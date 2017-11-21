@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.flf.mapper.FaqMapper" >
+    <resultMap id="BaseResultMap" type="Faq" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="headline" property="headline" jdbcType="VARCHAR" />
+    <result column="content" property="content" />
+    <result column="date" property="date" jdbcType="DATE" />
+     <result column="faq_num" property="faqNum" jdbcType="VARCHAR" />
+     <result column="faq_state" property="faqState" />
+  </resultMap>
+  
+  <update id="deleteFAQ" parameterType="String">
+   update t_faq 
+   set
+   faq_state=0
+   where id=#{0}
+  </update>
+  
+  <select id="listPageFAQ" parameterType="Faq" resultMap="BaseResultMap">
+    select * from t_faq ORDER BY date DESC LIMIT 5
+  </select>
+
+  
+  <select id="listAllFAQ" resultMap="BaseResultMap">
+  select * from t_faq 
+  </select>
+  
+  <select id="getFAQById" parameterType="String" resultMap="BaseResultMap">
+  select * from t_faq where id=#{0} 
+  </select>
+  
+  <insert id="insertFAQ" parameterType="Faq">
+    insert into t_faq ( id,headline, content, 
+      date,faq_num,faq_state)
+    values (UUID(), #{headline,jdbcType=VARCHAR}, #{content,jdbcType=VARCHAR}, 
+      #{date,jdbcType=DATE},#{faqNum},#{faqState})
+  </insert>
+  
+  <update id="updateFAQ" parameterType="Faq" >
+      update t_faq
+    set headline = #{headline,jdbcType=VARCHAR},
+      content = #{content,jdbcType=VARCHAR},
+      date = #{date,jdbcType=DATE},
+      faq_num=#{faqNum},
+      faq_state=#{faqState}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+ 
+</mapper>

@@ -1,0 +1,185 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.flf.mapper.ElectricityMeterProjectMapper" >
+  <resultMap id="BaseResultMap" type="com.flf.entity.ElectricityMeterProject" >
+    <id column="electricity_meter_project_id" property="electricityMeterProjectId" jdbcType="VARCHAR" />
+    <result column="electricity_meter_records_id" property="electricityMeterRecordsId" jdbcType="VARCHAR" />
+    <result column="reading_program_id" property="readingProgramId" jdbcType="VARCHAR" />
+  </resultMap>
+  
+  <resultMap id="ElectricityMeterRecordsResultMap" type="com.flf.entity.ElectricityMeterRecords" >
+    <id column="electricity_meter_records_id" property="electricityMeterRecordsId" jdbcType="VARCHAR" />
+    <result column="electricity_meter_id" property="electricityMeterId" jdbcType="VARCHAR" />
+    <result column="installation_time" property="installationTime" jdbcType="DATE" />
+    <result column="enabling_time" property="enablingTime" jdbcType="DATE" />
+    <result column="install" property="install" jdbcType="VARCHAR" />
+    <result column="outage_time" property="outageTime" jdbcType="DATE" />
+    <result column="using_nature" property="usingNature" jdbcType="VARCHAR" />
+    <result column="electricity_meter_building_id" property="electricityMeterBuildingId" jdbcType="VARCHAR" />
+    <result column="assets_id" property="assetsId" jdbcType="VARCHAR" />
+    <result column="state" property="state" jdbcType="VARCHAR" />
+    <result column="reading_way" property="readingWay" jdbcType="VARCHAR" />
+    <result column="parent_id" property="parentId" jdbcType="VARCHAR" />
+    <result column="is_billing" property="isBilling" jdbcType="VARCHAR" />
+    <result column="last_time_reading" property="lastTimeReading" jdbcType="DOUBLE" />
+    <result column="initial_reading" property="initialReading" jdbcType="DOUBLE" />
+    <result column="stop_reading" property="stopReading" jdbcType="DOUBLE" />
+    <result column="building_structure_id" property="buildingStructureId" jdbcType="VARCHAR" />
+    <result column="full_name" property="fullName" jdbcType="VARCHAR" />
+    <result column="electricity_meter_num" property="electricityMeterNum" jdbcType="VARCHAR" />
+    <result column="reading" property="reading" jdbcType="DOUBLE" />
+    <result column="meter_reading_people" property="meterReadingPeople" jdbcType="VARCHAR" />
+    <result column="meter_reading_date" property="meterReadingDate" jdbcType="VARCHAR" />
+  </resultMap>
+  
+  
+  <resultMap id="ElectricityMeterReadingProgramResultMap" type="com.flf.entity.ElectricityMeterReadingProgram" >
+    <id column="electricity_meter_reading_program_id" property="electricityMeterReadingProgramId" jdbcType="VARCHAR" />
+    <result column="project_name" property="projectName" jdbcType="VARCHAR" />
+    <result column="project_id" property="projectId" jdbcType="VARCHAR" />
+    <result column="settlement_day" property="settlementDay" jdbcType="INTEGER" />
+    <result column="reviewers" property="reviewers" jdbcType="VARCHAR" />
+    <result column="program_execution_status" property="programExecutionStatus" jdbcType="TINYINT" />
+    <result column="meter_reading_num" property="meterReadingNum" jdbcType="INTEGER" />
+    <result column="unfinished_num" property="unfinishedNum" jdbcType="INTEGER" />
+    <result column="start_time" property="startTime" jdbcType="DATE" />
+    <result column="end_time" property="endTime" jdbcType="DATE" />
+    <result column="verify_time" property="verifyTime" jdbcType="DATE" />
+    <result column="meter_reading_type" property="meterReadingType" jdbcType="TINYINT" />
+    <result column="meter_reading_warning_num" property="meterReadingWarningNum" jdbcType="INTEGER" />
+    <result column="meter_reading_error_num" property="meterReadingErrorNum" jdbcType="INTEGER" />
+    <result column="no_meter_reading_num" property="noMeterReadingNum" jdbcType="INTEGER" />
+    <result column="review_meter_num" property="reviewMeterNum" jdbcType="INTEGER" />
+    <result column="meter_reading_normal_num" property="meterReadingNormalNum" jdbcType="INTEGER" />
+    <result column="current_executor" property="currentExecutor" jdbcType="VARCHAR" />
+    <result column="executive_team" property="executiveTeam" jdbcType="VARCHAR" />
+  </resultMap>
+  
+  <resultMap id="ElectricityMeterProjectResultMap" type="com.flf.entity.ElectricityMeterProject" >
+    <id column="electricity_meter_project_id" property="electricityMeterProjectId" jdbcType="VARCHAR" />
+    <result column="electricity_meter_records_id" property="electricityMeterRecordsId" jdbcType="VARCHAR" />
+    <result column="reading_program_id" property="readingProgramId" jdbcType="VARCHAR" />
+    <result column="building_structure_id" property="buildingStructureId" jdbcType="VARCHAR" />
+    <association property="electricityMeterRecords" select="selectElectricityMeterRecords" column="electricity_meter_records_id" javaType="ElectricityMeterRecords">
+        <id column="electricity_meter_records_id" property="electricityMeterRecordsId" jdbcType="VARCHAR" />
+    <result column="electricity_meter_id" property="electricityMeterId" jdbcType="VARCHAR" />
+    <result column="installation_time" property="installationTime" jdbcType="DATE" />
+    <result column="enabling_time" property="enablingTime" jdbcType="DATE" />
+    <result column="install" property="install" jdbcType="VARCHAR" />
+    <result column="outage_time" property="outageTime" jdbcType="DATE" />
+    <result column="using_nature" property="usingNature" jdbcType="VARCHAR" />
+    <result column="electricity_meter_building_id" property="electricityMeterBuildingId" jdbcType="VARCHAR" />
+    <result column="assets_id" property="assetsId" jdbcType="VARCHAR" />
+    <result column="state" property="state" jdbcType="VARCHAR" />
+    <result column="reading_way" property="readingWay" jdbcType="VARCHAR" />
+    <result column="parent_id" property="parentId" jdbcType="VARCHAR" />
+    <result column="is_billing" property="isBilling" jdbcType="VARCHAR" />
+    <result column="last_time_reading" property="lastTimeReading" jdbcType="DOUBLE" />
+    <result column="initial_reading" property="initialReading" jdbcType="DOUBLE" />
+    <result column="stop_reading" property="stopReading" jdbcType="DOUBLE" />
+    <result column="building_structure_id" property="buildingStructureId" jdbcType="VARCHAR" />
+    <result column="full_name" property="fullName" jdbcType="VARCHAR" />
+    <result column="electricity_meter_num" property="electricityMeterNum" jdbcType="VARCHAR" />
+    <result column="reading" property="reading" jdbcType="DOUBLE" />
+    <result column="meter_reading_people" property="meterReadingPeople" jdbcType="VARCHAR" />
+    <result column="meter_reading_date" property="meterReadingDate" jdbcType="VARCHAR" />
+    </association>
+    <association property="electricityMeterReadingProgram" select="selectElectricityMeterReadingProgram"   column="reading_program_id"  javaType="ElectricityMeterReadingProgram">
+        <id column="electricity_meter_reading_program_id" property="electricityMeterReadingProgramId" jdbcType="VARCHAR" />
+    <result column="project_name" property="projectName" jdbcType="VARCHAR" />
+    <result column="project_id" property="projectId" jdbcType="VARCHAR" />
+    <result column="settlement_day" property="settlementDay" jdbcType="INTEGER" />
+    <result column="reviewers" property="reviewers" jdbcType="VARCHAR" />
+    <result column="program_execution_status" property="programExecutionStatus" jdbcType="TINYINT" />
+    <result column="meter_reading_num" property="meterReadingNum" jdbcType="INTEGER" />
+    <result column="unfinished_num" property="unfinishedNum" jdbcType="INTEGER" />
+    <result column="start_time" property="startTime" jdbcType="DATE" />
+    <result column="end_time" property="endTime" jdbcType="DATE" />
+    <result column="verify_time" property="verifyTime" jdbcType="DATE" />
+    <result column="meter_reading_type" property="meterReadingType" jdbcType="TINYINT" />
+    <result column="meter_reading_warning_num" property="meterReadingWarningNum" jdbcType="INTEGER" />
+    <result column="meter_reading_error_num" property="meterReadingErrorNum" jdbcType="INTEGER" />
+    <result column="no_meter_reading_num" property="noMeterReadingNum" jdbcType="INTEGER" />
+    <result column="review_meter_num" property="reviewMeterNum" jdbcType="INTEGER" />
+    <result column="meter_reading_normal_num" property="meterReadingNormalNum" jdbcType="INTEGER" />
+    <result column="current_executor" property="currentExecutor" jdbcType="VARCHAR" />
+    <result column="executive_team" property="executiveTeam" jdbcType="VARCHAR" />
+    </association>
+  </resultMap>
+  
+  <!--   新增电表使用记录抄表计划关系信息 -->
+  <insert id="insertWaterMeterProject" parameterType="com.flf.entity.ElectricityMeterProject" >
+    insert into te_electricity_meter_project (electricity_meter_project_id, electricity_meter_records_id, 
+      reading_program_id)
+    values (UUID(), #{electricityMeterRecordsId,jdbcType=VARCHAR}, 
+      #{readingProgramId,jdbcType=VARCHAR})
+  </insert>
+  
+  <!-- 根据抄表计划id解除抄表计划和抄表记录的关联 -->
+<delete id="deleteByReadingProgramId" parameterType="java.lang.String">
+  	delete from te_electricity_meter_project where reading_program_id=#{0}
+  </delete>  
+
+<!-- 查询电表使用记录 -->
+  <select id="selectElectricityMeterRecords" parameterType="String" resultMap="ElectricityMeterRecordsResultMap">
+      select * from te_electricity_meter_records where electricity_meter_records_id=#{0}
+  </select>
+  
+  
+  <!-- 查询电表抄表计划 -->
+  <select id="selectElectricityMeterReadingProgram" parameterType="String" resultMap="ElectricityMeterReadingProgramResultMap">
+      select * from te_electricity_meter_reading_program  where electricity_meter_reading_program_id=#{0}
+  </select>
+  
+  
+   <!--   根据查表计划id查询建筑结构id-->
+  <select id="listElectricityMeterProjectbyId"  resultMap="ElectricityMeterProjectResultMap">
+      select p.*,r.building_structure_id from te_electricity_meter_project p
+      left join te_electricity_meter_records r on r.electricity_meter_records_id=p.electricity_meter_records_id
+      where reading_program_id=#{0}
+  </select>
+  
+  
+  <!-- 分页查询电表抄表计划关系 -->
+  <select id="listPageElectricityMeterProject" parameterType="ElectricityMeterProject" resultMap="BaseResultMap">
+      select * from te_electricity_meter_project 
+  </select>
+  
+  <!-- 查询电表抄表计划关系 -->
+  <select id="listAllElectricityMeterProject"  resultMap="BaseResultMap">
+      select * from te_electricity_meter_project 
+  </select>
+  
+  <!-- 根据id查询电表抄表计划关系 -->
+  <select id="getElectricityMeterProjectbyId" parameterType="String" resultMap="BaseResultMap">
+      select * from te_electricity_meter_project where electricity_meter_project_id=#{electricityMeterProjectId}
+  </select>
+  
+  <!-- 删除电表抄表计划关系 -->
+  <delete id="deleteElectricityMeterProject" parameterType="String">
+      delete from te_electricity_meter_project where electricity_meter_project_id=#{electricityMeterProjectId}
+  </delete>
+  
+  <!-- 分页查询电表抄表计划关系 -->
+  <insert id="insertElectricityMeterProject" parameterType="com.flf.entity.ElectricityMeterProject" >
+    insert into te_electricity_meter_project (electricity_meter_project_id, electricity_meter_records_id, 
+      reading_program_id)
+    values (UUID(), #{electricityMeterRecordsId,jdbcType=VARCHAR}, 
+      #{readingProgramId,jdbcType=VARCHAR})
+  </insert>
+ 
+  <!-- 修改电表抄表计划关系 -->
+  <update id="updateElectricityMeterProject" parameterType="com.flf.entity.ElectricityMeterProject" >
+    update te_electricity_meter_project
+    <set >
+      <if test="electricityMeterRecordsId != null" >
+        electricity_meter_records_id = #{electricityMeterRecordsId,jdbcType=VARCHAR},
+      </if>
+      <if test="readingProgramId != null" >
+        reading_program_id = #{readingProgramId,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where electricity_meter_project_id = #{electricityMeterProjectId,jdbcType=VARCHAR}
+  </update>
+ 
+</mapper>

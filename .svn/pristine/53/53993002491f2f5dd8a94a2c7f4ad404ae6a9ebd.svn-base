@@ -1,0 +1,241 @@
+package com.flf.entity;
+
+import java.util.Date;
+
+import javax.xml.bind.annotation.XmlRootElement;
+
+import org.springframework.format.annotation.DateTimeFormat;
+@XmlRootElement(name = "ElectricityMeterRecords") // ���ʹ�ü�¼
+public class ElectricityMeterRecords {
+    private String electricityMeterRecordsId; // ���ʹ�ü�¼id
+
+    private String electricityMeterId;  // ���id
+
+    private Date installationTime; //��װʱ��
+
+    private Date enablingTime;// ����ʱ��
+
+    private String install; //��װ��
+
+    private Date outageTime; //ͣ��ʱ��
+
+    private String usingNature; //ʹ������
+
+    private String electricityMeterBuildingId; //�����������id
+
+    private String assetsId; //�ʲ�id
+
+    private String state; //��״̬
+
+    private String readingWay; //���?ʽ
+
+    private String parentId; // ����id
+
+    private String isBilling; //�Ƿ�Ʒѱ�
+
+    private Double lastTimeReading; //���¶���
+
+    private Double initialReading; //��ʼ����
+
+    private Double stopReading; //ͣ�ö���
+
+    private String buildingStructureId; // �����ṹid
+    
+    private String electricityMeterNum; //电表编号
+    
+    private String fullName; // 房屋全名
+    
+    private Double reading; // 本月读数
+    
+    private String meterReadingPeople; //抄表人
+    
+    private  Date  meterReadingDate; //抄表日期
+    
+    public Double getReading() {	
+		return reading;
+	}
+
+	public void setReading(Double reading) {
+		this.reading = reading;
+	}
+
+	public String getMeterReadingPeople() {
+		return meterReadingPeople;
+	}
+
+	public void setMeterReadingPeople(String meterReadingPeople) {
+		this.meterReadingPeople = meterReadingPeople;
+	}
+
+	public Date getMeterReadingDate() {
+		return meterReadingDate;
+	}
+
+	public void setMeterReadingDate(Date meterReadingDate) {
+		this.meterReadingDate = meterReadingDate;
+	}
+
+	public String getElectricityMeterNum() {
+		return electricityMeterNum;
+	}
+
+	public void setElectricityMeterNum(String electricityMeterNum) {
+		this.electricityMeterNum = electricityMeterNum;
+	}
+
+	public String getFullName() {
+		return fullName;
+	}
+
+	public void setFullName(String fullName) {
+		this.fullName = fullName;
+	}
+
+	private ElectricityMeter electricityMeter;
+    
+    
+
+    public ElectricityMeter getElectricityMeter() {
+		return electricityMeter;
+	}
+
+	public void setElectricityMeter(ElectricityMeter electricityMeter) {
+		this.electricityMeter = electricityMeter;
+	}
+
+	public String getElectricityMeterRecordsId() {
+        return electricityMeterRecordsId;
+    }
+
+    public void setElectricityMeterRecordsId(String electricityMeterRecordsId) {
+        this.electricityMeterRecordsId = electricityMeterRecordsId;
+    }
+
+    public String getElectricityMeterId() {
+        return electricityMeterId;
+    }
+
+    public void setElectricityMeterId(String electricityMeterId) {
+        this.electricityMeterId = electricityMeterId;
+    }
+
+    public Date getInstallationTime() {
+        return installationTime;
+    }
+
+    public void setInstallationTime(Date installationTime) {
+        this.installationTime = installationTime;
+    }
+
+    public Date getEnablingTime() {
+        return enablingTime;
+    }
+
+    public void setEnablingTime(Date enablingTime) {
+        this.enablingTime = enablingTime;
+    }
+
+    public String getInstall() {
+        return install;
+    }
+
+    public void setInstall(String install) {
+        this.install = install;
+    }
+
+    public Date getOutageTime() {
+        return outageTime;
+    }
+
+    public void setOutageTime(Date outageTime) {
+        this.outageTime = outageTime;
+    }
+
+    public String getUsingNature() {
+        return usingNature;
+    }
+
+    public void setUsingNature(String usingNature) {
+        this.usingNature = usingNature;
+    }
+
+    public String getElectricityMeterBuildingId() {
+        return electricityMeterBuildingId;
+    }
+
+    public void setElectricityMeterBuildingId(String electricityMeterBuildingId) {
+        this.electricityMeterBuildingId = electricityMeterBuildingId;
+    }
+
+    public String getAssetsId() {
+        return assetsId;
+    }
+
+    public void setAssetsId(String assetsId) {
+        this.assetsId = assetsId;
+    }
+
+    public String getState() {
+        return state;
+    }
+
+    public void setState(String state) {
+        this.state = state;
+    }
+
+    public String getReadingWay() {
+        return readingWay;
+    }
+
+    public void setReadingWay(String readingWay) {
+        this.readingWay = readingWay;
+    }
+
+    public String getParentId() {
+        return parentId;
+    }
+
+    public void setParentId(String parentId) {
+        this.parentId = parentId;
+    }
+
+    public String getIsBilling() {
+        return isBilling;
+    }
+
+    public void setIsBilling(String isBilling) {
+        this.isBilling = isBilling;
+    }
+
+    public Double getLastTimeReading() {
+        return lastTimeReading;
+    }
+
+    public void setLastTimeReading(Double lastTimeReading) {
+        this.lastTimeReading = lastTimeReading;
+    }
+
+    public Double getInitialReading() {
+        return initialReading;
+    }
+
+    public void setInitialReading(Double initialReading) {
+        this.initialReading = initialReading;
+    }
+
+    public Double getStopReading() {
+        return stopReading;
+    }
+
+    public void setStopReading(Double stopReading) {
+        this.stopReading = stopReading;
+    }
+
+    public String getBuildingStructureId() {
+        return buildingStructureId;
+    }
+
+    public void setBuildingStructureId(String buildingStructureId) {
+        this.buildingStructureId = buildingStructureId;
+    }
+}

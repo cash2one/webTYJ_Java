@@ -1,0 +1,443 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.flf.mapper.EntranceMapper">
+
+
+<resultMap id="BaseResultMap" type="com.flf.entity.Entrance" >
+    <id column="card_id" property="cardId" jdbcType="VARCHAR" />
+    <result column="house_id" property="houseId" jdbcType="VARCHAR" />
+    <result column="card_date" property="cardDate" jdbcType="DATE" />
+    <result column="start_date" property="startDate" jdbcType="DATE" />
+    <result column="end_date" property="endDate" jdbcType="DATE" />
+    <result column="user_type" property="userType" jdbcType="VARCHAR" />
+    <result column="user_id" property="userId" jdbcType="VARCHAR" />
+    <result column="relation" property="relation" jdbcType="VARCHAR" />
+    <result column="nominal_fee" property="nominalFee" jdbcType="DOUBLE" />
+    <result column="note" property="note" jdbcType="VARCHAR" />
+    <result column="car_type" property="carType" jdbcType="VARCHAR" />
+    <result column="cust_code" property="custCode" jdbcType="VARCHAR" />
+    <result column="card_state" property="cardState" jdbcType="TINYINT" />
+    <result column="idcard_num" property="idcardNum" jdbcType="VARCHAR" />
+    <result column="related" property="related" jdbcType="VARCHAR" />
+      <result column="card_num" property="cardNum" jdbcType="VARCHAR" />
+      <result column="staff_id" property="staffId" jdbcType="VARCHAR" />
+      <result column="operate_date" property="operateDate"  />
+  </resultMap>
+
+
+<resultMap id="PersonCusNewtResultMap" type="PersonCustNew" >
+    <result column="cust_id" property="custId" jdbcType="VARCHAR" />
+    <result column="cust_code" property="custCode" jdbcType="VARCHAR" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="sex" property="sex" jdbcType="VARCHAR" />
+    <result column="native_place" property="nativePlace" jdbcType="VARCHAR" />
+    <result column="census" property="census" jdbcType="VARCHAR" />
+    <result column="birthday" property="birthday" jdbcType="DATE" />
+    <result column="card_type" property="cardType" jdbcType="TINYINT" />
+    <result column="card_num" property="cardNum" jdbcType="VARCHAR" />
+    <result column="jiajia_num" property="jiajiaNum" jdbcType="VARCHAR" />
+    <result column="weixin_num" property="weixinNum" jdbcType="VARCHAR" />
+    <result column="work_units" property="workUnits" jdbcType="VARCHAR" />
+    <result column="position" property="position" jdbcType="VARCHAR" />
+    <result column="marrie_state" property="marrieState" jdbcType="TINYINT" />
+    <result column="edu_level" property="eduLevel" jdbcType="TINYINT" />
+    <result column="social" property="social" jdbcType="VARCHAR" />
+    <result column="landscape" property="landscape" jdbcType="TINYINT" />
+    <result column="hobby" property="hobby" jdbcType="VARCHAR" />
+    <result column="cust_level" property="custLevel" jdbcType="VARCHAR" />
+    <result column="is_enterprise" property="isEnterprise" jdbcType="TINYINT" />
+    <result column="urgent_contact_person" property="urgentContactPerson" jdbcType="VARCHAR" />
+    <result column="urgent_contact_phone" property="urgentContactPhone" jdbcType="VARCHAR" />
+    <result column="upload_image" property="uploadImage" jdbcType="VARCHAR" />
+    <result column="phone_num" property="phoneNum" jdbcType="VARCHAR" />
+  </resultMap>
+
+
+<resultMap id="HouseNewResultMap" type="HouseNew" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="building_id" property="buildingId" jdbcType="VARCHAR" />
+    <result column="building_structure_id" property="buildingStructureId" jdbcType="VARCHAR" />
+    <result column="house_num" property="houseNum" jdbcType="VARCHAR" />
+    <result column="property" property="property" jdbcType="VARCHAR" />
+    <result column="land_price" property="landPrice" jdbcType="DOUBLE" />
+    <result column="last_transcation_price" property="lastTranscationPrice" jdbcType="DOUBLE" />
+    <result column="house_name" property="houseName" jdbcType="VARCHAR" />
+    <result column="house_postcode" property="housePostcode" jdbcType="VARCHAR" />
+    <result column="manage_fee" property="manageFee" jdbcType="DOUBLE" />
+    <result column="complete_date" property="completeDate" jdbcType="DATE" />
+    <result column="elevator" property="elevator" jdbcType="TINYINT" />
+    <result column="gate_guard" property="gateGuard" jdbcType="TINYINT" />
+    <result column="join_date" property="joinDate" jdbcType="DATE" />
+    <result column="join_state" property="joinState" jdbcType="TINYINT" />
+    <result column="designer_draw" property="designerDraw" jdbcType="VARCHAR" />
+    <result column="is_billing" property="isBilling" jdbcType="TINYINT" />
+    <result column="price" property="price" jdbcType="DOUBLE" />
+    <result column="land_certificate" property="landCertificate" jdbcType="VARCHAR" />
+    <result column="market_state" property="marketState" jdbcType="TINYINT" />
+    <result column="special_fund" property="specialFund" jdbcType="TINYINT" />
+    <result column="capital_type" property="capitalType" jdbcType="TINYINT" />
+    <result column="password" property="password" jdbcType="VARCHAR" />
+    <result column="sip_id" property="sipId" jdbcType="VARCHAR" />
+    <result column="usable_area" property="usableArea" jdbcType="DOUBLE" />
+    <result column="full_name" property="fullName" jdbcType="VARCHAR" />
+  </resultMap>
+
+  <resultMap id="StaffResultMap" type="Staff" >
+    <result column="staff_id" property="staffId" jdbcType="VARCHAR" />
+    <result column="company_id" property="companyId" jdbcType="VARCHAR" />
+    <result column="staff_number" property="staffNumber" jdbcType="VARCHAR" />
+    <result column="first_name" property="firstName" jdbcType="VARCHAR" />
+    <result column="last_name" property="lastName" jdbcType="VARCHAR" />
+    <result column="first_name_spell" property="firstNameSpell" jdbcType="VARCHAR" />
+    <result column="last_name_spell" property="lastNameSpell" jdbcType="VARCHAR" />
+    <result column="sex" property="sex" jdbcType="INTEGER" />
+    <result column="native_place" property="nativePlace" jdbcType="VARCHAR" />
+    <result column="married" property="married" jdbcType="INTEGER" />
+    <result column="edu_lever" property="eduLever" jdbcType="INTEGER" />
+    <result column="landscape" property="landscape" jdbcType="INTEGER" />
+    <result column="birthday" property="birthday" jdbcType="DATE" />
+    <result column="hobby" property="hobby" jdbcType="VARCHAR" />
+    <result column="card_type" property="cardType" jdbcType="INTEGER" />
+    <result column="card_num" property="cardNum" jdbcType="VARCHAR" />
+    <result column="address" property="address" jdbcType="VARCHAR" />
+    <result column="telphone" property="telphone" jdbcType="VARCHAR" />
+    <result column="email" property="email" jdbcType="VARCHAR" />
+    <result column="QQ" property="qq" jdbcType="VARCHAR" />
+    <result column="position" property="position" jdbcType="INTEGER" />
+    <result column="division_id" property="divisionId" jdbcType="VARCHAR" />
+    <result column="divisionName" property="divisionname" jdbcType="VARCHAR" />
+    <result column="post_id" property="postId" jdbcType="VARCHAR" />
+    <result column="work_count" property="workCount" jdbcType="INTEGER" />
+    <result column="state" property="state" jdbcType="VARCHAR" />
+    <result column="staff_name" property="staffName" jdbcType="VARCHAR" />
+    <result column="team_work_id" property="teamworkId" jdbcType="VARCHAR" />
+     <result column="project_id" property="projectId" jdbcType="VARCHAR" />
+     <result column="instance_id" property="instanceId" jdbcType="VARCHAR" />  
+  </resultMap>
+
+
+<resultMap id="EntranceResultMap" type="com.flf.entity.Entrance" >
+    <id column="card_id" property="cardId" jdbcType="VARCHAR" />
+    <!-- <result column="house_id" property="houseId" jdbcType="VARCHAR" /> -->
+    <result column="card_date" property="cardDate" jdbcType="DATE" />
+    <result column="start_date" property="startDate" jdbcType="DATE" />
+    <result column="end_date" property="endDate" jdbcType="DATE" />
+    <result column="user_type" property="userType" jdbcType="VARCHAR" />
+    <result column="user_id" property="userId" jdbcType="VARCHAR" />
+    <result column="relation" property="relation" jdbcType="VARCHAR" />
+    <result column="nominal_fee" property="nominalFee" jdbcType="DOUBLE" />
+    <result column="note" property="note" jdbcType="VARCHAR" />
+    <result column="car_type" property="carType" jdbcType="VARCHAR" />
+   <!--  <result column="cust_code" property="custCode" jdbcType="VARCHAR" /> -->
+    <result column="card_state" property="cardState" jdbcType="TINYINT" />
+    <result column="idcard_num" property="idcardNum" jdbcType="VARCHAR" />
+    <result column="related" property="related" jdbcType="VARCHAR" />
+     <result column="card_num" property="cardNum" jdbcType="VARCHAR" />
+      <result column="operate_date" property="operateDate"  />
+   <association property="houseNew" column="house_id" javaType="HouseNew" select="selectHouse">
+
+   <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="building_id" property="buildingId" jdbcType="VARCHAR" />
+    <result column="building_structure_id" property="buildingStructureId" jdbcType="VARCHAR" />
+    <result column="house_num" property="houseNum" jdbcType="VARCHAR" />
+    <result column="property" property="property" jdbcType="VARCHAR" />
+    <result column="land_price" property="landPrice" jdbcType="DOUBLE" />
+    <result column="last_transcation_price" property="lastTranscationPrice" jdbcType="DOUBLE" />
+    <result column="house_postcode" property="housePostcode" jdbcType="VARCHAR" />
+    <result column="manage_fee" property="manageFee" jdbcType="DOUBLE" />
+    <result column="complete_date" property="completeDate" jdbcType="DATE" />
+    <result column="elevator" property="elevator" jdbcType="TINYINT" />
+    <result column="gate_guard" property="gateGuard" jdbcType="TINYINT" />
+    <result column="join_date" property="joinDate" jdbcType="DATE" />
+    <result column="join_state" property="joinState" jdbcType="TINYINT" />
+    <result column="designer_draw" property="designerDraw" jdbcType="VARCHAR" />
+    <result column="is_billing" property="isBilling" jdbcType="TINYINT" />
+    <result column="price" property="price" jdbcType="DOUBLE" />
+    <result column="land_certificate" property="landCertificate" jdbcType="VARCHAR" />
+    <result column="market_state" property="marketState" jdbcType="TINYINT" />
+    <result column="special_fund" property="specialFund" jdbcType="TINYINT" />
+    <result column="capital_type" property="capitalType" jdbcType="TINYINT" />
+    <result column="password" property="password" jdbcType="VARCHAR" />
+    <result column="sip_id" property="sipId" jdbcType="VARCHAR" />
+    <result column="usable_area" property="usableArea" jdbcType="DOUBLE" />
+    <result column="full_name" property="fullName" jdbcType="VARCHAR" />
+
+</association>
+
+
+<association property="personCustNew" column="cust_code" javaType="PersonCustNew" select="selectPersonCust">
+<result column="cust_id" property="custId" jdbcType="VARCHAR" />
+    <result column="cust_code" property="custCode" jdbcType="VARCHAR" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="sex" property="sex" jdbcType="VARCHAR" />
+    <result column="native_place" property="nativePlace" jdbcType="VARCHAR" />
+    <result column="census" property="census" jdbcType="VARCHAR" />
+    <result column="birthday" property="birthday" jdbcType="DATE" />
+    <result column="card_type" property="cardType" jdbcType="TINYINT" />
+    <result column="card_num" property="cardNum" jdbcType="VARCHAR" />
+    <result column="jiajia_num" property="jiajiaNum" jdbcType="VARCHAR" />
+    <result column="weixin_num" property="weixinNum" jdbcType="VARCHAR" />
+    <result column="work_units" property="workUnits" jdbcType="VARCHAR" />
+    <result column="position" property="position" jdbcType="VARCHAR" />
+    <result column="marrie_state" property="marrieState" jdbcType="TINYINT" />
+    <result column="edu_level" property="eduLevel" jdbcType="TINYINT" />
+    <result column="social" property="social" jdbcType="VARCHAR" />
+    <result column="landscape" property="landscape" jdbcType="TINYINT" />
+    <result column="hobby" property="hobby" jdbcType="VARCHAR" />
+    <result column="cust_level" property="custLevel" jdbcType="VARCHAR" />
+    <result column="is_enterprise" property="isEnterprise" jdbcType="TINYINT" />
+    <result column="urgent_contact_person" property="urgentContactPerson" jdbcType="VARCHAR" />
+    <result column="urgent_contact_phone" property="urgentContactPhone" jdbcType="VARCHAR" />
+    <result column="upload_image" property="uploadImage" jdbcType="VARCHAR" />
+    <result column="phone_num" property="phoneNum" jdbcType="VARCHAR" />
+
+</association>
+
+<association property="user" column="user_id" javaType="PersonCustNew" select="selectPersonCust">
+<result column="cust_id" property="custId" jdbcType="VARCHAR" />
+    <result column="cust_code" property="custCode" jdbcType="VARCHAR" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="sex" property="sex" jdbcType="VARCHAR" />
+    <result column="native_place" property="nativePlace" jdbcType="VARCHAR" />
+    <result column="census" property="census" jdbcType="VARCHAR" />
+    <result column="birthday" property="birthday" jdbcType="DATE" />
+    <result column="card_type" property="cardType" jdbcType="TINYINT" />
+    <result column="card_num" property="cardNum" jdbcType="VARCHAR" />
+    <result column="jiajia_num" property="jiajiaNum" jdbcType="VARCHAR" />
+    <result column="weixin_num" property="weixinNum" jdbcType="VARCHAR" />
+    <result column="work_units" property="workUnits" jdbcType="VARCHAR" />
+    <result column="position" property="position" jdbcType="VARCHAR" />
+    <result column="marrie_state" property="marrieState" jdbcType="TINYINT" />
+    <result column="edu_level" property="eduLevel" jdbcType="TINYINT" />
+    <result column="social" property="social" jdbcType="VARCHAR" />
+    <result column="landscape" property="landscape" jdbcType="TINYINT" />
+    <result column="hobby" property="hobby" jdbcType="VARCHAR" />
+    <result column="cust_level" property="custLevel" jdbcType="VARCHAR" />
+    <result column="is_enterprise" property="isEnterprise" jdbcType="TINYINT" />
+    <result column="urgent_contact_person" property="urgentContactPerson" jdbcType="VARCHAR" />
+    <result column="urgent_contact_phone" property="urgentContactPhone" jdbcType="VARCHAR" />
+    <result column="upload_image" property="uploadImage" jdbcType="VARCHAR" />
+    <result column="phone_num" property="phoneNum" jdbcType="VARCHAR" />
+
+</association>
+
+<association property="staff" column="staff_id" javaType="Staff" select="selectStaff">
+     <id column="staff_id" property="staffId" jdbcType="VARCHAR" />
+    <result column="company_id" property="companyId" jdbcType="VARCHAR" />
+    <result column="staff_number" property="staffNumber" jdbcType="VARCHAR" />
+    <result column="first_name" property="firstName" jdbcType="VARCHAR" />
+    <result column="last_name" property="lastName" jdbcType="VARCHAR" />
+    <result column="first_name_spell" property="firstNameSpell" jdbcType="VARCHAR" />
+    <result column="last_name_spell" property="lastNameSpell" jdbcType="VARCHAR" />
+    <result column="sex" property="sex" jdbcType="INTEGER" />
+    <result column="native_place" property="nativePlace" jdbcType="VARCHAR" />
+    <result column="married" property="married" jdbcType="INTEGER" />
+    <result column="edu_lever" property="eduLever" jdbcType="INTEGER" />
+    <result column="landscape" property="landscape" jdbcType="INTEGER" />
+    <result column="birthday" property="birthday" jdbcType="DATE" />
+    <result column="hobby" property="hobby" jdbcType="VARCHAR" />
+    <result column="card_type" property="cardType" jdbcType="INTEGER" />
+    <result column="card_num" property="cardNum" jdbcType="VARCHAR" />
+    <result column="address" property="address" jdbcType="VARCHAR" />
+    <result column="telphone" property="telphone" jdbcType="VARCHAR" />
+    <result column="email" property="email" jdbcType="VARCHAR" />
+    <result column="QQ" property="qq" jdbcType="VARCHAR" />
+    <result column="position" property="position" jdbcType="INTEGER" />
+    <result column="division_id" property="divisionId" jdbcType="VARCHAR" />
+    <result column="divisionName" property="divisionname" jdbcType="VARCHAR" />
+    <result column="post_id" property="postId" jdbcType="VARCHAR" />
+    <result column="work_count" property="workCount" jdbcType="INTEGER" />
+    <result column="state" property="state" jdbcType="VARCHAR" />
+    <result column="staff_name" property="staffName" jdbcType="VARCHAR" />
+    <result column="team_work_id" property="teamworkId" jdbcType="VARCHAR" />
+     <result column="project_id" property="projectId" jdbcType="VARCHAR" />
+     <result column="instance_id" property="instanceId" jdbcType="VARCHAR" />
+
+</association>
+
+</resultMap>
+
+<resultMap type="Entrance" id="ResultMaplistPage" extends="BaseResultMap">
+	<association property="user" column="user_id" javaType="PersonCustNew" select="com.flf.mapper.PersonCustNewMapper.getPersonCustNewById" />
+</resultMap>
+
+
+<select id="listEntranceByHouseId" resultMap="EntranceResultMap" parameterType="String">
+ select * from t_entrance where house_id=#{0} and card_state!=3 
+ </select>
+
+<select id="selectHouse" resultMap="HouseNewResultMap" parameterType="String">
+	select a.*,b.full_name from tc_house a
+  	left join tc_building_structure b on b.id=a.building_structure_id
+  	 where a.id=#{0}
+</select>
+
+<select id="selectStaff" resultMap="StaffResultMap" parameterType="String">
+	select * from t_staff where staff_id=#{0} 
+</select>
+
+<select id="selectPersonCust" resultMap="PersonCusNewtResultMap" parameterType="String"> 
+select * from tc_person_cust where cust_id=#{0} 
+</select>
+
+<select id="listPageEntrance" resultMap="EntranceResultMap" parameterType="Entrance"> 
+SELECT * FROM t_entrance 
+</select>
+
+<select id="listAllEntrance" resultMap="EntranceResultMap"> 
+SELECT * FROM t_entrance 
+</select>
+
+<select id="getEntrance" resultMap="BaseResultMap" parameterType="String"> 
+select * from t_entrance where card_id=#{0} 
+</select>
+
+
+<select id="listSearchEntrance" resultMap="EntranceResultMap" parameterType="Search"> 
+      select a.* from t_entrance a
+      left join  tc_person_cust b on a.user_id = b.cust_id
+      where 1=1
+        <if test="staffName!='' and staffName!=null">
+  			and b.name like CONCAT('%',#{staffName},'%')
+  		</if>
+  		<if test="idNum!='' and idNum!=null">
+  			and b.card_num like CONCAT('%',#{idNum},'%')
+  		</if>
+  		<if test="phone!='' and phone!=null">
+  			and b.phone_num like CONCAT('%',#{phone},'%')
+  		</if> 
+  		<if test="custId!='' and custId!=null">
+  			and a.user_id = #{custId}
+  		</if>
+  		<if test="entranceCardNum!='' and entranceCardNum!=null">
+  			and a.card_num = #{entranceCardNum}
+  		</if>
+  		<if test="entranceCardState!='' and entranceCardState!=null">
+  			and a.card_state = #{entranceCardState}
+  		</if>
+  		group by  a.card_id
+</select>
+
+  <!--    根据搜索条件查询办理人停车卡和授权人停车卡信息信息 
+                  
+         -->
+    <select id="listSearchEntranceAu" parameterType="Search" resultMap="EntranceResultMap">
+        select a.* from t_entrance a
+        LEFT JOIN  tc_person_cust b ON a.user_id = b.cust_id
+        LEFT JOIN t_authorization e ON e.authorizer_personId =b.cust_id
+		WHERE e.status = '1' and e.authorized_personId=#{custId} AND e.access_card=1  AND NOW() BETWEEN e.sta_date AND e.end_date 	
+        	<if test="staffName!='' and staffName!=null">
+  			and b.name like CONCAT('%',#{staffName},'%')
+  		</if>
+  		<if test="idNum!='' and idNum!=null">
+  			and b.card_num like CONCAT('%',#{idNum},'%')
+  		</if>
+  		<if test="phone!='' and phone!=null">
+  			and b.phone_num like CONCAT('%',#{phone},'%')
+  		</if> 
+  		
+  		group by  a.card_id
+    </select>
+
+<delete id="deleteEntranceById" parameterType="String">
+ delete from t_entrance where card_id=#{cardId} 
+ </delete>
+ 
+ 
+<!-- 禁用门禁卡 -->
+<update id="updateEntranceById" parameterType="String">
+  update t_entrance 
+ set 
+ card_state=3,
+ operate_date=now()
+ where card_id=#{0} 
+  </update>
+ <!--  挂失门禁卡 -->
+  <update id="updateEntranceByIdAndLost" parameterType="String">
+  update t_entrance 
+ set 
+ card_state=2,
+ operate_date=now()
+ where card_id=#{0} 
+  </update>
+  <!-- 退还门禁卡 -->
+   <update id="updateEntranceByIdAndReturn" parameterType="String">
+ update t_entrance 
+ set 
+ card_state=3,
+ operate_date=now()
+ where card_id=#{0} 
+  </update>
+
+<update id="updateEntrance" parameterType="Entrance">
+    update t_entrance
+    set house_id = #{houseId,jdbcType=VARCHAR},
+      card_date = #{cardDate,jdbcType=DATE},
+      start_date = #{startDate,jdbcType=DATE},
+      end_date = #{endDate,jdbcType=DATE},
+      user_type = #{userType,jdbcType=VARCHAR},
+      user_id = #{userId,jdbcType=VARCHAR},
+      relation = #{relation,jdbcType=VARCHAR},
+      nominal_fee = #{nominalFee,jdbcType=DOUBLE},
+      note = #{note,jdbcType=VARCHAR},
+      car_type = #{carType,jdbcType=VARCHAR},
+      cust_code = #{custCode,jdbcType=VARCHAR},
+      card_state = #{cardState,jdbcType=TINYINT},
+      idcard_num = #{idcardNum,jdbcType=VARCHAR},
+      related = #{related,jdbcType=VARCHAR},
+       card_num = #{cardNum,jdbcType=VARCHAR},
+       staff_id=#{staffId},
+       operate_date=#{operateDate}
+    where card_id = #{cardId,jdbcType=VARCHAR}
+ </update>
+
+<insert id="insertEntrance" parameterType="com.flf.entity.Entrance" >
+    insert into t_entrance (card_id, house_id, card_date, 
+      start_date, end_date, user_type, 
+      user_id, relation, nominal_fee, 
+      note, car_type, cust_code, 
+      card_state, idcard_num, related,card_num,staff_id,operate_date
+      )
+    values (UUID(), #{houseId,jdbcType=VARCHAR}, now(), 
+      #{startDate,jdbcType=DATE}, #{endDate,jdbcType=DATE}, #{userType,jdbcType=VARCHAR}, 
+      #{userId,jdbcType=VARCHAR}, #{relation,jdbcType=VARCHAR}, #{nominalFee,jdbcType=DOUBLE}, 
+      #{note,jdbcType=VARCHAR}, #{carType,jdbcType=VARCHAR}, #{custCode,jdbcType=VARCHAR}, 
+      #{cardState,jdbcType=TINYINT}, #{idcardNum,jdbcType=VARCHAR}, #{related,jdbcType=VARCHAR},#{cardNum},#{staffId}
+      ,now()
+      )
+  </insert>
+  
+  <select id="listPageEntranceRestful" parameterType="Entrance" resultMap="ResultMaplistPage">
+  	select * from t_entrance where user_id = #{userId,jdbcType=VARCHAR} and card_state in (1,2) order by operate_date desc
+  </select>
+  
+  <resultMap type="Entrance" id="ResultMapWithEntrance" extends="BaseResultMap">
+	<association property="user" column="user_id" javaType="PersonCustNew" select="com.flf.mapper.PersonCustNewMapper.getPersonCustNewById" />
+  </resultMap>
+  
+  <select id="listPageEntranceByContion" parameterType="Entrance" resultMap="ResultMapWithEntrance">
+  	select e.*
+  	from t_entrance e
+  	inner join tc_person_cust pc on e.user_id=pc.cust_id
+  	where card_state in (1,2) and 1=1
+  	<if test="name!='' and name!=null">
+  		and pc.name like CONCAT('%',#{name},'%')
+  	</if>
+  	<if test="cardNums!='' and cardNums!=null">
+  		and pc.card_num like CONCAT('%',#{cardNums},'%')
+  	</if>
+  	<if test="cardNum!='' and cardNum!=null">
+  		and e.card_num like CONCAT('%',#{cardNum},'%')
+  	</if> 
+  	<if test="cardType!='' and cardType!=null">
+  		and pc.card_type=#{cardType,jdbcType=VARCHAR}
+  	</if> 
+  	order by operate_date desc
+  </select>
+
+	<!-- 查询输入的门禁卡号在数据库中是否已存在  王洲  2016.1.14  -->
+	<select id="getEntranceBycardNum" parameterType="String" resultType="int">
+		select count(card_num) from t_entrance where card_num = #{0} and card_state in (1,2)
+	</select>  
+
+</mapper>

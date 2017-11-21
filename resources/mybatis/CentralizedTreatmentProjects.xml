@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.flf.mapper.CentralizedTreatmentProjectsMapper" >
+  <resultMap id="BaseResultMap" type="CentralizedTreatmentProjects" >
+    <id column="project_id" property="projectId" jdbcType="VARCHAR" />
+    <result column="project_name" property="projectName" jdbcType="VARCHAR" />
+    <result column="project_state" property="projectState" jdbcType="TINYINT" />
+    <result column="project_type" property="projectType" jdbcType="TINYINT" />
+    <result column="project_professional" property="projectProfessional" jdbcType="TINYINT" />
+    <result column="project_create" property="projectCreate" jdbcType="VARCHAR" />
+    <result column="project_start_time" property="projectStartTime" jdbcType="TIMESTAMP" />
+    <result column="project_end_time" property="projectEndTime" jdbcType="TIMESTAMP" />
+    <result column="project_estimate_area" property="projectEstimateArea" jdbcType="DOUBLE" />
+    <result column="project_estimate_num" property="projetctEstimaNum" jdbcType="VARCHAR" />
+    <result column="project_reality_area" property="projectRealityArea" jdbcType="DOUBLE" />
+    <result column="project_reality_num" property="projectRealityNum" jdbcType="VARCHAR" />
+    <result column="remarks" property="remarks" jdbcType="VARCHAR" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="principal" property="principal" jdbcType="VARCHAR" />
+    <result column="project_estimate_money" property="projectEstimateMoney" jdbcType="DOUBLE" />
+  </resultMap>
+  
+  <resultMap type="CentralizedTreatmentProjects" id="resultCentralizedTreatmentProjectsMap" extends="BaseResultMap">
+  	<association property="staff" column="project_create" javaType="Staff" select="com.flf.mapper.StaffMapper.selectByid"></association>
+  </resultMap>
+  
+  <select id="getCentralizedTreatmentProjectsbyState" parameterType="String" resultMap="resultCentralizedTreatmentProjectsMap">
+  	select * from ts_centralized_treatment_projects where project_state =#{0}
+  </select>
+  <select id="listPageCentralizedTreatmentProjectsbyState" parameterType="CentralizedTreatmentProjects" resultMap="resultCentralizedTreatmentProjectsMap">
+  	select * from ts_centralized_treatment_projects where project_state = #{state}
+  </select>
+  
+  
+  <select id="getAllCentralizedTreatmentProjects" resultMap="BaseResultMap">
+  	select * from ts_centralized_treatment_projects
+  </select>
+  
+  <select id="getAllCentralizedTreatmentProjectsAlive" resultMap="BaseResultMap">
+  	select * from ts_centralized_treatment_projects where project_state = 1
+  </select>
+  
+  <select id="getCentralizedTreatmentProjectCountsbyState" parameterType="String" resultType="Integer">
+  select count(*) from ts_centralized_treatment_projects where project_state= #{0}
+  </select>
+  
+  <select id="getCentralizedTreatmentProjectsbyId" parameterType="String" resultMap="resultCentralizedTreatmentProjectsMap">
+  	select * from ts_centralized_treatment_projects where project_id = #{0}
+  </select>
+  <insert id="insertCentralizedTreatmentProjects" parameterType="CentralizedTreatmentProjects" >      
+   insert into ts_centralized_treatment_projects (project_id,project_name,project_state,project_type,project_professional,project_create,project_start_time,project_end_time,
+ 	 project_estimate_area,project_estimate_num,project_reality_area,project_reality_num,remarks,create_time,principal,project_estimate_money)
+    values (UUID(),#{projectName,jdbcType=VARCHAR},#{projectState,jdbcType=TINYINT},#{projectType,jdbcType=TINYINT},#{projectProfessional,jdbcType=TINYINT},
+    #{projectCreate,jdbcType=VARCHAR},#{projectStartTime,jdbcType=TIMESTAMP},#{projectEndTime,jdbcType=TIMESTAMP},#{projectEstimateArea,jdbcType=DOUBLE},#{projetctEstimaNum,jdbcType=VARCHAR},
+    #{projectRealityArea,jdbcType=DOUBLE},#{projectRealityNum,jdbcType=VARCHAR},#{remarks,jdbcType=VARCHAR},#{createTime,jdbcType=TIMESTAMP},
+    #{principal,jdbcType=VARCHAR},#{projectEstimateMoney,jdbcType=DOUBLE})
+    
+  </insert>
+  
+   <insert id="insertCentralizedTreatmentProjectsUUID" parameterType="CentralizedTreatmentProjects" >      
+   insert into ts_centralized_treatment_projects (project_id,project_name,project_state,project_type,project_professional,project_create,project_start_time,project_end_time,
+ 	 project_estimate_area,project_estimate_num,project_reality_area,project_reality_num,remarks,create_time,principal,project_estimate_money)
+    values (#{projectId,jdbcType=VARCHAR},#{projectName,jdbcType=VARCHAR},#{projectState,jdbcType=TINYINT},#{projectType,jdbcType=TINYINT},#{projectProfessional,jdbcType=TINYINT},
+    #{projectCreate,jdbcType=VARCHAR},#{projectStartTime,jdbcType=TIMESTAMP},#{projectEndTime,jdbcType=TIMESTAMP},#{projectEstimateArea,jdbcType=DOUBLE},#{projetctEstimaNum,jdbcType=VARCHAR},
+    #{projectRealityArea,jdbcType=DOUBLE},#{projectRealityNum,jdbcType=VARCHAR},#{remarks,jdbcType=VARCHAR},#{createTime,jdbcType=TIMESTAMP},
+    #{principal,jdbcType=VARCHAR},#{projectEstimateMoney,jdbcType=DOUBLE})
+    
+  </insert>
+  
+  <update id="updateCentralizedTreatmentProjects" parameterType="CentralizedTreatmentProjects" >
+    update ts_centralized_treatment_projects
+    set
+    project_name = #{projectName,jdbcType=VARCHAR},
+    project_state = #{projectState,jdbcType=TINYINT},
+    project_type = #{projectType,jdbcType=TINYINT},
+    project_professional = #{projectProfessional,jdbcType=TINYINT},
+    project_create = #{projectCreate,jdbcType=VARCHAR},
+    project_start_time = #{projectStartTime,jdbcType=TIMESTAMP},
+    project_end_time = #{projectEndTime,jdbcType=TIMESTAMP},
+ 	project_estimate_area = #{projectEstimateArea,jdbcType=DOUBLE},
+ 	project_estimate_num = #{projetctEstimaNum,jdbcType=VARCHAR},
+ 	project_reality_area = #{projectRealityArea,jdbcType=DOUBLE},
+ 	project_reality_num = #{projectRealityNum,jdbcType=VARCHAR},
+ 	remarks = #{remarks,jdbcType=VARCHAR},
+ 	create_time = #{createTime,jdbcType=TIMESTAMP},
+ 	principal = #{principal,jdbcType=VARCHAR},
+ 	project_estimate_money = #{projectEstimateMoney,jdbcType=DOUBLE}
+    where project_id = #{projectId,jdbcType=VARCHAR}
+  </update>
+</mapper>

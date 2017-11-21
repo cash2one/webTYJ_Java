@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>遗失物品</title>
+    <link rel="stylesheet" href="css/externalProfession.css">
+    <style>
+        .panel_info td{height: 40px}
+    </style>
+</head>
+<body>
+<div class="row">
+    <div class="complaint_user_list" style="margin-top: 10px">
+        <div style="margin-top: 20px">
+            <form class="form-inline">
+                <div class="form-group col-md-offset-3" ng-click="turnLeft()">
+                    <div class="col-md-1">
+                        <a><span class="btn btn-sm glyphicon glyphicon-menu-left" aria-hidden="true"></span></a>
+                    </div>
+                </div>
+
+                <div class="form-group" ng-repeat="p in panels.panelList|len:panels.currentIndex:panels.currentIndex+panels.countShow" ng-click="togglePanel($index+panels.currentIndex)">
+                    <div class="col-md-3">
+                        <div class="nav-tabs" href="#sf" data-toggle="tab">
+                            <div class="panel table-bordered" style="height:140px;width:190px ;">
+                                <div class="panel_info">
+                                    <div style="padding:10px 20px 0">
+                                        <table>
+                                            <tr>
+                                                <td style="text-align: right">拾到日期：</td>
+                                                <td>{{p.time}}</td>
+                                            </tr>
+                                            <tr>
+                                                <td style="text-align: right">物品名称：</td>
+                                                <td>{{p.itemName}}</td>
+                                            </tr>
+                                            <tr>
+                                                <td style="text-align: right">数量：</td>
+                                                <td>{{p.number}}</td>
+                                            </tr>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group" ng-click="turnRight()">
+                    <div class="col-md-1">
+                        <a><span class="btn btn-sm glyphicon glyphicon-menu-right" aria-hidden="true"></span></a>
+                    </div>
+                </div>
+            </form>
+            <!--标签页开始-->
+            <div class=" tab-content col-md-offset-3">
+                <!--第一标签页-->
+                <div class="panel tab-pane in active" style="height: 300px;width:580px">
+                    <div class="panel_info" >
+                        <div style="padding:20px 100px 0">
+                            <p><span>拾到日期：</span></p>
+                            <p><span>地点：</span></p>
+                            <p><span>物品名称：</span></p>
+                            <p><span>数量：</span></p>
+                            <p><span>拾到人：</span></p>
+                            <p><span>认领人：</span></p>
+                            <p><span>认领日期：</span></p>
+                        </div>
+                        <button style="margin-left: 200px">&nbsp;&nbsp;&nbsp;打印&nbsp;&nbsp;&nbsp;</button>
+                    </div>
+                </div>
+                <div class="panel tab-pane "id="sf" style="height: 320px;width:580px">
+                    <div class="panel_info">
+                        <div style="padding:20px 100px 0">
+                            <p><span>拾到日期：</span><span style="margin-left: 60px">2015/4/26</span></p>
+                            <p><span>地点：</span><span></span></p>
+                            <p><span>物品名称：</span><span style="margin-left: 60px">身份证</span></p>
+                            <p><span>数量：</span><span style="margin-left: 85px">1张</span></p>
+                            <p><span>拾到人：</span></p>
+                            <p><span>认领人：</span></p>
+                            <p><span>认领日期：</span></p>
+                        </div>
+                        <button style="margin-left: 200px">&nbsp;&nbsp;&nbsp;打印&nbsp;&nbsp;&nbsp;</button>
+                    </div>
+                </div>
+                <!--第2标签页-->
+                <div class="panel tab-pane "id="lq" style="height: 320px;width:580px">
+                    <div class="panel_info" >
+                        <div style="padding:20px 100px 0">
+                            <p><span>拾到日期：</span><span style="margin-left: 60px">2015/8/26</span></p>
+                            <p><span>地点：</span><span></span></p>
+                            <p><span>物品名称：</span><span style="margin-left: 60px">钥匙</span></p>
+                            <p><span>数量：</span><span style="margin-left: 85px">1串</span></p>
+                            <p><span>拾到人：</span></p>
+                            <p><span>认领人：</span></p>
+                            <p><span>认领日期：</span></p>
+                        </div>
+                        <button style="margin-left: 200px">&nbsp;&nbsp;&nbsp;打印&nbsp;&nbsp;&nbsp;</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

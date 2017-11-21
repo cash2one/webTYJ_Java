@@ -1,0 +1,370 @@
+package com.flf.service.impl;
+
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.UUID;
+import org.apache.commons.lang.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import com.flf.entity.AdvancePaymentsDetails;
+import com.flf.entity.AreaTypeNew;
+import com.flf.entity.AssetAccount;
+import com.flf.entity.AssetAccountDetail;
+import com.flf.entity.Bill;
+import com.flf.entity.ChargeType;
+import com.flf.entity.DepositDeduct;
+import com.flf.entity.PageRestful;
+import com.flf.entity.Search;
+import com.flf.mapper.AdvancePaymentsDetailsMapper;
+import com.flf.mapper.AreaTypeNewMapper;
+import com.flf.mapper.AssetAccountDetailMapper;
+import com.flf.mapper.AssetAccountMapper;
+import com.flf.mapper.BillMapper;
+import com.flf.mapper.ChargeTypeMapper;
+import com.flf.mapper.DepositDeductMapper;
+import com.flf.mapper.PaymentDetailsMapper;
+import com.flf.service.AssetAccountService;
+
+public class AssetAccountServiceImpl implements AssetAccountService {
+	@Autowired
+	private AssetAccountMapper assetAccountMapper;//资产账户
+	@Autowired
+	private AdvancePaymentsDetailsMapper advancePaymentsDetailsMapper;//预支付明细
+	@Autowired
+	private DepositDeductMapper depositDeductMapper;//押金付款表
+	@Autowired
+	private AssetAccountDetailMapper assetAccountDetailMapper;//资产账户详情
+	@Autowired
+	private PaymentDetailsMapper paymentDetailsMapper;//历史记录
+	@Autowired
+	private ChargeTypeMapper chargeTypeMapper;
+	@Autowired
+	private BillMapper billMapper;
+	@Autowired
+	private AreaTypeNewMapper areaTypeNewMapper;//面积类型
+
+	@Override
+	public List<AssetAccount> getAssetAccountByCustId(String custId) {
+		List<AssetAccount> assetAccounts = assetAccountMapper.getAssetAccountByCustId(custId);
+		if(assetAccounts!=null){
+			for (AssetAccount assetAccount : assetAccounts) {
+				String assetAccountId = assetAccount.getAssetAccountId();
+				List<AdvancePaymentsDetails> advancePaymentsDetails = advancePaymentsDetailsMapper.getAdvancePaymentDetailByAssetAccountId(assetAccountId);
+				if(advancePaymentsDetails != null && advancePaymentsDetails.size()>0){
+					for (AdvancePaymentsDetails a : advancePaymentsDetails) {
+						String aId = a.getAdvancePaymentsDetailsId();
+						if(aId != null && !"".equals(aId)){
+							Double depositDeductSum = depositDeductMapper.countDeductionsSumByAdvancePaymentId(aId);
+							double depositDeductSum1 = depositDeductSum==null?0:depositDeductSum;
+							a.setTransactionAmount(depositDeductSum1);
+							advancePaymentsDetailsMapper.updateAdvancePaymentsDetails(a);
+						}
+					}
+				}
+				Double totalDeposits = advancePaymentsDetailsMapper.sumTransactionAmountByassetAccountId(assetAccountId);//获取押金总额
+				Double totalRefundableDeposit = advancePaymentsDetailsMapper.sumRefundableDepositAmountByassetAccountId(assetAccountId);//获取可退押金总额
+				assetAccount.setTotalDeposits(totalDeposits==null?0:totalDeposits);
+				assetAccount.setTotalRefundableDeposit(totalRefundableDeposit==null?0:totalRefundableDeposit);
+				assetAccountMapper.updateAssetAccount(assetAccount);//更新数据库
+			}
+		}
+		return assetAccounts;
+	}
+
+
+	@Override
+	public List<AdvancePaymentsDetails> getAdvancePaymentsDetailsByAssetAccountId(
+			String assetAccountId) {
+		return advancePaymentsDetailsMapper.getAdvancePaymentDetailByAssetAccountId(assetAccountId);//获取资产账户下的押金明细
+	}
+	
+	@Override
+	public AssetAccount seletctAssetAccountByCustIdRest(String custId,String buildingId) {
+		return assetAccountMapper.seletctAssetAccountByCustId(custId,buildingId);
+	}
+
+	@Override
+	public void updateAssetAccount(AssetAccount assetAccount) {
+		assetAccountMapper.updateAssetAccount(assetAccount);
+	}
+	@Override
+	public List<DepositDeduct> getDepositDeductsByAdvancePaymentId(
+			String advancePaymentId) {
+		return depositDeductMapper.getDepositDeductsByAdvancePaymentId(advancePaymentId);
+	}
+	
+	@Override
+	public PageRestful listPageAssetAccount(Search search) {
+		PageRestful pageRestful = new PageRestful();
+		if(StringUtils.isBlank(search.getAssetAccountType())||"10".equals(search.getAssetAccountType())){
+			search.setAssetAccountType(null);
+		}
+		if(search.getCardNum()!=null && search.getCardNum().length()>=18){
+			search.setCardNum(search.getCardNum()+"S");
+		}
+		List<AssetAccount> assetAccounts=assetAccountMapper.listPageAssetAccount(search);
+		for (AssetAccount assetAccount : assetAccounts) {
+			if(assetAccount.getAreaTypeId() != null){
+				AreaTypeNew areaTypeNew = areaTypeNewMapper.getAreaTypeNewByareaTypeId(assetAccount.getAreaTypeId());
+				if(areaTypeNew.getAreaTypeName()!=null){
+					assetAccount.setAreaTypeName(areaTypeNew.getAreaTypeName());
+				}
+			}else{
+				if(assetAccount.getAssetAccountType()==0){
+					assetAccount.setAreaTypeName("资产");}
+				else{assetAccount.setAreaTypeName("押金");}				
+			}
+		}
+		assetAccounts.add(0,null);
+		pageRestful.setAssetAccounts(assetAccounts);
+		pageRestful.setPage(search.getPage());
+		return pageRestful;
+	}
+
+
+	@Override
+	public int countAccountNumByProjectId(String projectId) {
+		Integer accountNum = assetAccountMapper.countAccountNumByProjectId(projectId);
+		if(accountNum!=null){
+			return accountNum;
+		}
+		return 0;
+	}
+
+
+	/**
+	 * 修改充值方法，首先判断充值的是通用余额还是收费项目金额
+	 * 如果是通用余额则修改通用余额
+	 * 如果是关联收费项目险判断是否已有数据，有便修改，没有便新增
+	 * 王洲
+	 * 2015.12.31
+	 * hulili
+	 * 2016.6.30
+	 */
+	@Override
+	public void topUP(AssetAccount assetAccount) {
+		ChargeType ct = new ChargeType();
+		AssetAccountDetail aad = new AssetAccountDetail();
+		//修改余额后在明细表中增加数据
+		AdvancePaymentsDetails apd = new AdvancePaymentsDetails();
+		apd.setAdvancePaymentsDetailsId(UUID.randomUUID().toString());
+		apd.setIsOutIn(0);
+		apd.setAssetAccountNum(assetAccount.getAssetAccountNum());
+		apd.setPaymentType(Integer.parseInt(assetAccount.getPaymentType()));
+		if(StringUtils.isNotBlank(assetAccount.getChargeTypeId())){
+			apd.setChargeTypeId(assetAccount.getChargeTypeId());
+		}
+		if(assetAccount.getDepositNum() != null){
+			apd.setDepositNum(assetAccount.getDepositNum());
+		}
+		apd.setTransactionDate(new Date());
+		apd.setTransactionAmount(assetAccount.getAddPrice());
+		apd.setAssetAccountId(assetAccount.getAssetAccountId());
+		advancePaymentsDetailsMapper.insertAdvancePaymentsDetails(apd);
+		
+		//如果有欠款，产生抵扣明细
+		Bill bill = new Bill();
+		bill.setAssetType(assetAccount.getAssetAccountType());
+		bill.setBuildingId(assetAccount.getBuildingId());
+		double overSum = 0.0;//滞纳金总金额
+		double lastOweSum = 0.0;//上期欠款总金额
+		double currOweSum = 0.0;//本期欠款总金额
+		double balaSum = 0.0;//账单明细可抵扣金额
+		double addprice = assetAccount.getAddPrice();//初始化为充值金额
+		double generSum = 0.0;//通用金额
+		double subSum = 0.0;//金额差
+		if(assetAccount.getGeneralBalance()>0){
+			generSum = assetAccount.getGeneralBalance();
+		}
+		
+		apd.setAdvancePaymentsDetailsId(UUID.randomUUID().toString());
+		apd.setIsOutIn(2);//抵扣欠款状态
+		if(StringUtils.isNotBlank(assetAccount.getChargeTypeId())){
+			bill.setChargeTypeId(assetAccount.getChargeTypeId());
+			ct = chargeTypeMapper.selectByPrimaryKey(assetAccount.getChargeTypeId());
+			//根据收费项目id和资产账户id查询数据库中是否已有对应的数据
+			aad = assetAccountDetailMapper.getAssetAccountDetailByIdAndCiId(assetAccount.getAssetAccountId(), assetAccount.getChargeTypeId());
+			if(aad !=null && aad.getDisposableBalance()>=0){
+				balaSum = aad.getDisposableBalance();
+				subSum = balaSum + addprice + generSum;
+			}else{
+				subSum = addprice+generSum;
+			}
+		}else{
+			if(assetAccount.getGeneralBalance()>0){
+				subSum = addprice + generSum;
+			}else{
+				subSum = addprice;
+			}
+		}
+		//查询对应建筑下bill表中的中数据
+		List<Bill> billList = billMapper.queryByCtiAndAat(bill);
+		List<Bill> billList1 = new ArrayList<Bill>();
+		List<Bill> billList2 = new ArrayList<Bill>();
+		List<Bill> billList3 = new ArrayList<Bill>();
+		if(StringUtils.isNotBlank(assetAccount.getChargeTypeId())){
+			if(billList.size()>0){
+				for(Bill bean : billList){
+					overSum += bean.getOverdue();
+					lastOweSum += bean.getLastOweSum();
+					currOweSum += bean.getCurrentOweSum();
+					if(subSum>bean.getOverdue()){
+						subSum = subSum-bean.getOverdue();
+						bean.setOverdue(0.0);
+					}else{
+						bean.setOverdue(bean.getOverdue()-subSum);
+						subSum=0.0;
+					}
+					billList1.add(bean);
+				}
+				if(subSum>0){
+					for(Bill bean1 : billList1){
+						if(subSum>bean1.getLastOweSum()){
+							subSum = subSum-bean1.getLastOweSum();
+							bean1.setLastOweSum(0.0);
+						}else{
+							bean1.setLastOweSum(bean1.getLastOweSum()-subSum);
+							subSum=0.0;
+						}
+						billList2.add(bean1);
+					}
+				}
+				if(subSum>0){
+					for(Bill bean2 : billList2){
+						if(subSum>bean2.getCurrentOweSum()){
+							subSum = subSum-bean2.getCurrentOweSum();
+							bean2.setCurrentOweSum(0.0);
+						}else{
+							bean2.setCurrentOweSum(bean2.getCurrentOweSum()-subSum);
+							subSum=0.0;
+						}
+						billList3.add(bean2);
+					}
+				}
+			}
+			if(subSum>0 && aad != null && (balaSum+addprice) >= (overSum+lastOweSum+currOweSum)){
+				//充值金额大于账单总金额
+				aad.setDisposableBalance(balaSum+addprice-(overSum+lastOweSum+currOweSum));
+				assetAccountDetailMapper.changePriceById(aad);
+			}else if(subSum>0 && aad != null && (balaSum+addprice) < (overSum+lastOweSum+currOweSum)){
+				//subSum为剩余通用金额
+				aad.setDisposableBalance(0.0);
+				assetAccountDetailMapper.changePriceById(aad);
+				assetAccount.setGeneralBalance(subSum);
+				assetAccountMapper.topUP(assetAccount);
+			}else if(subSum>0 && aad == null && addprice >= (overSum+lastOweSum+currOweSum)){
+				//为空，设置资产账户详情对象进行新增
+				AssetAccountDetail aadtoadd = new AssetAccountDetail();
+				aadtoadd.setAssetAccountDetailId(UUID.randomUUID().toString());
+				aadtoadd.setAssetAccountId(assetAccount.getAssetAccountId());
+				aadtoadd.setChargeItemId(ct.getChargeTypeId());//存放收费类型的id
+				aadtoadd.setDetailName(ct.getChargeTypeName());//存放收费类型的名称
+				aadtoadd.setDisposableBalance(addprice-(overSum+lastOweSum+currOweSum));
+				assetAccountDetailMapper.insertAssetAccountDetail(aadtoadd);
+			}else if(subSum==0.0 && aad != null){
+				aad.setDisposableBalance(subSum);
+				assetAccountDetailMapper.changePriceById(aad);
+				assetAccount.setGeneralBalance(subSum);
+				assetAccountMapper.topUP(assetAccount);
+			}
+		}else{
+			if(billList.size()>0){
+				for(Bill bean1 : billList){
+					if(bean1.getChargeTypePriority() != null){
+						overSum += bean1.getOverdue();
+						lastOweSum += bean1.getLastOweSum();
+						currOweSum += bean1.getCurrentOweSum();
+						if(subSum > bean1.getOverdue()){
+							subSum = subSum-bean1.getOverdue();
+							if(subSum > bean1.getLastOweSum()){
+								subSum = subSum-bean1.getLastOweSum();
+								bean1.setOverdue(0.0);
+								bean1.setLastOweSum(0.0);
+							}else{
+								bean1.setLastOweSum(bean1.getLastOweSum()-subSum);
+								bean1.setOverdue(0.0);
+								subSum=0.0;
+							}
+						}else{
+							bean1.setOverdue(bean1.getOverdue()-subSum);
+							subSum=0.0;
+						}
+					}
+					billList2.add(bean1);
+				}
+				if(subSum>0){
+					for(Bill bean2 : billList2){
+						if(bean2.getChargeTypePriority() != null){
+							if(subSum > bean2.getCurrentOweSum()){
+								subSum = subSum-bean2.getCurrentOweSum();
+								bean2.setCurrentOweSum(0.0);
+							}else{
+								bean2.setOverdue(bean2.getCurrentOweSum()-subSum);
+								subSum=0.0;
+							}
+						}
+						billList3.add(bean2);
+					}
+				}
+			}
+			//修改通用余额
+			assetAccount.setGeneralBalance(subSum);
+			assetAccountMapper.topUP(assetAccount);
+		}
+		
+		if(subSum>0){
+			apd.setTransactionAmount(overSum+lastOweSum+currOweSum);
+		}else{
+			if(StringUtils.isNotBlank(assetAccount.getChargeTypeId())){
+				apd.setTransactionAmount(balaSum + addprice + generSum);
+			}else{
+				apd.setTransactionAmount(addprice + generSum);
+			}
+		}
+		
+		if(apd.getTransactionAmount()>0){
+			//新增明细抵扣记录
+			advancePaymentsDetailsMapper.insertAdvancePaymentsDetails(apd);
+		}
+		if(billList3.size()>0){
+			for(Bill bill2: billList3){
+				bill2.setNoCollectSum(bill2.getOverdue()+bill2.getLastOweSum()+bill2.getCurrentOweSum());
+				billMapper.updateBill(bill2);
+			}
+		}else if(billList2.size()>0){
+			for(Bill bill2: billList2){
+				bill2.setNoCollectSum(bill2.getOverdue()+bill2.getLastOweSum()+bill2.getCurrentOweSum());
+				billMapper.updateBill(bill2);
+			}
+		}else if(billList1.size()>0){
+			for(Bill bill2: billList1){
+				bill2.setNoCollectSum(bill2.getOverdue()+bill2.getLastOweSum()+bill2.getCurrentOweSum());
+				billMapper.updateBill(bill2);
+			}
+		}
+		
+		//历史记录
+		assetAccount.getPaymentDetails().get(0).setPaymentDetailsId(UUID.randomUUID().toString());
+		assetAccount.getPaymentDetails().get(0).setTransactionDate(new Date());
+		String paymentNum=Long.toString(System.currentTimeMillis());
+		assetAccount.getPaymentDetails().get(0).setPaymentNum(paymentNum);
+		assetAccount.getPaymentDetails().get(0).setRefundState(0);
+		assetAccount.getPaymentDetails().get(0).setAssetAccountId(assetAccount.getAssetAccountId());
+		if(ct != null){
+			assetAccount.getPaymentDetails().get(0).setCiName(ct.getChargeTypeName());
+		}else{
+			assetAccount.getPaymentDetails().get(0).setCiName("通用");
+		}
+		assetAccount.getPaymentDetails().get(0).setCustId(assetAccount.getCustId());
+		assetAccount.getPaymentDetails().get(0).setIsOutIn(0);
+		if(assetAccount.getPaymentDetails().get(0).getCashSum()!=null&&assetAccount.getPaymentDetails().get(0).getCashSum()>0){
+			assetAccount.getPaymentDetails().get(0).setCashSum(assetAccount.getAddPrice());
+		}else if(assetAccount.getPaymentDetails().get(0).getCreditCardSum()!=null&&assetAccount.getPaymentDetails().get(0).getCreditCardSum()>0){
+			assetAccount.getPaymentDetails().get(0).setCreditCardSum(assetAccount.getAddPrice());
+		}else if(assetAccount.getPaymentDetails().get(0).getWechatSum()!=null&&assetAccount.getPaymentDetails().get(0).getWechatSum()>0){
+			assetAccount.getPaymentDetails().get(0).setWechatSum(assetAccount.getAddPrice());
+		}
+		paymentDetailsMapper.insertPaymentDetails(assetAccount.getPaymentDetails().get(0));
+	}
+
+}

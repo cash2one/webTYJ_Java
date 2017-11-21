@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.flf.mapper.SpecialtyInfoMapper">
+	<resultMap type="SpecialtyInfo" id="specialtyInfoResultMap">
+		<id column="specialty_id" property="specialtyId" jdbcType="VARCHAR" />
+		<result column="specialty_name" property="specialtyName"
+			jdbcType="VARCHAR" />
+		<result column="specialty_describle" property="specialtyDescrible"
+			jdbcType="VARCHAR" />
+		<result column="instance_id " property="instanceId" jdbcType="VARCHAR" />
+		<result column="state" property="state" jdbcType="TINYINT" />
+		<result column="company_id" property="companyId" jdbcType="VARCHAR" />
+		<result column="will_options" property="willOptions" jdbcType="TINYINT" />
+
+	</resultMap>
+
+
+	<resultMap id="PostResultMap" type="Post">
+		<id column="post_id" property="postId" jdbcType="VARCHAR" />
+		<result column="professional_line_id" property="professionalLineId"
+			jdbcType="VARCHAR" />
+		<result column="name_of_custom" property="nameOfCustom"
+			jdbcType="VARCHAR" />
+		<result column="is_core_post" property="isCorePost" jdbcType="TINYINT" />
+		<result column="project_id" property="projectId" jdbcType="VARCHAR" />
+	</resultMap>
+
+	<resultMap type="SpecialtyInfo" id="specialtyInfoPostResultMap"
+		extends="specialtyInfoResultMap">
+		<collection property="posts" ofType="Post" column="specialty_id"
+			select="selectPost">
+		</collection>
+	</resultMap>
+
+	<resultMap type="SpecialtyInfo" id="specialtyInfoPostOpenResultMap"
+		extends="specialtyInfoResultMap">
+		<collection property="posts" ofType="Post" column="specialty_id"
+			select="selectPostOpen">
+		</collection>
+	</resultMap>
+
+	<select id="selectPost" parameterType="String" resultMap="PostResultMap">
+		select
+		* from t_post where professional_line_id=#{0}
+	</select>
+
+	<select id="selectPostOpen" parameterType="String" resultMap="PostResultMap">
+		select * from t_post where professional_line_id=#{0} and state = 1
+	</select>
+
+	<select id="listAllSpecialtyInfo" resultMap="specialtyInfoResultMap">
+		select * from t_specialty_info where state = 1
+	</select>
+
+	<select id="listAllSpecialtyInfoAndPostRestful" resultMap="specialtyInfoPostResultMap">
+		select * from t_specialty_info where state = 1
+	</select>
+
+	<select id="listAllSpecialtyInfoAndPostOpen" resultMap="specialtyInfoPostOpenResultMap">
+		select * from t_specialty_info where state = 1
+	</select>
+
+	<select id="selectSpecialtyInfoById" resultMap="specialtyInfoPostOpenResultMap">
+		select * from t_specialty_info where specialty_id = #{specialtyId}
+	</select>
+	<select id="listPageSpecialtyInfo" parameterType="SpecialtyInfo"
+		resultMap="specialtyInfoResultMap">
+		select * from t_specialty_info
+	</select>
+	<select id="listAllSpecialtyInfoList" parameterType="SpecialtyInfo"
+		resultMap="specialtyInfoResultMap">
+		select * from t_specialty_info
+	</select>
+
+	<select id="listSpecialtyInfoBystaffId" parameterType="String"
+		resultMap="specialtyInfoResultMap">
+		SELECT c.* FROM t_core_position a
+		LEFT JOIN t_post b ON a.post_id=b.post_id
+		LEFT JOIN t_specialty_info c ON b.professional_line_id=c.specialty_id
+		WHERE a.state=1 AND a.staff_id=#{0}
+	</select>
+
+	<select id="listSpecialtyInfoByCompanyId" parameterType="String"
+		resultMap="specialtyInfoResultMap">
+		SELECT*FROM t_post tp ,t_core_position tcp,t_specialty_info
+		c WHERE tp.post_id=tcp.post_id AND
+		tp.professional_line_id=c.specialty_id
+		and c.company_id=#{0} AND
+		c.specialty_id=#{1}
+	</select>
+
+
+	<select id="getSpecialtyInfoById" resultMap="specialtyInfoResultMap"
+		parameterType="String">
+		SELECT * FROM t_specialty_info
+		WHERE specialty_id IN (SELECT specialty_id FROM t_post WHERE id=1)
+	</select>
+
+
+
+	<delete id="deleteSpecialtyInfo" parameterType="String">
+		delete from t_specialty_info
+		where specialty_id = #{0}
+	</delete>
+
+	<insert id="insertSpecialtyInfo" parameterType="SpecialtyInfo">
+		insert into t_specialty_info (specialty_id,
+		specialty_name,specialty_describle,instance_id,state,will_options,company_id
+		)
+		values ( UUID(),#{specialtyName,jdbcType=VARCHAR},
+		#{specialtyDescrible,jdbcType=VARCHAR},#{instanceId,jdbcType=VARCHAR},
+		#{state,jdbcType=TINYINT},#{willOptions,jdbcType=TINYINT},#{companyId,jdbcType=VARCHAR}
+		)
+	</insert>
+
+	<update id="updateSpecialtyInfo" parameterType="SpecialtyInfo">
+		update t_specialty_info
+		set specialty_name = #{specialtyName},
+		specialty_describle = #{specialtyDescrible},
+		instance_id=#{instanceId},
+		state=#{state},
+		will_options=#{willOptions},
+		company_id=#{companyId}
+		where specialty_id = #{specialtyId}
+	</update>
+
+	<update id="updateSpecialtyInfobystate" parameterType="SpecialtyInfo">
+		update t_specialty_info
+		set specialty_name = #{specialtyName,jdbcType=VARCHAR},
+		specialty_describle = #{specialtyDescrible,jdbcType=VARCHAR},
+		instance_id={instanceId},
+		company_id=#{companyId},
+		state=1
+		where specialty_id = #{specialtyId,jdbcType=VARCHAR}
+	</update>
+  
+  <select id="getSpecialtyInfoByName" parameterType="String" resultMap="specialtyInfoResultMap">
+  	select * from t_specialty_info where specialty_name = #{specialtyName, jdbcType=VARCHAR}
+  </select>
+</mapper>

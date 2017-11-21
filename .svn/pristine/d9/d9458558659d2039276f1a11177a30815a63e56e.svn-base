@@ -1,0 +1,193 @@
+package com.flf.service.impl;
+
+import java.io.FileOutputStream;
+import java.io.OutputStream;
+import java.util.ArrayList;
+import java.util.List;
+import javax.swing.JOptionPane;
+import org.springframework.beans.factory.annotation.Autowired;
+import com.flf.entity.Bill;
+import com.flf.entity.BillExport;
+import com.flf.entity.Billing;
+import com.flf.entity.PageRestful;
+import com.flf.mapper.BillMapper;
+import com.flf.service.BillService;
+import com.flf.util.ExportExcel;
+
+public class BillServiceImpl implements BillService {
+
+	@Autowired
+	private BillMapper billMapper;
+	
+	@Override
+	public PageRestful listPageBill(Bill bill) {
+		PageRestful pageRestful = new PageRestful();
+		List<Bill> bills = billMapper.listPageBill(bill);
+		bills.add(0, null);
+		pageRestful.setBills(bills);
+		pageRestful.setPage(bill.getPage());
+		return pageRestful;
+	}
+
+	/* 获取客户资产下的建筑结构的账单 */
+	@Override
+	public List<Bill> getBillsByCustId(String custId) {
+		List<Bill> bills = new ArrayList<Bill>();
+		List<String> buildingIds = billMapper.getAllBuildingIdOfCust(custId);// 获取所有账户下建筑结构Id
+		if (buildingIds != null && !buildingIds.isEmpty()) {
+			for (String bId : buildingIds) {
+				Bill bill = billMapper.getBillByBuildingId(bId);
+				bills.add(bill);
+			}
+		}
+		return bills;
+	}
+
+	@Override
+	public PageRestful listPageBillsByelectronicBillingIdThisMonth(Bill bill) {
+		PageRestful pageRestful = new PageRestful();
+		List<Bill> bills = billMapper.listPageBillsByelectronicBillingIdThisMonth(bill);
+		bills.add(0, null);
+		pageRestful.setBills(bills);
+		pageRestful.setPage(bill.getPage());
+		return pageRestful;
+	}
+
+	@Override
+	public PageRestful listPageBillsByelectronicBillingIdLastMonth(Bill bill) {
+		PageRestful pageRestful = new PageRestful();
+		List<Bill> bills = billMapper.listPageBillsByelectronicBillingIdLastMonth(bill);
+		bills.add(0, null);
+		pageRestful.setBills(bills);
+		pageRestful.setPage(bill.getPage());
+		return pageRestful;
+	}
+
+	@Override
+	public void UpdateRefund(Bill bill) {
+		billMapper.updateRefund(bill);
+	}
+
+	@Override
+	public void UpdateImpact(Bill bill) {
+		billMapper.updateImpact(bill);
+	}
+
+	@Override
+	public void exportExcelFile(BillExport billExport) {
+		ExportExcel<BillExport> ex = new ExportExcel<BillExport>();
+		String[] headers = { "创建时间", "未缴费", "已缴费" };
+		List<BillExport> dataset = new ArrayList<BillExport>();
+		dataset.add(billExport);
+		try {
+			OutputStream out = new FileOutputStream("E://收缴率.xls");
+			ex.exportExcel(headers, dataset, out);
+			out.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		JOptionPane.showMessageDialog(null, "导出成功!");
+		System.out.println("excel导出成功！");
+	}
+
+	@Override
+	public void updateBill(Bill bill) {
+		billMapper.updateBill(bill);
+	}
+	
+
+	@Override
+	public void AddBill(Bill bill) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public List<Bill> getBillsByProjectIdAndDate(Bill bill) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<Billing> getSubBillsForSubChargeItem(Bill bill) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<Bill> getOwe(Bill bill) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<Bill> getCollectFee(Bill bill) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void AddBillRes(String ids) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void AddBillForChargeItemBilling(String ids) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void AddBillForBuildingBilling(String ids) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public PageRestful listPageFindBillsByPersonMessage(Bill bill) {
+		// TODO Auto-generated method stub
+		PageRestful pageRestful = new PageRestful();
+		if(bill.getCardNum()!=null){
+			if(bill.getCardNum().length()>=18){
+				bill.setCardNum(bill.getCardNum()+"S");
+			}
+		}
+		List<Bill> billList = billMapper.listPageFindBillsByPersonMessage(bill);
+		billList.add(0, null);
+		pageRestful.setBills(billList);
+		pageRestful.setPage(bill.getPage());
+		return pageRestful;
+
+	}
+	@Override
+	public PageRestful listPageFindChargeBybuildingIdThisMonth(Bill bill) {
+		// TODO Auto-generated method stub
+		PageRestful pageRestful = new PageRestful();
+		List<Bill> bills = billMapper.listPageFindChargeBybuildingIdThisMonth(bill);
+		bills.add(0, null);
+		pageRestful.setBills(bills);
+		pageRestful.setPage(bill.getPage());
+		return pageRestful;
+	}
+	@Override
+	public PageRestful findChargeDetailsBychargeTypeIdThisMonth(Bill bill) {
+		// TODO Auto-generated method stub
+		PageRestful pageRestful = new PageRestful();
+		List<Bill> bills = billMapper.findChargeDetailsBychargeTypeIdThisMonth(bill);
+		bills.add(0, null);
+		pageRestful.setBills(bills);
+		pageRestful.setPage(bill.getPage());
+		return pageRestful;
+	}
+	
+	@Override
+	public PageRestful listPageBillsBybuildingIdLastMonth(Bill bill) {
+		PageRestful pageRestful = new PageRestful();
+		List<Bill> bills = billMapper.listPageBillsBybuildingIdLastMonth(bill);
+		bills.add(0, null);
+		pageRestful.setBills(bills);
+		pageRestful.setPage(bill.getPage());
+		return pageRestful;
+	}
+}

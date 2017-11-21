@@ -1,0 +1,322 @@
+<!--创建人：王志刚-->
+<!--物业服务修装页面-->
+<!--js路径： 'controllers/propertyService/staffHome/decorate/applicationData'-->
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>申请资料</title>
+</head>
+<body ng-controller="applicationDataCtrl">
+<div class="row">
+    <div class="col-md-3">
+    
+    <!-- gengxiaojiang -->
+        <span>房屋编号：</span><br>
+        <span>房屋地址：</span><br>
+        <img src="images/tuzhi.jpg" style="width: 230px;height: 200px;margin-right:5px"><br>
+        <span>加建：可加建</span><br>
+        <span>加建范围：区域</span>
+    </div>
+    <div class="col-md-3" style="margin-left: 20px;line-height: 40px">
+        <div class="row"  >
+            <div class="col-md-6">装修对象选择：</div>
+            <div class="col-md-6">
+                <div class="dropdown" style="margin-top:-8px;" >
+                    <!--<select style="width: 100px">-->
+                        <!--<option>请选择</option>-->
+                        <!--<option role="presentation">-->
+                            <!--<a href="#fees" tabindex="-1" data-toggle="modal" role="menuitem" data-target="#modal_fees">-->
+                                <!--全部装修</a>-->
+                        <!--</option>-->
+                        <!--<option>-->
+                            <!--<a href="#change" data-toggle="modal" data-target="#addVation">-->
+                                <!--选择装修</a>-->
+                        <!--</option>-->
+                    <!--</select>-->
+                    <button class="btn btn-xs dropdown-toggle"
+                            type="button" data-toggle="dropdown" aria-expanded="true">
+                        请选择
+                        <span class="caret"></span>
+                    </button>
+                    <ul class="dropdown-menu pull-right" role="menu" aria-labelledby="mycarport">
+                        <li role="presentation">
+                            <a href="#fees" tabindex="-1" data-toggle="modal" role="menuitem" data-target="#modal_fees">
+                                全部装修</a>
+                        </li>
+                        <li role="presentation">
+                            <a href="#change" data-toggle="modal" data-target="#addVation">
+                                选择装修</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <table class="table-bordered" style="width: 240px;margin-left: 16px">
+                <tr>
+                    <td >装修项目</td>
+                    <td>1</td>
+                    <td>2</td>
+                    <td>3</td>
+                    <td>4</td>
+                </tr>
+                <tr>
+                    <td>功能区间</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>区间编号</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+            </table>
+        </div>
+
+        <div class="row" style="margin-top: 10px">
+            <div class="col-md-6">装修开始日期：</div>
+            <div class="col-md-6"><input type="text" class=" "></div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-6">装修终止日期:</div>
+            <div class="col-md-6"><input type="text" class="form-control input-sm"></div>
+        </div>
+
+        <div class="row"  >
+            <div class="col-md-6">装修类型：</div>
+            <div class="col-md-6">
+                <div class="dropdown" style="margin-top:-8px;">
+                    <button class="btn btn-xs dropdown-toggle"
+                            type="button"data-toggle="dropdown" aria-expanded="true">
+                        请选择
+                        <span class="caret"></span>
+                    </button>
+                    <ul class="dropdown-menu pull-right" role="menu" aria-labelledby="mycarport">
+                        <li role="presentation">
+                            <a href="#fees" tabindex="-1" data-toggle="modal" role="menuitem" data-target="#modal_fees">
+                                自装</a>
+                        </li>
+
+                        <li role="presentation">
+                            <a href="#change" tabindex="-1" data-toggle="modal" role="menuitem" data-target="#chooseCompany">
+                                工装</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-6">装修人员：</div>
+            <div class="col-md-6"><img style="cursor:pointer" src="images\company\u223.png" width="20" height="20" data-toggle="modal" data-target="#zhuangxiuModal">
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3" style="margin-top: 50px;margin-left: 10px">
+        <table class="table-bordered" style="width: 150px">
+            <tr>
+                <td>序号</td>
+                <td>装修人姓名</td>
+            </tr>
+            <tr>
+                <td>1</td>
+                <td></td>
+            </tr>
+            <tr>
+                <td>2</td>
+                <td></td>
+            </tr>
+        </table>
+    </div>
+    <div class="col-md-3" style="margin-left: -30px">
+        <table style="border: 1px solid #797979;height: 300px;text-align: center;width: 200px" >
+            <tr>
+                <td>装修单位需提供的资料</td>
+            </tr>
+            <tr>
+                <td>1.消防文件复印件<label style="margin-left: 10px"><input type="checkbox"></label><br><button class="btn btn-default">上传</button></td>
+            </tr>
+            <tr>
+                <td>2.签订协议<label ><input type="checkbox"></label><br><button class="btn btn-default">上传</button></td>
+            </tr>
+            <tr>
+                <td>3.提供装修图纸<label style="margin-left: 10px"><input type="checkbox"></label><br><button class="btn btn-default">上传</button></td>
+            </tr>
+        </table>
+    </div>
+</div>
+
+<div class="modal fade" id="zhuangxiuModal" role="dialog" aria-label="myModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header" style="background-color: #02a0e7;height: 50px">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                        <p>装修人员</p>
+                    </div>
+
+                    <div class="modal-body">
+                        <table class="table-bordered" style="width:95%;text-align: center;margin: 20px auto">
+                            <tr>
+                                <td>姓名</td>
+                                <td>选择</td>
+                            </tr>
+                            <tr>
+                                <td>李波</td>
+                                <td><label><input type="checkbox"></label></td>
+                            </tr>
+                            <tr>
+                                <td>王波</td>
+                                <td><label><input type="checkbox"></label></td>
+                            </tr>
+                            <tr>
+                                <td>黄渤</td>
+                                <td><label><input type="checkbox"></label></td>
+                            </tr>
+                            <tr>
+                                <td>大伯</td>
+                                <td><label><input type="checkbox"></label></td>
+                            </tr>
+                            <tr>
+                                <td>肖聪</td>
+                                <td><label><input type="checkbox"></label></td>
+                            </tr>
+                        </table>
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn bg-primary" data-dismiss="modal" aria-label="Close">取消</button>
+                        <button type="button" class="btn bg-primary">提交</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+<!-- 选择装修模态框开始 -->
+<div class="modal fade" id="addVation" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color: #02a0e7;height: 50px">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <p>装修人员</p>
+            </div>
+            <div class="modal-body">
+                <table class="table-bordered" style="width:95%;text-align: center;margin: 20px auto">
+                    <tr>
+                        <td>功能区间类型</td>
+                        <td>功能区间编号</td>
+                        <td>选择</td>
+                    </tr>
+                    <tr>
+                        <td>客厅</td>
+                        <td>KT</td>
+                        <td><label><input type="checkbox"></label></td>
+                    </tr>
+                    <tr>
+                        <td>客厅</td>
+                        <td>KT</td>
+                        <td><label><input type="checkbox"></label></td>
+                    </tr>
+                    <tr>
+                        <td>餐厅</td>
+                        <td>CT</td>
+                        <td><label><input type="checkbox"></label></td>
+                    </tr>
+                    <tr>
+                        <td>主卧</td>
+                        <td>ZW</td>
+                        <td><label><input type="checkbox"></label></td>
+                    </tr>
+                    <tr>
+                        <td>餐厅</td>
+                        <td>CT</td>
+                        <td><label><input type="checkbox"></label></td>
+                    </tr>
+                    <tr>
+                    <td>卧室</td>
+                    <td>WS01</td>
+                    <td><label><input type="checkbox"></label></td>
+                    </tr>
+                    <tr>
+                        <td>卧室</td>
+                        <td>WS02</td>
+                        <td><label><input type="checkbox"></label></td>
+                    </tr>
+                    <tr>
+                        <td>厨房</td>
+                        <td>CF</td>
+                        <td><label><input type="checkbox"></label></td>
+                    </tr>
+                </table>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn bg-primary" data-dismiss="modal" aria-label="Close">取消</button>
+                <button type="button" class="btn bg-primary">提交</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- 选择装修模态框结束 -->
+
+<div class="modal fade" id="chooseCompany" role="dialog" aria-label="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color: #02a0e7;height: 50px">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <p>装修公司信息</p>
+            </div>
+
+            <div class="modal-body">
+                <!--第一行-->
+                <div class="row">
+                   <div class="col-md-2">装修单位：</div>
+                   <div class="col-md-4">
+                    <select  class="input-sm form-control">
+                        <option>请选择装修公司</option>
+                        <option>深圳宏达装修公司</option>
+                        <option>深圳腾飞装修公司</option>
+                    </select>
+                   </div>
+               </div>
+                <!--第二行-->
+                <div class="row">
+                    <div class="col-md-2">公司法人：</div>
+                    <div class="col-md-2">吴大维</div>
+                </div>
+
+                <!--第三行-->
+                <div class="row">
+                    <div class="col-md-3">现场负责人：</div>
+                    <div class="col-md-4" style="margin-left: -50px">
+                        <select  class="input-sm form-control">
+                            <option>刘大拿</option>
+                            <option>李林</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn bg-primary" data-dismiss="modal" aria-label="Close">取消</button>
+                <button type="button" class="btn bg-primary">提交</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<button type="button" class="btn btn-info" style="margin-left: 300px">保存</button>
+</body>
+</html>

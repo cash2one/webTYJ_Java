@@ -1,0 +1,1005 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.flf.mapper.StaffMapper">
+	<resultMap id="StaffResultMap" type="Staff">
+		<id column="staff_id" property="staffId" jdbcType="VARCHAR" />
+		<result column="company_id" property="companyId" jdbcType="VARCHAR" />
+		<result column="staff_number" property="staffNumber" jdbcType="VARCHAR" />
+		<result column="staff_no" property="staffNo" jdbcType="VARCHAR" />
+		<result column="first_name" property="firstName" jdbcType="VARCHAR" />
+		<result column="last_name" property="lastName" jdbcType="VARCHAR" />
+		<result column="first_name_spell" property="firstNameSpell"
+			jdbcType="VARCHAR" />
+		<result column="last_name_spell" property="lastNameSpell"
+			jdbcType="VARCHAR" />
+		<result column="sex" property="sex" jdbcType="INTEGER" />
+		<result column="native_place" property="nativePlace" jdbcType="VARCHAR" />
+		<result column="married" property="married" jdbcType="INTEGER" />
+		<result column="edu_lever" property="eduLever" jdbcType="VARCHAR" />
+		<result column="landscape" property="landscape" jdbcType="INTEGER" />
+		<result column="birthday" property="birthday" jdbcType="DATE" />
+		<result column="hobby" property="hobby" jdbcType="VARCHAR" />
+		<result column="card_type" property="cardType" jdbcType="INTEGER" />
+		<result column="card_num" property="cardNum" jdbcType="VARCHAR" />
+		<result column="address" property="address" jdbcType="VARCHAR" />
+		<result column="telphone" property="telphone" jdbcType="VARCHAR" />
+		<result column="email" property="email" jdbcType="VARCHAR" />
+		<result column="QQ" property="qq" jdbcType="VARCHAR" />
+		<result column="position" property="position" jdbcType="INTEGER" />
+		<result column="division_id" property="divisionId" jdbcType="VARCHAR" />
+		<result column="divisionName" property="divisionname" jdbcType="VARCHAR" />
+		<result column="post_id" property="postId" jdbcType="VARCHAR" />
+		<result column="work_count" property="workCount" jdbcType="INTEGER" />
+		<result column="state" property="state" jdbcType="VARCHAR" />
+		<result column="staff_name" property="staffName" jdbcType="VARCHAR" />
+		<result column="team_work_id" property="teamworkId" jdbcType="VARCHAR" />
+		<result column="project_id" property="projectId" jdbcType="VARCHAR" />
+		<result column="instance_id" property="instanceId" jdbcType="VARCHAR" />
+		<result column="specialty_name" property="specialtyName"
+			jdbcType="VARCHAR" />
+		<result column="name_of_custom" property="nameOfCustom"
+			jdbcType="VARCHAR" />
+		<result column="user_id" property="userId" jdbcType="VARCHAR" />
+		<result column="cashier_status" property="cashierStatus"
+			jdbcType="VARCHAR" />
+		<result column="cashierLeader_status" property="cashierLeaderStatus"
+			jdbcType="VARCHAR" />
+		<result column="teller_status" property="tellerStatus"
+			jdbcType="VARCHAR" />
+		<result column="accountant_status" property="accountantStatus"
+			jdbcType="VARCHAR" />
+			
+		<result column="process_status" property="processStatus" jdbcType="INTEGER" />
+		<result column="user_app_id" property="userAppId" jdbcType="VARCHAR" />
+
+	</resultMap>
+
+	<resultMap id="DivisionResultMap" type="Division">
+		<id column="id" property="id" jdbcType="VARCHAR" />
+		<result column="division_name" property="divisionName"
+			jdbcType="VARCHAR" />
+	</resultMap>
+
+	<resultMap id="AnnexMap" type="Staff" extends="StaffResultMap">
+		<collection property="annexs" column="staff_id" ofType="Annex"
+			select="com.flf.mapper.AnnexMapper.getAnnexbyRelationId"></collection>
+	</resultMap>
+
+
+	<!-- 排班表关联 -->
+	<resultMap id="staffSchedulingMap" type="Staff" extends="StaffResultMap">
+		<collection property="schedulings" ofType="Scheduling">
+			<id column="id" property="id" jdbcType="VARCHAR" />
+			<result column="staff_id" property="staffId" jdbcType="VARCHAR" />
+			<result column="classes_id" property="classesId" jdbcType="VARCHAR" />
+			<result column="remark" property="remark" jdbcType="VARCHAR" />
+		</collection>
+	</resultMap>
+
+	<!-- 部门表关联 -->
+	<resultMap id="staffDivisionMap" type="Staff" extends="StaffResultMap">
+		<collection property="division" ofType="Division" select="selectDivisionById"
+			column="division_id">
+			<id column="id" property="id" jdbcType="VARCHAR" />
+			<result column="division_name" property="divisionName"
+				jdbcType="VARCHAR" />
+		</collection>
+	</resultMap>
+
+	<resultMap id="PostResultMap" type="Post">
+		<id column="post_id" property="post_id" jdbcType="VARCHAR" />
+		<result column="post_type_id" property="postTypeId" jdbcType="VARCHAR" />
+		<result column="post_name" property="postName" jdbcType="VARCHAR" />
+		<result column="post_priority" property="postPriority"
+			jdbcType="INTEGER" />
+		<result column="area_id" property="areaId" jdbcType="VARCHAR" />
+		<result column="ridge_num" property="ridgeNum" jdbcType="INTEGER" />
+		<result column="seat_num" property="seatNum" jdbcType="INTEGER" />
+		<result column="unit" property="unit" jdbcType="INTEGER" />
+		<result column="floor" property="floor" jdbcType="INTEGER" />
+		<result column="room_num" property="roomNum" jdbcType="INTEGER" />
+		<result column="position" property="position" jdbcType="VARCHAR" />
+		<result column="instance_id" property="instanceId" jdbcType="VARCHAR" />
+	</resultMap>
+
+	<resultMap id="ResultMapStaff" type="Staff">
+		<id column="staff_id" property="staffId" jdbcType="VARCHAR" />
+		<result column="company_id" property="companyId" jdbcType="VARCHAR" />
+		<result column="staff_number" property="staffNumber" jdbcType="VARCHAR" />
+		<result column="staff_no" property="staffNo" jdbcType="VARCHAR" />
+		<result column="first_name" property="firstName" jdbcType="VARCHAR" />
+		<result column="last_name" property="lastName" jdbcType="VARCHAR" />
+		<result column="first_name_spell" property="firstNameSpell"
+			jdbcType="VARCHAR" />
+		<result column="last_name_spell" property="lastNameSpell"
+			jdbcType="VARCHAR" />
+		<result column="sex" property="sex" jdbcType="INTEGER" />
+		<result column="native_place" property="nativePlace" jdbcType="VARCHAR" />
+		<result column="married" property="married" jdbcType="INTEGER" />
+		<result column="edu_lever" property="eduLever" jdbcType="INTEGER" />
+		<result column="landscape" property="landscape" jdbcType="INTEGER" />
+		<result column="birthday" property="birthday" jdbcType="DATE" />
+		<result column="hobby" property="hobby" jdbcType="VARCHAR" />
+		<result column="card_type" property="cardType" jdbcType="INTEGER" />
+		<result column="card_num" property="cardNum" jdbcType="VARCHAR" />
+		<result column="address" property="address" jdbcType="VARCHAR" />
+		<result column="telphone" property="telphone" jdbcType="VARCHAR" />
+		<result column="email" property="email" jdbcType="VARCHAR" />
+		<result column="QQ" property="qq" jdbcType="VARCHAR" />
+		<result column="position" property="position" jdbcType="INTEGER" />
+		<result column="division_id" property="divisionId" jdbcType="VARCHAR" />
+		<result column="divisionName" property="divisionname" jdbcType="VARCHAR" />
+		<result column="post_id" property="postId" jdbcType="VARCHAR" />
+		<result column="work_count" property="workCount" jdbcType="INTEGER" />
+		<result column="state" property="state" jdbcType="VARCHAR" />
+		<result column="staff_name" property="staffName" jdbcType="VARCHAR" />
+		<result column="team_work_id" property="teamworkId" jdbcType="VARCHAR" />
+		<result column="project_id" property="projectId" jdbcType="VARCHAR" />
+		
+		<collection property="post" column="staff_id" ofType="Post"
+			select="com.flf.mapper.PostMapper.getPostByStaffId" />
+		<collection property="corePost" column="staff_id" ofType="Post"
+			select="com.flf.mapper.PostMapper.listCorePostByStaffId" />
+	</resultMap>
+
+	<!-- 关联用户表 -->
+	<!-- <resultMap type="TUser" id="staffTUserMap" extends="StaffResultMap"> 
+		<collection property="tUser" ofType="TUser"> <id column="user_id" property="userId" 
+		jdbcType="VARCHAR" /> <result column="cashier_status" property="cashierStatus" 
+		jdbcType="VARCHAR" /> <result column="cashierLeader_status" property="cashierLeaderStatus" 
+		jdbcType="VARCHAR" /> <result column="teller_status" property="tellerStatus" 
+		jdbcType="VARCHAR" /> <result column="accountant_status" property="accountantStatus" 
+		jdbcType="VARCHAR" /> </collection> </resultMap> -->
+
+	<select id="listPageFindUserByPost" parameterType="com.flf.entity.Staff"
+		resultMap="StaffResultMap">
+		SELECT u.user_id as user_id,s.staff_no,s.staff_name,si.specialty_name
+		AS
+		specialty_name,s.card_num,TIMESTAMPDIFF(YEAR,s.birthday,NOW()) AS
+		age,s.sex,s.telphone,s.QQ,p.name_of_custom AS name_of_custom from
+		t_user u
+		INNER JOIN t_staff s ON
+		s.staff_id = u.employ_id
+		INNER JOIN
+		t_teamwork_staff ts ON s.staff_id =
+		ts.staff_id
+		INNER JOIN t_post p ON
+		ts.post_id = p.post_id
+		INNER JOIN
+		t_specialty_info si ON
+		p.professional_line_id = si.specialty_id
+		WHERE
+		1=1
+		<if test="cashierStatus != null and cashierStatus != ''">
+			AND u.cashier_status=#{cashierStatus}
+		</if>
+		<if test="cashierLeaderStatus != null and cashierLeaderStatus != ''">
+			AND u.cashierLeader_status=#{cashierLeaderStatus}
+		</if>
+		<if test="tellerStatus != null and tellerStatus != ''">
+			AND u.teller_status=#{tellerStatus}
+		</if>
+		<if test="accountantStatus != null and accountantStatus != ''">
+			AND u.accountant_status=#{accountantStatus}
+		</if>
+		<if test="postId != null and postId != ''">
+			AND p.post_id = #{postId}
+		</if>
+		<if test="staffNo != null and staffNo != ''">
+			AND s.staff_no= UPPER(#{staffNo})
+		</if>
+		<if test="projectId != null and projectId != ''">
+			AND ts.project_id= #{projectId}
+		</if>
+		<if test="staffName != null and staffName != ''">
+			AND s.staff_name like CONCAT('%',#{staffName},'%')
+		</if>
+	</select>
+
+	<select id="listStaffprojectManager" resultMap="StaffResultMap">
+		SELECT d.* FROM
+		t_post a
+		LEFT JOIN t_prepare b ON a.post_id=b.post_id
+		LEFT JOIN
+		t_teamwork_staff c ON b.prepare_id=c.prepare_id
+		LEFT JOIN t_staff d ON
+		c.staff_id=d.staff_id
+	</select>
+
+	<select id="listStaffBypostId" resultMap="StaffResultMap">
+		SELECT * FROM
+		t_teamwork_staff a
+		LEFT JOIN t_staff b ON a.staff_id=b.staff_id
+		WHERE
+		a.post_id=#{0}
+	</select>
+
+	<select id="getStaffByUserId" parameterType="java.lang.String"
+		resultMap="StaffResultMap">
+		SELECT s.* FROM t_staff s LEFT JOIN t_user u ON
+		u.employ_id=s.staff_id WHERE
+		u.user_id=#{0}
+	</select>
+
+	<select id="listStaffByListpostId" resultMap="StaffResultMap">
+		SELECT b.* FROM t_teamwork_staff a
+		LEFT JOIN t_staff b ON
+		a.staff_id=b.staff_id
+		WHERE a.post_id in(
+		<foreach collection="list" separator="," item="items">#{items}
+		</foreach>
+		)
+	</select>
+
+	<select id="listTeamWorkStaffBystaffId" parameterType="String"
+		resultMap="ResultMapStaff">
+		SELECT c.* FROM t_teamwork a
+		LEFT JOIN t_teamwork_staff b ON
+		a.id=b.teamwork_id
+		RIGHT JOIN t_staff c ON b.staff_id=c.staff_id
+		WHERE
+		a.leader=#{0} and b.state = 0 and c.state = 1 group by b.staff_id
+	</select>
+
+	<select id="listSpecialtyInfoStaffBystaffId" parameterType="String"
+		resultMap="StaffResultMap">
+		SELECT distinct e.* FROM t_core_position a
+		LEFT JOIN t_post b
+		ON a.post_id=b.post_id
+		LEFT JOIN t_specialty_info c ON
+		b.professional_line_id=c.specialty_id
+		LEFT JOIN t_teamwork_staff d ON
+		c.specialty_id=d.professional_line_id
+		RIGHT JOIN t_staff e ON
+		d.staff_id=e.staff_id
+		WHERE a.staff_id=#{0}
+	</select>
+
+	<select id="listProjectStaffBystaffId" parameterType="String"
+		resultMap="StaffResultMap">
+		SELECT c.* FROM t_project a
+		LEFT JOIN t_teamwork_staff b ON
+		a.project_id=b.project_id
+		RIGHT JOIN t_staff c ON b.staff_id=c.staff_id
+		WHERE a.staff_id=#{0}
+	</select>
+
+	<select id="selectPost" parameterType="String" resultMap="PostResultMap">
+		select
+		* from t_post where post_id=#{0}
+	</select>
+
+	<select id="getStaffbyPostType" parameterType="String"
+		resultMap="ResultMapStaff">
+		select * from t_staff where post_id=#{0}
+	</select>
+
+	<select id="getStaffbyProjectId" parameterType="String"
+		resultMap="ResultMapStaff">
+		select * from t_staff where Project_id=#{0}
+	</select>
+
+	<!-- 根据团队id和员工姓名查询员工信息 -->
+	<select id="getStaffbyName" parameterType="String" resultMap="ResultMapStaff">
+		select * from t_staff where staff_name=#{0} and teamwork_id=#{1}
+	</select>
+	
+	<select id="getStaffNamebyId" parameterType="String" resultType="String">
+		select staff_name from t_staff where staff_Id=#{0}
+	</select>
+
+
+	<!-- 根据实例id查询员工信息 -->
+	<select id="getStaffbyInstanceId" parameterType="String"
+		resultMap="ResultMapStaff">
+		select * from t_staff where instance_id=#{0}
+	</select>
+
+	<select id="selectDivisionById" parameterType="String"
+		resultMap="DivisionResultMap">
+		select * from t_division where id=#{0}
+	</select>
+
+	<select id="listStaffByCurrentDateAndPostId" resultMap="StaffResultMap"
+		parameterType="Map">
+		SELECT * FROM t_staff WHERE staff_id NOT IN (SELECT
+		staff_id FROM
+		t_scheduling WHERE currentDate=#{date}) and post_id=#{id}
+	</select>
+
+	<select id="listStaffByHillockId" parameterType="String"
+		resultMap="ResultMapStaff">
+		select * from t_staff where post_id=#{0}
+	</select>
+
+	<select id="listStaffByteamworkId" parameterType="String"
+		resultMap="ResultMapStaff">
+		select * from t_staff where teamwork_id=#{0}
+	</select>
+
+	<select id="selectByid" parameterType="String" resultMap="ResultMapStaff">
+		select
+		* from t_staff where staff_id=#{0}
+	</select>
+
+	<!-- 创建 by 肖聪2015/6/23 根据员工id查询员工信息 -->
+	<select id="selectByidone" parameterType="String" resultMap="StaffResultMap">
+		select * from t_staff where staff_id=#{0}
+	</select>
+
+	<select id="listPageStaff" parameterType="Staff" resultMap="ResultMapStaff">
+		select * from t_staff
+	</select>
+
+	<select id="listStaffByProjectManager" parameterType="String"
+		resultMap="StaffResultMap">
+		SELECT c.* FROM t_teamwork_staff b
+		LEFT JOIN t_staff c ON
+		b.staff_id=c.staff_id
+		WHERE b.project_id IN (SELECT a.project_id FROM
+		t_project a where a.staff_id=#{0})
+	</select>
+
+	<select id="listStaffBySpecialtyInfoManager" parameterType="String"
+		resultMap="StaffResultMap">
+		SELECT e.* FROM (SELECT d.* FROM t_teamwork_staff d WHERE
+		d.post_id IN
+		(SELECT c.post_id FROM t_post c WHERE
+		c.professional_line_id IN
+		(SELECT b.professional_line_id FROM t_post b
+		WHERE b.post_id IN
+		(SELECT a.post_id FROM t_teamwork_staff a WHERE
+		a.staff_id=#{0})))) e
+		LEFT JOIN t_staff f ON e.staff_id=f.staff_id
+	</select>
+
+	<select id="listStaffByleader" parameterType="String" resultMap="StaffResultMap">
+		SELECT a.* FROM t_teamwork a
+		LEFT JOIN t_teamwork_staff b ON
+		a.id=b.teamwork_id
+		LEFT JOIN t_staff c ON b.staff_id=c.staff_id
+		WHERE
+		a.leader=#{0}
+	</select>
+
+	<select id="findAll" parameterType="Staff" resultMap="StaffResultMap">
+		select *
+		from t_staff where state=1
+	</select>
+
+	<select id="findStaffBystaffId" parameterType="String"
+		resultMap="StaffResultMap">
+		select * from t_staff where
+		staff_id=#{staffId,jdbcType=INTEGER}
+	</select>
+
+	<delete id="deleteStaff" parameterType="String">
+		delete from t_staff where
+		staff_id=#{staffId,jdbcType=INTEGER}
+	</delete>
+
+	<insert id="insertStaffUUID" parameterType="Staff">
+		insert into t_staff
+		(staff_id, company_id, staff_number, staff_no,
+		first_name, last_name,
+		first_name_spell,
+		last_name_spell, sex, native_place,
+		married,
+		edu_lever, landscape,
+		birthday, hobby, card_type,
+		card_num, address,
+		telphone,
+		email, QQ, position,
+		division_id, divisionName, post_id,
+		work_count, state,staff_name,
+		process_status,user_app_id)
+		values
+		(UUID(),#{companyId,jdbcType=VARCHAR},
+		#{staffNumber,jdbcType=VARCHAR}, #{staffNo,jdbcType=VARCHAR},
+		#{firstName,jdbcType=VARCHAR}, #{lastName,jdbcType=VARCHAR},
+		#{firstNameSpell,jdbcType=VARCHAR},
+		#{lastNameSpell,jdbcType=VARCHAR},
+		#{sex,jdbcType=INTEGER}, #{nativePlace,jdbcType=VARCHAR},
+		#{married,jdbcType=INTEGER}, #{eduLever,jdbcType=VARCHAR},
+		#{landscape,jdbcType=INTEGER},
+		#{birthday,jdbcType=DATE},
+		#{hobby,jdbcType=VARCHAR}, #{cardType,jdbcType=INTEGER},
+		#{cardNum,jdbcType=VARCHAR}, #{address,jdbcType=VARCHAR},
+		#{telphone,jdbcType=VARCHAR},
+		#{email,jdbcType=VARCHAR},
+		#{qq,jdbcType=VARCHAR}, #{position,jdbcType=INTEGER},
+		#{divisionId,jdbcType=INTEGER}, #{divisionname,jdbcType=VARCHAR},
+		#{postId,jdbcType=INTEGER},
+		#{workCount,jdbcType=INTEGER},
+		#{state,jdbcType=VARCHAR},#{staffName,jdbcType=VARCHAR},
+		#{processStatus,jdbcType=INTEGER},#{userAppId,jdbcType=VARCHAR}
+		)
+	</insert>
+
+	<insert id="insertStaff" parameterType="Staff">
+		insert into t_staff
+		(staff_id, company_id, staff_number, staff_no,
+		first_name, last_name,
+		first_name_spell,
+		last_name_spell, sex, native_place,
+		married,
+		edu_lever, landscape,
+		birthday, hobby, card_type,
+		card_num, address,
+		telphone,
+		email, QQ, position,
+		division_id, divisionName, post_id,
+		work_count, state,staff_name,
+		process_status,user_app_id
+		)
+		values
+		(#{staffId,jdbcType=VARCHAR},#{companyId,jdbcType=VARCHAR},
+		#{staffNumber,jdbcType=VARCHAR}, #{staffNo,jdbcType=VARCHAR},
+		#{firstName,jdbcType=VARCHAR}, #{lastName,jdbcType=VARCHAR},
+		#{firstNameSpell,jdbcType=VARCHAR},
+		#{lastNameSpell,jdbcType=VARCHAR},
+		#{sex,jdbcType=INTEGER}, #{nativePlace,jdbcType=VARCHAR},
+		#{married,jdbcType=INTEGER}, #{eduLever,jdbcType=VARCHAR},
+		#{landscape,jdbcType=INTEGER},
+		#{birthday,jdbcType=DATE},
+		#{hobby,jdbcType=VARCHAR}, #{cardType,jdbcType=INTEGER},
+		#{cardNum,jdbcType=VARCHAR}, #{address,jdbcType=VARCHAR},
+		#{telphone,jdbcType=VARCHAR},
+		#{email,jdbcType=VARCHAR},
+		#{qq,jdbcType=VARCHAR}, #{position,jdbcType=INTEGER},
+		#{divisionId,jdbcType=INTEGER}, #{divisionname,jdbcType=VARCHAR},
+		#{postId,jdbcType=INTEGER},
+		#{workCount,jdbcType=INTEGER},
+		#{state,jdbcType=VARCHAR},#{staffName,jdbcType=VARCHAR},
+		#{processStatus,jdbcType=INTEGER},#{userAppId,jdbcType=VARCHAR})
+	</insert>
+
+	<update id="updateStaffByworkCount" parameterType="String">
+		update t_staff
+		set work_count=#{1} where staff_id=#{0}
+	</update>
+
+	<update id="updateStaff" parameterType="Staff">
+		update t_staff
+		<set>
+			<if test="companyId != null">
+				company_id = #{companyId,jdbcType=INTEGER},
+			</if>
+			<if test="staffNumber != null">
+				staff_number = #{staffNumber,jdbcType=VARCHAR},
+			</if>
+			<if test="staffNo!= null">
+				staff_no = #{staffNo,jdbcType=VARCHAR},
+			</if>
+			<if test="firstName != null">
+				first_name = #{firstName,jdbcType=VARCHAR},
+			</if>
+			<if test="lastName != null">
+				last_name = #{lastName,jdbcType=VARCHAR},
+			</if>
+			<if test="firstNameSpell != null">
+				first_name_spell = #{firstNameSpell,jdbcType=VARCHAR},
+			</if>
+			<if test="lastNameSpell != null">
+				last_name_spell =#{lastNameSpell,jdbcType=VARCHAR},
+			</if>
+			<if test="sex != null">
+				sex =#{sex,jdbcType=INTEGER},
+			</if>
+			<if test="nativePlace != null">
+				native_place =#{nativePlace,jdbcType=VARCHAR},
+			</if>
+			<if test="married != null">
+				married =#{married,jdbcType=INTEGER},
+			</if>
+			<if test="eduLever != null">
+				edu_lever =#{eduLever,jdbcType=INTEGER},
+			</if>
+			<if test="landscape != null">
+				landscape =#{landscape,jdbcType=INTEGER},
+			</if>
+			<if test="birthday != null">
+				birthday =#{birthday,jdbcType=DATE},
+			</if>
+			<if test="hobby != null">
+				hobby =#{hobby,jdbcType=DATE},
+			</if>
+			<if test="cardType != null">
+				card_type =#{cardType,jdbcType=INTEGER},
+			</if>
+			<if test="cardNum != null">
+				card_num =#{cardNum,jdbcType=INTEGER},
+			</if>
+			<if test="address != null">
+				address =#{address,jdbcType=VARCHAR},
+			</if>
+			<if test="telphone != null">
+				telphone =#{telphone,jdbcType=VARCHAR},
+			</if>
+			<if test="email != null">
+				email =#{email,jdbcType=VARCHAR},
+			</if>
+			<if test="qq != null">
+				qq =#{qq,jdbcType=VARCHAR},
+			</if>
+			<if test="position != null">
+				position =#{position,jdbcType=INTEGER},
+			</if>
+			<if test="staffName != null">
+				staff_name =#{staffName,jdbcType=VARCHAR},
+			</if>
+			<if test="processStatus != null">
+				process_status =#{processStatus,jdbcType=INTEGER},
+			</if>
+			<if test="state != null">
+				state =#{state,jdbcType=VARCHAR},
+			</if>
+		</set>
+		where staff_id = #{staffId,jdbcType=VARCHAR}
+	</update>
+
+	<update id="updateStaffworkCount" parameterType="String">
+		update t_staff
+		set work_count=1 where post_id=#{0} and work_count=0
+	</update>
+
+	<select id="listAllStaff" resultMap="StaffResultMap">
+		select * from t_staff where
+		state='1'
+	</select>
+
+	<!-- 修改员工查询方法，设置项目团队成员时查询出所有没有被任命为核心岗位的员工 王洲 2016.2.4 -->
+	<select id="listAllStaffNoAllot" resultMap="StaffResultMap"
+		parameterType="String">
+		SELECT * FROM t_staff WHERE 
+		    staff_id NOT IN ( SELECT staff_id FROM t_teamwork_staff ) 
+		AND staff_id NOT IN ( SELECT leader FROM t_teamwork WHERE id = #{0}) 
+		AND state = 1
+		AND staff_id NOT IN (SELECT staff_id FROM t_core_position ) 
+		AND company_id = #{1}
+		AND staff_id NOT IN ( SELECT staff_id FROM t_teamwork_staff_add WHERE teamwork_id = #{0})
+		<!-- select a.* from t_staff a where a.staff_id not in (select b.staff_id 
+			from t_teamwork_staff b where b.staff_id = a.staff_id) and a.state=1 -->
+	</select>
+	
+  <select id="selectByTeamworkStaffAdd" resultMap="StaffResultMap" parameterType="java.lang.String" >
+    select s.*
+    from t_staff s
+    where staff_id IN ( SELECT staff_id FROM t_teamwork_staff_add WHERE teamwork_id = #{0})
+    AND staff_id NOT IN ( SELECT staff_id FROM t_teamwork_staff WHERE teamwork_id = #{0}) 
+  </select>
+
+	<!-- 查询员工编号或姓名 -->
+	<select id="listPageStaffOr" parameterType="Staff" resultMap="StaffResultMap">
+		SELECT * FROM t_staff WHERE 1 = 1
+		<if test="staffNo != null and staffNo != ''">
+			and staff_no LIKE CONCAT('%',#{staffNo},'%')
+			OR staff_name
+			LIKE CONCAT('%',#{staffNo},'%')
+		</if>
+		order by staff_no
+	</select>
+
+	<!-- 修改分页查询，增加根据编号、公司、员工id进行查询的条件 王洲 2015.12.22 -->
+	<!-- 修改查询方法，增加与专业线关联 王洲 2015.12.25 -->
+	<select id="listPageAllStaff" parameterType="Staff" resultMap="AnnexMap">
+		select distinct a.* from t_staff a left join t_teamwork_staff b on
+		a.staff_id = b.staff_id
+		where a.state=1
+		<if test="staffName!='' and staffName!=null">
+			and a.staff_name like CONCAT('%',#{staffName},'%')
+		</if>
+		<if test="staffNumber != null and staffNumber != ''">
+			and a.staff_number) like CONCAT('%',#{staffNumber},'%')
+		</if>
+		<if test="staffNo!= null and staffNo != ''">
+			and a.staff_no like CONCAT('%',#{staffNo},'%')
+		</if>
+		<if test="s_birthday!= null and s_birthday!= ''">
+			and a.birthday like CONCAT('%',#{s_birthday},'%')
+		</if>
+		<if test="sex1!= null and sex1!= ''">
+			and a.sex like CONCAT('%',#{sex1},'%')
+		</if>
+		<if test="cardNum!= null and cardNum!= ''">
+			and a.card_num like CONCAT('%',#{cardNum},'%')
+		</if>
+		<if test="cardType1!= null and cardType1 != ''">
+			and a.card_type like CONCAT('%',#{cardType1},'%')
+		</if>
+		<if test="address!= null and address != ''">
+			and a.address like CONCAT('%',#{address},'%')
+		</if>
+		<if test="telphone!= null and telphone != ''">
+			and a.telphone like CONCAT('%',#{telphone},'%')
+		</if>
+		<if test="nativePlace!= null and nativePlace != ''">
+			and a.native_place like CONCAT('%',#{nativePlace},'%')
+		</if>
+		<if test="email!= null and email != ''">
+			and a.email like CONCAT('%',#{email},'%')
+		</if>
+		<if test="companyId != null and companyId != ''">
+			and a.company_id = #{companyId}
+		</if>
+		<if test="staffId != null and staffId != ''">
+			and staff_id != #{staffId}
+		</if>
+		<if test="postId != null and postId != ''">
+			and b.professional_line_id = #{postId}
+		</if>
+		<if test="paramForSearch != null and paramForSearch != ''"><!-- 核心岗位任命增加工号与姓名同时查询 王洲 2016.02.29 -->
+			and UPPER(a.staff_no) like CONCAT('%',#{paramForSearch},'%') or
+			staff_name like CONCAT('%',#{paramForSearch},'%')
+		</if>
+		<if test="processStatus != null and processStatus != -2 ">
+			and a.process_status = #{processStatus}
+		</if>
+		order by staff_number desc
+	</select>
+	
+		<!--  -->
+	<select id="listPageAllStaff_Unckeck" parameterType="Staff" resultMap="AnnexMap">
+		select * from t_staff where state=0
+		<if test="staffName != null and staffName != ''">
+			and staff_name like CONCAT('%',#{staffName},'%')
+		</if>
+		<if test="staffNumber != null and staffNumber != ''">
+			and staff_number like CONCAT('%',#{staffNumber},'%')
+		</if>
+		<if test="staffNo!= null and staffNo != ''">
+			and staff_no like CONCAT('%',#{staffNo},'%')
+		</if>
+		<if test="s_birthday!= null and s_birthday!= ''">
+			and birthday like CONCAT('%',#{s_birthday},'%')
+		</if>
+		<if test="sex1!= null and sex1!= ''">
+			and sex like CONCAT('%',#{sex1},'%')
+		</if>
+		<if test="cardNum!= null and cardNum!= ''">
+			and card_num like CONCAT('%',#{cardNum},'%')
+		</if>
+		<if test="cardType1!= null and cardType1 != ''">
+			and card_type like CONCAT('%',#{cardType1},'%')
+		</if>
+		<if test="address!= null and address != ''">
+			and address like CONCAT('%',#{address},'%')
+		</if>
+		<if test="telphone!= null and telphone != ''">
+			and telphone like CONCAT('%',#{telphone},'%')
+		</if>
+		<if test="nativePlace!= null and nativePlace != ''">
+			and native_place like CONCAT('%',#{nativePlace},'%')
+		</if>
+		<if test="userAppId != null and userAppId != ''">
+			and user_app_id = #{userAppId}
+		</if>
+		<if test="processStatus != null and processStatus != ''">
+			and process_status = #{processStatus}
+		</if>
+		<!-- Order By create_time Desc -->
+	</select>
+
+	<select id="listPageStaffForUser" parameterType="Staff"
+		resultMap="StaffResultMap">
+		select * from t_staff where staff_id not in (select employ_id from
+		t_user where employ_id is not null)
+		<if test="staffName != null and staffName != ''">
+			and staff_name like CONCAT('%',#{staffName},'%')
+		</if>
+		<if test="telphone != null and telphone != ''">
+			and telphone like CONCAT('%',#{telphone},'%')
+		</if>
+		<if test="cardNum != null and cardNum != ''">
+			and card_num like CONCAT('%',#{cardNum},'%')
+		</if>
+	</select>
+	
+	<select id="listStaffByAll" parameterType="Staff"
+		resultMap="StaffResultMap">
+		select * from t_staff
+		<trim prefix="where" prefixOverrides="or">
+			<if test="staffName != null and staffName != ''">
+				staff_name like CONCAT('%',#{staffName},'%')
+			</if>
+			<if test="telphone != null and telphone != ''">
+				or telphone like CONCAT('%',#{telphone},'%')
+			</if>
+			<if test="cardNum != null and cardNum != ''">
+				or card_num like CONCAT('%',#{cardNum},'%')
+			</if>
+			<if test="staffNo != null and staffNo != ''">
+				or staff_no like CONCAT('%',#{staffNo},'%')
+			</if>
+		</trim>
+	</select>
+
+	<!-- 删除员工 将状态改为失效 0 -->
+	<update id="updateStaffStateById" parameterType="Staff">
+		update t_staff
+		set state=0 where staff_id = #{staffId,jdbcType=VARCHAR}
+	</update>
+
+	<select id="listPageAllStaffByRoleType" parameterType="Staff"
+		resultMap="StaffResultMap">
+		SELECT * FROM t_staff WHERE staff_id NOT IN(SELECT c.employ_id FROM
+		t_user c WHERE c.user_id IN (SELECT a.user_id FROM t_user_role a
+		LEFT
+		JOIN t_role b ON a.role_id = b.role_id WHERE b.role_type=#{roleType})
+		GROUP BY c.employ_id) and state = '1'
+		<if test="companyId">
+			and company_id = #{companyId}
+		</if>
+		<if test="staffName != null and staffName != ''">
+			and staff_name like CONCAT('%',#{staffName},'%')
+		</if>
+		<if test="staffNo!= null and staffNo!= ''">
+			and staff_no like CONCAT('%',#{staffNo},'%')
+		</if>
+		<if test="telphone != null and telphone != ''">
+			and telphone like CONCAT('%',#{telphone},'%')
+		</if>
+		<if test="cardNum != null and cardNum != ''">
+			and card_num like CONCAT('%',#{cardNum},'%')
+		</if>
+	</select>
+
+
+	<!-- 查询表中 员工号最大的编号 -->
+	<select id="selectCustCode" resultType="String">
+		select
+		max(staff_number+0) from t_staff
+
+	</select>
+
+	<select id="getStaffInTeamworkStaff" resultMap="StaffResultMap">
+		select distinct
+		a.* from t_staff a left join t_teamwork_staff b on
+		a.staff_id =
+		b.staff_id where a.state = 1
+	</select>
+
+	<select id="listStaffList" parameterType="Staff" resultMap="StaffResultMap">
+		select * from t_staff where 1=1 and state=1
+		<if test="staffName != null and staffName != ''">
+			and staff_name like CONCAT('%',#{staffName},'%')
+		</if>
+		<if test="staffNumber != null and staffNumber != ''">
+			and staff_number like CONCAT('%',#{staffNumber},'%')
+		</if>
+		<if test="staffNo!= null and staffNo != ''">
+			and staff_no like CONCAT('%',#{staffNo},'%')
+		</if>
+		<if test="s_birthday!= null and s_birthday!= ''">
+			and birthday like CONCAT('%',#{s_birthday},'%')
+		</if>
+		<if test="sex1!= null and sex1!= ''">
+			and sex like CONCAT('%',#{sex1},'%')
+		</if>
+		<if test="cardNum!= null and cardNum!= ''">
+			and card_num like CONCAT('%',#{cardNum},'%')
+		</if>
+		<if test="cardType1!= null and cardType1 != ''">
+			and card_type like CONCAT('%',#{cardType1},'%')
+		</if>
+		<if test="address!= null and address != ''">
+			and address like CONCAT('%',#{address},'%')
+		</if>
+		<if test="telphone!= null and telphone != ''">
+			and telphone like CONCAT('%',#{telphone},'%')
+		</if>
+		<if test="nativePlace!= null and nativePlace != ''">
+			and native_place like CONCAT('%',#{nativePlace},'%')
+		</if>
+		<if test="userAppId != null and userAppId != ''">
+			and user_app_id = #{userAppId}
+		</if>
+		<if test="processStatus != null and processStatus != ''">
+			and process_status = #{processStatus}
+		</if>
+
+	</select>
+
+	<!-- 根据公司id查询公司下的所有员工 王洲 2016.2.1 -->
+	<select id="getStaffByCompanyId" parameterType="String"
+		resultMap="StaffResultMap">
+		select * from t_staff where state = 1 and company_id = #{0}
+	</select>
+	<!-- 批量插入员工信息（用于Excel导入） 
+	<insert id="insertList" parameterType="java.util.List">
+		insert into t_staff (staff_id, company_id, staff_number, staff_no,sex,
+		native_place,
+		married, edu_lever, birthday, card_type, card_num,
+		address,
+		telphone,state,staff_name)
+		values
+		<foreach collection="list" item="item" index="index"
+			separator=",">
+			(UUID(),#{item.companyId,jdbcType=INTEGER},
+			#{item.staffNumber,jdbcType=VARCHAR},
+			#{item.staffNo,jdbcType=VARCHAR},#{item.sex,jdbcType=INTEGER},#{item.nativePlace,jdbcType=VARCHAR},
+			#{item.married,jdbcType=INTEGER},
+			#{item.eduLever,jdbcType=VARCHAR},#{item.birthday,jdbcType=DATE},
+			#{item.cardType,jdbcType=INTEGER},#{item.cardNum,jdbcType=VARCHAR},
+			#{item.address,jdbcType=VARCHAR},
+			#{item.telphone,jdbcType=VARCHAR},#{item.state,jdbcType=VARCHAR},
+			#{item.staffName,jdbcType=VARCHAR})
+		</foreach>
+	</insert>
+	-->
+	<!-- 批量插入员工信息（用于Excel导入） -->
+	<insert id="insertList" parameterType="java.util.List">
+		insert into t_staff (staff_id, company_id, staff_number, staff_no,sex,
+		native_place,
+		married, edu_lever, birthday, card_type, card_num,
+		address,
+		telphone,state,staff_name
+		,process_status,user_app_id)
+		values
+		<foreach collection="list" item="item" index="index"
+			separator=",">
+			(UUID(),#{item.companyId,jdbcType=INTEGER},
+			#{item.staffNumber,jdbcType=VARCHAR},
+			#{item.staffNo,jdbcType=VARCHAR},#{item.sex,jdbcType=INTEGER},#{item.nativePlace,jdbcType=VARCHAR},
+			#{item.married,jdbcType=INTEGER},
+			#{item.eduLever,jdbcType=VARCHAR},#{item.birthday,jdbcType=DATE},
+			#{item.cardType,jdbcType=INTEGER},#{item.cardNum,jdbcType=VARCHAR},
+			#{item.address,jdbcType=VARCHAR},
+			#{item.telphone,jdbcType=VARCHAR},#{item.state,jdbcType=VARCHAR},
+			#{item.staffName,jdbcType=VARCHAR}
+			,#{item.processStatus,jdbcType=INTEGER},#{item.userAppId,jdbcType=VARCHAR}
+			)
+		</foreach>
+	</insert>
+
+	<!-- 根据登录名查询员工 -->
+	<select id="selectStaffByLoginName" parameterType="java.lang.String"
+		resultMap="StaffResultMap">
+		select a.* from t_staff a
+		join t_user b on
+		a.staff_id=b.employ_id
+		where b.login_name=#{0}
+	</select>
+	<!-- 不提供多余的渠道来修改重要的字段  [未处理,待检测]到[待回复] -->
+	<update id="updateProcessStatus1ByLoginNameAndCompanyId" parameterType="Staff">
+		Update t_staff
+		Set process_status = 1 
+		Where user_app_id = #{staffId,jdbcType=VARCHAR} And company_id = #{companyId,jdbcType=VARCHAR}
+		And process_status = 0
+	</update>
+	<!-- 不提供多余的渠道来修改重要的字段  [待回复]到[已回复，待审核]  -->
+	<update id="updateProcessStatus2ByLoginNameAndCompanyId" parameterType="Staff">
+		Update t_staff
+		<set>
+			<if test="processStatus != null">
+				process_status = #{processStatus,jdbcType=INTEGER},
+			</if>
+			<if test="staffNumber != null">
+				staff_number = #{staffNumber,jdbcType=VARCHAR},
+			</if>
+			<if test="staffNo!= null">
+				staff_no = #{staffNo,jdbcType=VARCHAR},
+			</if>
+			<if test="firstName != null">
+				first_name = #{firstName,jdbcType=VARCHAR},
+			</if>
+			<if test="lastName != null">
+				last_name = #{lastName,jdbcType=VARCHAR},
+			</if>
+			<if test="firstNameSpell != null">
+				first_name_spell = #{firstNameSpell,jdbcType=VARCHAR},
+			</if>
+			<if test="lastNameSpell != null">
+				last_name_spell =#{lastNameSpell,jdbcType=VARCHAR},
+			</if>
+			<if test="sex != null">
+				sex =#{sex,jdbcType=INTEGER},
+			</if>
+			<if test="nativePlace != null">
+				native_place =#{nativePlace,jdbcType=VARCHAR},
+			</if>
+			<if test="married != null">
+				married =#{married,jdbcType=INTEGER},
+			</if>
+			<if test="landscape != null">
+				landscape =#{landscape,jdbcType=INTEGER},
+			</if>
+			<if test="birthday != null">
+				birthday =#{birthday,jdbcType=DATE},
+			</if>
+			<if test="cardType != null">
+				card_type =#{cardType,jdbcType=INTEGER},
+			</if>
+			<if test="cardNum != null">
+				card_num =#{cardNum,jdbcType=INTEGER},
+			</if>
+			<if test="address != null">
+				address =#{address,jdbcType=VARCHAR},
+			</if>
+			<if test="telphone != null">
+				telphone =#{telphone,jdbcType=VARCHAR},
+			</if>
+			<if test="email != null">
+				email =#{email,jdbcType=VARCHAR},
+			</if>
+
+			<if test="staffName != null">
+				staff_name =#{staffName,jdbcType=VARCHAR},
+			</if>
+		</set>
+		Where user_app_id = #{userAppId,jdbcType=VARCHAR} And company_id = #{companyId,jdbcType=VARCHAR}
+		<!--  And process_status = 1 -->
+	</update>
+	<!-- 不提供多余的渠道来修改重要的字段  [已回复，待审核]到[已完成]  -->
+	<update id="updateProcessStatus3ByLoginNameAndCompanyId" parameterType="Staff">
+		Update t_staff
+		Set process_status = 3
+		Where user_app_id = #{userAppId,jdbcType=VARCHAR} And company_id = #{companyId,jdbcType=VARCHAR}
+		And process_status = 2
+	</update>
+	<!-- 不提供多余的渠道来修改重要的字段  [已完成]到[离职]  -->
+	<update id="updateProcessStatusF2ByLoginNameAndCompanyId" parameterType="Staff">
+		Update t_staff
+		Set process_status = -2
+		Where user_app_id = #{userAppId,jdbcType=VARCHAR} And company_id = #{companyId,jdbcType=VARCHAR}
+		And process_status = 3
+	</update>
+	<!-- 不提供多余的渠道来修改重要的字段  [未处理]到[不通过]  -->
+	<update id="updateProcessStatusF1ByLoginNameAndCompanyId" parameterType="Staff">
+		Update t_staff
+		Set process_status = -1
+		Where user_app_id = #{userAppId,jdbcType=VARCHAR} And company_id = #{companyId,jdbcType=VARCHAR}
+		And process_status &lt; 3
+	</update>
+	<select id="listALlStaffInfo" parameterType="Staff" resultMap="StaffResultMap">
+		select * from t_staff where 1=1
+		<if test="staffName != null and staffName != ''">
+			and staff_name like CONCAT('%',#{staffName},'%')
+		</if>
+		<if test="staffNumber != null and staffNumber != ''">
+			and staff_number like CONCAT('%',#{staffNumber},'%')
+		</if>
+		<if test="staffNo!= null and staffNo != ''">
+			and staff_no like CONCAT('%',#{staffNo},'%')
+		</if>
+		<if test="s_birthday!= null and s_birthday!= ''">
+			and birthday like CONCAT('%',#{s_birthday},'%')
+		</if>
+		<if test="sex1!= null and sex1!= ''">
+			and sex like CONCAT('%',#{sex1},'%')
+		</if>
+		<if test="cardNum!= null and cardNum!= ''">
+			and card_num like CONCAT('%',#{cardNum},'%')
+		</if>
+		<if test="cardType1!= null and cardType1 != ''">
+			and card_type like CONCAT('%',#{cardType1},'%')
+		</if>
+		<if test="address!= null and address != ''">
+			and address like CONCAT('%',#{address},'%')
+		</if>
+		<if test="telphone!= null and telphone != ''">
+			and telphone like CONCAT('%',#{telphone},'%')
+		</if>
+		<if test="nativePlace!= null and nativePlace != ''">
+			and native_place like CONCAT('%',#{nativePlace},'%')
+		</if>
+		<if test="userAppId != null and userAppId != ''">
+			and user_app_id = #{userAppId}
+		</if>
+		<if test="processStatus != null and processStatus != ''">
+			and process_status = #{processStatus}
+		</if>
+	</select>
+		<!-- 删除未正式入职的员工-->
+	<update id="deleteStaffStateByStateAndId" parameterType="Staff">
+		Delete From t_staff
+		Where state=0 And staff_id = #{staffId,jdbcType=VARCHAR}
+	</update>
+		<!-- 离职员工-->
+	<update id="leaveStaffStateByStateAndId" parameterType="Staff">
+		Update t_staff
+		Set state = 0
+		,process_status = -2
+		Where state=1 And staff_id = #{staffId,jdbcType=VARCHAR}
+	</update>
+</mapper>

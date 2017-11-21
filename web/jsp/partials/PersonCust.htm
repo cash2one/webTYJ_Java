@@ -1,0 +1,104 @@
+<!DOCTYPE>
+<html ng-app="PersonCustApp">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>个人信息</title>
+</head >
+<link type="text/css" rel="stylesheet" href="/Home/css/main.css"/>
+<script src="/Home/js/AngularJS/angular-1.2.3.js"></script>
+<script src="/Home/js/AngularJS/PersonCust.js"></script>
+<body>
+<script type="text/ng-template" id="listView">
+<table class="main_head" width="100%" border="0" cellpadding="0" cellspacing="0" class="main_table" >
+			<tr class="main_head">
+				<th>id</th>
+				<th>客户姓名</th>
+				<th>身份证</th>
+				<th>电话</th>
+				<th>房屋类型</th>
+				<th>项目名称</th>
+				<th>所属区/期</th>
+				<th>房屋楼栋号</th>
+				<th>房屋单元号</th>
+				<th>房屋房号</th>
+				<th colspan="2">操作</th>
+			</tr>
+					<tr ng-repeat="items in personCusts" class="main_head">
+						<td>{{items.custId}}</td>
+						<td>{{items.name}}</td>
+						<td>{{items.cardNum}}</td>
+						<td>{{items.phoneNum}}</td>
+						<td>{{items.house.houseType}}</td>
+						<td>{{items.project.projectName}}</td>
+						<td>{{items.house.estateIssue}}</td>
+						<td>{{items.house.ridgeNum}}</td>
+						<td>{{items.house.unit}}</td>
+						<td>{{items.house.roomNum}}</td>
+						<td><a href="#" ng-click="GetPersonCust(items.custId)" class="myBtn"><em>修改</em></a></td>
+						<td><a href="#" ng-click="deletePersonCust(items.custId)" class="myBtn"><em>删除</em></a></td>
+					</tr>
+		</table>
+	<div class="page_and_btn">
+			<a href="#" ng-click="GetPersonCust(0)" class="myBtn"><em>新增</em></a>
+		</div>
+</script>
+	<script type="text/ng-template" id="AddOrUpdateView">
+	<table class="main_head" width="100%" border="0" cellpadding="0" cellspacing="0">
+
+		<tr class="main_head">
+			<th>客户姓名:</th>
+			<td>
+				<input type="text" ng-model="personCust.name" />
+				<input type="hidden" ng-model="personCust.custId" /> 
+			</td>
+		</tr>
+
+		<tr class="main_head">
+			<th>身份证:</th>
+			<td><input type="text" ng-model="personCust.cardNum"/> </td>
+		</tr>
+
+		<tr class="main_head">
+			<th>电话:</th>
+			<td><input type="text" ng-model="personCust.phoneNum"/> </td>
+		</tr>
+
+       <tr class="main_head">
+			<th>房屋类型:</th>
+			<td><input type="text" ng-model="personCust.house.houseType" /></td>
+		</tr>
+		<tr class="main_head">
+			<th>项目名称:</th>
+			<td><input type="text" ng-model="personCust.project.projectName"/> </td>
+		</tr>
+
+		<tr class="main_head">
+			<th>所属区/期:</th>
+			<td><input type="text" ng-model="personCust.house.estateIssue"/> </td>
+		</tr>
+
+		<tr class="main_head">
+			<th>房屋楼栋号:</th>
+			<td><input type="text" ng-model="personCust.house.ridgeNum"/> </td>
+		</tr>
+
+		<tr class="main_head">
+			<th>房屋单元号:</th>
+			<td><input type="text" ng-model="personCust.house.unit"/> </td>
+		</tr>
+
+		<tr class="main_head">
+			<th>房屋房号:</th>
+			<td><input type="text" ng-model="personCust.house.roomNum"/> </td>
+		</tr>
+
+		<tr class="main_head">
+			<td colspan="2"><input type="button" value="保存" ng-click="AddOrUpdatePersonCust()"/></td>
+		</tr>
+		</table>
+</script>
+<div ng-controller="PersonCustCtrl">
+	<div ng-include="templateUrl"></div>
+</div>
+</body>
+</html>

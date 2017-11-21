@@ -1,0 +1,169 @@
+/**
+ * @Title: PersonEmphasisService.java
+ * @Package com.flf.service
+ * @Description: TODO
+ * Copyright: Copyright (c) 2011 
+ * Company:武汉闻风多奇软件开发有限公司
+ * 
+ * @author wangtao
+ * @date 2015-6-17 下午2:35:26
+ * @version V1.0
+ */
+
+package com.flf.service;
+
+import java.util.List;
+
+import javax.jws.WebService;
+import javax.ws.rs.Consumes;
+import javax.ws.rs.DELETE;
+import javax.ws.rs.GET;
+import javax.ws.rs.POST;
+import javax.ws.rs.PUT;
+import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
+import javax.ws.rs.Produces;
+import javax.ws.rs.core.MediaType;
+
+import com.flf.entity.Annex;
+import com.flf.entity.PageRestful;
+import com.flf.entity.PersonEmphasis;
+
+/**
+ * @ClassName: PersonEmphasisService
+ * @Description: TODO
+ * @author wangyong
+ * @date 2015-6-17 下午2:35:26
+ *
+ */
+@Path("/PersonEmphasis")
+@WebService
+public interface PersonEmphasisService {
+
+	
+		/**
+		 * 分页显示所有重点客户信息
+		 * @return
+		 */
+	  	@POST
+	   	@Path("/listPagePersonEmphasisRestful")
+	   	@Produces(MediaType.APPLICATION_JSON)
+	    PageRestful listPagePersonEmphasisRestful(PersonEmphasis personEmphasis);  
+	  	
+		/**
+		 * 查询所有重点客户信息
+		 * @return
+		 */
+		@GET
+		@Path("/listPersonEmphasisBySta/{status}")
+		@Produces(MediaType.APPLICATION_JSON)
+		List<PersonEmphasis> listPersonEmphasisBySta(@PathParam("status") int status);
+		
+		
+		/**
+		 * 查询所有重点客户信息
+		 * @return
+		 */
+		@GET
+		@Path("/listAllPersonEmphasis")
+		@Produces(MediaType.APPLICATION_JSON)
+		List<PersonEmphasis> listAllPersonEmphasis();
+		
+		
+		/**
+		 * 根据id查询重点客户信息
+		 * @param PersonEmphasisIdId
+		 * @return
+		 */
+		@GET
+		@Path("/getPersonEmphasisByIdRest/{PersonEmphasisId}")
+		@Produces(MediaType.APPLICATION_JSON)
+		PersonEmphasis getPersonEmphasisByIdRest(@PathParam("PersonEmphasisId") String PersonEmphasisId);
+		
+		/**
+		 * 添加重点客户信息
+		 * @param PersonEmphasis
+		 * @return
+		 */
+		@POST
+		@Path("/AddPersonEmphasis")
+		@Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+		void AddPersonEmphasis(PersonEmphasis personEmphasis);
+		
+		
+		/**
+		 *修改重点客户信息
+		 * @param PersonEmphasis
+		 * @return
+		 */
+		@PUT
+		@Path("/UpdatePersonEmphasis")
+		@Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+		void UpdatePersonEmphasis(PersonEmphasis personEmphasis);
+		
+		/**
+		 * 删除重点客户信息
+		 * @param PersonEmphasisId
+		 * @return
+		 */
+		@DELETE
+		@Path("/DeletePersonEmphasis/{PersonEmphasis}")
+		void DeletePersonEmphasis(@PathParam("PersonEmphasis") String PersonEmphasis);
+		
+		
+		/**
+		 * 获取申请附件集合
+		 * @param PersonEmphasisId
+		 * @return
+		 */
+		@GET
+		@Path("/getPersonEmphasisAnnexById/{PersonEmphasisId}")
+		@Produces(MediaType.APPLICATION_JSON)
+		public  List<Annex> getPersonEmphasisAnnexById(@PathParam("PersonEmphasisId") String PersonEmphasisId);
+
+		//根据客户id查询重点客户的申请状态
+		@GET
+		@Path("/getPersonEmphasisData/{custId}")
+		@Produces(MediaType.APPLICATION_JSON)
+		PersonEmphasis getPersonEmphasisData(@PathParam("custId") String custId);
+		
+		
+		//根据客户id查询重点客户的失效申请状态
+		@GET
+		@Path("/getPersonEmphasisDataById/{custId}")
+		@Produces(MediaType.APPLICATION_JSON)
+		PersonEmphasis getPersonEmphasisDataById(@PathParam("custId") String custId);
+		 
+		//根据审核id查询重点信息 
+		@GET
+		@Path("/getPersonEmphasisDataByapprovalId/{approvalId}")
+		@Produces(MediaType.APPLICATION_JSON)
+		PersonEmphasis getPersonEmphasisDataByapprovalId(@PathParam("approvalId") String approvalId);
+
+		/**
+		 * 2016-1-19
+		 * 用于重点客户 ，vip客户申请校验
+		 * @param custId
+		 * @return
+		 */
+		@GET
+		@Path("/getPersonEmphasisState/{custId}")
+		@Produces(MediaType.APPLICATION_JSON)
+		PersonEmphasis getPersonEmphasisState(@PathParam("custId") String custId);
+		
+		
+		//查询重点客户申请数量
+		@GET
+		@Path("/getPersonEmphasisSum/{theme}")
+		@Produces(MediaType.APPLICATION_JSON)
+		String getPersonEmphasisSum(@PathParam("theme") String theme);
+		
+		//查询重点客户失效申请数量
+		@GET
+		@Path("/getFailPersonEmphasisSum/{theme}")
+		@Produces(MediaType.APPLICATION_JSON)
+		String getFailPersonEmphasisSum(@PathParam("theme") String theme);
+		
+		
+
+}

@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.flf.mapper.ChargeItemBillingMapper" >
+  <resultMap id="BaseResultMap" type="com.flf.entity.ChargeItemBilling" >
+    <id column="charge_item_billing_id" property="chargeItemBillingId" jdbcType="VARCHAR" />
+    <result column="project_billing_id" property="projectBillingId" jdbcType="VARCHAR" />
+    <result column="project_name" property="projectName" jdbcType="VARCHAR" />
+    <result column="charge_item_name" property="chargeItemName" jdbcType="VARCHAR" />
+    <result column="billing_start_time" property="billingStartTime" jdbcType="DATE" />
+    <result column="billing_end_time" property="billingEndTime" jdbcType="DATE" />
+    <result column="sum" property="sum" jdbcType="DOUBLE" />
+    <result column="billing_type" property="billingType" jdbcType="TINYINT" />    
+     <result column="project_id" property="projectId" jdbcType="VARCHAR" />
+    <result column="charge_item_id" property="chargeItemId" jdbcType="VARCHAR" />
+    <result column="current_sum" property="currentSum" jdbcType="VARCHAR" />
+    <result column="last_sum" property="lastSum" jdbcType="VARCHAR" />
+    <result column="building_billing_id" property="buildingBillingId" jdbcType="VARCHAR" />
+  </resultMap>
+  
+  <insert id="insertChargeItemBilling" parameterType="com.flf.entity.ChargeItemBilling" >
+    insert into tc_charge_item_billing (charge_item_billing_id, project_billing_id, 
+      project_name, charge_item_name, billing_start_time, 
+      billing_end_time, sum, billing_type,project_id,charge_item_id,current_sum,last_sum
+      )
+    values (#{chargeItemBillingId,jdbcType=VARCHAR}, #{projectBillingId,jdbcType=VARCHAR}, 
+      #{projectName,jdbcType=VARCHAR}, #{chargeItemName,jdbcType=VARCHAR}, #{billingStartTime,jdbcType=DATE}, 
+      #{billingEndTime,jdbcType=DATE}, #{sum,jdbcType=DOUBLE}, #{billingType,jdbcType=TINYINT},
+      #{projectId,jdbcType=VARCHAR},#{chargeItemId,jdbcType=VARCHAR},#{currentSum,jdbcType=VARCHAR},#{lastSum,jdbcType=VARCHAR}
+      )
+  </insert>
+  
+  <update id="updateChargeItemBilling" parameterType="com.flf.entity.ChargeItemBilling" >
+    update tc_charge_item_billing
+    <set >
+      <if test="projectBillingId != null" >
+        project_billing_id = #{projectBillingId,jdbcType=VARCHAR},
+      </if>
+      <if test="projectName != null" >
+        project_name = #{projectName,jdbcType=VARCHAR},
+      </if>
+      <if test="chargeItemName != null" >
+        charge_item_name = #{chargeItemName,jdbcType=VARCHAR},
+      </if>
+      <if test="billingStartTime != null" >
+        billing_start_time = #{billingStartTime,jdbcType=DATE},
+      </if>
+      <if test="billingEndTime != null" >
+        billing_end_time = #{billingEndTime,jdbcType=DATE},
+      </if>
+      <if test="sum != null" >
+        sum = #{sum,jdbcType=DOUBLE},
+      </if>
+      <if test="billingType != null" >
+        billing_type = #{billingType,jdbcType=TINYINT},
+      </if>           
+       <if test="projectId != null" >
+        project_id = #{projectId,jdbcType=VARCHAR},
+      </if>
+      <if test="chargeItemId != null" >
+        charge_item_id = #{chargeItemId,jdbcType=VARCHAR},
+      </if>
+      <if test="currentSum != null and currentSum != ''" >
+        current_sum = #{currentSum,jdbcType=VARCHAR},
+      </if>
+      <if test="lastSum != null and lastSum != ''" >
+        last_sum = #{lastSum,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where charge_item_billing_id = #{chargeItemBillingId,jdbcType=VARCHAR}
+  </update>
+  
+   <select id="getChargeItemBillingbyProjectId" parameterType="String" resultMap="BaseResultMap">
+ 		select * from tc_charge_item_billing
+ 		where project_id= #{projectId}  
+  </select>
+  <!-- 根据项目计费ID查询 -->
+  <select id="getChargeItemBillingById" parameterType="String" resultMap="BaseResultMap">
+ 		select * from tc_charge_item_billing
+ 		where charge_item_billing_id= #{chargeItemBillingId,jdbcType=VARCHAR}  
+  </select>
+  <select id="getChargeItemBillingbyProjectBillingId" parameterType="String" resultMap="BaseResultMap">
+ 		select * from tc_charge_item_billing
+ 		where project_billing_id= #{0}  
+  </select>
+  <select id="getChargeItemBillingNoPostingbyProjectBillingId" parameterType="String" resultMap="BaseResultMap">
+ 		select * from tc_charge_item_billing
+ 		where project_billing_id= #{0} and billing_type = 1 
+  </select>
+  <!-- 根据ID查询 -->
+  <select id="getChargeItemBillingByKey" parameterType="String" resultMap="BaseResultMap">
+ 		select * from tc_charge_item_billing
+ 		where charge_item_billing_id= #{chargeItemBillingId,jdbcType=VARCHAR}  
+  </select>
+  <!-- 根据项目计费表id查询项目的一级收费项目详情 -->
+  <select id="listPageChargeItemBillingListbyId" parameterType="com.flf.entity.ChargeItemBilling" resultMap="BaseResultMap">
+  		select * from tc_charge_item_billing a
+ 		where a.project_billing_id= #{projectBillingId} 		 
+ 		 <if test="projectId!=null and projectId!=''">
+       	 and a.project_id = #{projectId,jdbcType=VARCHAR}
+     	 </if>
+      	<if test="chargeItemId!=null and chargeItemId!=''">
+      	  and a.charge_item_id = #{chargeItemId,jdbcType=VARCHAR}
+      	</if>      			
+  </select>
+  
+  <select id="selectIds" parameterType="com.flf.entity.ChargeItemBilling" resultMap="BaseResultMap">
+  		select cib.charge_item_billing_id,cib.project_billing_id,bb.building_billing_id
+  		from tc_building_billing bb,tc_charge_item_billing cib,tc_project_billing pb
+  		where bb.charge_item_billing_id=cib.charge_item_billing_id and 
+  		cib.project_billing_id=pb.project_billing_id
+  		<if test="chargeItemBillingId!=null and chargeItemBillingId!=''">
+       	 and cib.charge_item_billing_id = #{chargeItemBillingId,jdbcType=VARCHAR}
+     	 </if>
+      	<if test="projectBillingId!=null and projectBillingId!=''">
+      	  and cib.project_billing_id = #{projectBillingId,jdbcType=VARCHAR}
+      	</if> 
+      	<if test="buildingBillingId!=null and buildingBillingId!=''">
+      	  and bb.building_billing_id = #{buildingBillingId,jdbcType=VARCHAR}
+      	</if>     		
+  </select>
+    <!-- 根据条件删除 -->
+	<delete id="deleteChargeItemBilling" parameterType="java.util.Map">
+		delete from tc_charge_item_billing
+		<where>
+			<if test="chargeItemBillingId!=null and chargeItemBillingId!= '' ">
+		  		charge_item_billing_id= #{chargeItemBillingId,jdbcType=VARCHAR}
+		  	</if>
+		</where>
+	</delete>
+	<!-- 根据条件删除 -->
+	<select id="getProjectBillingNum" resultType="java.lang.Double">
+		select round(sum(sum),2) as num from tc_charge_item_billing where project_billing_id=#{projectBillingId,jdbcType=VARCHAR}
+    </select>
+    
+    <select id="getChargeItemNewByProjectBillingId" parameterType="java.lang.String" resultMap="BaseResultMap">
+    	SELECT * FROM tc_charge_item_billing WHERE project_billing_id =#{0}
+    </select>
+    <update id="updateChargeItemBillingById">
+    	update tc_charge_item_billing set billing_type = 0 where charge_item_billing_id = #{0}
+    </update>
+</mapper>

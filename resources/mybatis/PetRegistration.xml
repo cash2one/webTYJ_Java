@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.flf.mapper.PetRegistrationMapper" >
+ <resultMap id="BaseResultMap" type="PetRegistration" >
+ <id column="pet_id" property="petId"/>
+ <result column="pet_name" property="petName"/>
+ <result column="pet_type" property="petType"/>
+ <result column="pet_no" property="petNo"/>
+ <result column="pet_sex" property="petSex"/>
+ <result column="pet_describe" property="petDescribe"/>
+ <result column="cust_id" property="custId"/>
+ <result column="registration_time" property="registrationTime"/>
+ <result column="person_building_id" property="personBuildingId"/>
+  <result column="pet_pic" property="petPic"  />
+  <result column="pet_status" property="petStatus"  />
+  <result column="pet_breeds" property="petBreeds"  />
+  <association property="buildingStructureNew" column="person_building_id" javaType="BuildingStructureNew" select="com.flf.mapper.BuildingStructureNewMapper.getBuildingStructureNewbyId" />
+  <association property="personCustNew" column="cust_id" javaType="PersonCustNew" select="com.flf.mapper.PersonCustNewMapper.getPersonCustNewById" />
+ <collection property="annexs" column="pet_id" ofType="Annex" select="com.flf.mapper.AnnexMapper.getAnnexbyRelationId"></collection>
+ </resultMap>
+ 
+<insert id="insertPetRegistration" parameterType="PetRegistration">
+					insert into t_pet (pet_id,pet_name,pet_type,pet_no,pet_sex,
+					 pet_describe,cust_id,registration_time,person_building_id,pet_pic,pet_status,pet_breeds) 
+					 values  (#{petId},#{petName},#{petType},#{petNo}, #{petSex},#{petDescribe},#{custId}, now(),#{personBuildingId},#{petPic},1,#{petBreeds})
+                     </insert>
+                     
+<update id="updatePetRegistration" parameterType="PetRegistration"> 
+			update t_pet set pet_name=#{petName},pet_type=#{petType},pet_no=#{petNo},pet_sex=#{petSex}, pet_describe=#{petDescribe},
+			cust_id=#{custId},registration_time=#{registrationTime},person_building_id=#{personBuildingId},pet_pic=#{petPic},pet_breeds=#{petBreeds}
+			   where pet_id=#{petId}
+  </update> 
+  
+  <select id="listAllPetRegistration" resultMap="BaseResultMap" parameterType="PetRegistration" >
+    select * from t_pet where pet_status = '1'
+    <if test="custId!='' and custId!=null">
+  			and cust_id = #{custId}
+  		</if>
+  </select>
+  
+   <select id="listPagePetRegistration" resultMap="BaseResultMap" parameterType="PetRegistration">
+    select * from t_pet where pet_status = '1'
+    <if test="custId!='' and custId!=null">
+  			and cust_id = #{custId}
+  		</if>
+  </select>
+  
+  <select id="getPetRegistrationById" resultMap="BaseResultMap" parameterType="String" >
+    select * from t_pet  where pet_id=#{0};
+  </select>
+  
+  
+  <update id="deletePetRegistrationById" parameterType="PetRegistration"> 
+      update t_pet 
+      set
+      pet_status=0
+      where pet_id=#{0}
+  </update>
+  
+     <!--  通过搜索条件找到宠物信息 -->
+	<select id="listSearchPets" resultMap="BaseResultMap" parameterType="Search">
+		SELECT a.* FROM t_pet a
+		LEFT JOIN tc_person_cust b ON a.cust_id=b.cust_id
+		WHERE 1=1
+		<if test="staffName!='' and staffName!=null">
+  			and b.name like CONCAT('%',#{staffName},'%')
+  		</if>
+  		<if test="idNum!='' and idNum!=null">
+  			and b.card_num like CONCAT('%',#{idNum},'%')
+  		</if>
+  		<if test="phone!='' and phone!=null">
+  			and b.phone_num like CONCAT('%',#{phone},'%')
+  		</if>
+  		<if test="petName!='' and petName!=null">
+  			and a.pet_name = #{petName}
+  		</if>
+		group by a.pet_id
+	</select>
+	
+	<resultMap type="PetRegistration" id="ResultMapWithPetRegistration" extends="BaseResultMap">
+		<association property="personCustNew" column="custId" javaType="PersonCustNew" select="com.flf.mapper.PersonCustNewMapper.getPersonCustNewById" />
+    </resultMap>
+	
+	<!-- 通过条件分页查询宠物信息 -->
+	<select id="listPagePetsByContion" resultMap="ResultMapWithPetRegistration" parameterType="PetRegistration">
+		select a.* from t_pet a
+		inner join tc_person_cust b on a.cust_id=b.cust_id
+		where pet_status = '1'
+		<if test="petName!='' and petName!=null">
+  			and a.pet_name like CONCAT('%',#{petName},'%')
+  		</if>
+  		<if test="name!='' and name!=null">
+  			and b.name like CONCAT('%',#{name},'%')
+  		</if>
+  		<if test="phone!='' and phone!=null">
+  			and b.phone_num like CONCAT('%',#{phone},'%')
+  		</if>
+		group by a.pet_id
+	</select>
+  
+  <!-- 根据personBuildingId查询宠物信息 -->
+  <select id="selectPetRegistrationByPersonBuildingId" resultMap="BaseResultMap" parameterType="java.lang.String">
+  	select * from t_pet where person_building_id=#{0}
+  </select>
+  
+  <select id="selectPetRegistrationByPersonBuildingIdList" resultMap="BaseResultMap">
+  	select * from t_pet where person_building_id in 
+  	<foreach item="item" collection="list" open="(" separator="," close=")">
+       #{item}
+    </foreach>
+  </select>
+ </mapper>
+    

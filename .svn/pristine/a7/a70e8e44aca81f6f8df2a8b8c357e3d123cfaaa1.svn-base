@@ -1,0 +1,89 @@
+<!--
+    前端负责人：倪明
+    后台负责人：
+    页面名称：外部专业线的重大事项查看
+    JS路径：'controllers/externalProfession/majorMatter/majorMatterCheck'
+    创建日期：2015/5/29
+    修改人：钟加诚
+    修改时间：2015/6/4
+-->
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>重大事项查看</title>
+    <style>
+        .order td{  height: 30px;  }
+    </style>
+</head>
+<body>
+<div class="container-fluid">
+    <div class="row" style="padding: 20px">
+        <div class="order">
+            <table style="line-height: 30px">
+                <tr>
+                    <td style="white-space: nowrap;text-align: right">服务编号：</td><td width="160">1001</td>
+                    <td style="white-space: nowrap;text-align: right">服务类型：</td><td>前台</td>
+                </tr>
+                <tr>
+                    <td style="white-space: nowrap;text-align: right">请求类型：</td><td width="160">101101212413234</td>
+                    <td style="white-space: nowrap;text-align: right">分类：</td><td width="90">清洁</td>
+                    <td style="white-space: nowrap;text-align: right">专业：</td><td>清洁</td>
+                </tr>
+                <tr>
+                    <td style="white-space: nowrap;text-align: right">房屋ID：</td><td width="160">1011212413234</td>
+                    <td style="white-space: nowrap;text-align: right">客户名称：</td><td>谢XX</td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>项目名称：</td><td>桃源居</td>
+                    <td style="white-space: nowrap;text-align: right">区：</td><td>1区</td>
+                    <td style="text-align: right">栋/座：</td><td>3</td>
+                </tr>
+                <tr>
+                    <td style="text-align: right">单元：</td><td>3</td>
+                    <td style="text-align: right">层：</td><td>5</td>
+                    <td style="text-align: right">房屋：</td><td>502</td>
+                </tr>
+                <tr>
+                    <td style="white-space: nowrap;text-align: right">优先级：</td>
+                    <td>中级</td>
+                    <td style="white-space: nowrap;text-align: right">重要程度：</td>
+                    <td>1级</td>
+                </tr>
+            </table>
+            <table>
+                <tr>
+                    <td>事由描述：</td>
+                    <td>小区卫生</td>
+                </tr>
+            </table>
+            <table>
+                <tr>
+                    <td style="white-space: nowrap;text-align: right">工单ID：</td><td width="150">100101</td>
+                    <td style="white-space: nowrap;text-align: right;color:red">重大事项：</td><td width="90" style="color: red">是</td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td style="white-space: nowrap;text-align: right">请求类型：</td>
+                    <td>重大事项</td>
+                    <td style="white-space: nowrap;text-align: right">分类：</td>
+                    <td>火灾</td>
+                    <td style="white-space: nowrap;text-align: right">专业：</td>
+                    <td>火灾</td>
+                </tr>
+                <tr>
+                    <td style="white-space: nowrap;text-align: right">负责人工号：</td><td>00010</td>
+                    <td style="text-align: right">负责人：</td><td>邹工</td>
+                </tr>
+                <tr>
+                    <td style="white-space: nowrap;text-align: right">负责人工号：</td><td>00010</td>
+                    <td style="text-align: right">负责人：</td><td>李工</td>
+                </tr>
+            </table>
+            <button>关闭</button>
+        </div>
+    </div>
+</div>
+</body>
+</html>

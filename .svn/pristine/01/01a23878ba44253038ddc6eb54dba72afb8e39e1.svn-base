@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.flf.mapper.OwnerConstructionApplyMapper" >
+  <resultMap id="BaseResultMap" type="OwnerConstructionApply" >
+	<id column="apply_id" property="applyId" jdbcType="VARCHAR" />
+	<result column="cust_id" property="custId" jdbcType="VARCHAR" />
+	<result column="apply_time" property="applyTime" jdbcType="TIMESTAMP" />
+	<result column="apply_type" property="applyType" jdbcType="TINYINT" />
+	<result column="construction_type" property="constructionType" jdbcType="TINYINT" />
+	<result column="estimated_star_time" property="estimatedStarTime" jdbcType="TIMESTAMP" />
+	<result column="estimated_finish_time" property="estimatedFinishTime" jdbcType="TIMESTAMP" />
+	<result column="dismantles_wall_area" property="dismantlesWallArea" jdbcType="DOUBLE" />
+	<result column="actual_dismantles_wall_area" property="actualDismantlesWallArea" jdbcType="DOUBLE" />
+	<result column="angent_id" property="angentId" jdbcType="VARCHAR" />
+	<result column="close_time" property="closeTime" jdbcType="TIMESTAMP" />
+	<result column="close_person_id" property="closePersonId" jdbcType="VARCHAR" />
+	<result column="close_remarks" property="closeRemarks" jdbcType="VARCHAR" />
+   <result column="server_id" property="serviceId" jdbcType="VARCHAR" />
+  </resultMap>
+  
+  <resultMap type="OwnerConstructionApply" id="resultOwnerConstructionApplyMap" extends="BaseResultMap">
+  	<association property="serviceRequest" column="server_id" javaType="ServiceRequest" select="com.flf.mapper.ServiceRequestMapper.getServiceRequest"></association>
+  	<association property="constructionAssociatedRecord" column="apply_id" javaType="ConstructionAssociatedRecord" select="com.flf.mapper.ConstructionAssociatedRecordMapper.getConstructionAssociatedRecordbyApplyId"></association>
+  	<collection property="constructionAnnexList" column="apply_id" ofType="ConstructionAnnex" select="com.flf.mapper.ConstructionAnnexMapper.getConstructionAnnexbyApplyId"></collection>
+  	<collection property="constructionComponentRecordsList" column="apply_id" ofType="ConstructionComponentRecords" select="com.flf.mapper.ConstructionComponentRecordsMapper.getConstructionComponentRecordsbyApplyId"></collection>
+  	<collection property="constructionDiscloseInformationList" column="apply_id" ofType="ConstructionDiscloseInformation" select="com.flf.mapper.ConstructionDiscloseInformationMapper.getConstructionDiscloseInformationbyApplyId"></collection>
+  	<collection property="constructionPersonnelAssociatedList" column="apply_id" ofType="ConstructionPersonnelAssociated" select="com.flf.mapper.ConstructionPersonnelAssociatedMapper.getConstructionPersonnelAssociatedbyApplyId"></collection>
+  </resultMap>
+  
+ <delete id="deleteOwnerConstructionApply" parameterType="String">
+  delete from ts_owner_construction_apply where record_id=#{0}
+  </delete>
+  
+  <select id="listAllOwnerConstructionApply"  resultMap="resultOwnerConstructionApplyMap" >
+ 	 select * from ts_owner_construction_apply 
+  </select>
+  
+  <select id="getOwnerConstructionApplybyId" parameterType="String" resultMap="resultOwnerConstructionApplyMap">
+  	select * from ts_owner_construction_apply where cust_id=#{0}
+  </select>
+   <select id="getOwnerConstructionApplyByServiceId" parameterType="String" resultMap="resultOwnerConstructionApplyMap">
+  	select * from ts_owner_construction_apply where server_id=#{0}
+  </select>
+  <insert id="insertOwnerConstructionApply" parameterType="OwnerConstructionApply" >      
+      insert into ts_owner_construction_apply (apply_id,cust_id,apply_time,apply_type,construction_type,estimated_star_time,estimated_finish_time,dismantles_wall_area,actual_dismantles_wall_area,
+      angent_id,close_time,close_person_id,close_remarks,server_id)
+    values (UUID(),#{custId,jdbcType=VARCHAR}, #{applyTime,jdbcType=TIMESTAMP}, #{applyType,jdbcType=TINYINT}
+    ,#{constructionType,jdbcType=TINYINT}, #{estimatedStarTime,jdbcType=TIMESTAMP}, #{estimatedFinishTime,jdbcType=TIMESTAMP},#{angentId,jdbcType=VARCHAR},#{dismantlesWallArea,jdbcType=DOUBLE},#{actualDismantlesWallArea,jdbcType=DOUBLE} , #{closeTime,jdbcType=TIMESTAMP}
+    ,#{closePersonId,jdbcType=VARCHAR},#{closeRemarks,jdbcType=VARCHAR},#{serviceId,jdbcType=VARCHAR})
+  </insert>
+  
+  <insert id="insertOwnerConstructionApplyUUID" parameterType="OwnerConstructionApply" >      
+      insert into ts_owner_construction_apply (apply_id,cust_id,apply_time,apply_type,construction_type,estimated_star_time,estimated_finish_time,
+      dismantles_wall_area,actual_dismantles_wall_area,angent_id,close_time,close_person_id,close_remarks,server_id)
+    values (#{applyId,jdbcType=VARCHAR}, #{custId,jdbcType=VARCHAR}, #{applyTime,jdbcType=TIMESTAMP}, #{applyType,jdbcType=TINYINT}
+    ,#{constructionType,jdbcType=TINYINT}, #{estimatedStarTime,jdbcType=TIMESTAMP}, #{estimatedFinishTime,jdbcType=TIMESTAMP},#{dismantlesWallArea,jdbcType=DOUBLE},#{actualDismantlesWallArea,jdbcType=DOUBLE},#{angentId,jdbcType=VARCHAR} , #{closeTime,jdbcType=TIMESTAMP}
+    ,#{closePersonId,jdbcType=VARCHAR},#{closeRemarks,jdbcType=VARCHAR},#{serviceId,jdbcType=VARCHAR})
+  </insert>
+ 
+  <update id="updateOwnerConstructionApply" parameterType="OwnerConstructionApply" >
+    update ts_owner_construction_apply
+    set cust_id = #{applyId,jdbcType=VARCHAR},
+      apply_time = #{componentId,jdbcType=TIMESTAMP},
+      apply_type = #{componentId,jdbcType=TINYINT},
+      construction_type = #{componentId,jdbcType=TINYINT},
+      estimated_star_time = #{componentId,jdbcType=TIMESTAMP},
+      estimated_finish_time = #{componentId,jdbcType=TIMESTAMP},
+      dismantles_wall_area = #{componentId,jdbcType=DOUBLE},
+      actual_dismantles_wall_area = #{componentId,jdbcType=DOUBLE},
+      angent_id = #{componentId,jdbcType=VARCHAR},
+      close_time = #{componentId,jdbcType=TIMESTAMP},
+      close_person_id = #{componentId,jdbcType=VARCHAR},
+      close_remarks = #{componentId,jdbcType=VARCHAR},
+      server_id=#{serviceId,jdbcType=VARCHAR}
+    where apply_id = #{applyId,jdbcType=VARCHAR}
+  </update>
+</mapper>

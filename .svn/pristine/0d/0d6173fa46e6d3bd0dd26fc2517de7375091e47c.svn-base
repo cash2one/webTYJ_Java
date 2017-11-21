@@ -1,0 +1,667 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>产品信息</title>
+    <style type="text/css">
+        ul,li,{margin:0;padding:0;}
+        ul{list-style:none;}
+        #root{margin:10px;width:200px;overflow:hidden;}
+        #root li{line-height:25px;}
+        #root li a{color:#666666;padding-left:5px;outline:none;blr:expression(this.onFocus=this.blur());}
+        #root .two{padding-left:20px;display:none;}
+    </style>
+    <link rel="stylesheet" href="css/internalProfession/productInformation.css">
+    <script src="js/lib/kindeditor-min.js" type="text/javascript"></script>
+    <script src="js/lib/zh_CN.js" type="text/javascript"></script>
+    <script>
+
+        KindEditor.ready(function(K) {
+            K.create('textarea[name="content"]', {
+                autoHeightMode : true,
+                afterCreate : function() {
+                    this.loadPlugin('autoheight');
+                }
+            });
+        });
+
+        //  When the HTML elements load, call init()
+        document.addEventListener("DOMContentLoaded", init, false);
+
+        //  Rotate the video by 30degrees when image is clicked
+        function init() {
+            var video = document.getElementById("theVideo");
+            if (video) {
+                var rotateVal = 0;       //  Global variable to hold current rotation value
+                document.getElementById("rotateVideo").addEventListener("click", function () {
+                    rotateVal = (rotateVal += 30) % 360;  // Calculate the next value, but keep between 0 and 360
+                    var temp = "rotate(" + rotateVal + "deg)"; // Create a style string
+                    document.getElementById("theVideo").style.msTransform = temp;  // Set the style
+                }, false);
+            }
+        }
+    </script>
+</head>
+<body ng-controller="productInCtrl">
+<div class="container-fluid">
+    <div class="row">
+        <div class="order">
+            <div class="program_search">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="col-md-10"><h4><span class="glyphicon glyphicon-indent-right" aria-hidden="true">填写宝贝基本信息</span></h4></div>
+                        <div class="col-md-2"><h4><span style="color: red;">*</span>表示必填项</h4></div>
+                    </div>
+
+                </div>
+
+                <!--左边【产品信息】-->
+                <div class="col-md-3" style="border: 1px solid lightgrey;">
+                    <h5>产品信息</h5>
+                    <p>类目：本地化生活服务>>保姆/看护>>普通保姆&nbsp;&nbsp;&nbsp;<button type="button" class="btn btn-default btn-xs">编辑类目</button></p>
+                </div>
+                <!--左边【产品信息】end-->
+
+                <!--右边【产品基本信息】-->
+                <div class="col-md-9" style="border: 1px solid lightgrey;">
+                    <!--【1.宝贝基本信息】-->
+                    <div class="row">
+                        <div class="table_list">
+                            <h4 style="text-align: left"><strong>1.宝贝基本信息</strong></h4>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    宝贝类型：<span style="color: red;font-size: 18px;">*</span><input type="radio" style="margin: 5px">全新<br>
+                                    页面模版：<select style="margin: 10px"><option>默认宝贝详情页</option></select>
+                                </div>
+
+                                <div class="col-md-12">
+                                    宝贝属性：<span style="color:lightslategray">填错宝贝属性，可能会引起宝贝下架，影响您的正常销售。请认真准确填写</span>
+                                </div>
+                                <div class="col-md-10">
+                                    <table style="">
+                                        <tr>
+                                            <td style="text-align: right">
+                                                服务项目：
+                                            </td>
+                                            <td>
+                                                <input type="checkbox">家庭清洁<input type="checkbox">烧饭做菜<input type="checkbox">带孩子<input type="checkbox">管家
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td style="text-align: right">
+                                                是否住家：
+                                            </td>
+                                            <td><select style="width: 100px"><option>是</option><option>否</option></select></td>
+                                        </tr>
+                                        <tr>
+                                            <td style="text-align: right">
+                                                性别：
+                                            </td>
+                                            <td><select style="width: 100px"><option>男</option><option>女</option></select></td>
+                                        </tr>
+                                        <tr>
+                                            <td style="text-align: right">
+                                                年龄：
+                                            </td>
+                                            <td><select style="width: 100px"><option>20</option></select></td>
+                                        </tr>
+                                        <tr>
+                                            <td style="text-align: right">
+                                                特色：
+                                            </td>
+                                            <td><input type="checkbox">有学历证书<input type="checkbox">有资质证书<input type="checkbox">有驾照<input type="checkbox">会英语</td>
+                                        </tr>
+                                        <tr>
+                                            <td style="text-align: right">
+                                                休息时间：
+                                            </td>
+                                            <td><select style="width: 100px"><option>18:00</option></select></td>
+                                        </tr>
+                                        <tr>
+                                            <td style="text-align: right">
+                                                生肖：
+                                            </td>
+                                            <td><select style="width: 100px"><option>狗</option></select></td>
+                                        </tr>
+                                    </table>
+                                </div>
+                                <div class="col-md-12">
+                                    宝贝标题：<span style="color: red;font-size: 18px;">*</span><input type="text" style="height: 20px;margin: 10px">还能输入30字
+                                </div>
+                                <div class="col-md-12">
+                                    一口价：<span style="color: red;font-size: 18px;">*</span><input type="text" style="height: 20px;margin: 10px">元&nbsp;&nbsp;&nbsp;本类目下，价格必须在1元-99999元之间
+                                </div>
+                                <div class="col-md-12">
+                                    宝贝规格：<button>添加销售属性</button>销售属性总数最多4组<span style="margin-left: 100px">提示：销售属性的组合不要超过600组</span>
+                                </div>
+                                <div class="col-md-12">
+                                    宝贝数量：<span style="color: red;font-size: 18px;">*</span><input type="text" style="height: 20px;margin: 10px" value="1">件
+                                </div>
+                                <div class="col-md-12">
+                                    采购地：<input type="radio" style="margin: 5px">国内<input type="radio" style="margin: 5px">海外及港台<br>
+                                </div>
+                                <div class="col-md-12">
+                                    商家编码：<input type="text" style="height: 20px;margin: 10px">
+                                </div>
+                                <div class="col-md-2">
+                                    宝贝图片：
+                                </div>
+                                <div class="col-md-10">
+
+                                    <div role="tabpanel" style="width: 540px;background-color: white">
+
+                                        <!-- Nav tabs -->
+                                        <ul class="nav nav-tabs" role="tablist">
+                                            <li role="presentation" class="active"><a href="#home" aria-controls="home" role="tab" data-toggle="tab">本地上传</a></li>
+                                            <li role="presentation"><a href="#picture" aria-controls="picture" role="tab" data-toggle="tab">图片空间</a></li>
+                                            <li role="presentation"><a href="#video" aria-controls="video" role="tab" data-toggle="tab">视频中心</a></li>
+                                            <li><a>图片空间超大容量全免费！</a></li>
+                                        </ul>
+
+                                        <!-- Tab panes -->
+                                        <div class="tab-content">
+                                            <div role="tabpanel" class="tab-pane active" id="home">
+                                                <div style="margin:10px 150px"><input type="file">
+                                                    提示：<p>1.本地上传图片大小不能超过<code>500K</code></p>
+                                                    <p>2.本类目下您最多可以上传<code>5</code>张图片</p>
+                                                </div>
+                                                <div><code>700*700</code>以上的图片可以在宝贝详情页主图提供图片放大功能</div>
+                                                <div class="row">
+                                                    <div class="col-md-2"><p class="bbtp">主图视频</p></div>
+                                                    <div class="col-md-2"><p class="bbtp">*主图</p></div>
+                                                    <div class="col-md-2"><p class="bbtp"></p></div>
+                                                    <div class="col-md-2"><p class="bbtp"></p></div>
+                                                    <div class="col-md-2"><p class="bbtp"></p></div>
+                                                </div>
+                                            </div>
+                                            <div role="tabpanel" class="tab-pane" id="picture">
+                                                <div style="margin:10px 150px"><input type="file">
+                                                    提示：<p>1.本地上传图片大小不能超过<code>500K</code></p>
+                                                    <p>2.本类目下您最多可以上传<code>5</code>张图片</p>
+                                                </div>
+                                                <div><code>700*700</code>以上的图片可以在宝贝详情页主图提供图片放大功能</div>
+                                                <div class="row">
+                                                    <div class="col-md-2"><p class="bbtp">主图</p></div>
+                                                    <div class="col-md-2"><p class="bbtp">*主图</p></div>
+                                                    <div class="col-md-2"><p class="bbtp"></p></div>
+                                                    <div class="col-md-2"><p class="bbtp"></p></div>
+                                                    <div class="col-md-2"><p class="bbtp"></p></div>
+                                                </div>
+                                            </div>
+                                            <div role="tabpanel" class="tab-pane" id="video">
+                                                <div style="margin:10px 150px"><input type="file">
+                                                    提示：<p>1.本地上传视频大小不能超过<code>500M</code></p>
+                                                    <p>2.本类目下您最多可以上传<code>5</code>个视频</p>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-md-2"><p class="bbtp">主视频</p></div>
+                                                    <div class="col-md-2"><p class="bbtp">主视频</p></div>
+                                                    <div class="col-md-2"><p class="bbtp"></p></div>
+                                                    <div class="col-md-2"><p class="bbtp"></p></div>
+                                                    <div class="col-md-2"><p class="bbtp"></p></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-2">
+                                    宝贝视频：
+                                </div>
+                                <div class="col-md-10" style="margin-top: 5px">
+                                    <div style="width: 540px;background-color: white">
+                                        <div style="text-align: center;">
+                                            <video style="width: 400px" src="http://ie.microsoft.com/testdrive/ieblog/2011/nov/pp4_blog_demo.mp4" id="theVideo" controls >
+                                                This browser or mode doesn't support HTML5 video.
+                                            </video>
+                                        </div>
+                                        <div style="margin-left: 200px"><input type="file"></div>
+                                    </div>
+                                </div>
+                                <div class="col-md-2">
+                                    宝贝描述：
+                                </div>
+                                <div class="col-md-10" style="margin-top: 5px;">
+                                    <div role="tabpanel" style="width: 540px;background-color: white">
+                                        <ul class="nav nav-tabs" role="tablist">
+                                            <li role="presentation" class="active"><a href="#computer" aria-controls="computer" role="tab" data-toggle="tab">电脑端</a></li>
+                                            <li role="presentation"><a href="#phone" aria-controls="phone" role="tab" data-toggle="tab">手机端</a></li>
+                                            <li class="pull-right"><a>一键诊断优化产品，打造爆款流量飙升！</a></li>
+                                        </ul>
+                                        <div class="tab-content">
+                                            <div role="tabpanel" class="tab-pane active" id="computer">
+                                                <div>
+                                                    <form>
+                                                        <textarea name="content" style="width:540px;height:200px;"></textarea>
+                                                    </form>
+                                                </div>
+                                                <div style="height: 45px;background-color: #c0c0c0">
+                                                    <form class="form-inline">
+                                                        <div class="form-group col-md-2" style="margin-top: 10px">
+                                                            <button class="btn btn-info btn-sm">生成手机版宝贝详情</button>
+                                                        </div>
+                                                        <div class="form-group pull-right" style="margin-top: 10px">
+                                                            <button class="btn btn-default btn-sm">生成手机版宝贝详情</button>
+                                                        </div>
+                                                        <div class="form-group pull-right col-md-4" style="margin-top: 10px">
+                                                            <span>没五分钟保存一次</span>
+                                                            <button class="btn btn-info btn-sm">保存</button>
+                                                        </div>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                            <div role="tabpanel" class="tab-pane" id="phone">
+                                                2
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!--【1.end】-->
+
+                <!--【2.】-->
+                <div class="row">
+                    <div class="col-md-12">
+                        <h4><strong>2.宝贝服务信息</strong></h4>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="col-md-2">
+                            <span>服务人：*</span>
+                        </div>
+                        <div class="col-md-10">
+                            <div class="row">
+                                <input style="width: 150px" class="form-control input-sm">
+                            </div>
+                            <div class="row" style="height: 40px">(考虑到您的隐私，服务人只留下姓即可，如：欧阳)</div>
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="col-md-2">
+                            <span>联系电话：*</span>
+                        </div>
+                        <div class="col-md-10">
+                            <div class="row" style="height: 40px">
+                                <button class="btn btn-sm btn-default" style="width: 150px;">
+                                    <img src="images/internalManage/product/shouji.png" style="width: 14px;height: 14px">添加手机号码
+                                </button>
+                            </div>
+
+                            <div class="row" style="height: 40px">
+                                <button class="btn btn-sm btn-default" style="width: 150px;">
+                                    <img src="images/internalManage/product/guhua.png" style="width: 14px;height: 14px;">添加固号/400号码
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-12">
+                        <div class="col-md-2" style="margin-top: 20px">
+                            <span>卖家商品：*</span>
+                        </div>
+                        <div class="col-md-10">
+                            <div class="row">
+                                <ul id="root">
+                                    <li>
+                                        <label><a href="">
+                                            <span class="glyphicon glyphicon-play" aria-hidden="true" style="margin-right:2px;"></span>
+                                            1栋</a></label>
+                                        <ul class="two">
+                                            <li>
+                                                <label><a href="">
+                                                    <span class="glyphicon glyphicon-play" aria-hidden="true" style="margin-right:2px;"></span>
+                                                    住宅</a></label>
+                                                <ul class="two">
+                                                    <li>
+                                                        <label><a href="">
+                                                            <span class="glyphicon glyphicon-play" aria-hidden="true" style="margin-right:2px;"></span>
+                                                            1单元</a></label>
+                                                        <ul class="two">
+                                                            <li>
+                                                                <label><a href="">
+                                                                    <span class="glyphicon glyphicon-play" aria-hidden="true" style="margin-right:2px;"></span>
+                                                                    1层</a></label>
+                                                                <ul class="two">
+                                                                    <li>
+                                                                        <label><a href="">
+                                                                            <span class="glyphicon glyphicon-play" aria-hidden="true" style="margin-right:2px;"></span>
+                                                                            101</a></label>
+                                                                        <ul class="two">
+                                                                            <li>
+                                                                                <label><a href=""><span class="glyphicon glyphicon-play" aria-hidden="true" style="margin-right:2px;"></span>
+                                                                                    房型A</a></label>
+                                                                                <ul class="two">
+                                                                                    <li><label><a href="#livingAssert" data-toggle="tab">客厅</a></label></li>
+                                                                                    <li><label><a href="#livingAssert" data-toggle="tab">卧室</a></label></li>
+                                                                                    <li><label><a href="#livingAssert" data-toggle="tab">次卧</a></label></li>
+                                                                                </ul>
+                                                                            </li>
+                                                                        </ul>
+                                                                    </li>
+                                                                </ul>
+                                                            </li>
+                                                            <li>
+                                                                <label><a href="">2层</a></label>
+                                                                <ul class="two">
+                                                                    <li>
+                                                                        <label><a href="">房号</a></label>
+                                                                        <ul class="two">
+                                                                            <li><label><a href="#" >201</a></label></li>
+                                                                            <li><label><a href="#">202</a></label></li>
+                                                                        </ul>
+                                                                    </li>
+                                                                </ul>
+                                                            </li>
+                                                        </ul>
+                                                    </li>
+                                                </ul>
+                                            </li>
+                                            <li>
+                                                <label><a href="">B座</a></label>
+                                                <ul class="two">
+                                                    <li>
+                                                        <label><a href="">单元</a></label>
+                                                        <ul class="two">
+                                                            <li>
+                                                                <label><a href="">1层</a></label>
+                                                                <ul class="two">
+                                                                    <li>
+                                                                        <label><a href="">房号</a></label>
+                                                                        <ul class="two">
+                                                                            <li><label><a href="#">101</a></label></li>
+                                                                            <li><label><a href="#">102</a></label></li>
+                                                                        </ul>
+                                                                    </li>
+                                                                </ul>
+                                                            </li>
+                                                            <li>
+                                                                <label><a href="">2层</a></label>
+                                                                <ul class="two">
+                                                                    <li>
+                                                                        <label><a href="">房号</a></label>
+                                                                        <ul class="two">
+                                                                            <li><label><a href="#">201</a></label></li>
+                                                                            <li><label><a href="#">202</a></label></li>
+                                                                        </ul>
+                                                                    </li>
+                                                                </ul>
+                                                            </li>
+                                                        </ul>
+                                                    </li>
+                                                </ul>
+                                            </li>
+                                        </ul>
+                                    </li>
+
+                                    <li>
+                                        <label><a href="#">2栋</a></label>
+                                        <ul class="two">
+                                            <li>
+                                                <label><a href="#">A座</a></label>
+                                                <ul class="two">
+                                                    <li>
+                                                        <label><a href="#">单元</a></label>
+                                                        <ul class="two">
+                                                            <li>
+                                                                <label><a href="#">1层</a></label>
+                                                                <ul class="two">
+                                                                    <li>
+                                                                        <label><a href="#">房号</a></label>
+                                                                        <ul class="two">
+                                                                            <li><label><a href="#">101</a></label></li>
+                                                                            <li><label><a href="#">102</a></label></li>
+                                                                        </ul>
+                                                                    </li>
+                                                                </ul>
+                                                            </li>
+                                                            <li>
+                                                                <label><a href="#">2层</a></label>
+                                                                <ul class="two">
+                                                                    <li>
+                                                                        <label><a href="#">房号</a></label>
+                                                                        <ul class="two">
+                                                                            <li><label><a href=#">201</a></label></li>
+                                                                            <li><label><a href="#">202</a></label></li>
+                                                                        </ul>
+                                                                    </li>
+                                                                </ul>
+                                                            </li>
+                                                        </ul>
+                                                    </li>
+                                                </ul>
+                                            </li>
+                                            <li>
+                                                <label><a href="#">B座</a></label>
+                                                <ul class="two">
+                                                    <li>
+                                                        <label><a href="#">单元</a></label>
+                                                        <ul class="two">
+                                                            <li>
+                                                                <label><a href="#">1层</a></label>
+                                                                <ul class="two">
+                                                                    <li>
+                                                                        <label><a href="#">房号</a></label>
+                                                                        <ul class="two">
+                                                                            <li><label><a href="#">101</a></label></li>
+                                                                            <li><label><a href="#">102</a></label></li>
+                                                                        </ul>
+                                                                    </li>
+                                                                </ul>
+                                                            </li>
+                                                            <li>
+                                                                <label><a href="#">2层</a></label>
+                                                                <ul class="two">
+                                                                    <li>
+                                                                        <label><a href="#">房号</a></label>
+                                                                        <ul class="two">
+                                                                            <li><label><a href="#">201</a></label></li>
+                                                                            <li><label><a href="#">202</a></label></li>
+                                                                        </ul>
+                                                                    </li>
+                                                                </ul>
+                                                            </li>
+                                                        </ul>
+                                                    </li>
+                                                </ul>
+                                            </li>
+
+                                        </ul>
+                                    </li>
+
+
+                                    <li>
+                                        <label><a href="#">3栋</a></label>
+                                        <ul class="two">
+                                            <li>
+                                                <label><a href="#">A座</a></label>
+                                                <ul class="two">
+                                                    <li>
+                                                        <label><a href="#">单元</a></label>
+                                                        <ul class="two">
+                                                            <li>
+                                                                <label><a href="#">1层</a></label>
+                                                                <ul class="two">
+                                                                    <li>
+                                                                        <label><a href="#">房号</a></label>
+                                                                        <ul class="two">
+                                                                            <li><label><a href="#">101</a></label></li>
+                                                                            <li><label><a href="#">102</a></label></li>
+                                                                        </ul>
+                                                                    </li>
+                                                                </ul>
+                                                            </li>
+                                                            <li>
+                                                                <label><a href="#">2层</a></label>
+                                                                <ul class="two">
+                                                                    <li>
+                                                                        <label><a href="#">房号</a></label>
+                                                                        <ul class="two">
+                                                                            <li><label><a href="#">201</a></label></li>
+                                                                            <li><label><a href="#">202</a></label></li>
+                                                                        </ul>
+                                                                    </li>
+                                                                </ul>
+                                                            </li>
+                                                        </ul>
+                                                    </li>
+                                                </ul>
+                                            </li>
+                                            <li>
+                                                <label><a href="#">B座</a></label>
+                                                <ul class="two">
+                                                    <li>
+                                                        <label><a href="#">单元</a></label>
+                                                        <ul class="two">
+                                                            <li>
+                                                                <label><a href="#">1层</a></label>
+                                                                <ul class="two">
+                                                                    <li>
+                                                                        <label><a href="#">房号</a></label>
+                                                                        <ul class="two">
+                                                                            <li><label><a href="#">101</a></label></li>
+                                                                            <li><label><a href="#">102</a></label></li>
+                                                                        </ul>
+                                                                    </li>
+                                                                </ul>
+                                                            </li>
+                                                            <li>
+                                                                <label><a href="#">2层</a></label>
+                                                                <ul class="two">
+                                                                    <li>
+                                                                        <label><a href="#">房号</a></label>
+                                                                        <ul class="two">
+                                                                            <li><label><a href="#">201</a></label></li>
+                                                                            <li><label><a href="#">202</a></label></li>
+                                                                        </ul>
+                                                                    </li>
+                                                                </ul>
+                                                            </li>
+                                                        </ul>
+                                                    </li>
+                                                </ul>
+                                            </li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                        <div class="col-md-12">
+                            <div class="col-md-2">
+                                项目名称：*
+                            </div>
+                            <div class="col-md-9">
+                                <div class="col-md-4">
+                                    <label>
+                                        <input type="checkbox" name="optionsRadios">
+                                        深圳桃源居
+                                    </label>
+                                </div>
+                                <div class="col-md-4">
+                                    <label>
+                                        <input type="checkbox" name="optionsRadios">
+                                        重庆桃源居
+                                    </label>
+                                </div>
+                                <div class="col-md-4">
+                                    <label>
+                                        <input type="checkbox" name="optionsRadios">
+                                        深圳桃源大厦
+                                    </label>
+                                </div>
+                                <div class="col-md-4">
+                                    <label>
+                                        <input type="checkbox" name="optionsRadios">
+                                        上海桃源大厦
+                                    </label>
+                                </div>
+                                <div class="col-md-4">
+                                    <label>
+                                        <input type="checkbox" name="optionsRadios">
+                                        上海桃源居
+                                    </label>
+                                </div>
+                                <div class="col-md-4">
+                                    <label>
+                                        <input type="checkbox" name="optionsRadios">
+                                        武汉桃源居
+                                    </label>
+                                </div>
+                            </div>
+
+                        </div>
+
+
+                        <div class="col-md-12" style="margin-top: 5px">
+                            <h4><strong>3. 宝贝物流及安装服务</strong></h4>
+                        </div>
+                        <div class="col-md-12">
+                            <form class="form-inline" style="margin-left: 20px">
+                                <div class="form-group">
+                                    * 提取方式:&nbsp;&nbsp;
+                                    <input type="checkbox" >运费设置
+                                    <select>
+                                        <option>请选择运费模版</option>
+                                    </select>
+                                    <button class="btn btn-default">新建运费模版</button>
+                                    <img src="images/internalManage/product/xiaoxiaotubiao.png" style="width: 20px;height: 16px">
+                                    <br>
+                                    <p></p>
+                                    <span style="margin-left: 80px;border: solid red ">运费模板已进行升级，您的“宝贝所在地”、“卖家承担运费”等设置需要在运费模板中进行操作，<a href="#">查看详情</a></span>
+                                    <br>
+                                    <p></p>
+                                    <input type="checkbox" style="margin-left: 80px;margin-top: 5px">电子交易凭证 <a href="#">电子凭证管理后台</a> <a href="#">了解详情</a>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                    <!--【2.end】-->
+
+
+                    <!--【4.】-->
+                    <div class="row">
+                        <div class="col-md-12"><h4><strong>4.售后保障信息</strong></h4></div>
+                        <div style="margin-left:20px;">
+                            <div class="col-md-2">发票：</div>
+                            <div class="col-md-10"><input type="radio">无<input type="radio">有</div>
+                            <div class="col-md-2">保修：</div><div class="col-md-10"><input type="radio">无<input type="radio">有</div>
+                            <div class="col-md-2">退换货承诺：</div><div class="col-md-9"><input type="checkbox"> 凡使用支付宝服务付款购买本店商品，若存在质量问题或与描述不符，本店将主动提供退换货服务并承担来回邮费!</div>
+                            <div class="col-md-2">服务保障：</div><div class="col-md-9"><input type="checkbox">该商品品类不支持“七天退货”服务；承诺更好服务可通过<a href="#">交易合约</a>设置</div>
+                        </div>
+
+                        <div class="col-md-12"><h4><strong>5.其他信息</strong></h4></div>
+
+                        <div style="margin-left:20px;">
+                            <div class="col-md-2">库存：</div><div class="col-md-10"><input type="radio">拍下减库存</div>
+                            <div class="col-md-10 col-md-offset-2"><input type="radio">付款减库存</div>
+                            <div class="col-md-2">有效期：</div><div class="col-md-2"><input type="radio">7天</div><div class="col-md-7">即日起全网一口价宝贝的有效期统一为7天</div>
+                            <div class="col-md-2">开始时间：</div><div class="col-md-2"><input type="radio">立刻</div>
+                            <div class="col-md-10 col-md-offset-2"><input type="radio">设定 <input type="datetime-local" class="form-control input-sm" style="width: 200px"></div>
+                            <div class="col-md-10 col-md-offset-2"><input type="radio">放入仓库</div>
+                            <div class="col-md-2">秒杀商品：</div><div class="col-md-9"><input type="checkbox">电脑用户<input type="checkbox">手机用户</div>
+                            <div class="col-md-2">橱窗推荐：</div><div class="col-md-2"><input type="checkbox">是 </div> <div class=" col-md-7">  橱窗是提供给卖家的免费广告位，<a href="#">了解如何获得更多橱窗位</a></div>
+                        </div>
+                    </div>
+                    <!--【4.end】-->
+
+                    <div style="margin-top: 30px;height: 50px">
+                        <form class="form-inline">
+                            <div class="form-group col-md-1 col-md-offset-4">
+                                <button class="btn btn-sm btn-info btn-default" style="width: 100px">发布</button>
+                            </div>
+                            <div class="form-group col-md-1 col-md-offset-1">
+                                <button class="btn btn-sm btn-info btn-default" style="width: 100px">取消</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <!--右边【产品基本信息】end-->
+                <div class="clear"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

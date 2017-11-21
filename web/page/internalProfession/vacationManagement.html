@@ -1,0 +1,140 @@
+<!--
+    pageName:【假期管理】内部专业线
+    Author:LiuYang
+    jsPath:js/controllers/internalProfession/vacationManagement.js
+-->
+<!DOCTYPE html>
+<html>
+<head lang="en">
+<meta charset="UTF-8">
+<title>假期管理(内部专业线)</title>
+</head>
+<body>
+	<div class="row" style="height: 532px">
+		<div class="table_list">
+			<h4 style="text-align: center">
+				<strong>假期管理</strong>
+			</h4>
+			<!--搜索条件-->
+			<div class="search_style">
+				<form name="getvacation">
+					<input type="text" class="search_style_input"
+						ng-model="Vacation.vacationName" placeholder="请输入搜索条件" />
+					<button type="submit" class="search_style_button"
+						ng-click="searchPaginator._load()">查找</button>
+				</form>
+			</div>
+			<!--搜索条件 end-->
+
+			<!--添加 删除 按钮-->
+			<div class="button_group">
+				<a data-toggle="modal" data-target="#addVation" class="btn"
+					ng-click="view(0)">增加</a> <a href="" class="delete"
+					ng-model="vacationInfo.allChecked" ng-click="deletevacations()">删除</a>
+			</div>
+			<!--添加 删除 按钮 end-->
+
+			<table width="100%" border="0" cellpadding="0" cellspacing="0"
+				class="table_style text-center">
+				<tr>
+					<td><input type="checkbox" ng-model="items.allChecked"
+						ng-change="checkAll(items.allChecked)" />全选</td>
+					<td>名称</td>
+					<td>起始时间</td>
+					<td>结束时间</td>
+					<td>天数</td>
+					<td width="200px">操作</td>
+				</tr>
+
+				<tr ng-repeat="item in searchPaginator.object.vacations"
+					ng-show="item.id != null && item.state">
+					<td><input type="checkbox" ng-model="items.checkbox" />
+					</td>
+					<td>{{item.vacationName}}</td>
+					<td>{{item.vacationStartDate|date:'yyyy-MM-dd'}}</td>
+					<td>{{item.vacationEndDate|date:'yyyy-MM-dd'}}</td>
+					<td>{{item.dayCount}}</td>
+					<td><a class="btn  btn-sm" role="button" data-toggle="modal"
+						data-target="#addVation" ng-click="view(item.id)"> <span
+							class="glyphicon glyphicon-pencil"></span>修改</a>
+					</td>
+				</tr>
+			</table>
+			<!--分页-->
+			<div class="pagination">
+				<a href="#" ng-show="searchPaginator.hasPrevious()"
+					ng-click="searchPaginator.previous()">上一页</a>
+				<h1>{{searchPaginator.pages}}</h1>
+				<a href="#" ng-repeat="i in searchPaginator.pages"
+					ng-click="searchPaginator.go(i)" class="number">{{i}}</a> <a
+					href="#" ng-show="searchPaginator.hasNext()"
+					ng-click="searchPaginator.next()">下一页</a>
+			</div>
+			<!--分页 end-->
+		</div>
+	</div>
+
+	<!--添加-->
+	<div class="modal fade" id="addVation" tabindex="-1" role="dialog"
+		aria-labelledby="myModalLabel" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal"
+						aria-hidden="true">&times;</button>
+					<h4 class="modal-title">新增假期</h4>
+				</div>
+
+				<div class="modal-body" style="line-height:40px;">
+					<div>
+						<form>
+							<table class="text-center" style="margin: 0px auto;">
+
+								<tr>
+									<td width="100px;">名称</td>
+									<td><input type="text" class="form-control input-sm"
+										ng-model="vacations.vacationName" />
+									</td>
+								</tr>
+								<tr>
+									<td width="100px;">起始时间</td>
+									<td><input type="Date" class="form-control input-sm"
+										ng-model="vacations.vacationStartDate" />
+									</td>
+
+								</tr>
+								<tr>
+									<td width="100px;">结束时间</td>
+									<td><input type="Date" class="form-control input-sm"
+										ng-model="vacations.vacationEndDate" />
+									</td>
+								</tr>
+
+								<tr>
+									<td width="100px;">天数</td>
+									<td><input type="text" class="form-control input-sm"
+										ng-model="vacations.dayCount" />
+									</td>
+								</tr>
+							</table>
+							<div class="modal-footer">
+								<button type="button" class="btn btn-sm btn-default"
+									ng-click="addOrUpdateVacation()" data-dismiss="modal">
+									<span class="glyphicon glyphicon-ok"></span>提交
+								</button>
+								<button type="button" class="btn btn-default btn-sm"
+									aria-label="Left Align" data-dismiss="modal">
+									<span class="glyphicon glyphicon-remove" aria-hidden="true">关闭</span>
+								</button>
+
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!--添加 end-->
+</body>
+</html>
+

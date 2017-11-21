@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.flf.mapper.CassetRepositoryMapper" >
+  <resultMap id="BaseResultMap" type="CassetRepository" >
+    <id column="asset_repository_id" property="assetRepositoryId" jdbcType="VARCHAR" />
+    <result column="property_id" property="propertyId" jdbcType="VARCHAR" />
+    <result column="property_number" property="propertyNumber" jdbcType="VARCHAR" />
+    <result column="property_name" property="propertyName" jdbcType="VARCHAR" />
+    <result column="property_specification" property="propertySpecification" jdbcType="VARCHAR" />
+    <result column="property_type_id" property="propertyTypeId"  />
+    <result column="expiration_date" property="expirationDate" jdbcType="DOUBLE" />
+    <result column="brand" property="brand"  />
+    <result column="producing_area" property="producingArea"/>
+    <result column="manufacturer" property="manufacturer"  />
+    <result column="manufacturer_phone" property="manufacturerPhone"/>
+    <result column="property_count" property="propertyCount" jdbcType="DOUBLE" />
+    <result column="property_area" property="propertyArea" jdbcType="VARCHAR" />
+    <result column="building_structure_id" property="buildingStructureId" jdbcType="VARCHAR" />
+    <result column="building_component_id" property="buildingComponentId" jdbcType="VARCHAR" />
+    <result column="functional_id" property="functionalId" jdbcType="VARCHAR" />
+    <result column="functional_name" property="functionalName" jdbcType="VARCHAR" />
+    <result column="building_id" property="buildingId"  />
+    <result column="project_id" property="projectId"  />
+    <result column="production_date" property="productionDate"  />
+    <result column="contract_expiration_date" property="contractExpirationDate"  />
+    <result column="start_using_date" property="startUsingDate"  />
+    <result column="asset_operation_state" property="assetOperationState"  />
+    <result column="contract_id" property="contractId"  />
+    <result column="contract" property="contract"  />
+  </resultMap>
+  
+   <resultMap id="CassetRepositoryReaultMap" type="CassetRepositoryReault" >
+   		<id  column="asset_repository_id" property="assetRepositoryId" jdbcType="VARCHAR" />
+   		<result  column="contract_id" property="contractId" jdbcType="VARCHAR" />  
+   		<result  column="property_id" property="propertyId" jdbcType="VARCHAR" />
+        <result column="property_number" property="propertyNumber" jdbcType="VARCHAR" />
+    	<result column="property_name" property="propertyName" jdbcType="VARCHAR" />
+    	<result column="property_type_name" property="propertyTypeName" jdbcType="VARCHAR" />
+    	<result column="property_type_name1" property="propertyTypeName1" jdbcType="VARCHAR" />
+  	    <result column="producing_area" property="producingArea"/>
+   </resultMap>
+  
+  <resultMap type="CassetRepository" id="resultCassetRepositoryMap" extends="BaseResultMap">
+  	<association property="contract" column="contract_id" javaType="Contract" select="com.flf.mapper.ContractMapper.getContractById"></association>
+  </resultMap>
+  
+  
+  <!--  根据建筑结构id查询资产库信息-->
+
+  <select id="listCassetRepositoryAllBybuildingStructureId" resultMap="BaseResultMap"  parameterType="PropertyResult">
+  select b.* from tc_casset_repository a
+  left join t_property b on a.property_id=b.property_id
+   	where building_structure_id in <foreach collection="buildingStructureNews" item="item" index="index" 
+		open="(" separator="," close=")">#{item}</foreach>
+  </select>
+
+  <select id="listCassetRepositoryAll" resultMap="BaseResultMap">
+
+    select * from tc_casset_repository
+   	where building_structure_id in <foreach collection="buildingStructureNews" item="item" index="index" 
+		open="(" separator="," close=")">#{item}</foreach>
+  </select>
+  
+ 
+ <select id="ListPageCassetRepository" resultMap="BaseResultMap" parameterType="CassetRepository">
+    select * from tc_casset_repository
+    
+  </select>
+  
+  <select id="ListCassetRepositoryAll" resultMap="BaseResultMap"  >
+    select * from tc_casset_repository
+   
+  </select>
+  
+  <select id="ListCassetRepositoryByProjectId" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select * from tc_casset_repository where project_id =#{0}
+  </select>
+ 
+  <select id="selectCassetRepositoryById" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select * from tc_casset_repository
+    where asset_repository_id = #{0}
+  </select>
+  
+  <select id="getCassetRepositorybyCondition" resultMap="resultCassetRepositoryMap" parameterType="CassetRepository" >
+    select * from tc_casset_repository where 1=1 
+    <if test="propertyName!='' and propertyName!=null">
+    	and property_name like CONCAT('%',#{propertyName},'%')
+    </if>
+    <if test="propertyTypeId!='' and propertyTypeId!=null">
+    	and property_type_id = #{propertyTypeId}
+    </if>
+    <if test="producingArea!='' and producingArea!=null">
+    	and producing_area = #{producingArea}
+    </if>
+    <if test="propertyId!='' and propertyId!=null">
+    	and property_id = #{propertyId}
+    </if>
+  </select>
+  
+  <delete id="deleteCassetRepository" parameterType="java.lang.String" >
+    delete from tc_casset_repository
+    where asset_repository_id = #{0}
+  </delete>
+  
+  <insert id="insertCassetRepository" parameterType="CassetRepository" >
+    insert into tc_casset_repository (asset_repository_id, property_id, property_number, property_name, 
+      property_specification,property_type_id, expiration_date,brand,producing_area,manufacturer,manufacturer_phone, property_count, 
+      property_area, building_structure_id, building_component_id, 
+      functional_id, functional_name,building_id,project_id,production_date,contract_expiration_date,start_using_date,asset_operation_state	,contract_id)
+    values (UUID(), #{propertyId,jdbcType=VARCHAR},#{propertyNumber,jdbcType=VARCHAR}, #{propertyName,jdbcType=VARCHAR}, 
+      #{propertySpecification,jdbcType=VARCHAR}, #{propertyTypeId},#{expirationDate},#{brand},#{producingArea},#{manufacturer},
+      #{manufacturerPhone}, #{propertyCount,jdbcType=DOUBLE}, 
+      #{propertyArea,jdbcType=VARCHAR}, #{buildingStructureId,jdbcType=VARCHAR}, #{buildingComponentId,jdbcType=VARCHAR}, 
+      #{functionalId,jdbcType=VARCHAR}, #{functionalName,jdbcType=VARCHAR},#{buildingId},#{projectId},#{productionDate},#{contractExpirationDate},#{startUsingDate},#{assetOperationState},#{contractId})
+  </insert>
+
+
+  <update id="updateCassetRepository" parameterType="CassetRepository" >
+    update tc_casset_repository
+    set property_id = #{propertyId,jdbcType=VARCHAR},
+      property_number = #{propertyNumber,jdbcType=VARCHAR},
+      property_name = #{propertyName,jdbcType=VARCHAR},
+      property_specification = #{propertySpecification,jdbcType=VARCHAR},
+      property_type_id = #{propertyTypeId,jdbcType=VARCHAR},
+      expiration_date = #{expirationDate},
+	  brand=#{brand},
+	  producing_area=#{producingArea},
+	  manufacturer=#{manufacturer},
+	  manufacturer_phone=#{manufacturerPhone},
+      property_count = #{propertyCount,jdbcType=DOUBLE},
+      property_area = #{propertyArea,jdbcType=VARCHAR},
+      building_structure_id = #{buildingStructureId,jdbcType=VARCHAR},
+      building_component_id = #{buildingComponentId,jdbcType=VARCHAR},
+      functional_id = #{functionalId,jdbcType=VARCHAR},
+      functional_name = #{functionalName,jdbcType=VARCHAR},
+      building_id=#{buildingId},
+      project_id=#{projectId},
+      production_date=#{productionDate},
+      contract_expiration_date=#{contractExpirationDate},
+      start_using_date=#{startUsingDate},
+      asset_operation_state = #{assetOperationState},
+      contract_id = #{contractId}
+    where asset_repository_id = #{assetRepositoryId,jdbcType=VARCHAR}
+  </update>
+  
+   <!-- 根据资产或 产地查询资产所属的专业及分类 -->
+   <select id="listPageSpecialAndClassify" parameterType="CassetRepository" resultMap="CassetRepositoryReaultMap">
+  	SELECT a.property_type_name,b.property_type_name as property_type_name1,c.property_name,c.property_number,c.producing_area,c.asset_repository_id,c.property_id
+  	from t_property_type a ,t_property_type b ,tc_casset_repository c
+  	where 1=1
+  	<if test="propertyId!=null and propertyId!=''">
+  	    and c.property_id= #{propertyId}
+  	    and a.parent_id=b.property_type_id  
+  	    and a.property_type_id=c.property_type_id
+  	</if>
+   	<if test="producingArea!=null and producingArea!=''">
+  	    and c.producing_area like CONCAT('%',#{producingArea},'%')
+  	</if>  	
+  </select>
+  
+  
+    
+  <select id="getCassetRepositoryDatils" resultMap="resultCassetRepositoryMap" parameterType="java.lang.String" >
+    select * from tc_casset_repository a
+    left join t_contract b on  b.id=a.contract_id
+    where asset_repository_id=#{assetRepositoryId}
+    
+  </select>
+
+  
+</mapper>

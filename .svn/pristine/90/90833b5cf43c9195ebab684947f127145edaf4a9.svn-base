@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.flf.mapper.ConstructionRecordCardMapper" >
+  <resultMap id="BaseResultMap" type="ConstructionRecordCard" >
+    <id column="record_id" property="recordId" jdbcType="VARCHAR" />
+    <result column="apply_id" property="applyId" jdbcType="VARCHAR" />
+    <result column="property_id" property="propertyId" jdbcType="VARCHAR" />
+     <result column="property_name" property="propertyName" jdbcType="VARCHAR" />
+      <result column="card_id" property="cardId" jdbcType="VARCHAR" />
+      <result column="cust_id" property="custId" jdbcType="VARCHAR" />
+      <result column="address_id" property="addressId" jdbcType="VARCHAR" />
+      <result column="construction_star_time" property="constructionStarTime" jdbcType="TIMESTAMP" />
+      <result column="construction_finish_time" property="constructionFinishTime" jdbcType="TIMESTAMP" />
+      <result column="decorate_id" property="decorateId" jdbcType="VARCHAR" />
+      <result column="head_id" property="headId" jdbcType="VARCHAR" />
+      <result column="fire_approval" property="fireApproval" jdbcType="VARCHAR" />
+      <result column="decorate_project" property="decorateProject" jdbcType="VARCHAR" />
+       <result column="angent_id" property="angentId" jdbcType="VARCHAR" />
+        <result column="construction_scope" property="constructionScope" jdbcType="TINYINT" />
+         <result column="registration_time" property="registrationTime" jdbcType="TIMESTAMP" />
+          <result column="daily_star_time" property="dailyStarTime" jdbcType="TIMESTAMP" />
+           <result column="daily_finish_time" property="dailyFinishTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  
+  <resultMap type="ConstructionRecordCard" id="resultConstructionRecordCardMap" extends="BaseResultMap">
+  	  	<association property="staff" column="angent_id" javaType="Staff" select="com.flf.mapper.StaffMapper.selectByid"></association>
+  	<!--  <collection property="decoratePersonnelAssociated" column="apply_id" select="com.flf.mapper.ConstructionRecordCardMapper.getConstructionRecordCardbyId"></collection>
+  --></resultMap>
+  
+ <delete id="deleteConstructionRecordCard" parameterType="String">
+  delete from ts_construction_record_card where record_id=#{0}
+  </delete>
+  
+  <select id="listAllConstructionRecordCard"  resultMap="resultConstructionRecordCardMap" >
+ 	 select * from ts_construction_record_card 
+  </select>
+  
+  <select id="getConstructionRecordCardbyId" parameterType="String" resultMap="resultConstructionRecordCardMap">
+  	select * from ts_construction_record_card where record_id=#{0}
+  </select>
+  <select id="getConstructionRecordCardbyApplyId" parameterType="String" resultMap="resultConstructionRecordCardMap">
+  	select * from ts_construction_record_card where apply_id=#{0}
+  </select>
+  
+  <insert id="insertConstructionRecordCard" parameterType="ConstructionRecordCard" >      
+      insert into ts_construction_record_card (record_id, apply_id,property_id,property_name,
+      card_id,cust_id,address_id,construction_star_time,construction_finish_time,decorate_id,head_id,fire_approval,
+     decorate_project,angent_id,construction_scope,registration_time,daily_star_time,daily_finish_time )
+    values (UUID(), #{applyId,jdbcType=VARCHAR}, #{propertyId,jdbcType=VARCHAR}, #{propertyName,jdbcType=VARCHAR}, 
+    #{cardId,jdbcType=VARCHAR}, #{custId,jdbcType=VARCHAR}, #{addressId,jdbcType=VARCHAR}, #{constructionStarTime,jdbcType=TIMESTAMP}
+    , #{constructionFinishTime,jdbcType=TIMESTAMP}, #{decorateId,jdbcType=VARCHAR}, #{headId,jdbcType=VARCHAR}, #{fireApproval,jdbcType=VARCHAR}
+    , #{decorateProject,jdbcType=VARCHAR}, #{angentId,jdbcType=VARCHAR}, #{constructionScope,jdbcType=TINYINT}, #{registrationTime,jdbcType=TIMESTAMP}
+    , #{dailyStarTime,jdbcType=TIMESTAMP}, #{dailyFinishTime,jdbcType=TIMESTAMP}
+    )
+  </insert>
+ 
+  <update id="updateConstructionRecordCard" parameterType="ConstructionRecordCard" >
+	update ts_construction_record_card
+	set apply_id = #{applyId,jdbcType=VARCHAR},
+	property_id = #{personnelId,jdbcType=VARCHAR},
+	property_name = #{personnelName,jdbcType=VARCHAR},
+	card_id = #{personnelPhone,jdbcType=VARCHAR},
+	cust_id = #{personnelName,jdbcType=VARCHAR},
+	address_id = #{personnelPhone,jdbcType=VARCHAR},
+	construction_star_time = #{personnelName,jdbcType=TIMESTAMP},
+	construction_finish_time = #{personnelPhone,jdbcType=TIMESTAMP},
+	decorate_id = #{personnelName,jdbcType=VARCHAR},
+	head_id = #{personnelPhone,jdbcType=VARCHAR},
+	fire_approval = #{personnelName,jdbcType=VARCHAR},
+	decorate_project = #{personnelPhone,jdbcType=VARCHAR},
+	angent_id = #{personnelName,jdbcType=VARCHAR},
+	construction_scope = #{personnelPhone,jdbcType=TINYINT},
+	registration_time = #{personnelName,jdbcType=TIMESTAMP},
+	daily_star_time = #{personnelPhone,jdbcType=TIMESTAMP},
+	daily_finish_time = #{personnelPhone,jdbcType=TIMESTAMP}
+	where record_id = #{recordId,jdbcType=VARCHAR}
+  </update>
+</mapper>

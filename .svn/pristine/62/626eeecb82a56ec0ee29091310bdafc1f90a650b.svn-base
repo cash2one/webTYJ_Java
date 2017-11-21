@@ -1,0 +1,317 @@
+package com.flf.service;
+
+import java.util.List;
+import javax.jws.WebService;
+import javax.ws.rs.Consumes;
+import javax.ws.rs.DELETE;
+import javax.ws.rs.GET;
+import javax.ws.rs.POST;
+import javax.ws.rs.PUT;
+import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
+import javax.ws.rs.Produces;
+import javax.ws.rs.core.MediaType;
+import com.flf.entity.PageRestful;
+import com.flf.entity.Project;
+import com.flf.entity.SubCompany;
+import com.flf.request.ProjectResult;
+import com.flf.request.Tree;
+
+@WebService
+@Path("/Project")
+public interface ProjectService {// 项目表
+
+	Project getProject(String projectId);// 根据Id查询项目表
+
+	int updateProject(Project project);// 修改项目表
+
+	int insertProject(Project project);// 添加项目表信息
+
+	int deleteProjectById(String projectId);// 删除项目表信息
+
+	String getProject1(String projectId);// 根据Id查询项目表
+
+	String updateProjectJson(String string);// 更新项目表
+
+	String deleteProjectByIdJson(String projectId);// 删除项目表信息
+
+	String insertProjectJson(String project);// 添加项目表信息
+
+	String getProjectJson(String projectId);// 根据Id查询项目表
+
+	/**
+	 * 分页查询项目表
+	 * 
+	 * @return
+	 */
+	@POST
+	@Path("/listPageProject")
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
+	PageRestful listPageProject(Project project);
+
+	/**
+	 * 分页查询项目表
+	 * 
+	 * @return
+	 */
+	@POST
+	@Path("/listPageProjectByState")
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
+	PageRestful listPageProjectByState(Project project);
+	
+	/**
+	 * 分页查询项目表
+	 * 
+	 * @return
+	 */
+	@POST
+	@Path("/listPageProjectByCompany")
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
+	PageRestful listPageProjectByCompany(Project project);
+
+	/**
+	 * 分页查询项目表,查询状态不为5的项目
+	 * 
+	 * @return
+	 */
+	@POST
+	@Path("/listPageProjectAll")
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
+	PageRestful listPageProjectAll(Project project);
+
+	/**
+	 * 查询所有项目表信息
+	 * 
+	 * @return
+	 */
+	@GET
+	@Path("/listAllProject/{companyId}")
+	@Produces(MediaType.APPLICATION_JSON)
+	List<Project> listAllProject(@PathParam("companyId") String companyId);
+
+	/**
+	 * 
+	 * 根据Id查询项目表
+	 * 
+	 * @param id
+	 * @return
+	 */
+	@GET
+	@Path("/getProjectbyId/{projectId}")
+	@Produces(MediaType.APPLICATION_JSON)
+	Project getUserByIdRest(@PathParam("projectId") String projectId);
+
+	/**
+	 * 根据团队Id查询项目表
+	 * 
+	 * @param id
+	 * @return
+	 */
+	@GET
+	@Path("/getProjectbyteamworkId/{teamworkId}")
+	@Produces(MediaType.APPLICATION_JSON)
+	List<Project> getProjectbyteamworkId(@PathParam("teamworkId") String teamworkId);
+
+	/**
+	 * 根据实例Id查询项目表
+	 * 
+	 * @param instanceId
+	 * @return
+	 */
+	/*
+	 * @GET
+	 * 
+	 * @Path("/listProjectbyinstanceId/{instanceId}")
+	 * 
+	 * @Produces(MediaType.APPLICATION_JSON) List<Project>
+	 * listProjectbyinstanceId(@PathParam("instanceId") String instanceId);
+	 */
+
+	/**
+	 * 根据团队Id查询项目表
+	 * 
+	 * @param id
+	 * @return
+	 */
+	/*
+	 * @GET
+	 * 
+	 * @Path("/getProjectbyteamworkId/{teamworkId}")
+	 * 
+	 * @Produces(MediaType.APPLICATION_JSON) List<Project>
+	 * getProjectbyteamworkId(@PathParam("teamworkId") String teamworkId);
+	 */
+
+	/**
+	 * 根据实例Id查询项目表
+	 * 
+	 * @param instanceId
+	 * @return
+	 */
+	/*
+	 * @GET
+	 * 
+	 * @Path("/listProjectbyinstanceId/{instanceId}")
+	 * 
+	 * @Produces(MediaType.APPLICATION_JSON) List<Project>
+	 * listProjectbyinstanceId(@PathParam("instanceId") String instanceId);
+	 */
+
+	/**
+	 * 添加项目表信息
+	 * 
+	 * @param project
+	 */
+	@POST
+	@Path("/insertProject")
+	@Consumes({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
+	void insertProjectrest(Project project);
+
+	/**
+	 * 修改项目表
+	 * 
+	 * @param project
+	 */
+	@PUT
+	@Path("/updateProject")
+	@Consumes({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
+	void updateProjectrest(Project project);
+
+	/**
+	 * 修改项目表(新)
+	 * 
+	 * @param projectResult
+	 */
+	@PUT
+	@Path("/updateProjectNew")
+	@Consumes({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
+	void updateProjectrestNew(ProjectResult projectResult);
+
+	/**
+	 * 删除项目表信息
+	 * 
+	 * @param id
+	 */
+	@DELETE
+	@Path("/deleteProject/{projectId}")
+	void deleteProjectrest(@PathParam("projectId") String projectId);
+
+	/* 删除项目表 */
+	@POST
+	@Path("/deleteSubProject")
+	@Produces(MediaType.APPLICATION_JSON)
+	void deleteSubProject(Project project);
+
+	@POST
+	@Path("/ProjectInitialization")
+	@Consumes({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
+	void ProjectInitialization(ProjectResult projectResult);
+
+	@GET
+	@Path("/getStaffTree")
+	@Produces(MediaType.APPLICATION_JSON)
+	public List<Tree> getStaffTree();
+
+	/**
+	 * 查询所有项目信息
+	 * 
+	 * @return Project集合
+	 */
+	@GET
+	@Path("/selectAllProject")
+	@Produces(MediaType.APPLICATION_JSON)
+	public List<Project> selectAllProject();
+
+	/**
+	 * jquery查询项目数量，启用及未启用计费收费数量
+	 * 
+	 * @return
+	 */
+	@GET
+	@Path("/getusesystemcount")
+	@Produces(MediaType.APPLICATION_JSON)
+	public String getUSeSystemCount();
+
+	/**
+	 * 查询所有项目，包含区
+	 * 
+	 * @return
+	 */
+	@GET
+	@Path("/getAllProjectWithRegion/{companyId}")
+	@Produces(MediaType.APPLICATION_JSON)
+	List<Project> getAllProjectWithRegion(@PathParam("companyId") String companyId);
+	
+	/**
+	 * 根据子公司Id 查询项目
+	 */
+
+	/**
+	 * 根据项目状态查询项目
+	 * 
+	 * @param state
+	 * @return
+	 */
+	@GET
+	@Path("/getProjectByState")
+	@Produces(MediaType.APPLICATION_JSON)
+	Project getProjectByState();
+
+	/**
+	 * 获取组列表
+	 * 
+	 * @param company
+	 * @return
+	 */
+	@GET
+	@Path("/getProjectByCompany/{company}")
+	@Produces(MediaType.APPLICATION_JSON)
+	String getProjectByCompany(@PathParam("company") String company);
+
+	String getProjectName(String projectId);// 根据Id查询项目名
+
+	/**
+	 * 根据用户名查询所在公司下的项目信息
+	 * 
+	 * @param userName
+	 * @return
+	 */
+	String getProjectListByUser(String userName);
+
+	/**
+	 * 根据项目id获取公司id
+	 * 
+	 * @param projectId
+	 * @return
+	 */
+	String getCompanyIdByProjectIid(String projectId);
+
+	/**
+	 * 根据项目启用状态和项目ID更换项目状态
+	 */
+	@POST
+	@Path("/updateIsUseSystemByProjectId")
+	@Produces(MediaType.APPLICATION_JSON)
+	String updateIsUseSystemByProjectId(Project project);
+
+	/**
+	 * BUG1351 根据项目ID列表获取项目其他属性
+	 * 
+	 * @return
+	 */
+	@POST
+	@Path("/getAllProjectByProjectIds")
+	@Produces(MediaType.APPLICATION_JSON)
+	List<Project> getAllProjectByProjectIds(List<String> projectIds);
+	
+	/* 分页查询子公司项目 */
+	@POST
+	@Path("/listPageAllsubCompanyProject")
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes({MediaType.APPLICATION_JSON,MediaType.APPLICATION_XML})
+	PageRestful listPageAllsubCompanyProject(SubCompany subCompany);
+}

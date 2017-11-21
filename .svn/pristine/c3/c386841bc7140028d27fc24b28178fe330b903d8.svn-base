@@ -1,0 +1,747 @@
+package com.flf.service.impl;
+import java.io.InputStream;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
+import java.util.UUID;
+
+import com.flf.entity.Annex;
+import com.flf.entity.MeterReadingData;
+import com.flf.entity.MeterReadingProgram;
+import com.flf.entity.PageRestful;
+import com.flf.entity.SearchMeter;
+import com.flf.mapper.AnnexMapper;
+import com.flf.mapper.CorrectedReadingMapper;
+import com.flf.mapper.MeterReadingDataMapper;
+import com.flf.mapper.MeterReadingProgramMapper;
+import com.flf.request.ExcelInfo;
+import com.flf.request.Info;
+import com.flf.service.MeterReadingDataService;
+import com.flf.util.Excel;
+import com.flf.util.ExcelUtils;
+//import com.zw.mango.JutilsFactory;
+import com.flf.util.Tools;
+
+public class MeterReadingDataServiceImpl implements MeterReadingDataService {
+	private MeterReadingDataMapper meterReadingDataMapper;
+
+	private CorrectedReadingMapper correctedReadingMapper;
+	
+	private MeterReadingProgramMapper meterReadingProgramMapper;
+	
+	private AnnexMapper annexMapper;
+
+	public AnnexMapper getAnnexMapper() {
+		return annexMapper;
+	}
+
+	public void setAnnexMapper(AnnexMapper annexMapper) {
+		this.annexMapper = annexMapper;
+	}
+
+	public CorrectedReadingMapper getCorrectedReadingMapper() {
+		return correctedReadingMapper;
+	}
+
+	public void setCorrectedReadingMapper(
+			CorrectedReadingMapper correctedReadingMapper) {
+		this.correctedReadingMapper = correctedReadingMapper;
+	}
+
+	public MeterReadingDataMapper getMeterReadingDataMapper() {
+		return meterReadingDataMapper;
+	}
+
+	public void setMeterReadingDataMapper(
+			MeterReadingDataMapper meterReadingDataMapper) {
+		this.meterReadingDataMapper = meterReadingDataMapper;
+	}
+
+	public MeterReadingProgramMapper getMeterReadingProgramMapper() {
+		return meterReadingProgramMapper;
+	}
+
+	public void setMeterReadingProgramMapper(MeterReadingProgramMapper meterReadingProgramMapper) {
+		this.meterReadingProgramMapper = meterReadingProgramMapper;
+	}
+
+	/**
+	 * 查询所有抄表数据信息
+	 * @return
+	 */
+	@Override
+	public List<MeterReadingData> listAllMeterReadingData() {
+		// TODO Auto-generated method stub
+		return meterReadingDataMapper.listAllMeterReadingData();
+	}
+
+	
+	/**
+	 * 根据id查询所有抄表数据信息
+	 * @return
+	 */
+	@Override
+	public MeterReadingData getUserByIdRest(String meterReadingDataId) {
+		// TODO Auto-generated method stub
+		return meterReadingDataMapper.getMeterReadingDatabyId(meterReadingDataId);
+	}
+
+	
+	/**
+	 * 新增抄表数据信息
+	 * @return
+	 */
+	@Override
+	public void insertMeterReadingDatarest(MeterReadingData meterReadingData) {
+		// TODO Auto-generated method stub
+		meterReadingDataMapper.insertMeterReadingData(meterReadingData);
+	}
+
+	/**
+	 * 修改抄表数据信息
+	 * @return
+	 */
+	@Override
+	public void updateMeterReadingDatarest(MeterReadingData meterReadingData) {
+		// TODO Auto-generated method stub
+		meterReadingDataMapper.updateMeterReadingData(meterReadingData);
+	}
+
+	
+	/**
+	 * 删除抄表数据信息
+	 * @return
+	 */
+	@Override
+	public void deleteMeterReadingDatarest(String meterReadingDataId) {
+		// TODO Auto-generated method stub
+		meterReadingDataMapper.deleteMeterReadingData(meterReadingDataId);
+	}
+
+	
+	/**
+	 * 分页查询所有抄表数据信息
+	 */
+	@Override
+	public PageRestful listPageMeterReadingData(
+			MeterReadingData meterReadingData) {
+		// TODO Auto-generated method stub
+		PageRestful pageRestful =new PageRestful();
+		List<MeterReadingData> meterReadingDatas=meterReadingDataMapper.listPageMeterReadingData(meterReadingData);
+		meterReadingDatas.add(0,null);
+		pageRestful.setMeterReadingData(meterReadingDatas);
+		pageRestful.setPage(meterReadingData.getPage());
+		return pageRestful;
+	}
+
+	@Override
+	public List<MeterReadingData> listMeterReadingDatabyId(
+			String waterMeterRecordId) {
+		// TODO Auto-generated method stub
+		return meterReadingDataMapper.listMeterReadingDatabyId(waterMeterRecordId);
+	}
+
+	@Override
+	public List<MeterReadingData> listMeterReadingDatebyName(String projectName) {
+		// TODO Auto-generated method stub
+		return meterReadingDataMapper.listMeterReadingDatebyName(projectName);
+	}
+
+	@Override
+	public PageRestful listPageMeterReadingDate(SearchMeter searchMeter) {
+		// TODO Auto-generated method stub
+		/*HashMap<String,Object> map=new HashMap<String,Object>();
+		map.put("meterReadingDate", searchMeter.getMeterReadingDate());
+		map.put("waterMeterNum", searchMeter.getWaterMeterNum());
+		map.put("readingState", searchMeter.getReadingState());
+		map.put("fullName", searchMeter.getFullName());
+		map.put("projectName", searchMeter.getProjectName());
+		map.put("meterReadingProgramId", searchMeter.getMeterReadingProgramId());
+		map.put("waterMeterRecordsId", searchMeter.getWaterMeterRecordsId());
+		map.put("meterReadingProgramIds", searchMeter.getMeterReadingProgramIds());
+		map.put("page", searchMeter.getPage());*/
+		
+		/*for (MeterReadingData meterReadingData : meterReadingDatas) {
+			Double a=meterReadingData.getReading();
+			Double b=meterReadingData.getLastMonthReading();
+			SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd");
+			Date x =meterReadingData.getMeterReadingDate();
+			int year= x.getYear()-1;
+			x.setYear(year+1900);
+			searchMeter.setMeterReadingDate(x);
+			searchMeter.setWaterMeterNum(meterReadingData.getWaterMeterNum());
+			MeterReadingData meterReadingDatass=meterReadingDataMapper.getMeterReadingDatabyDate(searchMeter);
+			if(meterReadingDatass.getReading()!=null){
+				Double c=meterReadingDatass.getReading();
+				meterReadingData.setDosagePoor(a-(b!=null?b:0)) ;
+				meterReadingData.setComparedSame(a/b);
+				meterReadingData.setSequential(a/c);
+			}		
+		}*/
+		/*for (MeterReadingData meterReadingData : meterReadingDatas) {
+			System.out.println(meterReadingData.getDosage());
+			List<MeterReadingData> meterReadingDatass=listMeterReadingDatebyDate(meterReadingData.getMeterReadingDate());	
+			meterReadingData.setMeterReadingDatass(meterReadingDatass);
+		}*/
+		PageRestful pageRestful =new PageRestful();
+		List<MeterReadingData> meterReadingDatas=meterReadingDataMapper.listPageMeterReadingDate(searchMeter);
+		meterReadingDatas.add(0,null);
+		pageRestful.setMeterReadingData(meterReadingDatas);
+		pageRestful.setPage(searchMeter.getPage());
+		/*System.out.println(meterReadingDatas.size());*/
+		return pageRestful;
+		
+	}
+
+	/**
+	 * 水表数据报表
+	 */
+	@Override
+	public List<MeterReadingData> listMeterReadingDatebyDate(
+			Date meterReadingDate) {
+		// TODO Auto-generated method stub
+		List<MeterReadingData> MeterReadingDatas=meterReadingDataMapper.listMeterReadingDatebyDate(meterReadingDate);
+		int year= meterReadingDate.getYear() - 1;
+		meterReadingDate.setYear(year+1900);
+		List<MeterReadingData> MeterReadingDatass=meterReadingDataMapper.listMeterReadingDatebyDate(meterReadingDate);
+		int month= meterReadingDate.getMonth() -1;
+		if(month==0){
+		     month=12;
+		}
+		meterReadingDate.setMonth(month);
+		List<MeterReadingData> MeterReadingDatasss=meterReadingDataMapper.listMeterReadingDatebyDate(meterReadingDate);
+		for (MeterReadingData meterReadingData : MeterReadingDatas) {
+			Double a=meterReadingData.getReading()-meterReadingData.getLastMonthReading();
+			for (MeterReadingData meterReadingDatas : MeterReadingDatass) {
+				Double b=meterReadingDatas.getReading()-meterReadingDatas.getLastMonthReading();
+				for (MeterReadingData meterReadingDatass : MeterReadingDatasss) {
+					Double c=meterReadingDatass.getReading()-meterReadingDatass.getLastMonthReading();
+					meterReadingData.setDosagePoor(a-c) ;
+					meterReadingData.setComparedSame(a/b);
+					meterReadingData.setSequential(a/c);	
+				}
+			}
+		}
+		return MeterReadingDatas;
+	}
+
+	@SuppressWarnings("static-access")
+	@Override
+	public void getExcel(String filePath) {
+		// TODO Auto-generated method stub
+		/*HttpServletRequest request = ((ServletRequestAttributes)RequestContextHolder.getRequestAttributes()).getRequest();
+		Map map = JsonUtil.getMap4Json(filePath);
+		String savePath = request.getServletContext().getRealPath("/") + map.get("String");  
+		try {
+			try {
+				System.out.println(savePath);
+			List<String> list = JutilsFactory.getJutils().importExcel(savePath);
+			for(String s:list){
+				System.out.println(s);
+			}
+			} catch (ClassNotFoundException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (InstantiationException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (IllegalAccessException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}*/
+	}
+	
+	//根据水表id查询所有抄表数据信息
+	@Override
+	public MeterReadingData getMeterReadings(String buildingStructureId) {
+		// TODO Auto-generated method stub
+		return meterReadingDataMapper.getMeterReadings(buildingStructureId);
+	}
+
+	@Override
+	public PageRestful listPageMeterReading(MeterReadingData meterReadingData) {
+		// TODO Auto-generated method stub
+		PageRestful pageRestful =new PageRestful();
+		String date=new SimpleDateFormat("yyyy-MM-dd").format(new Date());
+		
+		List<MeterReadingData> meterReadingDatas=meterReadingDataMapper.listPageMeterReading(meterReadingData);
+		for(MeterReadingData meterReading :meterReadingDatas){
+			
+		}
+		meterReadingDatas.add(0,null);
+		pageRestful.setMeterReadingData(meterReadingDatas);
+		pageRestful.setPage(meterReadingData.getPage());
+		/*System.out.println(meterReadingDatas.size());*/
+		return pageRestful;
+	}
+
+	@Override
+	public PageRestful listPageMeterReadingDates(
+			MeterReadingData meterReadingData) {
+		// TODO Auto-generated method stub
+		PageRestful pageRestful =new PageRestful();
+		String date=new SimpleDateFormat("yyyy-MM-dd").format(new Date());
+		List<MeterReadingData> meterReadingDatas=meterReadingDataMapper.listPageMeterReadingDates(meterReadingData);
+		//定义前台显示数据
+		List<MeterReadingData> meterReadings =new ArrayList<MeterReadingData>();
+		//循环计算前台显示数据
+		for(MeterReadingData meterReading :meterReadingDatas){
+			meterReading.getWaterMeterRecordId();
+			meterReading.getMeterExecutiveId();
+			meterReading.getLastMonthReading();
+			meterReading.getReading();
+			meterReading.getWaterMeterRecords();
+			meterReading.getMeterReadingDate();
+			meterReading.getCorrection();
+			meterReading.getSurplus();
+		}
+		meterReadingDatas.add(0,null);
+		pageRestful.setMeterReadingData(meterReadingDatas);
+		pageRestful.setPage(meterReadingData.getPage());
+		/*System.out.println(meterReadingDatas.size());*/
+		return pageRestful;
+	}
+/*	@Override
+	public void insertCorrect(CorrectedReading correctedReading) {
+		// TODO Auto-generated method stub
+		String uuid=UUID.randomUUID().toString();
+		//String uuid1=UUID.randomUUID().toString();
+		String date = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date());
+		List<Annex> annexList = correctedReading.getAnnexs();
+		MeterReadingData meterReadingData =meterReadingDataMapper.getMeterReadingDatabyId(correctedReading.getMeterReadingDataId());
+		//添加附件
+		if(annexList != null && annexList.size()>0){
+			for(Annex annex :annexList){
+				annex.setRelationId(uuid);
+				annex.setAnnexTime(date);
+				annexMapper.insertAnnex(annex);
+			}
+		}
+		correctedReading.setCorrectedReadingId(uuid);
+		correctedReading.setCorrectedTime(new Date());
+		meterReadingData.setCorrectedReadingId(uuid);
+		meterReadingData.setCorrection(correctedReading.getCorrection());
+		meterReadingDataMapper.updateMeterReadingData(meterReadingData);
+		correctedReadingMapper.insert(correctedReading);
+	
+	}
+*/
+
+	@Override
+	public void updateMeter(String meterReadingDataId) {
+		// TODO Auto-generated method stub
+		meterReadingDataMapper.updateMeter(meterReadingDataId);
+	}
+
+	@Override
+	public void updateMeterChecked(String meterReadingDataId) {
+		// TODO Auto-generated method stub
+		meterReadingDataMapper.updateMeterChecked(Arrays.asList(meterReadingDataId.split(",")));
+	}
+
+	@Override
+	public void updateMeterRecoed(String meterReadingDataId) {
+		// TODO Auto-generated method stub
+		meterReadingDataMapper.updateMeterRecoed(Arrays.asList(meterReadingDataId.split(",")));
+	}
+	
+	@Override
+	public void updateMeterReject(String meterReadingDataId) {
+		// TODO Auto-generated method stub
+		meterReadingDataMapper.updateMeterReject(Arrays.asList(meterReadingDataId.split(",")));
+	}
+
+	@SuppressWarnings("rawtypes")
+	@Override
+	public void updateVerification(String meterReadingDataId) {
+		// TODO Auto-generated method stub
+		List list = new ArrayList();
+	    list = Arrays.asList(meterReadingDataId.split(","));
+	    meterReadingDataMapper.updateVerification(Arrays.asList(meterReadingDataId.split(",")));
+	    if(list.size()>0){
+	    	for(int i=0; i<list.size(); i++){
+	    		MeterReadingData readingData = meterReadingDataMapper.selectByPrimaryKey(list.get(i).toString());	
+	    		String uuid=UUID.randomUUID().toString();
+	    		readingData.setMeterReadingDataId(uuid);
+	    		readingData.setVerificationRecord(0);
+	    		readingData.setNote("读数重表");
+	    		meterReadingDataMapper.insertMeterReadingData(readingData);
+	    	}
+	    }
+		
+		//meterReadingDataMapper.updateVerification(Arrays.asList(meterReadingDataId.split(",")));
+		
+	}
+	/*@Override
+	public String updateVerification(MeterReadingData searchMeter2)
+	 {
+		// TODO Auto-generated method stub
+		//meterReadingDataMapper.updateVerification(searchMeter2.);
+		MeterReadingData readingData = meterReadingDataMapper.selectByPrimaryKey(searchMeter2.getMeterReadingDataId());
+		
+		return null ;
+	}*/
+	
+	@Override
+	public List<MeterReadingData> getMeterReadingsByBuildingId(String addressId) {
+		return meterReadingDataMapper.getMeterReadingsByBuildingId(addressId);
+	}
+
+	@Override
+	public PageRestful listPageMeterRecoedDateList(MeterReadingData meterReadingData) {
+		PageRestful pageRestful =new PageRestful();
+		/*List<MeterReadingData> meterReadingDatas=meterReadingDataMapper.listPageMeterRecoedDateList(meterReadingData);
+		
+				if (meterReadingDatas != null && meterReadingDatas.size() > 0) {
+					for (int i=0; i<meterReadingDatas.size(); i++) {
+						meterReadingData.setMeterReadingDataId(meterReadingDatas.get(i).getMeterReadingDataId());
+						MeterReadingData readingData = meterReadingDataMapper.selectByPrimaryKey(meterReadingData.getMeterReadingDataId());
+						readingData.setReading(meterReadingDatas.get(i).getReading());
+						double useDate = readingData.getReading() - readingData.getLastMonthReading();
+						
+						MeterReadingProgram meterReadingProgram = meterReadingProgramMapper
+								.selectByPrimaryKey(readingData.getMeterReadingProgramId());
+						Date specifiedDate = readingData.getSpecifiedDate(); // 指定抄表日期
+						int executionFrequency = meterReadingProgram.getExecutionFrequency(); //抄表频率
+						Calendar c1 = Calendar.getInstance();
+						c1.setTime(specifiedDate);
+						c1.add(Calendar.MONTH, -executionFrequency);
+						MeterReadingData lastMonth = meterReadingDataMapper
+								.selectByWaterMeterRecordIdAndDate(readingData.getWaterMeterRecordId(), c1.getTime());
+						c1.add(Calendar.MONTH, -executionFrequency);
+						MeterReadingData lastTwoMonth = meterReadingDataMapper
+								.selectByWaterMeterRecordIdAndDate(readingData.getWaterMeterRecordId(), c1.getTime());
+						c1.setTime(specifiedDate);
+						c1.add(Calendar.YEAR, -1);
+						MeterReadingData lastYear = meterReadingDataMapper
+								.selectByWaterMeterRecordIdAndDate(readingData.getWaterMeterRecordId(), c1.getTime());
+						
+						
+						double tongbi = 0;
+						double pingjun = 0;
+						double huanbi = 0;
+						if(lastMonth != null){
+							double lastMonthUse = lastMonth.getReading() - lastMonth.getLastMonthReading();
+							tongbi = (useDate - lastMonthUse)/lastMonthUse; //同比
+							if(lastTwoMonth != null){
+								double lastTwoMonthUse = lastTwoMonth.getReading() - lastTwoMonth.getLastMonthReading();
+								pingjun = (useDate - (useDate + lastMonthUse + lastTwoMonthUse)/3)/((useDate + lastMonthUse + lastTwoMonthUse)/3);
+							}
+						}
+						if(lastYear != null){
+							double lastYearUse = lastYear.getReading() - lastYear.getLastMonthReading();
+							huanbi = (useDate - lastYearUse)/lastYearUse; //环比
+						}
+						double x = Math.abs(tongbi) > Math.abs(pingjun) ? Math.abs(tongbi) : Math.abs(pingjun);
+						double max = x > Math.abs(huanbi) ? x : Math.abs(huanbi);
+						if(readingData.getReading() < readingData.getLastMonthReading()){//本月读数小于上月读数
+							readingData.setNote("本月读数小于上月读数");
+						} 
+						if(max > 0.1 && max <= 0.3){//异常
+							readingData.setAbnormalState(1);
+							readingData.setNote("读数不正常");
+							if(meterReadingProgram.getMeterReadingWarningNum() == null){
+								meterReadingProgram.setMeterReadingWarningNum(1);
+							} else {
+//								meterReadingProgram.setMeterReadingWarningNum(meterReadingProgram.getMeterReadingWarningNum() + 1);
+							}
+						} else if(max > 0.3){//错误
+							readingData.setAbnormalState(2);
+							readingData.setNote("读数不正常");
+							if(meterReadingProgram.getMeterReadingErrorNum() == null){
+								meterReadingProgram.setMeterReadingErrorNum(1);
+							} else {
+//								meterReadingProgram.setMeterReadingErrorNum(meterReadingProgram.getMeterReadingErrorNum() + 1);
+							}
+						} 
+						else {//正常
+							readingData.setAbnormalState(0);
+							if(meterReadingProgram.getMeterReadingNormalNum() == null){
+								meterReadingProgram.setMeterReadingNormalNum(1);
+							} else {
+//								meterReadingProgram.setMeterReadingNormalNum(meterReadingProgram.getMeterReadingNormalNum() + 1);
+							}
+						}
+						
+//						meterReadingProgram.setMeterReadingNum(meterReadingProgram.getMeterReadingNum() + 1);//已抄表数＋1
+//						meterReadingProgram.setUnfinishedNum(meterReadingProgram.getUnfinishedNum() - 1);//未抄表数－1
+						if(readingData.getLoopNum()!= null ){
+							readingData.setConsumption(readingData.getReading() + readingData.getLoopNum() - readingData.getLastMonthReading());
+						}
+						readingData.setConsumption(readingData.getReading() - readingData.getLastMonthReading());
+						meterReadingDataMapper.updateByPrimaryKeySelective(readingData);
+						meterReadingProgramMapper.updateMeterReadingProgram(meterReadingProgram);
+					}
+					}*/
+		List<MeterReadingData> meterReadingDatas1=meterReadingDataMapper.listPageMeterRecoedDateList(meterReadingData);
+		meterReadingDatas1.add(0,null);
+		pageRestful.setMeterReadingData(meterReadingDatas1);
+		pageRestful.setPage(meterReadingData.getPage());
+		return pageRestful;
+	}
+
+	@Override
+	public String setMeterReadingData(MeterReadingData meterReadingData) {
+		MeterReadingData readingData = meterReadingDataMapper.selectByPrimaryKey(meterReadingData.getMeterReadingDataId());
+		readingData.setReading(meterReadingData.getReading());
+		double useDate = readingData.getReading() - readingData.getLastMonthReading();
+		
+		MeterReadingProgram meterReadingProgram = meterReadingProgramMapper
+				.selectByPrimaryKey(readingData.getMeterReadingProgramId());
+		Date specifiedDate = readingData.getSpecifiedDate(); // 指定抄表日期
+		int executionFrequency = meterReadingProgram.getExecutionFrequency(); //抄表频率
+		Calendar c1 = Calendar.getInstance();
+		c1.setTime(specifiedDate);
+		c1.add(Calendar.MONTH, -executionFrequency);
+		MeterReadingData lastMonth = meterReadingDataMapper
+				.selectByWaterMeterRecordIdAndDate(readingData.getWaterMeterRecordId(), c1.getTime());
+		c1.add(Calendar.MONTH, -executionFrequency);
+		MeterReadingData lastTwoMonth = meterReadingDataMapper
+				.selectByWaterMeterRecordIdAndDate(readingData.getWaterMeterRecordId(), c1.getTime());
+		c1.setTime(specifiedDate);
+		c1.add(Calendar.YEAR, -1);
+		MeterReadingData lastYear = meterReadingDataMapper
+				.selectByWaterMeterRecordIdAndDate(readingData.getWaterMeterRecordId(), c1.getTime());
+		
+		
+		double tongbi = 0;
+		double pingjun = 0;
+		double huanbi = 0;
+		if(lastMonth != null){
+			double lastMonthUse = lastMonth.getReading() - lastMonth.getLastMonthReading();
+			tongbi = (useDate - lastMonthUse)/lastMonthUse; //同比
+			if(lastTwoMonth != null){
+				double lastTwoMonthUse = lastTwoMonth.getReading() - lastTwoMonth.getLastMonthReading();
+				pingjun = (useDate - (useDate + lastMonthUse + lastTwoMonthUse)/3)/((useDate + lastMonthUse + lastTwoMonthUse)/3);
+			}
+		}
+		if(lastYear != null){
+			double lastYearUse = lastYear.getReading() - lastYear.getLastMonthReading();
+			huanbi = (useDate - lastYearUse)/lastYearUse; //环比
+		}
+		double x = Math.abs(tongbi) > Math.abs(pingjun) ? Math.abs(tongbi) : Math.abs(pingjun);
+		double max = x > Math.abs(huanbi) ? x : Math.abs(huanbi);
+		if(max > 0.1 && max <= 0.3){//异常
+			readingData.setAbnormalState(1);
+			if(meterReadingProgram.getMeterReadingWarningNum() == null){
+				meterReadingProgram.setMeterReadingWarningNum(1);
+			} else {
+//				meterReadingProgram.setMeterReadingWarningNum(meterReadingProgram.getMeterReadingWarningNum() + 1);
+			}
+		} else if(max > 0.3){//错误
+			readingData.setAbnormalState(2);
+			if(meterReadingProgram.getMeterReadingErrorNum() == null){
+				meterReadingProgram.setMeterReadingErrorNum(1);
+			} else {
+//				meterReadingProgram.setMeterReadingErrorNum(meterReadingProgram.getMeterReadingErrorNum() + 1);
+			}
+		} else {//正常
+			readingData.setAbnormalState(0);
+			if(meterReadingProgram.getMeterReadingNormalNum() == null){
+				meterReadingProgram.setMeterReadingNormalNum(1);
+			} else {
+//				meterReadingProgram.setMeterReadingNormalNum(meterReadingProgram.getMeterReadingNormalNum() + 1);
+			}
+		}
+		
+//		meterReadingProgram.setMeterReadingNum(meterReadingProgram.getMeterReadingNum() + 1);//已抄表数＋1
+//		meterReadingProgram.setUnfinishedNum(meterReadingProgram.getUnfinishedNum() - 1);//未抄表数－1
+		readingData.setConsumption(readingData.getReading() - readingData.getLastMonthReading());
+		meterReadingDataMapper.updateByPrimaryKeySelective(readingData);
+		meterReadingProgramMapper.updateMeterReadingProgram(meterReadingProgram);
+		return null;
+	}
+
+	@Override
+	public Info importExcelFileMeterReadingData(Annex annex) {
+		String filePath = annex.getAnnexAddress();
+		MeterReadingData meterReadingData = null;
+		if (Tools.notEmpty(filePath)) {
+			try {
+				List<Map<Short, String>> dataList = new ExcelUtils().readExcel(filePath);
+				if (dataList != null && dataList.size() > 0) {
+					for (Map<Short, String> t : dataList) {
+						meterReadingData = new MeterReadingData();
+						meterReadingData.setMeterReadingDataId(t.get((short) 0));
+						meterReadingData.setReading(Double.parseDouble(t.get((short) 5)));
+						MeterReadingData readingData = meterReadingDataMapper.selectByPrimaryKey(meterReadingData.getMeterReadingDataId());
+						readingData.setReading(meterReadingData.getReading());
+						double useDate = readingData.getReading() - readingData.getLastMonthReading();
+						
+						MeterReadingProgram meterReadingProgram = meterReadingProgramMapper
+								.selectByPrimaryKey(readingData.getMeterReadingProgramId());
+						Date specifiedDate = readingData.getSpecifiedDate(); // 指定抄表日期
+						int executionFrequency = meterReadingProgram.getExecutionFrequency(); //抄表频率
+						Calendar c1 = Calendar.getInstance();
+						c1.setTime(specifiedDate);
+						c1.add(Calendar.MONTH, -executionFrequency);
+						MeterReadingData lastMonth = meterReadingDataMapper
+								.selectByWaterMeterRecordIdAndDate(readingData.getWaterMeterRecordId(), c1.getTime());
+						c1.add(Calendar.MONTH, -executionFrequency);
+						MeterReadingData lastTwoMonth = meterReadingDataMapper
+								.selectByWaterMeterRecordIdAndDate(readingData.getWaterMeterRecordId(), c1.getTime());
+						c1.setTime(specifiedDate);
+						c1.add(Calendar.YEAR, -1);
+						MeterReadingData lastYear = meterReadingDataMapper
+								.selectByWaterMeterRecordIdAndDate(readingData.getWaterMeterRecordId(), c1.getTime());
+						
+						
+						double tongbi = 0;
+						double pingjun = 0;
+						double huanbi = 0;
+						if(lastMonth != null){
+							double lastMonthUse = lastMonth.getReading() - lastMonth.getLastMonthReading();
+							tongbi = (useDate - lastMonthUse)/lastMonthUse; //同比
+							if(lastTwoMonth != null){
+								double lastTwoMonthUse = lastTwoMonth.getReading() - lastTwoMonth.getLastMonthReading();
+								pingjun = (useDate - (useDate + lastMonthUse + lastTwoMonthUse)/3)/((useDate + lastMonthUse + lastTwoMonthUse)/3);
+							}
+						}
+						if(lastYear != null){
+							double lastYearUse = lastYear.getReading() - lastYear.getLastMonthReading();
+							huanbi = (useDate - lastYearUse)/lastYearUse; //环比
+						}
+						double x = Math.abs(tongbi) > Math.abs(pingjun) ? Math.abs(tongbi) : Math.abs(pingjun);
+						double max = x > Math.abs(huanbi) ? x : Math.abs(huanbi);
+						if(max > 0.1 && max <= 0.3){//异常
+							readingData.setAbnormalState(1);
+							if(meterReadingProgram.getMeterReadingWarningNum() == null){
+								meterReadingProgram.setMeterReadingWarningNum(1);
+							} else {
+//								meterReadingProgram.setMeterReadingWarningNum(meterReadingProgram.getMeterReadingWarningNum() + 1);
+							}
+						} else if(max > 0.3){//错误
+							readingData.setAbnormalState(2);
+							if(meterReadingProgram.getMeterReadingErrorNum() == null){
+								meterReadingProgram.setMeterReadingErrorNum(1);
+							} else {
+//								meterReadingProgram.setMeterReadingErrorNum(meterReadingProgram.getMeterReadingErrorNum() + 1);
+							}
+						} else {//正常
+							readingData.setAbnormalState(0);
+							if(meterReadingProgram.getMeterReadingNormalNum() == null){
+								meterReadingProgram.setMeterReadingNormalNum(1);
+							} else {
+//								meterReadingProgram.setMeterReadingNormalNum(meterReadingProgram.getMeterReadingNormalNum() + 1);
+							}
+						}
+						
+//						meterReadingProgram.setMeterReadingNum(meterReadingProgram.getMeterReadingNum() + 1);//已抄表数＋1
+//						meterReadingProgram.setUnfinishedNum(meterReadingProgram.getUnfinishedNum() - 1);//未抄表数－1
+						readingData.setConsumption(readingData.getReading() - readingData.getLastMonthReading());
+						meterReadingDataMapper.updateByPrimaryKeySelective(readingData);
+						meterReadingProgramMapper.updateMeterReadingProgram(meterReadingProgram);
+					}
+					return Tools.msg("数据导入成功!",true);
+				}
+			} catch (Exception e){
+				e.printStackTrace();
+			}
+		}
+		return Tools.msg("数据导入失败!", false);
+	}
+	
+	
+	/**
+	 * 分页查询所有水表数据信息
+	 */
+	@Override
+	public PageRestful listPageWaterMeterRecordAll(
+			MeterReadingData meterReadingData) {
+		// TODO Auto-generated method stub
+		PageRestful pageRestful =new PageRestful();
+		List<MeterReadingData> meterReadingDatas=meterReadingDataMapper.listPageWaterMeterRecordAll(meterReadingData);
+		
+		for (MeterReadingData item : meterReadingDatas) {
+			//计算上个月的日期
+			Calendar calender = Calendar.getInstance();
+			if(item.getSpecifiedDate()!=null)
+			{
+				calender.setTime(item.getSpecifiedDate());
+				calender.add(Calendar.MONTH, -1);
+				//上个月的水表使用记录
+				MeterReadingData readingData = meterReadingDataMapper.selectByWaterMeterRecordIdAndDate(item.getWaterMeterRecordId(), calender.getTime());
+				if(readingData != null){
+					item.setLastMonthUse(readingData.getConsumption());
+				}
+				//计算去年的日期
+				calender.add(Calendar.MONTH, 1);
+	        calender.add(Calendar.YEAR, -1);
+	        //去年的水表使用量
+	        MeterReadingData readingData2 = meterReadingDataMapper.selectByWaterMeterRecordIdAndDate(item.getWaterMeterRecordId(), calender.getTime());
+	        if(readingData2 != null){
+	        	item.setLastYearUse(readingData2.getConsumption());
+	        }
+			}
+		}
+		
+		meterReadingDatas.add(0,null);
+		pageRestful.setMeterReadingData(meterReadingDatas);
+		pageRestful.setPage(meterReadingData.getPage());
+		return pageRestful;
+	}
+
+	@Override
+	public String setLoopNum(MeterReadingData meterReadingData) {
+		MeterReadingData item = meterReadingDataMapper.selectByPrimaryKey(meterReadingData.getMeterReadingDataId());
+		item.setLoopNum(meterReadingData.getLoopNum());
+		item.setConsumption(item.getLoopNum() + item.getReading() - item.getLastMonthReading());
+		meterReadingDataMapper.updateByPrimaryKeySelective(item);
+		return null;
+	}
+	
+	@Override
+	public Double getWaterMeterUsage(MeterReadingData meterReadingData) {
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        String str = sdf.format(meterReadingData.getSpecifiedDate());
+		MeterReadingData item = meterReadingDataMapper.selectByBuildingStructureIdAndMeterReadingDate(meterReadingData.getBuildingStructureId(),str);
+	    if(item == null)
+	    {
+	    	double watermetermsage = 0;
+	    	return watermetermsage;
+	    }
+	    else
+	    {
+	    	double watermetermsage = item.getConsumption();
+	    	return watermetermsage;
+		}
+	}
+	
+	@Override
+	public InputStream exportWaterDataReportExcel() {
+		// TODO Auto-generated method stub
+				//导出到excel
+				Excel ex=new Excel();
+			    List<ExcelInfo> list=new ArrayList<ExcelInfo>();
+				String[] headers = { "计划名称","水表编号","水表描述","本月读数","本月修正量",
+						"本月用量",
+						"上月读数","上月用量","上月修正量","同比","去年读数","去年用量","环比"};
+				String[] fields = {"projectName","waterMeterNum","waterMeterDescribed","reading","correction",
+						"consumption",
+						"lastMonthReading","lastMonthUse","correction","comparedSame","lastYearRead","lastYearUse","sequential"};
+		        List<MeterReadingData> dataset = meterReadingDataMapper.listAllMeterReadingData1();
+		      
+		        if(dataset.size() > 0){
+		        	ExcelInfo exl=new ExcelInfo();
+					exl.setFields(fields);
+					exl.setTitles(headers);
+					exl.setSheetName("水表数据报表");
+					exl.setList(dataset);
+					list.add(exl);
+		        }
+				try {
+				    return ex.createExcelInputStream(list);
+				} catch (Exception e) {
+					e.printStackTrace();
+					return null;
+				}
+	}
+}

@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.flf.mapper.ProductCommonserviceMapper" >
+  <resultMap id="BaseResultMap" type="com.flf.entity.ProductCommonservice" >
+    <id column="commonservice_id" property="commonserviceId" jdbcType="VARCHAR" />
+    <result column="commonservice_name" property="commonserviceName" jdbcType="VARCHAR" />
+    <result column="product_servicetype" property="productServicetype" jdbcType="VARCHAR" />
+    <result column="product_unit" property="productUnit" jdbcType="VARCHAR" />
+    <result column="product_price" property="productPrice" jdbcType="VARCHAR" />
+    <result column="product_begin_date" property="productBeginDate" jdbcType="TIMESTAMP" />
+    <result column="product_end_date" property="productEndDate" jdbcType="TIMESTAMP" />
+    <result column="product_type" property="productType" jdbcType="VARCHAR" />
+    <result column="product_code" property="productCode" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    commonservice_id, commonservice_name, product_servicetype, product_unit, product_price, 
+    product_begin_date, product_end_date, product_type
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from tc_product_commonservice
+    where commonservice_id = #{commonserviceId,jdbcType=VARCHAR}
+  </select>
+  <select id="selectByName" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select * from tc_product_commonservice where commonservice_name=#{commonserviceName,jdbcType=VARCHAR}
+  </select>
+  <select id="selectMaxCode" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select max(cast(right(IFNULL(product_code,0),5)as signed))as product_code from tc_product_commonservice
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from tc_product_commonservice
+    where commonservice_id = #{commonserviceId,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.flf.entity.ProductCommonservice" >
+    insert into tc_product_commonservice (commonservice_id, commonservice_name, 
+      product_servicetype, product_unit, product_price, 
+      product_begin_date, product_end_date, product_type, product_code
+      )
+    values (#{commonserviceId,jdbcType=VARCHAR}, #{commonserviceName,jdbcType=VARCHAR}, 
+      #{productServicetype,jdbcType=VARCHAR}, #{productUnit,jdbcType=VARCHAR}, #{productPrice,jdbcType=VARCHAR}, 
+      #{productBeginDate,jdbcType=TIMESTAMP}, #{productEndDate,jdbcType=TIMESTAMP}, #{productType,jdbcType=VARCHAR}
+      , #{productCode,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.flf.entity.ProductCommonservice" >
+    insert into tc_product_commonservice
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="commonserviceId != null" >
+        commonservice_id,
+      </if>
+      <if test="commonserviceName != null" >
+        commonservice_name,
+      </if>
+      <if test="productServicetype != null" >
+        product_servicetype,
+      </if>
+      <if test="productUnit != null" >
+        product_unit,
+      </if>
+      <if test="productPrice != null" >
+        product_price,
+      </if>
+      <if test="productBeginDate != null" >
+        product_begin_date,
+      </if>
+      <if test="productEndDate != null" >
+        product_end_date,
+      </if>
+      <if test="productType != null" >
+        product_type,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="commonserviceId != null" >
+        #{commonserviceId,jdbcType=VARCHAR},
+      </if>
+      <if test="commonserviceName != null" >
+        #{commonserviceName,jdbcType=VARCHAR},
+      </if>
+      <if test="productServicetype != null" >
+        #{productServicetype,jdbcType=VARCHAR},
+      </if>
+      <if test="productUnit != null" >
+        #{productUnit,jdbcType=VARCHAR},
+      </if>
+      <if test="productPrice != null" >
+        #{productPrice,jdbcType=VARCHAR},
+      </if>
+      <if test="productBeginDate != null" >
+        #{productBeginDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="productEndDate != null" >
+        #{productEndDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="productType != null" >
+        #{productType,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.flf.entity.ProductCommonservice" >
+    update tc_product_commonservice
+    <set >
+      <if test="commonserviceName != null" >
+        commonservice_name = #{commonserviceName,jdbcType=VARCHAR},
+      </if>
+      <if test="productServicetype != null" >
+        product_servicetype = #{productServicetype,jdbcType=VARCHAR},
+      </if>
+      <if test="productUnit != null" >
+        product_unit = #{productUnit,jdbcType=VARCHAR},
+      </if>
+      <if test="productPrice != null" >
+        product_price = #{productPrice,jdbcType=VARCHAR},
+      </if>
+      <if test="productBeginDate != null" >
+        product_begin_date = #{productBeginDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="productEndDate != null" >
+        product_end_date = #{productEndDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="productType != null" >
+        product_type = #{productType,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where commonservice_id = #{commonserviceId,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.flf.entity.ProductCommonservice" >
+    update tc_product_commonservice
+    set commonservice_name = #{commonserviceName,jdbcType=VARCHAR},
+      product_servicetype = #{productServicetype,jdbcType=VARCHAR},
+      product_unit = #{productUnit,jdbcType=VARCHAR},
+      product_price = #{productPrice,jdbcType=VARCHAR},
+      product_begin_date = #{productBeginDate,jdbcType=TIMESTAMP},
+      product_end_date = #{productEndDate,jdbcType=TIMESTAMP},
+      product_type = #{productType,jdbcType=VARCHAR}
+    where commonservice_id = #{commonserviceId,jdbcType=VARCHAR}
+  </update>
+</mapper>

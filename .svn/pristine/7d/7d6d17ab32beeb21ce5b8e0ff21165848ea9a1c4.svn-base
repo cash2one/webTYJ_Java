@@ -1,0 +1,59 @@
+<!--
+    作者:彭婷婷
+    页面名称:个人评分记录表
+    js路径:js/controllers/externalProfession/personalScoreRecord
+-->
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>个人评分记录表</title>
+    <link rel="stylesheet" href="css/propertyService.css">
+</head>
+<body>
+<body>
+<div class="row">
+    <div class="complaint_user_list" style="margin: 10px 10px;">
+        <div class="row" style="margin-top: 10px">
+            <div class="col-md-2">
+                <img src="images/company/3506.png" style="width: 80px;height: 75px;margin-left: 30px">
+            </div>
+            <div class="col-md-10">
+                <div class="row">
+                    <div class="col-md-4">质检活动名称：清洁质检001</div>
+                    <div class="col-md-4">质检活动级别：部门质检</div>
+                    <div class="col-md-4">质检活动创建时间：2014-04-07</div>
+                </div>
+                <div class="row">
+                    <div class="col-md-4">质检活动周期：月检</div>
+                    <div class="col-md-4">质检活动标准：<a href="#">清洁质检标准表</a></div>
+                    <div class="col-md-4">创建人：张三三</div>
+                </div>
+                <div class="row">
+                    <div class="col-md-4">&nbsp;</div>
+                    <div class="col-md-4">质检区域：桃源居一区</div>
+                    <div class="col-md-4">质检时间：4月8日</div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="complaint_user_list" style="margin: 10px 10px;">
+        <div class="media-left" >
+            <div style="width: 150px;height:400px;border: 1px solid #000000;margin:20px;text-align: center">
+                <p style="margin-top: 20px"><a ui-sref="index.externalProfession.personalScoreRecord.page1">张三</a> </p>
+                <p><a ui-sref="index.externalProfession.personalScoreRecord.page2">李四</a> </p>
+                <p><a ui-sref="index.externalProfession.personalScoreRecord.page3">王五</a> </p>
+
+            </div>
+        </div>
+
+        <div class="media-right" style="width: 800px">
+            <div class="row">
+                <div ui-view></div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</body>
+</html>

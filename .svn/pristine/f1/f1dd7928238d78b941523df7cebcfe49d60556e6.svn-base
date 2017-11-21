@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.flf.mapper.ServiceObjectRecordsMapper" >
+  <resultMap id="BaseResultMap" type="ServiceObjectRecords" >
+    <id column="record_id" property="recordId" jdbcType="VARCHAR" />
+    <result column="service_request_id" property="serviceRequestId" jdbcType="VARCHAR" />
+    <result column="service_object_type" property="serviceObjectType" jdbcType="TINYINT" />
+    <result column="service_object_id" property="serviceObjectId" jdbcType="VARCHAR" />
+    <result column="criteria_id" property="criteriaId" jdbcType="VARCHAR" />
+  </resultMap>
+  
+ <resultMap type="ServiceObjectRecords" id="resultServiceObjectRecordsMap" extends="BaseResultMap">
+  	<association property="staff" column="service_object_id" select="com.flf.mapper.StaffMapper.findStaffBystaffId"></association>
+  	<association property="scoreCriteria" column="criteria_id" select="com.flf.mapper.ScoreCriteriaMapper.getScoreCriteriabyId"></association>
+  </resultMap>
+  
+  <select id="selectServiceRequest" resultMap="resultServiceObjectRecordsMap" parameterType="String">
+  	select * from ts_service_object_records where service_request_id=#{0}
+  </select>
+  
+ <delete id="deleteServiceObjectRecords" parameterType="String">
+  delete from ts_service_object_records where record_id=#{0}
+  </delete>
+  
+  <select id="getServiceObjectRecordsbyId" parameterType="String" resultMap="resultServiceObjectRecordsMap">
+  select * from ts_service_object_records where record_id=#{0}
+  </select>
+  
+  <select id="getServiceObjectRecordsbyServicereId" parameterType="String" resultMap="resultServiceObjectRecordsMap">
+  	select * from ts_service_object_records where service_request_id = #{0}
+  </select>
+  
+  <select id="getServiceObjectRecordsbyRequestAndStaff" parameterType="String" resultMap="resultServiceObjectRecordsMap">
+  	select * from ts_service_object_records where service_request_id=#{0} and service_object_id=#{1}
+  </select>
+  
+  <insert id="insertServiceObjectRecords" parameterType="ServiceObjectRecords" >
+     insert into ts_service_object_records (record_id,service_request_id, service_object_type,service_object_id,criteria_id)
+    values ( UUID(),#{serviceRequestId,jdbcType=TINYINT},#{serviceObjectType,jdbcType=TINYINT},#{serviceObjectId,jdbcType=VARCHAR},#{criteriaId,jdbcType=VARCHAR})
+  </insert>
+ 
+  <update id="updateServiceObjectRecords" parameterType="ServiceObjectRecords" >
+    update ts_service_object_records
+    set service_request_id = #{serviceRequestId,jdbcType=VARCHAR},
+      service_object_type = #{serviceObjectType,jdbcType=TINYINT},
+      service_object_id = #{serviceObjectId,jdbcType=VARCHAR},
+      criteria_id = #{criteriaId,jdbcType=VARCHAR}
+    where record_id = #{recordId,jdbcType=VARCHAR}
+  </update>
+</mapper>

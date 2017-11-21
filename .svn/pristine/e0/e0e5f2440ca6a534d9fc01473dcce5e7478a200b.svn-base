@@ -1,0 +1,28 @@
+<!--
+    pageName:【车辆管理】物业服务人员主页
+    Author:钟加诚
+   jsPath:js/controllers/propertyService/vehicleManagement.js
+   最后修改时间：2015/5/28
+   -->
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>车辆管理</title>
+</head>
+<body ng-controller="vehicleCtrl">
+<div class="complaint_user_list ">
+    <!--导航条-->
+    <div style="padding:5px 10px 0">
+        <div class="complaint_user_info_navigation">
+            <a class="btn" ui-sref="index.propertyService.staffHome.vehicleManagement.vehicleManagementAdd">新增车辆</a>
+            <a class="btn" ui-sref="index.propertyService.staffHome.vehicleManagement.vehicleManagementCheck">车辆登记记录</a>
+        </div>
+        <div class="clear"></div>
+    </div>
+    <div class="row" style="padding:5px 10px 0">
+        <div ui-view></div>
+    </div>
+</div>
+</body>
+</html>

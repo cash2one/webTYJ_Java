@@ -1,0 +1,804 @@
+package com.flf.service.impl;
+
+import java.math.BigDecimal;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
+import java.util.UUID;
+
+import javax.script.ScriptEngine;
+import javax.script.ScriptEngineManager;
+
+import net.sf.json.JSONObject;
+
+import org.apache.commons.lang.StringUtils;
+import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+
+import com.flf.entity.Bill;
+import com.flf.entity.BillingRecord;
+import com.flf.entity.BuildingStructureNew;
+import com.flf.entity.ChargeItemNew;
+import com.flf.entity.ChargeItemNewBuilding;
+import com.flf.entity.ChargeItemNewDetails;
+import com.flf.entity.ChargeTypeBuildingBilling;
+import com.flf.entity.ChargeTypeDetails;
+import com.flf.entity.ChargeTypeDetailsBuildingBilling;
+import com.flf.entity.ChargeTypeProjectBilling;
+import com.flf.entity.DataDictionarySlave;
+import com.flf.entity.Formula;
+import com.flf.entity.MeterReadingData;
+import com.flf.entity.ProjectBilling;
+import com.flf.entity.Scheme;
+import com.flf.mapper.BillMapper;
+import com.flf.mapper.BillingRecordMapper;
+import com.flf.mapper.BuildingStructureNewMapper;
+import com.flf.mapper.ChargeItemNewBuildingMapper;
+import com.flf.mapper.ChargeItemNewDetailsMapper;
+import com.flf.mapper.ChargeItemNewMapper;
+import com.flf.mapper.ChargeTypeBuildingBillingMapper;
+import com.flf.mapper.ChargeTypeDetailsBuildingBillingMapper;
+import com.flf.mapper.ChargeTypeDetailsMapper;
+import com.flf.mapper.ChargeTypeProjectBillingMapper;
+import com.flf.mapper.FormulaMapper;
+import com.flf.mapper.ProjectBillingMapper;
+import com.flf.mapper.SchemeMapper;
+import com.flf.service.BillService;
+import com.flf.service.ChargeTypeDetailsBuildingBillingService;
+import com.flf.service.DataDictionarySlaveService;
+import com.flf.service.MeterReadingDataService;
+import com.flf.service.ProductCommonserviceService;
+import com.flf.util.ArithUtils;
+import com.flf.util.DateUtil;
+import com.flf.util.Tools;
+/**
+ * @author maogaofei
+ * @date 2016年7月9日 下午2:47:03
+ */
+public class ChargeTypeDetailsBuildingBillingServiceImpl implements ChargeTypeDetailsBuildingBillingService {
+	
+	private ChargeTypeDetailsBuildingBillingMapper chargeTypeDetailsBuildingBillingMapper;
+	@Autowired
+	private ChargeTypeDetailsMapper chargeTypeDetailsMapper;
+	@Autowired
+	private SchemeMapper schemeMapper;
+	@Autowired
+	private ChargeItemNewMapper chargeItemNewMapper;
+	@Autowired
+	private ChargeItemNewBuildingMapper chargeItemNewBuildingMapper;
+	@Autowired
+	private BuildingStructureNewMapper buildingStructureNewMapper;
+	@Autowired
+	private ChargeItemNewDetailsMapper chargeItemNewDetailsMapper;
+	@Autowired
+	private FormulaMapper formulaMapper;
+	@Autowired
+	private DataDictionarySlaveService dataDictionarySlaveService;
+	@Autowired
+	private ChargeTypeBuildingBillingMapper chargeTypeBuildingBillingMapper;
+	@Autowired
+	private ChargeTypeProjectBillingMapper chargeTypeProjectBillingMapper;
+	@Autowired
+	private ProjectBillingMapper projectBillingMapper;
+	@Autowired
+	private BillingRecordMapper billingRecordMapper;
+	@Autowired
+	private MeterReadingDataService meterReadingDataService;
+	@Autowired
+	private BillMapper billMapper;
+	@Autowired
+	private BillService billService;
+	@Autowired
+	private ProductCommonserviceService productCommonserviceService;
+	
+	private static final Logger log = Logger.getLogger(ChargeTypeDetailsBuildingBillingServiceImpl.class);
+
+	public ChargeTypeDetailsBuildingBillingMapper getChargeTypeDetailsBuildingBillingMapper() {
+		return chargeTypeDetailsBuildingBillingMapper;
+	}
+
+	public void setChargeTypeDetailsBuildingBillingMapper(
+			ChargeTypeDetailsBuildingBillingMapper chargeTypeDetailsBuildingBillingMapper) {
+		this.chargeTypeDetailsBuildingBillingMapper = chargeTypeDetailsBuildingBillingMapper;
+	}
+
+	@Override
+	public List<ChargeTypeDetailsBuildingBilling> listAllChargeTypeDetailsBuildingBilling(
+			ChargeTypeDetailsBuildingBilling chargeTypeDetailsBuildingBilling) {
+		List<ChargeTypeDetailsBuildingBilling> list = chargeTypeDetailsBuildingBillingMapper.listAllChargeTypeDetailsBuildingBilling(chargeTypeDetailsBuildingBilling);
+		for(ChargeTypeDetailsBuildingBilling cdbb:list){
+			ChargeTypeDetails chargeTypeDetails = chargeTypeDetailsMapper.selectByPrimaryKey(cdbb.getChargeTypeDetailsId());
+			cdbb.setChargeTypeDetailsName(chargeTypeDetails.getChargeTypeDetailsName());
+			cdbb.setChargeTypeDetailsNum(chargeTypeDetails.getChargeTypeDetailsNum());
+		}
+		return list;
+	}
+
+	@Override
+	public void manualBilling(String projectId,String schemeIds) {
+		if (!Tools.isEmpty(schemeIds)) {
+			Date newDate = new Date();
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM");
+			String billingMonth = sdf.format(newDate);//计费日期
+			Calendar cal = Calendar.getInstance(); 
+		    cal.add(Calendar.MONTH, -1);//获取上个月月份
+			String month = sdf.format(cal.getTime());//计费月份
+			
+			ProjectBilling pb = new ProjectBilling();
+			pb.setProjectId(projectId);
+			pb.setMonth(month);
+			List<ProjectBilling> projectBillingList = projectBillingMapper.listPageProjectBilling(pb);
+			
+			ProjectBilling projectBilling = new ProjectBilling(); 
+			if(projectBillingList.size()>0){
+				projectBilling = projectBillingList.get(0);
+			}else{
+				String projectBillingId = UUID.randomUUID().toString();//项目计费ID
+				projectBilling.setProjectBillingId(projectBillingId);
+				projectBilling.setAmount(BigDecimal.valueOf(0));//项目计费金额
+				projectBilling.setProjectId(projectId);
+				projectBilling.setMonth(month);
+			}
+			
+			BigDecimal b_projectBillingAmount = projectBilling.getAmount();//项目计费金额
+			String[] array = schemeIds.split(",");
+			for (int i = 0 ; i < array.length; i++) {
+				Scheme scheme = schemeMapper.selectByPrimaryKey(array[i]);
+				ChargeItemNew chargeItemNew = new ChargeItemNew();
+				chargeItemNew.setSchemeId(scheme.getSchemeId());
+				List<ChargeItemNew> chargeItemNewList = chargeItemNewMapper.listAllChargeItemNew(chargeItemNew);
+				String chargeTypeProjectBillingId = UUID.randomUUID().toString();//收费类型项目计费ID
+				BigDecimal b_ctProjectBillAmount = BigDecimal.valueOf(0);
+				
+				for(ChargeItemNew cin:chargeItemNewList){//收费项目列表
+					ChargeItemNewDetails chargeItemNewDetails = new ChargeItemNewDetails();
+					chargeItemNewDetails.setChargeItemNewId(cin.getChargeItemNewId());
+					List<ChargeItemNewDetails> cinDetailsList = chargeItemNewDetailsMapper.listAllChargeItemNewDetails(chargeItemNewDetails);
+					
+					ChargeItemNewBuilding chargeItemNewBuilding = new ChargeItemNewBuilding();
+					chargeItemNewBuilding.setChargeItemNewId(cin.getChargeItemNewId());
+					List<ChargeItemNewBuilding> cinbList = chargeItemNewBuildingMapper.listAllChargeItemNewBuilding(chargeItemNewBuilding);
+					for(ChargeItemNewBuilding cinb:cinbList){//收费项目建筑关系列表
+						String chargeTypeBuildingBillingId = UUID.randomUUID().toString();
+						BigDecimal ctBuildBillAmount = BigDecimal.valueOf(0);
+						String buildingId = cinb.getBuildingId();
+						BuildingStructureNew buildingStructureNew = buildingStructureNewMapper.getBuildingStructureNewbyId(buildingId);
+						
+						MeterReadingData meterReadingData = new MeterReadingData();
+						meterReadingData.setBuildingStructureId(buildingId);
+						
+						Calendar calendar = Calendar.getInstance(); 
+						calendar.add(Calendar.MONTH, -1);//获取上个月月份
+						try {
+							meterReadingData.setSpecifiedDate(sdf.parse(sdf.format(calendar.getTime())));
+						} catch (ParseException e) {
+							e.printStackTrace();
+						}
+						Double d_waterSum =  meterReadingDataService.getWaterMeterUsage(meterReadingData);
+						String waterSumStr = d_waterSum.toString();//用水量
+						String electricSumStr = "0";//用电量
+						String buildAreaStr = "0";//建筑面积
+						String rTBuildAreaStr = "0";//使用范围总建筑面积
+						String totalInAreaStr = "0";//总套内面积
+						String totalCompAreaStr = "0";//总竣工面积
+						if(buildingStructureNew.getBuildingArea() != null){
+							buildAreaStr = buildingStructureNew.getBuildingArea().toString();//建筑面积
+						}
+						
+						for(ChargeItemNewDetails cinDetails:cinDetailsList){//收费项目详情列表
+							ChargeTypeDetailsBuildingBilling chargeTypeDetailsBuildingBilling = new ChargeTypeDetailsBuildingBilling();
+							String chargeTypeDetailsBuildingBillingId = UUID.randomUUID().toString();
+							chargeTypeDetailsBuildingBilling.setChargeTypeDetailsBuildingBillingId(chargeTypeDetailsBuildingBillingId);
+							chargeTypeDetailsBuildingBilling.setChargeTypeBuildingBillingId(chargeTypeBuildingBillingId);
+							chargeTypeDetailsBuildingBilling.setChargeTypeDetailsId(cinDetails.getChargeTypeDetailsId());
+							chargeTypeDetailsBuildingBilling.setChargeItemDetailsId(cinDetails.getChargeItemDetailsId());
+							//获取收费类型详情建筑计费金额
+							BigDecimal b_amount = getAmount(cinDetails.getChargeItemDetailsId(),waterSumStr,electricSumStr,buildAreaStr,
+									rTBuildAreaStr,totalInAreaStr,totalCompAreaStr,scheme.getProjectId());
+							chargeTypeDetailsBuildingBilling.setAmount(b_amount);
+							chargeTypeDetailsBuildingBilling.setStatus("00");//00-未出账，01-已出账
+							chargeTypeDetailsBuildingBilling.setCreateTime(DateUtil.getToday("yyyy-MM-dd HH:mm:ss"));
+							chargeTypeDetailsBuildingBilling.setUpdateTime(DateUtil.getToday("yyyy-MM-dd HH:mm:ss"));
+							chargeTypeDetailsBuildingBilling.setBillingTime(DateUtil.getToday("yyyy-MM-dd HH:mm:ss"));
+							chargeTypeDetailsBuildingBillingMapper.insertSelective(chargeTypeDetailsBuildingBilling);
+							
+							BillingRecord billingRecord = new BillingRecord();//计费记录
+							billingRecord.setBillingRecordId(UUID.randomUUID().toString());
+							billingRecord.setProjectId(projectId);
+							billingRecord.setBuildingId(buildingId);
+							billingRecord.setChargeTypeDetailsId(cinDetails.getChargeTypeDetailsId());
+							billingRecord.setChargeTypeDetailsBuildingBillingId(chargeTypeDetailsBuildingBillingId);
+							billingRecord.setBillingTime(DateUtil.getToday("yyyy-MM-dd HH:mm"));
+							billingRecord.setAmount(b_amount);
+							billingRecord.setCreateTime(DateUtil.getToday("yyyy-MM-dd HH:mm:ss"));
+							billingRecord.setUpdateTime(DateUtil.getToday("yyyy-MM-dd HH:mm:ss"));
+							billingRecordMapper.insertSelective(billingRecord);
+							ctBuildBillAmount = ctBuildBillAmount.add(b_amount);
+						}
+						ChargeTypeBuildingBilling chargeTypeBuildingBilling = new ChargeTypeBuildingBilling();
+						chargeTypeBuildingBilling.setChargeTypeBuildingBillingId(chargeTypeBuildingBillingId);
+						chargeTypeBuildingBilling.setChargeTypeProjectBillingId(chargeTypeProjectBillingId);
+						chargeTypeBuildingBilling.setChargeTypeId(scheme.getChargeTypeId());
+						chargeTypeBuildingBilling.setBuildingId(buildingId);
+						chargeTypeBuildingBilling.setBillingMonth(billingMonth);
+						chargeTypeBuildingBilling.setAmount(ctBuildBillAmount);
+						chargeTypeBuildingBilling.setStatus("00");//00-未出账，01-已出账
+						chargeTypeBuildingBilling.setCreateTime(DateUtil.getToday("yyyy-MM-dd HH:mm:ss"));
+						chargeTypeBuildingBilling.setUpdateTime(DateUtil.getToday("yyyy-MM-dd HH:mm:ss"));
+						chargeTypeBuildingBilling.setBillingTime(DateUtil.getToday("yyyy-MM-dd HH:mm:ss"));
+						chargeTypeBuildingBillingMapper.insertSelective(chargeTypeBuildingBilling);
+						b_ctProjectBillAmount = b_ctProjectBillAmount.add(ctBuildBillAmount);
+					}
+				}
+				ChargeTypeProjectBilling chargeTypeProjectBilling = new ChargeTypeProjectBilling();
+				chargeTypeProjectBilling.setChargeTypeProjectBillingId(chargeTypeProjectBillingId);
+				chargeTypeProjectBilling.setAmount(b_ctProjectBillAmount);
+				chargeTypeProjectBilling.setProjectBillingId(projectBilling.getProjectBillingId());
+				chargeTypeProjectBilling.setChargeTypeId(scheme.getChargeTypeId());
+				chargeTypeProjectBilling.setBillingMonth(billingMonth);
+				chargeTypeProjectBilling.setStatus("00");//00-未出账，01-已出账
+				chargeTypeProjectBilling.setCreateTime(DateUtil.getToday("yyyy-MM-dd HH:mm:ss"));
+				chargeTypeProjectBilling.setUpdateTime(DateUtil.getToday("yyyy-MM-dd HH:mm:ss"));
+				chargeTypeProjectBilling.setBillingTime(DateUtil.getToday("yyyy-MM-dd HH:mm:ss"));
+				chargeTypeProjectBillingMapper.insertSelective(chargeTypeProjectBilling);
+				b_projectBillingAmount = b_projectBillingAmount.add(b_ctProjectBillAmount);
+			}
+			projectBilling.setStatus("00");//00-未出账，01-已出账
+			if(projectBillingList.size()>0){
+				projectBilling.setBillingMonth(billingMonth);
+				projectBilling.setAmount(b_projectBillingAmount);
+				projectBillingMapper.updateByPrimaryKeySelective(projectBilling);
+			}else{
+				projectBilling.setBillingMonth(billingMonth);
+				projectBilling.setAmount(b_projectBillingAmount);
+				projectBillingMapper.insertSelective(projectBilling);
+			}
+		}
+	}
+	/**
+	 * 计算收费类型详情建筑计费金额
+	 * @author maogaofei
+	 * @date 2016年7月11日 下午5:19:35
+	 * @param chargeItemNewDetailsId 收费项目详情ID
+	 * @param waterSumStr 用水量
+	 * @param electricSumStr  用电量
+	 * @param buildAreaStr  建筑面积
+	 * @param rTBuildAreaStr  使用范围总建筑面积
+	 * @param totalInAreaStr  总套内面积
+	 * @param totalCompAreaStr  总竣工面积
+	 * @param projectId  项目ID
+	 * @return
+	 */
+	public BigDecimal getAmount(String chargeItemNewDetailsId,String waterSumStr,String electricSumStr,String buildAreaStr,
+			String rTBuildAreaStr,String totalInAreaStr,String totalCompAreaStr,String projectId){
+		ScriptEngine jse = new ScriptEngineManager().getEngineByName("JavaScript"); 
+		Formula formula = new Formula();
+		formula.setChargeItemDetailsId(chargeItemNewDetailsId);
+		List<Formula> formulaList = formulaMapper.listAllFormula(formula);
+		
+		ChargeItemNewDetails chargeItemNewDetails = chargeItemNewDetailsMapper.selectByPrimaryKey(chargeItemNewDetailsId);
+		ChargeItemNew chargeItemNew = chargeItemNewMapper.selectByPrimaryKey(chargeItemNewDetails.getChargeItemNewId());
+		rTBuildAreaStr = chargeItemNew.getUseRangeTotalBuildArea().toString();
+		String amountStr = "0";
+		for(Formula fm:formulaList){
+			String conditionExpression = fm.getConditionExpression();
+			String formulaExpression = fm.getFormulaExpression();
+			List<DataDictionarySlave> variableList = dataDictionarySlaveService.getDataDictionarySlaveRes("variable", projectId);
+			for(DataDictionarySlave dds:variableList){
+				if("waterSum".equals(dds.getSlaveName())){
+					conditionExpression = conditionExpression.replaceAll(dds.getSlaveName(), waterSumStr);
+					formulaExpression = formulaExpression.replaceAll(dds.getSlaveName(), waterSumStr);
+				}
+				if("electricSum".equals(dds.getSlaveName())){
+					conditionExpression = conditionExpression.replaceAll(dds.getSlaveName(), electricSumStr);
+					formulaExpression = formulaExpression.replaceAll(dds.getSlaveName(), electricSumStr);
+				}
+				if("buildArea".equals(dds.getSlaveName())){
+					conditionExpression = conditionExpression.replaceAll(dds.getSlaveName(), buildAreaStr);
+					formulaExpression = formulaExpression.replaceAll(dds.getSlaveName(), buildAreaStr);
+				}
+				if("RTBuildArea".equals(dds.getSlaveName())){
+					conditionExpression = conditionExpression.replaceAll(dds.getSlaveName(), rTBuildAreaStr);
+					formulaExpression = formulaExpression.replaceAll(dds.getSlaveName(), rTBuildAreaStr);
+				}
+				if("TotalInArea".equals(dds.getSlaveName())){
+					conditionExpression = conditionExpression.replaceAll(dds.getSlaveName(), totalInAreaStr);
+					formulaExpression = formulaExpression.replaceAll(dds.getSlaveName(), totalInAreaStr);
+				}
+				if("TotalCompArea".equals(dds.getSlaveName())){
+					conditionExpression = conditionExpression.replaceAll(dds.getSlaveName(), totalCompAreaStr);
+					formulaExpression = formulaExpression.replaceAll(dds.getSlaveName(), totalCompAreaStr);
+				}
+			}
+			try{
+				if("".equals(conditionExpression) || null == conditionExpression){
+					amountStr = jse.eval(formulaExpression).toString();
+				}else{
+					if("true".equals(jse.eval(conditionExpression).toString())){
+						amountStr = jse.eval(formulaExpression).toString();
+					}
+				}
+				
+			}catch (Exception e) {
+				 log.error("公式运算错误！"); 
+			}
+		}
+		BigDecimal b_amount = new BigDecimal(amountStr);
+		b_amount.setScale(2, BigDecimal.ROUND_UP);
+		return b_amount;
+	}
+
+	@Override
+	public void reBilling(String projectBillingIds) {
+		if (!Tools.isEmpty(projectBillingIds)) {
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM");
+			String[] array = projectBillingIds.split(",");
+			for(int i = 0 ; i < array.length; i++) {
+				ProjectBilling projectBilling = projectBillingMapper.selectByPrimaryKey(array[i]);
+				String projectId = projectBilling.getProjectId();
+				String monthStr = projectBilling.getMonth();
+				ChargeTypeProjectBilling chargeTypeProjectBilling = new ChargeTypeProjectBilling();
+				chargeTypeProjectBilling.setProjectBillingId(projectBilling.getProjectBillingId());
+				List<ChargeTypeProjectBilling> chargeTypeProjectBillingList = chargeTypeProjectBillingMapper.listAllChargeTypeProjectBilling(chargeTypeProjectBilling);
+				BigDecimal b_projectBillingAmount = BigDecimal.valueOf(0);
+				for(ChargeTypeProjectBilling ctpb:chargeTypeProjectBillingList){//收费类型项目计费列表
+					ChargeTypeBuildingBilling chargeTypeBuildingBilling = new ChargeTypeBuildingBilling();
+					chargeTypeBuildingBilling.setChargeTypeProjectBillingId(ctpb.getChargeTypeProjectBillingId());
+					List<ChargeTypeBuildingBilling> ctbbList = chargeTypeBuildingBillingMapper.listAllChargeTypeBuildingBilling(chargeTypeBuildingBilling);
+					BigDecimal b_ctpbAmount = BigDecimal.valueOf(0);
+					for(ChargeTypeBuildingBilling ctbb:ctbbList){//收费类型建筑计费列表
+						BuildingStructureNew buildingStructureNew = buildingStructureNewMapper.getBuildingStructureNewbyId(ctbb.getBuildingId());
+						String buildingId = buildingStructureNew.getId();
+						
+						MeterReadingData meterReadingData = new MeterReadingData();
+						meterReadingData.setBuildingStructureId(buildingId);
+						try{
+							meterReadingData.setSpecifiedDate(sdf.parse(monthStr));
+						} catch (ParseException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+						Double d_waterSum =  meterReadingDataService.getWaterMeterUsage(meterReadingData);
+						String waterSumStr = d_waterSum.toString();//用水量
+						String electricSumStr = "0";//用电量
+						String buildAreaStr = "0";//建筑面积
+						String rTBuildAreaStr = "0";//使用范围总建筑面积
+						String totalInAreaStr = "0";//总套内面积
+						String totalCompAreaStr = "0";//总竣工面积
+						if(buildingStructureNew.getBuildingArea() != null){
+							buildAreaStr = buildingStructureNew.getBuildingArea().toString();//建筑面积
+						}
+						
+						ChargeTypeDetailsBuildingBilling ctdbb = new ChargeTypeDetailsBuildingBilling();
+						ctdbb.setChargeTypeBuildingBillingId(ctbb.getChargeTypeBuildingBillingId());
+						List<ChargeTypeDetailsBuildingBilling> ctdbbList = chargeTypeDetailsBuildingBillingMapper.listAllChargeTypeDetailsBuildingBilling(ctdbb);
+						BigDecimal ctbbAmount = BigDecimal.valueOf(0);
+						for(ChargeTypeDetailsBuildingBilling ctdbBilling:ctdbbList){//收费类型详情建筑计费列表
+							BigDecimal b_amount = getAmount(ctdbBilling.getChargeItemDetailsId(), waterSumStr, electricSumStr, buildAreaStr, 
+									rTBuildAreaStr,totalInAreaStr,totalCompAreaStr,projectId);
+							ctdbBilling.setAmount(b_amount);
+							ctdbBilling.setUpdateTime(DateUtil.getToday("yyyy-MM-dd HH:mm:ss"));
+							ctdbBilling.setBillingTime(DateUtil.getToday("yyyy-MM-dd HH:mm:ss"));
+							chargeTypeDetailsBuildingBillingMapper.updateByPrimaryKeySelective(ctdbBilling);
+							ctbbAmount = ctbbAmount.add(b_amount);
+							
+							BillingRecord billingRecord = new BillingRecord();
+							billingRecord.setBillingRecordId(UUID.randomUUID().toString());
+							billingRecord.setProjectId(projectId);
+							billingRecord.setBuildingId(buildingId);
+							billingRecord.setChargeTypeDetailsId(ctdbBilling.getChargeTypeDetailsId());
+							billingRecord.setChargeTypeDetailsBuildingBillingId(ctdbBilling.getChargeTypeDetailsBuildingBillingId());
+							billingRecord.setBillingTime(DateUtil.getToday("yyyy-MM-dd HH:mm"));
+							billingRecord.setAmount(b_amount);
+							billingRecord.setCreateTime(DateUtil.getToday("yyyy-MM-dd HH:mm:ss"));
+							billingRecord.setUpdateTime(DateUtil.getToday("yyyy-MM-dd HH:mm:ss"));
+							billingRecordMapper.insertSelective(billingRecord);
+							
+						}
+						ctbb.setAmount(ctbbAmount);
+						ctbb.setBillingMonth(DateUtil.getToday("yyyy-MM"));
+						ctbb.setBillingTime(DateUtil.getToday("yyyy-MM-dd HH:mm:ss"));
+						ctbb.setUpdateTime(DateUtil.getToday("yyyy-MM-dd HH:mm:ss"));
+						chargeTypeBuildingBillingMapper.updateByPrimaryKeySelective(ctbb);
+						b_ctpbAmount = b_ctpbAmount.add(ctbbAmount);
+					}
+					ctpb.setAmount(b_ctpbAmount);
+					ctpb.setBillingMonth(DateUtil.getToday("yyyy-MM"));
+					ctpb.setBillingTime(DateUtil.getToday("yyyy-MM-dd HH:mm:ss"));
+					ctpb.setUpdateTime(DateUtil.getToday("yyyy-MM-dd HH:mm:ss"));
+					chargeTypeProjectBillingMapper.updateByPrimaryKeySelective(ctpb);
+					b_projectBillingAmount = b_projectBillingAmount.add(b_ctpbAmount);
+				}
+				projectBilling.setAmount(b_projectBillingAmount);
+				projectBilling.setBillingMonth(DateUtil.getToday("yyyy-MM"));
+				projectBilling.setBillingTime(DateUtil.getToday("yyyy-MM-dd HH:mm:ss"));
+				projectBilling.setUpdateTime(DateUtil.getToday("yyyy-MM-dd HH:mm:ss"));
+				projectBillingMapper.updateByPrimaryKeySelective(projectBilling);
+			}
+		}
+	}
+
+	@Override
+	public void reChargeTypeProjectBilling(String chargeTypeProjectBillingIds) {
+		if (!Tools.isEmpty(chargeTypeProjectBillingIds)) {
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM");
+			String[] array = chargeTypeProjectBillingIds.split(",");
+			ProjectBilling projectBilling = new ProjectBilling();
+			for(int i = 0 ; i < array.length; i++) {
+				ChargeTypeProjectBilling chargeTypeProjectBilling = chargeTypeProjectBillingMapper.selectByPrimaryKey(array[i]);
+				projectBilling = projectBillingMapper.selectByPrimaryKey(chargeTypeProjectBilling.getProjectBillingId());
+				ChargeTypeBuildingBilling chargeTypeBuildingBilling = new ChargeTypeBuildingBilling();
+				chargeTypeBuildingBilling.setChargeTypeProjectBillingId(chargeTypeProjectBilling.getChargeTypeProjectBillingId());
+				List<ChargeTypeBuildingBilling> ctbbList = chargeTypeBuildingBillingMapper.listAllChargeTypeBuildingBilling(chargeTypeBuildingBilling);
+				BigDecimal b_ctpbAmount = BigDecimal.valueOf(0);//收费类型项目计费金额
+				for(ChargeTypeBuildingBilling ctbb:ctbbList){//收费类型建筑计费列表
+					BuildingStructureNew buildingStructureNew = buildingStructureNewMapper.getBuildingStructureNewbyId(ctbb.getBuildingId());
+					String buildingId = buildingStructureNew.getId();
+					
+					MeterReadingData meterReadingData = new MeterReadingData();
+					meterReadingData.setBuildingStructureId(buildingId);
+					try{
+						meterReadingData.setSpecifiedDate(sdf.parse(projectBilling.getMonth()));
+					} catch (ParseException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+					Double d_waterSum =  meterReadingDataService.getWaterMeterUsage(meterReadingData);
+					String waterSumStr = d_waterSum.toString();//用水量
+					String electricSumStr = "0";//用电量
+					String buildAreaStr = "0";//建筑面积
+					String rTBuildAreaStr = "0";//使用范围总建筑面积
+					String totalInAreaStr = "0";//总套内面积
+					String totalCompAreaStr = "0";//总竣工面积
+					if(buildingStructureNew.getBuildingArea() != null){
+						buildAreaStr = buildingStructureNew.getBuildingArea().toString();//建筑面积
+					}
+					
+					ChargeTypeDetailsBuildingBilling ctdbb = new ChargeTypeDetailsBuildingBilling();
+					ctdbb.setChargeTypeBuildingBillingId(ctbb.getChargeTypeBuildingBillingId());
+					List<ChargeTypeDetailsBuildingBilling> ctdbbList = chargeTypeDetailsBuildingBillingMapper.listAllChargeTypeDetailsBuildingBilling(ctdbb);
+					BigDecimal ctbbAmount = BigDecimal.valueOf(0);
+					for(ChargeTypeDetailsBuildingBilling ctdbBilling:ctdbbList){//收费类型详情建筑计费列表
+						BigDecimal b_amount = getAmount(ctdbBilling.getChargeItemDetailsId(), waterSumStr, electricSumStr, buildAreaStr,
+								rTBuildAreaStr,totalInAreaStr,totalCompAreaStr,projectBilling.getProjectId());
+						ctdbBilling.setAmount(b_amount);
+						ctdbBilling.setUpdateTime(DateUtil.getToday("yyyy-MM-dd HH:mm:ss"));
+						ctdbBilling.setBillingTime(DateUtil.getToday("yyyy-MM-dd HH:mm:ss"));
+						chargeTypeDetailsBuildingBillingMapper.updateByPrimaryKeySelective(ctdbBilling);
+						ctbbAmount = ctbbAmount.add(b_amount);
+						
+						BillingRecord billingRecord = new BillingRecord();
+						billingRecord.setBillingRecordId(UUID.randomUUID().toString());
+						billingRecord.setProjectId(projectBilling.getProjectId());
+						billingRecord.setBuildingId(buildingId);
+						billingRecord.setChargeTypeDetailsId(ctdbBilling.getChargeTypeDetailsId());
+						billingRecord.setChargeTypeDetailsBuildingBillingId(ctdbBilling.getChargeTypeDetailsBuildingBillingId());
+						billingRecord.setBillingTime(DateUtil.getToday("yyyy-MM-dd HH:mm"));
+						billingRecord.setAmount(b_amount);
+						billingRecord.setCreateTime(DateUtil.getToday("yyyy-MM-dd HH:mm:ss"));
+						billingRecord.setUpdateTime(DateUtil.getToday("yyyy-MM-dd HH:mm:ss"));
+						billingRecordMapper.insertSelective(billingRecord);
+						
+					}
+					ctbb.setAmount(ctbbAmount);
+					ctbb.setBillingMonth(DateUtil.getToday("yyyy-MM"));
+					ctbb.setBillingTime(DateUtil.getToday("yyyy-MM-dd HH:mm:ss"));
+					ctbb.setUpdateTime(DateUtil.getToday("yyyy-MM-dd HH:mm:ss"));
+					chargeTypeBuildingBillingMapper.updateByPrimaryKeySelective(ctbb);
+					b_ctpbAmount = b_ctpbAmount.add(ctbbAmount);
+				}
+				chargeTypeProjectBilling.setAmount(b_ctpbAmount);
+				chargeTypeProjectBilling.setBillingMonth(DateUtil.getToday("yyyy-MM"));
+				chargeTypeProjectBilling.setBillingTime(DateUtil.getToday("yyyy-MM-dd HH:mm:ss"));
+				chargeTypeProjectBilling.setUpdateTime(DateUtil.getToday("yyyy-MM-dd HH:mm:ss"));
+				chargeTypeProjectBillingMapper.updateByPrimaryKeySelective(chargeTypeProjectBilling);
+			}
+			ChargeTypeProjectBilling ctpBilling = new ChargeTypeProjectBilling();
+			ctpBilling.setProjectBillingId(projectBilling.getProjectBillingId());
+			List<ChargeTypeProjectBilling> ctpBillingList = chargeTypeProjectBillingMapper.listAllChargeTypeProjectBilling(ctpBilling);
+			BigDecimal b_projectBillingAmount = BigDecimal.valueOf(0);
+			for(ChargeTypeProjectBilling chargeTypeProjectBilling:ctpBillingList){
+				b_projectBillingAmount = b_projectBillingAmount.add(chargeTypeProjectBilling.getAmount());
+			}
+			projectBilling.setAmount(b_projectBillingAmount);
+			projectBilling.setBillingMonth(DateUtil.getToday("yyyy-MM"));
+			projectBilling.setBillingTime(DateUtil.getToday("yyyy-MM-dd HH:mm:ss"));
+			projectBilling.setUpdateTime(DateUtil.getToday("yyyy-MM-dd HH:mm:ss"));
+			projectBillingMapper.updateByPrimaryKeySelective(projectBilling);
+		}
+	}
+
+	@Override
+	public void reChargeTypeBuildingBilling(String chargeTypeBuildingBillingIds) {
+		if (!Tools.isEmpty(chargeTypeBuildingBillingIds)) {
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM");
+			String[] array = chargeTypeBuildingBillingIds.split(",");
+			ProjectBilling projectBilling = new ProjectBilling();
+			ChargeTypeProjectBilling chargeTypeProjectBilling = new ChargeTypeProjectBilling();
+			if(array.length>0){
+				ChargeTypeBuildingBilling ctbb = chargeTypeBuildingBillingMapper.selectByPrimaryKey(array[0]);
+				chargeTypeProjectBilling = chargeTypeProjectBillingMapper.selectByPrimaryKey(ctbb.getChargeTypeProjectBillingId());
+				projectBilling = projectBillingMapper.selectByPrimaryKey(chargeTypeProjectBilling.getProjectBillingId());
+			}
+			
+			for(int i = 0 ; i < array.length; i++) {
+				ChargeTypeBuildingBilling ctbb = chargeTypeBuildingBillingMapper.selectByPrimaryKey(array[i]);
+				BuildingStructureNew buildingStructureNew = buildingStructureNewMapper.getBuildingStructureNewbyId(ctbb.getBuildingId());
+				String buildingId = buildingStructureNew.getId();
+				
+				MeterReadingData meterReadingData = new MeterReadingData();
+				meterReadingData.setBuildingStructureId(buildingId);
+				try{
+					meterReadingData.setSpecifiedDate(sdf.parse(projectBilling.getMonth()));
+				} catch (ParseException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				Double d_waterSum =  meterReadingDataService.getWaterMeterUsage(meterReadingData);
+				String waterSumStr = d_waterSum.toString();//用水量
+				String electricSumStr = "0";//用电量
+				String buildAreaStr = "0";//建筑面积
+				String rTBuildAreaStr = "0";//使用范围总建筑面积
+				String totalInAreaStr = "0";//总套内面积
+				String totalCompAreaStr = "0";//总竣工面积
+				if(buildingStructureNew.getBuildingArea() != null){
+					buildAreaStr = buildingStructureNew.getBuildingArea().toString();//建筑面积
+				}
+				
+				ChargeTypeDetailsBuildingBilling ctdbb = new ChargeTypeDetailsBuildingBilling();
+				ctdbb.setChargeTypeBuildingBillingId(ctbb.getChargeTypeBuildingBillingId());
+				List<ChargeTypeDetailsBuildingBilling> ctdbbList = chargeTypeDetailsBuildingBillingMapper.listAllChargeTypeDetailsBuildingBilling(ctdbb);
+				BigDecimal ctbbAmount = BigDecimal.valueOf(0);
+				for(ChargeTypeDetailsBuildingBilling ctdbBilling:ctdbbList){//收费类型详情建筑计费列表
+					BigDecimal b_amount = getAmount(ctdbBilling.getChargeItemDetailsId(), waterSumStr, electricSumStr, buildAreaStr, 
+							rTBuildAreaStr,totalInAreaStr,totalCompAreaStr,projectBilling.getProjectId());
+					ctdbBilling.setAmount(b_amount);
+					ctdbBilling.setUpdateTime(DateUtil.getToday("yyyy-MM-dd HH:mm:ss"));
+					ctdbBilling.setBillingTime(DateUtil.getToday("yyyy-MM-dd HH:mm:ss"));
+					chargeTypeDetailsBuildingBillingMapper.updateByPrimaryKeySelective(ctdbBilling);
+					ctbbAmount = ctbbAmount.add(b_amount);
+					
+					BillingRecord billingRecord = new BillingRecord();
+					billingRecord.setBillingRecordId(UUID.randomUUID().toString());
+					billingRecord.setProjectId(projectBilling.getProjectId());
+					billingRecord.setBuildingId(buildingId);
+					billingRecord.setChargeTypeDetailsId(ctdbBilling.getChargeTypeDetailsId());
+					billingRecord.setChargeTypeDetailsBuildingBillingId(ctdbBilling.getChargeTypeDetailsBuildingBillingId());
+					billingRecord.setBillingTime(DateUtil.getToday("yyyy-MM-dd HH:mm"));
+					billingRecord.setAmount(b_amount);
+					billingRecord.setCreateTime(DateUtil.getToday("yyyy-MM-dd HH:mm:ss"));
+					billingRecord.setUpdateTime(DateUtil.getToday("yyyy-MM-dd HH:mm:ss"));
+					billingRecordMapper.insertSelective(billingRecord);
+				}
+				ctbb.setAmount(ctbbAmount);
+				ctbb.setBillingMonth(DateUtil.getToday("yyyy-MM"));
+				ctbb.setBillingTime(DateUtil.getToday("yyyy-MM-dd HH:mm:ss"));
+				ctbb.setUpdateTime(DateUtil.getToday("yyyy-MM-dd HH:mm:ss"));
+				chargeTypeBuildingBillingMapper.updateByPrimaryKeySelective(ctbb);
+			}
+			
+			ChargeTypeBuildingBilling CTBBilling = new ChargeTypeBuildingBilling();
+			CTBBilling.setChargeTypeProjectBillingId(chargeTypeProjectBilling.getChargeTypeProjectBillingId());
+			List<ChargeTypeBuildingBilling> ctbbList = chargeTypeBuildingBillingMapper.listAllChargeTypeBuildingBilling(CTBBilling);
+			BigDecimal b_chargeTypeProjectBillingAmount = BigDecimal.valueOf(0);
+			for(ChargeTypeBuildingBilling chargeTBBilling:ctbbList){
+				b_chargeTypeProjectBillingAmount = b_chargeTypeProjectBillingAmount.add(chargeTBBilling.getAmount());
+			}
+			chargeTypeProjectBilling.setAmount(b_chargeTypeProjectBillingAmount);
+			chargeTypeProjectBilling.setBillingMonth(DateUtil.getToday("yyyy-MM"));
+			chargeTypeProjectBilling.setBillingTime(DateUtil.getToday("yyyy-MM-dd HH:mm:ss"));
+			chargeTypeProjectBilling.setUpdateTime(DateUtil.getToday("yyyy-MM-dd HH:mm:ss"));
+			chargeTypeProjectBillingMapper.updateByPrimaryKeySelective(chargeTypeProjectBilling);
+			
+			ChargeTypeProjectBilling ctpBilling = new ChargeTypeProjectBilling();
+			ctpBilling.setProjectBillingId(projectBilling.getProjectBillingId());
+			List<ChargeTypeProjectBilling> ctpBillingList = chargeTypeProjectBillingMapper.listAllChargeTypeProjectBilling(ctpBilling);
+			BigDecimal b_projectBillingAmount = BigDecimal.valueOf(0);
+			for(ChargeTypeProjectBilling chargeTPBilling:ctpBillingList){
+				b_projectBillingAmount = b_projectBillingAmount.add(chargeTPBilling.getAmount());
+			}
+			projectBilling.setAmount(b_projectBillingAmount);
+			projectBilling.setBillingMonth(DateUtil.getToday("yyyy-MM"));
+			projectBilling.setBillingTime(DateUtil.getToday("yyyy-MM-dd HH:mm:ss"));
+			projectBilling.setUpdateTime(DateUtil.getToday("yyyy-MM-dd HH:mm:ss"));
+			projectBillingMapper.updateByPrimaryKeySelective(projectBilling);
+		}
+	}
+
+	@Override
+	public void confirmProjectBilling(String projectBillingIds) {
+		if (!Tools.isEmpty(projectBillingIds)) {
+			String[] array = projectBillingIds.split(",");
+			for(int i = 0 ; i < array.length; i++) {
+				ProjectBilling projectBilling = projectBillingMapper.selectByPrimaryKey(array[i]);
+				ChargeTypeProjectBilling chargeTypeProjectBilling = new ChargeTypeProjectBilling();
+				chargeTypeProjectBilling.setProjectBillingId(projectBilling.getProjectBillingId());
+				List<ChargeTypeProjectBilling> chargeTypeProjectBillingList = chargeTypeProjectBillingMapper.listAllChargeTypeProjectBilling(chargeTypeProjectBilling);
+				for(ChargeTypeProjectBilling ctpb:chargeTypeProjectBillingList){//收费类型项目计费列表
+					ChargeTypeBuildingBilling chargeTypeBuildingBilling = new ChargeTypeBuildingBilling();
+					chargeTypeBuildingBilling.setChargeTypeProjectBillingId(ctpb.getChargeTypeProjectBillingId());
+					List<ChargeTypeBuildingBilling> ctbbList = chargeTypeBuildingBillingMapper.listAllChargeTypeBuildingBilling(chargeTypeBuildingBilling);
+					for(ChargeTypeBuildingBilling ctbb:ctbbList){//收费类型建筑计费列表
+						createBill(ctbb,projectBilling.getProjectId(),ctpb.getChargeTypeId(),projectBilling.getMonth());//生成账单
+						ctbb.setStatus("01");//00-未出账，01-已出账
+						ctbb.setUpdateTime(DateUtil.getToday("yyyy-MM-dd HH:mm:ss"));
+						chargeTypeBuildingBillingMapper.updateByPrimaryKeySelective(ctbb);
+					}
+					ctpb.setStatus("01");//00-未出账，01-已出账
+					ctpb.setUpdateTime(DateUtil.getToday("yyyy-MM-dd HH:mm:ss"));
+					chargeTypeProjectBillingMapper.updateByPrimaryKeySelective(ctpb);
+				}
+				projectBilling.setStatus("01");//00-未出账，01-已出账
+				projectBilling.setUpdateTime("yyyy-MM-dd HH:mm:ss");
+				projectBillingMapper.updateByPrimaryKeySelective(projectBilling);
+			}
+		}
+	}
+
+	@Override
+	public void confirmChargeTypeProjectBilling(
+			String confirmChargeTypeProjectBillingIds) {
+		if (!Tools.isEmpty(confirmChargeTypeProjectBillingIds)) {
+			String[] array = confirmChargeTypeProjectBillingIds.split(",");
+			ProjectBilling projectBilling = new ProjectBilling();
+			if(array.length>0){
+				ChargeTypeProjectBilling ctpb = chargeTypeProjectBillingMapper.selectByPrimaryKey(array[0]);
+				projectBilling = projectBillingMapper.selectByPrimaryKey(ctpb.getProjectBillingId());
+			}
+			for(int i = 0 ; i < array.length; i++) {
+				ChargeTypeProjectBilling ctpb = chargeTypeProjectBillingMapper.selectByPrimaryKey(array[i]);
+				ChargeTypeBuildingBilling chargeTypeBuildingBilling = new ChargeTypeBuildingBilling();
+				chargeTypeBuildingBilling.setChargeTypeProjectBillingId(ctpb.getChargeTypeProjectBillingId());
+				List<ChargeTypeBuildingBilling> ctbbList = chargeTypeBuildingBillingMapper.listAllChargeTypeBuildingBilling(chargeTypeBuildingBilling);
+				for(ChargeTypeBuildingBilling ctbb:ctbbList){//收费类型建筑计费列表
+					createBill(ctbb,projectBilling.getProjectId(),ctpb.getChargeTypeId(),projectBilling.getMonth());//生成账单
+					ctbb.setStatus("01");//00-未出账，01-已出账
+					ctbb.setUpdateTime(DateUtil.getToday("yyyy-MM-dd HH:mm:ss"));
+					chargeTypeBuildingBillingMapper.updateByPrimaryKeySelective(ctbb);
+				}
+				ctpb.setStatus("01");//00-未出账，01-已出账
+				ctpb.setUpdateTime(DateUtil.getToday("yyyy-MM-dd HH:mm:ss"));
+				chargeTypeProjectBillingMapper.updateByPrimaryKeySelective(ctpb);
+			}
+			ChargeTypeProjectBilling chargeTypeProjectBilling = new ChargeTypeProjectBilling();
+			chargeTypeProjectBilling.setProjectBillingId(projectBilling.getProjectBillingId());
+			chargeTypeProjectBilling.setStatus("00");
+			List<ChargeTypeProjectBilling> ctpbList = chargeTypeProjectBillingMapper.listAllChargeTypeProjectBilling(chargeTypeProjectBilling);
+			if(ctpbList.size() == 0){
+				if("00".equals(projectBilling.getStatus())){
+					projectBilling.setStatus("01");//00-未出账，01-已出账
+					projectBilling.setUpdateTime(DateUtil.getToday("yyyy-MM-dd HH:mm:ss"));
+					projectBillingMapper.updateByPrimaryKeySelective(projectBilling);
+				}
+			}
+		}
+	}
+
+	@Override
+	public void confirmChargeTypeBuildingBilling(
+			String confirmChargeTypeBuildingBillingIds) {
+		if (!Tools.isEmpty(confirmChargeTypeBuildingBillingIds)) {
+			String[] array = confirmChargeTypeBuildingBillingIds.split(",");
+			ProjectBilling projectBilling = new ProjectBilling();
+			ChargeTypeProjectBilling chargeTypeProjectBilling = new ChargeTypeProjectBilling();
+			if(array.length>0){
+				ChargeTypeBuildingBilling ctbb = chargeTypeBuildingBillingMapper.selectByPrimaryKey(array[0]);
+				chargeTypeProjectBilling = chargeTypeProjectBillingMapper.selectByPrimaryKey(ctbb.getChargeTypeProjectBillingId());
+				projectBilling = projectBillingMapper.selectByPrimaryKey(chargeTypeProjectBilling.getProjectBillingId());
+			}
+			for(int i = 0 ; i < array.length; i++) {
+				ChargeTypeBuildingBilling ctbb = chargeTypeBuildingBillingMapper.selectByPrimaryKey(array[i]);
+				createBill(ctbb,projectBilling.getProjectId(),chargeTypeProjectBilling.getChargeTypeId(),projectBilling.getMonth());//生成账单
+				ctbb.setStatus("01");//00-未出账，01-已出账
+				ctbb.setUpdateTime(DateUtil.getToday("yyyy-MM-dd HH:mm:ss"));
+				chargeTypeBuildingBillingMapper.updateByPrimaryKeySelective(ctbb);
+			}
+			
+			ChargeTypeBuildingBilling chargeTypeBuildingBilling = new ChargeTypeBuildingBilling();
+			chargeTypeBuildingBilling.setChargeTypeProjectBillingId(chargeTypeProjectBilling.getChargeTypeProjectBillingId());
+			chargeTypeBuildingBilling.setStatus("00");//00-未出账，01-已出账
+			List<ChargeTypeBuildingBilling> ctbbList = chargeTypeBuildingBillingMapper.listAllChargeTypeBuildingBilling(chargeTypeBuildingBilling);
+			if(ctbbList.size() == 0){
+				if("00".equals(chargeTypeProjectBilling.getStatus())){
+					chargeTypeProjectBilling.setStatus("01");//00-未出账，01-已出账
+					chargeTypeProjectBilling.setUpdateTime(DateUtil.getToday("yyyy-MM-dd HH:mm:ss"));
+					chargeTypeProjectBillingMapper.updateByPrimaryKeySelective(chargeTypeProjectBilling);
+				}
+			}
+			
+			ChargeTypeProjectBilling chargeTPBilling = new ChargeTypeProjectBilling();
+			chargeTPBilling.setProjectBillingId(projectBilling.getProjectBillingId());
+			chargeTPBilling.setStatus("00");
+			List<ChargeTypeProjectBilling> ctpbList = chargeTypeProjectBillingMapper.listAllChargeTypeProjectBilling(chargeTPBilling);
+			if(ctpbList.size() == 0){
+				if("00".equals(projectBilling.getStatus())){
+					projectBilling.setStatus("01");//00-未出账，01-已出账
+					projectBilling.setUpdateTime(DateUtil.getToday("yyyy-MM-dd HH:mm:ss"));
+					projectBillingMapper.updateByPrimaryKeySelective(projectBilling);
+				}
+			}
+		}
+	}
+	/**
+	 * 生成账单
+	 * @author maogaofei
+	 * @date 2016年7月15日 下午1:34:35
+	 * @param ctbb 收费类型建筑计费记录
+	 * @param projectId 项目ID
+	 */
+	private void createBill(ChargeTypeBuildingBilling ctbb, String projectId,String chargeTypeId,String monthStr) {
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM");
+		Bill bill = new Bill();
+		
+		List<Bill> billList = billMapper.listAllBill(new Bill());
+		String numStr = String.valueOf(billList.size());
+		numStr = StringUtils.leftPad(String.valueOf(numStr), 5, "0");
+		String billNum = productCommonserviceService.getProductNumber("440300", projectId ,"01", "006", numStr);
+		JSONObject  jasonObject = JSONObject.fromObject(billNum);
+		@SuppressWarnings("unchecked")
+		Map<String,String> map = (Map<String,String>)jasonObject;
+		billNum = map.get("code");
+		
+		
+		bill.setBillNum(billNum);//账单编号
+		bill.setProjectId(projectId);
+		bill.setBuildingId(ctbb.getBuildingId());
+		bill.setBuildingBillingId(ctbb.getChargeTypeBuildingBillingId());
+		bill.setNoCollectSum(ctbb.getAmount().doubleValue());//未收金额
+		bill.setCollectSum(0.0);//实收金额
+		bill.setOverdue(0.0);//滞纳金
+		bill.setCurrentSum(ctbb.getAmount().doubleValue());//本期金额
+		bill.setCurrentOweSum(ctbb.getAmount().doubleValue());//本期欠款余额
+		bill.setLastOweSum(0.0);//上期欠款余额
+		
+		if(ctbb.getAmount().compareTo(BigDecimal.valueOf(0))==0){
+			bill.setBillState(1);//1-已核查
+		}else{
+			bill.setBillState(2);//2-未核实
+		}
+		
+		Bill newBill = new Bill();
+		bill.setChargeTypeId(chargeTypeId);
+		try {
+			bill.setBillDate(sdf.parse(monthStr));//账单时间
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+		Bill lastBill = billMapper.getLastBill(newBill);
+		
+		Double d_lastSum = 0.0;
+		if(lastBill != null){
+			d_lastSum =  ArithUtils.add(ArithUtils.add(lastBill.getCurrentOweSum(), 
+					lastBill.getLastOweSum()), lastBill.getOverdue());//上期金额=上期的(本期余额+上期余额+滞纳金)
+			lastBill.setBillState(3);//3-失效
+			billMapper.updateBill(lastBill);
+		}
+		bill.setLastSum(d_lastSum);//上期金额
+		bill.setLastOweSum(d_lastSum);//上期欠款余额
+		
+		String billNumMonth = productCommonserviceService.getProductNumber("440300", projectId ,"02", "006", numStr);//电子账单编号
+		JSONObject  jasObject = JSONObject.fromObject(billNumMonth);
+		@SuppressWarnings("unchecked")
+		Map<String,String> newMap = (Map<String,String>)jasObject;
+		billNumMonth = newMap.get("code");
+		
+		Bill nBill = new Bill();
+		nBill.setBuildingId(ctbb.getBuildingId());
+		try {
+			nBill.setBillDate(sdf.parse(monthStr));
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+		List<Bill> nBillList = billMapper.listAllBill(nBill);
+		for(Bill billDemo:nBillList){
+			if(billDemo.getBillNumMonth() != null){
+				billNumMonth = billDemo.getBillNumMonth();
+			}
+		}
+		bill.setBillNumMonth(billNumMonth);
+		billService.deduction(bill);
+	}
+}

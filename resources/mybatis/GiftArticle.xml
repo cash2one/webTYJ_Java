@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.flf.mapper.GiftArticleMapper" >
+<resultMap id="BaseResultMap" type="GiftArticle" >
+    <id column="gift_article_id" property="giftArticleId" jdbcType="VARCHAR" />
+    <result column="gift_id" property="giftId" jdbcType="VARCHAR" />
+    <result column="article_id" property="articleId" jdbcType="VARCHAR" />
+    <result column="quantity" property="quantity" jdbcType="INTEGER" />
+    <result column="state" property="state"/>
+  </resultMap>
+  
+	<resultMap id="GiftResultMap" type="Gift" >
+    <id column="gift_id" property="giftId" jdbcType="VARCHAR" />
+    <result column="gift_name" property="giftName" jdbcType="VARCHAR" />
+    <result column="building_structure_id" property="buildingStructureId" jdbcType="VARCHAR" />
+  </resultMap>
+  
+	<resultMap id="HouseArticleResultMap" type="HouseArticle" >
+    <id column="article_id" property="articleId"/>
+    <result column="article_name" property="articleName"/>
+    <result column="quantity" property="quantity"/>
+    <result column="property_id" property="propertyId"/>
+    <result column="house_id" property="houseId"/>
+    <result column="article_state" property="articleState"/>
+  </resultMap>
+  
+	<resultMap id="GiftArticleResultMap" type="GiftArticle" >
+    <id column="gift_article_id" property="giftArticleId" jdbcType="VARCHAR" />
+    <result column="gift_id" property="giftId" jdbcType="VARCHAR" />
+    <result column="article_id" property="articleId" jdbcType="VARCHAR" />
+    <result column="quantity" property="quantity" jdbcType="INTEGER" />
+    <association property="gift" select="selectGift" column="gift_id" javaType="Gift">
+        <id column="gift_id" property="giftId" jdbcType="VARCHAR" />
+    <result column="gift_name" property="giftName" jdbcType="VARCHAR" />
+    <result column="building_structure_id" property="buildingStructureId" jdbcType="VARCHAR" />
+    </association>
+    <association property="houseArticle" select="selectHouseArticle" column="article_id" javaType="HouseArticle">
+        <id column="article_id" property="articleId"/>
+    <result column="article_name" property="articleName"/>
+    <result column="quantity" property="quantity"/>
+    <result column="property_id" property="propertyId"/>
+    <result column="house_id" property="houseId"/>
+    <result column="article_state" property="articleState"/>
+    </association>
+  </resultMap>
+
+	
+	<select id="selectGift" parameterType="String" resultMap="GiftResultMap">
+	    select * from t_gift where gift_id=#{0}
+	</select>
+	
+	<select id="selectHouseArticle" parameterType="String" resultMap="HouseArticleResultMap">
+	    select * from tc_house_article where article_id=#{0}
+	</select>
+	
+	<update id="updateGiftArticleState" parameterType="GiftArticle">
+		update t_gift_article
+		set quantity=#{quantity},
+		state=#{state}
+		where gift_id=#{giftId} and article_id=#{articleId}
+	</update>
+	
+	<delete id="deleteGiftArticle" parameterType="String">
+	    delete from t_gift_article where gift_article_id =#{0}
+	</delete>
+	
+	<select id="listGiftArticle" parameterType="String" resultMap="GiftArticleResultMap">
+	    select * from t_gift_article where gift_id=#{0}
+	</select>
+	
+	<!-- 新增礼包物品关系信息 -->
+	<insert id="insertGiftArticle" parameterType="com.flf.entity.GiftArticle" >
+    insert into t_gift_article (gift_article_id,gift_id, article_id, 
+      quantity)
+    values (#{giftArticleId},#{giftId}, #{articleId,jdbcType=VARCHAR}, 
+      #{quantity})
+  </insert>
+  
+	<!-- 修改礼包物品关系信息 -->
+	<update id="updateGiftArticle" parameterType="com.flf.entity.GiftArticle" >
+    update t_gift_article
+    <set >
+      <if test="giftId != null" >
+        gift_id = #{giftId,jdbcType=VARCHAR},
+      </if>
+      <if test="articleId != null" >
+        article_id = #{articleId,jdbcType=VARCHAR},
+      </if>
+      <if test="quantity != null" >
+        quantity = #{quantity},
+      </if>
+      <if test = "state != null">
+      	state = #{state}
+      </if>
+    </set>
+    where gift_article_id = #{giftArticleId,jdbcType=VARCHAR}
+  </update>
+</mapper>

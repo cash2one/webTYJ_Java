@@ -1,0 +1,224 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.flf.mapper.DataDictionarySlaveMapper" >
+  <resultMap id="BaseResultMap" type="com.flf.entity.DataDictionarySlave" >
+    <id column="slave_id" property="slaveId" jdbcType="VARCHAR" />
+    <result column="slave_name" property="slaveName" jdbcType="VARCHAR" />
+    <result column="master_id" property="masterId" jdbcType="VARCHAR" />
+    <result column="status" property="status" jdbcType="VARCHAR" />
+    <result column="description" property="description" jdbcType="VARCHAR"/>
+    <result column="create_id" property="createId" jdbcType="VARCHAR" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="update_id" property="updateId" jdbcType="VARCHAR" />
+    <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+    <association property="createStaff" column="create_id" javaType="TUser" select="com.flf.mapper.TUserMapper.selectByPrimaryKey" />
+    <association property="updateStaff" column="update_id" javaType="TUser" select="com.flf.mapper.TUserMapper.selectByPrimaryKey" />
+  </resultMap>
+  
+  <resultMap id="BaseResultMap1" type="com.flf.entity.DataDictionarySlave" >
+    <id column="slave_id" property="slaveId" jdbcType="VARCHAR" />
+    <result column="slave_name" property="slaveName" jdbcType="VARCHAR" />
+    <result column="master_id" property="masterId" jdbcType="VARCHAR" />
+    <result column="status" property="status" jdbcType="VARCHAR" />
+    <result column="description" property="description" jdbcType="VARCHAR"/>
+    <result column="create_id" property="createId" jdbcType="VARCHAR" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="update_id" property="updateId" jdbcType="VARCHAR" />
+    <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+    </resultMap>
+  
+  <sql id="Base_Column_List" >
+    slave_id, slave_name, master_id, status, description, create_id, create_time, update_id, update_time
+  </sql>
+  
+  <!-- 数据字典从表查询条件 -->
+  <sql id="ListPageSlave_Where_Clause">
+  	<where>
+  		<trim prefixOverrides="and">
+  			<if test="sName != null and sName !=''">and slave_name like CONCAT(CONCAT('%',#{sName}),'%')</if>
+  			<if test="desc != null and desc != ''">and description like CONCAT(CONCAT('%',#{desc}),'%')</if>
+  			<if test="masterId != null and masterId !=''">and master_id = #{masterId}</if>
+  		</trim>
+  	</where>
+  </sql>
+  
+  <select id="getDropboxList" resultMap="BaseResultMap" parameterType="java.lang.String">
+		  	<!-- SELECT
+			*
+		FROM
+			data_dictionary_slave ds
+		INNER JOIN (
+			SELECT
+				*
+			FROM
+				data_dictionary_master
+			WHERE
+				STATUS = 0
+			AND master_name = #{0}
+		) dm ON dm.master_id = ds.master_id
+		LEFT JOIN data_dictionary_master_project mp ON mp.master_id = dm.master_id
+		WHERE
+			ds.status = 0 and mp.project_id = #{1}
+			order by ds.slave_name -->
+			SELECT a.* FROM data_dictionary_slave a 
+			LEFT JOIN data_dictionary_master b ON a.master_id = b.master_id 
+			LEFT JOIN data_dictionary_master_project c ON b.master_id = c.master_id 
+			WHERE c.project_id = #{1} 
+			AND b.master_name = #{0} 
+			AND b.status = 0 
+			AND a.status = 0 
+			ORDER BY a.slave_name
+  </select>
+  
+  <select id="getDefaultByMasterName" resultMap="BaseResultMap" parameterType="java.lang.String">
+  	SELECT dds.* FROM data_dictionary_slave dds 
+	LEFT JOIN data_dictionary_master ddm ON dds.master_id = ddm.master_id
+	LEFT JOIN data_dictionary_master_project ddmp ON ddm.master_id = ddmp.master_id
+	WHERE ddmp.project_id = (SELECT p.project_id FROM t_project p WHERE state = '5')
+	AND ddm.master_name = #{0}
+	AND ddm.status = 0 
+	AND dds.status = 0 
+ 	ORDER BY dds.slave_name
+  </select>
+  
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from data_dictionary_slave
+    where slave_id = #{slaveId,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from data_dictionary_slave
+    where slave_id = #{slaveId,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.flf.entity.DataDictionarySlave" >
+    insert into data_dictionary_slave (slave_id, slave_name, master_id, 
+      status, description, create_id, create_time, 
+      update_id, update_time)
+    values (#{slaveId,jdbcType=VARCHAR}, #{slaveName,jdbcType=VARCHAR}, #{masterId,jdbcType=VARCHAR}, 
+      #{status,jdbcType=VARCHAR}, #{description,jdbcType=VARCHAR}, #{createId,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, 
+      #{updateId,jdbcType=VARCHAR}, #{updateTime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.flf.entity.DataDictionarySlave" >
+    insert into data_dictionary_slave
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="slaveId != null" >
+        slave_id,
+      </if>
+      <if test="slaveName != null" >
+        slave_name,
+      </if>
+      <if test="masterId != null" >
+        master_id,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="description != null">
+      	description,
+      </if>
+      <if test="createId != null" >
+        create_id,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="updateId != null" >
+        update_id,
+      </if>
+      <if test="updateTime != null" >
+        update_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="slaveId != null" >
+        #{slaveId,jdbcType=VARCHAR},
+      </if>
+      <if test="slaveName != null" >
+        #{slaveName,jdbcType=VARCHAR},
+      </if>
+      <if test="masterId != null" >
+        #{masterId,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="description != null">
+      	#{description,jdbcType=VARCHAR},
+      </if>
+      <if test="createId != null" >
+        #{createId,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateId != null" >
+        #{updateId,jdbcType=VARCHAR},
+      </if>
+      <if test="updateTime != null" >
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.flf.entity.DataDictionarySlave" >
+    update data_dictionary_slave
+    <set >
+      <if test="slaveName != null" >
+        slave_name = #{slaveName,jdbcType=VARCHAR},
+      </if>
+      <if test="masterId != null" >
+        master_id = #{masterId,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="description != null">
+      	description = #{description,jdbcType=VARCHAR},
+      </if>
+      <if test="createId != null" >
+        create_id = #{createId,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateId != null" >
+        update_id = #{updateId,jdbcType=VARCHAR},
+      </if>
+      <if test="updateTime != null" >
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where slave_id = #{slaveId,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.flf.entity.DataDictionarySlave" >
+    update data_dictionary_slave
+    set slave_name = #{slaveName,jdbcType=VARCHAR},
+      master_id = #{masterId,jdbcType=VARCHAR},
+      status = #{status,jdbcType=VARCHAR},
+      description = #{description,jdbcType=VARCHAR},
+      create_id = #{createId,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_id = #{updateId,jdbcType=VARCHAR},
+      update_time = #{updateTime,jdbcType=TIMESTAMP}
+    where slave_id = #{slaveId,jdbcType=VARCHAR}
+  </update>
+  
+	<!-- 分页查询数据字典主表数据 -->
+	<select id="listPageSlave" parameterType="com.flf.entity.DataDictionarySlave" resultMap="BaseResultMap">
+		select <include refid="Base_Column_List" /> from data_dictionary_slave <include refid="ListPageSlave_Where_Clause" />
+	</select>
+	<!-- 查询所有数据 -->
+	<select id="listAllSlave" resultMap="BaseResultMap1">
+		select * from data_dictionary_slave
+	</select>
+	<!-- 根据条件查询数据 -->
+	<select id="listSlaveByName" resultMap="BaseResultMap1" parameterType="java.lang.String">
+		SELECT dds.* FROM data_dictionary_slave dds 
+		LEFT JOIN data_dictionary_master ddm ON ddm.master_name = #{0} 
+		WHERE ddm.master_id = dds.master_id
+	</select>
+	<!-- 根据masterId查询数据 -->
+	<select id="getDataDictionarySlaveByMasterId" resultMap="BaseResultMap1" parameterType="java.lang.String">
+		SELECT * from data_dictionary_slave where master_id = #{0}
+	</select>
+</mapper>

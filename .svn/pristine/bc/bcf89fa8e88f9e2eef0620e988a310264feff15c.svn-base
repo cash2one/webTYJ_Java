@@ -1,0 +1,81 @@
+
+
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>物业管理房屋主页</title>
+    <link rel="stylesheet" href="css/personnel.css">
+</head>
+<body ng-controller="housesCtrl">
+<div class="row">
+    <!--房屋主页start-->
+    <div class="complaint_user">
+        <div class="complaint_user_img"><img src="images/company/u133.jpg" width="100" height="100"></div>
+        <div class="complaint_user_info">
+            <div class="complaint_user_info_button">
+
+                <span class="dot_Checked"></span><br>
+                <span class="dot_unCheck"></span><br>
+                         <span class="complaint_panel_info_navigation">
+         						    <ul>
+                                        <li><img src="images/propertyService/jiantoua.png" width="35" height="29">
+                                            <ul>
+                                                <li class="program_panel_info_navigation_top">功能列表</li>
+                                                <li>验房</li>
+                                                <li>装修</li>
+                                                <li class="program_panel_info_navigation_bottom">产权变更</li>
+                                                <li>施工管理</li>
+                                                <li>租赁</li>
+                                                <li>入伙</li>
+                                            </ul>
+                                        </li>
+                                    </ul>
+                                 </span>
+
+            </div>
+            <div class="complaint_user_info_info">
+                <table class="complaint_user_info_userinfo">
+                    <tr>
+                        <td class="col-md-3">资产类型：住宅</td>
+                        <td style="width: 270px">详细地址：世外桃源1期3区7栋2单元702室</td>
+                        <td class="col-md-3">销售状态：已销售</td>
+                        <td>销售状态：已销售</td>
+                    </tr>
+
+                    <tr>
+                        <td class="col-md-3">所属人：周润发</td>
+                        <td>建筑面积：240平方</td>
+                        <td class="col-md-3">套内面积：200平方</td>
+                        <td>入伙状态：未入伙</td>
+                    </tr>
+
+                    <tr>
+                        <td class="col-md-3">联系电话：13856888788</td>
+                        <td>楼房属性：小高层</td>
+                        <td class="col-md-3">房屋户型：四房两厅</td>
+                        <td>租赁状态：未租赁</td>
+                    </tr>
+
+                </table>
+                <div class="clear"></div>
+            </div>
+
+            <div class="complaint_user_info_navigation">
+                <a class="btn" ui-sref="index.propertyService.housesHome.homePage">主页</a>
+                <a class="btn" ui-sref="index.propertyService.housesHome.joinGang.licensing.choiceHousing">入伙</a>
+                <a class="btn" ui-sref="index.propertyService.housesHome.decorate">装修</a>
+                <a class="btn" ui-sref="index.propertyService.housesHome.changeTitle">产权变更</a>
+                <a class="btn" ui-sref="index.propertyService.housesHome.lease">租赁</a>
+            </div>
+        </div>
+        <div class="clear"></div>
+    </div>
+    <!--房屋主页end-->
+</div>
+<div class="row">
+    <div ui-view></div>
+</div>
+</div>
+</body>
+</html>

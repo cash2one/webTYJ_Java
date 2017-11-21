@@ -1,0 +1,164 @@
+<!--
+    创建时间：2015/5/19
+    作者:
+    修改者：钟加诚
+    修改时间：2015/6/1
+    修改内容：Js数据，查询效果
+    页面名称:施工管理-办理申请
+    js路径:js/controllers/externalProfession/allPets
+-->
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>施工管理-办理申请</title>
+    <link rel="stylesheet" href="css/propertyService.css">
+</head>
+<body>
+<!--申请办理-->
+<div class="complaint_user_list">
+<div style="padding:20px 30px 0">
+    <form class="form" role="form">
+        <div class="tabList">
+            <table style="width:800px;height:600px;">
+                <tr>
+                    <td rowspan="14">施工流程图编号：{{pictureNumber}}<br>
+                        <img src="images/tuzhi.jpg" ><br>
+                        <input type="file">
+                    </td>
+                </tr>
+                <tr>
+                    <td>施工申请日期：</td>
+                    <td>{{applicationDate}}</td>
+                </tr>
+                <tr>
+                    <td>施工类型：</td>
+                    <td>
+                        <select class="form-control">
+                            <option value="业主装修">业主装修</option>
+                            <option value="内部施工">内部施工</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td>施工原因：</td>
+                    <td><textarea class="form-control" style="width:200px;" placeholder="请输入施工原因"></textarea></td>
+                </tr>
+                <tr>
+                    <td>施工单位：</td>
+                    <td>
+                        <select class="form-control">
+                            <option value="">请选择装修公司</option>
+                            <option value="">深圳宏达装修公司</option>
+                            <option value="">深圳腾飞装修公司</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td>公司法人：</td>
+                    <td>{{}}</td>
+                </tr>
+                <tr>
+                    <td>负责人电话：</td>
+                    <td>{{}}</td>
+                </tr>
+                <tr>
+                    <td>单位地址：</td>
+                    <td>{{}}</td>
+                </tr>
+                <tr>
+                    <td>单位电话：</td>
+                    <td>{{}}</td>
+                </tr>
+                <tr>
+                    <td>现场负责人：</td>
+                    <td>{{}}</td>
+                </tr>
+                <tr>
+                    <td>施工人员：</td>
+                    <td>
+                        <select style="width: 150px;height: 30px">
+                            <option value=""></option>
+                            <option value="">李可学</option>
+                            <option value="">林家庆</option>
+                        </select>
+                        <a class="btn" data-toggle="modal" data-target="#show"><img src="images/internalManage/u133.png" style="width: 30px;height: 30px"></a>
+                    </td>
+                </tr>
+                <tr>
+                    <td>施工开始日期：</td>
+                    <td>{{}}</td>
+                </tr>
+                <tr>
+                    <td>施工终止日期：</td>
+                    <td>{{}}</td>
+                </tr>
+                <tr>
+                    <td>申请人：</td>
+                    <td>
+                        <select class="form-control">
+                            <option value="">{{}}</option>
+                            <option value="">{{}}</option>
+                        </select>
+                    </td>
+                </tr>
+            </table>
+        </div>
+
+        <div id="show" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModelShow" aria-hidden="true">
+            <!--弹出模态框，合同详细信息-->
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header" style="background-color: white;height: 50px;margin: auto;text-align: center">
+                        <b class="modal-title" id="myModalShow" >选择人员</b>
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <table class="table table-bordered" style="text-align: center">
+                            <tr>
+                                <td>姓名</td>
+                                <td>选择</td>
+                            </tr>
+                            <tr>
+                                <td>{{}}</td>
+                                <td><input type="checkbox"></td>
+                            </tr>
+                            <tr>
+                                <td>{{}}</td>
+                                <td><input type="checkbox"></td>
+                            </tr>
+                            <tr>
+                                <td>{{}}</td>
+                                <td><input type="checkbox"></td>
+                            </tr>
+                        </table>
+                        <button class="btn btn-lg" style="width: 100px;margin-left: 300px" data-dismiss="modal">保存</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
+        <div class="tabList">
+            <table style="width:800px;height:150px;">
+                <tr>
+                    <td rowspan="3">施工单位需提供的资料</td>
+                    <td>1.消防文件复印件：<input type="checkbox"><button class="btn btn-default">上传</button> </td>
+                </tr>
+                <tr>
+                    <td>2.签订协议<input type="checkbox"><button class="btn btn-default">上传</button></td>
+                </tr>
+                <tr>
+                    <td>3.提供施工图纸一式两份（详见图纸资料提供栏）<input type="checkbox"><button class="btn btn-default">上传</button></td>
+                </tr>
+            </table>
+        </div>
+        <button type="submit" class="btn btn-default">提交申请</button>
+    </form>
+</div>
+</div>
+</body>
+</html>

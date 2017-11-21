@@ -1,0 +1,204 @@
+package com.flf.service.impl;
+
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import net.sf.json.JSONObject;
+
+import org.apache.commons.lang.StringUtils;
+import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+
+import com.flf.entity.BuildingStructureNew;
+import com.flf.entity.ChargeItemNew;
+import com.flf.entity.ChargeItemNewBuilding;
+import com.flf.entity.ChargeItemNewDetails;
+import com.flf.entity.Formula;
+import com.flf.entity.Scheme;
+import com.flf.mapper.BuildingStructureNewMapper;
+import com.flf.mapper.ChargeItemNewBuildingMapper;
+import com.flf.mapper.ChargeItemNewDetailsMapper;
+import com.flf.mapper.ChargeItemNewMapper;
+import com.flf.mapper.FormulaMapper;
+import com.flf.mapper.SchemeMapper;
+import com.flf.service.SchemeService;
+import com.flf.util.Tools;
+
+public class SchemeServiceImpl implements SchemeService {
+	private Logger log = Logger.getLogger(SchemeServiceImpl.class);  
+
+	private SchemeMapper schemeMapper;
+	@Autowired
+	private ChargeItemNewMapper chargeItemNewMapper;
+	@Autowired
+	private ChargeItemNewDetailsMapper chargeItemNewDetailsMapper;
+	@Autowired
+	private FormulaMapper formulaMapper;
+	@Autowired
+	private BuildingStructureNewMapper buildingStructureNewMapper;
+	@Autowired
+	private ChargeItemNewBuildingMapper chargeItemNewBuildingMapper;
+	
+	public SchemeMapper getSchemeMapper() {
+		return schemeMapper;
+	}
+
+	public void setSchemeMapper(SchemeMapper schemeMapper) {
+		this.schemeMapper = schemeMapper;
+	}
+
+	@Override
+	public List<Scheme> getSchemeByProjectId(String projectId) {
+		List<Scheme> list = schemeMapper.getSchemeByProjectId(projectId);
+		return list;
+	}
+
+	@Override
+	public List<Scheme> getSmByProjectId(String projectId) {
+		List<Scheme> smList = schemeMapper.getSchemeByProjectId(projectId);
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		for(Scheme sm:smList){
+			Date startDate = null;
+			try {
+				startDate = sdf.parse(sm.getStartDate());
+				Date nowDate = new Date();
+				String status = sm.getSchemeStatus();
+				if("01".equals(status)){
+					if(nowDate.getTime()>startDate.getTime()){
+						sm.setSchemeStatus("启用中");
+					}else{
+						sm.setSchemeStatus("待启用");
+					}
+				}else{
+					sm.setSchemeStatus("失效");
+				}
+			} catch (ParseException e) {
+				e.printStackTrace();
+				log.error("方案生效时间日期格式转换错误！");
+			}
+		}
+		return smList;
+	}
+
+	@Override
+	public String insertScheme(Scheme scheme) {
+		Map<String,String> map=new HashMap<String,String>();
+		if(StringUtils.isBlank(scheme.getSchemeName())){
+			map.put("code","3001");
+			map.put("information","请输入方案名称！");
+		    return JSONObject.fromObject(map).toString();//3001表示参数不全    200表示成功
+		}
+		if(StringUtils.isBlank(scheme.getStartDate())){
+			map.put("code","3001");
+			map.put("information","请选择生效日期！");
+		    return JSONObject.fromObject(map).toString();//3001表示参数不全    200表示成功
+		}
+		if(StringUtils.isBlank(scheme.getChargeSet())){
+			map.put("code","3001");
+			map.put("information","请选择计费设置！");
+		    return JSONObject.fromObject(map).toString();//3001表示参数不全    200表示成功
+		}
+		if(StringUtils.isBlank(scheme.getChargeTypeId())){
+			map.put("code","3001");
+			map.put("information","请选择收费类型！");
+		    return JSONObject.fromObject(map).toString();//3001表示参数不全    200表示成功
+		}
+		if("01".equals(scheme.getChargeSet())){
+			if(StringUtils.isBlank(scheme.getChargeFre())){
+				map.put("code","3001");
+				map.put("information","请选择计费频率！");
+			    return JSONObject.fromObject(map).toString();//3001表示参数不全    200表示成功
+			}
+			if(StringUtils.isBlank(scheme.getChargeTime())){
+				map.put("code","3001");
+				map.put("information","请选择自动计费时间！");
+			    return JSONObject.fromObject(map).toString();//3001表示参数不全    200表示成功
+			}
+		}
+		String schemeId = scheme.getSchemeId();
+		ChargeItemNew chargeItemNew = new ChargeItemNew();
+		chargeItemNew.setSchemeId(schemeId);
+		List<ChargeItemNew> cinList = chargeItemNewMapper.listAllChargeItemNew(chargeItemNew);
+		if(cinList.size() == 0){
+			map.put("code","3001");
+			map.put("information","请新建收费项目！");
+		    return JSONObject.fromObject(map).toString();//3001表示参数不全    200表示成功
+		}
+		int buildingNum = 0;
+		for(ChargeItemNew cin:cinList){
+			ChargeItemNewDetails chargeItemNewDetails = new ChargeItemNewDetails();
+			chargeItemNewDetails.setChargeItemNewId(cin.getChargeItemNewId());
+			List<ChargeItemNewDetails> cindList = chargeItemNewDetailsMapper.listAllChargeItemNewDetails(chargeItemNewDetails);
+			if(cindList.size() == 0){
+				map.put("code","3001");
+				map.put("information","请删除收费项目重新新建！");
+			    return JSONObject.fromObject(map).toString();//3001表示参数不全    200表示成功
+			}
+			
+			for(ChargeItemNewDetails cind:cindList){
+				Formula formula = new Formula();
+				formula.setChargeItemDetailsId(cind.getChargeItemDetailsId());
+				List<Formula> formulaList = formulaMapper.listAllFormula(formula);
+				if(formulaList.size() == 0){
+					map.put("code","3001");
+					map.put("information","请确认收费项目详情下是否都建立了公式！");
+				    return JSONObject.fromObject(map).toString();// 200表示成功
+				}
+			}
+			
+			ChargeItemNewBuilding cib = new ChargeItemNewBuilding();
+			cib.setChargeItemNewId(cin.getChargeItemNewId());
+			List<ChargeItemNewBuilding> cibList = chargeItemNewBuildingMapper.listAllChargeItemNewBuilding(cib);
+			buildingNum = buildingNum + cibList.size();
+		}
+		String projectId = scheme.getProjectId();
+		List<BuildingStructureNew> bsnList = buildingStructureNewMapper.getBuildingStructureNewbyProjectId(projectId);
+		if(buildingNum < bsnList.size()){
+			map.put("code","3001");
+			map.put("information","使用范围必须全部选择！");
+		    return JSONObject.fromObject(map).toString();// 200表示成功
+		}
+		scheme.setSchemeStatus("01");//01-待启用 启用中
+		schemeMapper.insertSelective(scheme);
+		map.put("code","200");
+		map.put("information","保存成功");
+	    return JSONObject.fromObject(map).toString();//3001表示参数不全    200表示成功
+	}
+	
+	@Override
+	public void updateScheme(String schemeId) {
+		if (!Tools.isEmpty(schemeId)) {
+			String[] array = schemeId.split(",");
+			for (int i = 0 ; i < array.length; i++) {
+				Scheme sm = schemeMapper.selectByPrimaryKey(array[i]);
+				sm.setSchemeStatus("02");//02-失效
+				//删除方案
+				schemeMapper.updateByPrimaryKeySelective(sm);
+			}
+		}
+	}
+
+	@Override
+	public Scheme getSchemeById(String schemeId) {
+		Scheme scheme = schemeMapper.selectByPrimaryKey(schemeId);
+		return scheme;
+	}
+
+	@Override
+	public void updateSchemeEndDate(Scheme scheme) {
+		Scheme newScheme = schemeMapper.selectByPrimaryKey(scheme.getSchemeId());
+		newScheme.setEndDate(scheme.getEndDate());
+		schemeMapper.updateByPrimaryKeySelective(newScheme);
+	}
+	
+	@Override
+	public List<Scheme> getSchemeByChargeTypeId(String chargeTypeId) {
+		List<Scheme> list=schemeMapper.getSchemeByChargeTypeId(chargeTypeId);
+		return list;
+	}
+}

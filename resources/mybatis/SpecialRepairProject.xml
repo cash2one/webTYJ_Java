@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.flf.mapper.SpecialRepairProjectMapper" >
+  
+  <resultMap id="BaseResultMap" type="SpecialRepairProject" >
+    <id column="special_id" property="specialId" jdbcType="VARCHAR" />
+    <result column="special_name" property="specialName" jdbcType="VARCHAR" />
+    <result column="special_type" property="specialType" jdbcType="TINYINT" />
+    <result column="special_state" property="specialState" jdbcType="TINYINT" />
+    <result column="special_cer_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="special_writer" property="specialWriter" jdbcType="VARCHAR" />
+    <result column="special_startover_time" property="startTime" jdbcType="TIMESTAMP" />
+    <result column="remarks" property="remarks" jdbcType="VARCHAR" />
+    <result column="special_principal" property="specialPrincipal" jdbcType="VARCHAR"/>
+    <result column="special_estimate_money" property="specialEstimateMoney" jdbcType="DOUBLE"/>
+    <result column="special_end_time" property="endTime" jdbcType="TIMESTAMP"/>
+  </resultMap>
+  
+  <resultMap type="SpecialRepairProject" id="resultSpecialRepairProjectMap" extends="BaseResultMap">
+  	<association property="staff" column="special_writer" javaType="Staff" select="com.flf.mapper.StaffMapper.selectByid"></association>
+  </resultMap>
+  
+  <select id="getAllSpecialRepairProject" resultMap="BaseResultMap">
+  select * from ts_special_repair_project where special_state not in (0,2)
+  </select>
+  
+  <select id="getSpecialRepairProjectbyId" parameterType="String" resultMap="BaseResultMap">
+  select * from ts_special_repair_project where special_id = #{0}
+  </select>
+  
+  <select id="getSpecialRepairProjectbyState" parameterType="String" resultMap="resultSpecialRepairProjectMap">
+  	select * from ts_special_repair_project where special_state = #{0}
+  </select>
+  
+  <select id="listPageSpecialRepairProjectbyState" parameterType="SpecialRepairProject" resultMap="resultSpecialRepairProjectMap">
+  	select * from ts_special_repair_project where special_state = #{state}
+  </select>
+  
+  <select id="getSpecialRepairProjectCountbyState" parameterType="String" resultType="Integer">
+  select count(*) from ts_special_repair_project where special_state = #{0}
+  </select>
+  
+  <insert id="insertSpecialRepairProject" parameterType="SpecialRepairProject" >
+    insert into ts_special_repair_project (special_id,special_name,special_type,special_state,special_cer_time,special_writer,special_startover_time,remarks,special_principal,special_estimate_money,special_end_time)
+    values (UUID(), #{specialName,jdbcType=VARCHAR}, #{specialType,jdbcType=TINYINT}, 
+      #{specialState,jdbcType=TINYINT},#{createTime,jdbcType=TIMESTAMP}, #{specialWriter,jdbcType=VARCHAR}, #{startTime,jdbcType=TIMESTAMP},#{remarks,jdbcType=VARCHAR},#{specialPrincipal,jdbcType=VARCHAR},
+       #{specialEstimateMoney,jdbcType=DOUBLE},#{endTime,jdbcType=TIMESTAMP})
+     
+  </insert>
+  
+  <insert id="insertSpecialRepairProjectUUID" parameterType="SpecialRepairProject" >
+    insert into ts_special_repair_project (special_id,special_name,special_type,special_state,special_cer_time,special_writer,special_startover_time,remarks,special_principal,special_estimate_money,special_end_time)
+    values (#{specialId,jdbcType=VARCHAR}, #{specialName,jdbcType=VARCHAR}, #{specialType,jdbcType=TINYINT}, 
+      #{specialState,jdbcType=TINYINT},#{createTime,jdbcType=TIMESTAMP}, #{specialWriter,jdbcType=VARCHAR}, #{startTime,jdbcType=TIMESTAMP},#{remarks,jdbcType=VARCHAR},#{specialPrincipal,jdbcType=VARCHAR},
+      #{specialEstimateMoney,jdbcType=DOUBLE},#{endTime,jdbcType=TIMESTAMP})
+  </insert>
+  
+  <update id="updateSpecialRepairProject" parameterType="SpecialRepairProject" >
+    update ts_special_repair_project
+    set
+    special_name = #{specialName,jdbcType=VARCHAR},
+    special_type = #{specialType,jdbcType=TINYINT},
+    special_state = #{specialState,jdbcType=TINYINT},
+    special_cer_time = #{createTime,jdbcType=TIMESTAMP},
+    special_writer = #{specialWriter,jdbcType=VARCHAR},
+    special_startover_time = #{startTime,jdbcType=TIMESTAMP},
+ 	remarks = #{remarks,jdbcType=VARCHAR}
+ 	where special_id = #{specialId,jdbcType=VARCHAR}
+  </update>
+</mapper>

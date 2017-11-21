@@ -1,0 +1,197 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.flf.mapper.BillingRecordMapper" >
+  <resultMap id="BaseResultMap" type="com.flf.entity.BillingRecord" >
+    <id column="billing_record_id_" property="billingRecordId" jdbcType="CHAR" />
+    <result column="project_id_" property="projectId" jdbcType="CHAR" />
+    <result column="building_id_" property="buildingId" jdbcType="CHAR" />
+    <result column="charge_type_details_id_" property="chargeTypeDetailsId" jdbcType="CHAR" />
+    <result column="charge_type_details_building_billing_id_" property="chargeTypeDetailsBuildingBillingId" jdbcType="CHAR" />
+    <result column="billing_time_" property="billingTime" jdbcType="VARCHAR" />
+    <result column="amount_" property="amount" jdbcType="DECIMAL" />
+    <result column="create_user_" property="createUser" jdbcType="CHAR" />
+    <result column="create_time_" property="createTime" jdbcType="VARCHAR" />
+    <result column="update_user_" property="updateUser" jdbcType="CHAR" />
+    <result column="update_time_" property="updateTime" jdbcType="VARCHAR" />
+    <!-- 建筑名称字段，附加，数据表中无 -->
+    <result column="full_name" property="fullName" jdbcType="VARCHAR"/>
+    <!-- 项目名称字段，附加，数据表中无 -->
+    <result column="project_name" property="projectName" jdbcType="VARCHAR"/>
+    <!-- 收费类型详情名称字段，附加，数据表中无 -->
+    <result column="charge_type_details_name" property="chargeTypeDetailsName" jdbcType="VARCHAR"/>
+    <!-- 计费开始时间字段，附加，数据表中无 -->
+    <result column="billing_startTime" property="billingStartTime" jdbcType="VARCHAR"/>
+    <!-- 计费结束时间字段，附加，数据表中无 -->
+    <result column="billing_endTime" property="billingEndTime" jdbcType="VARCHAR"/>
+  </resultMap>
+  <sql id="Base_Column_List" >
+    billing_record_id_, project_id_, building_id_, charge_type_details_id_, charge_type_details_building_billing_id_, 
+    billing_time_, amount_, create_user_, create_time_, update_user_, update_time_
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from tc_billing_record
+    where billing_record_id_ = #{billingRecordId,jdbcType=CHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from tc_billing_record
+    where billing_record_id_ = #{billingRecordId,jdbcType=CHAR}
+  </delete>
+  <insert id="insert" parameterType="com.flf.entity.BillingRecord" >
+    insert into tc_billing_record (billing_record_id_, project_id_, building_id_, 
+      charge_type_details_id_, charge_type_details_building_billing_id_, 
+      billing_time_, amount_, create_user_, 
+      create_time_, update_user_, update_time_
+      )
+    values (#{billingRecordId,jdbcType=CHAR}, #{projectId,jdbcType=CHAR}, #{buildingId,jdbcType=CHAR}, 
+      #{chargeTypeDetailsId,jdbcType=CHAR}, #{chargeTypeDetailsBuildingBillingId,jdbcType=CHAR}, 
+      #{billingTime,jdbcType=VARCHAR}, #{amount,jdbcType=DECIMAL}, #{createUser,jdbcType=CHAR}, 
+      #{createTime,jdbcType=VARCHAR}, #{updateUser,jdbcType=CHAR}, #{updateTime,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.flf.entity.BillingRecord" >
+    insert into tc_billing_record
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="billingRecordId != null" >
+        billing_record_id_,
+      </if>
+      <if test="projectId != null" >
+        project_id_,
+      </if>
+      <if test="buildingId != null" >
+        building_id_,
+      </if>
+      <if test="chargeTypeDetailsId != null" >
+        charge_type_details_id_,
+      </if>
+      <if test="chargeTypeDetailsBuildingBillingId != null" >
+        charge_type_details_building_billing_id_,
+      </if>
+      <if test="billingTime != null" >
+        billing_time_,
+      </if>
+      <if test="amount != null" >
+        amount_,
+      </if>
+      <if test="createUser != null" >
+        create_user_,
+      </if>
+      <if test="createTime != null" >
+        create_time_,
+      </if>
+      <if test="updateUser != null" >
+        update_user_,
+      </if>
+      <if test="updateTime != null" >
+        update_time_,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="billingRecordId != null" >
+        #{billingRecordId,jdbcType=CHAR},
+      </if>
+      <if test="projectId != null" >
+        #{projectId,jdbcType=CHAR},
+      </if>
+      <if test="buildingId != null" >
+        #{buildingId,jdbcType=CHAR},
+      </if>
+      <if test="chargeTypeDetailsId != null" >
+        #{chargeTypeDetailsId,jdbcType=CHAR},
+      </if>
+      <if test="chargeTypeDetailsBuildingBillingId != null" >
+        #{chargeTypeDetailsBuildingBillingId,jdbcType=CHAR},
+      </if>
+      <if test="billingTime != null" >
+        #{billingTime,jdbcType=VARCHAR},
+      </if>
+      <if test="amount != null" >
+        #{amount,jdbcType=DECIMAL},
+      </if>
+      <if test="createUser != null" >
+        #{createUser,jdbcType=CHAR},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=VARCHAR},
+      </if>
+      <if test="updateUser != null" >
+        #{updateUser,jdbcType=CHAR},
+      </if>
+      <if test="updateTime != null" >
+        #{updateTime,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.flf.entity.BillingRecord" >
+    update tc_billing_record
+    <set >
+      <if test="projectId != null" >
+        project_id_ = #{projectId,jdbcType=CHAR},
+      </if>
+      <if test="buildingId != null" >
+        building_id_ = #{buildingId,jdbcType=CHAR},
+      </if>
+      <if test="chargeTypeDetailsId != null" >
+        charge_type_details_id_ = #{chargeTypeDetailsId,jdbcType=CHAR},
+      </if>
+      <if test="chargeTypeDetailsBuildingBillingId != null" >
+        charge_type_details_building_billing_id_ = #{chargeTypeDetailsBuildingBillingId,jdbcType=CHAR},
+      </if>
+      <if test="billingTime != null" >
+        billing_time_ = #{billingTime,jdbcType=VARCHAR},
+      </if>
+      <if test="amount != null" >
+        amount_ = #{amount,jdbcType=DECIMAL},
+      </if>
+      <if test="createUser != null" >
+        create_user_ = #{createUser,jdbcType=CHAR},
+      </if>
+      <if test="createTime != null" >
+        create_time_ = #{createTime,jdbcType=VARCHAR},
+      </if>
+      <if test="updateUser != null" >
+        update_user_ = #{updateUser,jdbcType=CHAR},
+      </if>
+      <if test="updateTime != null" >
+        update_time_ = #{updateTime,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where billing_record_id_ = #{billingRecordId,jdbcType=CHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.flf.entity.BillingRecord" >
+    update tc_billing_record
+    set project_id_ = #{projectId,jdbcType=CHAR},
+      building_id_ = #{buildingId,jdbcType=CHAR},
+      charge_type_details_id_ = #{chargeTypeDetailsId,jdbcType=CHAR},
+      charge_type_details_building_billing_id_ = #{chargeTypeDetailsBuildingBillingId,jdbcType=CHAR},
+      billing_time_ = #{billingTime,jdbcType=VARCHAR},
+      amount_ = #{amount,jdbcType=DECIMAL},
+      create_user_ = #{createUser,jdbcType=CHAR},
+      create_time_ = #{createTime,jdbcType=VARCHAR},
+      update_user_ = #{updateUser,jdbcType=CHAR},
+      update_time_ = #{updateTime,jdbcType=VARCHAR}
+    where billing_record_id_ = #{billingRecordId,jdbcType=CHAR}
+  </update>
+  <select id="listPageBillingRecord" parameterType="com.flf.entity.BillingRecord" resultMap="BaseResultMap">
+  	select a.*,b.project_name,c.full_name,d.charge_type_details_name from tc_billing_record as a
+  	left join t_project as b on a. project_id_ = b.project_id
+  	left join tc_building_structure as c on a.building_id_ = c.id 
+  	left join tc_charge_type_details as d on a.charge_type_details_id_ = d.charge_type_details_id
+  	where 1=1
+  	<if test="fullName != null and fullName != ''">
+		and c.full_name like CONCAT(#{fullName},'%')
+	</if>
+  	<if test="billingStartTime != null">
+  		<![CDATA[
+  			and a.billing_time_ >= #{billingStartTime}
+  		]]>
+  	</if>
+  	<if test="billingEndTime != null">
+  		<![CDATA[
+	      and a.billing_time_ <= #{billingEndTime}
+		]]>
+  	</if>
+  	order by a.billing_time_ desc
+  </select>
+</mapper>

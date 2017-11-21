@@ -1,0 +1,129 @@
+package com.flf.service;
+
+import java.util.List;
+import javax.jws.WebService;
+import javax.ws.rs.Consumes;
+import javax.ws.rs.GET;
+import javax.ws.rs.POST;
+import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
+import javax.ws.rs.Produces;
+import javax.ws.rs.core.MediaType;
+import com.flf.entity.ChargeType;
+import com.flf.entity.PageRestful;
+
+/**
+ * 收费类型service
+ * @author maogaofei
+ * @date 2016年6月28日 下午1:52:39
+ */
+@WebService
+@Path("/ChargeType")
+public interface ChargeTypeService {
+	
+	/**
+	 * 根据条件查询所有的收费项目信息
+	 * @author maogaofei
+	 * @date 2016年6月28日 下午1:53:04
+	 * @param chargeType
+	 * @return
+	 */
+	@POST
+	@Path("/listAllChargeType")
+	@PathParam(MediaType.APPLICATION_JSON)
+	List<ChargeType> listAllChargeType(ChargeType chargeType);
+	
+	
+	/**
+	 * 根据id查询费用类型
+	 * @author maogaofei
+	 * @date 2016年6月28日 下午1:53:23
+	 * @param chargeTypeId
+	 * @return
+	 */
+	@GET
+	@Path("/getChargeTypeById/{chargeTypeId}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public ChargeType getChargeTypeById(@PathParam("chargeTypeId") String chargeTypeId);
+	
+	/**
+	 * 根据项目ID查询项目列表
+	 * @author yangankun
+	 * @date 
+	 * @param projectId
+	 * @return
+	 */
+	@GET
+	@Path("/getChargeTypeProjectId/{projectId}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public List<ChargeType> getChargeTypeProjectId(@PathParam("projectId") String projectId);
+	
+	/**
+	 * @author yangankun
+	 * @date 
+	 * @param chargeType
+	 */
+	@POST
+	@Path("/addChargeType")
+	@Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+	String addChargeType(ChargeType chargeType);
+	
+	/**
+	 * 修改收费项目为失效
+	 * @author yangankun
+	 * @param chargeTypeId
+	 */
+	@GET
+	@Path("/changeState/{chargeTypeId}")
+	@Consumes({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
+	void changeState(@PathParam("chargeTypeId") String chargeTypeId);
+	
+	/**
+	 * 修改收费项目
+	 * @author yangankun
+	 * */
+	@POST
+	@Path("/editChargeType")
+	@Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+	String editChargeType(ChargeType chargeType);
+	/**
+	 * 分页
+	 * 
+	 * */
+	@POST
+	@Path("/listPageChargeType")
+	@Produces(MediaType.APPLICATION_JSON)
+	PageRestful listPageChargeType(ChargeType chargeType);
+	
+	/**
+	 * 查询已经使用的优先级
+	 */
+	@GET
+	@Path("/getPriority/{productId}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public List<ChargeType> getPriority(@PathParam("productId") String productId);
+	
+	@POST
+	@Path("/getCode")
+	@Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+	String getCode();
+	
+	
+	@GET
+	@Path("/selectStateById/{chargeTypeId}")
+	@Consumes({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
+	String selectStateById(@PathParam("chargeTypeId") String chargeTypeId);
+	
+	@GET
+	@Path("/checkEditName/{name}/{id}/{projectId}")
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+	int checkEditName(@PathParam("name") String name,@PathParam("id") String id,@PathParam("projectId") String projectId);
+
+	@GET
+	@Path("/checkNewName/{name}/{projectId}")
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+	int checkNewName(@PathParam("name") String name,@PathParam("projectId") String projectId);
+
+}

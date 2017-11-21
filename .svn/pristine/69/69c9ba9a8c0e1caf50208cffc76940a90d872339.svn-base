@@ -1,0 +1,33 @@
+<!--创建人：李斌  日期：2015/5/6
+    页面名称：外部专业线的抄表管理
+    JS路径：   'controllers/externalProfession/meterReadingManagement',
+-->
+
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>抄表管理</title>
+</head>
+<body>
+<div class="row">
+    <div class="complaint_user_list" style="margin-top: 15px;">
+        <!--外部专业线的抄表管理的导航-->
+        <div style="padding:5px 10px 0">
+            <div class="complaint_user_info_navigation">
+                <a class="btn" ui-sref="index.externalProfession.meterReadingManagement.newActivities">新增活动</a>
+                <a class="btn" ui-sref="index.externalProfession.meterReadingManagement.history01">历史记录</a>
+            </div>
+            <div class="clear"></div>
+        </div>
+        <!--外部专业线的抄表管理的导航end-->
+
+        <!--指定跳转-->
+        <div class="row" style="padding:5px 10px 0">
+            <div ui-view></div>
+        </div>
+        <!--指定跳转end-->
+    </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.flf.mapper.ProductFixedparkingspaceChildMapper" >
+  <resultMap id="BaseResultMap" type="com.flf.entity.ProductFixedparkingspaceChild" >
+    <id column="fixedparkingspace_child_id" property="fixedparkingspaceChildId" jdbcType="VARCHAR" />
+    <result column="stall_id" property="stallId" jdbcType="VARCHAR" />
+    <result column="fixedparkingspace_id" property="fixedparkingspaceId" jdbcType="VARCHAR" />
+    <result column="full_name" property="fullName" jdbcType="VARCHAR" />
+    <result column="code_name" property="codeName" jdbcType="VARCHAR" />
+    <result column="begin_date" property="beginDate" jdbcType="VARCHAR" />
+    <result column="end_date" property="endDate" jdbcType="VARCHAR" />
+    <result column="product_price" property="productPrice" jdbcType="DECIMAL" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    fixedparkingspace_child_id, stall_id, fixedparkingspace_id
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from tc_product_fixedparkingspace_child
+    where fixedparkingspace_child_id = #{fixedparkingspaceChildId,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from tc_product_fixedparkingspace_child
+    where fixedparkingspace_child_id = #{fixedparkingspaceChildId,jdbcType=VARCHAR}
+  </delete>
+  <delete id="deleteByPfId" parameterType="java.lang.String" >
+    delete from tc_product_fixedparkingspace_child
+    where fixedparkingspace_id = #{fixedparkingspaceId,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.flf.entity.ProductFixedparkingspaceChild" >
+    insert into tc_product_fixedparkingspace_child (fixedparkingspace_child_id, stall_id, 
+      fixedparkingspace_id)
+    values (#{fixedparkingspaceChildId,jdbcType=VARCHAR}, #{stallId,jdbcType=VARCHAR}, 
+      #{fixedparkingspaceId,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.flf.entity.ProductFixedparkingspaceChild" >
+    insert into tc_product_fixedparkingspace_child
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="fixedparkingspaceChildId != null" >
+        fixedparkingspace_child_id,
+      </if>
+      <if test="stallId != null" >
+        stall_id,
+      </if>
+      <if test="fixedparkingspaceId != null" >
+        fixedparkingspace_id,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="fixedparkingspaceChildId != null" >
+        #{fixedparkingspaceChildId,jdbcType=VARCHAR},
+      </if>
+      <if test="stallId != null" >
+        #{stallId,jdbcType=VARCHAR},
+      </if>
+      <if test="fixedparkingspaceId != null" >
+        #{fixedparkingspaceId,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.flf.entity.ProductFixedparkingspaceChild" >
+    update tc_product_fixedparkingspace_child
+    <set >
+      <if test="stallId != null" >
+        stall_id = #{stallId,jdbcType=VARCHAR},
+      </if>
+      <if test="fixedparkingspaceId != null" >
+        fixedparkingspace_id = #{fixedparkingspaceId,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where fixedparkingspace_child_id = #{fixedparkingspaceChildId,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.flf.entity.ProductFixedparkingspaceChild" >
+    update tc_product_fixedparkingspace_child
+    set stall_id = #{stallId,jdbcType=VARCHAR},
+      fixedparkingspace_id = #{fixedparkingspaceId,jdbcType=VARCHAR}
+    where fixedparkingspace_child_id = #{fixedparkingspaceChildId,jdbcType=VARCHAR}
+  </update>
+  <select id="listPageFullnNameById" parameterType="com.flf.entity.ProductFixedparkingspaceChild" resultMap="BaseResultMap">
+    select NULL as 'fixedparkingspace_child_id',
+	NULL as 'stall_id',
+	NULL as 'fixedparkingspace_id',
+	d.full_name,c.full_name as 'code_name' from 
+	
+	(select b.* from 
+	(select stall_id as 'id' from tc_product_fixedparkingspace_child 
+	where fixedparkingspace_id=#{fixedparkingspaceId,jdbcType=VARCHAR})as a LEFT JOIN tc_building_structure as b ON a.id=b.id) 
+	as c
+	LEFT JOIN 
+	(select * from tc_building_structure where ISNULL(parent_id)) as d 
+	on c.building_id=d.building_id
+  </select>
+  <select id="getAllPfc" resultMap="BaseResultMap"> 	
+	select qq.*,ww.begin_date,ww.end_date,ww.product_price from(
+	select c.fixedparkingspace_child_id,
+	c.stall_id,
+	c.fixedparkingspace_id,
+	d.full_name,c.full_name as 'code_name' from 
+	(select b.*,a.* from 
+	(select * from tc_product_fixedparkingspace_child )as a LEFT JOIN tc_building_structure as b ON a.stall_id=b.id) 
+	as c
+	LEFT JOIN 
+	(select * from tc_building_structure where ISNULL(parent_id)) as d 
+	on c.building_id=d.building_id) qq LEFT JOIN tc_product_fixedparkingspace ww on qq.fixedparkingspace_id=ww.fixedparkingspace_id
+  </select>
+</mapper>

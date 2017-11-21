@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>入伙</title>
+</head>
+<body ng-controller="joinGangCtrl">
+<div class="complaint_user_list ">
+    <div style="padding:5px 10px 0">
+        <div class="complaint_user_info_navigation">
+            <a class="btn" ui-sref="index.propertyService.staffHome.joinGang.choiceHousing">选择房屋</a>
+            <a class="btn" ui-sref="index.propertyService.staffHome.joinGang.collectingManagement">收管理费</a>
+            <a class="btn" ui-sref="index.propertyService.staffHome.joinGang.goodsReceipt">物品领取</a>
+            <a class="btn" ui-sref="index.propertyService.staffHome.joinGang.ownersShoufang">业主收房</a>
+        </div>
+        <div class="clear"></div>
+    </div>
+    <div class="row" style="padding:5px 10px 0">
+        <div ui-view></div>
+    </div>
+</div>
+</body>
+</html>

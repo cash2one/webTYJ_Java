@@ -1,0 +1,114 @@
+package com.flf.service;
+
+import java.util.List;
+
+import javax.jws.WebService;
+import javax.ws.rs.Consumes;
+import javax.ws.rs.GET;
+import javax.ws.rs.POST;
+import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
+import javax.ws.rs.Produces;
+import javax.ws.rs.core.MediaType;
+
+import com.flf.entity.Scheme;
+
+/**
+ * 计费方案service
+ * @author maogaofei
+ * @date 2016年6月29日 下午2:48:58
+ */
+@Path("/Scheme")
+@WebService
+public interface SchemeService {
+	
+	/**
+	 * 根据项目id查询所属方案集合
+	 * @author maogaofei
+	 * @date 2016年6月29日 下午2:51:19
+	 * @param projectId
+	 * @return
+	 */
+	@GET
+	@Path("/getschemebyprojectid/{projectId}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public List<Scheme> getSchemeByProjectId(@PathParam("projectId") String projectId);
+	
+	/**
+	 * 根据项目id查询所属方案集合(使用状态判断使用中或者待使用)
+	 * @author maogaofei
+	 * @date 2016年6月29日 下午2:51:33
+	 * @param projectId
+	 * @return
+	 */
+	@GET
+	@Path("/getsmbyprojectid/{projectId}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public List<Scheme> getSmByProjectId(@PathParam("projectId") String projectId);
+	
+	/**
+	 * 新增计费方案
+	 * @author maogaofei
+	 * @date 2016年6月30日 下午5:09:03
+	 * @param scheme
+	 */
+	@POST
+	@Path("/insertScheme")
+	@Consumes({MediaType.APPLICATION_XML,MediaType.APPLICATION_JSON})
+	String insertScheme(Scheme scheme);
+	
+	/**
+	 * 使方案批量失效
+	 * @author maogaofei
+	 * @date 2016年7月5日 下午3:42:10
+	 * @param schemeId
+	 */
+	@GET
+	@Path("/updateScheme/{schemeId}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public String updateScheme(@PathParam("schemeId") String schemeId);
+	
+	/**
+	 * 根据方案id查询方案
+	 * @author maogaofei
+	 * @date 2016年7月5日 下午3:42:16
+	 * @param schemeId
+	 * @return
+	 */
+	@GET
+	@Path("/getSchemeById/{schemeId}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Scheme getSchemeById(@PathParam("schemeId") String schemeId);
+	
+	/**
+	 * 根据方案id查询方案,并显示代码集对应描述
+	 * @author maogaofei
+	 * @date 2016年7月5日 下午3:42:16
+	 * @param schemeId
+	 * @return
+	 */
+	@GET
+	@Path("/showSchemeById/{schemeId}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Scheme showSchemeById(@PathParam("schemeId") String schemeId);
+	
+	/**
+	 * 修改方案的失效时间
+	 * @author maogaofei
+	 * @date 2016年7月5日 下午3:43:58
+	 * @param scheme
+	 */
+	@POST
+	@Path("/updateSchemeEndDate")
+	@Produces(MediaType.APPLICATION_JSON)
+	public void updateSchemeEndDate(Scheme scheme);
+	
+	@POST
+	@Path("/getSchemeByChargeTypeId/{chargeTypeId}")
+	@Consumes({MediaType.APPLICATION_JSON})
+	public List<Scheme> getSchemeByChargeTypeId(@PathParam("chargeTypeId") String chargeTypeId);
+	
+	
+	
+	
+}

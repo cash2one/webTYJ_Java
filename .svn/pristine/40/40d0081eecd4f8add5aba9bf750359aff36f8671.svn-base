@@ -1,0 +1,36 @@
+package com.flf.entity;
+
+import javax.xml.bind.annotation.XmlRootElement;
+
+@XmlRootElement(name="ProductFixedparkingspaceChild")
+public class ProductFixedparkingspaceChild {
+    private String fixedparkingspaceChildId;
+
+    private String stallId;
+
+    private String fixedparkingspaceId;
+
+    public String getFixedparkingspaceChildId() {
+        return fixedparkingspaceChildId;
+    }
+
+    public void setFixedparkingspaceChildId(String fixedparkingspaceChildId) {
+        this.fixedparkingspaceChildId = fixedparkingspaceChildId;
+    }
+
+    public String getStallId() {
+        return stallId;
+    }
+
+    public void setStallId(String stallId) {
+        this.stallId = stallId;
+    }
+
+    public String getFixedparkingspaceId() {
+        return fixedparkingspaceId;
+    }
+
+    public void setFixedparkingspaceId(String fixedparkingspaceId) {
+        this.fixedparkingspaceId = fixedparkingspaceId;
+    }
+}

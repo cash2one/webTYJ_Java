@@ -1,0 +1,78 @@
+package com.flf.mapper;
+
+
+import java.util.List;
+import java.util.Map;
+
+import com.flf.entity.Tasks;
+/**
+ * 任务表
+ * 创建人：邵政
+ * 创建时间：2015/6/23
+ */
+public interface TasksMapper {
+	
+	int finishTasks(String taskId);//将任务设置已完成
+	int deleteTasks(String taskId);//删除任务信息
+	int insertTasks(Tasks tasks);//添加任务信息
+	int insertTasksUUID(Tasks tasks);//添加任务信息(uuid)
+	int changeTaskState(String remarks ,Tasks tasks);//关闭任务
+//    List<Tasks> listPageTasks(Tasks tasks);//分页查询任务信息
+    List<Tasks> listAllTasks();//查询所有任务信息
+    Tasks getTasksbyId(String taskId);//通过Id查询任务信息
+    int updateTasks(Tasks tasks);//修改任务信息
+    List<Tasks> getTasksbyTaskTypeAndServiceId(Tasks tasks);//根据任务类型和服务请求id查询任务
+    List<Tasks> getTasksbyServiceRequestId(String serviceRequestId);////通过服务ID查询任务信息
+    List<Tasks> listPageTasksbyServiceRequestId(Tasks tasks);////通过服务ID查询任务信息（分页）
+    List<Tasks> listPageTasksbyState(Tasks tasks);//通过任务状态来获取为人接受和转出的任务
+	List<Tasks> listTasksbyStateRestful();//
+//    List<Tasks> getTasksbyLoginId(String loginId,String state);//通过登录人id来获取任务状态
+    List<Tasks> getTasksbyLoginId(Tasks tasks);
+    List<Tasks> getTasksbyLoginIdAndState(String loginId,String state1,String state2);//获取任务信息(我的任务模块)
+    List<Tasks> listPageTasksbyLoginIdAndState(Tasks tasks);
+    List<Tasks> getTasksbyProjectId(String projectId);//通过从属id获取任务信息
+    List<Tasks> getTaskbySubordinateIdAndType1(String type ,String projectId);
+    List<Tasks> getTaskbySubordinateIdAndType2(String type ,String projectId);
+    List<Tasks> getGoingTaskbyStateAndType(String type);//根据任务类型获取进行中的任务
+    List<Tasks> getHistoryTaskbyStateAndType(String type);//根据任务类型获取历史的任务
+    List<Tasks> listPageTasksByType(Tasks tasks);//根据任务类型获取任务
+    List<Tasks> getTasksbyStaffId(String staffId);//根据员工id获取任务信息
+    List<Tasks> getTasksbyAddressIdAndType(String type,String addressId);
+    List<Tasks> listPageGetTasksbyServiceRequestId(Tasks tasks);//根据服务请求id获取请求下的任务
+    int changeTasksStateByIds(Tasks tasks);//将任务id集合中的所有任务的状态修改
+    List<Tasks> getTasksbyUserIdAndState();//获取没有接受和转出状态的任务
+    List<Tasks> getTasksbyTaskAndServiceId(Tasks tasks);  //根据任务条件查询任务
+    int insertTasksAll(Tasks tasks);//添加多个任务信息
+    List<Tasks> getCountByServerId(String serverId);//根据服务请求id查询所有任务数量 王洲 2015.12.30
+    List<Tasks> getFinishCountByServerId(String serverId);//根据服务请求id查询已经关闭或完成的任务数量	王洲 2015.12.30
+    int changeTaskStateById(String tasksId);
+    
+    /**
+     * 根据登录名和状态获取任务列表
+     * @param map
+     * @return
+     */
+	List<Tasks> getTasksByLoginNameAndState(Map<String, Object> map);
+	
+	/**
+	 * 查询任务池
+	 * @return
+	 */
+	List<Tasks> getTasksPool();
+	
+	/**
+	 * 根据任务id获取任务详情
+	 * @param tasksId
+	 * @return
+	 */
+	Tasks getTasksInfoByTasksId(String tasksId);
+	
+	List<Tasks> listPageTaskbySubordinateIdAndType1(Tasks tasks);//通过id和状态获取任务详情
+	
+	List<Tasks> listPageTaskbySubordinateIdAndType2(Tasks tasks);//通过id和状态获取任务详情
+	
+	//根据任务类型查询任务池中相应任务个数
+	int getTaskPoolsCountBytaskType(String taskType);
+	
+	java.util.List<Tasks> getInspectionTasksbyId(String taskId); // 根据巡检任务id查询任务信息 杨升权 2016.7.26
+}

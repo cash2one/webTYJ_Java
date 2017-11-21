@@ -1,0 +1,36 @@
+package com.flf.mapper;
+
+import com.flf.entity.ProductBs;
+
+import java.util.List;
+import java.util.Map;
+
+import org.apache.ibatis.annotations.Param;
+
+public interface ProductBsMapper {
+    int deleteByPrimaryKey(String productBsId);
+
+    int insert(ProductBs record);
+
+    int insertSelective(ProductBs record);
+
+    ProductBs selectByPrimaryKey(String productBsId);
+
+    int updateByPrimaryKeySelective(ProductBs record);
+
+    int updateByPrimaryKey(ProductBs record);
+    
+    List<ProductBs> listPageProductBs(ProductBs productBs);//分页查询建筑产品
+    
+    List<ProductBs> listAllProductBs();		//查询所有有效数据  王洲   2015.12.25
+    
+    List<ProductBs> listAllProductBsByProductId(String productId);		//根据产品id查询所有有效数据	王洲		2015.12.26
+
+    List<ProductBs> listAllProductBsByBId(String bId);		//根据建筑结构id查询所有有效数据	陈浪2016-04-29 
+    
+    int changeStateByProductBsId(String productBsId);		//根据productBsId改变数据的状态为失效  王洲  2015.12.26
+    
+    int changeStateByProductId(String productId);//根据productBsId改变数据的状态为失效  王洲  2015.12.26
+    
+    int deleteByProductId(String productid);
+}

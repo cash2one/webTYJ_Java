@@ -1,0 +1,56 @@
+<!--
+    作者:彭婷婷
+    页面名称:宠物登记--新增宠物
+    js路径:js/controllers/propertyService/staffHome/petRegistration/newPet
+-->
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>新增宠物</title>
+</head>
+<body>
+<div class="complaint_user">
+    <table border="1" style="width:50%;text-align: center;margin:20px auto">
+        <tr >
+            <td style="width: 30%">宠物名称</td>
+            <td><input type="text" name="" class="form-control" ng-model="addPetRegistration.petName"></td>
+        </tr>
+        <tr>
+            <td>宠物类型</td>
+            <td><input type="text" name="" class="form-control" ng-model="addPetRegistration.petType"></td>
+        </tr>
+
+        <tr>
+            <td>宠物性别</td>
+            <td><input type="text" name="" class="form-control" ng-model="addPetRegistration.petSex"></td>
+        </tr>
+        <tr>
+            <td>宠物品种</td>
+           <td><input type="text" name="" class="form-control" ng-model="addPetRegistration.petKinds"></td>
+        </tr>
+        <tr>
+            <td>描述</td>
+            <td><input type="text" name="" class="form-control" ng-model="addPetRegistration.describe"></td>
+        </tr>
+
+        <tr>   
+            <td>登记日期</td>
+            <td><input type="text" name="" class="form-control" ng-model="addPetRegistration. registrationTime"></td>
+        </tr>
+        <tr>
+            <td>登记人</td>
+           <td><input type="text" name="" class="form-control" ng-model="addPetRegistration.registrant"></td>
+        </tr>
+
+    </table>
+    <div class="row" style="text-align: center">
+        <button type="button" class="btn bg-default" data-dismiss="modal" aria-label="Close">取消</button>
+        <button type="submit" class="btn btn-default"  ng-click="AddPetRegistration()">提交</button>&nbsp;&nbsp;
+        <button type="button" class="btn bg-default">打印</button>
+    </div>
+
+
+</div>
+</body>
+</html>

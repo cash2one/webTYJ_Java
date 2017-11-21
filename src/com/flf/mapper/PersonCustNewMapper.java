@@ -1,0 +1,159 @@
+/**
+ * @Title: PersonCustNewMapper.java
+ * @Package com.flf.mapper
+ * @Description: TODO
+ * Copyright: Copyright (c) 2011 
+ * Company:武汉闻风多奇软件开发有限公司
+ * 
+ * @author wangtao
+ * @date 2015-5-25 下午1:21:29
+ * @version V1.0
+ */
+
+package com.flf.mapper;
+
+import java.util.List;
+import java.util.Map;
+
+import com.flf.entity.PersonCustNew;
+import com.flf.entity.Search;
+import com.flf.entity.SearchPersonAndEnterprise;
+
+/**
+ * @ClassName: PersonCustNewMapper
+ * @Description: TODO
+ * @author wangyong
+ * @date 2015-5-25 下午1:21:29
+ *
+ */
+
+public interface PersonCustNewMapper {
+
+	
+	/*
+	 *  客户信息表
+	 */
+    List<PersonCustNew> listPagePersonCustNew(PersonCustNew personCustNew);//分页查询显示客户信息
+    List<PersonCustNew> listPagePersonCustNewBySearch(PersonCustNew personCustNew);//分页查询显示客户信息
+    List<PersonCustNew> listAllPersonCustNew(); //查询客户信息
+    PersonCustNew getPersonCustNewById(String custId);//根据id查询客户信息
+    int insertPersonCustNew(PersonCustNew personCustNew); //添加客户信息
+    
+    int insertPersonCustNewUUID(PersonCustNew personCustNew); //添加客户信息主键不自动生成
+    
+    int updatePersonCustNew(PersonCustNew personCustNew); //修改客户信息
+    int deletePersonCustNew(String custId); //删除客户信息
+    
+    List<PersonCustNew> findPersonCustNewByhouseId(String houseId);  // 通过房屋id查询客户信息
+    
+    List<PersonCustNew> listPageSearchPersonCust(Search search);//根据搜索条件查询客户信息
+    
+    List<PersonCustNew>  getPersonCustNewBycardType(PersonCustNew personCustNew);//根据身份证等条件查询客户信息
+    
+
+   /* List<PersonCust> listPageSearchPersonCust(Search search);//根据搜索条件查询客户信息
+*/
+
+   /* List<PersonCust> listPageSearchPersonCust(Search search);//根据搜索条件查询客户信息
+*/    
+
+    List<PersonCustNew> listSearchPersonCust(Search search);//根据搜索条件查询前三百条客户信息
+
+    List<PersonCustNew>  findEnterpriseCustByIdRestful(String EnterpriseCustId);//通过企业id查询所有企业下的员工信息
+    
+    List<PersonCustNew> getPersonCustNewByHouseId(String houseId);  // 通过房屋id查询客户信息 
+    
+    List<PersonCustNew> getPersonCustNewByStallNewId(String houseId);  // 通过车位id查询客户信息 
+    
+    List<PersonCustNew> getSearchPersonCust(SearchPersonAndEnterprise searchPersonAndEnterprise);  // 通过条件查询客户信息
+    
+    List<PersonCustNew> listPagePersonCustByCondition(PersonCustNew personCustNew);//个人客户管理按条件检索
+    
+    PersonCustNew getPersonCustNewbyNameAndCardAndNum(String name,String cardNum,String phoneNum); //根据姓名电话身份证号查询客户信息
+    
+    PersonCustNew getPersonCustById(String custId);
+    
+    List<PersonCustNew> listPagelistSearchPersonCust(PersonCustNew custNew);//根据搜索条件分页查询客户信息
+    
+    List<PersonCustNew> listPersonCustNewByBuildingStructureId(String buildingStructureId);//根据建筑结构id查询出个人客户
+
+    List<PersonCustNew> getSelectPersonNew(String buildingStructureid);  //根据建筑结构id获取客户信息
+    
+    List<PersonCustNew> listPagePersonCustNewByAllSearch(PersonCustNew personCustNew);
+    
+    List<PersonCustNew> getPersonCustNewbySearch(Search search);//根据选中的房屋获取与房屋相关联的人员
+    
+    String selectCustCode();
+    
+    List<PersonCustNew> selectPersonCust(String buildingStructureId);//根据建筑结构id查询有效业主信息
+    
+    List<PersonCustNew> listAllPersonCustNewList(PersonCustNew personCustNew);
+    
+    /**
+     * 根据证件号和姓名查询人员信息主键
+     * @author xiaocong
+     * @date 上午10:00:10
+     * @Description:TODO
+     * @return
+     * @updateby
+     */
+    String getCustId(String cardNum,String name);
+    
+    int getCountByNoOrPhone(PersonCustNew personCustNew);
+    
+    /**
+     * 根据公司id查询cust集合
+     * @param companyId
+     * @return
+     */
+	List<PersonCustNew> selectCustListByCompanyId(String companyId);
+	
+	
+	/**
+	 * 查询编辑是是否重复复，除开自己
+	 * @param personCustNew
+	 * @return
+	 */
+	int getCountByNoOrPhoneById(PersonCustNew personCustNew);
+	
+	/**
+	 * 获取最后一个个人客户的信息
+	 * @return
+	 */
+	PersonCustNew getLastPersonCustNew();
+	
+	/**
+	 * 根据客户id的集合查询客户信息
+	 * @param custIdList
+	 * @return
+	 */
+	List<PersonCustNew> getPersonCustListByCustIdList(List<String> custIdList);
+	
+	/**
+	 * 根据houseId以及客户类型查询客户信息
+	 * @param map
+	 * @return
+	 */
+	List<PersonCustNew> selectPersonCustNewByHouseIdAndCustType(Map<String, Object> map);
+	
+	/**
+	 * 根据客户ID查询客户信息
+	 * @param custId
+	 * @return
+	 */
+	PersonCustNew selectCustInfoById(String custId);
+	
+	/**
+	 * 根据CompanyId查询客户信息
+	 * @param companyId
+	 * @return
+	 */
+	List<PersonCustNew> searchAllPersonCustNewByCompanyId(String companyId);
+	
+	List<PersonCustNew>listPersonCustByAll(String all);
+	
+	PersonCustNew getPersonCustNewVIPbyId(String customerId);
+	
+	List<PersonCustNew> ListPagefindEnterpriseCustByIdRestful(PersonCustNew personCustNew);
+	
+}

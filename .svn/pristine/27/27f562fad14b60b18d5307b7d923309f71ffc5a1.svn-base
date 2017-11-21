@@ -1,0 +1,113 @@
+package com.flf.entity;
+
+import java.util.Date;
+import java.util.List;
+
+import javax.xml.bind.annotation.XmlRootElement;
+@XmlRootElement(name="CorrectedReading")
+public class CorrectedReading {
+    private String correctedReadingId;//读数修正ID
+
+    private String waterMeterId;//水表ID
+
+    private Date correctedTime;//修正时间
+
+    private String operator;//操作人
+
+    private Double correction;//修正量
+
+    private String reason;//原因
+
+    private String annexId;//附件ID
+
+    private Double correctionValue;//修正值
+    
+    private String meterReadingDataId;
+    
+    private List<Annex> annexs;//附件表
+    
+    
+    public List<Annex> getAnnexs() {
+		return annexs;
+	}
+
+	public void setAnnexs(List<Annex> annexs) {
+		this.annexs = annexs;
+	}
+
+	public String getMeterReadingDataId() {
+		return meterReadingDataId;
+	}
+
+	public void setMeterReadingDataId(String meterReadingDataId) {
+		this.meterReadingDataId = meterReadingDataId;
+	}
+
+	public String getCorrectedReadingId() {
+        return correctedReadingId;
+    }
+
+    public void setCorrectedReadingId(String correctedReadingId) {
+        this.correctedReadingId = correctedReadingId;
+    }
+
+    public String getWaterMeterId() {
+        return waterMeterId;
+    }
+
+    public void setWaterMeterId(String waterMeterId) {
+        this.waterMeterId = waterMeterId;
+    }
+
+    public Date getCorrectedTime() {
+        return correctedTime;
+    }
+
+    public void setCorrectedTime(Date correctedTime) {
+        this.correctedTime = correctedTime;
+    }
+
+    public String getOperator() {
+        return operator;
+    }
+
+    public void setOperator(String operator) {
+        this.operator = operator;
+    }
+
+
+
+    public String getReason() {
+        return reason;
+    }
+
+    public void setReason(String reason) {
+        this.reason = reason;
+    }
+
+    public String getAnnexId() {
+        return annexId;
+    }
+
+    public void setAnnexId(String annexId) {
+        this.annexId = annexId;
+    }
+
+	public Double getCorrection() {
+		return correction;
+	}
+
+	public void setCorrection(Double correction) {
+		this.correction = correction;
+	}
+
+	public Double getCorrectionValue() {
+		return correctionValue;
+	}
+
+	public void setCorrectionValue(Double correctionValue) {
+		this.correctionValue = correctionValue;
+	}
+
+ 
+}

@@ -1,0 +1,73 @@
+<!--
+    页面名称：任务详情【新增报价单】
+    负责人：刘洋
+    js路径：js/externalProfession/taskDetails/taskQuoteEditor.js
+    修改时间：
+-->
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>新增报价单——(任务详情)</title>
+</head>
+<body>
+<div class="complaint_user">
+    <div  style="height: 600px;width: 400px;margin: 20px;border: 1px solid rgba(0, 0, 0, 0.99)">
+        <!--标题-->
+        <div >
+            <span class="glyphicon glyphicon-envelope" aria-hidden="true" style="margin: 10px"></span>
+            <span>报价单</span>
+        </div>
+        <!--标题 end-->
+        <!--内容-->
+        <div>
+            <div class="row col-md-12" style="margin:5px 10px;">
+                <div class="col-md-6">关联任务：20012</div>
+                <div class="col-md-6">服务请求：Q1122</div>
+            </div>
+            <div class="row col-md-12" style="margin:0px 10px;">
+                <div class="col-md-6">工单ID：10020</div>
+                <div class="col-md-6">工单状态：已完成</div>
+            </div>
+            <div class="col-me-12" style="padding-left: 30px;"><select class="col-md-10"><option>人工费</option></select></div>
+            <div class="col-me-12">
+                <span class="col-md-3">电工</span>
+                <span class="col-md-3">1元/分钟</span>
+                <span class="col-md-3">60分钟</span>
+                <span class="col-md-3">60.00</span>
+            </div>
+            <div class="col-md-12"><span class="glyphicon glyphicon-plus btn" aria-hidden="true">添加行</span></div>
+            <div class="col-me-12" style="padding-left: 30px;"><select class="col-md-10"><option>物料费</option></select></div>
+            <div class="col-me-12">
+                <span class="col-md-3">灯管</span>
+                <span class="col-md-3">10/个</span>
+                <span class="col-md-3">2</span>
+                <span class="col-md-3">20.00</span>
+            </div>
+            <div class="col-md-12"><span class="glyphicon glyphicon-plus btn" aria-hidden="true">添加行</span></div>
+            <div class="col-me-12" style="padding-left: 30px;"><select class="col-md-10"><option>工具费</option></select></div>
+            <div class="col-me-12">
+                <span class="col-md-3">升降梯</span>
+                <span class="col-md-3">10元/次</span>
+                <span class="col-md-3">1</span>
+                <span class="col-md-3">10.00</span>
+            </div>
+
+            <div class="col-md-12">
+                <span class="col-md-4">总额：<input type="text" class="" style="width: 100px"/></span>
+                <span class="col-md-4">折扣：<input type="text" class=""  style="width: 100px"/></span>
+                <span class="col-md-4">最终价格：<input type="text" class=""  style="width: 100px"/></span>
+            </div>
+
+            <div class="col-md-12" style="margin-top: 15px;"><span class="col-md-3">折扣原因：</span><textarea rows="2" cols="40"></textarea></div>
+            <div class="col-md-12" style="margin-top: 5px;"><span class="col-md-3">备注：</span><textarea rows="2" cols="40"></textarea></div>
+
+            <div class="col-md-6"><button class="btn btn-default col-md-offset-6">提交</button></div>
+            <div class="col-md-6"><button class="btn btn-default">取消</button></div>
+        </div>
+        <!--内容 end-->
+        </div>
+    </div>
+</div>
+</body>
+</html>

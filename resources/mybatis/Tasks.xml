@@ -1,0 +1,518 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.flf.mapper.TasksMapper" >
+  <resultMap id="BaseResultMap" type="Tasks" >
+    <id column="task_id" property="taskId" jdbcType="VARCHAR" />
+    <result column="server_id" property="serverId" jdbcType="VARCHAR" />
+    <result column="customer_id" property="customerId" jdbcType="VARCHAR" />
+    <result column="task_type" property="taskType" jdbcType="TINYINT"/>
+    <result column="task_state" property="taskState" jdbcType="TINYINT" />
+    <result column="professional" property="professional" jdbcType="TINYINT" />
+    <result column="product" property="product" jdbcType="TINYINT" />
+    <result column="address_id" property="addressId" jdbcType="VARCHAR" />
+    <result column="estimated_time" property="estimatedTime" jdbcType="TIMESTAMP" />
+    <result column="finish_time" property="finishTime" jdbcType="TIMESTAMP" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP"/>
+    <result column="task_description" property="taskDescription" jdbcType="VARCHAR" />
+    <result column="principal" property="principal" jdbcType="VARCHAR" />
+    <result column="subordinate_id" property="subordinateId" jdbcType="VARCHAR" />
+    <result column="subordinate_type" property="subordinateType" jdbcType="TINYINT" />
+    <result column="subordinate_operation" property="subordinateOperation" jdbcType="VARCHAR" />
+    <result column="subordinate_time" property="subordinateTime" jdbcType="TIMESTAMP" />
+    <result column="urgeCount" property="urgeCount" jdbcType="VARCHAR" />
+    <result column="delay_time" property="delayTime" jdbcType="TIMESTAMP" />
+    <result column="delay_count" property="delayCount" jdbcType="VARCHAR" />
+    <result column="urge_ridicule" property="urgeRidicule" jdbcType="VARCHAR" />
+    <result column="transfer_principal" property="transferPrincipal" jdbcType="VARCHAR" />
+  </resultMap>
+  
+  <resultMap type="Tasks" id="appBaseResultMap" extends="BaseResultMap">
+  	<result column="name" property="customerName" jdbcType="VARCHAR" />
+    <result column="full_name" property="customerFullName" jdbcType="VARCHAR" />
+    <result column="register_phone" property="customerPhone" jdbcType="VARCHAR" />
+  </resultMap> 
+  
+  <resultMap id="addSomeColumnsMap" type="Tasks" extends="BaseResultMap">
+    <result column="full_name" property="fullName" jdbcType="VARCHAR" />
+    <result column="check_item_name" property="checkItemName" jdbcType="VARCHAR" />
+    <result column="check_item_unit" property="checkItemUnit" jdbcType="VARCHAR" />
+    <result column="record_id" property="recordId" jdbcType="VARCHAR" />
+    <result column="inspection_result" property="inspectionResult" jdbcType="VARCHAR" />
+    <result column="state" property="state" jdbcType="VARCHAR" />
+    <result column="order_id" property="orderId" jdbcType="VARCHAR" />
+  </resultMap>
+  
+  <resultMap type="Tasks" id="resultTasksMap" extends="BaseResultMap">
+  	<association property="serviceRequest" column="server_id" javaType="ServiceRequest" select="com.flf.mapper.ServiceRequestMapper.getServiceRequest"></association>
+  	<association property="personCustNew" column="customer_id" javaType="PersonCustNew" select="com.flf.mapper.PersonCustNewMapper.getPersonCustNewById"></association>
+  	<!--<collection property="serviceObjectRecords" column="service_object" select="com.flf.mapper.ServiceObjectRecordsMapper.getServiceObjectRecordsbyId"></collection>-->
+  	<association property="staff" column="principal" javaType="Staff" select="com.flf.mapper.StaffMapper.selectByid"></association>
+  	<association property="buildingStructureNew" column="address_id" javaType="BuildingStructureNew" select="com.flf.mapper.BuildingStructureNewMapper.getBuildingStructureNewbyId"></association>
+  </resultMap>
+  
+ <!--<delete id="deleteTasks" parameterType="String">
+  delete from ts_tasks where task_id=#{0}
+  </delete>-->
+  
+  <select id="listAllTasks"  resultMap="resultTasksMap" >
+  select * from ts_tasks 
+  </select>
+  
+  <select id="getTasksbyId" parameterType="String" resultMap="resultTasksMap">
+  select * from ts_tasks where task_id=#{0}
+  </select>
+  
+  <select id="getAppTasksbyId" parameterType="String" resultMap="appBaseResultMap">
+  	<!-- select t.* from ts_tasks t where task_id=#{0} -->
+  	SELECT t.*,bs.full_name,pc.name,pc.register_phone FROM ts_tasks t 
+	LEFT JOIN tc_building_structure bs ON bs.id = t.address_id
+	LEFT JOIN tc_person_cust pc ON pc.cust_id = t.customer_id
+	WHERE task_id='a03122be-5e01-4a62-a8ac-efc061f5ae9a'
+  </select>
+  
+  <select id="listTasksPoolNotStaffId"  parameterType="Map" resultMap="BaseResultMap">
+	SELECT * FROM ts_tasks WHERE create_time &lt; DATE_ADD(NOW(),INTERVAL ${time} MINUTE) AND task_state = '4' AND principal != #{staffId}
+  </select>
+  
+  <select id="getTasksbyServiceRequestId" parameterType="String" resultMap="resultTasksMap">
+  	select * from ts_tasks where server_id=#{0}
+  </select>
+<!--    分页查询
+  <select id="listPageTasksbyServiceRequestId" parameterType="String" resultMap="resultTasksMap">
+  	select * from ts_tasks where server_id=#{serverId}
+  	<if test="taskDescription !='' and taskDescription !=null">
+  	and task_description LIKE CONCAT('%',#{taskDescription},'%')
+  	</if>
+  </select> -->
+  
+  <!--   分页查询 -->
+  <select id="listPageTasksbyServiceRequestId" parameterType="String" resultMap="resultTasksMap">
+	SELECT ts.*,re.`delay_time`,re.`delay_count`,urg.`urgeCount`, urg.`urge_ridicule`
+	FROM ts_tasks ts 
+	LEFT JOIN (
+		SELECT rs.`task_id`,MAX(rs.`delay_time`) AS `delay_time`,COUNT(0) AS `delay_count`  FROM ts_application_delay_records rs
+		GROUP BY rs.`task_id`
+	) re
+	ON ts.`task_id` = re.`task_id`
+	LEFT JOIN (
+		SELECT utr.`task_id`,COUNT(0) AS `urgeCount` 
+		,CASE  
+		WHEN COUNT(0)>= 5 THEN (SELECT urge_ridicule FROM ts_urge_task_ridicule WHERE urge_sum = 5) 
+		WHEN COUNT(0)= 4 THEN (SELECT urge_ridicule FROM ts_urge_task_ridicule WHERE urge_sum = 4)
+		WHEN COUNT(0)= 3 THEN (SELECT urge_ridicule FROM ts_urge_task_ridicule WHERE urge_sum = 3) 
+		WHEN COUNT(0)= 2 THEN (SELECT urge_ridicule FROM ts_urge_task_ridicule WHERE urge_sum = 2) 
+		WHEN COUNT(0)= 1 THEN (SELECT urge_ridicule FROM ts_urge_task_ridicule WHERE urge_sum = 1) 
+		ELSE '' END AS urge_ridicule
+		FROM ts_urge_task_records utr
+		GROUP BY utr.`task_id`
+	) AS urg ON urg.`task_id` = ts.`task_id`
+	
+	Where ts.server_id=#{serverId}
+  	<if test="taskDescription !='' and taskDescription !=null">
+  	and ts.task_description LIKE CONCAT('%',#{taskDescription},'%')
+  	</if>
+  </select>
+  
+  <!--   <select id="getTasksbyTaskTypeAndServiceId" parameterType="String" resultMap="resultTasksMap">
+  	select * from ts_tasks where  task_type=#{0} and server_id=#{1}
+  </select> -->
+  
+  <select id="getTasksbyTaskTypeAndServiceId" parameterType="Tasks"  resultMap="resultTasksMap">
+  	select * from ts_tasks where task_type = #{taskType} and server_id=#{serverId}
+  </select>
+  
+  <select id="listTasksbyStateRestful" resultMap="resultTasksMap">
+  SELECT ts.*,re.`delay_time`,re.`delay_count`,urg.`urgeCount`, urg.`urge_ridicule`
+	FROM ts_tasks ts 
+	LEFT JOIN (
+		SELECT rs.`task_id`,MAX(rs.`delay_time`) AS `delay_time`,COUNT(0) AS `delay_count`  FROM ts_application_delay_records rs
+		GROUP BY rs.`task_id`
+	) re
+	ON ts.`task_id` = re.`task_id`
+	LEFT JOIN (
+		SELECT utr.`task_id`,COUNT(0) AS `urgeCount` 
+		,CASE  
+		WHEN COUNT(0)>= 5 THEN (SELECT urge_ridicule FROM ts_urge_task_ridicule WHERE urge_sum = 5) 
+		WHEN COUNT(0)= 4 THEN (SELECT urge_ridicule FROM ts_urge_task_ridicule WHERE urge_sum = 4)
+		WHEN COUNT(0)= 3 THEN (SELECT urge_ridicule FROM ts_urge_task_ridicule WHERE urge_sum = 3) 
+		WHEN COUNT(0)= 2 THEN (SELECT urge_ridicule FROM ts_urge_task_ridicule WHERE urge_sum = 2) 
+		WHEN COUNT(0)= 1 THEN (SELECT urge_ridicule FROM ts_urge_task_ridicule WHERE urge_sum = 1) 
+		ELSE '' END AS urge_ridicule
+		FROM ts_urge_task_records utr
+		GROUP BY utr.`task_id`
+	) AS urg ON urg.`task_id` = ts.`task_id`  
+  	where task_state= 4 or task_state =5 order by create_time desc
+  </select>
+  
+  <select id="listPageTasksbyState" parameterType="Tasks"  resultMap="resultTasksMap">
+  	SELECT ts.*,re.`delay_time`,re.`delay_count`,urg.`urgeCount`, urg.`urge_ridicule`
+	FROM ts_tasks ts 
+	LEFT JOIN (
+		SELECT rs.`task_id`,MAX(rs.`delay_time`) AS `delay_time`,COUNT(0) AS `delay_count`  FROM ts_application_delay_records rs
+		GROUP BY rs.`task_id`
+	) re
+	ON ts.`task_id` = re.`task_id`
+	LEFT JOIN (
+		SELECT utr.`task_id`,COUNT(0) AS `urgeCount` 
+		,CASE  
+		WHEN COUNT(0)>= 5 THEN (SELECT urge_ridicule FROM ts_urge_task_ridicule WHERE urge_sum = 5) 
+		WHEN COUNT(0)= 4 THEN (SELECT urge_ridicule FROM ts_urge_task_ridicule WHERE urge_sum = 4)
+		WHEN COUNT(0)= 3 THEN (SELECT urge_ridicule FROM ts_urge_task_ridicule WHERE urge_sum = 3) 
+		WHEN COUNT(0)= 2 THEN (SELECT urge_ridicule FROM ts_urge_task_ridicule WHERE urge_sum = 2) 
+		WHEN COUNT(0)= 1 THEN (SELECT urge_ridicule FROM ts_urge_task_ridicule WHERE urge_sum = 1) 
+		ELSE '' END AS urge_ridicule
+		FROM ts_urge_task_records utr
+		GROUP BY utr.`task_id`
+	) AS urg ON urg.`task_id` = ts.`task_id`  
+  	
+  	
+  	where task_state= 4 or task_state =5 order by create_time desc
+  </select>
+  
+  <select id="getTasksbyUserIdAndState" parameterType="String"  resultMap="resultTasksMap">
+  	select * from ts_tasks where task_state= 4 or task_state =5
+  </select>
+  
+  <!-- 根据任务类型查询任务池中任务个数 -->
+  <select id="getTaskPoolsCountBytaskType" parameterType="String" resultType="Integer">
+  select count(*) from ts_tasks where task_type= #{0} and task_state in (4,5)
+  </select>
+  
+  <select id="getTasksbyLoginId" parameterType="Tasks"  resultMap="BaseResultMap">
+  	select * from ts_tasks where principal = #{principal} and task_state = #{taskState}
+  </select>
+  
+  <select id="listTasksByMap" parameterType="Map"  resultMap="BaseResultMap">
+  	select * from ts_tasks
+  	<trim prefix="where" prefixOverrides="or">
+  	(
+  		<if test="state0!=null and state0!=null">
+  			task_state = #{state0}
+  		</if>
+  		<if test="state1!=null and state1!=null">
+  			or task_state = #{state1}
+  		</if>
+  		<if test="state2!=null and state2!=null">
+  			or task_state = #{state2}
+  		</if>
+  		<if test="state3!=null and state3!=null">
+  			or task_state = #{state3}
+  		</if>
+  		<if test="state4!=null and state4!=null">
+  			or task_state = #{state4}
+  		</if>
+  		<if test="state5!=null and state5!=null">
+  			or task_state = #{state5}
+  		</if>
+  		<if test="state6!=null and state6!=null">
+  			or task_state = #{state6}
+  		</if>
+  		<if test="state7!=null and state7!=null">
+  			or task_state = #{state7}
+  		</if>
+  		)
+  		<if test="staffId!=null and staffId!=''">
+  			and principal = #{staffId}
+  		</if>
+  	</trim>
+  </select>
+  
+  <select id="listTasksByTypesStates" parameterType="Map"  resultMap="resultTasksMap">
+  	select * from ts_tasks
+  	<trim prefix="where" prefixOverrides="or">
+  			(
+  			<if test="type0!=null and type0!=''">
+  				task_type = #{taskType0}
+  			</if>
+  			<if test="type1!=null and type1!=''">
+  			 	or task_type = #{type1}
+  			</if>
+  			<if test="type2!=null and type2!=''">
+  				or task_type = #{type2}
+  			</if>
+  			<if test="type3!=null and type3!=''">
+  				or task_type = #{type3}
+  			</if>
+  			<if test="type4!=null and type4!=''">
+  				or task_type = #{type4}
+  			</if>
+  			<if test="type5!=null and type5!=''">
+  				or task_type = #{type5}
+  			</if>
+  			<if test="type6!=null and type6!=''">
+  				or task_type = #{type6}
+  			</if>
+  			<if test="type7!=null and type7!=''">
+  				or task_type = #{type7}
+  			</if>
+  			) and (
+  			<if test="state0!=null and state0!=null">
+  				task_state = #{state0}
+  			</if>
+  			<if test="state1!=null and state1!=null">
+  				or task_state = #{state1}
+  			</if>
+  			<if test="state2!=null and state2!=null">
+  				or task_state = #{state2}
+  			</if>
+  			<if test="state3!=null and state3!=null">
+  				or task_state = #{state3}
+  			</if>
+  			<if test="state4!=null and state4!=null">
+  				or task_state = #{state4}
+  			</if>
+  			<if test="state5!=null and state5!=null">
+  				or task_state = #{state5}
+  			</if>
+  			<if test="state6!=null and state6!=null">
+  				or task_state = #{state6}
+  			</if>
+  			<if test="state7!=null and state7!=null">
+  				or task_state = #{state7}
+  			</if>
+  			) 
+  			<if test="staffId!=null and staffId!=''">
+  				AND principal = #{staffId}
+  			</if>
+  	</trim>
+  </select>
+  
+  <select id="getTasksbyLoginIdAndState" parameterType="String"  resultMap="resultTasksMap">
+  	select * from ts_tasks where principal = #{0} and task_state in(#{1},#{2})
+  </select>
+  
+  <!-- 增加转出任务判断  zhuqi 20160803-->
+  <select id="listPageTasksbyLoginIdAndState" parameterType="Tasks"  resultMap="resultTasksMap">
+  	select * from ts_tasks where (principal = #{principal} and task_state in(#{state1},#{state2})
+  	<if test="state1==4 or state2==4">
+  		AND transfer_principal IS NULL
+  	</if>
+  	)
+  	<if test="state1==4 or state2==4">
+  	 or(transfer_principal = #{principal} and task_state=5)
+  	</if>
+  </select>
+  
+  <select id="getTasksbyProjectId" parameterType="String"  resultMap="resultTasksMap">
+  	select * from ts_tasks where subordinate_id = #{0}
+  </select>
+  
+  <select id="getTaskbySubordinateIdAndType1" parameterType="String"  resultMap="resultTasksMap">
+  	select * from ts_tasks where subordinate_type = #{0} and subordinate_id = #{1} and task_state in (0,2)
+  </select>
+  
+  <select id="listPageTaskbySubordinateIdAndType1" parameterType="Tasks"  resultMap="resultTasksMap">
+  	SELECT ts.*,re.`delay_time`,re.`delay_count`,urg.`urgeCount`, urg.`urge_ridicule`
+	FROM ts_tasks ts 
+	LEFT JOIN (
+		SELECT rs.`task_id`,MAX(rs.`delay_time`) AS `delay_time`,COUNT(0) AS `delay_count`  FROM ts_application_delay_records rs
+		GROUP BY rs.`task_id`
+	) re
+	ON ts.`task_id` = re.`task_id`
+	LEFT JOIN (
+		SELECT utr.`task_id`,COUNT(0) AS `urgeCount` 
+		,CASE  
+		WHEN COUNT(0)>= 5 THEN (SELECT urge_ridicule FROM ts_urge_task_ridicule WHERE urge_sum = 5) 
+		WHEN COUNT(0)= 4 THEN (SELECT urge_ridicule FROM ts_urge_task_ridicule WHERE urge_sum = 4)
+		WHEN COUNT(0)= 3 THEN (SELECT urge_ridicule FROM ts_urge_task_ridicule WHERE urge_sum = 3) 
+		WHEN COUNT(0)= 2 THEN (SELECT urge_ridicule FROM ts_urge_task_ridicule WHERE urge_sum = 2) 
+		WHEN COUNT(0)= 1 THEN (SELECT urge_ridicule FROM ts_urge_task_ridicule WHERE urge_sum = 1) 
+		ELSE '' END AS urge_ridicule
+		FROM ts_urge_task_records utr
+		GROUP BY utr.`task_id`
+	) AS urg ON urg.`task_id` = ts.`task_id` 
+  	
+  	where subordinate_type = #{subordinateType} and subordinate_id = #{subordinateId} and task_state in (0,2)
+  </select>
+  
+  <select id="getTaskbySubordinateIdAndType2" parameterType="String"  resultMap="resultTasksMap">
+  	select * from ts_tasks where subordinate_type = #{0} and subordinate_id = #{1} and task_state not in (0,2)
+  </select>
+  
+<!--   <select id="listPageTaskbySubordinateIdAndType2" parameterType="Tasks"  resultMap="resultTasksMap">
+  	select * from ts_tasks where subordinate_type = #{subordinateType} and subordinate_id = #{subordinateId} and task_state not in (0,2)
+  </select> -->
+  
+  <select id="listPageTaskbySubordinateIdAndType2" parameterType="Tasks"  resultMap="resultTasksMap">
+  	SELECT ts.*,re.`delay_time`,re.`delay_count`,urg.`urgeCount`, urg.`urge_ridicule`
+	FROM ts_tasks ts 
+	LEFT JOIN (
+		SELECT rs.`task_id`,MAX(rs.`delay_time`) AS `delay_time`,COUNT(0) AS `delay_count`  FROM ts_application_delay_records rs
+		GROUP BY rs.`task_id`
+	) re
+	ON ts.`task_id` = re.`task_id`
+	LEFT JOIN (
+		SELECT utr.`task_id`,COUNT(0) AS `urgeCount` 
+		,CASE  
+		WHEN COUNT(0)>= 5 THEN (SELECT urge_ridicule FROM ts_urge_task_ridicule WHERE urge_sum = 5) 
+		WHEN COUNT(0)= 4 THEN (SELECT urge_ridicule FROM ts_urge_task_ridicule WHERE urge_sum = 4)
+		WHEN COUNT(0)= 3 THEN (SELECT urge_ridicule FROM ts_urge_task_ridicule WHERE urge_sum = 3) 
+		WHEN COUNT(0)= 2 THEN (SELECT urge_ridicule FROM ts_urge_task_ridicule WHERE urge_sum = 2) 
+		WHEN COUNT(0)= 1 THEN (SELECT urge_ridicule FROM ts_urge_task_ridicule WHERE urge_sum = 1) 
+		ELSE '' END AS urge_ridicule
+		FROM ts_urge_task_records utr
+		GROUP BY utr.`task_id`
+	) AS urg ON urg.`task_id` = ts.`task_id`
+  	
+  	where subordinate_type = #{subordinateType} and subordinate_id = #{subordinateId} and task_state not in (0,2)
+  </select>
+  
+  <select id="getGoingTaskbyStateAndType" parameterType="String"  resultMap="resultTasksMap">
+  	select * from ts_tasks where task_type=#{0} and task_state not in (0,2) ORDER BY create_time DESC
+  </select>
+  
+  <select id="getHistoryTaskbyStateAndType" parameterType="String"  resultMap="resultTasksMap">
+  	select * from ts_tasks where task_type=#{0} and task_state in (0,2) ORDER BY create_time DESC
+  </select>
+  
+  <select id="listPageTasksByType" parameterType="Tasks" resultMap="resultTasksMap">
+  	select * from ts_tasks where task_type=#{taskType} and task_id != #{taskId} ORDER BY create_time DESC
+  </select>
+  
+  <select id="getTasksbyStaffId" parameterType="String"  resultMap="resultTasksMap">
+  	select * from ts_tasks where principal = #{0}
+  </select>
+    <select id="getTasksbyAddressIdAndType" parameterType="String"  resultMap="resultTasksMap">
+  	select * from ts_tasks where address_id = #{1} and task_type=#{0} 
+  </select>
+  <!-- 根据服务请求id获取任务 分页查询 -->
+  <select id="listPageGetTasksbyServiceRequestId" parameterType="Tasks" resultMap="resultTasksMap">
+  	select t.task_id,t.server_id,t.customer_id,t.task_type,t.task_state,t.professional,
+  		t.product,t.address_id,t.estimated_time,t.finish_time,t.create_time,t.task_description,
+  		t.principal,t.subordinate_id,t.subordinate_type
+  	from ts_tasks as t
+  	where t.server_id = #{serverId,jdbcType=VARCHAR}
+  	<if test="taskDescription != null and taskDescription != ''">
+  		t.task_description like CONCAT('%',CONCAT(#{taskDescription,jdbcType=VARCHAR},'%'))
+  	</if>
+  </select>
+ <insert id="insertTasks" parameterType="Tasks" >
+    insert into ts_tasks (task_id,server_id,customer_id,task_type,task_state,professional,product
+    ,address_id,estimated_time,finish_time,create_time,task_description,principal,subordinate_id,subordinate_type,subordinate_operation,subordinate_time)
+    values (UUID(),#{serverId,jdbcType=VARCHAR}, #{customerId,jdbcType=VARCHAR}, 
+    #{taskType,jdbcType=TINYINT}, #{taskState,jdbcType=TINYINT}, 
+    #{professional,jdbcType=TINYINT}, #{product,jdbcType=TINYINT}, 
+    #{addressId,jdbcType=VARCHAR}, #{estimatedTime,jdbcType=TIMESTAMP}, 
+    #{finishTime,jdbcType=TIMESTAMP},#{createTime,jdbcType=TIMESTAMP}, #{taskDescription,jdbcType=VARCHAR}, 
+    #{principal,jdbcType=VARCHAR},#{subordinateId,jdbcType=VARCHAR},#{subordinateType,jdbcType=TINYINT},#{subordinateOperation,jdbcType=VARCHAR},#{subordinateTime,jdbcType=TIMESTAMP})
+  </insert>
+ 
+ <insert id="insertTasksUUID" parameterType="Tasks" >
+    insert into ts_tasks (task_id,server_id,customer_id,task_type,task_state,professional,product
+    ,address_id,estimated_time,finish_time,create_time,task_description,principal,subordinate_id,subordinate_type,subordinate_operation,subordinate_time)
+    values (#{taskId,jdbcType=VARCHAR},#{serverId,jdbcType=VARCHAR}, #{customerId,jdbcType=VARCHAR}, 
+    #{taskType,jdbcType=TINYINT}, #{taskState,jdbcType=TINYINT}, 
+    #{professional,jdbcType=TINYINT}, #{product,jdbcType=TINYINT}, 
+    #{addressId,jdbcType=VARCHAR}, #{estimatedTime,jdbcType=TIMESTAMP}, 
+    #{finishTime,jdbcType=TIMESTAMP},NOW(), #{taskDescription,jdbcType=VARCHAR}, 
+    #{principal,jdbcType=VARCHAR},#{subordinateId,jdbcType=VARCHAR},#{subordinateType,jdbcType=TINYINT},#{subordinateOperation,jdbcType=VARCHAR},#{subordinateTime,jdbcType=TIMESTAMP})
+  </insert>
+ 
+  <update id="updateTasks" parameterType="Tasks" >
+    update ts_tasks
+    set server_id = #{serverId,jdbcType=VARCHAR},
+    customer_id = #{customerId,jdbcType=VARCHAR},
+    task_type = #{taskType,jdbcType=TINYINT},
+    task_state = #{taskState,jdbcType=TINYINT},
+    professional = #{professional,jdbcType=TINYINT},
+    product = #{product,jdbcType=VARCHAR},
+    address_id = #{addressId,jdbcType=VARCHAR},
+    estimated_time = #{estimatedTime,jdbcType=TIMESTAMP},
+    finish_time =  #{finishTime,jdbcType=TIMESTAMP},
+    create_time = #{createTime,jdbcType=TIMESTAMP},
+    task_description = #{taskDescription,jdbcType=VARCHAR},
+    principal = #{principal,jdbcType=VARCHAR},
+    subordinate_id = #{subordinateId,jdbcType=VARCHAR},
+    subordinate_type = #{subordinateType,jdbcType=TINYINT},
+    subordinate_operation = #{subordinateOperation,jdbcType=VARCHAR},
+    subordinate_time = #{subordinateTime,jdbcType=TIMESTAMP},
+    transfer_principal = #{transferPrincipal,jdbcType=VARCHAR}
+    where task_id = #{taskId,jdbcType=VARCHAR}
+  </update>
+  <!-- 将id为id集合中的任务状态修改为指定状态 -->
+  <update id="changeTasksStateByIds" parameterType="Tasks">
+  	update ts_tasks
+  	set
+  		task_state = #{taskState,jdbcType=TINYINT}
+  		<if test="finishTime != null">
+  			,finish_time = #{finishTime,jdbcType=TIMESTAMP}
+  		</if>
+  	where task_id in
+  	<foreach collection="tasksIds" item="id" index="index" open="(" close=")" separator=",">
+  		#{id}
+  	</foreach>
+  </update>
+  <update id="closeTasks" parameterType="String" >
+  	update ts_tasks set task_state = 0 where task_id =#{0}
+  </update>
+  
+   <update id="finishTasks" parameterType="String" >
+  	update ts_tasks set task_state = 2 where task_id =#{0}
+  </update>
+  
+   <select id="getTasksbyTaskAndServiceId" parameterType="Tasks"  resultMap="resultTasksMap">
+  	select * from ts_tasks where 
+  		<if test="taskId != null and taskId != ''">
+  			task_id = #{taskId}
+  		</if>
+  		<if test="serverId != null and serverId != ''">
+  			server_id = #{serverId}
+  		</if>
+  		<if test="taskState != null and taskState != ''">
+  			task_state = #{taskState}
+  		</if>
+  		<if test="taskType != null and taskType != ''">
+  			task_type = #{taskType}
+  		</if>
+  		<if test="createTime != null and createTime != ''">
+  			create_time = #{createTime}
+  		</if>
+  </select>
+  
+  <!-- 根据服务请求id查询所有任务数量 王洲 2015.12.30 -->
+  <select id="getCountByServerId" parameterType="String" resultMap="BaseResultMap">
+  	select * from ts_tasks where server_id = #{0}
+  </select>
+  
+  
+  <!-- 根据服务请求id查询已经关闭或完成的任务数量	王洲 2015.12.30 -->
+  <select id="getFinishCountByServerId" parameterType="String" resultMap="BaseResultMap">
+  	select * from ts_tasks where server_id = #{0} and task_state in (0,2)
+  </select>
+  
+  <!-- 根据登录名和状态获取任务列表 -->
+  <select id="getTasksByLoginNameAndState" parameterType="java.util.Map" resultMap="BaseResultMap">
+  	select a.* from ts_tasks a
+	join t_user b on b.employ_id=a.principal
+	WHERE b.login_name=#{loginName}
+  	<if test="taskState != null">
+  		and task_state = #{taskState}
+  	</if>
+  </select>
+  
+  <!-- 查询任务池 -->
+  <select id="getTasksPool" resultMap="BaseResultMap">
+  	select * from ts_tasks where task_state='4'
+  </select>
+  
+  <!-- 根据任务id获取任务详情 -->
+  <select id="getTasksInfoByTasksId" parameterType="java.lang.String" resultMap="resultTasksMap">
+  	select a.*,(select count(*) from ts_urge_task_records b where b.task_id=#{0}) as urgeCount
+from ts_tasks a where task_id=#{0}
+  </select>
+  
+  
+   <select id="getInspectionTasksbyId" parameterType="String" resultMap="addSomeColumnsMap">
+   	SELECT b.record_id ,c.full_name,d.check_item_name,d.check_item_unit ,b.inspection_result,a.state,a.order_id FROM ts_inspection_orders AS a 
+		LEFT JOIN ts_inspection_records AS b ON b.order_id=a.order_id 
+		LEFT JOIN tc_building_structure AS c ON c.id=b.inspection_property_id
+		LEFT JOIN ts_inspection_property_check_item AS d ON d.inspection_plan_id=b.inspection_plan_id	
+		WHERE task_id=#{taskId,jdbcType=VARCHAR}
+  </select>
+  
+  
+  <update id="changeTaskStateById" parameterType="String" >
+  	update ts_tasks set task_state = 2 where task_id =#{0}
+  </update>
+  
+</mapper>

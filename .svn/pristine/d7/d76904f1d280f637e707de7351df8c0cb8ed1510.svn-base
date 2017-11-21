@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.flf.mapper.CompensateObjectMapper" >
+  <resultMap id="ResultCompensateObject" type="CompensateObject" >
+    <id column="record_id" property="recordId" jdbcType="VARCHAR" />
+    <result column="task_id" property="taskId" jdbcType="VARCHAR" />
+    <result column="customer_id" property="customerId" jdbcType="VARCHAR" />
+    <result column="compensate_sum" property="compensateSum" jdbcType="DECIMAL" />
+  </resultMap>
+  
+   <resultMap id="ResultTasks" type="Tasks" >
+    <id column="task_id" property="taskId" jdbcType="VARCHAR" />
+    <result column="server_id" property="serverId" jdbcType="VARCHAR" />
+    <result column="customer_id" property="customerId" jdbcType="VARCHAR" />
+    <result column="task_type" property="taskType" jdbcType="TINYINT" />
+    <result column="task_state" property="taskState" jdbcType="TINYINT" />
+    <result column="professional" property="professional" jdbcType="TINYINT" />
+    <result column="product" property="product" jdbcType="TINYINT" />
+    <result column="address_id" property="addressId" jdbcType="VARCHAR" />
+    <result column="estimated_time" property="estimatedTime" jdbcType="DATE" />
+    <result column="finish_time" property="finishTime" jdbcType="DATE" />
+    <result column="task_description" property="taskDescription" jdbcType="VARCHAR" />
+    <result column="principal" property="principal" jdbcType="VARCHAR" />
+    <result column="service_object" property="serviceObject" jdbcType="VARCHAR" />
+  </resultMap>
+  
+  <resultMap id="BaseResultMap" type="PersonCustNew" >
+    <id column="cust_id" property="custId" jdbcType="INTEGER" />
+    <result column="vip_num" property="vipNum" jdbcType="VARCHAR" />
+    <result column="vip_type" property="vipType" jdbcType="INTEGER" />
+    <result column="vip_begin_time" property="vipBegintime" jdbcType="DATE" />
+    <result column="vip_end_time" property="vipEndintime" jdbcType="DATE" />
+    <result column="person_pet" property="presonPet" jdbcType="VARCHAR" />
+    <result column="mainteen" property="mainteen" jdbcType="VARCHAR" />
+    <result column="private_stop_car" property="privateStopcar" jdbcType="VARCHAR" />
+    <result column="home_making" property="homemaking" jdbcType="VARCHAR" />
+    <result column="cust_code" property="custCode" jdbcType="VARCHAR" />
+    <result column="cust_style" property="custStyle" jdbcType="TINYINT" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="sex" property="sex" jdbcType="VARCHAR" />
+    <result column="phone_num" property="phoneNum" jdbcType="VARCHAR" />
+    <result column="native_place" property="nativePlace" jdbcType="VARCHAR" />
+    <result column="census" property="census" jdbcType="VARCHAR" />
+    <result column="birthday" property="birthday" jdbcType="DATE" />
+    <result column="card_type" property="cardType" jdbcType="TINYINT" />
+    <result column="card_num" property="cardNum" jdbcType="VARCHAR" />
+    <result column="jiajia_num" property="jiajiaNum" jdbcType="VARCHAR" />
+    <result column="weixin_num" property="weixinNum" jdbcType="VARCHAR" />
+    <result column="work_units" property="workUnits" jdbcType="VARCHAR" />
+    <result column="position" property="position" jdbcType="VARCHAR" />
+    <result column="marrie_state" property="marrieState" jdbcType="TINYINT" />
+    <result column="edu_level" property="eduLevel" jdbcType="TINYINT" />
+    <result column="social" property="social" jdbcType="VARCHAR" />
+    <result column="landscape" property="landscape" jdbcType="TINYINT" />
+    <result column="hobby" property="hobby" jdbcType="VARCHAR" />
+    <result column="cust_level" property="custLevel" jdbcType="VARCHAR" />
+    <result column="is_enterprise" property="isEnterprise" jdbcType="TINYINT" />
+    <result column="urgent_contact_person" property="urgentContactPerson" jdbcType="VARCHAR" />
+    <result column="urgent_contact_phone" property="urgentContactPhone" jdbcType="VARCHAR" />
+    <result column="upload_image" property="uploadImage" jdbcType="VARCHAR" />
+    <result column="phone_num" property="phoneNum" jdbcType="VARCHAR" />
+    <result column="building" property="building" jdbcType="VARCHAR" />
+    <result column="complaint_count" property="complaintCount" jdbcType="INTEGER" />
+    <result column="blacklist" property="blacklist" jdbcType="INTEGER" />
+    <result column="handle_event_count" property="handleEventCount" jdbcType="INTEGER" />
+    <result column="affinity" property="affinity" jdbcType="VARCHAR" />
+    <result column="neighborhood_dispute" property="neighborhoodDispute" jdbcType="VARCHAR" />
+     <result column="qq_num" property="qqNum" jdbcType="VARCHAR" />
+  </resultMap>
+  
+  <resultMap id="ResultCompensateObjectMap" type="CompensateObject" >
+    <id column="record_id" property="recordId" jdbcType="VARCHAR" />
+    <result column="customer_id" property="customerId" jdbcType="VARCHAR" />
+    <result column="compensate_sum" property="compensateSum" jdbcType="DECIMAL" />
+<association property="tasks" column="task_id" javaType="Tasks">
+    <id column="task_id" property="taskId" jdbcType="VARCHAR" />
+    <result column="server_id" property="serverId" jdbcType="VARCHAR" />
+    <result column="customer_id" property="customerId" jdbcType="VARCHAR" />
+    <result column="task_type" property="taskType" jdbcType="TINYINT" />
+    <result column="task_state" property="taskState" jdbcType="TINYINT" />
+    <result column="professional" property="professional" jdbcType="TINYINT" />
+    <result column="product" property="product" jdbcType="TINYINT" />
+    <result column="address_id" property="addressId" jdbcType="VARCHAR" />
+    <result column="estimated_time" property="estimatedTime" jdbcType="DATE" />
+    <result column="finish_time" property="finishTime" jdbcType="DATE" />
+    <result column="task_description" property="taskDescription" jdbcType="VARCHAR" />
+    <result column="principal" property="principal" jdbcType="VARCHAR" />
+    <result column="service_object" property="serviceObject" jdbcType="VARCHAR" />
+</association>
+<association property="personCustNew" column="customer_id" javaType="PersonCustNew">
+    <id column="cust_id" property="custId" jdbcType="INTEGER" />
+    <result column="vip_num" property="vipNum" jdbcType="VARCHAR" />
+    <result column="vip_type" property="vipType" jdbcType="INTEGER" />
+    <result column="vip_begin_time" property="vipBegintime" jdbcType="DATE" />
+    <result column="vip_end_time" property="vipEndintime" jdbcType="DATE" />
+    <result column="person_pet" property="presonPet" jdbcType="VARCHAR" />
+    <result column="mainteen" property="mainteen" jdbcType="VARCHAR" />
+    <result column="private_stop_car" property="privateStopcar" jdbcType="VARCHAR" />
+    <result column="home_making" property="homemaking" jdbcType="VARCHAR" />
+    <result column="cust_code" property="custCode" jdbcType="VARCHAR" />
+    <result column="cust_style" property="custStyle" jdbcType="TINYINT" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="sex" property="sex" jdbcType="VARCHAR" />
+    <result column="phone_num" property="phoneNum" jdbcType="VARCHAR" />
+    <result column="native_place" property="nativePlace" jdbcType="VARCHAR" />
+    <result column="census" property="census" jdbcType="VARCHAR" />
+    <result column="birthday" property="birthday" jdbcType="DATE" />
+    <result column="card_type" property="cardType" jdbcType="TINYINT" />
+    <result column="card_num" property="cardNum" jdbcType="VARCHAR" />
+    <result column="jiajia_num" property="jiajiaNum" jdbcType="VARCHAR" />
+    <result column="weixin_num" property="weixinNum" jdbcType="VARCHAR" />
+    <result column="work_units" property="workUnits" jdbcType="VARCHAR" />
+    <result column="position" property="position" jdbcType="VARCHAR" />
+    <result column="marrie_state" property="marrieState" jdbcType="TINYINT" />
+    <result column="edu_level" property="eduLevel" jdbcType="TINYINT" />
+    <result column="social" property="social" jdbcType="VARCHAR" />
+    <result column="landscape" property="landscape" jdbcType="TINYINT" />
+    <result column="hobby" property="hobby" jdbcType="VARCHAR" />
+    <result column="cust_level" property="custLevel" jdbcType="VARCHAR" />
+    <result column="is_enterprise" property="isEnterprise" jdbcType="TINYINT" />
+    <result column="urgent_contact_person" property="urgentContactPerson" jdbcType="VARCHAR" />
+    <result column="urgent_contact_phone" property="urgentContactPhone" jdbcType="VARCHAR" />
+    <result column="upload_image" property="uploadImage" jdbcType="VARCHAR" />
+    <result column="phone_num" property="phoneNum" jdbcType="VARCHAR" />
+    <result column="building" property="building" jdbcType="VARCHAR" />
+    <result column="complaint_count" property="complaintCount" jdbcType="INTEGER" />
+    <result column="blacklist" property="blacklist" jdbcType="INTEGER" />
+    <result column="handle_event_count" property="handleEventCount" jdbcType="INTEGER" />
+    <result column="affinity" property="affinity" jdbcType="VARCHAR" />
+    <result column="neighborhood_dispute" property="neighborhoodDispute" jdbcType="VARCHAR" />
+     <result column="qq_num" property="qqNum" jdbcType="VARCHAR" />
+</association>
+  </resultMap>
+  
+  <select id="selectTasks" resultMap="ResultTasks" parameterType="String">
+  	select * from ts_tasks where taskId=#{0}
+  </select>
+  
+  <select id="selectPersonCust" resultMap="BaseResultMap" parameterType="String">
+  	select * from tc_person_cust where cust_id=#{0}
+  </select>
+  
+ <delete id="deleteCompensateObject" parameterType="String">
+  delete from ts_compensate_object where record_id=#{0}
+  </delete>
+  
+  <select id="listPageCompensateObject" parameterType="CompensateObject" resultMap="ResultCompensateObjectMap">
+  select * from ts_compensate_object 
+  </select>
+  
+  <select id="listAllCompensateObject"  resultMap="ResultCompensateObject" >
+  select * from ts_compensate_object 
+  </select>
+  
+  <select id="getCompensateObjectbyId" parameterType="String" resultMap="ResultCompensateObjectMap">
+  select * from ts_compensate_object where record_id=#{0}
+  </select>
+  
+  <insert id="insertCompensateObject" parameterType="CompensateObject" >      
+      insert into ts_compensate_object (record_id, task_id, customer_id, 
+      compensate_sum)
+    values (UUID(), #{taskId,jdbcType=VARCHAR}, #{customerId,jdbcType=VARCHAR}, 
+      #{compensateSum,jdbcType=DECIMAL})
+  </insert>
+ 
+  <update id="updateCompensateObject" parameterType="CompensateObject" >
+     update ts_compensate_object
+    set task_id = #{taskId,jdbcType=VARCHAR},
+      customer_id = #{customerId,jdbcType=VARCHAR},
+      compensate_sum = #{compensateSum,jdbcType=DECIMAL}
+    where record_id = #{recordId,jdbcType=VARCHAR}
+  </update>
+</mapper>

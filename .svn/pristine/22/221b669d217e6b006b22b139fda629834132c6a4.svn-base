@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.flf.mapper.AreaNewMapper" >
+  
+  <resultMap id="BaseResultMap" type="AreaNew" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="building_id" property="buildingId" jdbcType="VARCHAR" />
+    <result column="area_type_id" property="areaTypeId" jdbcType="VARCHAR" />
+    <result column="building_area" property="buildingArea" jdbcType="DOUBLE" />
+    <result column="commonality_area" property="commonalityArea" jdbcType="DOUBLE" />
+    
+    <result column="inside_area" property="commonalityArea" jdbcType="DOUBLE" />
+    <result column="utility_ratio" property="utilityRatio" jdbcType="DOUBLE" />
+  </resultMap>
+  
+  <resultMap type="AreaNew" id="areaTypeResultMap" extends="BaseResultMap">
+  	<association property="areaTypeNew" column="area_type_id" select="com.flf.mapper.AreaTypeNewMapper.getAreaTypeNewByareaTypeId"></association>
+  </resultMap>
+
+ <delete id="deleteAreaNew" parameterType="String">
+  delete from tc_area
+    where id = #{0,jdbcType=VARCHAR}
+  </delete>
+  
+  <select id="listPageAreaNew" parameterType="AreaNew" resultMap="BaseResultMap">
+  select * from tc_area 
+  </select>
+  
+  <select id="listAllAreaNew"  resultMap="BaseResultMap">
+  select * from tc_area 
+  </select>
+  
+   <select id="listAllAreaNewByBuildingId" parameterType="String" resultMap="areaTypeResultMap" >
+   select * from tc_area where building_id=#{0}
+  </select>
+  
+
+  
+  <select id="getAreaNewbyId" parameterType="String" resultMap="areaTypeResultMap">
+  select * from tc_area where id=#{0}
+  </select>
+  
+  <insert id="insertAreaNew" parameterType="AreaNew" >
+    insert into tc_area (id, building_id, area_type_id, 
+      building_area, inside_area, utility_ratio,commonality_area)
+    values (UUID(), #{buildingId,jdbcType=VARCHAR}, #{areaTypeId,jdbcType=VARCHAR}, 
+      #{buildingArea,jdbcType=DOUBLE},
+      #{insideArea,jdbcType=DOUBLE}, #{utilityRatio,jdbcType=DOUBLE},#{commonalityArea,jdbcType=DOUBLE})
+  </insert>
+ 
+  <update id="updateAreaNew" parameterType="AreaNew" >
+    update tc_area
+    set building_id = #{buildingId,jdbcType=VARCHAR},
+      area_type_id = #{areaTypeId,jdbcType=VARCHAR},
+      building_area = #{buildingArea,jdbcType=DOUBLE},
+      commonality_area = #{commonalityArea,jdbcType=DOUBLE},
+      completion_area = #{completionArea,jdbcType=DOUBLE},
+      inside_area = #{insideArea,jdbcType=DOUBLE},
+      utility_ratio = #{utilityRatio,jdbcType=DOUBLE}
+    where id = #{id,jdbcType=VARCHAR}
+    </update>
+    
+    <!-- 批量插入面积信息（用于Excel导入） -->
+	<insert id="insertList"  parameterType="java.util.List">
+		insert into tc_area (id, building_id, area_type_id, 
+      building_area, inside_area,commonality_area,utility_ratio)
+    	values 
+		<foreach collection="list" item="item" index="index" separator="," >
+			(#{item.id,jdbcType=VARCHAR}, #{item.buildingId,jdbcType=VARCHAR}, #{item.areaTypeId,jdbcType=VARCHAR}, 
+      #{item.buildingArea,jdbcType=DOUBLE},
+      #{item.insideArea,jdbcType=DOUBLE},#{item.commonalityArea,jdbcType=DOUBLE},#{item.utilityRatio,jdbcType=DOUBLE})
+		</foreach>
+	</insert>
+</mapper>

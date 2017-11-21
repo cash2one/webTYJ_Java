@@ -1,0 +1,321 @@
+package com.flf.entity;
+
+import java.util.Date;
+import java.util.List;
+
+import javax.xml.bind.annotation.XmlRootElement;
+
+/**
+ * 收支明细
+ * @author 倪明
+ *	2015-9-22
+ */
+
+@XmlRootElement(name = "PaymentDetails") //收支明细表
+public class PaymentDetails {
+    private String paymentDetailsId; //收支明细id
+
+    private Double transactionAmount; //交易金额
+
+    private Date transactionDate;  //交易时间
+    
+    private String note;  //说明
+    
+    private String financialStaffId;  //操作人 员工id
+    
+    private String financialUserId;//操作人 用户id
+    
+    private String financialStaffName;  //操作人姓名
+    
+    private String personId;  //交账人 员工id(暂留)
+    
+    private String personName;  //交账人(暂留)
+    
+    private Integer refundState;  //交款状态（0未交账1已交账）
+    
+    private Double cashSum;  //现金金额
+    
+    private Double creditCardSum;  //刷卡金额
+    
+    private Double wechatSum;  //微信金额
+    
+    private Double chargeSum;//预付款
+    
+    private Double Sum;//金额
+    
+    private int paymentType;//支付类型
+    
+    private String paymentNum;  //交易单号
+    private String batchNum;  //批次
+    
+    private FinancialStaff financialStaff;  //财务人员表
+    
+	private String staffNumber;//员工号（显示用）
+	
+	private String accountRecordId;//交账记录id
+	
+	private String assetAccountId;//资产账户id
+	
+	private String assetAccountNum;//资产账户编号
+	
+	private String custId;//客户id
+	
+	private String ciId;//收费项目id
+	
+	private String ciName;//收费项目名
+	
+	private int isOutIn=1;//收支类别(0收入1支出)
+	
+	private String outTradeNo;//商户单号
+	
+	private String billId;//账单id
+	
+	private List<Bill> bills; //每月账单
+	
+	private String advancePaymentsDetailsId;//预收款明细
+	
+	private String authorizationCode; //授权码
+	
+	public String getAuthorizationCode() {
+		return authorizationCode;
+	}
+	public void setAuthorizationCode(String authorizationCode) {
+		this.authorizationCode = authorizationCode;
+	}
+	private String projectId;//根据项目id
+	
+	public String getProjectId() {
+		return projectId;
+	}
+	public void setProjectId(String projectId) {
+		this.projectId = projectId;
+	}
+	public String getAssetAccountNum() {
+		return assetAccountNum;
+	}
+	public void setAssetAccountNum(String assetAccountNum) {
+		this.assetAccountNum = assetAccountNum;
+	}
+	public List<Bill> getBills() {
+		return bills;
+	}
+	public void setBills(List<Bill> bills) {
+		this.bills = bills;
+	}
+	public String getAccountRecordId() {
+		return accountRecordId;
+	}
+	public void setAccountRecordId(String accountRecordId) {
+		this.accountRecordId = accountRecordId;
+	}
+	public String getStaffNumber() {
+		return staffNumber;
+	}
+	public void setStaffNumber(String staffNumber) {
+		this.staffNumber = staffNumber;
+	}
+
+    private Page page;
+    
+ 	public Page getPage() {
+ 		if(this.page==null){
+ 			this.page=new Page();
+ 		}
+ 		return page;
+ 	}
+ 	public void setPage(Page page) {
+ 		this.page = page;
+ 	}
+	public FinancialStaff getFinancialStaff() {
+		return financialStaff;
+	}
+
+	public void setFinancialStaff(FinancialStaff financialStaff) {
+		this.financialStaff = financialStaff;
+	}
+
+	public String getPaymentNum() {
+		return paymentNum;
+	}
+
+	public void setPaymentNum(String paymentNum) {
+		this.paymentNum = paymentNum;
+	}
+
+	public String getBatchNum() {
+		return batchNum;
+	}
+
+	public void setBatchNum(String batchNum) {
+		this.batchNum = batchNum;
+	}
+
+	public String getPaymentDetailsId() {
+		return paymentDetailsId;
+	}
+
+	public void setPaymentDetailsId(String paymentDetailsId) {
+		this.paymentDetailsId = paymentDetailsId;
+	}
+
+	public Double getTransactionAmount() {
+		return transactionAmount;
+	}
+
+	public void setTransactionAmount(Double transactionAmount) {
+		this.transactionAmount = transactionAmount;
+	}
+
+	public Date getTransactionDate() {
+		return transactionDate;
+	}
+
+	public void setTransactionDate(Date transactionDate) {
+		this.transactionDate = transactionDate;
+	}
+
+	public String getNote() {
+		return note;
+	}
+
+	public void setNote(String note) {
+		this.note = note;
+	}
+
+	public String getFinancialStaffId() {
+		return financialStaffId;
+	}
+
+	public void setFinancialStaffId(String financialStaffId) {
+		this.financialStaffId = financialStaffId;
+	}
+
+	public String getFinancialStaffName() {
+		return financialStaffName;
+	}
+
+	public void setFinancialStaffName(String financialStaffName) {
+		this.financialStaffName = financialStaffName;
+	}
+
+	public String getPersonId() {
+		return personId;
+	}
+
+	public void setPersonId(String personId) {
+		this.personId = personId;
+	}
+
+	public String getPersonName() {
+		return personName;
+	}
+
+	public void setPersonName(String personName) {
+		this.personName = personName;
+	}
+
+	public Integer getRefundState() {
+		return refundState;
+	}
+
+	public void setRefundState(Integer refundState) {
+		this.refundState = refundState;
+	}
+
+	public Double getCashSum() {
+		return cashSum;
+	}
+
+	public void setCashSum(Double cashSum) {
+		this.cashSum = cashSum;
+	}
+
+	public Double getCreditCardSum() {
+		return creditCardSum;
+	}
+
+	public void setCreditCardSum(Double creditCardSum) {
+		this.creditCardSum = creditCardSum;
+	}
+
+	public Double getWechatSum() {
+		return wechatSum;
+	}
+
+	public void setWechatSum(Double wechatSum) {
+		this.wechatSum = wechatSum;
+	}
+	public String getFinancialUserId() {
+		return financialUserId;
+	}
+	public void setFinancialUserId(String financialUserId) {
+		this.financialUserId = financialUserId;
+	}
+	public String getCustId() {
+		return custId;
+	}
+	public String getCiId() {
+		return ciId;
+	}
+	public void setCustId(String custId) {
+		this.custId = custId;
+	}
+	public void setCiId(String ciId) {
+		this.ciId = ciId;
+	}
+	public Double getChargeSum() {
+		return chargeSum;
+	}
+	public void setChargeSum(Double chargeSum) {
+		this.chargeSum = chargeSum;
+	}
+	public String getCiName() {
+		return ciName;
+	}
+	public void setCiName(String ciName) {
+		this.ciName = ciName;
+	}
+	public int getIsOutIn() {
+		return isOutIn;
+	}
+	public void setIsOutIn(int isOutIn) {
+		this.isOutIn = isOutIn;
+	}
+	public Double getSum() {
+		return Sum;
+	}
+	public void setSum(Double sum) {
+		Sum = sum;
+	}
+	public int getPaymentType() {
+		return paymentType;
+	}
+	public void setPaymentType(int paymentType) {
+		this.paymentType = paymentType;
+	}
+	public String getAssetAccountId() {
+		return assetAccountId;
+	}
+	public void setAssetAccountId(String assetAccountId) {
+		this.assetAccountId = assetAccountId;
+	}
+	public String getBillId() {
+		return billId;
+	}
+	public void setBillId(String billId) {
+		this.billId = billId;
+	}
+	public String getOutTradeNo() {
+		return outTradeNo;
+	}
+	public void setOutTradeNo(String outTradeNo) {
+		this.outTradeNo = outTradeNo;
+	}
+	public String getAdvancePaymentsDetailsId() {
+		return advancePaymentsDetailsId;
+	}
+	public void setAdvancePaymentsDetailsId(String advancePaymentsDetailsId) {
+		this.advancePaymentsDetailsId = advancePaymentsDetailsId;
+	}
+
+}

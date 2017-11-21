@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>公司组织架构</title>
+    <style type="text/css">
+        #menu_zzjs_net{margin:10px;width:200px;overflow:hidden;}
+        #menu_zzjs_net li{line-height:25px;}
+        #menu_zzjs_net li a{color:#666666;padding-left:5px;outline:none;}
+        #menu_zzjs_net li input{vertical-align:middle;margin-left:5px;}
+        #menu_zzjs_net .two{padding-left:10px;display:none;}
+        .col-md-2 button{width: 90px;height: 60px;margin-top: 20px;margin-bottom: 10px}
+    </style>
+</head>
+<body>
+<div class="complaint_user_list" style="margin-top: 15px;height: auto">
+    <div class="container" style="margin: 20px 10px">
+        <div class="col-md-2" style="border: 1px solid #797979;height: auto">
+            <ul id="menu_zzjs_net">
+                <li>
+                    <label><a href="javascript:">XXXX公司</a></label>
+                    <ul class="two">
+                        <li>
+                            <label><a href="javascript:">XXX董事</a></label>
+                            <ul class="two">
+                                <li>
+                                    <label><input type="checkbox" value="123456"><a href="javascript:">XXX经理</a></label>
+                                    <ul class="two">
+                                        <li><label><input type="checkbox" value="123456"><a href="javascript:">保洁部组长</a></label></li>
+                                        <li>
+                                            <label><input type="checkbox" value="123456"><a href="javascript:">保安部组长</a></label>
+                                            <ul class="two">
+                                                <li>
+                                                    <label><input type="checkbox" value="123456"><a href="javascript:">保安部1组</a></label>
+                                                    <ul class="two">
+                                                        <li><label><input type="checkbox" value="123456"><a href="javascript:">关羽</a></label></li>
+                                                        <li><label><input type="checkbox" value="123456"><a href="javascript:">吕布</a></label></li>
+                                                    </ul>
+                                                </li>
+                                            </ul>
+                                        <li><label><input type="checkbox" value="123456"><a href="javascript:">维修部组长</a></label></li>
+                                    </ul>
+                                <li><label><input type="checkbox" value="123456"><a href="javascript:">XXX经理</a></label></li>
+                                <li><label><input type="checkbox" value="123456"><a href="javascript:">XXX经理</a></label></li>
+                                <li><label><input type="checkbox" value="123456"><a href="javascript:">XXX经理</a></label></li>
+                            </ul>
+                        </li>
+
+                        <li><label><a href="javascript:">XXX董事</a></label></li>
+                        <li><label><a href="javascript:">XXX董事</a></label></li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+
+
+
+        <div class="col-md-2" style="border: 1px solid #797979;height: auto;width:auto;margin: 0 10px">
+            <br><button style="margin:0 320px"><span>董事长</span><br><span>熊大</span></button>
+            <br><br>
+            <button style="margin-left: 190px" href="#daxiong" data-toggle="modal"><span>XXX经理</span><br><span>大熊</span></button>
+            <button style="margin-left: 200px"><span>XXX经理</span><br><span>大狗熊</span></button>
+            <br><br>
+            <button style="margin-left: 95px"><span>保安部组长</span><br><span>大熊</span></button>
+            <button><span>保洁部组长</span><br><span>大熊</span></button>
+            <button><span>维修部组长</span><br><span>大熊</span></button>
+            <br>
+            <br>
+            <button><span>保安部1组</span></button>
+            <button><span>保安部2组</span></button>
+            <button><span>保安部3组</span></button>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="daxiong" tabindex="-1" role="dialog"
+     aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog" style="width: 60%">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close"
+                        data-dismiss="modal" aria-hidden="true">
+                    &times;
+                </button>
+                <h4 class="modal-title" >
+                    信息
+                </h4>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                <table border="1" style="margin: 10px 10px">
+                    <tr>
+                        <td width="100px" style="text-align: center">团队领袖</td>
+                        <td width="700px" style="padding: 5px 10px">团队成员：<span class="glyphicon glyphicon-plus" style="padding-left: 500px">添加成员</span></td>
+                    </tr>
+                    <tr>
+                        <td style="text-align: center"><label><img src="images\staffHome\u116.jpg" style="width: 50px;height: 50px"><p>熊二</p></label></td>
+                        <td>
+                            <label style="margin: 0 5px;text-align: center"><img src="images\staffHome\u116.jpg" style="width: 50px;height: 50px"><p>谢逊</p></label>
+                            <label style="margin: 0 5px;text-align: center"><img src="images\staffHome\u116.jpg" style="width: 50px;height: 50px"><p>赵敏</p></label>
+                            <label style="margin: 0 5px;text-align: center"><img src="images\staffHome\u116.jpg" style="width: 50px;height: 50px"><p>成昆</p></label>
+                            <label style="margin: 0 5px;text-align: center"><img src="images\staffHome\u116.jpg" style="width: 50px;height: 50px"><p>熊二</p></label>
+                        </td>
+                    </tr>
+                </table>
+                <div class="col-md-6" style="text-align: center">
+                    <table border="1">
+                        <label><span>管理项目列表</span><span class="glyphicon glyphicon-plus" style="padding-left: 280px"></span></label>
+                        <tr>
+                            <td style="width: 80px">序号</td>
+                            <td style="width: 300px">项目名称</td>
+                        </tr>
+                        <tr>
+                            <td>1</td>
+                            <td>深圳宝安桃源居</td>
+                        </tr>
+                        <tr>
+                            <td>2</td>
+                            <td>深圳宝安桃源商务大厦</td>
+                        </tr>
+                        <tr>
+                            <td>3</td>
+                            <td>深圳龙岗桃源居</td>
+                        </tr>
+                    </table>
+                    </div>
+                <div class="col-md-6" style="text-align: center">
+                    <table border="1">
+                            <label><span>管理专业列表</span><span class="glyphicon glyphicon-plus" style="padding-left: 280px"></span></label>
+                            <tr>
+                                <td style="width: 80px">序号</td>
+                                <td style="width: 300px">专业名称</td>
+                            </tr>
+                            <tr>
+                                <td>1</td>
+                                <td>清洁</td>
+                            </tr>
+                            <tr>
+                                <td>2</td>
+                                <td>安保</td>
+                            </tr>
+                    </table>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">关闭
+                </button>
+                <button type="button" data-dismiss="modal" class="btn btn-primary">
+                    确认修改
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+<script>
+    function addEvent(el,name,fn){
+        if(el.addEventListener) return el.addEventListener(name,fn,false);
+        return el.attachEvent('on'+name,fn);
+    }
+    function nextnode(node){
+        if(!node)return ;
+        if(node.nodeType == 1)
+            return node;
+        if(node.nextSibling)
+            return nextnode(node.nextSibling);
+    }
+    function prevnode(node){
+        if(!node)return ;
+        if(node.nodeType == 1)
+            return node;
+        if(node.previousSibling)
+            return prevnode(node.previousSibling);
+    }
+    function parcheck(self,checked){
+        var par =  prevnode(self.parentNode.parentNode.parentNode.previousSibling);
+        if(par&&par.getElementsByTagName('input')[0]){
+            par.getElementsByTagName('input')[0].checked = checked;
+            parcheck(par.getElementsByTagName('input')[0],sibcheck(par.getElementsByTagName('input')[0]));
+        }
+    }
+    function sibcheck(self){
+        var sbi = self.parentNode.parentNode.parentNode.childNodes,n=0;
+        for(var i=0;i<sbi.length;i++){
+            if(sbi[i].nodeType != 1)
+                n++;
+            else if(sbi[i].getElementsByTagName('input')[0].checked)
+                n++;
+        }
+    }
+    addEvent(document.getElementById('menu_zzjs_net'),'click',function(e){
+        e = e||window.event;
+        var target = e.target||e.srcElement;
+        var tp = nextnode(target.parentNode.nextSibling);
+        switch(target.nodeName){
+            case 'A':
+                if(tp&&tp.nodeName == 'UL'){
+                    if(tp.style.display != 'block' ){
+                        tp.style.display = 'block';
+                    }else{
+                        tp.style.display = 'none';
+                    }
+                }
+                break;
+            case 'SPAN':
+                var ap = nextnode(nextnode(target.nextSibling).nextSibling);
+                if(ap.style.display != 'block' ){
+                    ap.style.display = 'block';
+                }else{
+                    ap.style.display = 'none';
+                }
+                break;
+            case 'INPUT':
+                if(target.checked){
+                    if(tp){
+                        var checkbox = tp.getElementsByTagName('input');
+                        for(var i=0;i<checkbox.length;i++)
+                            checkbox[i].checked = true;
+                    }
+                }else{
+                    if(tp){
+                        var checkbox= tp.getElementsByTagName('input');
+                        for(var i=0;i<checkbox.length;i++)
+                            checkbox[i].checked = false;
+                    }
+                }
+                parcheck(target,sibcheck(target));
+                break;
+        }
+    });
+
+</script>
+</html>

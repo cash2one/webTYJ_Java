@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.flf.mapper.ElectricityMeterTypesMapper" >
+  <resultMap id="BaseResultMap" type="com.flf.entity.ElectricityMeterTypes" >
+    <id column="electricity_meter_types_id" property="electricityMeterTypesId" jdbcType="VARCHAR" />
+    <result column="electricity_meter_types_name" property="electricityMeterTypesName" jdbcType="VARCHAR" />
+    <result column="electricity_meter_described" property="electricityMeterDescribed" jdbcType="VARCHAR" />
+  </resultMap>
+ 
+  <!-- 分页查询电表类型 -->
+  <select id="listPageElectricityMeterTypes" parameterType="ElectricityMeterTypes" resultMap="BaseResultMap">
+      select * from te_electricity_meter_types
+  </select>
+  
+  <!-- 查询电表类型 -->
+  <select id="listAllElectricityMeterTypes"  resultMap="BaseResultMap">
+      select * from te_electricity_meter_types
+  </select>
+  
+  <!-- 根据id查询电表类型 -->
+  <select id="getElectricityMeterTypesbyId" parameterType="ElectricityMeterTypes" resultMap="BaseResultMap">
+      select * from te_electricity_meter_types where electricity_meter_types_id=#{electricityMeterTypesId}
+  </select>
+  
+  <!-- 删除电表类型 -->
+  <delete id="deleteElectricityMeterTypes" parameterType="String">
+      delete from te_electricity_meter_types where electricity_meter_types_id=#{electricityMeterTypesId}
+  </delete>
+  
+  <!-- 新增电表类型 -->
+  <insert id="insertElectricityMeterTypes" parameterType="com.flf.entity.ElectricityMeterTypes" >
+    insert into te_electricity_meter_types (electricity_meter_types_id, electricity_meter_types_name, 
+      electricity_meter_described)
+    values (UUID(), #{electricityMeterTypesName,jdbcType=VARCHAR}, 
+      #{electricityMeterDescribed,jdbcType=VARCHAR})
+  </insert>
+  
+  <!-- 修改电表类型 -->
+  <update id="updateElectricityMeterTypes" parameterType="com.flf.entity.ElectricityMeterTypes" >
+    update te_electricity_meter_types
+    <set >
+      <if test="electricityMeterTypesName != null" >
+        electricity_meter_types_name = #{electricityMeterTypesName,jdbcType=VARCHAR},
+      </if>
+      <if test="electricityMeterDescribed != null" >
+        electricity_meter_described = #{electricityMeterDescribed,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where electricity_meter_types_id = #{electricityMeterTypesId,jdbcType=VARCHAR}
+  </update>
+ 
+</mapper>

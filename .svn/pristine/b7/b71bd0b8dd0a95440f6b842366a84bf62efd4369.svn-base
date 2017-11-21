@@ -1,0 +1,17 @@
+<!--
+    前端负责人：倪明
+    页面名称：顶部导航条
+    创建时间：2015/4/1
+    修改时间：2015/5/27
+-->
+<div class="row navpadding">
+    <div class="navigation">
+        <a ui-sref="index.enterprise" ng-class="{'navigation_this ':btnIndex==1}" ng-click="doClick(1)">企业信息</a>
+        <a ui-sref="index.workBench" ng-class="{'navigation_this ':btnIndex==2}" ng-click="doClick(2)">工作台</a>
+        <a ui-sref="index.order" ng-class="{'navigation_this ':btnIndex==3}" ng-click="doClick(3)">工单管理</a>
+        <a ui-sref="index.propertyService" ng-class="{'navigation_this ':btnIndex==4}" ng-click="doClick(4)">物业服务</a>
+        <a ui-sref="index.externalProfession" ng-class="{'navigation_this ':btnIndex==5}" ng-click="doClick(5)">外部专业线</a>
+        <a ui-sref="index.internalProfession" ng-class="{'navigation_this ':btnIndex==6}" ng-click="doClick(6)">内部专业线</a>
+        <a ui-sref="index.business" ng-class="{'navigation_this ':btnIndex==7}" ng-click="doClick(7)">商业智能</a>
+    </div>
+</div>

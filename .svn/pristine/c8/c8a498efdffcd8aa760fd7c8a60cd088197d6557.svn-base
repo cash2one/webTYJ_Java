@@ -1,0 +1,155 @@
+<!--
+    创建时间：2015/5/19
+    创建人：钟加诚
+    修改人：钟加诚
+    修改内容：Js数据，查询效果
+    最后修改时间:2015/6/1
+    pageName:外部专业线---小区车辆
+    jsPath： 'controllers/externalProfession/allVehicles
+-->
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>外部专业线全部车辆</title>
+</head>
+<body ng-controller="allVehiclesCtrl">
+<div class="complaint_user_list" style="margin: 10px 10px;">
+    <!--搜索-->
+    <div class="row" style="margin-top: 10px;text-align: right;white-space: nowrap;line-height: 35px">
+        <div class="col-md-12">
+            <div class="col-md-1">办理人：</div>
+            <div class="col-md-2"><input type="text" class="form-control input-sm" ng-model='per'></div>
+            <div class="col-md-1">车牌号：</div>
+            <div class="col-md-2"><input type="text" class="form-control input-sm" ng-model='numberCard'></div>
+            <div class="col-md-1">车辆识别代号：</div>
+            <div class="col-md-2"><input type="text" class="form-control input-sm"></div>
+        </div>
+        <div class="col-md-12">
+            <div class="col-md-1">发动机号码：</div>
+            <div class="col-md-2"><input type="text" class="form-control input-sm"></div>
+            <div class="col-md-1">车辆品牌：</div>
+            <div class="col-md-2"><input type="text" class="form-control input-sm"></div>
+            <div class="col-md-3">
+                <form class="form-inline">
+                    <div class="form-group">筛选：</div>
+                    <div class="form-group" style="margin-left: 5px"><input type="radio" value="1" ng-model="typ">宝马</div>
+                    <div class="form-group" style="margin-left: 5px"><input type="radio" value="2" ng-model="typ">奔驰</div>
+                    <div class="form-group" style="margin-left: 5px"><input type="radio" value="3" ng-model="typ">其它</div>
+                    <button class="glyphicon glyphicon-search btn btn-sm" aria-hidden="true" ng-click="change()"></button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="complaint_user_list" style="margin: 10px 10px;">
+    <div class="row" style="height:auto">
+        <!--记录-->
+        <div class="col-md-12" style="padding-top:8px" ng-repeat="item in itemsone" ng-show="item.vehiclesId!=null">
+            <div class="col-md-2">
+                <a href="#" data-toggle="modal" data-target="#modifyPet" ng-click="show(item.vehiclesId)">
+                    <img src="images/company/u134.png" style="width: 110px;height: 89px;">
+                </a>
+            </div>
+            <div class="col-md-10">
+                <div class="row" style="margin-left:-50px;padding-top:15px">
+                    <p class="col-md-3">车牌号码：{{item.numberplate}}</p>
+                    <p class="col-md-3">车辆颜色：{{item.color}}</p>
+                    <p class="col-md-3">办理人：{{item.transactor}}</p>
+                    <p class="col-md-3">操作人：{{item.operate}}</p>
+                </div>
+                <div class="row" style="margin-left:-50px;">
+                    <p class="col-md-3">行驶证号：{{item.licence}}</p>
+                    <p class="col-md-3">车辆型号：{{item.vehicleModels}}</p>
+                    <p class="col-md-3">代办人：{{item.commissionAgent}}</p>
+                    <p class="col-md-3">操作时间：{{item.operateTime}}</p>
+                </div>
+            </div>
+        </div>
+        <!--1 end-->
+    </div>
+
+<!--模态框-->
+    <div class="modal fade" id="modifyPet" role="dialog" aria-label="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header" style="background-color: white;height: 50px">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <a ui-sref="index.propertyService.staffHome.vehicleManagement.vehicleManagementAdd"><span style="color: #000000">新增车辆</span></a>
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="media-left" style="height:auto;width: 650px;">
+                        <table class="table-bordered" style="width:95%;text-align: center">
+                            <tr >
+                                <td >车牌号码</td>
+                                <td style="width: 25%">{{numberplate}}</td>
+                                <td >车辆颜色</td>
+                                <td style="width: 25%">{{color}}</td>
+
+                            </tr>
+                            <tr>
+                                <td>车辆类型</td>
+                                <td>{{}}</td>
+                                <td>注册车辆日期</td>
+                                <td>{{operateTime}}</td>
+                            </tr>
+                            <tr>
+                                <td>车辆品牌</td>
+                                <td>{{vehicleModels}}</td>
+                                <td>发证日期</td>
+                                <td>{{}}</td>
+                            </tr>
+                            <tr>
+                                <td>车辆型号</td>
+                                <td></td>
+                                <td>车辆所有人</td>
+                                <td>{{}}</td>
+                            </tr>
+                            <tr>
+                                <td>发动机型号</td>
+                                <td>{{}}</td>
+                                <td>车辆类型</td>
+                                <td>{{}}</td>
+                            </tr>
+                            <tr>
+                                <td>车辆识别代号</td>
+                                <td>{{}}</td>
+                                <td>住址</td>
+                                <td>{{}}</td>
+                            </tr>
+                            <tr>
+                                <td>核定载客</td>
+                                <td></td>
+                                <td>理赔信息</td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td>登记人</td>
+                                <td></td>
+                                <td>登记时间</td>
+                                <td>{{operateTime}}</td>
+                            </tr>
+
+                            <tr>
+                                <td>行驶证号</td>
+                                <td>{{licence}}</td>
+                                <td>上传附件</td>
+                                <td></td>
+                            </tr>
+
+                        </table>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn bg-primary" data-dismiss="modal" aria-label="Close">关闭</button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

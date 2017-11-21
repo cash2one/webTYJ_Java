@@ -1,0 +1,247 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.flf.mapper.SchemeMapper" >
+  <resultMap id="BaseResultMap" type="com.flf.entity.Scheme" >
+    <id column="scheme_id" property="schemeId" jdbcType="VARCHAR" />
+    <result column="scheme_name" property="schemeName" jdbcType="VARCHAR" />
+    <result column="scheme_status" property="schemeStatus" jdbcType="VARCHAR" />
+    <result column="start_date" property="startDate" jdbcType="VARCHAR" />
+    <result column="end_date" property="endDate" jdbcType="VARCHAR" />
+    <result column="project_id" property="projectId" jdbcType="VARCHAR" />
+    <result column="charge_type_id" property="chargeTypeId" jdbcType="VARCHAR" />
+    <result column="charge_set" property="chargeSet" jdbcType="VARCHAR" />
+    <result column="charge_fre" property="chargeFre" jdbcType="VARCHAR" />
+    <result column="charge_time" property="chargeTime" jdbcType="VARCHAR" />
+    <result column="create_user" property="createUser" jdbcType="VARCHAR" />
+    <result column="create_time" property="createTime" jdbcType="VARCHAR" />
+    <result column="update_user" property="updateUser" jdbcType="VARCHAR" />
+    <result column="update_time" property="updateTime" jdbcType="VARCHAR" />
+    <result column="billing_date" property="billingDate" jdbcType="VARCHAR" />
+    <!-- 收费类型名称字段，附加，数据表中无 -->
+    <result column="charge_type_name" property="chargeTypeName" jdbcType="VARCHAR"/>
+    <result column="project_name" property="projectName" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    scheme_id, scheme_name, scheme_status, start_date, end_date, project_id,
+    charge_type_id, charge_set, charge_fre, charge_time, create_user, create_time, update_user, 
+    update_time,billing_date
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from tc_scheme
+    where scheme_id = #{schemeId,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from tc_scheme
+    where scheme_id = #{schemeId,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.flf.entity.Scheme" >
+    insert into tc_scheme (scheme_id, scheme_name, scheme_status, 
+      start_date, end_date, project_id, 
+      charge_type_id, charge_set, 
+      charge_fre, charge_time, create_user, 
+      create_time, update_user, update_time,billing_date
+      )
+    values (#{schemeId,jdbcType=VARCHAR}, #{schemeName,jdbcType=VARCHAR}, #{schemeStatus,jdbcType=VARCHAR}, 
+      #{startDate,jdbcType=VARCHAR}, #{endDate,jdbcType=VARCHAR}, #{projectId,jdbcType=VARCHAR}, 
+      #{chargeTypeId,jdbcType=VARCHAR}, #{chargeSet,jdbcType=VARCHAR}, 
+      #{chargeFre,jdbcType=VARCHAR}, #{chargeTime,jdbcType=VARCHAR}, #{createUser,jdbcType=VARCHAR}, 
+      #{createTime,jdbcType=VARCHAR}, #{updateUser,jdbcType=VARCHAR}, #{updateTime,jdbcType=VARCHAR}, #{billingDate,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.flf.entity.Scheme" >
+    insert into tc_scheme
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="schemeId != null" >
+        scheme_id,
+      </if>
+      <if test="schemeName != null" >
+        scheme_name,
+      </if>
+      <if test="schemeStatus != null" >
+        scheme_status,
+      </if>
+      <if test="startDate != null" >
+        start_date,
+      </if>
+      <if test="endDate != null" >
+        end_date,
+      </if>
+      <if test="projectId != null" >
+        project_id,
+      </if>
+      <if test="chargeTypeId != null" >
+        charge_type_id,
+      </if>
+      <if test="chargeSet != null" >
+        charge_set,
+      </if>
+      <if test="chargeFre != null" >
+        charge_fre,
+      </if>
+      <if test="chargeTime != null" >
+        charge_time,
+      </if>
+      <if test="createUser != null" >
+        create_user,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="updateUser != null" >
+        update_user,
+      </if>
+      <if test="updateTime != null" >
+        update_time,
+      </if>
+      <if test="billingDate != null" >
+        billing_date,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="schemeId != null" >
+        #{schemeId,jdbcType=VARCHAR},
+      </if>
+      <if test="schemeName != null" >
+        #{schemeName,jdbcType=VARCHAR},
+      </if>
+      <if test="schemeStatus != null" >
+        #{schemeStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="startDate != null" >
+        #{startDate,jdbcType=VARCHAR},
+      </if>
+      <if test="endDate != null" >
+        #{endDate,jdbcType=VARCHAR},
+      </if>
+      <if test="projectId != null" >
+        #{projectId,jdbcType=VARCHAR},
+      </if>
+      <if test="chargeTypeId != null" >
+        #{chargeTypeId,jdbcType=VARCHAR},
+      </if>
+      <if test="chargeSet != null" >
+        #{chargeSet,jdbcType=VARCHAR},
+      </if>
+      <if test="chargeFre != null" >
+        #{chargeFre,jdbcType=VARCHAR},
+      </if>
+      <if test="chargeTime != null" >
+        #{chargeTime,jdbcType=VARCHAR},
+      </if>
+      <if test="createUser != null" >
+        #{createUser,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=VARCHAR},
+      </if>
+      <if test="updateUser != null" >
+        #{updateUser,jdbcType=VARCHAR},
+      </if>
+      <if test="updateTime != null" >
+        #{updateTime,jdbcType=VARCHAR},
+      </if>
+      <if test="billingDate != null" >
+      	#{billingDate,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.flf.entity.Scheme" >
+    update tc_scheme
+    <set >
+      <if test="schemeName != null" >
+        scheme_name = #{schemeName,jdbcType=VARCHAR},
+      </if>
+      <if test="schemeStatus != null" >
+        scheme_status = #{schemeStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="startDate != null" >
+        start_date = #{startDate,jdbcType=VARCHAR},
+      </if>
+      <if test="endDate != null" >
+        end_date = #{endDate,jdbcType=VARCHAR},
+      </if>
+      <if test="projectId != null" >
+        project_id = #{projectId,jdbcType=VARCHAR},
+      </if>
+      <if test="chargeTypeId != null" >
+        charge_type_id = #{chargeTypeId,jdbcType=VARCHAR},
+      </if>
+      <if test="chargeSet != null" >
+        charge_set = #{chargeSet,jdbcType=VARCHAR},
+      </if>
+      <if test="chargeFre != null" >
+        charge_fre = #{chargeFre,jdbcType=VARCHAR},
+      </if>
+      <if test="chargeTime != null" >
+        charge_time = #{chargeTime,jdbcType=VARCHAR},
+      </if>
+      <if test="createUser != null" >
+        create_user = #{createUser,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=VARCHAR},
+      </if>
+      <if test="updateUser != null" >
+        update_user = #{updateUser,jdbcType=VARCHAR},
+      </if>
+      <if test="updateTime != null" >
+        update_time = #{updateTime,jdbcType=VARCHAR},
+      </if>
+      <if test="billingDate != null" >
+        billing_date = #{billingDate,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where scheme_id = #{schemeId,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.flf.entity.Scheme" >
+    update tc_scheme
+    set scheme_name = #{schemeName,jdbcType=VARCHAR},
+      scheme_status = #{schemeStatus,jdbcType=VARCHAR},
+      start_date = #{startDate,jdbcType=VARCHAR},
+      end_date = #{endDate,jdbcType=VARCHAR},
+      project_id = #{projectId,jdbcType=VARCHAR},
+      charge_type_id = #{chargeTypeId,jdbcType=VARCHAR},
+      charge_set = #{chargeSet,jdbcType=VARCHAR},
+      charge_fre = #{chargeFre,jdbcType=VARCHAR},
+      charge_time = #{chargeTime,jdbcType=VARCHAR},
+      create_user = #{createUser,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=VARCHAR},
+      update_user = #{updateUser,jdbcType=VARCHAR},
+      update_time = #{updateTime,jdbcType=VARCHAR},
+      billing_date = #{billingDate,jdbcType=VARCHAR}
+    where scheme_id = #{schemeId,jdbcType=VARCHAR}
+  </update>
+  <!-- 根据项目ID查询所有的计费方案列表 -->
+  <select id="getSchemeByProjectId" parameterType="String" resultMap="BaseResultMap">
+  	select a.*,b.charge_type_name,c.project_name from tc_scheme as a 
+  		left join tc_charge_type as b on a.charge_type_id = b.charge_type_id
+  		left join t_project as c on a.project_id = c.project_id
+  	 where a.project_id = #{projectId} order by scheme_status,start_date
+  </select>
+  
+  <select id="getSchemeByChargeTypeId" parameterType="String" resultMap="BaseResultMap">
+  	select * from tc_scheme where charge_type_id = #{chargeTypeId}
+  </select>
+  
+  <select id="getManualSchemeList" parameterType="String" resultMap="BaseResultMap">
+  	select * from tc_scheme where charge_set = '02' and #{0} >= start_date and (end_date is null or end_date > #{0})
+  </select>
+  
+  <select id="getAutoSchemeList" parameterType="String" resultMap="BaseResultMap">
+  	select * from tc_scheme where charge_set = '01' and #{0} >= start_date and (end_date is null or end_date > #{0})
+  </select>
+  
+  <select id="listAllScheme" parameterType="com.flf.entity.Scheme" resultMap="BaseResultMap">
+  	select * from tc_scheme where 1=1
+  	<if test="projectId != null">
+  		and project_id = #{projectId}
+  	</if>
+  	<if test="chargeTypeId != null">
+  		and charge_type_id = #{chargeTypeId}
+  	</if>
+  </select>
+  
+  
+</mapper>

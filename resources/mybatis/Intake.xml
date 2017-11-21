@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+	
+
+<mapper namespace="com.flf.mapper.IntakeMapper">
+	 <resultMap id="BaseResultMap" type="com.flf.entity.Intake" >
+    <id column="intake_id" property="intakeId" jdbcType="VARCHAR" />
+    <result column="house_id" property="houseId" jdbcType="VARCHAR" />
+    <result column="start_date" property="startDate" jdbcType="DATE" />
+    <result column="end_date" property="endDate" jdbcType="DATE" />
+    <result column="intake_state" property="intakeState" jdbcType="INTEGER" />
+    <result column="intake_amount" property="intakeAmount" jdbcType="DOUBLE" />
+    <result column="intake_price" property="intakePrice" jdbcType="DOUBLE" />
+     <result column="staff_id" jdbcType="VARCHAR" property="staffId" />
+    <result column="trans_actor" jdbcType="VARCHAR" property="transActor" />
+    <result column="full_name" jdbcType="VARCHAR" property="fullName" />
+    <result column="project_name" jdbcType="VARCHAR" property="projectName" />
+    <result column="building_type" jdbcType="VARCHAR" property="buildingType" />
+    <result column="staff_name" jdbcType="VARCHAR" property="staffName" />
+  </resultMap>
+  
+  <select id="listAllIntakeBySearch" parameterType="Search" resultMap="BaseResultMap">
+ 		SELECT f.* FROM t_intake f 
+ 		LEFT JOIN tc_person_cust a on f.trans_actor = a.cust_id
+ 		LEFT JOIN tc_person_building c ON a.cust_id=c.cust_id
+ 		LEFT JOIN tc_house d ON c.building_structure_id=d.building_structure_id
+  		WHERE 1=1
+  		<if test="staffName!='' and staffName!=null">
+  			and a.name like CONCAT('%',#{staffName},'%')
+  		</if>
+  		<if test="idNum!='' and idNum!=null">
+  			and a.card_num like CONCAT('%',#{idNum},'%')
+  		</if>
+  		<if test="phone!='' and phone!=null">
+  			and a.phone_num like CONCAT('%',#{phone},'%')
+  		</if>
+  		<if test="custId!='' and custId!=null">
+  			and a.cust_id like CONCAT('%',#{custId},'%')
+  		</if>
+  		<if test="houseId!='' and houseId!=null">
+  			and d.id like CONCAT('%',#{houseId},'%')
+  		</if>
+  		group by f.intake_id
+ 	</select>
+	
+	<select id="listPageIntake" parameterType="Intake" resultMap="BaseResultMap">
+		SELECT a.*,b.full_name,b.building_type,c.project_name,d.staff_name FROM t_intake   a
+		LEFT JOIN tc_building_structure b ON a.house_id=b.id
+		LEFT JOIN t_project c ON c.project_id=b.project_id
+		LEFT JOIN t_staff d ON d.staff_id=a.staff_id
+		GROUP BY a.intake_id
+	</select>
+	
+	<select id="listAllIntake"  resultMap="BaseResultMap">
+		select * from t_intake    	
+	</select>
+	
+	<select id="getIntakeById" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select * from t_intake
+     where Intakes_id = #{0}
+    </select>
+    
+    <select id="getInrakeByBuildingId" resultMap="BaseResultMap" parameterType="java.lang.String">
+     select * from t_intake
+     where house_id = #{0}
+    </select>
+	
+   <insert id="insert" parameterType="Intake" >
+    insert into t_intake (intake_id, house_id, start_date, 
+      end_date, intake_state, intake_amount, 
+      intake_price,staff_id, trans_actor)
+    values (UUID(), #{houseId,jdbcType=VARCHAR}, #{startDate,jdbcType=DATE}, 
+      #{endDate,jdbcType=DATE}, #{intakeState,jdbcType=INTEGER}, #{intakeAmount,jdbcType=DOUBLE}, 
+      #{intakePrice,jdbcType=DOUBLE}, #{staffId,jdbcType=VARCHAR}, #{transActor,jdbcType=VARCHAR})
+  </insert>
+  
+  <insert id="insertIntake" parameterType="Intake" >
+    insert into t_intake (intake_id, house_id, start_date, 
+      end_date, intake_state, intake_amount, 
+      intake_price,staff_id, trans_actor)
+    values (UUID(), #{houseId,jdbcType=VARCHAR}, #{startDate,jdbcType=DATE}, 
+      #{endDate,jdbcType=DATE}, #{intakeState,jdbcType=INTEGER}, #{intakeAmount,jdbcType=DOUBLE}, 
+      #{intakePrice,jdbcType=DOUBLE}, #{staffId,jdbcType=VARCHAR}, #{transActor,jdbcType=VARCHAR})
+  </insert>
+  
+  <insert id="insertListIntake">
+  	insert into t_intake (intake_id, house_id, start_date, 
+      end_date, intake_state, intake_amount, 
+      intake_price,staff_id, trans_actor)
+    values (
+    	<foreach collection="list" separator="," item="items">
+    		UUID(), #{items.houseId,jdbcType=VARCHAR}, #{items.startDate,jdbcType=DATE}, 
+      		#{items.endDate,jdbcType=DATE}, #{items.intakeState,jdbcType=INTEGER}, #{items.intakeAmount,jdbcType=DOUBLE}, 
+      		#{items.intakePrice,jdbcType=DOUBLE}, #{items.staffId,jdbcType=VARCHAR}, #{items.transActor,jdbcType=VARCHAR}
+    	</foreach>
+    )
+  </insert>
+  
+  <update id="updateIntake" parameterType="Intake" >
+    update t_intake
+    set 
+      house_id = #{houseId,jdbcType=VARCHAR},
+      start_date = #{startDate,jdbcType=DATE},
+      end_date = #{endDate,jdbcType=DATE},
+      intake_state = #{intakeState,jdbcType=INTEGER},
+      intake_amount = #{intakeAmount,jdbcType=DOUBLE},
+      intake_price = #{intakePrice,jdbcType=DOUBLE},
+      staff_id = #{staffId,jdbcType=VARCHAR},
+      trans_actor = #{transActor,jdbcType=VARCHAR}
+      where intake_id = #{intakeId,jdbcType=VARCHAR}
+  </update>
+  
+  
+  <delete id="deleteIntake" parameterType="String">
+    delete from t_intake
+    where intake_id=#{0}
+  </delete>
+</mapper>

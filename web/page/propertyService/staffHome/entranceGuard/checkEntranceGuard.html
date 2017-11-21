@@ -1,0 +1,277 @@
+<!--
+    pageName:【门禁卡历史记录】物业服务人员主页中门禁卡
+    创建人:钟加诚
+    修改人：倪明   修改内容：实现数据传递
+    jsPath:js/controllers/propertyService/entranceGuard/checkEntranceGuard.js
+    创建时间：2015/5/6
+    修改时间：2015/6/2
+   -->
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>门禁卡历史记录</title>
+</head>
+<body>
+<div class="complaint_user_list" style="height: 650px;margin-top: 15px">
+    <div style="margin-top: 15px">
+        <span style="margin-left: 15px">门禁卡列表:</span>
+        <span style="margin-left: 700px">新增门禁卡</span>
+        <a ui-sref="index.propertyService.staffHome.entranceGuard.addEntranceGuard">
+            <span class="glyphicon glyphicon-plus" aria-hidden="true" style="margin-left: 10px"></span>
+        </a>
+    </div>
+    <!--门禁卡内容开始-->
+    <div class="col-lg-4 col-md-3 col-sm-4" ng-repeat="entrance in entrances">
+        <div class="program_panel">
+            <div class="program_panel_people_title">
+                <span class="panel_title_left">门禁卡号：{{entrance.cardNum}}</span>
+                <span class="complaint1_panel_info_navigation">
+                    <ul>
+                        <li><a href="#" class="dropdown-toggle btn-lg" data-toggle="dropdown" role="button" aria-expanded="false"><span class="glyphicon glyphicon-menu-down" aria-hidden="true"></span></a>
+                            <ul>
+                                <li class="program_panel_info_navigation_top">功能列表</li>
+                                <li data-toggle="modal" data-target="#free" style="cursor:pointer" ng-click="choiceEntrance(entrance)">更换</li>
+                                <li data-toggle="modal" data-target="#file" style="cursor:pointer" ng-click="choiceEntrance(entrance)">挂失</li>
+                                <li class="program_panel_info_navigation_bottom" data-toggle="modal" data-target="#freedom" style="cursor:pointer" ng-click="choiceEntrance(entrance)">退费</li>
+                            </ul>
+                        </li>
+                    </ul>
+                </span>
+                </span>
+            </div>
+            <div class="complaint_panel_info">
+                <div class="row">
+                    <div class="col-md-5">
+                        <img src="images/staffHome/carport/cheliang.jpg" width="100" height="90" >
+                    </div>
+                    <div class="col-md-7">
+                        <div class="row">启用日期：{{entrance. startDate|date:'yy-MM-dd'}}</div>
+                        <div class="row">截止日期：{{entrance.endDate|date:'yy-MM-dd'}}</div>
+                        <div class="row">操作人：{{entrance.user.name}}</div>
+                        <div class="row">卡状态：<span ng-switch on="entrance.cardState">
+                 	    <span ng-switch-when="1">正常</span>
+                 	    <span ng-switch-when="2">挂失</span>
+                 	    <span ng-switch-when="3">禁用</span>
+                 	    <span ng-switch-when="4">退卡</span>               	                                                             	   
+                        </span></div>
+                        <div class="row">办卡日期：{{entrance.cardDate|date:'yy-MM-dd'}}</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--门禁卡内容结束-->
+    <!-- 分页开始 -->
+    <div class="pagination">
+        <a href="#" >上一页</a>
+        <a href="#" class="number">1</a>
+        <a href="#" class="number">2</a>
+        <a href="#" class="number">3</a>
+        <a href="#" class="number">4</a>
+        <a href="#" class="number">5</a>
+        <a href="#">下一页</a>
+    </div>
+    <!-- 分页结束 -->
+    <!--更换模态框开始-->
+    <div class="modal fade" id="free" tabindex="-1" role="dialog"
+         aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close"
+                            data-dismiss="modal" aria-hidden="true">
+                        &times;
+                    </button>
+                    <h4 class="modal-title">
+                        更换
+                    </h4>
+                </div>
+                <div class="modal-body">
+                    <div class="container">
+                        <table>
+                            <tr>
+                                <td>客户编号:</td>
+                                <td><label><input type="text">办卡人编号</label></td>
+                                <td>旧ID卡号:</td>
+                                <td><label><input type="text" ng-model="entranceone.cardNum"></label></td>
+                            </tr>
+                            <tr>
+                                <td>新ID卡号:</td>
+                                <td><label><input type="text" ng-model="newCardNum"></label></td>
+                                <td>使用人姓名:</td>
+                                <td><label><input type="text" >办卡人姓名</label></td>
+                            </tr>
+                            <tr>
+                                <td>门禁卡状态:</td>
+                                <td><label><input type="text" ng-model="entranceone.cardState"></label></td>
+                                <td>门禁卡类型:</td>
+                                <td><label><input type="text" ng-model="entranceone.carType"></label></td>
+                            </tr>
+                            <tr>
+                                <td>办卡日期:</td>
+                                <td><label><input type="text" ng-model="entranceone.time"></label></td>
+                                <td>启用日期:</td>
+                                <td><label><input type="text" ng-model="entranceone.startDate"></label></td>
+                            </tr>
+                            <tr>
+                                <td>亲属关系:</td>
+                                <td><label><input type="text" ng-model="entranceone.relation"></label></td>
+                                <td>工本费:</td>
+                                <td><label><input type="text" value="30元"></label></td>
+                            </tr>
+                            <tr>
+                                <td>截止日期:</td>
+                                <td><label><input type="text" ng-model="entranceone.endDate"></label></td>
+                            </tr>
+                        </table>
+                    </div>
+                    <div class="row" style="margin-top: 10px">
+                        <div class="col-md-2 col-md-offset-2"><button class="btn btn-sm btn-primary" data-dismiss="modal" ng-click="changeEntrance()">提交</button></div>
+                        <div class="col-md-2"><button class="btn btn-sm btn-primary">取消</button></div>
+                        <div class="col-md-2"><button class="btn btn-sm btn-primary">打印</button></div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">取消
+                    </button>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal -->
+    </div>
+    <!--更换模态框结束-->
+    <!--挂失模态框开始-->
+    <div class="modal fade" id="file" tabindex="-1" role="dialog"
+         aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close"
+                            data-dismiss="modal" aria-hidden="true">
+                        &times;
+                    </button>
+                    <h4 class="modal-title">
+                        挂失
+                    </h4>
+                </div>
+                <div class="modal-body">
+                    <div class="container">
+                        <table>
+                            <tr>
+                                <td>客户编号:</td>
+                                <td><label><input type="text">办卡人编号</label></td>
+                                <td>ID卡号:</td>
+                                <td><label><input type="text" ng-model="entranceone.cardNum"></label></td>
+                            </tr>
+                            <tr>                              
+                                <td>使用人姓名:</td>
+                                <td><label><input type="text" >办卡人姓名</label></td>
+                            </tr>
+                            <tr>
+                                <td>门禁卡状态:</td>
+                                <td><label><input type="text" ng-model="entranceone.cardState"></label></td>
+                                <td>门禁卡类型:</td>
+                                <td><label><input type="text" ng-model="entranceone.carType"></label></td>
+                            </tr>
+                            <tr>
+                                <td>办卡日期:</td>
+                                <td><label><input type="text" ng-model="entranceone.time"></label></td>
+                                <td>启用日期:</td>
+                                <td><label><input type="text" ng-model="entranceone.startDate"></label></td>
+                            </tr>
+                            <tr>
+                                <td>亲属关系:</td>
+                                <td><label><input type="text" ng-model="entranceone.relation"></label></td>
+                                <td>工本费:</td>
+                                <td><label><input type="text" value="30元"></label></td>
+                            </tr>
+                            <tr>
+                                <td>截止日期:</td>
+                                <td><label><input type="text" ng-model="entranceone.endDate"></label></td>
+                            </tr>
+                        </table>
+                    </div>
+                    <div class="row" style="margin-top: 10px">
+                        <div class="col-md-2 col-md-offset-2"><button class="btn btn-sm btn-primary" ng-click="loseeEntrance()">提交</button></div>
+                        <div class="col-md-2"><button class="btn btn-sm btn-primary">取消</button></div>
+                        <div class="col-md-2"><button class="btn btn-sm btn-primary">打印</button></div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default"
+                            data-dismiss="modal">取消
+                    </button>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal -->
+    </div>
+    <!--挂失模态框结束-->
+    <!--退费模态框开始-->
+    <div class="modal fade" id="freedom" tabindex="-1" role="dialog"
+         aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close"
+                            data-dismiss="modal" aria-hidden="true">
+                        &times;
+                    </button>
+                    <h4 class="modal-title">
+                        退费
+                    </h4>
+                </div>
+                <div class="modal-body">
+                    <div class="container">
+                       <table>
+                            <tr>
+                                <td>客户编号:</td>
+                                <td><label><input type="text">办卡人编号</label></td>
+                                <td>ID卡号:</td>
+                                <td><label><input type="text" ng-model="entranceone.cardNum"></label></td>
+                            </tr>
+                            <tr>                              
+                                <td>使用人姓名:</td>
+                                <td><label><input type="text" >办卡人姓名</label></td>
+                            </tr>
+                            <tr>
+                                <td>门禁卡状态:</td>
+                                <td><label><input type="text" ng-model="entranceone.cardState"></label></td>
+                                <td>门禁卡类型:</td>
+                                <td><label><input type="text" ng-model="entranceone.carType"></label></td>
+                            </tr>
+                            <tr>
+                                <td>办卡日期:</td>
+                                <td><label><input type="text" ng-model="entranceone.time"></label></td>
+                                <td>启用日期:</td>
+                                <td><label><input type="text" ng-model="entranceone.startDate"></label></td>
+                            </tr>
+                            <tr>
+                                <td>亲属关系:</td>
+                                <td><label><input type="text" ng-model="entranceone.relation"></label></td>
+                                <td>工本费:</td>
+                                <td><label><input type="text" value="30元"></label></td>
+                            </tr>
+                            <tr>
+                                <td>截止日期:</td>
+                                <td><label><input type="text" ng-model="entranceone.endDate"></label></td>
+                            </tr>
+                        </table>
+                    </div>
+                    <div class="row" style="margin-top: 10px">
+                        <div class="col-md-2 col-md-offset-2"><button class="btn btn-sm btn-primary" ng-click="returnEntrance()">确认退卡</button></div>
+                        <div class="col-md-2"><button class="btn btn-sm btn-primary">取消</button></div>
+                        <div class="col-md-2"><button class="btn btn-sm btn-primary">打印</button></div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default"
+                            data-dismiss="modal">取消
+                    </button>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal -->
+    </div>
+    <!--退费模态框结束-->
+</div>
+</body>
+</html>

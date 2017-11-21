@@ -1,0 +1,29 @@
+<!--
+author:王志刚
+pageName:内部专业线人员初始化----项目团队管理
+jsPath: controllers/internalProfession/projectManagementTeam
+修改人：王志刚
+最后修改时间：2015/6/3
+-->
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>项目团队管理</title>
+</head>
+<body >
+<div class="row">
+    <div class="complaint_user_list" style="margin-top: 15px;">
+        <div style="padding:5px 10px 0">
+            <div class="complaint_user_info_navigation">
+                <a class="btn" ui-sref="index.internalProfession.projectManagementTeam.checkProject">团队列表</a>
+            </div>
+            <div class="clear"></div>
+        </div>
+        <div class="row" style="padding:5px 10px 0">
+            <div ui-view></div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

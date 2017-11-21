@@ -1,0 +1,534 @@
+﻿package com.flf.entity;
+
+import java.util.List;
+
+import javax.xml.bind.annotation.XmlRootElement;
+
+//建筑结构
+@XmlRootElement(name = "BuildingStructureNew") 
+public class BuildingStructureNew {
+    private String id;   //  建筑结构主键
+
+    private String fullName;  // 建筑结构全名
+ 
+    private String nodeName;  // 节点名称
+
+    private String buildingId;  // 建筑id
+
+    private String parentId;  //  父节点id
+
+    private Double buildingArea;//  建筑面积
+    
+    private Double totalArea;//总用地面积  王洲  2016.1.7
+
+    private Double commonalityArea;//  公摊面积
+
+    private Double insideArea;//  套内面积
+    private Double completionArea;//  竣工面积
+
+    private Double utilityRatio;//  实用率
+    
+    private String buildingType;  // 建筑类型
+    
+    private String areaId;//建筑面积类型id
+    
+    private  String projectId;   //项目id
+    
+    private Boolean checked;
+    
+    private List<BuildingStructureNew> children; //子id集合
+    
+    private String custId;//  客户id
+    
+    private List<PersonCustNew> personCusts; 
+    
+    private Byte isBindingAssets; //是否绑定资产
+    
+    private String name;  //业主姓名
+    
+    private String cardType;  //  身份证类型
+    
+    private String cardNum;  // 身份证号
+    
+    private String collectionManageId;  //托收管理id
+    
+    private String productId;//关联产品id，wangzhou
+    
+    private String personBuildingId;//关联客户建筑关系
+    
+    private Integer state; //关联客户建筑关系启用状态
+    
+    private StallNew stall;//车位对象
+    
+    private StoreNew store;//商铺对象
+    
+    private HouseNew house;//  房屋对象
+    
+    private List<PersonBuildingNew> personBuildings;//人员建筑关系集合，有效的户主集合
+    
+    private String buildingCertificate;//房产证号
+    
+    private PersonBuildingNew personBuildingNew;//单个人员建筑关系对象
+    
+    private List<String> custIds;//人员主键id集合
+    
+    private List<String>enterIds;
+    
+    private String parcelId;//关联宗地id  王洲  2016.2.2
+    
+    private List<HouseNew> houseList;
+    
+    private List<StallNew> stallList;
+    
+    private List<StoreNew> storeList;
+    
+    
+    private String custid;
+    private String cutname;
+    private String entername;
+    private String enterid;
+    
+    private PersonCustNew custInfo;//个人客户信息
+    
+    private EnterpriseCustNew enterpriseCustInfo;//企业客户信息
+    
+    private List<Constant> constantList;//常量，关联水费，电费，物业费
+    
+    private Sipmanage sipmanage;//家家sip
+    
+    private Sipmanage indoorSipInfo;//室内机sip
+    
+    
+    public String getCustid() {
+		return custid;
+	}
+
+	public void setCustid(String custid) {
+		this.custid = custid;
+	}
+
+	public String getCutname() {
+		return cutname;
+	}
+
+	public void setCutname(String cutname) {
+		this.cutname = cutname;
+	}
+
+	public String getEntername() {
+		return entername;
+	}
+
+	public void setEntername(String entername) {
+		this.entername = entername;
+	}
+
+	public String getEnterid() {
+		return enterid;
+	}
+
+	public void setEnterid(String enterid) {
+		this.enterid = enterid;
+	}
+
+	public List<String> getEnterIds() {
+		return enterIds;
+	}
+
+	public void setEnterIds(List<String> enterIds) {
+		this.enterIds = enterIds;
+	}
+
+	public List<String> getCustIds() {
+		return custIds;
+	}
+
+	public void setCustIds(List<String> custIds) {
+		this.custIds = custIds;
+	}
+
+	public PersonBuildingNew getPersonBuildingNew() {
+		return personBuildingNew;
+	}
+
+	public void setPersonBuildingNew(PersonBuildingNew personBuildingNew) {
+		this.personBuildingNew = personBuildingNew;
+	}
+
+	public String getBuildingCertificate() {
+		return buildingCertificate;
+	}
+
+	public void setBuildingCertificate(String buildingCertificate) {
+		this.buildingCertificate = buildingCertificate;
+	}
+
+	public List<PersonBuildingNew> getPersonBuildings() {
+		return personBuildings;
+	}
+
+	public void setPersonBuildings(List<PersonBuildingNew> personBuildings) {
+		this.personBuildings = personBuildings;
+	}
+
+	public StallNew getStall() {
+		return stall;
+	}
+
+	public void setStall(StallNew stall) {
+		this.stall = stall;
+	}
+
+	public StoreNew getStore() {
+		return store;
+	}
+
+	public void setStore(StoreNew store) {
+		this.store = store;
+	}
+
+	public Integer getState() {
+		return state;
+	}
+
+	public void setState(Integer state) {
+		this.state = state;
+	}
+
+    
+    public String getCustType() {
+		return custType;
+	}
+
+	public void setCustType(String custType) {
+		this.custType = custType;
+	}
+
+	private String custType;//人员建筑关系类型
+    
+   public String getEnterpriseName() {
+		return enterpriseName;
+	}
+
+	public void setEnterpriseName(String enterpriseName) {
+		this.enterpriseName = enterpriseName;
+	}
+
+	public String getOfficePhone() {
+		return officePhone;
+	}
+
+	public void setOfficePhone(String officePhone) {
+		this.officePhone = officePhone;
+	}
+
+private String enterpriseName;  //企业名称
+    
+    private String officePhone;  //企业电话
+
+
+	private List<EnterpriseCustNew> enterpriseCustNews;//企业客户
+    
+    public List<EnterpriseCustNew> getEnterpriseCustNews() {
+		return enterpriseCustNews;
+	}
+
+	public void setEnterpriseCustNews(List<EnterpriseCustNew> enterpriseCustNews) {
+		this.enterpriseCustNews = enterpriseCustNews;
+	}
+
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	
+
+	public String getCardType() {
+		return cardType;
+	}
+
+	public void setCardType(String cardType) {
+		this.cardType = cardType;
+	}
+
+	public String getCardNum() {
+		return cardNum;
+	}
+
+	public void setCardNum(String cardNum) {
+		this.cardNum = cardNum;
+	}
+
+	public Byte getIsBindingAssets() {
+		return isBindingAssets;
+	}
+
+	public void setIsBindingAssets(Byte isBindingAssets) {
+		this.isBindingAssets = isBindingAssets;
+	}
+
+	public List<PersonCustNew> getPersonCusts() {	
+		return personCusts;
+	}
+
+	public void setPersonCusts(List<PersonCustNew> personCusts) {
+		this.personCusts = personCusts;
+	}
+
+	public String getCustId() {
+		return custId;
+	}
+
+	public void setCustId(String custId) {
+		this.custId = custId;
+	}
+
+	public List<BuildingStructureNew> getChildren() {
+		return children;
+	}
+
+	public void setChildren(List<BuildingStructureNew> children) {
+		this.children = children;
+	}
+
+	public Boolean getChecked() {
+		return checked;
+	}
+
+	public void setChecked(Boolean checked) {
+		this.checked = checked;
+	}
+
+	public String getProjectId() {
+		return projectId;
+	}
+
+	public void setProjectId(String projectId) {
+		this.projectId = projectId;
+	}
+
+	public String getBuildingType() {
+		return buildingType;
+	}
+
+	public void setBuildingType(String buildingType) {
+		
+		this.buildingType = buildingType;
+	}
+
+	public HouseNew getHouse() {
+		return house;
+	}
+
+	public void setHouse(HouseNew house) {
+		this.house = house;
+	}
+    
+    private Page page;
+    
+    public Page getPage() {
+		return page;
+	}
+
+	public void setPage(Page page) {
+		this.page = page;
+	}
+
+	public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public String getFullName() {
+        return fullName;
+    }
+
+    public void setFullName(String fullName) {
+        this.fullName = fullName;
+    }
+
+    public String getNodeName() {
+        return nodeName;
+    }
+
+    public void setNodeName(String nodeName) {
+        this.nodeName = nodeName;
+    }
+
+    public String getBuildingId() {
+        return buildingId;
+    }
+
+    public void setBuildingId(String buildingId) {
+        this.buildingId = buildingId;
+    }
+
+    public String getParentId() {
+        return parentId;
+    }
+
+    public void setParentId(String parentId) {
+        this.parentId = parentId;
+    }
+
+    public Double getBuildingArea() {
+        return buildingArea;
+    }
+
+    public void setBuildingArea(Double buildingArea) {
+        this.buildingArea = buildingArea;
+    }
+
+    public Double getTotalArea() {
+		return totalArea;
+	}
+
+	public void setTotalArea(Double totalArea) {
+		this.totalArea = totalArea;
+	}
+
+	public Double getCommonalityArea() {
+        return commonalityArea;
+    }
+
+    public void setCommonalityArea(Double commonalityArea) {
+        this.commonalityArea = commonalityArea;
+    }
+
+    public Double getInsideArea() {
+        return insideArea;
+    }
+
+    public void setInsideArea(Double insideArea) {
+        this.insideArea = insideArea;
+    }
+
+    public Double getCompletionArea() {
+        return completionArea;
+    }
+
+    public void setCompletionArea(Double completionArea) {
+        this.completionArea = completionArea;
+    }
+
+    public Double getUtilityRatio() {
+        return utilityRatio;
+    }
+
+    public void setUtilityRatio(Double utilityRatio) {
+        this.utilityRatio = utilityRatio;
+    }
+
+	public String getAreaId() {
+		return areaId;
+	}
+
+	public void setAreaId(String areaId) {
+		this.areaId = areaId;
+	}
+
+	public String getCollectionManageId() {
+		return collectionManageId;
+	}
+
+	public void setCollectionManageId(String collectionManageId) {
+		this.collectionManageId = collectionManageId;
+	}
+
+	public String getProductId() {
+		return productId;
+	}
+
+	public void setProductId(String productId) {
+		this.productId = productId;
+	}
+
+	public String getPersonBuildingId() {
+		return personBuildingId;
+	}
+
+	public void setPersonBuildingId(String personBuildingId) {
+		this.personBuildingId = personBuildingId;
+	}
+
+	public String getParcelId() {
+		return parcelId;
+	}
+
+	public void setParcelId(String parcelId) {
+		this.parcelId = parcelId;
+	}
+
+	public List<HouseNew> getHouseList() {
+		return houseList;
+	}
+
+	public void setHouseList(List<HouseNew> houseList) {
+		this.houseList = houseList;
+	}
+
+	public List<StallNew> getStallList() {
+		return stallList;
+	}
+
+	public void setStallList(List<StallNew> stallList) {
+		this.stallList = stallList;
+	}
+
+	public List<StoreNew> getStoreList() {
+		return storeList;
+	}
+
+	public void setStoreList(List<StoreNew> storeList) {
+		this.storeList = storeList;
+	}
+
+	public PersonCustNew getCustInfo() {
+		return custInfo;
+	}
+
+	public void setCustInfo(PersonCustNew custInfo) {
+		this.custInfo = custInfo;
+	}
+
+	public EnterpriseCustNew getEnterpriseCustInfo() {
+		return enterpriseCustInfo;
+	}
+
+	public void setEnterpriseCustInfo(EnterpriseCustNew enterpriseCustInfo) {
+		this.enterpriseCustInfo = enterpriseCustInfo;
+	}
+
+	public List<Constant> getConstantList() {
+		return constantList;
+	}
+
+	public void setConstantList(List<Constant> constantList) {
+		this.constantList = constantList;
+	}
+
+	public Sipmanage getSipmanage() {
+		return sipmanage;
+	}
+
+	public void setSipmanage(Sipmanage sipmanage) {
+		this.sipmanage = sipmanage;
+	}
+
+	public Sipmanage getIndoorSipInfo() {
+		return indoorSipInfo;
+	}
+
+	public void setIndoorSipInfo(Sipmanage indoorSipInfo) {
+		this.indoorSipInfo = indoorSipInfo;
+	}
+	
+}

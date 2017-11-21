@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>内部专业线里的制度章程</title>
+</head>
+<body>
+<div class="row" style="height: 532px">
+    <h4 style="text-align: center"><strong>制度章程</strong></h4>
+    <table class="table">
+    			<div   ng-repeat="item in searchPaginator.object.ruless" ng-show="item.id!=null">
+                    <div class="col-md-2" style="text-align: center"><a href="institutionDetailed.html" target="_self">{{item.title}}</a></div>
+                    <div class="col-md-8" ><center><a href="institutionDetailed.html" target="_self">{{item.detailInfo}}</a></center></div>
+                    <div class="col-md-2">{{item.lastModtime | date:"yyyy-MM-dd"}}</div>
+				</div>
+                    
+                </table>
+    <div class="pagination">
+                    <a href="#" ng-show="searchPaginator.hasPrevious()" ng-click="searchPaginator.previous()">上一页</a>
+                    <a href="#" ng-repeat="i in searchPaginator.pages"  ng-click="searchPaginator.go(i)" class="number">{{i}}</a>
+                    <a href="#" ng-show="searchPaginator.hasNext()" ng-click="searchPaginator.next()">下一页</a>
+    </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.flf.mapper.PendingApprovalMapper" >
+  <resultMap id="BaseResultMap" type="com.flf.entity.PendingApproval" >
+    <id column="pending_approval_id" property="pendingApprovalId" jdbcType="VARCHAR" />
+    <result column="types" property="types" jdbcType="TINYINT" />
+    <result column="theme" property="theme" jdbcType="VARCHAR" />
+    <result column="current_dates" property="currentDates" jdbcType="DATE" />
+  </resultMap>
+  
+  <sql id="Base_Column_List" >
+    pending_approval_id, types, theme, current_dates
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from tc_pending_approval
+    where pending_approval_id = #{pendingApprovalId,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from tc_pending_approval
+    where pending_approval_id = #{pendingApprovalId,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.flf.entity.PendingApproval" >
+    insert into tc_pending_approval (pending_approval_id, types, theme, 
+      current_dates)
+    values (#{pendingApprovalId,jdbcType=VARCHAR}, #{types,jdbcType=TINYINT}, #{theme,jdbcType=VARCHAR}, 
+      #{currentDates,jdbcType=DATE})
+  </insert>
+  <insert id="insertSelective" parameterType="com.flf.entity.PendingApproval" >
+    insert into tc_pending_approval
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="pendingApprovalId != null" >
+        pending_approval_id,
+      </if>
+      <if test="types != null" >
+        types,
+      </if>
+      <if test="theme != null" >
+        theme,
+      </if>
+      <if test="currentDates != null" >
+        current_dates,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="pendingApprovalId != null" >
+        #{pendingApprovalId,jdbcType=VARCHAR},
+      </if>
+      <if test="types != null" >
+        #{types,jdbcType=TINYINT},
+      </if>
+      <if test="theme != null" >
+        #{theme,jdbcType=VARCHAR},
+      </if>
+      <if test="currentDates != null" >
+        #{currentDates,jdbcType=DATE},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.flf.entity.PendingApproval" >
+    update tc_pending_approval
+    <set >
+      <if test="types != null" >
+        types = #{types,jdbcType=TINYINT},
+      </if>
+      <if test="theme != null" >
+        theme = #{theme,jdbcType=VARCHAR},
+      </if>
+      <if test="currentDates != null" >
+        current_dates = #{currentDates,jdbcType=DATE},
+      </if>
+    </set>
+    where pending_approval_id = #{pendingApprovalId,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.flf.entity.PendingApproval" >
+    update tc_pending_approval
+    set types = #{types,jdbcType=TINYINT},
+      theme = #{theme,jdbcType=VARCHAR},
+      current_dates = #{currentDates,jdbcType=DATE}
+    where pending_approval_id = #{pendingApprovalId,jdbcType=VARCHAR}
+  </update>
+   
+ 	<resultMap type="PendingApproval" id="AllResultMap">
+        <result column="pending_approval_id" property="pendingApprovalId" jdbcType="VARCHAR" /> 
+        <association property="personCustNew" column="cust_id" javaType="PersonCustNew">
+              <id column="cust_id" property="custId" jdbcType="VARCHAR" />
+               <result column="card_num" property="cardNum" jdbcType="VARCHAR" />
+		      <result column="register_phone" property="registerPhone" jdbcType="VARCHAR" />
+        </association>       
+        <association property="personVip" column="approval_id" javaType="PersonVip">
+            <id column="vip_id" property="vipId" jdbcType="VARCHAR" />
+		    <result column="cust_id" property="custId" jdbcType="VARCHAR" />
+		    <result column="vip_start" property="vipStart" jdbcType="DATE" />
+		    <result column="vip_end" property="vipEnd" jdbcType="DATE" />
+		     <result column="name" property="name" jdbcType="VARCHAR" />
+		    <result column="apply_reason" property="applyReason" jdbcType="VARCHAR" />		    
+		    <result column="refuse_reason" property="refuseReason" jdbcType="VARCHAR" />
+		    <result column="review_state" property="reviewState" jdbcType="TINYINT" />
+		    <result column="staff_id" property="staffId" jdbcType="VARCHAR" />
+		    <result column="theme" property="theme" jdbcType="VARCHAR" />
+		    <result column="applystype" property="applystype" jdbcType="TINYINT" />	
+		     <result column="idcard" property="idcard" jdbcType="VARCHAR" />
+		     <result column="phonenum" property="phonenum" jdbcType="VARCHAR" /> 
+		     <result column="idcard1" property="idcard1" jdbcType="VARCHAR" />
+		     <result column="phonenum1" property="phonenum1" jdbcType="VARCHAR" /> 	    
+        </association>
+        <association property="personEmphasis" column="approval_id" javaType="PersonEmphasis">
+            <!--  <id column="approval_id" property="approvalId" jdbcType="VARCHAR" /> -->
+           	 <id column="emphasis_id" property="emphasisId" jdbcType="VARCHAR" />
+           	  <result column="applyreason" property="applyreason" jdbcType="VARCHAR" />
+             <result column="username" property="username" jdbcType="VARCHAR" />
+		    <result column="applydate" property="applydate" jdbcType="DATE" />
+		    <result column="applystatus" property="applystatus" jdbcType="TINYINT" />		    		    
+		    <result column="failreason" property="failreason" jdbcType="VARCHAR" />
+		    <result column="cust_id" property="custId" jdbcType="VARCHAR" />
+		    <result column="applyeddate" property="applyeddate" jdbcType="DATE" />
+		    <result column="theme1" property="theme1" jdbcType="VARCHAR" />
+		    <result column="applystype1" property="applystype1" jdbcType="TINYINT" />
+		    <result column="idcard" property="idcard" jdbcType="VARCHAR" />
+		    <result column="phonenum" property="phonenum" jdbcType="VARCHAR" />
+        </association>
+         <collection property="teamworkstaff" column="staff_id" ofType="Teamworkstaff" select="com.flf.mapper.TeamworkstaffMapper.getStaffPostById">
+             <result column="staff_name" property="staffName" jdbcType="VARCHAR" />
+		    <result column="telphone" property="telphone" jdbcType="VARCHAR" />
+		    <result column="specialty_name" property="specialtyName" jdbcType="VARCHAR" />         	
+         </collection>
+         <collection property="vipList" select="com.flf.mapper.AnnexMapper.getAnnexbyRelationId" ofType="Annex" column="vip_id">
+			 <result column="annex_address" property="annexAddress" jdbcType="VARCHAR" />
+		</collection>
+		<collection property="emphasisList" select="com.flf.mapper.AnnexMapper.getAnnexbyRelationId" ofType="Annex" column="emphasis_id">
+			 <result column="annex_address" property="annexAddress" jdbcType="VARCHAR" />
+		</collection>
+     </resultMap>
+
+  
+  <!-- 条件分页查询重点客户和vip客户集合 -->
+  <select id="listPagePendingApproval" parameterType="com.flf.entity.PendingApproval" resultMap="AllResultMap">
+  		 select pa.pending_approval_id,pa.types,pa.current_dates, 		
+  		 pv.vip_id, pv.cust_id,pv.vip_start,pv.vip_end,
+    	 pv.apply_reason,pv.refuse_reason,pv.review_state,
+    	 pv.staff_id,pv.theme,pv.applystype, pv.name,
+    	 pv.phonenum AS phonenum1,pv.idcard AS idcard1, 	 		
+  		 pe.emphasis_id, pe.applyreason, pe.applydate, pe.applystatus,
+    	 pe.failreason, pe.applyeddate, pe.theme as theme1,pe.idcard,pe.phonenum,
+    	 pe.applystype as applystype1,pe.username,pc.card_num,pc.register_phone
+    	 from tc_pending_approval pa
+    	 left join tc_person_vip pv on pa.pending_approval_id =pv.approval_id
+    	 left join tc_person_emphasis pe on pa.pending_approval_id = pe.approval_id 
+    	 left join tc_person_cust pc on pc.cust_id=pv.cust_id and  pc.cust_id=pe.cust_id   
+    	 where 1=1
+    	  <if test="types!=null and types!=''">
+          and pa.types= #{types,jdbcType=VARCHAR}
+      	  </if>
+     	  <if test="theme!=null and theme!=''">
+          and pa.theme like CONCAT('%',#{theme},'%')
+      	  </if>
+      	  
+  </select>
+  
+  
+    <select id="selectAllPendingApproval" resultMap="AllResultMap">
+  	 select pa.pending_approval_id,pa.types,pa.current_dates, 		
+  		 pv.vip_id, pv.cust_id,pv.vip_start,pv.vip_end,
+    	 pv.apply_reason,pv.refuse_reason,pv.review_state,
+    	 pv.staff_id,pv.theme,pv.applystype, pv.name, 	 		
+  		 pe.emphasis_id, pe.applyreason, pe.applydate, pe.applystatus,
+    	 pe.failreason, pe.applyeddate, pe.theme as theme1,pe.idcard,pe.phonenum,
+    	 pe.applystype as applystype1,pe.username,pc.card_num,pc.register_phone
+    	 from tc_pending_approval pa
+    	 left join tc_person_vip pv on pa.pending_approval_id =pv.approval_id
+    	 left join tc_person_emphasis pe on pa.pending_approval_id = pe.approval_id 
+    	 left join tc_person_cust pc on pc.cust_id=pv.cust_id and  pc.cust_id=pe.cust_id
+    	 WHERE pv.review_state=0 OR pe.applystatus=0 
+    	      	  
+  </select>
+  
+</mapper>

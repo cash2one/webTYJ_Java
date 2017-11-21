@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>办理授权</title>
+    <link rel="stylesheet" href="css/propertyService.css">
+</head>
+<body ng-controller="licensingCtrl">
+<div class="row" style="padding:5px 30px 0;">
+    <div class="row">
+        <table style="margin-left: 380px">
+            <tr style="height: 25px;">
+                <td><div class="doted"><span class="dot_Check"></span></div></td>
+                <td><div class="doted"><span class="dot_unChecked"></span></div></td>
+                <td><div class="doted"><span class="dot_unChecked"></span></div></td>
+                <td><div class="doted"><span class="dot_unChecked"></span></div></td>
+            </tr>
+            <tr style="height: 25px">
+                <td>选择房屋</td>
+                <td>收管理费</td>
+                <td>物品领取</td>
+                <td>业主收房</td>
+            </tr>
+        </table>
+    </div>
+    <div class="complaint_user1">
+        <div style="padding:5px 10px 0">
+            <div class="complaint_user_info_navigation">
+                <a class="btn" ui-sref="index.propertyService.housesHome.joinGang.licensing.choiceHousing">选择房屋</a>
+                <a class="btn" ui-sref="index.propertyService.housesHome.joinGang.licensing.collectingManagement">收管理费</a>
+                <a class="btn" ui-sref="index.propertyService.housesHome.joinGang.licensing.goodsReceipt">物品领取</a>
+                <a class="btn" ui-sref="index.propertyService.housesHome.joinGang.licensing.ownersShoufang">业主收房</a>
+            </div>
+            <div class="clear"></div>
+        </div>
+        <div class="row" style="padding:5px 10px 0">
+            <div ui-view></div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

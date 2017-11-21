@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>内部专业线里的FAQ</title>
+
+</head>
+<body>
+<div>
+    <div class="row">
+        <div class="table_list">
+            <h4 style="text-align: center"><strong>FAQ</strong></h4>
+            <div class="col-md-12" style="height: 58px">
+                <div class="button_group">
+                    <a href="#addvipCustomer" data-toggle="modal">增加</a>
+                </div>
+            </div>
+        </div>
+        <table class="table">
+            <tr ng-repeat="item in searchPaginator.object.faqs" ng-show="item.id!=null">
+                <td class="col-md-2" style="text-align: center"><a href="FAQDetailed.html" target="_self">{{item.headline}}</a></td>
+                <td class="col-md-7"><a href="FAQDetailed.html" target="_self">{{item.content}}</a></td>
+                <td class="col-md-2">{{item.date | date:"yyyy-MM-dd"}}</td>
+                <td class="col-md-1">
+                    <form class="form-inline">
+
+                        <div class="form-group" align="center" valign="middle"><a href="#updatevipCustome"data-toggle="modal">修改</a></div>
+                        <div class="form-group"><a href="#">删除</a></div>
+                    </form>
+                </td>
+            </tr>
+        </table>
+    </div>
+    <!--分页-->
+    <div class="pagination">
+        <a href="#" ng-show="searchPaginator.hasPrevious()" ng-click="searchPaginator.previous()">上一页</a>
+        <a href="#" ng-repeat="i in searchPaginator.pages"  ng-click="searchPaginator.go(i)" class="number">{{i}}</a>
+        <a href="#" ng-show="searchPaginator.hasNext()" ng-click="searchPaginator.next()">下一页</a>
+    </div>
+    <!--分页 end-->
+</div>
+<!--增加一条数据模态框开始-->
+<div class="modal fade" id="addvipCustomer" tabindex="-1" role="dialog"
+     aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content" >
+            <div class="modal-header">
+                <button type="button" class="close"
+                        data-dismiss="modal" aria-hidden="true">
+                    &times;
+                </button>
+                <h4 class="modal-title" id="ImpClient">
+                    增加FAQ
+                </h4>
+            </div>
+            <div class="modal-body">
+                <div>
+                    <form>
+                        <table class="text-center" style="margin: 0px auto;">
+                            <tr>
+                                <td style="height: 35px" class="text-right">问题：</td>
+                                <td><input type="text" class="input-sm form-control"></td>
+
+                            </tr>
+                            <tr>
+                                <td style="height: 35px" class="text-right">时间：</td>
+                                <td><input type="text" class="input-sm form-control"></td>
+
+                            </tr>
+                            <tr>
+                                <td style="height: 75px" class="text-right">描述：</td>
+                                <td>
+                                    <textarea class="input-sm form-control" style="width: 150px;" rows="3"></textarea>
+                                </td>
+                            </tr>
+                        </table>
+                    </form>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default"  data-dismiss="modal">关闭</button>
+                <button type="button" class="btn btn-primary">确认增加</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!--增加一条数据模态框结束-->
+
+<!--修改一条数据模态框开始-->
+<div class="modal fade" id="updatevipCustome" tabindex="-1" role="dialog"
+     aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close"
+                        data-dismiss="modal" aria-hidden="true">
+                    &times;
+                </button>
+                <h4 class="modal-title">
+                    修改FAQ
+                </h4>
+                </td>
+                <div class="modal-body">
+                    <div>
+                        <form>
+                            <table class="text-center" style="margin: 0px auto;">
+                                <tr>
+                                    <td style="height: 35px" class="text-right">问题：</td>
+                                    <td><input type="text" class="input-sm form-control" value="系统公告"></td>
+
+                                </tr>
+                                <tr>
+                                    <td style="height: 35px" class="text-right">时间：</td>
+                                    <td><input type="text" class="input-sm form-control" value="2015-04-21"></td>
+
+                                </tr>
+                                <tr>
+                                    <td style="height: 75px" class="text-right">描述：</td>
+                                    <td>
+                                        <textarea class="input-sm form-control" style="width: 150px;" rows="3">系统公告</textarea>
+                                    </td>
+                                </tr>
+                            </table>
+                        </form>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default"
+                            data-dismiss="modal">关闭
+                    </button>
+                    <button type="button" class="btn btn-primary">
+                        确认修改
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!--修改一条数据模态框结束-->
+</body>
+</html>

@@ -1,0 +1,34 @@
+package com.flf.service;
+
+import javax.jws.WebService;
+import javax.ws.rs.Consumes;
+import javax.ws.rs.POST;
+import javax.ws.rs.PUT;
+import javax.ws.rs.Path;
+import javax.ws.rs.Produces;
+import javax.ws.rs.core.MediaType;
+
+import com.flf.entity.AreaTypeNew;
+import com.flf.entity.BuildingBilling;
+import com.flf.entity.PageRestful;
+
+@WebService
+@Path("/BuildingBilling")
+public interface BuildingBillingService {
+	
+	/*根据收费项目计费id查询关于建筑的收费项目详情*/	
+	@POST
+	@Path("/listPageBuildingBillingList")
+	@Produces(MediaType.APPLICATION_JSON)
+	PageRestful listPageBuildingBillingListRes(BuildingBilling buildingBilling);
+	
+	/**
+	 * 修改
+	 * @return
+	 */
+	@PUT
+	@Path("/updateBuildingBilling")
+	@Consumes({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
+	void updateBuildingBilling(BuildingBilling buildingBilling);
+	
+}

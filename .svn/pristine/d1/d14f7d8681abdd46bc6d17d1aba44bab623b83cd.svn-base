@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.flf.mapper.PostAuthorityMapper" >
+  <resultMap id="BaseResultMap" type="com.flf.entity.PostAuthority" >
+    <id column="post_authority_id" property="postAuthorityId" jdbcType="VARCHAR" />
+    <result column="role_id" property="roleId" jdbcType="VARCHAR" />
+    <result column="action_id" property="actionId" jdbcType="VARCHAR" />
+    <result column="post_id" property="postId" jdbcType="VARCHAR" />
+    <result column="creater_id" property="createrId" jdbcType="VARCHAR" />
+    <result column="create_time" property="createTime" jdbcType="DATE" />
+    <result column="modify_id" property="modifyId" jdbcType="VARCHAR" />
+    <result column="modify_time" property="modifyTime" jdbcType="DATE" />
+    <result column="state" property="state" jdbcType="TINYINT" />
+      <result column="permissions_name" property="permissionsName" jdbcType="TINYINT" />
+    <result column="status" property="status" jdbcType="TINYINT" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    post_authority_id, role_id, action_id, post_id, creater_id, create_time, modify_id, 
+    modify_time, state
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from tc_post_authority
+    where post_authority_id = #{postAuthorityId,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from tc_post_authority
+    where post_authority_id = #{postAuthorityId,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.flf.entity.PostAuthority" >
+    insert into tc_post_authority (post_authority_id, role_id, action_id, 
+      post_id, creater_id, create_time, 
+      modify_id, modify_time, state
+      )
+    values (#{postAuthorityId,jdbcType=VARCHAR}, #{roleId,jdbcType=VARCHAR}, #{actionId,jdbcType=VARCHAR}, 
+      #{postId,jdbcType=VARCHAR}, #{createrId,jdbcType=VARCHAR}, #{createTime,jdbcType=DATE}, 
+      #{modifyId,jdbcType=VARCHAR}, #{modifyTime,jdbcType=DATE}, #{state,jdbcType=TINYINT}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.flf.entity.PostAuthority" >
+    insert into tc_post_authority
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="postAuthorityId != null" >
+        post_authority_id,
+      </if>
+      <if test="roleId != null" >
+        role_id,
+      </if>
+      <if test="actionId != null" >
+        action_id,
+      </if>
+      <if test="postId != null" >
+        post_id,
+      </if>
+      <if test="createrId != null" >
+        creater_id,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="modifyId != null" >
+        modify_id,
+      </if>
+      <if test="modifyTime != null" >
+        modify_time,
+      </if>
+      <if test="state != null" >
+        state,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="postAuthorityId != null" >
+        #{postAuthorityId,jdbcType=VARCHAR},
+      </if>
+      <if test="roleId != null" >
+        #{roleId,jdbcType=VARCHAR},
+      </if>
+      <if test="actionId != null" >
+        #{actionId,jdbcType=VARCHAR},
+      </if>
+      <if test="postId != null" >
+        #{postId,jdbcType=VARCHAR},
+      </if>
+      <if test="createrId != null" >
+        #{createrId,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=DATE},
+      </if>
+      <if test="modifyId != null" >
+        #{modifyId,jdbcType=VARCHAR},
+      </if>
+      <if test="modifyTime != null" >
+        #{modifyTime,jdbcType=DATE},
+      </if>
+      <if test="state != null" >
+        #{state,jdbcType=TINYINT},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.flf.entity.PostAuthority" >
+    update tc_post_authority
+    <set >
+      <if test="roleId != null" >
+        role_id = #{roleId,jdbcType=VARCHAR},
+      </if>
+      <if test="actionId != null" >
+        action_id = #{actionId,jdbcType=VARCHAR},
+      </if>
+      <if test="postId != null" >
+        post_id = #{postId,jdbcType=VARCHAR},
+      </if>
+      <if test="createrId != null" >
+        creater_id = #{createrId,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=DATE},
+      </if>
+      <if test="modifyId != null" >
+        modify_id = #{modifyId,jdbcType=VARCHAR},
+      </if>
+      <if test="modifyTime != null" >
+        modify_time = #{modifyTime,jdbcType=DATE},
+      </if>
+      <if test="state != null" >
+        state = #{state,jdbcType=TINYINT},
+      </if>
+    </set>
+    where post_authority_id = #{postAuthorityId,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.flf.entity.PostAuthority" >
+    update tc_post_authority
+    set role_id = #{roleId,jdbcType=VARCHAR},
+      action_id = #{actionId,jdbcType=VARCHAR},
+      post_id = #{postId,jdbcType=VARCHAR},
+      creater_id = #{createrId,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=DATE},
+      modify_id = #{modifyId,jdbcType=VARCHAR},
+      modify_time = #{modifyTime,jdbcType=DATE},
+      state = #{state,jdbcType=TINYINT}
+    where post_authority_id = #{postAuthorityId,jdbcType=VARCHAR}
+  </update>
+  
+  <select id="getPostAuthorityByUserId" parameterType="String" resultMap="BaseResultMap">
+   		SELECT pa.* FROM 
+		(
+		SELECT
+			post_id
+		FROM
+			tc_user_post
+		WHERE
+			user_id = #{0}
+		) up
+		LEFT JOIN t_post p ON up.post_id = p.post_id
+		LEFT JOIN tc_post_authority pa ON pa.post_id = p.post_id
+		WHERE pa.state = 1
+  </select>
+  
+  <resultMap type="PostAuthority" id="AllResultMap"  extends="BaseResultMap">
+    <result column="permissions_name" property="permissionsName" jdbcType="VARCHAR" />
+	<result column="status" property="status" jdbcType="TINYINT" />
+	<collection property="actions" column="role_id" ofType="Action" select="com.flf.mapper.ActionMapper.selectActionById">
+		
+	</collection>		
+  </resultMap>
+  
+  <!-- 查询岗位所具有的操作权限和功能权限 -->
+  <select id="selectActionPermissions" parameterType="String" resultMap="AllResultMap">    
+     select distinct(pa.role_id),hp.permissions_name,hp.status
+    from hr_permissions hp
+    inner join tc_post_authority pa on pa.role_id=hp.permissions_id 
+    where pa.post_id = #{postId,jdbcType=VARCHAR}
+    
+  </select>
+</mapper>

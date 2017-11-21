@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+	
+
+<mapper namespace="com.flf.mapper.TenementPactMapper">
+	<resultMap type="TenementPact" id="TenementPactResultMap">
+		<id column="pact_id" property="pactId" jdbcType="VARCHAR" />
+	    <result column="pre_enterprise" property="preEnterprise" jdbcType="VARCHAR" />
+	    <result column="aft_enterprise" property="aftEnterprise" jdbcType="VARCHAR" />
+	    <result column="sta_time" property="staTime" jdbcType="DATE" />
+	    <result column="end_time" property="endTime" jdbcType="DATE" />
+	    <result column="pact_code" property="pactCode" jdbcType="VARCHAR" />
+	    <result column="pact_type" property="pactType" jdbcType="VARCHAR" />
+	    <result column="property_project" property="propertyProject" jdbcType="VARCHAR" />
+	    <result column="per_price" property="perPrice" jdbcType="DOUBLE" />
+	    <result column="manage_area" property="manageArea" jdbcType="DOUBLE" />
+	    <result column="total_price" property="totalPrice" jdbcType="DOUBLE" />
+	    <result column="total_price_type" property="totalPriceType" jdbcType="TINYINT" />
+	    <result column="pact_name" property="pactName" jdbcType="VARCHAR" />
+	    <result column="pact_describle" property="pactDescrible" jdbcType="VARCHAR" />
+		<result column="accessory_src" property="accessorySrc" jdbcType="VARCHAR" />
+	    <result column="third_enterprise_id" property="thirdEnterpriseId" jdbcType="VARCHAR" />	
+	    <result column="four_enterprise_id" property="fourEnterpriseId" jdbcType="VARCHAR" />	
+	    <result column="state" property="state" jdbcType="TINYINT" />
+	    <collection property="annexs" column="pact_id" ofType="Annex" select="com.flf.mapper.AnnexMapper.getAnnexByPactId" />
+	</resultMap>
+	
+	<resultMap id="ChargeItemResultMap" type="ChargeItem" >
+    <id column="charge_item_id" property="chargeItemId" jdbcType="VARCHAR" />
+    <result column="charge_item_type" property="chargeItemType" jdbcType="VARCHAR" />
+    <result column="charge_item_area" property="chargeItemArea" jdbcType="DOUBLE" />
+    <result column="unit_price" property="unitPrice" jdbcType="DOUBLE" />
+    <result column="money" property="money" jdbcType="DOUBLE" />
+    <result column="charge_unit" property="chargeUnit" jdbcType="VARCHAR" />
+    <result column="pact_id" property="pactId" jdbcType="VARCHAR" />
+  </resultMap>
+  
+	<resultMap id="AnnexResultMap" type="Annex" >
+    <id column="annex_id" property="annexId" jdbcType="VARCHAR" />
+    <result column="relation_id" property="relationId" jdbcType="VARCHAR" />
+    <result column="annex_type" property="annexType" jdbcType="TINYINT" />
+    <result column="annex_address" property="annexAddress" jdbcType="VARCHAR" />
+    <result column="annex_name" property="annexName" jdbcType="VARCHAR" />
+    <result column="annex_time" property="annexTime" jdbcType="TIMESTAMP" />
+    <result column="pact_id" property="pactId" jdbcType="VARCHAR" />
+  </resultMap>
+	
+	<resultMap type="TenementPact" id="TenementPactCResultMap" extends="TenementPactResultMap" >
+		<association property="project" column="project_id" javaType="Project" select="com.flf.mapper.ProjectMapper.getProject" />
+	    <collection property="chargeItems" ofType="ChargeItem" column="pact_id" select="selectChargeItem"></collection>
+	    <collection property="annexs" ofType="Annex" column="pact_id" select="selectAnnex"></collection>
+	</resultMap>
+	
+	<select id="selectChargeItem" parameterType="String" resultMap="ChargeItemResultMap">
+	    select * from tc_charge_item where pact_id=#{0}
+	</select>
+	
+	<select id="selectAnnex" parameterType="String" resultMap="AnnexResultMap">
+	    select * from ts_annex where pact_id=#{0}
+	</select>
+	<!-- 搜索查询物业合同 -->
+	<select id="listPageTenementPact" parameterType="TenementPact" resultMap="TenementPactResultMap">
+		select * from tc_tenement_pact where 1=1
+		<if test="pactName != null and pactName != ''">
+			and pact_name like CONCAT('%',#{pactName,jdbcType=VARCHAR},'%')
+		</if>
+		<if test="propertyProject != null and propertyProject != ''">
+			and property_project like CONCAT('%',#{propertyProject,jdbcType=VARCHAR},'%')
+		</if>
+		<if test="minendTime != null and minendTime != '' and maxendTime == null or maxendTime == ''">
+			and end_time &gt;= #{minendTime}
+		</if>
+		<if test="maxendTime != null and maxendTime != '' and minendTime == null or minendTime == ''">
+			and #{maxendTime} &gt;= end_time 
+		</if>
+		<if test="minendTime != null and minendTime != '' and maxendTime != null and maxendTime != ''">
+			and end_time between #{minendTime} and #{maxendTime}
+		</if>
+		<if test="state == 3">
+			and sta_time &gt; now()
+		</if>
+		<if test="state == 0">
+			and end_time &lt;= #{endTime}
+		</if>
+		<if test="state == 1">
+			and end_time &gt;= #{endTime}
+		</if>
+		<if test="state == 2">
+			and end_time between now() and #{endTime}
+		</if>
+	</select>
+	
+	<select id="searchTenementPact" parameterType="com.flf.request.TenementPactSearch" resultMap="TenementPactResultMap">
+		select * from tc_tenement_pact a 
+		left join t_project b on a.project_id = b.project_id
+		where 1=1  	
+		<if test="staTime!=null or endTime!=null">
+  			and a.end_time between #{staTime} and #{endTime}
+  		</if>
+  		<if test="tenementPactName!=null and tenementPactName!= '' ">
+  			and a.pact_name like CONCAT('%',#{tenementPactName},'%')
+  		</if>	
+  		<if test="tenementPactName!=null and tenementPactName!= '' ">
+  			and a.pact_name like CONCAT('%',#{tenementPactName},'%')
+  		</if>
+  		<if test="loseEfficacy==true">
+  			and a.end_time&gt;NOW()
+  		</if>
+  		<if test="crp==true">
+  			and a.end_time&lt;NOW()
+  		</if>
+  		<if test="project==true">
+  			and b.projectName like CONCAT('%',#{project},'%')
+  		</if>
+  		<if test="aboutOfLoseEfficacy==true">
+  			and a.end_time&lt;#{endTime} order by a.end_time desc
+  		</if>
+	</select>
+	
+	<select id="listAllTenementPact"  resultMap="TenementPactResultMap">
+		select * from tc_tenement_pact 	
+  			
+	</select>
+	
+	<select id="getTenementPactById" resultMap="TenementPactResultMap" parameterType="java.lang.String" >
+    select * from tc_tenement_pact
+     where pact_id = #{0}
+    </select>
+    
+	<update id="updateTenementPactState" parameterType="TenementPact">
+	    update tc_tenement_pact set state =#{state} where pact_id=#{pactId}
+	</update>
+	
+	 <!-- 新增物业合同 -->
+  <insert id="insertTenementPact" parameterType="TenementPact" >
+        insert into tc_tenement_pact (pact_id, pre_enterprise, aft_enterprise,
+      sta_time, end_time, pact_code, 
+      pact_type, property_project, per_price, 
+      manage_area, total_price, total_price_type, 
+      pact_name, pact_describle,state)
+    values (#{pactId}, #{preEnterprise,jdbcType=VARCHAR}, #{aftEnterprise,jdbcType=VARCHAR}, 
+      #{staTime,jdbcType=DATE}, #{endTime,jdbcType=DATE}, #{pactCode,jdbcType=VARCHAR}, 
+      #{pactType,jdbcType=VARCHAR}, #{propertyProject,jdbcType=VARCHAR}, #{perPrice,jdbcType=DOUBLE}, 
+      #{manageArea,jdbcType=DOUBLE}, #{totalPrice,jdbcType=DOUBLE}, #{totalPriceType,jdbcType=TINYINT}, 
+      #{pactName,jdbcType=VARCHAR}, #{pactDescrible,jdbcType=VARCHAR},#{state})
+  </insert>
+  
+  <update id="updateTenementPact" parameterType="TenementPact" >
+   update tc_tenement_pact
+    set pre_enterprise = #{preEnterprise,jdbcType=VARCHAR},
+      aft_enterprise = #{aftEnterprise,jdbcType=VARCHAR},
+      sta_time = #{staTime,jdbcType=DATE},
+      end_time = #{endTime,jdbcType=DATE},
+      pact_code = #{pactCode,jdbcType=VARCHAR},
+      manage_type = #{manageType,jdbcType=VARCHAR},
+      project_id = #{projectId,jdbcType=VARCHAR},
+      per_price = #{perPrice,jdbcType=DOUBLE},
+      manage_area = #{manageArea,jdbcType=DOUBLE},
+      total_price = #{totalPrice,jdbcType=DOUBLE},
+      pact_name = #{pactName,jdbcType=VARCHAR},
+      pact_describle = #{pactDescrible,jdbcType=VARCHAR},
+      accessory_src = #{accessorySrc,jdbcType=VARCHAR},
+      third_enterprise_id = #{thirdEnterpriseId,jdbcType=VARCHAR},
+      four_enterprise_id = #{fourEnterpriseId,jdbcType=VARCHAR}
+    where pact_id = #{pactId,jdbcType=VARCHAR}
+  </update>
+  
+  <!--  删除物业合同 -->
+  <delete id="deleteTenementPact" parameterType="String">
+    delete from tc_tenement_pact
+    where pact_id=#{0}
+  </delete>
+</mapper>

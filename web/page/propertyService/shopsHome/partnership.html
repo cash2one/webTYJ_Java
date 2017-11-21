@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>入伙</title>
+    <script type="text/ng-template" id="top-personal">
+        <div ng-include="'page/propertyService/shopsHome/partnership/personal.html'" ng-controller="personalCtrl"></div>
+    </script>
+    <script type="text/ng-template" id="top-company">
+        <div ng-include="'page/propertyService/shopsHome/partnership/company.html'" ng-controller="companyCtrl"></div>
+    </script>
+
+</head>
+<body ng-controller="partnershipCtrl">
+<div class="complaint_user_list" style="padding:15px 1px;height: 300px">
+
+    <!--添加入伙-->
+    <div class="col-lg-4 col-md-4 col-sm-6">
+        <div class="panel" style="height: 250px;background-color: #f0f0f0">
+            <div class="panel_title">
+                <span class="panel_title_left">添加信息： </span>
+                <span class="panel_title_right"><span class="zoom_button"></span><span class="close_button"></span></span>
+            </div>
+            <div class="panel_info" style="margin-top: -20px">
+                <div class=" panel_info clear">
+                    <div class="btn-group col-md-offset-11">
+                    </div>
+                </div>
+                <div style="padding: 5px" align="center"><a href="#biaoqianye1" data-toggle="tab"><img class="glyphicon img3" ng-class="vm.collapsed?'glyphicon-chevron-up':'glyphicon-chevron-down'"
+                                                                                                       ng-click="vm.collapsed = !vm.collapsed" src="images/company/u1498.png" style="width: 200px;height: 150px" ></a> </div>
+            </div>
+        </div>
+    </div>
+    <!--添加入伙 end-->
+
+    <!--入伙信息-->
+    <div class="panel-collapse collapse  col-lg-8 col-md-8 col-sm-6" ng-class="{in:vm.collapsed}">
+        <div class="panel" style="height: 250px;background-color: #f0f0f0">
+
+                <div class="panel_title">
+
+                    <div class="complaint_user_info_navigation col-md-5">
+                    <a class="btn" ng-click="changeTemplate(0)">个人</a>
+                    <a class="btn" ng-click="changeTemplate(1)">企业</a>
+                    </div>
+
+                    <form class="form-inline">
+                        <input type="email" class="form-control input-sm" placeholder="" style="width: 240px;">
+                        <span class="glyphicon glyphicon-search btn" aria-hidden="true"></span>
+                    </form>
+                </div>
+
+            <div class="panel_info">
+
+                    <div ng-include="currentTemplate" ></div>
+
+            </div>
+
+        </div>
+    </div>
+    <!--入伙信息 end-->
+
+
+</div>
+</body>
+</html>

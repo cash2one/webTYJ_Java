@@ -1,0 +1,85 @@
+package com.flf.service.impl;
+
+import java.util.List;
+
+import javax.ws.rs.Consumes;
+import javax.ws.rs.POST;
+import javax.ws.rs.Path;
+import javax.ws.rs.core.MediaType;
+
+import com.flf.entity.AreaTypeNew;
+import com.flf.entity.BuildingBilling;
+import com.flf.entity.ChargeItemBilling;
+import com.flf.entity.PageRestful;
+import com.flf.entity.ProjectBilling;
+import com.flf.mapper.BillingMapper;
+import com.flf.mapper.BuildingBillingMapper;
+import com.flf.mapper.ChargeItemBillingMapper;
+import com.flf.mapper.ProjectBillingMapper;
+import com.flf.service.ChargeItemBillingService;
+
+public class ChargeItemBillingServiceImpl implements ChargeItemBillingService{
+	
+	private ChargeItemBillingMapper chargeItemBillingMapper;	
+
+	public ChargeItemBillingMapper getChargeItemBillingMapper() {
+		return chargeItemBillingMapper;
+	}
+
+	public void setChargeItemBillingMapper(
+			ChargeItemBillingMapper chargeItemBillingMapper) {
+		this.chargeItemBillingMapper = chargeItemBillingMapper;
+	}
+
+	
+	/**
+	 * 根据项目id查询详情
+	 */
+	@Override
+	public List<ChargeItemBilling> getChargeItemBillingbyProjectIdRes(String id) {
+		// TODO Auto-generated method stub
+		return chargeItemBillingMapper.getChargeItemBillingbyProjectId(id);
+	}
+
+	/**
+	 * 根据项目计费表id查询项目的一级收费项目详情
+	 */
+	@Override
+	public PageRestful  listPageChargeItemBillingListbyIdRes(
+			ChargeItemBilling chargeItemBilling) {
+		// TODO Auto-generated method stub
+		PageRestful pageRestful=new PageRestful();
+		List<ChargeItemBilling> chargeItem =chargeItemBillingMapper.listPageChargeItemBillingListbyId(chargeItemBilling);
+		chargeItem.add(0,null);
+		pageRestful.setChargeItemBillings(chargeItem);
+		pageRestful.setPage(chargeItemBilling.getPage());
+		return pageRestful;
+	}
+
+
+	@Override
+	public ChargeItemBilling selectIdsRes(ChargeItemBilling chargeItemBilling) {
+		// TODO Auto-generated method stub
+		ChargeItemBilling charge=chargeItemBillingMapper.selectIds(chargeItemBilling);
+		
+		return charge;		
+	}
+
+
+	@Override
+	public void insertChargeItemBillingRestful(
+			ChargeItemBilling chargeItemBilling) {
+		// TODO Auto-generated method stub
+		
+		chargeItemBillingMapper.insertChargeItemBilling(chargeItemBilling);
+	}
+
+
+	@Override
+	public void updateChargeItemBilling(ChargeItemBilling chargeItemBilling) {
+		// TODO Auto-generated method stub
+		chargeItemBilling.setBillingType((byte) 0);
+		chargeItemBillingMapper.updateChargeItemBilling(chargeItemBilling);
+	}
+	
+}

@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:aop="http://www.springframework.org/schema/aop" 
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+						http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.0.xsd
+						http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-2.0.xsd
+						http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd">
+	<import resource="ApplicationContext-service.xml"/>
+	<import resource="ApplicationContext-quartz.xml"/>
+	<import resource="cxfws-config.xml"/>
+	<import resource="wssec.xml"/>
+	<import resource="rests-config.xml"/>
+	
+	<bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+
+		<property name="driverClassName" value="com.mysql.jdbc.Driver"/>
+		
+		<!-- 本地版本数据库配置 -->
+		<property name="username" value="root"/>
+		<property name="password" value="abc123"/>
+		<property name="url" value="jdbc:mysql://127.0.0.1:3306/home_jiajia?Unicode=true&amp;characterEncoding=UTF-8" />
+		<!-- 107发布版本数据库配置 -->
+		<!-- <property name="username" value="root" />
+		<property name="password" value="root" />
+		<property name="url" value="jdbc:mysql://120.24.223.107:3306/home_jiajia?Unicode=true&amp;characterEncoding=UTF-8" /> -->
+		
+	</bean>
+	<bean id="dynamicDataSource" class="com.flf.dynamicdatasource.DynamicDataSource">
+		<property name="defaultTargetDataSource" ref="dataSource"></property>
+		<property name="targetDataSources">
+            <map></map>
+        </property>
+	</bean>
+	
+	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+		<property name="dataSource" ref="dynamicDataSource"/>
+		<property name="configLocation" value="classpath:mybatis/config.xml"/>
+	</bean>
+	<bean id="jdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate">
+        <property name="dataSource" ref="dynamicDataSource" />
+    </bean>
+	<bean id="sqlSession" class="org.mybatis.spring.SqlSessionTemplate">
+		<constructor-arg index="0" ref="sqlSessionFactory"></constructor-arg>
+	</bean>
+	
+	<!-- 扫描 basePackage下所有的接口，根据对应的mapper.xml为其生成代理类-->
+	<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+		<property name="basePackage" value="com.flf.mapper" />
+	</bean>
+	
+	<bean name="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">   
+    	<property name="dataSource" ref="dynamicDataSource"></property>
+ 	</bean>
+	
+	<!--  spring处理上传文件的 Bean Resolver对象-->
+	<bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+			<property name="defaultEncoding" value="UTF-8"></property>
+			<property name="maxUploadSize" value="-1"></property> <!-- 最大文件大小-1为无限制 -->
+			<property name="maxInMemorySize" value="10240"></property> <!-- 内存缓存大小 -->
+			<property name="uploadTempDir" value="/tmp/"></property><!-- 临时文件存放位置 -->
+	</bean>
+	
+	<tx:advice id="txAdvice" transaction-manager="transactionManager">
+		<tx:attributes>
+			<tx:method name="delete*" propagation="REQUIRED" read-only="false" 
+			           rollback-for="java.lang.Exception"/>
+			<tx:method name="insert*" propagation="REQUIRED" read-only="false" 
+			           rollback-for="java.lang.Exception" />
+			<tx:method name="update*" propagation="REQUIRED" read-only="false" 
+			           rollback-for="java.lang.Exception" />
+			<tx:method name="save*" propagation="REQUIRED" read-only="false" 
+			           rollback-for="java.lang.Exception" />
+			<tx:method name="*" propagation="REQUIRED" read-only="false"/>
+		</tx:attributes>
+	</tx:advice>
+	
+	<aop:config>
+		<aop:pointcut id="pc" expression="execution(* com.flf.service..*(..))" />
+		<aop:advisor pointcut-ref="pc" advice-ref="txAdvice" />
+	</aop:config>
+	
+	<bean id="freeMarker" class="org.springframework.ui.freemarker.FreeMarkerConfigurationFactoryBean">
+		<property name="templateLoaderPath" value="classpath:template"></property>
+		<property name="freemarkerSettings">
+			<props>
+				<prop key="default_encoding">UTF-8</prop>
+				<prop key="locale">zh_CN</prop>
+			</props>
+		</property>
+	</bean>
+	
+	<bean id="MailWithFreeMarker" class="com.flf.mail.MailWithFreeMarker">
+		<property name="confi" ref="freeMarker"></property>
+	</bean>
+</beans>

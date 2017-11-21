@@ -1,0 +1,24 @@
+package com.flf.service;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import com.flf.entity.BuildingStructureNew;
+import com.flf.entity.HouseNew;
+
+public class Test {
+	
+	
+
+	public static void main(String[] args) {
+
+		List<HouseNew> houseNews = new ArrayList<>();
+		List<BuildingStructureNew> bNews = new ArrayList<>();
+		
+		String building = "1332c354-772b-4439-a73e-bd08ec352f7d";
+		
+		
+		
+	}
+
+}

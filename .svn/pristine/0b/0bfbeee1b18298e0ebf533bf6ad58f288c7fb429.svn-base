@@ -1,0 +1,76 @@
+<!--
+作者：陶勇超
+日期：2015/5/19
+名称：人员主页服务请求
+JS路径： 'controllers/propertyService/staffHome/serviceRequest',
+修改人：刘洋
+修改内容：查询服务请求列表
+-->
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <style>
+        .current_ul li{width: 80px ;border:1px solid green}
+        .current_ul li{position: relative}
+        .current_ul li .card{display:none;position: absolute}
+        .current_ul li:hover .card{  display: inline-block;left:80px;top:0px;}
+        .changeBorder:hover .reqDetail{border:1px solid lightgray}
+    </style>
+</head>
+<body >
+<div  class="complaint_user_list">
+
+    <div class="row" style="padding-left: 15px;">
+    <!--添加服务请求图片-->
+    <div class="col-lg-4 col-md-4 col-sm-6">
+        <div class="program_panel">
+            <div class="program_panel_people_title">
+                <span class="panel_title_left">添加服务请求</span>
+            </div>
+            <div class="complaint_panel_info text-center">
+                <a ui-sref="index.propertyService.staffHome.newServiceRequest" class="changeBorder">
+                    <img src="images/staffHome/addCar.png" style="width: 100px;height: 100px" >
+                </a>
+            </div>
+            </div>
+        </div>
+    <!--添加服务请求图片 end-->
+        <!--请求信息-->
+        <div class="col-lg-4 col-md-4 col-sm-6">
+            <div class="program_panel">
+                <div class="program_panel_people_title">
+                    <span class="panel_title_left">请求信息</span>
+                <span class="panel_title_right">
+                     <span class="complaint1_panel_info_navigation">
+         					<ul>
+                                <li>业务办理<a href="#" class="dropdown-toggle btn-lg" data-toggle="dropdown" role="button" aria-expanded="false"><span class="glyphicon glyphicon-menu-down" aria-hidden="true"></span></a>
+                                    <ul>
+                                        <li class="program_panel_info_navigation_top">新建</li>
+                                        <li>合并</li>
+                                        <li class="program_panel_info_navigation_bottom">关闭</li>
+                                    </ul>
+                                </li>
+                            </ul>
+                     </span>
+                </span>
+                </div>
+                <a ui-sref="index.externalProfession.serviceRequestDatil.allWorkOrders" class="changeBorder">
+                    <div class="complaint_panel_info reqDetail">
+                    <div class="col-md-12">请求ID：{{vm.reqId}}</div>
+                    <div class="col-md-12">请求时间：{{vm.reqDate}}</div>
+                    <!--<div class="col-md-6">分类：{{vm.reqType}}</div>-->
+                    <!--<div class="col-md-6">服务类型：{{vm.serviceType}}</div>-->
+                    <!--<div class="col-md-6">客户ID：{{vm.reqId}}</div>-->
+                    <div class="col-md-6">请求来源：{{vm.source}}</div>
+                    <div class="col-md-6">客户姓名：{{vm.customerName}}</div>
+                    <div class="col-md-6">服务请求描述：{{vm.describe}}</div>
+                </div>
+                </a>
+            </div>
+        </div>
+        <!--请求信息 end-->
+    </div>
+</div>
+</body>
+</html>

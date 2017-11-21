@@ -1,0 +1,62 @@
+<!--
+    页面名称：【任务类型设置】
+    前端负责人：刘洋
+    js路径：js/controllers/internalProfession/taskSet.js
+    创建时间：2015/5/12
+    修改日期：
+-->
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>任务类型设置</title>
+    <link rel="stylesheet" href="css/propertyService.css">
+</head>
+<body>
+<div class="row">
+    <div class="complaint_user_list" style="margin-top: 15px;height: 530px;">
+        <!--内容-->
+            <div class="container-fluid text-center">
+                <!--任务类型列表-->
+                <div class="col-md-2" style="margin-top: 8px;border: 1px solid lightgray;height: 500px">
+                    <h5>任务类型列表</h5>
+                        <div style="padding-left:35px;border-top: 1px solid lightgray;margin-bottom: 30px;">
+                            <a ui-sref="index.internalProfession.taskSet.clean">
+                            <button class="btn btn-default col-md-9" style="margin-top: 30px;">清洁</button>
+                            </a>
+                            <a ui-sref="index.internalProfession.taskSet.gardens">
+                                <button class="btn btn-default col-md-9" style="margin-top:15px;">园林</button>
+                            </a>
+                            <a ui-sref="index.internalProfession.taskSet.repair">
+                                <button class="btn btn-default col-md-9" style="margin-top:15px;">维修</button>
+                            </a>
+                            <a ui-sref="index.internalProfession.taskSet.security">
+                                <button class="btn btn-default col-md-9" style="margin-top:15px;">保安</button>
+                            </a>
+                            <a ui-sref="index.internalProfession.taskSet.claims">
+                                <button class="btn btn-default col-md-9" style="margin-top:15px;">索赔</button>
+                            </a>
+                            <a ui-sref="index.internalProfession.taskSet.majorIssues">
+                                <button class="btn btn-default col-md-9" style="margin-top:15px;">重大事项</button>
+                            </a>
+
+                            <span class="glyphicon glyphicon-plus btn btn-lg col-md-9" aria-hidden="true" style="margin-top:100px;"></span>
+                        </div>
+                </div>
+                <!--任务类型列表 end-->
+                <!--工单类型-->
+                <div  class="col-md-10" style="margin-top: 8px;border: 1px solid lightgray;height: 500px;">
+                    <h5>工单类型</h5>
+                    <div style="border-top: 1px solid lightgray">
+                        <div class="row" style="padding:5px 10px 0">
+                            <div ui-view></div>
+                        </div>
+                        </div>
+                </div>
+                <!--工单类型 end-->
+            </div>
+        <!--内容 end-->
+    </div>
+</div>
+</body>
+</html>

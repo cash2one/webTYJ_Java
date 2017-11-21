@@ -1,0 +1,127 @@
+package com.flf.entity;
+
+import java.util.Date;
+
+import javax.xml.bind.annotation.XmlRootElement;
+@XmlRootElement(name = "Log") //日志表
+public class Log {
+	private String id;//日志id
+
+    private String relevanceId;//关联id
+
+    private String thing;//事情
+
+    private String service;//业务
+
+    private String staff;//操作人员
+
+    private String site;//地点
+
+    private String operation;//操作(新增、修改)
+
+    private Date time;//操作时间
+
+    private String table;//表名
+    
+    private String staffExecutor;//抄表人
+    
+    public String getStaffExecutor() {
+		return staffExecutor;
+	}
+
+	public void setStaffExecutor(String staffExecutor) {
+		this.staffExecutor = staffExecutor;
+	}
+
+	private String logTypeId; //日志类型id
+    
+    public String getLogTypeId() {
+		return logTypeId;
+	}
+
+	public void setLogTypeId(String logTypeId) {
+		this.logTypeId = logTypeId;
+	}
+
+	private Page page;
+
+    public Page getPage() {
+		return page;
+	}
+
+	public void setPage(Page page) {
+		this.page = page;
+	}
+
+	public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public String getRelevanceId() {
+        return relevanceId;
+    }
+
+    public void setRelevanceId(String relevanceId) {
+        this.relevanceId = relevanceId;
+    }
+
+    public String getThing() {
+        return thing;
+    }
+
+    public void setThing(String thing) {
+        this.thing = thing;
+    }
+
+    public String getService() {
+        return service;
+    }
+
+    public void setService(String service) {
+        this.service = service;
+    }
+
+    public String getStaff() {
+        return staff;
+    }
+
+    public void setStaff(String staff) {
+        this.staff = staff;
+    }
+
+    public String getSite() {
+        return site;
+    }
+
+    public void setSite(String site) {
+        this.site = site;
+    }
+
+    public String getOperation() {
+        return operation;
+    }
+
+    public void setOperation(String operation) {
+        this.operation = operation;
+    }
+
+    public Date getTime() {
+        return time;
+    }
+
+    public void setTime(Date time) {
+        this.time = time;
+    }
+
+    public String getTable() {
+        return table;
+    }
+
+    public void setTable(String table) {
+        this.table = table;
+    }
+}

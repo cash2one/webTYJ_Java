@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>部门质检模板新增和查看v3</title>
+</head>
+<body>
+<div class="row">
+    <div class="complaint_user_list" style="margin: 10px auto;">
+        <div class="row" style="margin-top: 10px">
+            <div class="col-md-2">
+                <img src="images/company/3506.png" style="width: 80px;height: 75px;margin-left: 30px">
+            </div>
+            <div class="col-md-10">
+                <div class="row">
+                    <div class="col-md-4">质检活动级别：部门质检</div>
+                    <div class="col-md-8">描述：已检查</div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="complaint_user">
+        <div class="complaint_user_info">
+            <div class="complaint_user_info_navigation">
+                <a ui-sref="index.externalProfession.departmentQualityTemplet.allActivity">全部活动</a>
+                <a ui-sref="index.externalProfession.departmentQualityTemplet.allTemplet">全部模板</a>
+            </div>
+        </div>
+        <div class="row" style="padding:5px 10px 0">
+            <div ui-view></div>
+        </div>
+        <div class="clear"></div>
+    </div>
+
+
+</div>
+</body>
+</html>

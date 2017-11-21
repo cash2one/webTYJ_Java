@@ -1,0 +1,189 @@
+package com.flf.service;
+
+import java.util.List;
+import javax.jws.WebService;
+import javax.ws.rs.Consumes;
+import javax.ws.rs.GET;
+import javax.ws.rs.POST;
+import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
+import javax.ws.rs.Produces;
+import javax.ws.rs.core.MediaType;
+import com.flf.entity.BuildingStructureNew;
+import com.flf.entity.PageRestful;
+import com.flf.entity.Product;
+import com.flf.entity.StallNew;
+import com.flf.request.Info;
+
+/**
+ * 产品模块后台接口
+ * @author wangzhou
+ *
+ */
+@WebService
+@Path("/Product")
+public interface ProductService {
+
+	/**
+	 * 新增产品
+	 * @author xiaocong
+	 * @date 下午5:00:05
+	 * @Description:TODO
+	 * @param product
+	 * @updateby xiaocong
+	 */
+	@POST
+	@Path("/addProduct")
+	@Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+	void addProduct(Product product);
+	
+	/**
+	 * 修改产品信息
+	 * @author xiaocong
+	 * @date 下午5:00:54
+	 * @Description:TODO
+	 * @param product
+	 * @updateby xiaocong
+	 */
+	@POST
+	@Path("/updateProduct")
+	@Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+	void updateProduct(Product product);
+	
+	/**
+	 * 根据车位ID删除并修改车位信息表的车位状态
+	 * @param stallId 车位ID
+	 * @param stallType 车位状态
+	 * @return
+	 */
+	@POST
+	@Path("/deleteProductByStallId/{stallId}/{stallType}")
+	@Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+	void deleteProductByStallId(@PathParam("stallId") String stallId,@PathParam("stallType") String stallType);
+	
+	/**
+	 * 根据产品id删除产品信息
+	 * @author xiaocong
+	 * @date 下午5:01:17
+	 * @Description:TODO
+	 * @param productId
+	 * @updateby xiaocong
+	 */
+	@POST
+	@Path("/deleteProductById/{productId}")
+	@Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+	void deleteProduct(@PathParam("productId") String productId);
+	/**
+	 * 分页查询产品
+	 * @param product
+	 * @return
+	 */
+	@POST
+	@Path("/listPageProduct")
+	@Produces(MediaType.APPLICATION_JSON)
+	PageRestful listPageProduct(Product product);
+	
+	/**
+	 * 根据产品id查询对象及关联数据
+	 * @param productId
+	 * @return
+	 */
+	@POST
+	@Path("/getProductByProductId/{productId}")
+	@Produces(MediaType.APPLICATION_JSON)
+	Product getProductByProductId(@PathParam("productId") String productId);
+	
+	/**
+	 * 创建by夏平2015-10-21
+	 * 查询项目关联车位信息
+	 * @param Stall
+	 */
+	@POST
+	@Path("/listPageStallP")
+	@Produces(MediaType.APPLICATION_JSON)
+	PageRestful listPageStallP(StallNew stallNew);
+	
+	/**
+	 * 修改产品状态为失效 wangzhou
+	 * @param productId
+	 */
+	@GET
+	@Path("/changeState/{productids}")
+	@Consumes({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
+	void changeState(@PathParam("productids") String productids);
+	
+	/**
+	 * 获取最新门禁卡
+	 * @return
+	 */
+	@GET
+	@Path("/getProductByType/{productType}")
+	@Produces(MediaType.APPLICATION_JSON)
+	Product getProductByType(@PathParam("productType") String productType);
+	
+	@POST
+	@Path("/checkProductName")
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+	Info checkProductName(Product product);
+	
+	@POST
+	@Path("/updateOrInsertProduct")
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+	void updateOrInsertProduct(Product product);
+	/**
+	 * @author hanyupeng
+	 * @date 2016年7月12日15:58:46
+	 * 读取车位
+	 */
+	@POST
+	@Path("/getBuildingListByType")
+	@Produces(MediaType.APPLICATION_JSON)
+	List<BuildingStructureNew> getBuildingListByType();
+	
+	/**
+	 * 获取产品通过分类
+	 * @param Type
+	 * @return
+	 */
+	@GET
+	@Path("/getProductListByType/{Type}")
+	@Produces(MediaType.APPLICATION_JSON)
+	List<Product> getProductListByType(@PathParam("Type") String Type);
+	/**
+	 * 获取最新的产品编号
+	 * */
+	@POST
+	@Path("/getCode")
+	@Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+	String getCode();
+	
+	/**
+	 * 根据产品类型过去产品信息
+	 * @author yangshengquan
+	 * @date 2016年7月18日
+	 * @return
+	 */
+	@GET
+	@Path("/listgetProductByType/{productType}")
+	@Produces(MediaType.APPLICATION_JSON)
+	List<Product> listgetProductByType(@PathParam("productType") String productType);
+	
+	/**
+	 * 停车卡产品id查询产品信息
+	 * @author yangshengquan
+	 * @date 2016年7月19日
+	 * @return
+	 */
+	@GET
+	@Path("/getProductById1/{productId}")
+	@Produces(MediaType.APPLICATION_JSON)
+	Product getProductById1(@PathParam("productId") String productId);
+	
+	@GET
+	@Path("/getProductFivById/{productId}")
+	@Produces(MediaType.APPLICATION_JSON)
+	Product getProductFivById(@PathParam("productId") String productId);
+	
+}

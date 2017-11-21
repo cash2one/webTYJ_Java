@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.flf.mapper.MeterMapper" >
+  <resultMap id="BaseResultMap" type="com.flf.entity.WaterMeter" >
+    <id column="water_meter_id" property="waterMeterId" jdbcType="VARCHAR" />
+    <result column="assets_id" property="assetsId" jdbcType="VARCHAR" />
+    <result column="water_meter_num" property="waterMeterNum" jdbcType="VARCHAR" />
+    <result column="state" property="state" jdbcType="TINYINT" />
+    <result column="ratio" property="ratio" jdbcType="DOUBLE" />
+    <result column="max" property="max" jdbcType="DOUBLE" />
+    <result column="min" property="min" jdbcType="DOUBLE" />
+    <result column="property_number" property="propertyNumber" jdbcType="VARCHAR" />
+    <result column="property_specification" property="propertySpecification" jdbcType="VARCHAR" />
+    <result column="brand" property="brand" jdbcType="VARCHAR" />
+    <result column="whether_repeated_use" property="whetherRepeatedUse" jdbcType="INTEGER" />
+	<result column="operator" property="operator" jdbcType="VARCHAR" />
+	<result column="building_structure_id" property="buildingStructureId" jdbcType="VARCHAR" />
+	<result column="water_meter_records_id" property="waterMeterRecordsId" jdbcType="VARCHAR" />
+		<result column="full_name" property="fullName" jdbcType="VARCHAR" />
+		<result column="public_water" property="publicWater" jdbcType="VARCHAR"/>
+  </resultMap>
+   <resultMap type="WaterMeter" id="resultWaterMeterMap" extends="BaseResultMap">
+       <association property="property" column="assets_id" select="com.flf.mapper.PropertyMapper.selectByPrimaryKey" ></association>
+      <association property="waterMeterRecords" column="water_meter_records_id" select="com.flf.mapper.MeterRecordsMapper.getWaterMeterRecordsbyIds" ></association>
+  </resultMap>
+<!--   分页查询水表信息 -->
+  <select id="listPageWaterMeter" parameterType="WaterMeter" resultMap="BaseResultMap">
+      select a.*,b.property_number,b.property_specification,b.brand,tw.building_structure_id,tw.water_meter_records_id,tb.full_name from t_water_meter a
+      left join t_property b on  a.assets_id=b.property_id
+      left join t_water_meter_records tw on a.water_meter_id=tw.water_meter_id
+      left join tc_building_structure tb on tw.building_structure_id=tb.id
+      where 1=1
+      <if test="waterMeterNum !=null and waterMeterNum !=''">
+          and a.water_meter_num  LIKE CONCAT('%',#{waterMeterNum},'%')
+      </if>
+      <if test="state != null and state !='' ">
+          and a.state = #{state}
+      </if>
+      group by a.water_meter_id
+  </select>
+  
+  <select id="getWaterMeterByBuildingStructureId" parameterType="WaterMeter" resultMap="BaseResultMap">
+  	SELECT a.*,bs.id as building_structure_id,bs.full_name
+  	FROM t_water_meter a
+      LEFT JOIN tc_component_property cp ON cp.property_id = a.assets_id
+      LEFT JOIN tc_component_structure cs ON cs.component_property_id = cp.component_id
+      LEFT JOIN tc_building_structure  bs ON bs.id = cs.building_structure_id
+      LEFT JOIN tc_person_building pb ON pb.building_structure_id = bs.id
+      WHERE a.state = '1' AND bs.id = #{buildingStructureId}
+      <if test="waterMeterNum">
+      	a.water_meter_num = like CONCAT('%',#{waterMeterNum},'%')
+      </if>
+      <if test="fullName">
+      	bs.full_name like CONCAT('%',#{fullName},'%')
+      </if>
+  </select>
+  
+<!--  查询所有水表信息 -->
+  <select id="listAllWaterMeter" resultMap="BaseResultMap">
+      select * from t_water_meter 
+  </select>
+  
+<!--   根据id水表信息 -->
+  <select id="getWaterMeterbyId" parameterType="String" resultMap="resultWaterMeterMap">
+      select * from t_water_meter where water_meter_id=#{waterMeterId}
+  </select>
+  
+  <!--   根据水表id查询水表信息 和使用记录-->
+  <select id="getWaterMeterbyWaterMeterId" parameterType="String" resultMap="resultWaterMeterMap">
+      select a.*,b.full_name,wer.water_meter_records_id ,wer.public_water from t_water_meter a
+      left join t_water_meter_records wer on a.water_meter_id=wer.water_meter_id
+       left join tc_building_structure b on wer.building_structure_id=b.id
+      where a.water_meter_id=#{waterMeterId}
+  </select>
+  
+  <!--   根据水表编号查询水表信息是否存在 -->
+  <select id="getWaterMeterbyWaterMeterNum" parameterType="String" resultMap="BaseResultMap">
+      select * from t_water_meter where water_meter_num=#{0}
+  </select>
+  
+  <!--   根据资产编号查询水表信息是否存在 -->
+  <select id="getWaterMeterbyPropertyNumber" parameterType="String" resultMap="BaseResultMap">
+      select * from t_property where property_number=#{0}
+  </select>
+  
+  <!--   根据水表编号查询水表信息 -->
+  <select id="getWaterMeterbyParentNum" parameterType="String" resultMap="BaseResultMap">
+      select * from t_water_meter where water_meter_num=#{0}
+  </select>
+  
+  <!--   根据水表使用记录id查询水表信息 -->
+  <select id="getWaterMeterbywaterMeterRecordsId" parameterType="String" resultMap="BaseResultMap">
+      select * from t_water_meter where water_meter_id in (select water_meter_id from t_water_meter_records where water_meter_records_id = #{0})
+  </select>
+  
+<!--   删除水表信息 -->
+  <delete id="deleteWaterMeter" parameterType="String" >
+      delete from t_water_meter where water_meter_id=#{0}
+  </delete>
+  
+<!--   新增水表信息 -->
+  <insert id="insertWaterMeter" parameterType="com.flf.entity.WaterMeter" >
+    insert into t_water_meter (water_meter_id, assets_id, water_meter_num, 
+       state, ratio, 
+      max, min,whether_repeated_use)
+    values (#{waterMeterId}, #{assetsId,jdbcType=VARCHAR}, #{waterMeterNum,jdbcType=VARCHAR}, 
+       #{state,jdbcType=TINYINT}, #{ratio,jdbcType=DOUBLE}, 
+      #{max,jdbcType=DOUBLE},  
+      #{min,jdbcType=DOUBLE},#{whetherRepeatedUse,jdbcType=INTEGER})
+  </insert>
+ 
+<!--   修改水表信息 -->
+  <update id="updateWaterMeter" parameterType="com.flf.entity.WaterMeter" >
+	update t_water_meter
+	set
+	assets_id = #{assetsId,jdbcType=VARCHAR},
+	water_meter_num = #{waterMeterNum,jdbcType=VARCHAR},
+	ratio = #{ratio,jdbcType=DOUBLE},
+	max = #{max,jdbcType=DOUBLE},
+	min = #{min,jdbcType=DOUBLE},
+	state=#{state,jdbcType=INTEGER},
+	whether_repeated_use = #{whetherRepeatedUse,jdbcType=INTEGER},
+	operator = #{operator,jdbcType=VARCHAR}
+	where water_meter_id = #{waterMeterId,jdbcType=VARCHAR}
+  </update>
+  
+  <select id="getWaterMeterAndFullNameByParentId" parameterType="java.lang.String" resultMap="BaseResultMap">
+	select b.water_meter_records_id,a.water_meter_num,c.full_name,c.id from t_water_meter a
+	join t_water_meter_records b on a.water_meter_id=b.water_meter_id
+	join tc_building_structure c on b.building_structure_id=c.id
+	where c.parent_id=#{0} and a.state='2'
+  </select>
+  
+  <select id="getWaterMeterAndFullNameByMeterReadingProgramId" parameterType="java.lang.String" resultMap="BaseResultMap">
+  	select b.water_meter_records_id,a.water_meter_num,c.full_name from t_water_meter a
+	join t_water_meter_records b on a.water_meter_id=b.water_meter_id
+	join tc_building_structure c on b.building_structure_id=c.id
+	join t_meter_reading_data d on b.water_meter_records_id=d.water_meter_record_id
+	where d.meter_reading_program_id=#{0}
+  </select>
+</mapper>

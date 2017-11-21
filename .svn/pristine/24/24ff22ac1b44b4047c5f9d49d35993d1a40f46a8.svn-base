@@ -1,0 +1,199 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.flf.mapper.MeterReadingResultsMapper" >
+  <resultMap id="BaseResultMap" type="com.flf.entity.MeterReadingResults" >
+    <id column="meter_executive_id" property="meterExecutiveId" jdbcType="VARCHAR" />
+    <result column="meter_reading_program_id" property="meterReadingProgramId" jdbcType="VARCHAR" />
+    <result column="meter_executive_time" property="meterExecutiveTime" jdbcType="DATE" />
+    <result column="meter_reading_num" property="meterReadingNum" jdbcType="INTEGER" />
+    <result column="unfinished_num" property="unfinishedNum" jdbcType="INTEGER" />
+    <result column="meter_reading_warning_num" property="meterReadingWarningNum" jdbcType="INTEGER" />
+    <result column="meter_reading_error_num" property="meterReadingErrorNum" jdbcType="INTEGER" />
+    <result column="no_meter_reading_num" property="noMeterReadingNum" jdbcType="INTEGER" />
+    <result column="review_meter_num" property="reviewMeterNum" jdbcType="INTEGER" />
+    <result column="meter_reading_normal_num" property="meterReadingNormalNum" jdbcType="INTEGER" />
+    <result column="current_executor" property="currentExecutor" jdbcType="VARCHAR" />
+    <result column="whether_upload_success" property="whetherUploadSuccess" jdbcType="VARCHAR" />
+    
+    <result column="project_name" property="projectName" jdbcType="VARCHAR"/>
+  </resultMap>
+  
+  <sql id="Base_Column_List" >
+    meter_executive_id, meter_reading_program_id, meter_executive_time, meter_reading_num, 
+    unfinished_num, meter_reading_warning_num, meter_reading_error_num, no_meter_reading_num, 
+    review_meter_num, meter_reading_normal_num, current_executor, whether_upload_success
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_meter_reading_results
+    where meter_executive_id = #{meterExecutiveId,jdbcType=VARCHAR}
+  </select>
+  <!--   查询所有抄表结果信息 -->
+  <select id="listAllMeterReadingResults" resultMap="BaseResultMap">
+        select m.*,n.project_name from t_meter_reading_results  m 
+       inner join t_meter_reading_program n on n.meter_reading_program_id=m.meter_reading_program_id
+      inner join t_project p on n.project_id= p.project_id
+      where 1=1  
+     
+  </select>
+    <!--   分页查询所有抄表结果信息 -->
+  <select id="listPageMeterReadingResults" parameterType="SearchMeter" resultMap="BaseResultMap">
+        select m.*,n.project_name from t_meter_reading_results  m 
+       inner join t_meter_reading_program n on n.meter_reading_program_id=m.meter_reading_program_id
+  <!--     inner join t_project p on n.project_id= p.project_id -->
+      where 1=1  
+         <if test="projectName != null and projectName!='' "  >
+          and n.project_name like CONCAT('%',#{projectName},'%')
+      </if>
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from t_meter_reading_results
+    where meter_executive_id = #{meterExecutiveId,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.flf.entity.MeterReadingResults" >
+    insert into t_meter_reading_results (meter_executive_id, meter_reading_program_id, 
+      meter_executive_time, meter_reading_num, unfinished_num, 
+      meter_reading_warning_num, meter_reading_error_num, 
+      no_meter_reading_num, review_meter_num, meter_reading_normal_num, 
+      current_executor, whether_upload_success)
+    values (#{meterExecutiveId,jdbcType=VARCHAR}, #{meterReadingProgramId,jdbcType=VARCHAR}, 
+      #{meterExecutiveTime,jdbcType=DATE}, #{meterReadingNum,jdbcType=INTEGER}, #{unfinishedNum,jdbcType=INTEGER}, 
+      #{meterReadingWarningNum,jdbcType=INTEGER}, #{meterReadingErrorNum,jdbcType=INTEGER}, 
+      #{noMeterReadingNum,jdbcType=INTEGER}, #{reviewMeterNum,jdbcType=INTEGER}, #{meterReadingNormalNum,jdbcType=INTEGER}, 
+      #{currentExecutor,jdbcType=VARCHAR}, #{whetherUploadSuccess,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.flf.entity.MeterReadingResults" >
+    insert into t_meter_reading_results
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="meterExecutiveId != null" >
+        meter_executive_id,
+      </if>
+      <if test="meterReadingProgramId != null" >
+        meter_reading_program_id,
+      </if>
+      <if test="meterExecutiveTime != null" >
+        meter_executive_time,
+      </if>
+      <if test="meterReadingNum != null" >
+        meter_reading_num,
+      </if>
+      <if test="unfinishedNum != null" >
+        unfinished_num,
+      </if>
+      <if test="meterReadingWarningNum != null" >
+        meter_reading_warning_num,
+      </if>
+      <if test="meterReadingErrorNum != null" >
+        meter_reading_error_num,
+      </if>
+      <if test="noMeterReadingNum != null" >
+        no_meter_reading_num,
+      </if>
+      <if test="reviewMeterNum != null" >
+        review_meter_num,
+      </if>
+      <if test="meterReadingNormalNum != null" >
+        meter_reading_normal_num,
+      </if>
+      <if test="currentExecutor != null" >
+        current_executor,
+      </if>
+      <if test="whetherUploadSuccess != null" >
+        whether_upload_success,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="meterExecutiveId != null" >
+        #{meterExecutiveId,jdbcType=VARCHAR},
+      </if>
+      <if test="meterReadingProgramId != null" >
+        #{meterReadingProgramId,jdbcType=VARCHAR},
+      </if>
+      <if test="meterExecutiveTime != null" >
+        #{meterExecutiveTime,jdbcType=DATE},
+      </if>
+      <if test="meterReadingNum != null" >
+        #{meterReadingNum,jdbcType=INTEGER},
+      </if>
+      <if test="unfinishedNum != null" >
+        #{unfinishedNum,jdbcType=INTEGER},
+      </if>
+      <if test="meterReadingWarningNum != null" >
+        #{meterReadingWarningNum,jdbcType=INTEGER},
+      </if>
+      <if test="meterReadingErrorNum != null" >
+        #{meterReadingErrorNum,jdbcType=INTEGER},
+      </if>
+      <if test="noMeterReadingNum != null" >
+        #{noMeterReadingNum,jdbcType=INTEGER},
+      </if>
+      <if test="reviewMeterNum != null" >
+        #{reviewMeterNum,jdbcType=INTEGER},
+      </if>
+      <if test="meterReadingNormalNum != null" >
+        #{meterReadingNormalNum,jdbcType=INTEGER},
+      </if>
+      <if test="currentExecutor != null" >
+        #{currentExecutor,jdbcType=VARCHAR},
+      </if>
+      <if test="whetherUploadSuccess != null" >
+        #{whetherUploadSuccess,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.flf.entity.MeterReadingResults" >
+    update t_meter_reading_results
+    <set >
+      <if test="meterReadingProgramId != null" >
+        meter_reading_program_id = #{meterReadingProgramId,jdbcType=VARCHAR},
+      </if>
+      <if test="meterExecutiveTime != null" >
+        meter_executive_time = #{meterExecutiveTime,jdbcType=DATE},
+      </if>
+      <if test="meterReadingNum != null" >
+        meter_reading_num = #{meterReadingNum,jdbcType=INTEGER},
+      </if>
+      <if test="unfinishedNum != null" >
+        unfinished_num = #{unfinishedNum,jdbcType=INTEGER},
+      </if>
+      <if test="meterReadingWarningNum != null" >
+        meter_reading_warning_num = #{meterReadingWarningNum,jdbcType=INTEGER},
+      </if>
+      <if test="meterReadingErrorNum != null" >
+        meter_reading_error_num = #{meterReadingErrorNum,jdbcType=INTEGER},
+      </if>
+      <if test="noMeterReadingNum != null" >
+        no_meter_reading_num = #{noMeterReadingNum,jdbcType=INTEGER},
+      </if>
+      <if test="reviewMeterNum != null" >
+        review_meter_num = #{reviewMeterNum,jdbcType=INTEGER},
+      </if>
+      <if test="meterReadingNormalNum != null" >
+        meter_reading_normal_num = #{meterReadingNormalNum,jdbcType=INTEGER},
+      </if>
+      <if test="currentExecutor != null" >
+        current_executor = #{currentExecutor,jdbcType=VARCHAR},
+      </if>
+      <if test="whetherUploadSuccess != null" >
+        whether_upload_success = #{whetherUploadSuccess,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where meter_executive_id = #{meterExecutiveId,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.flf.entity.MeterReadingResults" >
+    update t_meter_reading_results
+    set meter_reading_program_id = #{meterReadingProgramId,jdbcType=VARCHAR},
+      meter_executive_time = #{meterExecutiveTime,jdbcType=DATE},
+      meter_reading_num = #{meterReadingNum,jdbcType=INTEGER},
+      unfinished_num = #{unfinishedNum,jdbcType=INTEGER},
+      meter_reading_warning_num = #{meterReadingWarningNum,jdbcType=INTEGER},
+      meter_reading_error_num = #{meterReadingErrorNum,jdbcType=INTEGER},
+      no_meter_reading_num = #{noMeterReadingNum,jdbcType=INTEGER},
+      review_meter_num = #{reviewMeterNum,jdbcType=INTEGER},
+      meter_reading_normal_num = #{meterReadingNormalNum,jdbcType=INTEGER},
+      current_executor = #{currentExecutor,jdbcType=VARCHAR},
+      whether_upload_success = #{whetherUploadSuccess,jdbcType=VARCHAR}
+    where meter_executive_id = #{meterExecutiveId,jdbcType=VARCHAR}
+  </update>
+</mapper>

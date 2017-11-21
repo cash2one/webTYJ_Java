@@ -1,0 +1,28 @@
+<!--创建人：王志刚-
+页面名称：物业服务人员主页租赁页面
+js路径: 'controllers/propertyService/staffHome/lease'-->
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>物业服务人员信息里的租赁</title>
+</head>
+<body ng-controller="leaseCtrl">
+<div class="complaint_user_list ">
+    <!--tab-->
+    <div style="padding:5px 10px 0">
+        <div class="complaint_user_info_navigation">
+            <a class="btn" ui-sref="index.propertyService.staffHome.lease.leaseAdd">新增租赁信息</a>
+            <a class="btn" ui-sref="index.propertyService.staffHome.lease.leaseHistory">历史记录</a>
+        </div>
+    </div>
+    <!--tab end-->
+
+    <!--模板-->
+    <div class="row" style="padding:5px 10px 0">
+        <div ui-view></div>
+    </div>
+    <!--模板 end-->
+</div>
+</body>
+</html>

@@ -1,0 +1,33 @@
+<!--
+    页面名称：【物业服务】人员主页——放行条
+    前端负责人：刘洋
+    js路径：js/controllers/propertyService/staffHome/releasePass.js
+    创建时间：2015/5/13
+    修改日期：2015/5/28
+-->
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>放行条</title>
+</head>
+<body>
+<div class="complaint_user_list ">
+    <!--导航-->
+    <div style="padding:5px 10px 0">
+        <div class="complaint_user_info_navigation">
+            <a class="btn" ui-sref="index.propertyService.staffHome.releasePass.addReleasePass">新增放行条</a>
+            <a class="btn" ui-sref="index.propertyService.staffHome.releasePass.addCompanyPass">新增企业放行条</a>
+            <a class="btn" ui-sref="index.propertyService.staffHome.releasePass.historicRecords">历史记录</a>
+        </div>
+        <div class="clear"></div>
+    </div>
+    <!--导航 end-->
+    <!--模板-->
+    <div class="row" style="padding:5px 10px 0">
+        <div ui-view></div>
+    </div>
+    <!--模板 end-->
+</div>
+</body>
+</html>

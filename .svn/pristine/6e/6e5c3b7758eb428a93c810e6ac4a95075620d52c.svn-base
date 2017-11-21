@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>工作台工单</title>
+</head>
+<body ng-controller="taskCtrl">
+
+<div class="row" style="padding:20px 30px 0">
+    <!--右侧面板1-->
+    <div class="table_list">
+        <h4 style="text-align: center"><strong>工单</strong></h4>
+        <div class="search_style"><form>
+            <input type="text"   class="search_style_input"  placeholder="请输入搜索条件" />
+            <button type="submit" class="search_style_button">查找</button>
+        </form>
+        </div>
+        <div class="button_group">
+            <a  data-toggle="modal" data-target="#myModal_service" class="btn">增加</a>
+            <div class="modal fade" id="myModal_service" tabindex="-1" role="dialog"
+                 aria-labelledby="myModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content" style="width: 700px">
+                        <div class="modal-header">
+                            <button type="button" class="close"
+                                    data-dismiss="modal" aria-hidden="true">
+                                &times;
+                            </button>
+                            <p>增加工单</p>
+                        </div>
+
+                        <div class="modal-body"style="line-height:40px;">
+                            <div>
+                                <form>
+                                    <table class="text-center" style="margin: 0px auto;">
+
+                                        <tr>
+                                            <td  width="100px;">催款编号</td>
+                                            <td><input type="text" class="form-control input-sm"/></td>
+                                        </tr>
+                                        <tr>
+                                            <td width="100px;">催款类型</td>
+                                            <td><select class="btn-sm" style="width: 150px">
+                                                <option value="">所有</option>
+                                                <option value="">一般业主</option>
+                                                <option value="">重要业主</option>
+                                                <option value="">VIP业主</option>
+
+                                            </select></td>
+                                        </tr>
+
+                                        <tr>
+                                            <td width="100px;">房屋编号</td>
+                                            <td><input type="text" class="form-control input-sm"/></td>
+                                        </tr>
+                                        <tr>
+                                            <td width="100px;">业主姓名</td>
+                                            <td><input type="text" class="form-control input-sm"/></td>
+                                        </tr>
+                                        <tr>
+                                            <td><span>业主类型</span></td>
+                                            <td><select class="btn-sm" style="width: 150px">
+                                                <option value="">所有</option>
+                                                <option value="">一般业主</option>
+                                                <option value="">重要业主</option>
+                                                <option value="">VIP业主</option>
+
+                                            </select></td>
+                                        </tr>
+                                        <tr>
+                                            <td width="100px;">联系电话</td>
+                                            <td><input type="text" class="form-control input-sm"/></td>
+                                        </tr>
+                                        <tr>
+                                            <td width="100px;">催款超时</td>
+                                            <td><input type="text" class="form-control input-sm"/></td>
+                                        </tr>
+                                        <tr>
+                                            <td width="100px;">账单数量</td>
+                                            <td><input type="text" class="form-control input-sm"/></td>
+                                        </tr>
+                                        <tr>
+                                            <td width="100px;">催款总金额</td>
+                                            <td><input type="text" class="form-control input-sm"/></td>
+                                        </tr>
+
+                                    </table>
+                                </form>
+                            </div>
+                        </div>
+
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default btn-sm" aria-label="Left Align" data-dismiss="modal">
+                                <span class="glyphicon glyphicon-remove" aria-hidden="true">关闭</span>
+                            </button>
+                            <button type="button" class="btn btn-sm btn-default">
+                                <span class="glyphicon glyphicon-ok"></span>提交
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <a href="#" class="delete">删除</a>
+
+        </div>
+        <table width="100%" border="0" cellpadding="0" cellspacing="0" class="table_style">
+            <tr>
+                <td width="50" align="center" valign="middle" class="table_style_toptd">选项</td>
+                <td align="center" valign="middle" class="table_style_toptd">催款编号</td>
+                <<td width="70" align="center" valign="middle" class="table_style_toptd">催款类型 <select class="btn-xs">
+                <option value="">所有</option>
+                <option value="">个人</option>
+                <option value="">企业</option>
+                <option value="">合同</option></select></td>
+                <td align="center" valign="middle" class="table_style_toptd">房屋编号</td>
+                <td align="center" valign="middle" class="table_style_toptd">业主姓名</td>
+                <td align="center" valign="middle" class="table_style_toptd">联系电话</td>
+                <td align="center" valign="middle" class="table_style_toptd">催款超时</td>
+                <td align="center" valign="middle" class="table_style_toptd">账单数量</td>
+                <td align="center" valign="middle" class="table_style_toptd">催款总金额</td>
+                <td width="50" align="center" valign="middle" class="table_style_toptd">操作</td>
+            </tr>
+            <tr>
+                <td width="50" align="center" valign="middle"><input type="checkbox" name="checkbox2" id="checkbox2"></td>
+                <td align="center" valign="middle">1-142692951</td>
+                <td align="center" valign="middle">个人</td>
+                <td align="center" valign="middle">1426921</td>
+                <td align="center" valign="middle">D001</td>
+                <td align="center" valign="middle">15322334511</td>
+                <td align="center" valign="middle">暂未</td>
+                <td align="center" valign="middle">2</td>
+                <td align="center" valign="middle">-300</td>
+                <td width="50" align="center" valign="middle">
+                    <a  data-toggle="modal" data-target="#myModal_VIP"
+                        class="btn">修改</a>
+                    <div class="modal fade" id="myModal_VIP" tabindex="-1" role="dialog"
+                         aria-labelledby="myModalLabel" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content" style="width: 700px">
+                                <div class="modal-header">
+                                    <button type="button" class="close"
+                                            data-dismiss="modal" aria-hidden="true">
+                                        &times;
+                                    </button>
+                                    <p>修改工单</p>
+                                </div>
+
+                                <div class="modal-body"style="line-height:40px;">
+                                    <div>
+                                        <form>
+                                            <table class="text-center" style="margin: 0px auto;">
+
+                                                <tr>
+                                                    <td  width="100px;">催款编号</td>
+                                                    <td><input type="text" class="form-control input-sm" placeholder="工单编号"/></td>
+                                                </tr>
+                                                <tr>
+                                                    <td width="100px;">催款类型</td>
+                                                    <td><input type="text" class="form-control input-sm" placeholder="优先级"/></td>
+                                                </tr>
+
+                                                <tr>
+                                                    <td width="100px;">房屋编号</td>
+                                                    <td><input type="text" class="form-control input-sm" placeholder="房屋编号"/></td>
+                                                </tr>
+                                                <tr>
+                                                    <td width="100px;">业主姓名</td>
+                                                    <td><input type="text" class="form-control input-sm" placeholder="业主姓名"/></td>
+                                                </tr>
+                                                <tr>
+                                                    <td width="100px;">联系电话</td>
+                                                    <td><input type="text" class="form-control input-sm" placeholder="联系电话"/></td>
+                                                </tr>
+                                                <tr>
+                                                    <td width="100px;">催款超时</td>
+                                                    <td><input type="text" class="form-control input-sm" placeholder="一级分类"/></td>
+                                                </tr>
+                                                <tr>
+                                                    <td width="100px;">账单数量</td>
+                                                    <td><input type="text" class="form-control input-sm" placeholder="二级分类"/></td>
+                                                </tr>
+                                                <tr>
+                                                    <td width="100px;">催款总金额</td>
+                                                    <td><input type="text" class="form-control input-sm" placeholder="三级分类"/></td>
+                                                </tr>
+                                            </table>
+                                        </form>
+                                    </div>
+                                </div>
+
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-default btn-sm" aria-label="Left Align" data-dismiss="modal">
+                                        <span class="glyphicon glyphicon-remove" aria-hidden="true">关闭</span>
+                                    </button>
+                                    <button type="button" class="btn btn-sm btn-default">
+                                        <span class="glyphicon glyphicon-ok"></span>提交
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td width="50" align="center" valign="middle"><input type="checkbox" name="checkbox" id="checkbox"></td>
+                <td align="center" valign="middle">1-23456789</td>
+                <td align="center" valign="middle">个人</td>
+                <td align="center" valign="middle">1426921</td>
+                <td align="center" valign="middle">D001</td>
+                <td align="center" valign="middle">15322334511</td>
+                <td align="center" valign="middle">暂未</td>
+                <td align="center" valign="middle">2</td>
+                <td align="center" valign="middle">-300</td>
+                <td width="50" align="center" valign="middle"><a href="#">修改</a></td>
+            </tr>
+            <tr>
+                <td width="50" align="center" valign="middle"><input type="checkbox" name="checkbox4" id="checkbox4"></td>
+                <td align="center" valign="middle">1-23456789</td>
+                <td align="center" valign="middle">个人</td>
+                <td align="center" valign="middle">1426921</td>
+                <td align="center" valign="middle">D001</td>
+                <td align="center" valign="middle">15322334511</td>
+                <td align="center" valign="middle">暂未</td>
+                <td align="center" valign="middle">2</td>
+                <td align="center" valign="middle">-300</td>
+                <td width="50" align="center" valign="middle"><a href="#">修改</a></td>
+            </tr>
+            <tr>
+                <td width="50" align="center" valign="middle"><input type="checkbox" name="checkbox5" id="checkbox5"></td>
+                <td align="center" valign="middle">1-23456789</td>
+                <td align="center" valign="middle">个人</td>
+                <td align="center" valign="middle">1426921</td>
+                <td align="center" valign="middle">D001</td>
+                <td align="center" valign="middle">15322334511</td>
+                <td align="center" valign="middle">暂未</td>
+                <td align="center" valign="middle">2</td>
+                <td align="center" valign="middle">-300</td>
+                <td width="50" align="center" valign="middle"><a href="#">修改</a></td>
+            </tr>
+            <tr>
+                <td width="50" align="center" valign="middle"><input type="checkbox" name="checkbox6" id="checkbox6"></td>
+                <td align="center" valign="middle">1-23456789</td>
+                <td align="center" valign="middle">个人</td>
+                <td align="center" valign="middle">1426921</td>
+                <td align="center" valign="middle">D001</td>
+                <td align="center" valign="middle">15322334511</td>
+                <td align="center" valign="middle">暂未</td>
+                <td align="center" valign="middle">2</td>
+                <td align="center" valign="middle">-300</td>
+                <td width="50" align="center" valign="middle"><a href="#">修改</a></td>
+            </tr>
+            <tr>
+                <td width="50" align="center" valign="middle"><input type="checkbox" name="checkbox6" id="checkbox6"></td>
+                <td align="center" valign="middle">1-23456789</td>
+                <td align="center" valign="middle">个人</td>
+                <td align="center" valign="middle">1426921</td>
+                <td align="center" valign="middle">D001</td>
+                <td align="center" valign="middle">15322334511</td>
+                <td align="center" valign="middle">暂未</td>
+                <td align="center" valign="middle">2</td>
+                <td align="center" valign="middle">-300</td>
+                <td width="50" align="center" valign="middle"><a href="#">修改</a></td>
+            </tr>
+            <tr>
+                <td width="50" align="center" valign="middle"><input type="checkbox" name="checkbox6" id="checkbox6"></td>
+                <td align="center" valign="middle">1-23456789</td>
+                <td align="center" valign="middle">个人</td>
+                <td align="center" valign="middle">1426921</td>
+                <td align="center" valign="middle">D001</td>
+                <td align="center" valign="middle">15322334511</td>
+                <td align="center" valign="middle">暂未</td>
+                <td align="center" valign="middle">2</td>
+                <td align="center" valign="middle">-300</td>
+                <td width="50" align="center" valign="middle"><a href="#">修改</a></td>
+            </tr>
+            <tr>
+                <td width="50" align="center" valign="middle"><input type="checkbox" name="checkbox6" id="checkbox6"></td>
+                <td align="center" valign="middle">1-23456789</td>
+                <td align="center" valign="middle">个人</td>
+                <td align="center" valign="middle">1426921</td>
+                <td align="center" valign="middle">D001</td>
+                <td align="center" valign="middle">15322334511</td>
+                <td align="center" valign="middle">暂未</td>
+                <td align="center" valign="middle">2</td>
+                <td align="center" valign="middle">-300</td>
+                <td width="50" align="center" valign="middle"><a href="#">修改</a></td>
+            </tr>
+            <tr>
+                <td width="50" align="center" valign="middle"><input type="checkbox" name="checkbox3" id="checkbox3"></td>
+                <td align="center" valign="middle">1-23456789</td>
+                <td align="center" valign="middle">个人</td>
+                <td align="center" valign="middle">1426921</td>
+                <td align="center" valign="middle">D001</td>
+                <td align="center" valign="middle">15322334511</td>
+                <td align="center" valign="middle">暂未</td>
+                <td align="center" valign="middle">2</td>
+                <td align="center" valign="middle">-300</td>
+
+                <td width="50" align="center" valign="middle"><a href="#">修改</a></td>
+            </tr>
+        </table>
+
+        <div class="pagination">
+            <a href="#" >上一页</a>
+            <a href="#" class="number">1</a>
+            <a href="#" class="number">2</a>
+            <a href="#" class="number">3</a>
+            <a href="#" class="number">4</a>
+            <a href="#" class="number">5</a>
+            <a href="#">下一页</a>
+        </div>
+    </div>
+</div>
+</body>
+</html>

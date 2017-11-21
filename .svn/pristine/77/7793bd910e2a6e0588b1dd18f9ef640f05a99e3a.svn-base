@@ -1,0 +1,242 @@
+<!--
+作者：陶勇超
+创建时间：2015/5/27
+项目初始化
+JS路径：'controllers/internalProfession/projectInitialization',
+-->
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>项目初始化</title>
+</head>
+<body>
+<div style="border: 1px solid ;height: 500px">
+    <table border="1" style="width: 100%;border-top: hidden;border-left: hidden;border-right: hidden">
+        <tr>
+            <td>
+                <div class="row">
+                    <div class="col-md-8">
+                        <ul class="list-inline">
+                            <li><h1 style="margin: 18px">项目初始化:</h1></li>
+                        </ul>
+                    </div>
+                    <div class="col-md-4">
+                        <button class="pull-right" style="width: 100px;margin: 20px">下一步</button>
+                        <button class="pull-right" style="width: 100px;margin: 20px">上一步</button>
+                    </div>
+                </div>
+            </td>
+        </tr>
+    </table>
+    <div>
+
+        <span class="col-md-11" style="margin-top: 10px;">项目列表</span>
+        <a href="#" data-toggle="modal"  data-target="#myModal" style="margin-top: 10px">
+            <p ><span class="glyphicon glyphicon-plus btn btn-sm" aria-hidden="true" style="margin-top:5px;"></span></p>
+        </a>
+        <hr style="border: 1px solid #b2b2b2 ;margin-top: -5px;width: 98%">
+    </div>
+    <div>
+        <table>
+            <tr style="text-align: center">
+                <td style="text-align: center;width: 40px">序号</td>
+                <td style="text-align: center">项目编号</td>
+                <td style="text-align: center;width: 70px">项目名称</td>
+                <td style="text-align: center;width: 150px">项目地址</td>
+                <td style="text-align: center">总占地面积</td>
+                <td style="text-align: center;width: 60px">容积率</td>
+                <td style="text-align: center;width: 70px">核增容积率</td>
+                <td style="text-align: center;width: 60px">绿化率</td>
+                <td style="text-align: center;width: 70px">总建筑面积</td>
+                <td style="text-align: center">计容面积</td>
+                <td style="text-align: center;width: 80px">核增计容面积</td>
+                <td style="text-align: center;width: 70px">地下室面积</td>
+                <td style="text-align: center">车位配比</td>
+                <td style="text-align: center;width: 80px">地下车位总数</td>
+                <td style="text-align: center;width: 80px">地面车位总数</td>
+            </tr>
+            <tr style="text-align: center">
+                <td style="text-align: center">1</td>
+                <td style="text-align: center">0001</td>
+                <td style="text-align: center">重庆桃源居</td>
+                <td style="text-align: center">深圳市宝安区XX路XX号</td>
+                <td style="text-align: center">10万㎡</td>
+                <td style="text-align: center">1.72</td>
+            </tr>
+        </table>
+    </div>
+    <!--模态框新增项目初始化-->
+    <div class="modal fade" id="myModal" role="dialog" aria-label="myModalLabel" aria-hidden="true" >
+        <div class="modal-dialog" style="width: 700px">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <p>项目基本信息：</p>
+                    <table style="line-height:25px;">
+                        <tr>
+                            <td style="text-align: center">项目编号</td>
+                            <td class="col-md-2" ><label>
+                                <input type="text" style="width:200px;" >
+                            </label>
+                            </td>
+                            <td style="text-align: center">总占地面积</td>
+                            <td class="col-md-3">
+                                <label> <input type="text" style="width:200px;"></label>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="text-align: center">项目名称</td>
+                            <td class="col-md-2">
+                                <label>  <input type="text" style="width:200px;" ></label>
+                            </td>
+                            <td style="text-align: center">总建筑面积</td>
+                            <td class="col-md-3">
+                                <label> <input type="text" style="width:200px;"></label>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="text-align: center">项目地址</td>
+                            <td class="col-md-2">
+                                <label>  <input type="text" style="width:200px;"></label>
+                            </td>
+                            <td style="text-align: center">计容面积</td>
+                            <td class="col-md-3">
+                                <label>  <input type="text" style="width:200px;" ></label>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="text-align: center">车位配比</td>
+                            <td class="col-md-2">
+                                <label>  <input type="text" style="width:200px;"></label>
+                            </td>
+                            <td style="text-align: center">地下室面积</td>
+                            <td class="col-md-3">
+                                <label><input type="text" style="width:200px;"></label>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="text-align: center">地下车位总数</td>
+                            <td class="col-md-2">
+                                <label>  <input type="text" style="width:200px;"></label>
+                            </td>
+                            <td style="text-align: center">核增计容面积</td>
+                            <td class="col-md-3">
+                                <label>  <input type="text" style="width:200px;"></label>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="text-align: center">地面车位总数</td>
+                            <td class="col-md-2">
+                                <label> <input type="text" style="width:200px;"></label>
+                            </td>
+                            <td style="text-align: center">容积率</td>
+                            <td class="col-md-3">
+                                <label>  <input type="text" style="width:200px;"></label>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="text-align: center">绿化率</td>
+                            <td class="col-md-2">
+                                <label>    <input type="text" style="width:200px;"></label>
+                            </td>
+                            <td style="text-align: center">核增容积率</td>
+                            <td class="col-md-3"><label><input type="text" style="width:200px;" ></label></td>
+                        </tr>
+                    </table>
+                    <hr style="border: 1px solid #000000">
+                    <span class="col-md-10">人员编制：项目经理：
+                        <select style="width: 100px;height:28px;">
+                        <option></option>
+                        <option></option>
+                        <option></option>
+                    </select></span>
+                    <a href="#" data-toggle="modal"  data-target="#myModal1" style="margin-top: 10px">
+                        <p >添加编制<span class="glyphicon glyphicon-plus btn btn-sm" aria-hidden="true" style="margin-top:-5px;"></span></p>
+                    </a>
+                    <p style="margin-left: 20px">清洁工:<input type="text" style="width:30px;height: 25px">人</p>
+                    <p style="margin-left: 30px">保安:<input type="text" style="width:30px;height: 25px">人</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" >提交</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="myModal1" role="dialog" aria-label="myModalLabel" aria-hidden="true" >
+        <div class="modal-dialog" style="width: 300px">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <table style="width: 300px;margin-left: 50px">
+                        <tr>
+                            <td><strong>清洁:</strong></td>
+                            <td><strong>维修:</strong></td>
+                        </tr>
+                        <tr>
+                            <td><input type="checkbox">经理</td>
+                            <td><input type="checkbox">经理</td>
+                        </tr>
+                        <tr>
+                            <td><input type="checkbox">主管</td>
+                            <td><input type="checkbox">主管</td>
+                        </tr>
+                        <tr>
+                            <td><input type="checkbox">领班</td>
+                            <td><input type="checkbox">班长</td>
+                        </tr>
+                        <tr>
+                            <td><input type="checkbox">清洁工</td>
+                            <td><input type="checkbox">维修工</td>
+                        </tr>
+
+                        <tr>
+                            <td><strong>园林:</strong></td>
+                            <td><strong>人力资源:</strong></td>
+                        </tr>
+                        <tr>
+                            <td><input type="checkbox">经理</td>
+                            <td><input type="checkbox">经理</td>
+                        </tr>
+                        <tr>
+                            <td><input type="checkbox">主管</td>
+                            <td><input type="checkbox">主管</td>
+                        </tr>
+                        <tr>
+                            <td><input type="checkbox">领班</td>
+                            <td><input type="checkbox">文员</td>
+                        </tr>
+                        <tr>
+                            <td><input type="checkbox">园林工</td>
+
+                        </tr>
+
+                        <tr>
+                            <td ><strong>安保:</strong></td>
+                            <td><strong>项目:</strong></td>
+                        </tr>
+                        <tr>
+                            <td><input type="checkbox">经理</td>
+                            <td><input type="checkbox">项目经理</td>
+                        </tr>
+                        <tr>
+                            <td><input type="checkbox">主管</td>
+                            <td><input type="checkbox">收费员</td>
+                        </tr>
+                        <tr>
+                            <td><input type="checkbox">班长</td>
+                            <td><input type="checkbox">前台客服</td>
+                        </tr>
+                        <tr>
+                            <td><input type="checkbox">保安</td>
+
+                        </tr>
+                    </table>
+                    </div>
+                <div class="modal-footer">
+                    <button type="button" >提交</button>
+                </div>
+                </div>
+            </div>
+        </div>
+</div>
+</body>
+</html>

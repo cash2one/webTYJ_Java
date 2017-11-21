@@ -1,0 +1,203 @@
+<!--
+    pageName:【车位管理】物业服务人员主页
+    Author:钟加诚
+   jsPath:js/controllers/propertyService/parkingManagement.js
+
+   修改：倪明 2015/6/8
+   填充数据对应相关的操作
+   -->
+<!DOCTYPE html>
+<html>
+<head lang="en">
+<meta charset="UTF-8">
+<title>车位管理</title>
+</head>
+<body>
+
+<!-- 人员信息页面模态框开始 -->
+<div class="modal fade" id="myModal_zuping" tabindex="-1" role="dialog"
+     aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog" style="width: 1024px">
+        <div class="modal-content" >
+            <div class="modal-header">
+                <button type="button" class="close"
+                        data-dismiss="modal" aria-hidden="true">
+                    &times;
+                </button>
+                <p>租客信息</p>
+            </div>
+            <div class="modal-body" style="line-height:30px;white-space: nowrap">
+                <table>
+                    <tr>
+                        <td>姓名：</td>
+                        <td><label><input type="text" class="form-control input-sm toutou" ng-model="PersonCust.name"></label></td>
+                        <td>客户编号：</td>
+                        <td><label><input type="text" class="form-control input-sm toutou" ng-model="PersonCust.custCode"></label></td>
+                        <td>身份证号：</td>
+                        <td><label><input type="text" class="form-control input-sm toutou" ng-model="PersonCust.cardNum"></label></td>
+                        <td style="padding-left: 10px">筛选条件：
+                            <button class="btn-default" ng-click="selectPersonBycustId()">搜索</button>
+
+                        </td>
+                    </tr>
+                </table>
+                <div class="row" style="padding:5px 10px 0">
+                    <div class="container" style="border: 1px solid #000000;width: auto;height: auto">
+                        <div class="row renyuantt" ng-repeat="items2 in personCust1" ng-show="items2.custId!=null">
+                            <div class="col-md-2" style="text-align: right"><img src="images/staffHome/u116.jpg" ng-click="getPersonBycustId(items2.custId)"></div>
+                            <div class="col-md-10 zengjia">
+                                <table>
+                                    <tr>
+                                        <td style="width: 80px;text-align: right">客户姓名：</td>
+                                        <td style="width: 80px;">{{items2.name}}</td>
+                                        <td style="width: 80px;text-align: right">性别：</td>
+                                        <td style="width: 80px;">{{items2.sex}}</td>
+                                        <td style="width: 80px;text-align: right">家家号：</td>
+                                        <td style="width: 80px;">{{items2.jiajiaNume}}</td>
+                                        <td style="width: 80px;text-align: right">身份证：</td>
+                                        <td style="width: 80px;">{{items2.cardNum}}</td>
+                                    </tr>
+                                </table>
+                            </div>
+                            <div class="col-md-10 zengjia">
+                                <table>
+                                    <tr>
+                                        <td style="width: 80px;text-align: right">客户编号：</td>
+                                        <td style="width: 80px;">{{items2.custCode}}</td>
+                                        <td style="width: 80px;text-align: right">年龄：</td>
+                                        <td style="width: 80px;">50</td>
+                                        <td style="width: 80px;text-align: right">联系电话：</td>
+                                        <td style="width: 80px;">{{items2.phoneNum}}</td>
+                                        <td style="width: 80px;text-align: right">QQ号码：</td>
+                                        <td style="width: 80px;">{{items2.qqNum}}</td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default btn-sm" aria-label="Left Align" data-dismiss="modal">
+                    <span aria-hidden="true">确定</span>
+                </button>
+                <button type="button" class="btn btn-sm btn-default" data-dismiss="modal">
+                    <span aria-hidden="true">取消</span>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- 人员信息页面模态框结束 -->
+<div class="complaint_user_list">
+    <div id="myTabContent" class="tab-content">
+        <!--车位列表信息-->
+        <div id="divOne_1" class="tab-pane fade in active">
+            <div class="row" style="padding:5px 10px 0">
+                <div class="col-md-12">
+                    <ul class="nav nav-tabs">
+                        <li class="active"><a href="#">车位列表</a></li>
+                    </ul>
+                </div>
+                <!--车位列表-->
+                <div class="col-md-12">
+                    <div class="col-md-12"
+                         style="margin-top:8px;border-bottom: 1px solid lightgray;">
+                        <p class="col-md-12">已登记车位列表：</p>
+                    </div>
+                    <div ng-repeat="items in carPark" ng-show="items.authorizationId!=null">
+                        <div class="col-lg-4 col-md-3 col-sm-4"  ng-repeat="items1 in items.stall" ng-show="items1.stallId!=null">
+                            <div class="program_panel" >
+                                <div class="program_panel_people_title">
+                                    <span class="panel_title_left">车位信息：</span>
+                                  <span class="complaint1_panel_info_navigation">
+         						    <ul>
+                                        <li><a href="#" class="dropdown-toggle btn-lg" data-toggle="dropdown" role="button" aria-expanded="false"><span class="glyphicon glyphicon-menu-down" aria-hidden="true"></span></a>
+                                            <ul>
+                                                <li class="program_panel_info_navigation_top"><a href="#divOne_2" data-toggle="tab" >产权变更</a></li>
+                                            </ul>
+                                        </li>
+                                    </ul>
+                                 </span>
+                                    </span>
+                                </div>
+                                <div class="complaint_panel_info">
+                                    <div class="row">
+                                        <div class="col-md-4" style="margin-top: 10px">
+                                            <img src="images/company/u134.png" width="100" height="100" >
+                                        </div>
+                                        <div class="col-md-7" style="margin-left: 10px">
+                                            <div class="row">车位编码：{{items1.stallCoding}}</div>
+                                            <div class="row">车库位置：{{items1.garagePosition}}</div>
+                                            <div class="row">车位属性：{{items1.stallProperty}}</div>
+                                            <div class="row">车位类型：{{items1.stallType}}</div>
+                                            <div class="row">管理费：{{items1.maintenancePrice}}/月</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!--车位列表 end-->
+
+                <!--分页-->
+                <div class="pagination">
+                    <a href="#" ng-show="searchPaginator.hasPrevious()"
+                       ng-click="searchPaginator.previous()">上一页</a> <a href="#"
+                                                                        ng-repeat="i in searchPaginator.pages"
+                                                                        ng-click="searchPaginator.go(i)" class="number">{{i}}</a> <a
+                        href="#" ng-show="searchPaginator.hasNext()"
+                        ng-click="searchPaginator.next()">下一页</a>
+                </div>
+                <!--分页 end-->
+            </div>
+        </div>
+        <!--车位列表信息 end-->
+        <!-- 产权变更开始 -->
+        <div id="divOne_2" class="container tab-pane fade">
+            <div style="margin-top: 15px;margin-left: 100px">
+                <table class="row">
+                    <tr >
+                        <td style="text-align: right;width: 100px;height: 35px">登记人：</td>
+                        <td style="width: 200px;">
+                             <input style="width: 150px" type="text" class="form-control" />
+                        </td>
+                        <td style="text-align: right;width: 100px;">新产权人姓名：</td>
+                        <td style="width: 200px;">
+                            <form class="form-inline">
+                                <div class="form-group" style="width: 100px">
+                                    {{personCust2.name}}
+                                </div>
+                                <div class="form-group">
+                                    <span><a data-toggle="modal" data-target="#myModal_zuping" ng-click="selectPersonBycustId()"><img src="images/company/u223.png" width="20px" height="20"></a></span>
+                                </div>
+                            </form>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="text-align: right;width: 100px;height: 35px">签约时间：</td>
+                        <td style="width: 200px;"><input style="width: 150px" type="text" class="form-control" ng-model="addChangeTitle.paymentType"/>
+                        </td>
+                        <td style="text-align: right;width: 100px;">新产权人证件：</td>
+                        <td style="width: 200px;"><input style="width: 150px" type="text" class="form-control"  /></td>
+                    </tr>
+                    <tr>
+                        <td style="text-align: right;width: 100px;height: 35px">上传资料：</td>
+                        <td style="width: 200px;"><input style="width: 150px" type="text" class="form-control" ng-model="addChangeTitle.paymentType"/></td>
+                    </tr>
+                </table>
+                <div class="col-md-offset-3" style="margin-top: 30px">
+                    <a href="#divOne_1" data-toggle="tab" >
+                        <button type="button" class="btn btn-primary" ng-click="insertNewLease()">提交</button>
+                        <button type="button" class="btn btn-primary"  ng-click="clear()">取消</button>
+                    </a>
+                </div>
+            </div>
+        </div>
+        <!-- 产权变更结束 -->
+    </div>
+</div>
+</body>
+</html>

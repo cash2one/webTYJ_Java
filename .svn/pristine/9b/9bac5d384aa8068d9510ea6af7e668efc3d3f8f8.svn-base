@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+		http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-3.0.xsd	
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd">
+	<mvc:annotation-driven/>
+	
+	<bean id="scheduler" class="org.springframework.scheduling.quartz.SchedulerFactoryBean" lazy-init="false">  
+        <property name="triggers">  
+            <list>  
+            </list>  
+        </property>  
+    </bean>
+    
+    <bean id="ChargeItemJob" class="com.flf.quartz.ChargeItemJob">
+		<property name="projectMapper" ref="projectMapper" />
+		<property name="schemeMapper" ref="schemeMapper" />
+		<property name="schemeRelationMapper" ref="schemeRelationMapper" />
+		<property name="chargeItemNewMapper" ref="chargeItemNewMapper" />
+		<property name="schemeDatailsMapper" ref="schemeDatailsMapper" />
+		<property name="conditionMapper" ref="conditionMapper" />
+		<property name="formulaMapper" ref="formulaMapper" />
+		<property name="constantMapper" ref="constantMapper" />
+		<property name="billMapper" ref="billMapper" />
+		<property name="projectBillingMapper" ref="projectBillingMapper" />
+		<property name="buildingStructureNewMapper" ref="buildingStructureNewMapper" />
+		<property name="assetAccountMapper" ref="assetAccountMapper" />
+		<property name="electronicBillingMapper" ref="electronicBillingMapper" />
+		<property name="electricityMeterReadingDataMapper" ref="electricityMeterReadingDataMapper" />
+		<property name="dataDictionarySlaveMapper" ref="dataDictionarySlaveMapper" />
+	</bean>
+	<!--要调用的工作 -->  
+	<bean id="myJob" class="com.flf.quartz.MyJob">
+		<property name="projectMapper" ref="projectMapper" />
+		<property name="schemeMapper" ref="schemeMapper" />
+		<property name="schemeRelationMapper" ref="schemeRelationMapper" />
+		<property name="chargeItemNewMapper" ref="chargeItemNewMapper" />
+		<property name="schemeDatailsMapper" ref="schemeDatailsMapper" />
+		<property name="conditionMapper" ref="conditionMapper" />
+		<property name="formulaMapper" ref="formulaMapper" />
+		<property name="constantMapper" ref="constantMapper" />
+		<property name="billMapper" ref="billMapper" />
+		<property name="projectBillingMapper" ref="projectBillingMapper" />
+		<property name="buildingStructureNewMapper" ref="buildingStructureNewMapper" />
+		<property name="assetAccountMapper" ref="assetAccountMapper" />
+		<property name="electronicBillingMapper" ref="electronicBillingMapper" />
+		<property name="electricityMeterReadingDataMapper" ref="electricityMeterReadingDataMapper" />
+		<property name="dataDictionarySlaveMapper" ref="dataDictionarySlaveMapper" />
+		<property name="scheduler" ref="scheduler" />
+	</bean>	
+	<!--定义调用对象和调用对象的方法-->
+	<bean id="myDetail" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+		<!--调用的类-->
+		<property name="targetObject" ref="myJob"></property>
+		<!--调用类中的方法-->
+		<property name="targetMethod" value="initSchedulerTask"></property>
+		<property name="concurrent" value="false" />
+	</bean>
+	<!--定义触发时间-->  
+	<bean id="myTrigger" class="org.springframework.scheduling.quartz.CronTriggerBean">
+		<property name="jobDetail" ref="myDetail"></property>
+		<property name="cronExpression">
+			<value>0 16 17 ? * *</value>  
+		</property>
+	</bean>
+	<!-- 定义触发时间(simpleTrigger) -->
+	<!-- <bean id="simpleTrigger" class="org.springframework.scheduling.quartz.SimpleTriggerBean">
+        <property name="jobDetail" ref="myJob" />
+        <property name="repeatInterval" value="60000" />
+        <property name="startDelay" value="60000" />
+    </bean> -->
+	
+	<!-- 总管理类 如果将lazy-init='false'那么容器启动就会执行调度程序  -->  
+	<bean id="startQuertz" lazy-init="false" autowire="no"
+	class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
+		<property name="triggers">
+			<list>
+				<ref bean="myTrigger" />
+			</list>
+		</property>
+	</bean>
+ 
+</beans>

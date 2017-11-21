@@ -1,0 +1,168 @@
+package com.flf.service;
+
+import java.util.List;
+import javax.jws.WebService;
+import javax.ws.rs.Consumes;
+import javax.ws.rs.GET;
+import javax.ws.rs.POST;
+import javax.ws.rs.PUT;
+import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
+import javax.ws.rs.Produces;
+import javax.ws.rs.core.MediaType;
+import com.flf.entity.AccountRecord;
+import com.flf.entity.PageRestful;
+
+@WebService
+@Path("/AccountRecord")
+public interface AccountRecordService {
+	/**
+	 * 交账列表
+	 * @param accountRecord
+	 * @return
+	 */
+	@POST
+	@Path("/listPageAccountRecord")
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
+	PageRestful listPageAccountRecordRes(AccountRecord accountRecord);
+	/**
+	 * 确认收账
+	 * @param AreaNew
+	 */
+	@PUT
+	@Path("/updateAccountState")
+	@Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+	void UpdateAccountState(AccountRecord accountRecord);
+	
+	/**
+	 * 退回
+	 * @param AreaNew
+	 */
+	@PUT
+	@Path("/updateAccountState1")
+	@Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+	void UpdateAccountState1(AccountRecord accountRecord);
+	
+	/*
+	 * 新增  用于收银组长 出纳 交账
+	 */
+	@POST
+	@Path("/insertAccountRecord")
+	@Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+	public void insertAccountRecord(AccountRecord accountRecord);
+	
+	@GET
+	@Path("/getAccountRecordById/{accountRecordId}")
+	@Produces(MediaType.APPLICATION_JSON)
+	AccountRecord getAccountRecord(@PathParam("accountRecordId") String accountRecordId);
+
+	/*查询交账中的列表  */
+	@GET
+	@Path("/getAccountRecordListById/{financialStaffId}")
+	@Produces(MediaType.APPLICATION_JSON)
+	List<AccountRecord> getAccountRecordListById(@PathParam("financialStaffId") String financialStaffId);
+
+	
+	/*
+	 * 修改
+	 * */
+	@PUT
+	@Path("/update")
+	@Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+	void Update(AccountRecord accountRecord);
+
+	
+	/**
+	 * 查询所有未交账的数据
+	 * @return
+	 */
+	@POST
+	@Path("/listPageAccountRecordUnFinish")
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
+	PageRestful listPageAccountRecordUnFinish(AccountRecord accountRecord);
+	
+	//查询交账中的列表	
+	@POST
+	@Path("/listPageByState")
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
+	PageRestful listPageByState(AccountRecord accountRecord);
+	
+	/*
+	 * 新增交账 用于收银员交账
+	 */
+	@POST
+	@Path("/insertAccountRecordRes")
+	@Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+	public void insertAccountRecordRes(AccountRecord accountRecord);
+	
+	/**
+	 * 数据退回
+	 * 用于在上级未收账之前自己将数据撤回
+	 */	
+	@PUT
+	@Path("/backAccountRecord")
+	@Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+	void UpdateAccountStateRes(AccountRecord accountRecord);
+	
+	//查询现金交账的数据（已结算）
+	@GET
+	@Path("/selectAccountRecordById/{financialStaffId}")
+	@Produces(MediaType.APPLICATION_JSON)
+	List<AccountRecord> selectAccountRecordById(@PathParam("financialStaffId") String financialStaffId);
+	
+	//收银员数据回退
+	@PUT
+	@Path("/backAccountRecordData")
+	@Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+	void backAccountRecordDataRes(AccountRecord accountRecord);
+	
+	//查询现金交账的数据(未结算)
+	//查询现金交账的数据
+	@GET
+	@Path("/selectARById/{financialStaffId}")
+	@Produces(MediaType.APPLICATION_JSON)
+	List<AccountRecord> selectARById(@PathParam("financialStaffId") String financialStaffId);
+	
+	/*
+	 * 根据岗位id查询
+	 */
+	@POST
+	@Path("/listByPostId")
+	@Produces(MediaType.APPLICATION_JSON)
+	PageRestful listPagePostIdRecordRes(AccountRecord accountRecord);
+	
+	/**
+	 * 查询所有未交账的数据
+	 * @return
+	 */
+	@POST
+	@Path("/listPageAccountRecordUnFinishTest")
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
+	PageRestful listPageAccountRecordUnFinishTest(AccountRecord accountRecord);
+	
+	/**
+	 * 查询收款员退回的数据
+	 * @param accountRecord
+	 * @return
+	 */
+	@POST
+	@Path("/listPageAccountRecordUnFinishTest")
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
+	List<AccountRecord>selectARByStaffAndState(AccountRecord accountRecord);
+	/**
+	 * 查询未交帐数据
+	 * @author hanyupeng
+	 * @date 2016年7月22日11:20:07
+	 * @param accountRecord
+	 * @return
+	 */
+	@POST
+	@Path("/listPageByPost")
+	@Produces(MediaType.APPLICATION_JSON)
+	PageRestful listPageByPost(AccountRecord accountRecord);
+}

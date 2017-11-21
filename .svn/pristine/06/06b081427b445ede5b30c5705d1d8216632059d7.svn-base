@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.flf.mapper.SchemeRelationMapper" >
+  <resultMap id="BaseResultMap" type="com.flf.entity.SchemeRelation" >
+    <id column="scheme_ic_relation_id" property="schemeRelationId" jdbcType="VARCHAR" />
+    <result column="scheme_id" property="schemeId" jdbcType="VARCHAR" />
+    <result column="charge_item_id" property="chargeItemId" jdbcType="VARCHAR" />
+  </resultMap>
+  
+  <resultMap type="com.flf.entity.SchemeRelation" id="ResultMapWithChargeItem" extends="BaseResultMap">
+  	<association property="chargeItemNew" column="charge_item_id" javaType="ChargeItemNew" select="com.flf.mapper.ChargeItemNewMapper.getChargeItemNewById" />
+  </resultMap>
+  
+ <!-- 新增方案收费项目关联表数据 -->
+ <insert id="insertSchemeRelation" parameterType="SchemeRelation" >
+    insert into tc_scheme_ic_relation (scheme_ic_relation_id, scheme_id, charge_item_id) 
+    values (#{schemeRelationId,jdbcType=VARCHAR}, #{schemeId,jdbcType=VARCHAR}, #{chargeItemId,jdbcType=VARCHAR})
+  </insert>
+  
+  <!-- 根据方案Id查询方案与一级收费项目关联信息以及收费项目信息 -->
+  <select id="getSchemeRelationBySchemeId" parameterType="String" resultMap="ResultMapWithChargeItem">
+  	select * from tc_scheme_ic_relation where scheme_id = #{schemeId}
+  </select>
+  
+  <!-- 根据一级收费项目有Id查询所属方案信息 -->
+  <select id="getSchemeByChargeItemId" parameterType="String" resultMap="ResultMapWithChargeItem">
+  	select * from tc_scheme_ic_relation where charge_item_id = #{cinId}
+  </select>
+  
+  <!-- 根据方案id查询方案 -->
+   <select id="getSchemeRelationResBySchemeId" parameterType="String" resultMap="BaseResultMap">
+  	 select scheme_ic_relation_id,charge_item_id from tc_scheme_ic_relation where scheme_id = #{schemeId}
+  </select>
+    
+  <delete id="deleteSchemeRelation" parameterType="SchemeRelation">
+  		delete from tc_scheme_ic_relation 
+  		<where>
+  			<if test="schemeRelationId !=null">
+  			   schemeRelationId = #{schemeRelationId}
+  			</if>
+  			<if test="schemeId !=null">
+  				and schemeId = #{schemeId}
+  			</if>
+  			<if test="chargeItemId !=null">
+  				and chargeItemId = #{chargeItemId}
+  			</if>
+  		</where>
+  </delete>
+  
+  <delete id="deleteSchemeRelationById">
+  		delete from tc_scheme_ic_relation where charge_item_id in 
+  		<foreach collection="array" index="index" item="item" open="(" separator="," close=")">
+  			#{item}
+  		</foreach>
+  </delete>
+  
+  <delete id="deleteSchemeRelationByciIdAndSchemeId" parameterType="java.util.Map">
+  		delete from tc_scheme_ic_relation where charge_item_id in 
+  		<foreach collection="array" index="index" item="item" open="(" separator="," close=")">
+  			#{item}
+  		</foreach>
+  		 and scheme_id = #{schemeId}
+  </delete>
+  
+  <delete id="deleteSchemeRelationBySchemeId" parameterType="String">
+  		delete from tc_scheme_ic_relation where scheme_id = #{schemeId}
+  </delete>
+  
+	<!-- 批量增加方案收费项目关联数据  wangzhou  2016.04.25 -->
+	<insert id="insertSchemeRelationList" parameterType="java.util.List">
+		insert into tc_scheme_ic_relation (scheme_ic_relation_id, scheme_id, charge_item_id)
+		values
+		<foreach collection="list" item="item" index="index" separator="," >
+			(#{item.schemeRelationId,jdbcType=VARCHAR}, #{item.schemeId,jdbcType=VARCHAR}, #{item.chargeItemId,jdbcType=VARCHAR})
+		</foreach>
+	</insert>
+  
+</mapper>

@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.flf.mapper.OwnerRenovationApplyMapper" >
+  <resultMap id="BaseResultMap" type="OwnerRenovationApply" >
+	<id column="apply_id" property="applyId" jdbcType="VARCHAR" />
+	<result column="cust_id" property="custId" jdbcType="VARCHAR" />
+	<result column="apply_time" property="applyTime" jdbcType="TIMESTAMP" />
+	<result column="apply_type" property="applyType" jdbcType="TINYINT" />
+	<result column="decorate_type" property="decorateType" jdbcType="TINYINT" />
+	<result column="estimated_star_time" property="estimatedStarTime" jdbcType="TIMESTAMP" />
+	<result column="estimated_finish_time" property="estimatedFinishTime" jdbcType="TIMESTAMP" />
+	<result column="angent_id" property="angentId" jdbcType="VARCHAR" />
+	<result column="close_time" property="closeTime" jdbcType="TIMESTAMP" />
+	<result column="close_person_id" property="closePersonId" jdbcType="VARCHAR" />
+	<result column="close_remarks" property="closeRemarks" jdbcType="VARCHAR" />
+	<result column="dismantles_wall_area" property="dismantlesWallArea" jdbcType="DOUBLE" />
+	<result column="actual_dismantles_wall_area" property="actualDismantlesWallArea" jdbcType="DOUBLE" />
+ 	<result column="server_id" property="serviceId" jdbcType="VARCHAR" />
+ 
+  </resultMap>
+  
+  <resultMap type="OwnerRenovationApply" id="resultOwnerRenovationApplyMap" extends="BaseResultMap">
+  	  	<association property="serviceRequest" column="server_id" javaType="ServiceRequest" select="com.flf.mapper.ServiceRequestMapper.getServiceRequest"></association>
+  	<association property="decorateAssociatedRecords" column="apply_id" javaType="DecorateAssociatedRecords" select="com.flf.mapper.DecorateAssociatedRecordsMapper.getDecorateAssociatedRecordsbyApplyId"></association>
+  	<collection property="decorateAnnexList" column="apply_id" ofType="DecorateAnnex" select="com.flf.mapper.DecorateAnnexMapper.getDecorateAnnexbyApplyId"></collection>
+  	<collection property="decorateComponentRecordsList" column="apply_id" ofType="DecorateComponentRecords" select="com.flf.mapper.DecorateComponentRecordsMapper.getDecorateComponentRecordsbyApplyId"></collection>
+  	<collection property="decoreateDiscloseInformationList" column="apply_id" ofType="DecoreateDiscloseInformation" select="com.flf.mapper.DecoreateDiscloseInformationMapper.getDecoreateDiscloseInformationbyApplyId"></collection>
+  	<collection property="decoratePersonnelAssociatedList" column="apply_id" ofType="DecoratePersonnelAssociated" select="com.flf.mapper.DecoratePersonnelAssociatedMapper.getDecoratePersonnelAssociatedbyApplyId"></collection>
+  </resultMap>
+  
+ <delete id="deleteOwnerRenovationApply" parameterType="String">
+  delete from ts_owner_renovation_apply where record_id=#{0}
+  </delete>
+  
+  <select id="listAllOwnerRenovationApply"  resultMap="resultOwnerRenovationApplyMap" >
+ 	 select * from ts_owner_renovation_apply 
+  </select>
+  
+  <select id="getOwnerRenovationApplybyId" parameterType="String" resultMap="resultOwnerRenovationApplyMap">
+  	select * from ts_owner_renovation_apply  where cust_id=#{0}
+  </select>
+  
+  <select id="getOwnerRenovationApplyByServiceId" parameterType="String" resultMap="resultOwnerRenovationApplyMap">
+  	select * from ts_owner_renovation_apply where server_id=#{0}
+  </select>
+  
+  <insert id="insertOwnerRenovationApply" parameterType="OwnerRenovationApply" >      
+      insert into ts_owner_renovation_apply (apply_id,cust_id,apply_time,apply_type,decorate_type,estimated_star_time,estimated_finish_time,
+      angent_id,close_time,close_person_id,close_remarks,dismantles_wall_area,actual_dismantles_wall_area,server_id)
+    values (UUID(),#{custId,jdbcType=VARCHAR}, #{applyTime,jdbcType=TIMESTAMP}, #{applyType,jdbcType=TINYINT}
+    ,#{decorateType,jdbcType=TINYINT}, #{estimatedStarTime,jdbcType=TIMESTAMP}, #{estimatedFinishTime,jdbcType=TIMESTAMP},#{angentId,jdbcType=VARCHAR} , #{closeTime,jdbcType=TIMESTAMP}
+    ,#{closePersonId,jdbcType=VARCHAR},#{closeRemarks,jdbcType=VARCHAR},#{dismantlesWallArea,jdbcType=DOUBLE},#{actualDismantlesWallArea,jdbcType=DOUBLE},#{serviceId,jdbcType=VARCHAR})
+  </insert>
+  
+  <insert id="insertOwnerRenovationApplyUUID" parameterType="OwnerRenovationApply" >      
+      insert into ts_owner_renovation_apply (apply_id,cust_id,apply_time,apply_type,decorate_type,estimated_star_time,estimated_finish_time,
+      angent_id,close_time,close_person_id,close_remarks,dismantles_wall_area,actual_dismantles_wall_area,server_id)
+    values (#{applyId,jdbcType=VARCHAR}, #{custId,jdbcType=VARCHAR}, #{applyTime,jdbcType=TIMESTAMP}, #{applyType,jdbcType=TINYINT}
+    ,#{decorateType,jdbcType=TINYINT}, #{estimatedStarTime,jdbcType=TIMESTAMP}, #{estimatedFinishTime,jdbcType=TIMESTAMP},#{angentId,jdbcType=VARCHAR} , #{closeTime,jdbcType=TIMESTAMP}
+    ,#{closePersonId,jdbcType=VARCHAR},#{closeRemarks,jdbcType=VARCHAR},#{dismantlesWallArea,jdbcType=DOUBLE},#{actualDismantlesWallArea,jdbcType=DOUBLE},#{serviceId,jdbcType=VARCHAR})
+  </insert>
+ 
+  <update id="updateOwnerRenovationApply" parameterType="OwnerRenovationApply" >
+    update ts_owner_renovation_apply
+    set cust_id = #{applyId,jdbcType=VARCHAR},
+      apply_time = #{componentId,jdbcType=TIMESTAMP},
+      apply_type = #{componentId,jdbcType=TINYINT},
+      decorate_type = #{componentId,jdbcType=TINYINT},
+      estimated_star_time = #{componentId,jdbcType=TIMESTAMP},
+      estimated_finish_time = #{componentId,jdbcType=TIMESTAMP},
+      dismantles_wall_area = #{componentId,jdbcType=DOUBLE},
+      actual_dismantles_wall_area = #{componentId,jdbcType=DOUBLE},
+      angent_id = #{componentId,jdbcType=VARCHAR},
+      close_time = #{componentId,jdbcType=TIMESTAMP},
+      close_person_id = #{componentId,jdbcType=VARCHAR},
+      close_remarks = #{componentId,jdbcType=VARCHAR},
+      server_id=#{serviceId,jdbcType=VARCHAR}
+    where apply_id = #{applyId,jdbcType=VARCHAR}
+  </update>
+</mapper>

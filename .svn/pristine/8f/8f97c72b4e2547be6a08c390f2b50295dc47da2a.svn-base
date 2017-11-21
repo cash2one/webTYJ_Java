@@ -1,0 +1,63 @@
+package com.flf.mapper;
+
+import java.util.List;
+import com.flf.entity.ChargeType;
+import com.flf.entity.Scheme;
+
+/**
+ * @author maogaofei
+ * @date 2016年6月29日 下午4:25:42
+ */
+public interface ChargeTypeMapper {
+	//根据主键删除
+    int deleteByPrimaryKey(String chargeTypeId);
+    //插入对象中所有字段
+    int insert(ChargeType record);
+    //根据条件插入对象字段
+    int insertSelective(ChargeType record);
+    //根据主键查询
+    ChargeType selectByPrimaryKey(String chargeTypeId);
+    //根据条件修改对象属性
+    int updateByPrimaryKeySelective(ChargeType record);
+    //修改对象所有属性
+    int updateByPrimaryKey(ChargeType record);
+    
+    /**
+     * 根据条件查询所有的收费类型列表
+     * @author maogaofei
+     * @date 2016年6月29日 下午4:31:17
+     * @param chargeType
+     * @return
+     */
+	List<ChargeType> listAllChargeType(ChargeType chargeType);
+	
+	/**
+	 * 根据项目ID查询收费类型表
+	 * 
+	 * */
+	List<ChargeType> getChargeTypeProjectId(String projectId);
+	/**
+	 * 根据收费类型ID查询方案表
+	 * */
+	List<Scheme> getSchemeStatusById(String chargeTypeId);
+	/**
+	 * 分页
+	 * @param chargeType
+	 * @return
+	 * */
+	List<ChargeType> listPageChargeType(ChargeType chargeType);
+	
+	//改变启用状态
+	void changeState(String chargetTypeid);
+	
+	List<ChargeType> queryByPri();
+	
+	//获取优先级
+	List<ChargeType> getPriority();
+	
+	//通过名字查找
+	ChargeType selectByName(String name);
+	//获取编号
+	ChargeType getCode();
+	
+}

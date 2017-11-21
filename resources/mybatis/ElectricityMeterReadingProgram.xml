@@ -1,0 +1,507 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.flf.mapper.ElectricityMeterReadingProgramMapper" >
+  <resultMap id="BaseResultMap" type="com.flf.entity.ElectricityMeterReadingProgram" >
+    <id column="electricity_meter_reading_program_id" property="electricityMeterReadingProgramId" jdbcType="VARCHAR" />
+    <result column="project_name" property="projectName" jdbcType="VARCHAR" />
+    <result column="project_id" property="projectId" jdbcType="VARCHAR" />
+    <result column="settlement_day" property="settlementDay" jdbcType="INTEGER" />
+    <result column="reviewers" property="reviewers" jdbcType="VARCHAR" />
+    <result column="program_execution_status" property="programExecutionStatus" jdbcType="TINYINT" />
+    <result column="program_exception_status" property="programExceptionStatus" jdbcType="TINYINT" />
+    <result column="meter_reading_num" property="meterReadingNum" jdbcType="INTEGER" />
+    <result column="electricity_meter_num" property="electricityMeterNum" jdbcType="INTEGER" />
+    <result column="unfinished_num" property="unfinishedNum" jdbcType="INTEGER" />
+    <result column="start_time" property="startTime" jdbcType="DATE" />
+    <result column="end_time" property="endTime" jdbcType="DATE" />
+    <result column="verify_time" property="verifyTime" jdbcType="DATE" />
+    <result column="meter_reading_type" property="meterReadingType" jdbcType="TINYINT" />
+    <result column="meter_reading_warning_num" property="meterReadingWarningNum" jdbcType="INTEGER" />
+    <result column="meter_reading_error_num" property="meterReadingErrorNum" jdbcType="INTEGER" />
+    <result column="no_meter_reading_num" property="noMeterReadingNum" jdbcType="INTEGER" />
+    <result column="review_meter_num" property="reviewMeterNum" jdbcType="INTEGER" />
+    <result column="meter_reading_normal_num" property="meterReadingNormalNum" jdbcType="INTEGER" />
+    <result column="current_executor" property="currentExecutor" jdbcType="VARCHAR" />
+    <result column="executive_team" property="executiveTeam" jdbcType="VARCHAR" />
+    <result column="meter_reading_people" property="meterReadingPeople" jdbcType="VARCHAR" />
+    <result column="meter_reading_date" property="meterReadingDate" jdbcType="VARCHAR" />
+    <result column="reading" property="reading" jdbcType="VARCHAR" />
+    <result column="full_name" property="fullName" jdbcType="VARCHAR" />
+    <result column="all_num" property="allNum" jdbcType="INTEGER" />
+    <result column="automatic_execution" property="automaticExecution" jdbcType="INTEGER" />
+    <result column="log_id" property="logId" jdbcType="VARCHAR" />
+	<result column="last_month_reading" property="lastMonthReading" jdbcType="DOUBLE" />
+	<result column="electricity_meter_num" property="electricityMeterNum" jdbcType="VARCHAR" />
+	<result column="electricity_meter_id" property="electricityMeterId" jdbcType="VARCHAR" />
+	<result column="verification_record" property="verificationRecord" jdbcType="TINYINT" />
+	<result column="electricity_meter_reading_data_id" property="electricityMeterReadingDataId" jdbcType="VARCHAR" />
+	<result column="audit_time" property="auditTime" jdbcType="INTEGER" />
+	<result column="execution_frequency" property="executionFrequency" jdbcType="INTEGER" />
+	<result column="modified_person" property="modifiedPerson" jdbcType="VARCHAR"/>
+  </resultMap>
+  
+  <!-- 关联映射-->
+  <!-- 关联项目-->
+   <resultMap type="com.flf.entity.ElectricityMeterReadingProgram" id="resultMeterReadingProgramMap" extends="BaseResultMap">
+   <association property="staffExecutor" column="current_executor" javaType="Staff" select="com.flf.mapper.StaffMapper.getStaffNamebyId"></association>
+  <association property="staffReviewer" column="reviewers" javaType="Staff" select="com.flf.mapper.StaffMapper.getStaffNamebyId"></association>
+  <collection property="project" column="project_id"  select="com.flf.mapper.ProjectMapper.getProject"></collection>
+  </resultMap>	
+  <!-- 关联电表-->
+  <resultMap type="com.flf.entity.ElectricityMeterReadingProgram" id="resultElectricityMeterReadingProgramMap" extends="BaseResultMap">
+  <association property="electricityMeter" column="electricity_meter_id" select="com.flf.mapper.ElectricityMeterMapper.getElectricityMeterbyId" ></association>
+  </resultMap>
+   
+  <!--关联电表数据报表列表  -->
+  <resultMap type="com.flf.entity.ElectricityMeterReadingProgram" id="ElectricityMeterReadingDateMap" extends="BaseResultMap">
+  	<collection property="electricityMeterReadingDataList" column="electricity_meter_reading_program_id"  select="com.flf.mapper.ElectricityMeterReadingDataMapper.selectMeterReadingDateByProgramId"></collection>	
+  </resultMap>
+  
+  <!-- 关联电表列表 -->
+  <resultMap type="ElectricityMeterReadingProgram" id="electricityMeterMap" extends="BaseResultMap">
+  	<collection property="electricityMeterList" column="electricity_meter_reading_program_id"  select="com.flf.mapper.ElectricityMeterMapper.getElectricityMeterAndFullNameByMeterReadingProgramId"></collection>	
+  </resultMap>
+  
+  <!-- 电表外层的核实：根据数组的id查询所有抄表计划 -->
+  <select id="selectMeterChecked"  resultMap="BaseResultMap">
+     SELECT a.*,b.electricity_meter_reading_data_id FROM te_electricity_meter_reading_program a 
+     JOIN te_electricity_meter_reading_data b  ON a.electricity_meter_reading_program_id = b.electricity_meter_reading_program_id 
+     WHERE a.electricity_meter_reading_program_id IN 
+     <foreach collection="list" open="(" close=")" separator="," item="item">
+     	#{item}
+     </foreach>
+  </select>
+  
+  <!-- 通过抄表计划id查询抄表计划信息 -->
+   <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+  	select * from te_electricity_meter_reading_program where electricity_meter_reading_program_id=#{0}
+  </select>
+  
+  <!-- 通过抄表计划id查询抄表计划信息 -->
+   <select id="editData" parameterType="java.lang.String" resultMap="electricityMeterMap">
+  	select * from te_electricity_meter_reading_program where electricity_meter_reading_program_id=#{0}
+  </select>
+  <!--通过抄表计划id选择性更新抄表计划  -->
+  <update id="updateByPrimaryKeySelective" parameterType="com.flf.entity.ElectricityMeterReadingProgram" >
+    update te_electricity_meter_reading_program
+    <set >
+      <if test="projectName != null" >
+        project_name = #{projectName,jdbcType=VARCHAR},
+      </if>
+      <if test="projectId != null" >
+        project_id = #{projectId,jdbcType=VARCHAR},
+      </if>
+      <if test="settlementDay != null" >
+        settlement_day = #{settlementDay,jdbcType=INTEGER},
+      </if>
+      <if test="reviewers != null" >
+        reviewers = #{reviewers,jdbcType=VARCHAR},
+      </if>
+      <if test="programExecutionStatus != null" >
+        program_execution_status = #{programExecutionStatus,jdbcType=TINYINT},
+      </if>
+      <if test="meterReadingNum != null" >
+        meter_reading_num = #{meterReadingNum,jdbcType=INTEGER},
+      </if>
+      <if test="unfinishedNum != null" >
+        unfinished_num = #{unfinishedNum,jdbcType=INTEGER},
+      </if>
+      <if test="startTime != null" >
+        start_time = #{startTime,jdbcType=DATE},
+      </if>
+      <if test="endTime != null" >
+        end_time = #{endTime,jdbcType=DATE},
+      </if>
+      <if test="verifyTime != null" >
+        verify_time = #{verifyTime,jdbcType=DATE},
+      </if>
+      <if test="meterReadingType != null" >
+        meter_reading_type = #{meterReadingType,jdbcType=TINYINT},
+      </if>
+      <if test="meterReadingWarningNum != null" >
+        meter_reading_warning_num = #{meterReadingWarningNum,jdbcType=INTEGER},
+      </if>
+      <if test="meterReadingErrorNum != null" >
+        meter_reading_error_num = #{meterReadingErrorNum,jdbcType=INTEGER},
+      </if>
+      <if test="noMeterReadingNum != null" >
+        no_meter_reading_num = #{noMeterReadingNum,jdbcType=INTEGER},
+      </if>
+      <if test="reviewMeterNum != null" >
+        review_meter_num = #{reviewMeterNum,jdbcType=INTEGER},
+      </if>
+      <if test="meterReadingNormalNum != null" >
+        meter_reading_normal_num = #{meterReadingNormalNum,jdbcType=INTEGER},
+      </if>
+      <if test="currentExecutor != null" >
+        current_executor = #{currentExecutor,jdbcType=VARCHAR},
+      </if>
+      <if test="executiveTeam != null" >
+        executive_team = #{executiveTeam,jdbcType=VARCHAR},
+      </if>
+      <if test="allNum != null" >
+        all_num = #{allNum,jdbcType=INTEGER},
+      </if>
+      <if test="automaticExecution != null" >
+        automatic_execution = #{automaticExecution,jdbcType=TINYINT},
+      </if>
+      <if test="logId != null" >
+        log_id = #{logId,jdbcType=VARCHAR},
+      </if>
+      <if test="auditTime != null" >
+        audit_time = #{auditTime,jdbcType=INTEGER},
+      </if>
+      <if test="executionFrequency != null" >
+        execution_frequency = #{executionFrequency,jdbcType=INTEGER},
+      </if>
+    </set>
+    where electricity_meter_reading_program_id = #{electricityMeterReadingProgramId,jdbcType=VARCHAR}
+  </update>
+  
+  <!--   修改抄表计划信息 -->
+  <update id="updateMeterReadingProgram" parameterType="com.flf.entity.ElectricityMeterReadingProgram" >
+    update te_electricity_meter_reading_program
+    set electricity_meter_reading_program_id = #{electricityMeterReadingProgramId,jdbcType=VARCHAR},
+      project_name = #{projectName,jdbcType=VARCHAR},
+      project_id = #{projectId,jdbcType=VARCHAR},
+      settlement_day = #{settlementDay,jdbcType=INTEGER},
+      reviewers = #{reviewers,jdbcType=VARCHAR},
+      program_execution_status = #{programExecutionStatus,jdbcType=TINYINT},
+      program_exception_status = #{programExceptionStatus,jdbcType=TINYINT},
+      meter_reading_num = #{meterReadingNum,jdbcType=INTEGER},
+      unfinished_num = #{unfinishedNum,jdbcType=INTEGER},
+      start_time = #{startTime,jdbcType=DATE},
+      end_time = #{endTime,jdbcType=DATE},
+      verify_time = #{verifyTime,jdbcType=DATE},
+      meter_reading_type = #{meterReadingType,jdbcType=TINYINT},
+      meter_reading_warning_num = #{meterReadingWarningNum,jdbcType=INTEGER},
+      meter_reading_error_num = #{meterReadingErrorNum,jdbcType=INTEGER},
+      no_meter_reading_num = #{noMeterReadingNum,jdbcType=INTEGER},
+      review_meter_num = #{reviewMeterNum,jdbcType=INTEGER},
+      meter_reading_normal_num = #{meterReadingNormalNum,jdbcType=INTEGER},
+      current_executor = #{currentExecutor,jdbcType=VARCHAR},
+      executive_team=#{executiveTeam},
+      all_num=#{allNum},
+      automatic_execution = #{automaticExecution,jdbcType=VARCHAR},
+      modified_person = #{modifiedPerson,jdbcType=VARCHAR},
+      log_id = #{logId,jdbcType=VARCHAR}
+    where electricity_meter_reading_program_id=#{electricityMeterReadingProgramId}
+  </update>
+  
+  
+  <!-- 选择性的新建抄表计划 -->
+   <insert id="insertSelective" parameterType="com.flf.entity.ElectricityMeterReadingProgram" >
+    insert into te_electricity_meter_reading_program
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="electricityMeterReadingProgramId != null" >
+        electricity_meter_reading_program_id,
+      </if>
+      <if test="projectName != null" >
+        project_name,
+      </if>
+      <if test="projectId != null" >
+        project_id,
+      </if>
+      <if test="settlementDay != null" >
+        settlement_day,
+      </if>
+      <if test="reviewers != null" >
+        reviewers,
+      </if>
+      <if test="programExecutionStatus != null" >
+        program_execution_status,
+      </if>
+      <if test="meterReadingNum != null" >
+        meter_reading_num,
+      </if>
+      <if test="unfinishedNum != null" >
+        unfinished_num,
+      </if>
+      <if test="startTime != null" >
+        start_time,
+      </if>
+      <if test="endTime != null" >
+        end_time,
+      </if>
+      <if test="verifyTime != null" >
+        verify_time,
+      </if>
+      <if test="meterReadingType != null" >
+        meter_reading_type,
+      </if>
+      <if test="meterReadingWarningNum != null" >
+        meter_reading_warning_num,
+      </if>
+      <if test="meterReadingErrorNum != null" >
+        meter_reading_error_num,
+      </if>
+      <if test="noMeterReadingNum != null" >
+        no_meter_reading_num,
+      </if>
+      <if test="reviewMeterNum != null" >
+        review_meter_num,
+      </if>
+      <if test="meterReadingNormalNum != null" >
+        meter_reading_normal_num,
+      </if>
+      <if test="currentExecutor != null" >
+        current_executor,
+      </if>
+      <if test="modifiedPerson != null" >
+        modified_person,
+      </if>
+      <if test="executiveTeam != null" >
+        executive_team,
+      </if>
+      <if test="allNum != null" >
+        all_num,
+      </if>
+      <if test="automaticExecution != null" >
+        automatic_execution,
+      </if>
+      <if test="logId != null" >
+        log_id,
+      </if>
+      <if test="auditTime != null" >
+        audit_time,
+      </if>
+      <if test="executionFrequency != null" >
+        execution_frequency,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="electricityMeterReadingProgramId != null" >
+        #{electricityMeterReadingProgramId,jdbcType=VARCHAR},
+      </if>
+      <if test="projectName != null" >
+        #{projectName,jdbcType=VARCHAR},
+      </if>
+      <if test="projectId != null" >
+        #{projectId,jdbcType=VARCHAR},
+      </if>
+      <if test="settlementDay != null" >
+        #{settlementDay,jdbcType=INTEGER},
+      </if>
+      <if test="reviewers != null" >
+        #{reviewers,jdbcType=VARCHAR},
+      </if>
+      <if test="programExecutionStatus != null" >
+        #{programExecutionStatus,jdbcType=TINYINT},
+      </if>
+      <if test="meterReadingNum != null" >
+        #{meterReadingNum,jdbcType=INTEGER},
+      </if>
+      <if test="unfinishedNum != null" >
+        #{unfinishedNum,jdbcType=INTEGER},
+      </if>
+      <if test="startTime != null" >
+        #{startTime,jdbcType=DATE},
+      </if>
+      <if test="endTime != null" >
+        #{endTime,jdbcType=DATE},
+      </if>
+      <if test="verifyTime != null" >
+        #{verifyTime,jdbcType=DATE},
+      </if>
+      <if test="meterReadingType != null" >
+        #{meterReadingType,jdbcType=TINYINT},
+      </if>
+      <if test="meterReadingWarningNum != null" >
+        #{meterReadingWarningNum,jdbcType=INTEGER},
+      </if>
+      <if test="meterReadingErrorNum != null" >
+        #{meterReadingErrorNum,jdbcType=INTEGER},
+      </if>
+      <if test="noMeterReadingNum != null" >
+        #{noMeterReadingNum,jdbcType=INTEGER},
+      </if>
+      <if test="reviewMeterNum != null" >
+        #{reviewMeterNum,jdbcType=INTEGER},
+      </if>
+      <if test="meterReadingNormalNum != null" >
+        #{meterReadingNormalNum,jdbcType=INTEGER},
+      </if>
+      <if test="currentExecutor != null" >
+        #{currentExecutor,jdbcType=VARCHAR},
+      </if>
+      <if test="modifiedPerson != null" >
+        #{modifiedPerson,jdbcType=VARCHAR},
+      </if>
+      <if test="executiveTeam != null" >
+        #{executiveTeam,jdbcType=VARCHAR},
+      </if>
+      <if test="allNum != null" >
+        #{allNum,jdbcType=INTEGER},
+      </if>
+      <if test="automaticExecution != null" >
+        #{automaticExecution,jdbcType=TINYINT},
+      </if>
+      <if test="logId != null" >
+        #{logId,jdbcType=VARCHAR},
+      </if>
+      <if test="auditTime != null" >
+        #{auditTime,jdbcType=INTEGER},
+      </if>
+      <if test="executionFrequency != null" >
+        #{executionFrequency,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+ 
+  <!-- 分页和根据计划名称和开始时间查询电表计划 -->
+  <select id="listPageElectricityMeterReadingProgram" parameterType="SearchMeter" resultMap="resultMeterReadingProgramMap">
+      select m.* from te_electricity_meter_reading_program m 
+      inner join t_project p on m.project_id= p.project_id
+      where 1=1 
+      <if test="projectName != null and projectName != '' ">
+          and m.project_name  LIKE '%' #{projectName} '%' 
+      </if>
+     <!--  <if test="currentExecutor != null and currentExecutor!='' "  >
+          and m.current_executor= #{currentExecutor}
+      </if>
+      <if test="executiveTeam != null and executiveTeam!='' "  >
+          and m.executive_team= #{executiveTeam}
+      </if> -->
+      <if test="startTime != null and startTime != '' ">
+          and YEAR(start_time) =YEAR(#{startTime})  AND MONTH(start_time) = MONTH(#{startTime})
+      </if>
+       order by start_time desc
+  </select>
+  
+    <!-- 执行抄表计划 -->
+  <update id="implementProgram">
+  	update te_electricity_meter_reading_program set program_execution_status='1'
+  	where electricity_meter_reading_program_id in
+  	<foreach collection="list" open="(" close=")" item="item" separator=",">
+  		#{item}
+  	</foreach>
+  </update>
+  
+  <!-- 查询电表计划 -->
+  <select id="listAllElectricityMeterReadingProgram" resultMap="BaseResultMap" >
+      select * from te_electricity_meter_reading_program 
+  </select>
+  
+  <!-- 根据id查询电表计划 -->
+  <select id="getElectricityMeterReadingProgrambyId" parameterType="String" resultMap="BaseResultMap">
+      select * from te_electricity_meter_reading_program where electricity_meter_reading_program_id=#{electricityMeterReadingProgramId}
+  </select>
+  
+  <!--   根据负责人查询抄表计划信息 -->
+  <select id="listElectricityMeterReadingProgrambyStaff" parameterType="String" resultMap="BaseResultMap">
+      select * from te_electricity_meter_reading_program  where current_executor=#{0}
+  </select>
+  
+  <!-- 删除查询电表计划 -->
+  <delete id="deleteElectricityMeterReadingProgram" parameterType="String">
+      delete from te_electricity_meter_reading_program where electricity_meter_reading_program_id=#{electricityMeterReadingProgramId}
+  </delete>
+  
+  <!-- 新增查询电表计划 -->
+  <insert id="insertElectricityMeterReadingProgram" parameterType="com.flf.entity.ElectricityMeterReadingProgram" >
+    insert into te_electricity_meter_reading_program (electricity_meter_reading_program_id, project_name, 
+      project_id, settlement_day, reviewers, 
+      program_execution_status, meter_reading_num, 
+      unfinished_num, start_time, end_time, 
+      verify_time, meter_reading_type, meter_reading_warning_num, 
+      meter_reading_error_num, no_meter_reading_num, 
+      review_meter_num, meter_reading_normal_num, 
+      current_executor, executive_team)
+    values (#{electricityMeterReadingProgramId} ,#{projectName,jdbcType=VARCHAR}, 
+      #{projectId,jdbcType=VARCHAR}, #{settlementDay,jdbcType=INTEGER}, #{reviewers,jdbcType=VARCHAR}, 
+      #{programExecutionStatus,jdbcType=TINYINT}, #{meterReadingNum,jdbcType=INTEGER}, 
+      #{unfinishedNum,jdbcType=INTEGER}, #{startTime,jdbcType=DATE}, #{endTime,jdbcType=DATE}, 
+      #{verifyTime,jdbcType=DATE}, #{meterReadingType,jdbcType=TINYINT}, #{meterReadingWarningNum,jdbcType=INTEGER}, 
+      #{meterReadingErrorNum,jdbcType=INTEGER}, #{noMeterReadingNum,jdbcType=INTEGER}, 
+      #{reviewMeterNum,jdbcType=INTEGER}, #{meterReadingNormalNum,jdbcType=INTEGER}, 
+      #{currentExecutor,jdbcType=VARCHAR}, #{executiveTeam,jdbcType=VARCHAR})
+  </insert>
+  
+  <!-- 修改查询电表计划 -->
+  <update id="updateElectricityMeterReadingProgram" parameterType="com.flf.entity.ElectricityMeterReadingProgram" >
+    update te_electricity_meter_reading_program
+    <set >
+      <if test="projectName != null" >
+        project_name = #{projectName,jdbcType=VARCHAR},
+      </if>
+      <if test="projectId != null" >
+        project_id = #{projectId,jdbcType=VARCHAR},
+      </if>
+      <if test="settlementDay != null" >
+        settlement_day = #{settlementDay,jdbcType=INTEGER},
+      </if>
+      <if test="reviewers != null" >
+        reviewers = #{reviewers,jdbcType=VARCHAR},
+      </if>
+      <if test="programExecutionStatus != null" >
+        program_execution_status = #{programExecutionStatus,jdbcType=TINYINT},
+      </if>
+      <if test="meterReadingNum != null" >
+        meter_reading_num = #{meterReadingNum,jdbcType=INTEGER},
+      </if>
+      <if test="unfinishedNum != null" >
+        unfinished_num = #{unfinishedNum,jdbcType=INTEGER},
+      </if>
+      <if test="startTime != null" >
+        start_time = #{startTime,jdbcType=DATE},
+      </if>
+      <if test="endTime != null" >
+        end_time = #{endTime,jdbcType=DATE},
+      </if>
+      <if test="verifyTime != null" >
+        verify_time = #{verifyTime,jdbcType=DATE},
+      </if>
+      <if test="meterReadingType != null" >
+        meter_reading_type = #{meterReadingType,jdbcType=TINYINT},
+      </if>
+      <if test="meterReadingWarningNum != null" >
+        meter_reading_warning_num = #{meterReadingWarningNum,jdbcType=INTEGER},
+      </if>
+      <if test="meterReadingErrorNum != null" >
+        meter_reading_error_num = #{meterReadingErrorNum,jdbcType=INTEGER},
+      </if>
+      <if test="noMeterReadingNum != null" >
+        no_meter_reading_num = #{noMeterReadingNum,jdbcType=INTEGER},
+      </if>
+      <if test="reviewMeterNum != null" >
+        review_meter_num = #{reviewMeterNum,jdbcType=INTEGER},
+      </if>
+      <if test="meterReadingNormalNum != null" >
+        meter_reading_normal_num = #{meterReadingNormalNum,jdbcType=INTEGER},
+      </if>
+      <if test="currentExecutor != null" >
+        current_executor = #{currentExecutor,jdbcType=VARCHAR},
+      </if>
+      <if test="executiveTeam != null" >
+        executive_team = #{executiveTeam,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where electricity_meter_reading_program_id = #{electricityMeterReadingProgramId,jdbcType=VARCHAR}
+  </update>
+  
+   <!--   抄表计划多条件查询接口 -->
+  <select id="listPageMeterReadingResult" parameterType="SearchMeter" resultMap="resultMeterReadingProgramMap">
+       select m.electricity_meter_reading_program_id,m.project_name,m.project_id,m.settlement_day,m.reviewers,m.program_execution_status,m.unfinished_num,
+       m.audit_time,m.log_id,m.automatic_execution,m.meter_reading_type,m.verify_time,m.end_time,m.review_meter_num,m.all_num,m.current_executor,
+       m.start_time,m.program_exception_status,(select count(*) from te_electricity_meter_reading_data 
+	where electricity_meter_reading_program_id=m.electricity_meter_reading_program_id
+	and reading!='' and not ISNULL(reading) and reading!='0') as meter_reading_num,
+	(select count(*) from te_electricity_meter_reading_data 
+	where electricity_meter_reading_program_id=m.electricity_meter_reading_program_id
+	and abnormal_state='0') as meter_reading_normal_num,
+	(select count(*) from te_electricity_meter_reading_data 
+	where electricity_meter_reading_program_id=m.electricity_meter_reading_program_id
+	and abnormal_state='1') as meter_reading_warning_num,
+	(select count(*) from te_electricity_meter_reading_data 
+	where electricity_meter_reading_program_id=m.electricity_meter_reading_program_id
+	and abnormal_state='2') as meter_reading_error_num from te_electricity_meter_reading_program m 
+	inner join t_project p on m.project_id=p.project_id
+	where m.program_execution_status='1' 
+      <if test="projectName != null and projectName!='' "  >
+          and m.project_name like CONCAT('%',#{projectName},'%')
+      </if>
+      <if test="startTime != null and startTime != '' ">
+          and YEAR(start_time) =YEAR(#{startTime})  AND MONTH(start_time) = MONTH(#{startTime})
+      </if>
+  </select>
+</mapper>

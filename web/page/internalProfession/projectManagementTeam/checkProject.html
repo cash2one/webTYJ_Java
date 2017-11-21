@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>查看项目</title>
+</head>
+<body>
+<div style="padding:15px 15px 0">
+ <!--1-->
+    <div class="pull-right">
+        <a href="#" data-toggle="modal" data-target="#addPerson">
+            <img src="images/propertyService/u459.png" style="width: 20px;height: 20px">
+        </a>
+    </div>
+
+    <div class="modal fade" id="addPerson" role="dialog" aria-label="personDatil" aria-hidden="true">
+        <div class="modal-dialog" style="width: 800px">
+            <div class="modal-content">
+                <div class="modal-header" style="background-color: white;height: 50px">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                  <table class="table-bordered" style="height:auto;width: 100%;background: #ffffff;">
+                      <tr>
+                          <td class="col-md-2" style="text-align: center">团队领袖:</td>
+                          <td class="col-md-10">
+                              <p class="col-md-8" >团队成员</p>
+                              <p class="col-md-2 pull-right">添加成员<span class="glyphicon glyphicon-plus"></span></p>
+                          </td>
+                      </tr>
+                      <tr>
+                          <td rowspan="2"  style="text-align: center">
+                              <img style="width: 60px;height: 60px;" src="images/staffHome/u116.jpg">
+                              <p>李丽</p>
+                          </td>
+                          <td>
+                              <div class="col-md-12" style="text-align: end;margin-top: 10px">
+                                  <div class="col-md-1" ng-repeat="item in items" >
+                                      <img style="width: 50px;height: 50px;" src="images/staffHome/u116.jpg">
+                                      <p>{{item.name}}</p>
+                                  </div>
+                              </div>
+                          </td>
+                      </tr>
+                      <tr >
+                          <td height="100px" style="border-top-style: hidden">&nbsp;</td>
+                      </tr>
+                  </table>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn bg-primary" data-dismiss="modal" aria-label="Close">关闭</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="col-md-12" style="border-bottom: 1px solid lightgray" ng-repeat="item in items">
+        <div class="col-md-2">
+            <img src="images/staffHome/u116.jpg" style="width: 60px;height: 60px;">
+        </div>
+
+        <div class="col-md-10" style="margin-left:-100px;">
+            <p class="col-md-3">姓名:{{item.name}}</p>
+            <p class="col-md-3">管理岗位:{{item.managerJob}}</p>
+                <span class="glyphicon glyphicon-search btn btn-sm" aria-hidden="true"
+                      ui-sref="index.internalProfession.projectManagementTeam.search"></span>
+            <p class="col-md-11">团队成员数量：{{item.teamNumber}}</p>
+        </div>
+    </div>
+
+</div>
+</body>
+</html>

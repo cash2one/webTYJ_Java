@@ -1,0 +1,43 @@
+package com.flf.mapper;
+
+import java.util.List;
+import java.util.Map;
+
+import com.flf.entity.Billing;
+
+
+public interface BillingMapper {
+	/*查询所有的计费信息*/
+	List<Billing> listAllBilling();
+	/*分页查询计费信息*/
+    List<Billing> listPageSearchBilling(Billing billing);
+    /*根据id查询计费信息*/
+    Billing getBillingById(String billingId);
+    /**
+     * 根据条件删除计费信息
+     * @param Map 删除条件
+     * */
+    void deleteBilling(Map map);
+    /*新增计费信息*/
+    int insertBilling(Billing billing);
+    /*修改计费信息*/
+    int updateBilling(Billing billing);
+    
+    /**
+     * 根据条件查询收费记录 
+     * @param Map 查询条件
+     * @return List 收费记录
+     * */
+    List<Billing> getBillingDatils(Map map);
+    /*根据项目id查询项目计费表信息 */
+    List<Billing> getBillingByProjectId(String projectId);
+    
+    /*根据子收费项目id获取计费表金额*/
+    List<Billing> getBillingsBySubChargeItemIds(List<String> chargeItemIds);
+    //根据方案收费项目关系表查询对应的计费信息
+	List<Billing> getBillingBySchemeDetailId(String schemeDatailsId);
+	//批量插入
+	int insertList(List<Billing> billingListAll);
+	//根据建筑收费项目id获取计费信息
+	List<Billing> listBillingByBuildingbillingId(String buildingBilling);
+}

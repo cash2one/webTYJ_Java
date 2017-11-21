@@ -1,0 +1,429 @@
+package com.flf.entity;
+/* Created by Administrator on 2015/6/15. 
+author:尹磊
+修改时间：2015/6/15  修改人：尹磊 */
+import java.util.Date;
+import java.util.List;
+
+import javax.xml.bind.annotation.XmlRootElement;
+@XmlRootElement(name = "WaterMeterRecords") // 水表使用记录表
+public class WaterMeterRecords {
+    private String waterMeterRecordsId; // 水表使用记录id
+
+    private String waterMeterId;  // 水表Id
+
+    private Date installationTime;  //安装时间
+
+    private Date enablingTime; // 启用时间
+
+    private String install;  //安装人
+
+    private Date outageTime; // 停用时间
+
+    private String usingNature;  //使用性质  0.商业 1.居民 2.管理处
+
+    private String waterMeterBuildingId;  //水表所有人类型id
+
+    private String assetsId;  //资产id
+
+    private Integer state; // 表状态  0.  1.新建 2.使用中 3.停用 4.未使用
+
+    private String readingWay;  //抄表方式  1.户内 2.户外 3.远程抄表
+
+    private String parentId;  // 父表id
+
+    private String isBilling;  // 是否计费表 0.是 1.否
+
+    private Double lastMonthReading;  //上次读数
+
+    private Double initialReading;  //初始读数
+
+    private Double stopReading; // 停用读数
+    
+    private String buildingStructureId; //建筑结构id
+    
+    private String fullName; //房屋全名
+    
+    private String waterMeterNum; //水表编号
+    
+    private String reading; //读数
+    
+    private String meterReadingPeople; //抄表人
+    
+    private String meterReadingDate ; //抄表日期
+    
+    private WaterMeter waterMeter; // 水表表
+    
+    private Property property ; //资产表
+    
+    private String parentNum; //父表编号
+    
+    private String mainNum;//主表编号
+    
+    private String waterMeterDescribed; //表描述
+    
+    private String fromNum; //从表编号
+    
+    private String meterReadingProgramId;//
+    
+    private Double lastMonthReadings;  //上次读数
+    
+    private int year;//年份
+    private Double correction;//修正量
+    private Double surplus;//用余量
+    private String meterReadingDataId;//抄表数据id
+    private Double correctionValue;//修正值
+    private String correctedReadingId;
+    private Integer abnormalState;//异常状态
+    
+    private Double childMeterReading;//字表读数总和
+    
+    private Date queryDate; //水损查询日期
+    
+    private List<String> parentNumList; //水损查询，父表编号集合
+    
+    private int level; //层级
+    
+	public Integer getAbnormalState() {
+		return abnormalState;
+	}
+
+	public void setAbnormalState(Integer abnormalState) {
+		this.abnormalState = abnormalState;
+	}
+
+	public String getCorrectedReadingId() {
+		return correctedReadingId;
+	}
+
+	public void setCorrectedReadingId(String correctedReadingId) {
+		this.correctedReadingId = correctedReadingId;
+	}
+
+	public String getMeterReadingDataId() {
+		return meterReadingDataId;
+	}
+
+	public void setMeterReadingDataId(String meterReadingDataId) {
+		this.meterReadingDataId = meterReadingDataId;
+	}
+
+
+	public Double getCorrection() {
+		return correction;
+	}
+
+	public void setCorrection(Double correction) {
+		this.correction = correction;
+	}
+
+	public Double getSurplus() {
+		return surplus;
+	}
+
+	public void setSurplus(Double surplus) {
+		this.surplus = surplus;
+	}
+
+	public Double getCorrectionValue() {
+		return correctionValue;
+	}
+
+	public void setCorrectionValue(Double correctionValue) {
+		this.correctionValue = correctionValue;
+	}
+
+	public int getYear() {
+		return year;
+	}
+
+	public void setYear(int year) {
+		this.year = year;
+	}
+
+	public Double getLastMonthReadings() {
+		return lastMonthReadings;
+	}
+
+	public void setLastMonthReadings(Double lastMonthReadings) {
+		this.lastMonthReadings = lastMonthReadings;
+	}
+
+	public String getMeterReadingProgramId() {
+		return meterReadingProgramId;
+	}
+
+	public void setMeterReadingProgramId(String meterReadingProgramId) {
+		this.meterReadingProgramId = meterReadingProgramId;
+	}
+
+	public String getParentNum() {
+		return parentNum;
+	}
+
+	public void setParentNum(String parentNum) {
+		this.parentNum = parentNum;
+	}
+
+	public Property getProperty() {
+		return property;
+	}
+
+	public void setProperty(Property property) {
+		this.property = property;
+	}
+
+	public WaterMeter getWaterMeter() {
+		return waterMeter;
+	}
+
+	public void setWaterMeter(WaterMeter waterMeter) {
+		this.waterMeter = waterMeter;
+	}
+
+	public String getReading() {
+		return reading;
+	}
+
+	public void setReading(String reading) {
+		this.reading = reading;
+	}
+
+	public String getMeterReadingPeople() {
+		return meterReadingPeople;
+	}
+
+	public void setMeterReadingPeople(String meterReadingPeople) {
+		this.meterReadingPeople = meterReadingPeople;
+	}
+
+	public String getMeterReadingDate() {
+		return meterReadingDate;
+	}
+
+	public void setMeterReadingDate(String meterReadingDate) {
+		this.meterReadingDate = meterReadingDate;
+	}
+
+	public String getWaterMeterNum() {
+		return waterMeterNum;
+	}
+
+	public void setWaterMeterNum(String waterMeterNum) {
+		this.waterMeterNum = waterMeterNum;
+	}
+
+	public String getFullName() {
+		return fullName;
+	}
+
+	public void setFullName(String fullName) {
+		this.fullName = fullName;
+	}
+
+	public String getBuildingStructureId() {
+		return buildingStructureId;
+	}
+
+	public void setBuildingStructureId(String buildingStructureId) {
+		this.buildingStructureId = buildingStructureId;
+	}
+
+	private Page page;
+
+    public Page getPage() {
+		return page;
+	}
+
+	public void setPage(Page page) {
+		this.page = page;
+	}
+
+	public String getWaterMeterRecordsId() {
+        return waterMeterRecordsId;
+    }
+
+    public void setWaterMeterRecordsId(String waterMeterRecordsId) {
+        this.waterMeterRecordsId = waterMeterRecordsId;
+    }
+
+    public String getWaterMeterId() {
+        return waterMeterId;
+    }
+
+    public void setWaterMeterId(String waterMeterId) {
+        this.waterMeterId = waterMeterId;
+    }
+
+    public Date getInstallationTime() {
+        return installationTime;
+    }
+
+    public void setInstallationTime(Date installationTime) {
+        this.installationTime = installationTime;
+    }
+
+    public Date getEnablingTime() {
+        return enablingTime;
+    }
+
+    public void setEnablingTime(Date enablingTime) {
+        this.enablingTime = enablingTime;
+    }
+
+    public String getInstall() {
+        return install;
+    }
+
+    public void setInstall(String install) {
+        this.install = install;
+    }
+
+    public Date getOutageTime() {
+        return outageTime;
+    }
+
+    public void setOutageTime(Date outageTime) {
+        this.outageTime = outageTime;
+    }
+
+    public String getUsingNature() {
+        return usingNature;
+    }
+
+    public void setUsingNature(String usingNature) {
+        this.usingNature = usingNature;
+    }
+
+    public String getWaterMeterBuildingId() {
+        return waterMeterBuildingId;
+    }
+
+    public void setWaterMeterBuildingId(String waterMeterBuildingId) {
+        this.waterMeterBuildingId = waterMeterBuildingId;
+    }
+
+    public String getAssetsId() {
+        return assetsId;
+    }
+
+    public void setAssetsId(String assetsId) {
+        this.assetsId = assetsId;
+    }
+
+ 
+
+
+	public Integer getState() {
+		return state;
+	}
+
+	public void setState(Integer state) {
+		this.state = state;
+	}
+
+	public String getReadingWay() {
+		return readingWay;
+	}
+
+	public void setReadingWay(String readingWay) {
+		this.readingWay = readingWay;
+	}
+
+	public String getIsBilling() {
+		return isBilling;
+	}
+
+	public void setIsBilling(String isBilling) {
+		this.isBilling = isBilling;
+	}
+
+	public String getParentId() {
+        return parentId;
+    }
+
+    public void setParentId(String parentId) {
+        this.parentId = parentId;
+    }
+
+    public Double getLastMonthReading() {
+		return lastMonthReading;
+	}
+
+	public void setLastMonthReading(Double lastMonthReading) {
+		this.lastMonthReading = lastMonthReading;
+	}
+
+	public Double getInitialReading() {
+        return initialReading;
+    }
+
+    public void setInitialReading(Double initialReading) {
+        this.initialReading = initialReading;
+    }
+
+    public Double getStopReading() {
+        return stopReading;
+    }
+
+    public void setStopReading(Double stopReading) {
+        this.stopReading = stopReading;
+    }
+
+	public String getMainNum() {
+		return mainNum;
+	}
+
+	public void setMainNum(String mainNum) {
+		this.mainNum = mainNum;
+	}
+
+	public String getFromNum() {
+		return fromNum;
+	}
+
+	public void setFromNum(String fromNum) {
+		this.fromNum = fromNum;
+	}
+
+	public String getWaterMeterDescribed() {
+		return waterMeterDescribed;
+	}
+
+	public void setWaterMeterDescribed(String waterMeterDescribed) {
+		this.waterMeterDescribed = waterMeterDescribed;
+	}
+
+	public Double getChildMeterReading() {
+		return childMeterReading;
+	}
+
+	public void setChildMeterReading(Double childMeterReading) {
+		this.childMeterReading = childMeterReading;
+	}
+
+	public Date getQueryDate() {
+		return queryDate;
+	}
+
+	public void setQueryDate(Date queryDate) {
+		this.queryDate = queryDate;
+	}
+
+	public List<String> getParentNumList() {
+		return parentNumList;
+	}
+
+	public void setParentNumList(List<String> parentNumList) {
+		this.parentNumList = parentNumList;
+	}
+
+	public int getLevel() {
+		return level;
+	}
+
+	public void setLevel(int level) {
+		this.level = level;
+	}
+	
+}

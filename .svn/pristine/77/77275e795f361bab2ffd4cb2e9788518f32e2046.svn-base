@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.flf.mapper.WaterLossMapper" >
+  <resultMap id="BaseResultMap" type="com.flf.entity.WaterLoss" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="level" property="level" jdbcType="INTEGER" />
+    <result column="water_num" property="waterNum" jdbcType="VARCHAR" />
+    <result column="water_name" property="waterName" jdbcType="VARCHAR" />
+    <result column="consumption" property="consumption" jdbcType="DOUBLE" />
+    <result column="child_consumption" property="childConsumption" jdbcType="DOUBLE" />
+    <result column="water_loss" property="waterLoss" jdbcType="DOUBLE" />
+    <result column="loss_rate" property="lossRate" jdbcType="VARCHAR" />
+    <result column="meter_date" property="meterDate" jdbcType="DATE" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, level, water_num, water_name, consumption, child_consumption, water_loss, loss_rate, 
+    meter_date
+  </sql>
+  
+  <select id="selectByWaterNum" resultMap="BaseResultMap">
+  	select * from t_water_loss	
+	where water_num=#{waterNum}
+	AND YEAR (meter_date) = YEAR (#{queryDate})
+	AND MONTH (meter_date) = MONTH (#{queryDate})
+  </select>
+  
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_water_loss
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByMeterDate" parameterType="java.util.Date" >
+    delete from t_water_loss
+    where YEAR (meter_date) = YEAR (#{queryDate})AND MONTH (meter_date) = MONTH (#{queryDate});
+
+  </delete>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from t_water_loss
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.flf.entity.WaterLoss" >
+    insert into t_water_loss (id, level, water_num, 
+      water_name, consumption, child_consumption, 
+      water_loss, loss_rate, meter_date
+      )
+    values (#{id,jdbcType=INTEGER}, #{level,jdbcType=INTEGER}, #{waterNum,jdbcType=VARCHAR}, 
+      #{waterName,jdbcType=VARCHAR}, #{consumption,jdbcType=DOUBLE}, #{childConsumption,jdbcType=DOUBLE}, 
+      #{waterLoss,jdbcType=DOUBLE}, #{lossRate,jdbcType=VARCHAR}, #{meterDate,jdbcType=DATE}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.flf.entity.WaterLoss" >
+    insert into t_water_loss
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="level != null" >
+        level,
+      </if>
+      <if test="waterNum != null" >
+        water_num,
+      </if>
+      <if test="waterName != null" >
+        water_name,
+      </if>
+      <if test="consumption != null" >
+        consumption,
+      </if>
+      <if test="childConsumption != null" >
+        child_consumption,
+      </if>
+      <if test="bootChildConsumption != null" >
+        boot_child_consumption,
+      </if>
+      <if test="waterLoss != null" >
+        water_loss,
+      </if>
+      <if test="lossRate != null" >
+        loss_rate,
+      </if>
+      <if test="meterDate != null" >
+        meter_date,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="level != null" >
+        #{level,jdbcType=INTEGER},
+      </if>
+      <if test="waterNum != null" >
+        #{waterNum,jdbcType=VARCHAR},
+      </if>
+      <if test="waterName != null" >
+        #{waterName,jdbcType=VARCHAR},
+      </if>
+      <if test="consumption != null" >
+        #{consumption,jdbcType=DOUBLE},
+      </if>
+      <if test="childConsumption != null" >
+        #{childConsumption,jdbcType=DOUBLE},
+      </if>
+      <if test="bootChildConsumption != null" >
+        #{bootChildConsumption,jdbcType=DOUBLE},
+      </if>
+      <if test="waterLoss != null" >
+        #{waterLoss,jdbcType=DOUBLE},
+      </if>
+      <if test="lossRate != null" >
+        #{lossRate,jdbcType=VARCHAR},
+      </if>
+      <if test="meterDate != null" >
+        #{meterDate,jdbcType=DATE},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.flf.entity.WaterLoss" >
+    update t_water_loss
+    <set >
+      <if test="level != null" >
+        level = #{level,jdbcType=INTEGER},
+      </if>
+      <if test="waterNum != null" >
+        water_num = #{waterNum,jdbcType=VARCHAR},
+      </if>
+      <if test="waterName != null" >
+        water_name = #{waterName,jdbcType=VARCHAR},
+      </if>
+      <if test="consumption != null" >
+        consumption = #{consumption,jdbcType=DOUBLE},
+      </if>
+      <if test="childConsumption != null" >
+        child_consumption = #{childConsumption,jdbcType=DOUBLE},
+      </if>
+      <if test="waterLoss != null" >
+        water_loss = #{waterLoss,jdbcType=DOUBLE},
+      </if>
+      <if test="lossRate != null" >
+        loss_rate = #{lossRate,jdbcType=VARCHAR},
+      </if>
+      <if test="meterDate != null" >
+        meter_date = #{meterDate,jdbcType=DATE},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.flf.entity.WaterLoss" >
+    update t_water_loss
+    set level = #{level,jdbcType=INTEGER},
+      water_num = #{waterNum,jdbcType=VARCHAR},
+      water_name = #{waterName,jdbcType=VARCHAR},
+      consumption = #{consumption,jdbcType=DOUBLE},
+      child_consumption = #{childConsumption,jdbcType=DOUBLE},
+      water_loss = #{waterLoss,jdbcType=DOUBLE},
+      loss_rate = #{lossRate,jdbcType=VARCHAR},
+      meter_date = #{meterDate,jdbcType=DATE}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  
+  <select id="selectByDate" parameterType="java.util.Date" resultMap="BaseResultMap">
+  	select * from t_water_loss
+  	where YEAR(meter_date)=YEAR(#{0}) and MONTH(meter_date)=MONTH(#{0})
+  </select>
+  
+  <select id="selectMaxLevelByDate" parameterType="java.util.Date" resultType="Integer">
+  	select IFNULL(max(level),0) from t_water_loss
+  	where YEAR(meter_date)=YEAR(#{0}) and MONTH(meter_date)=MONTH(#{0})
+  </select>
+</mapper>

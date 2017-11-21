@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.flf.mapper.CorrectedReadingMapper" >
+  <resultMap id="BaseResultMap" type="com.flf.entity.CorrectedReading" >
+    <id column="corrected_reading_id" property="correctedReadingId" jdbcType="VARCHAR" />
+    <result column="water_meter_id" property="waterMeterId" jdbcType="VARCHAR" />
+    <result column="electricity_meter_id" property="electricityMeterId" jdbcType="VARCHAR" />
+    <result column="corrected_time" property="correctedTime" jdbcType="DATE" />
+    <result column="operator" property="operator" jdbcType="VARCHAR" />
+    <result column="correction" property="correction" jdbcType="DOUBLE" />
+    <result column="reason" property="reason" jdbcType="VARCHAR" />
+    <result column="annex_id" property="annexId" jdbcType="VARCHAR" />
+    <result column="correction_value" property="correctionValue" jdbcType="DOUBLE" />
+    <result column="return_premium" property="returnPremium" jdbcType="VARCHAR"/>
+  </resultMap>
+  <sql id="Base_Column_List" >
+    corrected_reading_id, water_meter_id, corrected_time, operator, correction, reason, 
+    annex_id, correction_value
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_corrected_reading
+    where corrected_reading_id = #{correctedReadingId,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from t_corrected_reading
+    where corrected_reading_id = #{correctedReadingId,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.flf.entity.CorrectedReading" >
+    insert into t_corrected_reading (corrected_reading_id, water_meter_id, 
+      corrected_time, operator, correction, 
+      reason, annex_id, correction_value,return_premium
+      )
+    values (#{correctedReadingId,jdbcType=VARCHAR}, #{waterMeterId,jdbcType=VARCHAR}, 
+      #{correctedTime,jdbcType=DATE}, #{operator,jdbcType=VARCHAR}, #{correction,jdbcType=DOUBLE}, 
+      #{reason,jdbcType=VARCHAR}, #{annexId,jdbcType=VARCHAR}, #{correctionValue,jdbcType=DOUBLE},
+      #{returnPremium,jdbcType=VARCHAR}
+      )
+  </insert>
+  
+  <insert id="insertElectricity" parameterType="com.flf.entity.CorrectedReading" >
+    insert into t_corrected_reading (corrected_reading_id, electricity_meter_id, 
+      corrected_time, operator, correction, 
+      reason, annex_id, correction_value
+      )
+    values (#{correctedReadingId,jdbcType=VARCHAR}, #{electricityMeterId,jdbcType=VARCHAR}, 
+      #{correctedTime,jdbcType=DATE}, #{operator,jdbcType=VARCHAR}, #{correction,jdbcType=DOUBLE}, 
+      #{reason,jdbcType=VARCHAR}, #{annexId,jdbcType=VARCHAR}, #{correctionValue,jdbcType=DOUBLE}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.flf.entity.CorrectedReading" >
+    insert into t_corrected_reading
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="correctedReadingId != null" >
+        corrected_reading_id,
+      </if>
+      <if test="waterMeterId != null" >
+        water_meter_id,
+      </if>
+      <if test="correctedTime != null" >
+        corrected_time,
+      </if>
+      <if test="operator != null" >
+        operator,
+      </if>
+      <if test="correction != null" >
+        correction,
+      </if>
+      <if test="reason != null" >
+        reason,
+      </if>
+      <if test="annexId != null" >
+        annex_id,
+      </if>
+      <if test="correctionValue != null" >
+        correction_value,
+      </if>
+      <if test="returnPremium!=null">
+     	 return_premium
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="correctedReadingId != null" >
+        #{correctedReadingId,jdbcType=VARCHAR},
+      </if>
+      <if test="waterMeterId != null" >
+        #{waterMeterId,jdbcType=VARCHAR},
+      </if>
+      <if test="correctedTime != null" >
+        #{correctedTime,jdbcType=DATE},
+      </if>
+      <if test="operator != null" >
+        #{operator,jdbcType=VARCHAR},
+      </if>
+      <if test="correction != null" >
+        #{correction,jdbcType=DOUBLE},
+      </if>
+      <if test="reason != null" >
+        #{reason,jdbcType=VARCHAR},
+      </if>
+      <if test="annexId != null" >
+        #{annexId,jdbcType=VARCHAR},
+      </if>
+      <if test="correctionValue != null" >
+        #{correctionValue,jdbcType=DOUBLE},
+      </if>
+      <if test="returnPremium!=null">
+      	#{returnPremium,jdbcType=VARCHAR}
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.flf.entity.CorrectedReading" >
+    update t_corrected_reading
+    <set >
+      <if test="waterMeterId != null" >
+        water_meter_id = #{waterMeterId,jdbcType=VARCHAR},
+      </if>
+      <if test="correctedTime != null" >
+        corrected_time = #{correctedTime,jdbcType=DATE},
+      </if>
+      <if test="operator != null" >
+        operator = #{operator,jdbcType=VARCHAR},
+      </if>
+      <if test="correction != null" >
+        correction = #{correction,jdbcType=DOUBLE},
+      </if>
+      <if test="reason != null" >
+        reason = #{reason,jdbcType=VARCHAR},
+      </if>
+      <if test="annexId != null" >
+        annex_id = #{annexId,jdbcType=VARCHAR},
+      </if>
+      <if test="correctionValue != null" >
+        correction_value = #{correctionValue,jdbcType=DOUBLE},
+      </if>
+    </set>
+    where corrected_reading_id = #{correctedReadingId,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.flf.entity.CorrectedReading" >
+    update t_corrected_reading
+    set water_meter_id = #{waterMeterId,jdbcType=VARCHAR},
+      corrected_time = #{correctedTime,jdbcType=DATE},
+      operator = #{operator,jdbcType=VARCHAR},
+      correction = #{correction,jdbcType=DOUBLE},
+      reason = #{reason,jdbcType=VARCHAR},
+      annex_id = #{annexId,jdbcType=VARCHAR},
+      correction_value = #{correctionValue,jdbcType=DOUBLE}
+      return_premium = #{returnPremium,jdbcType=VARCHAR}
+    where corrected_reading_id = #{correctedReadingId,jdbcType=VARCHAR}
+  </update>
+</mapper>

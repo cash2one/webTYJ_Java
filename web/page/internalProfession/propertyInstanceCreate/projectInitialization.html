@@ -1,0 +1,248 @@
+<!--
+    作者：彭婷婷
+    页面名称：物业实例创建---项目初始化
+    js路径：js/controllers/internalProfession/propertyInstanceCreate/projectInitialization
+    创建时间:2015/6/9
+-->
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+    <script type="text/javascript">
+        function temp(){
+            var temp=document.getElementsByName('special');
+
+            for(var i=0;i<temp.length;i++){
+                if(temp[i].checked==true){
+                    alert(temp[i].value);
+                }
+            }
+        }
+    </script>
+</head>
+<body>
+<table border="1" style="width: 98%;margin: 10px">
+    <tr>
+        <td>
+            <div class="row">
+                <div class="col-md-8">
+                    <h1 style="margin: 20px">项目初始化：</h1>
+                </div>
+                <div class="col-md-2"><button class="pull-right" style="width: 100px;margin: 20px" ui-sref="index.internalProfession.propertyInstanceCreate.personSet">上一步</button></div>
+                <div class="col-md-2"><button class="pull-right" style="width: 100px;margin: 20px">下一步</button></div>
+            </div>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <!--显示项目列表-->
+            <table border="1" style="width:98%;margin:20px 10px 200px 10px;text-align: center">
+                <tr>
+                    <td colspan="15">
+                        <a class="btn btn-xs pull-right" href="#" data-toggle="modal" data-target="#addProject">
+                            <img src="images/propertyService/u459.png" style="width: 20px;height: 20px">
+                        </a>
+                    </td>
+                </tr>
+                <tr>
+                    <td>序号</td>
+                    <td>项目编号</td>
+                    <td>项目名称</td>
+                    <td>项目地址</td>
+                    <td>总占地面积</td>
+                    <td>容积率</td>
+                    <td>核增容积率</td>
+                    <td>绿化率</td>
+                    <td>总建筑面积</td>
+                    <td>计容面积</td>
+                    <td>核增计容面积</td>
+                    <td>地下室面积</td>
+                    <td>车位配比</td>
+                    <td>地下车位总数</td>
+                    <td>地面车位总数</td>
+                </tr>
+                <tr ng-repeat="item in projects">
+                    <!--序号-->
+                    <td>{{item.projectId}}</td>
+                    <!--项目编号-->
+                    <td>{{item.projectNumber}}</td>
+                    <!--项目名称-->
+                    <td>{{item.projectName}}</td>
+                    <!--项目地址-->
+                    <td>{{item.address}}</td>
+                    <!--总占地面积-->
+                    <td>{{item.projectTotalarea}}</td>
+                    <!--容积率-->
+                    <td>{{item.greeningRate}}</td>
+                    <!--核增容积率-->
+                    <td>{{item.greeningRate}}</td>
+                    <!--绿化率-->
+                    <td>{{item.greeningRate}}</td>
+                    <!--总建筑面积-->
+                    <td>{{item.totalBuildarea}}</td>
+                    <!--计容面积-->
+                    <td>{{item.capacitanceArea}}</td>
+                    <!--核增计容面积-->
+                    <td>{{item.addCapacitancearea}}</td>
+                    <!--地下室面积-->
+                    <td>{{item.basementArea}}</td>
+                    <!--车位配比-->
+                    <td>{{item.stallMatching}}</td>
+                    <!--地下车位总数-->
+                    <td>{{item.undergroundParkingspacestotal}}</td>
+                    <!--地面车位总数-->
+                    <td>{{item.groundParkingspacetotal}}</td>
+                </tr>
+            </table>
+        </td>
+    </tr>
+</table>
+<!--弹出添加项目模态框-->
+<div class="modal fade" id="addProject" role="dialog" aria-label="personDatil" aria-hidden="true">
+    <div class="modal-dialog" style="width: 800px">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color: white;height: 50px">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <table style="width: 80%;height:300px;margin: 10px auto">
+                    <tr>
+                        <td>项目编号:</td>
+                        <td><input type="text" ng-model="addProject.projectNumber"></td>
+                        <td>总占地面积:</td>
+                        <td><input type="text" ng-model="addProject.projectTotalarea"></td>
+                    </tr>
+                    <tr>
+                        <td>项目名称:</td>
+                        <td><input type="text" ng-model="addProject.projectName"></td>
+                        <td>总建筑面积:</td>
+                        <td><input type="text" ng-model="addProject.totalBuildarea"></td>
+                    </tr>
+                    <tr>
+                        <td>项目地址:</td>
+                        <td><input type="text" ng-model="addProject.address"></td>
+                        <td>计容面积:</td>
+                        <td><input type="text" ng-model="addProject.capacitanceArea"></td>
+                    </tr>
+                    <tr>
+                        <td>车位配比:</td>
+                        <td><input type="text" ng-model="addProject.stallMatching"></td>
+                        <td>地下室面积:</td>
+                        <td><input type="text" ng-model="addProject.basementArea"></td>
+                    </tr>
+                    <tr>
+                        <td>地下车位总数:</td>
+                        <td><input type="text" ng-model="addProject.undergroundParkingspacestotal"></td>
+                        <td>核增计容面积:</td>
+                        <td><input type="text" ng-model="addProject.addCapacitancearea"></td>
+                    </tr>
+                    <tr>
+                        <td>地面车位总数:</td>
+                        <td><input type="text" ng-model="addProject.groundParkingspacetotal"></td>
+                        <td>容积率:</td>
+                        <td><input type="text" ng-model="addProject.addCapacitancearea"></td>
+                    </tr>
+                    <tr>
+                        <td>绿化率:</td>
+                        <td><input type="text" ng-model="addProject.greeningRate"></td>
+                        <td>核增容积率:</td>
+                        <td><input type="text" ng-model="addProject.greeningRate"></td>
+                    </tr>
+                    <tr style="margin-top: 30px">
+                        <td>人员编制设置</td>
+                        <td>项目经理:<select style="width: 100px"></select></td>
+                        <td colspan="2">
+                            <a class="btn btn-xs pull-right" href="#" data-toggle="modal" data-target="#addPerson">
+                                <img src="images/propertyService/u459.png" style="width: 20px;height: 20px">添加编制
+                            </a>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>清洁工：</td>
+                        <td><input type="text">人</td>
+                    </tr>
+                </table>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn bg-primary" data-dismiss="modal" ng-click="insert()">提交</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!--弹出添加编制模态框-->
+<div class="modal fade" id="addPerson" role="dialog" aria-label="personDatil" aria-hidden="true">
+    <div class="modal-dialog" style="width: 280px">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color: white;height: 50px">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <table style="width: 260px;margin:10px">
+                    <tr>
+                        <td><strong>清洁:</strong></td>
+                        <td><strong>维修:</strong></td>
+                    </tr>
+                    <tr>
+                        <td><input type="checkbox" value="主管" name="special">主管</td>
+                        <td><input type="checkbox" value="主管" name="special">主管</td>
+                    </tr>
+                    <tr>
+                        <td><input type="checkbox" value="领班" name="special">领班</td>
+                        <td><input type="checkbox" value="班长" name="special">班长</td>
+                    </tr>
+                    <tr>
+                        <td><input type="checkbox" value="清洁工" name="special">清洁工</td>
+                        <td><input type="checkbox" value="维修工" name="special">维修工</td>
+                    </tr>
+                    <tr>
+                        <td><strong>园林:</strong></td>
+                        <td><strong>人力资源:</strong></td>
+                    </tr>
+                    <tr>
+                        <td><input type="checkbox" value="主管" name="special">主管</td>
+                        <td><input type="checkbox"  value="主管" name="special">主管</td>
+                    </tr>
+                    <tr>
+                        <td><input type="checkbox" value="领班" name="special">领班</td>
+                        <td><input type="checkbox" value="文员" name="special">文员</td>
+                    </tr>
+                    <tr>
+                        <td><input type="checkbox" name="special" value="园林工">园林工</td>
+                        <td>&nbsp;</td>
+                    </tr>
+
+                    <tr>
+                        <td ><strong>安保:</strong></td>
+                        <td><strong>项目:</strong></td>
+                    </tr>
+                    <tr>
+                        <td><input type="checkbox" name="special" value="主管">主管</td>
+                        <td><input type="checkbox" name="special" value="收费员">收费员</td>
+                    </tr>
+                    <tr>
+                        <td><input type="checkbox" name="special" value="班长">班长</td>
+                        <td><input type="checkbox" name="special" value="前台客服">前台客服</td>
+                    </tr>
+                    <tr>
+                        <td><input type="checkbox" name="special" value="保安">保安</td>
+                        <td>&nbsp;</td>
+                    </tr>
+
+                </table>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn bg-primary" onClick="temp()">提交</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+</body>
+</html>

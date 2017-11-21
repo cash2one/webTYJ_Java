@@ -1,0 +1,59 @@
+package com.flf.entity;
+
+import java.util.Date;
+
+import javax.xml.bind.annotation.XmlRootElement;
+
+import org.springframework.format.annotation.DateTimeFormat;
+//内部通知
+@XmlRootElement(name = "Inform")
+public class Inform {
+    private String id;//id
+
+    private String inform;//通知
+
+    private @DateTimeFormat(pattern="yyyy-MM-dd")Date time;//日期
+
+    private String content;//内容
+    private Page page;
+	
+   	public Page getPage() {
+   		return page;
+   	}
+   	public void setPage(Page page) {
+   		this.page = page;
+   	}
+
+    
+   	
+
+    public String getId() {
+		return id;
+	}
+	public void setId(String id) {
+		this.id = id;
+	}
+	public String getInform() {
+        return inform;
+    }
+
+    public void setInform(String inform) {
+        this.inform = inform;
+    }
+
+    public Date getTime() {
+        return time;
+    }
+
+    public void setTime(Date time) {
+        this.time = time;
+    }
+
+    public String getContent() {
+        return content;
+    }
+
+    public void setContent(String content) {
+        this.content = content;
+    }
+}

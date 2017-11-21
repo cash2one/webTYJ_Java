@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.flf.mapper.TUserPermissionsMapper" >
+  <resultMap id="BaseResultMap" type="com.flf.entity.TUserPermissions" >
+    <id column="role_permissions_id" property="rolePermissionsId" jdbcType="VARCHAR" />
+    <result column="role_id" property="roleId" jdbcType="VARCHAR" />
+    <result column="permissions_id" property="permissionsId" jdbcType="VARCHAR" />
+    <result column="anthorty_id" property="anthortyId" jdbcType="VARCHAR" />
+    <result column="create_id" property="createId" jdbcType="VARCHAR" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="update_id" property="updateId" jdbcType="VARCHAR" />
+    <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+    <result column="user_id" property="userId" jdbcType="VARCHAR" />
+    <association column="permissions_id" property="permissions" javaType="HrPermissions" select="com.flf.mapper.HrPermissionsMapper.selectByPrimaryKey" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    role_permissions_id, role_id, permissions_id, anthorty_id, create_id, create_time, 
+    update_id, update_time,user_id
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_user_permissions
+    where role_permissions_id = #{rolePermissionsId,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByTUserPermissions" parameterType="java.util.Map" >
+    delete from t_user_permissions
+    <trim prefix="where" prefixOverrides="and">
+    	<if test="rolePermissionsId != null">
+    		role_permissions_id = #{rolePermissionsId,jdbcType=VARCHAR}
+    	</if>
+    	<if test="userId != null">
+    		and user_id = #{userId,jdbcType=VARCHAR}
+    	</if>
+    </trim>
+
+  </delete>
+  <insert id="insert" parameterType="com.flf.entity.TUserPermissions" >
+    insert into t_user_permissions (role_permissions_id, role_id, permissions_id, 
+      anthorty_id, create_id, create_time, 
+      update_id, update_time, user_id)
+    values (#{rolePermissionsId,jdbcType=VARCHAR}, #{roleId,jdbcType=VARCHAR}, #{permissionsId,jdbcType=VARCHAR}, 
+      #{anthortyId,jdbcType=VARCHAR}, #{createId,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, 
+      #{updateId,jdbcType=VARCHAR}, #{updateTime,jdbcType=TIMESTAMP}, #{userId,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.flf.entity.TUserPermissions" >
+    insert into t_user_permissions
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="rolePermissionsId != null" >
+        role_permissions_id,
+      </if>
+      <if test="roleId != null" >
+        role_id,
+      </if>
+      <if test="permissionsId != null" >
+        permissions_id,
+      </if>
+      <if test="anthortyId != null" >
+        anthorty_id,
+      </if>
+      <if test="createId != null" >
+        create_id,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="updateId != null" >
+        update_id,
+      </if>
+      <if test="updateTime != null" >
+        update_time,
+      </if>
+      <if test="userId != null" >
+        user_id,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="rolePermissionsId != null" >
+        #{rolePermissionsId,jdbcType=VARCHAR},
+      </if>
+      <if test="roleId != null" >
+        #{roleId,jdbcType=VARCHAR},
+      </if>
+      <if test="permissionsId != null" >
+        #{permissionsId,jdbcType=VARCHAR},
+      </if>
+      <if test="anthortyId != null" >
+        #{anthortyId,jdbcType=VARCHAR},
+      </if>
+      <if test="createId != null" >
+        #{createId,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateId != null" >
+        #{updateId,jdbcType=VARCHAR},
+      </if>
+      <if test="updateTime != null" >
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="userId != null" >
+        #{userId,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.flf.entity.TUserPermissions" >
+    update t_user_permissions
+    <set >
+      <if test="roleId != null" >
+        role_id = #{roleId,jdbcType=VARCHAR},
+      </if>
+      <if test="permissionsId != null" >
+        permissions_id = #{permissionsId,jdbcType=VARCHAR},
+      </if>
+      <if test="anthortyId != null" >
+        anthorty_id = #{anthortyId,jdbcType=VARCHAR},
+      </if>
+      <if test="createId != null" >
+        create_id = #{createId,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateId != null" >
+        update_id = #{updateId,jdbcType=VARCHAR},
+      </if>
+      <if test="updateTime != null" >
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="userId != null" >
+        user_id = #{userId,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where role_permissions_id = #{rolePermissionsId,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.flf.entity.TUserPermissions" >
+    update t_user_permissions
+    set role_id = #{roleId,jdbcType=VARCHAR},
+      permissions_id = #{permissionsId,jdbcType=VARCHAR},
+      anthorty_id = #{anthortyId,jdbcType=VARCHAR},
+      create_id = #{createId,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_id = #{updateId,jdbcType=VARCHAR},
+      update_time = #{updateTime,jdbcType=TIMESTAMP},
+      user_id = #{userId,jdbcType=VARCHAR}
+    where role_permissions_id = #{rolePermissionsId,jdbcType=VARCHAR}
+  </update>
+  
+  <select id="listTUserPermissionsByuserId" parameterType="String" resultMap="BaseResultMap">
+  	<!-- select <include refid="Base_Column_List" /> from t_user_permissions where user_id = #{userId} -->
+  	select <include refid="Base_Column_List" /> from t_user_permissions where user_id = #{userId}
+  </select>
+  
+  <delete id="deleteTUserPermissions" parameterType="com.flf.entity.TUserPermissions">
+  	delete from t_user_permissions
+    where user_id = #{userId,jdbcType=VARCHAR} and permissions_id = #{permissionsId,jdbcType=VARCHAR}
+  </delete>
+  
+  <select id="getTUserPermissionBytUserId" parameterType="String" resultMap="BaseResultMap">
+  	select <include refid="Base_Column_List" /> from t_user_permissions where user_id = #{userId} and permissions_id = '5d84715b-dba6-49cb-a6b4-4e3409b1b1c6'
+  </select>
+  
+   <!--根据用户id和权限id查询对应权限 -->
+  <select id="getTUserPermissionBytUserIdAndPermissionsId" parameterType="java.util.Map" resultMap="BaseResultMap">
+  	SELECT * FROM t_user_permissions <!-- where user_id = #{tUserId,jdbcType=VARCHAR} AND permissions_id = #{permissionsId,jdbcType=VARCHAR} -->
+  	<trim prefix="where" suffixOverrides="and || or">
+  		<if test="userId != null and userId != ''">
+  			user_id = #{userId,jdbcType=VARCHAR}
+  		</if>
+  		<if test="permissionsId != null and permissionsId != ''">
+  		   AND permissions_id = #{permissionsId,jdbcType=VARCHAR}
+  		</if>
+  	</trim>
+  </select>
+  
+</mapper>

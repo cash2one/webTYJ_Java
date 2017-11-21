@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.flf.mapper.ClaimToCustomerOrdersMapper" >
+  <resultMap id="BaseResultMap" type="ClaimToCustomerOrders" >
+    <id column="order_id" property="orderId" jdbcType="VARCHAR" />
+    <result column="order_type" property="orderType" jdbcType="TINYINT" />
+    <result column="order_state" property="orderState" jdbcType="TINYINT" />
+    <result column="task_id" property="taskId" jdbcType="VARCHAR" />
+    <result column="service_request_id" property="serviceRequestId" jdbcType="VARCHAR" />
+    <result column="operator_id" property="operatorId" jdbcType="VARCHAR" />
+    <result column="finish_time" property="finishTime" jdbcType="TIMESTAMP" />
+    <result column="customer_object_id" property="customerObjectId" jdbcType="VARCHAR" />
+    <result column="customer_object_name" property="customerObjectName" jdbcType="VARCHAR" />
+    <result column="customer_object_phonenum" property="customerObjectPhonenum" jdbcType="VARCHAR" />
+    <result column="remarks" property="remarks" jdbcType="VARCHAR" />
+    <result column="close_time" property="closeTime" jdbcType="TIMESTAMP" />
+    <result column="close_person_id" property="closePersonId" jdbcType="VARCHAR" />
+    <result column="close_remarks" property="closeRemarks" jdbcType="VARCHAR" />
+    <result column="signature" property="signature" jdbcType="VARCHAR" />
+  </resultMap>
+  
+  <resultMap type="ClaimToCustomerOrders" id="resultClaimToCustomerOrdersMap" extends="BaseResultMap">
+  	<association property="staff" column="operator_id" javaType="Staff" select="com.flf.mapper.StaffMapper.selectByid"></association>
+  	<association property="claimToCustomerRethods" column="order_id" javaType="ClaimToCustomerRethods" select="com.flf.mapper.ClaimToCustomerRethodsMapper.getClaimToCustomerRethodsbyOrderId"></association>
+  	<collection property="annexs" column="order_id" ofType="Annex" select="com.flf.mapper.AnnexMapper.getAnnexbyRelationId"></collection>
+  </resultMap>
+  
+  <select id="getClaimToCustomerOrdersbyId" parameterType="String" resultMap="resultClaimToCustomerOrdersMap">
+  select * from ts_claim_to_customer_orders where order_id=#{0}
+  </select>
+  
+  <insert id="insertClaimToCustomerOrders" parameterType="ClaimToCustomerOrders" >      
+      insert into ts_claim_to_customer_orders (order_id, order_type, order_state,task_id, 
+      service_request_id, operator_id, finish_time,customer_object_id,customer_object_name,customer_object_phonenum,
+      remarks,close_time,close_person_id,close_remarks,signature)
+    values (UUID(),#{orderType,jdbcType=TINYINT},#{orderState,jdbcType=TINYINT}, #{taskId,jdbcType=VARCHAR}, 
+      #{serviceRequestId,jdbcType=VARCHAR}, #{operatorId,jdbcType=VARCHAR}, #{finishTime,jdbcType=TIMESTAMP},#{customerObjectId,jdbcType=VARCHAR},
+      #{customerObjectName,jdbcType=VARCHAR},#{customerObjectPhonenum,jdbcType=VARCHAR},#{remarks,jdbcType=VARCHAR},
+      #{closeTime,jdbcType=TIMESTAMP},#{closePersonId,jdbcType=VARCHAR},#{closeRemarks,jdbcType=VARCHAR},#{signature,jdbcType=VARCHAR})
+  </insert>
+  
+   <insert id="insertClaimToCustomerOrdersUUID" parameterType="ClaimToCustomerOrders" >      
+     insert into ts_claim_to_customer_orders (order_id, order_type, order_state,task_id, 
+      service_request_id, operator_id, finish_time,customer_object_id,customer_object_name,customer_object_phonenum,
+      remarks,close_time,close_person_id,close_remarks,signature)
+    values (#{orderId,jdbcType=VARCHAR},#{orderType,jdbcType=TINYINT},#{orderState,jdbcType=TINYINT}, #{taskId,jdbcType=VARCHAR}, 
+      #{serviceRequestId,jdbcType=VARCHAR}, #{operatorId,jdbcType=VARCHAR}, #{finishTime,jdbcType=TIMESTAMP},#{customerObjectId,jdbcType=VARCHAR},
+      #{customerObjectName,jdbcType=VARCHAR},#{customerObjectPhonenum,jdbcType=VARCHAR},#{remarks,jdbcType=VARCHAR},
+      #{closeTime,jdbcType=TIMESTAMP},#{closePersonId,jdbcType=VARCHAR},#{closeRemarks,jdbcType=VARCHAR},#{signature,jdbcType=VARCHAR})
+  </insert>
+ 
+  <update id="updateClaimToCustomerOrders" parameterType="ClaimToCustomerOrders" >
+    update ts_claim_to_customer_orders
+    set order_type = #{orderType,jdbcType=TINYINT},
+    	order_state = #{orderState,jdbcType=TINYINT},
+      task_id = #{taskId,jdbcType=VARCHAR},
+      service_request_id = #{serviceRequestId,jdbcType=VARCHAR},
+      operator_id = #{operatorId,jdbcType=VARCHAR},
+      finish_time = #{finishTime,jdbcType=TIMESTAMP},
+      customer_object_id = #{customerObjectId,jdbcType=TIMESTAMP},
+      customer_object_name = #{customerObjectName,jdbcType=TIMESTAMP},
+      customer_object_phonenum = #{customerObjectPhonenum,jdbcType=TIMESTAMP},
+      remarks = #{remarks,jdbcType=VARCHAR},
+      close_time = #{closeTime,jdbcType=TIMESTAMP},
+      close_person_id = #{closePersonId,jdbcType=VARCHAR},
+      close_remarks = #{closeRemarks,jdbcType=VARCHAR},
+      signature = #{signature,jdbcType=VARCHAR}
+    where order_id = #{orderId,jdbcType=VARCHAR}
+  </update>
+  
+   <resultMap type="ClaimToCustomerOrders" id="resultWithClaimToCustomerOrders" extends="BaseResultMap">
+  	 <association property="claimToCustomerRethods" column="order_id" javaType="ClaimToCustomerRethods" select="com.flf.mapper.ClaimToCustomerRethodsMapper.getClaimToCustomerRethodsbyOrderId"></association>  	
+  </resultMap>
+  
+   <select id="getClaimToCustomerOrders" resultMap="resultWithClaimToCustomerOrders">
+  		select * from ts_claim_to_customer_orders cco
+  		inner join ts_claim_to_customer_methods ccm on cco.order_id=ccm.order_id
+  </select>
+  
+</mapper>

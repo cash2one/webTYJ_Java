@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>保险理赔</title>
+</head>
+<body ng-controller="claimCtrl">
+<div class="complaint_user_list">
+    <div class="row" style="margin: 10px">
+        <button class="btn btn-xs">切换</button>
+        <button class="btn btn-xs">切换</button>
+        <button class="btn btn-md col-md-offset-10" ui-sref="index.propertyService.carHome.collectFees">
+            <span class="glyphicon glyphicon-remove"  aria-hidden="true"></span>
+        </button>
+
+    </div>
+<div class="row" style="padding:20px 20px 0">
+    <div class="col-lg-4 col-md-4 col-sm-6">
+        <div class="panel">
+            <div class="panel_title">
+                <span class="panel_title_left">保险名称：房屋保险</span>
+            </div>
+            <div class="col-md-12" style="padding-top: 10px">车牌号码：粤B12345</div>
+            <div class="col-md-6" style="...">保险公司：人保</div>
+            <div class="col-md-6" style="...">
+            <span class="panel_title_right">
+               <ul id="myTabe">
+                   <li class="dropdown pull-right">
+                       <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><button class="btn btn-default" style="margin-top: -5px">操作</button></a>
+                       <ul class="dropdown-menu" role="menu" aria-labelledby="myTbaDrop1">
+                           <li><a  data-toggle="modal" data-target="#myModal">
+                               新增保险单</a></li>
+                           <li><a  data-toggle="modal" data-target="#myModall">
+                               修改</a></li>
+                       </ul>
+                   </li>
+               </ul>
+            </span>
+            </div>
+            <div class="col-md-12" style="...">理赔类型：刮花</div>
+            <div class="col-md-12" style="...">理赔状态：已完成</div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLable" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <h4 class="modal-title" id="myModallabel">新增表单</h4>
+                </div>
+                <div class="modal-body" style="padding-right: 60px">
+                    <table class="table" style="text-align: right">
+                        <tr style="border: hidden">
+                            <td>保险名称：<input type="text" style="height: 22px" placeholder=""></td>
+                            <td>保险数量：<input type="text" style="height: 22px" placeholder=""></td>
+                        </tr>
+                        <tr style="border: hidden">
+                            <td>受益人：<input type="text" style="height: 22px" placeholder=""></td>
+                            <td>保险种类：<select>
+                                <option>个人</option>
+                                <option>商业</option>
+                            </select></td>
+                        </tr>
+                        <tr style="border: hidden">
+                            <td>保险ID：<input type="text" style="height: 22px" placeholder=""></td>
+                            <td>客户名称：<input type="text" style="height: 22px" placeholder=""></td>
+
+                        </tr>
+                        <tr style="border: hidden">
+                            <td>保险金额：<input type="text" style="height: 22px" placeholder=""></td>
+                            <td>客户电话：<input type="text" style="height: 22px" placeholder=""></td>
+
+                        </tr>
+                        <tr style="border: hidden">
+                            <td>房产证：<input type="text"  style="height: 22px" placeholder=""></td>
+                            <td>身份证：<input type="text" style="height: 22px" placeholder=""></td>
+                        </tr>
+                        <tr style="border: hidden">
+                            <td>保险状态：<select>
+                                <option>过期</option>
+                                <option>在保</option>
+                            </select></td>
+                            <td>是否购买过：<input type="text" style="width: 30px;height: 22px" placeholder=""></td>
+                        </tr>
+                        <tr style="border: hidden">
+                            <td>有效时间：<input type="date" style="height: 22px" placeholder=""></td>
+                        </tr>
+                    </table>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">提交</button>
+                    <button type="button" class="btn btn-primary" data-dismiss="modal">取消</button>
+                    <button type="button" class="btn btn-primary">打印</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="modal fade" id="myModall" tabindex="-1" role="dialog" aria-labelledby="myModalLable" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <h4 class="modal-title" id="myModalllabel">修改</h4>
+                </div>
+                <div class="modal-body" style="padding-left: 40px">
+                    <table class="table">
+                        <tr style="border: hidden">
+                            <td>保险名称：房屋保险</td>
+                            <td>保险数量：1</td>
+                            <td>受益人：范冰冰</td>
+                        </tr>
+                        <tr style="border: hidden">
+                            <td>保险种类：<select>
+                                <option>个人</option>
+                                <option>商业</option>
+                            </select></td>
+                            <td>保险ID：sdhr123</td>
+                            <td>客户名称：章子怡</td>
+
+                        </tr>
+                        <tr style="border: hidden">
+                            <td>保险金额：50001</td>
+                            <td>客户电话：12383383838</td>
+                            <td>房产证：4320583</td>
+
+                        </tr>
+                        <tr style="border: hidden">
+                            <td>身份证：4206213232134539</td>
+                            <td>保险状态：<select>
+                                <option>过期</option>
+                                <option>可用</option>
+                            </select></td>
+                            <td>是否购买过：<input type="text" style="width: 30px;height: 20px" placeholder=""></td>
+                        </tr>
+                        <tr style="border: hidden">
+                            <td>有效时间：2016/05/06</td>
+                        </tr>
+                    </table>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">提交</button>
+                    <button type="button" class="btn btn-primary" data-dismiss="modal">取消</button>
+                    <button type="button" class="btn btn-primary">打印</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+</div>
+</body>
+</html>

@@ -1,0 +1,264 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.flf.mapper.StoreNewMapper" >
+  <resultMap id="BaseResultMap" type="StoreNew" >
+    <result column="store_id" property="storeId" jdbcType="VARCHAR" />
+    <result column="store_tyoe" property="storeTyoe" jdbcType="VARCHAR" />
+    
+    <result column="intake_date" property="intakeDate" jdbcType="DATE" />
+    <result column="building_area" property="buildingArea" jdbcType="DOUBLE" />
+    <result column="commonality_area" property="commonalityArea" jdbcType="DOUBLE" />
+    <result column="completion_area" property="completionArea" jdbcType="DOUBLE" />
+    <result column="inside_area" property="insideArea" jdbcType="DOUBLE" />
+    <result column="store_number" property="storeNumber" jdbcType="VARCHAR" />
+
+    <result column="store_bairro" property="storeBairro" jdbcType="VARCHAR" />
+    <result column="sta_date" property="staDate" jdbcType="DATE" />
+    <result column="property_type" property="propertyType" jdbcType="TINYINT" />
+    <result column="register_price" property="registerPrice" jdbcType="DOUBLE" />
+    <result column="mortgage_amount" property="mortgageAmount" jdbcType="DOUBLE" />
+    <result column="registrant_cust" property="registrantCust" jdbcType="VARCHAR" />
+    <result column="registration_date" property="registrationDate" jdbcType="DATE" />
+    <result column="down_payment_amount" property="downPaymentAmount" jdbcType="DOUBLE" />
+    <result column="payment_method" property="paymentMethod" jdbcType="VARCHAR" />
+    <result column="transaction_type" property="transactionType" jdbcType="VARCHAR" />
+    <result column="discounted_prices" property="discountedPrices" jdbcType="DOUBLE" />
+    <result column="building_structure_id" property="buildingStructureId" jdbcType="VARCHAR" />
+    <result column="building_id" property="buildingId" jdbcType="VARCHAR" />
+	 <!-- 商铺编号取消注释  王洲  2016.02.25 -->
+     <result column="store_code" property="storeCode" jdbcType="VARCHAR" />
+
+    <result column="project_id" property="projectId" jdbcType="VARCHAR" /> 
+     <result column="intake_state" property="intakeState" /> 
+ <result column="full_name" property="fullName" /> 
+ <result column="building_certificate" property="buildingCertificate" />
+  </resultMap>
+
+	<resultMap type="StoreNew" id="ResultMapWithExport" extends="BaseResultMap">
+		<association property="buildingStructureNew" column="building_structure_id" javaType="BuildingStructureNew" select="com.flf.mapper.BuildingStructureNewMapper.getBuildingStructureNewbyId" />
+	</resultMap>  
+	<select id="listAllStoreNew" resultMap="ResultMapWithExport">
+		select * from tc_store
+	</select>
+  
+   	<select id="selectStoreNew" parameterType="String" resultMap="BaseResultMap">
+  	 	select * from tc_store  where store_id = #{0}
+  	</select>
+  
+  <select id="listSearchStoreNew" parameterType="Search" resultMap="BaseResultMap">
+  	SELECT a.* ,b.full_name FROM tc_store a 
+		LEFT JOIN tc_building_structure b ON a.building_structure_id=b.id 
+		LEFT JOIN tc_person_building c ON b.id=c.building_structure_id
+		LEFT JOIN tc_person_cust d ON c.cust_id=d.cust_id
+		LEFT JOIN t_car_info e on e.person_id = d.cust_id
+		WHERE 1=1
+		<if test="staffName!='' and staffName!=null">
+  			and d.name like CONCAT('%',#{staffName},'%')
+  		</if>
+  		<if test="idNum!='' and idNum!=null">
+  			and d.card_num like CONCAT('%',#{idNum},'%')
+  		</if>
+  		<if test="phone!='' and phone!=null">
+  			and d.register_phone like CONCAT('%',#{phone},'%')
+  		</if>
+  		<if test="custId!='' and custId!=null">
+  			and d.cust_id = #{custId}
+  		</if>
+  		<if test="carNum!='' and carNum!=null">
+  			and e.car_num like CONCAT('%',#{carNum},'%')
+  		</if>
+  		<if test="personBuildingState!=null">
+  			and c.state = #{personBuildingState}
+  		</if>
+  		<if test="houseAddress != null and houseAddress != ''">
+  			and b.full_name like CONCAT('%',#{houseAddress},'%')
+  		</if>
+  		group by a.store_id
+  </select>
+  
+  	<select id="listSearchStoreNewAu" resultMap="BaseResultMap" parameterType="Search">
+		SELECT a.*,f.full_name FROM tc_store a 	
+		LEFT JOIN tc_building_structure f ON a.building_structure_id=f.id 	
+		LEFT JOIN tc_person_building c ON a.building_structure_id=c.building_structure_id
+		LEFT JOIN tc_person_cust d ON c.cust_id=d.cust_id
+		LEFT JOIN t_authorization e ON e.authorizer_personId =d.cust_id
+		WHERE e.status = '1' and e.authorized_personId=#{custId} AND e.roperty_changes=1  AND NOW() BETWEEN e.sta_date AND e.end_date 		
+		<if test="staffName!='' and staffName!=null">
+  			and d.name like CONCAT('%',#{staffName},'%')
+  		</if>
+  		<if test="idNum!='' and idNum!=null">
+  			and d.card_num like CONCAT('%',#{idNum},'%')
+  		</if>
+  		<if test="phone!='' and phone!=null">
+  			and d.phone_num like CONCAT('%',#{phone},'%')
+  		</if>
+  		<if test="carportNum!='' and carportNum!=null">
+  			and a.stall_number like CONCAT('%',#{carportNum},'%')
+  		</if>
+  		<!-- <if test="custId!='' and custId!=null">
+  			and d.cust_id = #{custId}
+  		</if> -->
+  		<if test="personBuildingState!=null">
+  			and c.state = #{personBuildingState}
+  		</if>
+		GROUP BY a.store_id
+	</select>
+
+  <delete id="deleteByExample" parameterType="String" >
+    delete from tc_store  where store_id = #{storeId,jdbcType=VARCHAR},
+ 
+  </delete>
+  
+  
+  <select id="listStoreByBuildingStructureId" resultMap="BaseResultMap" parameterType="String">
+  	select a.*,b.full_name,b.completion_area from tc_store a 
+     left join tc_building_structure b on a.building_structure_id=b.id
+ 	 where a.building_structure_id=#{0} limit 1
+  </select>
+  <insert id="insert" parameterType="StoreNew" >
+    insert into tc_store (store_id, store_tyoe,
+    intake_date,building_area,commonality_area,inside_area,completion_area,store_number,
+     store_bairro,sta_date,property_type,register_price,mortgage_amount, registrant_cust, registration_date, 
+      down_payment_amount, payment_method, transaction_type, 
+
+      discounted_prices, building_structure_id,
+
+      building_id,project_id,intake_state,building_certificate,
+	  store_code
+      )
+    values (UUID(), #{storeTyoe,jdbcType=VARCHAR},
+       #{intakeDate},#{buildingArea,jdbcType=DOUBLE},#{commonalityArea,jdbcType=DOUBLE},
+       #{insideArea,jdbcType=DOUBLE},#{completionArea,jdbcType=DOUBLE},#{storeNumber,jdbcType=VARCHAR},
+       #{storeBairro,jdbcType=VARCHAR}, 
+      #{staDate}, #{propertyType,jdbcType=TINYINT}, #{registerPrice,jdbcType=DOUBLE}, 
+      #{mortgageAmount,jdbcType=DOUBLE}, #{registrantCust,jdbcType=VARCHAR}, #{registrationDate}, 
+      #{downPaymentAmount,jdbcType=DOUBLE}, #{paymentMethod,jdbcType=VARCHAR}, #{transactionType,jdbcType=VARCHAR}, 
+
+      #{discountedPrices,jdbcType=DOUBLE}, #{buildingStructureId,jdbcType=VARCHAR},
+
+     #{buildingId,jdbcType=VARCHAR}, 
+      #{projectId,jdbcType=VARCHAR},#{intakeState},
+      #{buildingCertificate},#{storeCode,jdbcType=VARCHAR}
+      )
+  </insert>
+
+  
+  <update id="updateByExample" parameterType="map" >
+    update tc_store
+    set 
+      store_tyoe = #{storeTyoe,jdbcType=VARCHAR},
+      store_bairro = #{storeBairro,jdbcType=VARCHAR},
+      
+       intake_date= #{intakeDate},
+       building_area= #{buildingArea,jdbcType=DOUBLE},
+       commonality_area= #{commonalityArea,jdbcType=DOUBLE},
+       inside_area= #{insideArea,jdbcType=DOUBLE},
+       completion_area= #{completionArea,jdbcType=DOUBLE},
+       store_number= #{storeNumber,jdbcType=VARCHAR},
+       
+      sta_date = #{staDate},
+      property_type = #{propertyType,jdbcType=TINYINT},
+      register_price = #{registerPrice,jdbcType=DOUBLE},
+      mortgage_amount = #{mortgageAmount,jdbcType=DOUBLE},
+      registrant_cust = #{registrantCust,jdbcType=VARCHAR},
+      registration_date = #{registrationDate},
+      down_payment_amount = #{downPaymentAmount,jdbcType=DOUBLE},
+      payment_method = #{paymentMethod,jdbcType=VARCHAR},
+      transaction_type = #{transactionType,jdbcType=VARCHAR},
+      discounted_prices = #{discountedPrices,jdbcType=DOUBLE},
+      building_structure_id = #{buildingStructureId,jdbcType=VARCHAR},
+
+     
+      store_code=#{storeCode}
+
+      building_id = #{buildingId,jdbcType=VARCHAR},
+      project_id=#{projectId,jdbcType=VARCHAR},
+       intake_state=#{intakeState}
+   where store_id = #{storeId,jdbcType=VARCHAR}
+  </update>
+  
+  	<!-- 根据项目id查询项目下所有商铺信息 -->
+	<select id="listStoreByProjectId" parameterType="String" resultMap="BaseResultMap">
+		select a.*,b.full_name from tc_store a left join tc_building_structure b on a.building_structure_id = b.id where a.project_id = #{projectId,jdbcType=VARCHAR}
+	</select>  
+	
+	<update id="updateStore" parameterType="String">
+      update tc_store 
+      set building_certificate=#{1}
+      where building_structure_id=#{0}
+  </update>
+  
+	<!-- 修改商铺信息   王洲   2016.03.11  -->
+	<update id="updateStoreNew" parameterType="StoreNew">
+		update tc_store
+			set 
+			store_tyoe = #{storeTyoe,jdbcType=VARCHAR},
+			intake_date= #{intakeDate},
+			building_area= #{buildingArea,jdbcType=DOUBLE},
+			commonality_area= #{commonalityArea,jdbcType=DOUBLE},
+			inside_area= #{insideArea,jdbcType=DOUBLE},
+			completion_area= #{completionArea,jdbcType=DOUBLE},
+			store_number= #{storeNumber,jdbcType=VARCHAR},
+			building_structure_id = #{buildingStructureId,jdbcType=VARCHAR},
+			store_code=#{storeCode},
+			building_id = #{buildingId,jdbcType=VARCHAR},
+			project_id=#{projectId,jdbcType=VARCHAR},
+			intake_state=#{intakeState}
+		where store_id = #{storeId,jdbcType=VARCHAR}
+	</update>
+	
+	 <!-- 批量插入商铺信息（用于Excel导入）
+	<insert id="insertList"  parameterType="java.util.List">
+		insert into tc_store (store_id,building_structure_id,
+      building_id,project_id)
+    	values 
+		<foreach collection="list" item="item" index="index" separator="," >
+			(#{item.storeId,jdbcType=VARCHAR},#{item.buildingStructureId,jdbcType=VARCHAR},
+     #{item.buildingId,jdbcType=VARCHAR}, 
+      #{item.projectId,jdbcType=VARCHAR})
+		</foreach>
+	</insert>
+	-->
+	 
+	 <!-- 批量插入商铺信息（用于Excel导入）-->
+	 <insert id="insertList"  parameterType="java.util.List">
+		Insert Into tc_store (
+		store_id, store_tyoe,intake_date
+		, building_area,commonality_area,inside_area
+		, completion_area,store_number,store_bairro
+		, sta_date,property_type,register_price
+		, mortgage_amount, registrant_cust,registration_date
+		, down_payment_amount, payment_method,transaction_type
+		, discounted_prices, building_structure_id,building_id
+		, project_id,intake_state,building_certificate
+		, store_code)
+    	Values 
+		<foreach collection="list" item="item" index="index" separator="," >
+		(#{item.storeId,jdbcType=VARCHAR}, #{item.storeTyoe,jdbcType=VARCHAR}, #{item.intakeDate,jdbcType=DATE}
+		, #{item.buildingArea,jdbcType=DOUBLE},#{item.commonalityArea,jdbcType=DOUBLE},#{item.insideArea,jdbcType=DOUBLE}
+		, #{item.completionArea,jdbcType=DOUBLE},#{item.storeNumber,jdbcType=VARCHAR},#{item.storeBairro,jdbcType=VARCHAR}
+		, #{item.staDate,jdbcType=DATE}, #{item.propertyType,jdbcType=TINYINT}, #{item.registerPrice,jdbcType=DOUBLE}
+		, #{item.mortgageAmount,jdbcType=DOUBLE}, #{item.registrantCust,jdbcType=VARCHAR}, #{item.registrationDate,jdbcType=DATE}
+		, #{item.downPaymentAmount,jdbcType=DOUBLE}, #{item.paymentMethod,jdbcType=VARCHAR}, #{item.transactionType,jdbcType=VARCHAR}
+		, #{item.discountedPrices,jdbcType=DOUBLE}, #{item.buildingStructureId,jdbcType=VARCHAR},#{item.buildingId,jdbcType=VARCHAR}
+		, #{item.projectId,jdbcType=VARCHAR},#{item.intakeState,jdbcType=TINYINT},#{item.buildingCertificate,jdbcType=VARCHAR}
+		, #{item.storeCode,jdbcType=VARCHAR})
+		</foreach>
+	</insert>
+	
+	
+	<!-- 根据项目id分页查询项目下所有商铺信息  wangzhou  2016-03-24 -->
+	<select id="listPageStoreByProjectId" parameterType="StoreNew" resultMap="BaseResultMap">
+		select a.*,b.full_name from tc_store a left join tc_building_structure b on a.building_structure_id = b.id where a.project_id = #{projectId,jdbcType=VARCHAR}
+	</select>
+	
+	<select id="getStoreNewByBuildingStructureId" parameterType="String" resultMap="BaseResultMap">
+		select * from tc_store where building_structure_id = #{0}
+	</select>
+	
+	<!-- 根据建筑结构id分页查询商铺数据  ylq 2016-07-05 -->
+	<select id="listPageStoreByBuildingStructureId" parameterType="StoreNew" resultMap="BaseResultMap">
+		select a.*,b.full_name from tc_store a left join tc_building_structure b on a.building_structure_id = b.id
+		Where a.building_structure_id = #{buildingStructureId,jdbcType=VARCHAR} Or b.parent_id = #{buildingStructureId,jdbcType=VARCHAR}
+	</select>
+</mapper>

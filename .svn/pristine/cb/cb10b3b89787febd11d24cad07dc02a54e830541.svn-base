@@ -1,0 +1,201 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.flf.mapper.ElectricityMeterRecordsMapper" >
+  <resultMap id="BaseResultMap" type="com.flf.entity.ElectricityMeterRecords" >
+    <id column="electricity_meter_records_id" property="electricityMeterRecordsId" jdbcType="VARCHAR" />
+    <result column="electricity_meter_id" property="electricityMeterId" jdbcType="VARCHAR" />
+    <result column="installation_time" property="installationTime" jdbcType="DATE" />
+    <result column="enabling_time" property="enablingTime" jdbcType="DATE" />
+    <result column="install" property="install" jdbcType="VARCHAR" />
+    <result column="outage_time" property="outageTime" jdbcType="DATE" />
+    <result column="using_nature" property="usingNature" jdbcType="VARCHAR" />
+    <result column="electricity_meter_building_id" property="electricityMeterBuildingId" jdbcType="VARCHAR" />
+    <result column="assets_id" property="assetsId" jdbcType="VARCHAR" />
+    <result column="state" property="state" jdbcType="VARCHAR" />
+    <result column="reading_way" property="readingWay" jdbcType="VARCHAR" />
+    <result column="parent_id" property="parentId" jdbcType="VARCHAR" />
+    <result column="is_billing" property="isBilling" jdbcType="VARCHAR" />
+    <result column="last_time_reading" property="lastTimeReading" jdbcType="DOUBLE" />
+    <result column="initial_reading" property="initialReading" jdbcType="DOUBLE" />
+    <result column="stop_reading" property="stopReading" jdbcType="DOUBLE" />
+    <result column="building_structure_id" property="buildingStructureId" jdbcType="VARCHAR" />
+    <result column="full_name" property="fullName" jdbcType="VARCHAR" />
+    <result column="electricity_meter_num" property="electricityMeterNum" jdbcType="VARCHAR" />
+    <result column="reading" property="reading" jdbcType="DOUBLE" />
+    <result column="meter_reading_people" property="meterReadingPeople" jdbcType="VARCHAR" />
+    <result column="meter_reading_date" property="meterReadingDate" jdbcType="VARCHAR" />
+  </resultMap>
+  
+  <resultMap id="ElectricityMeterResultMap" type="com.flf.entity.ElectricityMeter" >
+    <id column="electricity_meter_id" property="electricityMeterId" jdbcType="VARCHAR" />
+    <result column="assets_id" property="assetsId" jdbcType="VARCHAR" />
+    <result column="electricity_meter_num" property="electricityMeterNum" jdbcType="VARCHAR" />
+    <result column="assets_num" property="assetsNum" jdbcType="VARCHAR" />
+    <result column="state" property="state" jdbcType="TINYINT" />
+    <result column="ratio" property="ratio" jdbcType="DOUBLE" />
+    <result column="max" property="max" jdbcType="DOUBLE" />
+    <result column="brand" property="brand" jdbcType="VARCHAR" />
+    <result column="specifications" property="specifications" jdbcType="VARCHAR" />
+    <result column="min" property="min" jdbcType="DOUBLE" />
+  </resultMap>
+  
+  <resultMap id="ElectricityMeterRecordsResultMap" type="com.flf.entity.ElectricityMeterRecords" >
+    <id column="electricity_meter_records_id" property="electricityMeterRecordsId" jdbcType="VARCHAR" />
+    <result column="electricity_meter_id" property="electricityMeterId" jdbcType="VARCHAR" />
+    <result column="installation_time" property="installationTime" jdbcType="DATE" />
+    <result column="enabling_time" property="enablingTime" jdbcType="DATE" />
+    <result column="install" property="install" jdbcType="VARCHAR" />
+    <result column="outage_time" property="outageTime" jdbcType="DATE" />
+    <result column="using_nature" property="usingNature" jdbcType="VARCHAR" />
+    <result column="electricity_meter_building_id" property="electricityMeterBuildingId" jdbcType="VARCHAR" />
+    <result column="assets_id" property="assetsId" jdbcType="VARCHAR" />
+    <result column="state" property="state" jdbcType="VARCHAR" />
+    <result column="reading_way" property="readingWay" jdbcType="VARCHAR" />
+    <result column="parent_id" property="parentId" jdbcType="VARCHAR" />
+    <result column="is_billing" property="isBilling" jdbcType="VARCHAR" />
+    <result column="last_time_reading" property="lastTimeReading" jdbcType="DOUBLE" />
+    <result column="initial_reading" property="initialReading" jdbcType="DOUBLE" />
+    <result column="stop_reading" property="stopReading" jdbcType="DOUBLE" />
+    <result column="building_structure_id" property="buildingStructureId" jdbcType="VARCHAR" />
+    <result column="full_name" property="fullName" jdbcType="VARCHAR" />
+    <result column="electricity_meter_num" property="electricityMeterNum" jdbcType="VARCHAR" />
+    <result column="reading" property="reading" jdbcType="DOUBLE" />
+    <result column="meter_reading_people" property="meterReadingPeople" jdbcType="VARCHAR" />
+    <result column="meter_reading_date" property="meterReadingDate" jdbcType="VARCHAR" />
+    <association property="electricityMeter" select="selectElectricityMeter" column="electricity_meter_id" javaType="ElectricityMeter">
+        <id column="electricity_meter_id" property="electricityMeterId" jdbcType="VARCHAR" />
+    <result column="assets_id" property="assetsId" jdbcType="VARCHAR" />
+    <result column="electricity_meter_num" property="electricityMeterNum" jdbcType="VARCHAR" />
+    <result column="assets_num" property="assetsNum" jdbcType="VARCHAR" />
+    <result column="state" property="state" jdbcType="TINYINT" />
+    <result column="ratio" property="ratio" jdbcType="DOUBLE" />
+    <result column="max" property="max" jdbcType="DOUBLE" />
+    <result column="brand" property="brand" jdbcType="VARCHAR" />
+    <result column="specifications" property="specifications" jdbcType="VARCHAR" />
+    <result column="min" property="min" jdbcType="DOUBLE" />
+    </association>
+  </resultMap>
+ 
+  <!-- 根据id查询电表信息 -->
+  <select id="selectElectricityMeter" parameterType="String" resultMap="ElectricityMeterResultMap">
+      select * from te_electricity_meter where electricity_meter_id=#{0}
+  </select>
+  
+  
+  <!-- 分页查询电表使用记录 -->
+  <select id="listPageElectricityMeterRecords" parameterType="SearchMeter" resultMap="ElectricityMeterRecordsResultMap">
+      select w.*,b.full_name,m.electricity_meter_num,d.reading,d.meter_reading_people,d.meter_reading_date from te_electricity_meter_records w 
+      inner join tc_building_structure b on w.building_structure_id=b.id
+      inner join te_electricity_meter m on w.electricity_meter_id = m.electricity_meter_id
+      inner join te_electricity_meter_reading_data d on d.electricity_meter_record_id = w.electricity_meter_records_id
+      where 1=1
+      <if test="electricityMeterNum != null">
+          and electricity_meter_num = #{electricityMeterNum}
+      </if>
+      <if test="fullName != null">
+          and full_name = #{fullName}
+      </if>
+  </select>
+  
+  <!-- 查询电表使用记录 -->
+  <select id="listAllElectricityMeterRecords"  resultMap="BaseResultMap">
+      select * from te_electricity_meter_records 
+  </select>
+  
+  <!--  根据建筑结构id查询鼠标使用记录 -->
+    <select id="listElectricityMeterRecordsbybuildigIds" parameterType="String" resultMap="ElectricityMeterRecordsResultMap">
+      select * from te_electricity_meter_records where building_structure_id =#{0} and `state` = '启用中'
+  </select>
+  
+  <!-- 根据id查询电表使用记录 -->
+  <select id="getElectricityMeterRecordsbyId" parameterType="String" resultMap="ElectricityMeterRecordsResultMap">
+      select * from te_electricity_meter_records w 
+      inner join tc_building_structure b on w.building_structure_id=b.id
+      where electricity_meter_records_id =#{electricityMeterRecordsId}
+  </select>
+  
+  <!--       根据水表编号查询水表使用记录信息 -->
+    <select id="listElectricityMeterRecordsbyWaterId" parameterType="String" resultMap="ElectricityMeterRecordsResultMap">
+      select * from te_electricity_meter_records where electricity_meter_id in (select electricity_meter_id from te_electricity_meter where electricity_meter_num =#{electricityMeterNum})
+  </select>
+  
+  <!-- 删除电表使用记录 -->
+  <delete id="deleteElectricityMeterRecords" parameterType="String">
+      delete from te_electricity_meter_records where electricity_meter_records_id =#{electricityMeterRecordsId}
+  </delete>
+  
+  <!-- 新增电表使用记录 -->
+  <insert id="insertElectricityMeterRecords" parameterType="com.flf.entity.ElectricityMeterRecords" >
+    insert into te_electricity_meter_records (electricity_meter_records_id, electricity_meter_id, 
+      installation_time, enabling_time, install, 
+      outage_time, using_nature, electricity_meter_building_id, 
+      assets_id, state, reading_way, 
+      parent_id, is_billing, last_time_reading, 
+      initial_reading, stop_reading, building_structure_id
+      )
+    values (UUID(), #{electricityMeterId,jdbcType=VARCHAR}, 
+      #{installationTime,jdbcType=DATE}, #{enablingTime,jdbcType=DATE}, #{install,jdbcType=VARCHAR}, 
+      #{outageTime,jdbcType=DATE}, #{usingNature,jdbcType=VARCHAR}, #{electricityMeterBuildingId,jdbcType=VARCHAR}, 
+      #{assetsId,jdbcType=VARCHAR}, #{state,jdbcType=VARCHAR}, #{readingWay,jdbcType=VARCHAR}, 
+      #{parentId,jdbcType=VARCHAR}, #{isBilling,jdbcType=VARCHAR}, #{lastTimeReading,jdbcType=DOUBLE}, 
+      #{initialReading,jdbcType=DOUBLE}, #{stopReading,jdbcType=DOUBLE}, #{buildingStructureId,jdbcType=VARCHAR}
+      )
+  </insert>
+ 
+  <!-- 修改电表使用记录 -->
+  <update id="updateElectricityMeterRecords" parameterType="com.flf.entity.ElectricityMeterRecords" >
+    update te_electricity_meter_records
+    <set >
+      <if test="electricityMeterId != null" >
+        electricity_meter_id = #{electricityMeterId,jdbcType=VARCHAR},
+      </if>
+      <if test="installationTime != null" >
+        installation_time = #{installationTime,jdbcType=DATE},
+      </if>
+      <if test="enablingTime != null" >
+        enabling_time = #{enablingTime,jdbcType=DATE},
+      </if>
+      <if test="install != null" >
+        install = #{install,jdbcType=VARCHAR},
+      </if>
+      <if test="outageTime != null" >
+        outage_time = #{outageTime,jdbcType=DATE},
+      </if>
+      <if test="usingNature != null" >
+        using_nature = #{usingNature,jdbcType=VARCHAR},
+      </if>
+      <if test="electricityMeterBuildingId != null" >
+        electricity_meter_building_id = #{electricityMeterBuildingId,jdbcType=VARCHAR},
+      </if>
+      <if test="assetsId != null" >
+        assets_id = #{assetsId,jdbcType=VARCHAR},
+      </if>
+      <if test="state != null" >
+        state = #{state,jdbcType=VARCHAR},
+      </if>
+      <if test="readingWay != null" >
+        reading_way = #{readingWay,jdbcType=VARCHAR},
+      </if>
+      <if test="parentId != null" >
+        parent_id = #{parentId,jdbcType=VARCHAR},
+      </if>
+      <if test="isBilling != null" >
+        is_billing = #{isBilling,jdbcType=VARCHAR},
+      </if>
+      <if test="lastTimeReading != null" >
+        last_time_reading = #{lastTimeReading,jdbcType=DOUBLE},
+      </if>
+      <if test="initialReading != null" >
+        initial_reading = #{initialReading,jdbcType=DOUBLE},
+      </if>
+      <if test="stopReading != null" >
+        stop_reading = #{stopReading,jdbcType=DOUBLE},
+      </if>
+      <if test="buildingStructureId != null" >
+        building_structure_id = #{buildingStructureId,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where electricity_meter_records_id = #{electricityMeterRecordsId,jdbcType=VARCHAR}
+  </update>
+ 
+</mapper>

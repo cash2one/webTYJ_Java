@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>售后管理</title>
+</head>
+<body >
+<div class="row">
+    <div class="table_list">
+        <h4 style="text-align: center"><strong>售后管理</strong></h4>
+        <div class="col-md-2" ><select ng-model="AfterSale.responsibleDepartmentType"  class="form-control" style="margin-top: 12px;margin-left: 20px">
+        	<option value="" selected="selected">查询所有</option>
+            <option value="开发商">开发商</option>
+            <option value="物业公司">物业公司</option>
+            <option value="第三方">第三方</option>
+        </select>
+        </div>
+        <div class="col-md-10" style="height: 58px">
+            <div class="search_style form-inline">
+                <form>
+                    <input type="text"   class="search_style_input" ng-model="AfterSale.responsibleDepartment"  placeholder="请输入搜索条件" />
+                    <button type="submit" class="search_style_button" ng-click="searchPaginator._load()">查找</button>
+                </form>
+            </div>
+            <div class="button_group" style="margin-right: 20px">
+                <a href="#shouhoufuwumodal1" data-toggle="modal">增加</a>
+                <a href="#" class="delete" ng-click="deleteAfterSales()">删除</a>
+            </div>
+
+        </div>
+    </div>
+
+    <div class="col-md-12" style="height: 46px">
+        <div class="button_group" style="margin-right: 20px">
+            <button class="btn btn-primary">验房</button>
+            <button class="btn btn-primary">保修跟踪</button>
+            <button class="btn btn-primary">索赔</button>
+            <button class="btn btn-primary">房屋结构数据初始化</button>
+            <button class="btn btn-primary">项目结构数据初始化</button>
+            </button>
+        </div>
+    </div>
+    <div class="table_list">
+        <table width="100%" border="0" cellpadding="0" cellspacing="0" class="table_style">
+        	<tr>
+                <td width="50" align="center" valign="middle" class="table_style_toptd">&nbsp;</td>
+                <td align="center" valign="middle" class="table_style_toptd">负责单位</td>
+                <td align="center" valign="middle" class="table_style_toptd">负责单位电话</td>
+                <td align="center" valign="middle" class="table_style_toptd">负责项目</td>
+                <td align="center" valign="middle" class="table_style_toptd">负责事项</td>
+                <td align="center" valign="middle" class="table_style_toptd">售后开始时间</td>
+                <td align="center" valign="middle" class="table_style_toptd">售后结束时间</td>
+                <td align="center" valign="middle" class="table_style_toptd">服务房屋编号</td>
+                <td align="center" valign="middle" class="table_style_toptd">房屋地址</td>
+                <td align="center" valign="middle" class="table_style_toptd">户主类型</td>
+                <td align="center" valign="middle" class="table_style_toptd">户主姓名</td>
+                <td align="center" valign="middle" class="table_style_toptd">户主电话</td>
+                <td align="center" valign="middle" class="table_style_toptd">客户评价</td>
+                <td width="50" align="center" valign="middle" class="table_style_toptd">&nbsp;</td>
+                <td width="50" align="center" valign="middle" class="table_style_toptd">&nbsp;</td>
+            </tr>
+            <tr ng-repeat="items in searchPaginator.object.afterSales" ng-show="items.id!=null">
+                <td width="50" align="center" valign="middle"><input type="checkbox" name="checkbox2" id="checkbox2" ng-model="items.checkbox"></td>
+                <td align="center" valign="middle">{{items.responsibleDepartment}}</td>
+                <td align="center" valign="middle">{{items.responsibleDepartmentPhone}}</td>
+                <td align="center" valign="middle">{{items.responsibleProject}}</td>
+                <td align="center" valign="middle">{{items.responsibleItems}}</td>
+                <td align="center" valign="middle">{{items.afterStartTime | date:"yyyy-MM-dd"}}</td>
+                <td align="center" valign="middle">{{items.afterEndTime | date:"yyyy-MM-dd"}}</td>
+                <td align="center" valign="middle">{{items.serviceHomeNum}}</td>
+                <td align="center" valign="middle">{{items.homeAddress}}</td>
+                <td align="center" valign="middle">{{items.clientType}}</td>
+                <td align="center" valign="middle">{{items.clientName}}</td>
+                <td align="center" valign="middle">{{items.clientPhone}}</td>
+                <td align="center" valign="middle">{{items.clientEvaluate}}</td>
+                <td width="50" align="center" valign="middle"><a href="#shouhoufuwumodal2" data-toggle="modal" ng-click="view(items.id)">查看</a></td>
+                <td width="50" align="center" valign="middle"><a href="#shouhoufuwumodal3" data-toggle="modal" ng-click="view(items.id)">修改</a></td>
+            </tr>
+        </table>
+        <div ng-include="searchPaginator.templateUrl"></div>
+    </div>
+</div>
+
+    <div class="pagination">
+                    <a href="#" ng-show="searchPaginator.hasPrevious()" ng-click="searchPaginator.previous()">上一页</a>
+                    <a href="#" ng-repeat="i in searchPaginator.pages"  ng-click="searchPaginator.go(i)" class="number">{{i}}</a>
+                    <a href="#" ng-show="searchPaginator.hasNext()" ng-click="searchPaginator.next()">下一页</a>
+    </div>
+
+<!-- 模态框（Modal）增加信息 -->
+<div class="modal fade" id="biaoqianye2" tabindex="-1" role="dialog"
+     aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog" style="width: 60%">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close"
+                        data-dismiss="modal" aria-hidden="true">
+                    &times;
+                </button>
+                <h4 class="modal-title" id="myModalLabel">
+                    增加信息
+                </h4>
+            </div>
+            <div class="modal-body">
+
+                <table>
+                    <tbody><tr style="height: 40px">
+                        <td class="text-right">负责单位：</td>
+                        <td><input type="text" class="input-sm form-control" ng-model="addAfterSale.responsibleDepartment"></td>
+                        <td class="text-right">&nbsp;&nbsp;负责单位电话：</td>
+                        <td><input type="text" class="input-sm form-control" ng-model="addAfterSale.responsibleDepartmentPhone"></td>
+                        <td class="text-right">&nbsp;&nbsp;负责项目：</td>
+                        <td><input type="text" class="input-sm form-control" ng-model="addAfterSale.responsibleProject"></td>
+                    </tr>
+
+
+                    <tr style="height: 40px">
+                        <td class="text-right">负责事项：</td>
+                        <td><input type="text" class="input-sm form-control" ng-model="addAfterSale.responsibleItems"></td>
+                        <td class="text-right">&nbsp;&nbsp;售后开始时间：</td>
+                        <td><input type="date" class="input-sm form-control" ng-model="addAfterSale.afterStartTime"></td>
+                        <td class="text-right">&nbsp;&nbsp;售后结束时间：</td>
+                        <td><input type="date" class="input-sm form-control" ng-model="addAfterSale.afterEndTime"></td>
+                    </tr>
+
+                    <tr style="height: 40px">
+                        <td class="text-right">服务房屋编号：</td>
+                        <td><input type="text" class="input-sm form-control" ng-model="addAfterSale.serviceHomeNum"></td>
+                        <td class="text-right">&nbsp;&nbsp;房屋地址：</td>
+                        <td><input type="text" class="input-sm form-control" ng-model="addAfterSale.homeAddress"></td>
+                        <td class="text-right">&nbsp;&nbsp;户主类型：</td>
+                        <td><input type="text" class="input-sm form-control" ng-model="addAfterSale.clientType"></td>
+                    </tr>
+                    <tr style="height: 40px">
+                        <td class="text-right">户主姓名：</td>
+                        <td><input type="text" class="input-sm form-control" ng-model="addAfterSale.clientName"></td>
+                        <td class="text-right">&nbsp;&nbsp;户主电话：</td>
+                        <td><input type="text" class="input-sm form-control" ng-model="addAfterSale.clientPhone"></td>
+                        <td class="text-right">&nbsp;&nbsp;客户评价：</td>
+                        <td><input type="text" class="input-sm form-control" ng-model="addAfterSale.clientEvaluate"></td>
+                    </tr>
+
+                    </tbody></table>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default"
+                        data-dismiss="modal">关闭
+                </button>
+                <button type="button" ng-click="insert()" class="btn btn-primary" data-dismiss="modal"> 
+                    确认增加
+                </button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal -->
+</div>
+
+
+<!-- 模态框（Modal）查看信息 -->
+<div class="modal fade" id="shouhoufuwumodal2" tabindex="-1" role="dialog"
+     aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog" >
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close"
+                        data-dismiss="modal" aria-hidden="true">
+                    &times;
+                </button>
+                <h4 class="modal-title" id="myModalLabel">
+                    查看信息
+                </h4>
+            </div>
+            <div class="modal-body " style="margin-left: 10px">
+                <table>
+                    <tbody><tr style="height: 40px;" >
+                        <td class="text-right">负责单位：</td>
+                        <td style="width: 180px">{{afterSale.responsibleDepartment}}</td>
+                        <td class="text-right">负责单位电话：</td>
+                        <td style="width: 180px">{{afterSale.responsibleDepartmentPhone}}</td>
+
+                    </tr>
+                    <tr  style="height: 40px"> <td class="text-right">负责项目：</td>
+                        <td >{{afterSale.responsibleProject}}</td>
+                        <td class="text-right">负责事项：</td>
+                        <td>{{afterSale.responsibleItems}}</td>
+                    </tr>
+
+                    <tr  style="height: 40px">
+
+                        <td class="text-right">售后开始时间：</td>
+                        <td>{{afterSale.afterStartTime | date:"yyyy-MM-dd"}}</td>
+                        <td class="text-right">售后结束时间：</td>
+                        <td>{{afterSale.afterEndTime | date:"yyyy-MM-dd"}}</td>
+                    </tr>
+
+
+                    <tr  style="height: 40px">
+                        <td class="text-right">服务房屋编号：</td>
+                        <td>{{afterSale.serviceHomeNum}}</td>
+                        <td class="text-right">房屋地址：</td>
+                        <td>{{afterSale.homeAddress}}</td>
+
+                    </tr>
+                    <tr  style="height: 40px">
+                        <td class="text-right">户主类型：</td>
+                        <td>{{afterSale.clientType}}</td>
+                        <td class="text-right">户主姓名：</td>
+                        <td>{{afterSale.clientName}}</td>
+                    </tr>
+                    <tr  style="height: 40px">
+
+                        <td class="text-right">户主电话：</td>
+                        <td>{{afterSale.clientPhone}}</td>
+                        <td class="text-right">;客户评价：</td>
+                        <td>{{afterSale.clientEvaluate}}</td>
+                    </tr>
+                    </tbody></table>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default"
+                        data-dismiss="modal">关闭
+                </button>
+                <button type="button" class="btn btn-primary">
+                    确认
+                </button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal -->
+</div>
+
+
+<!-- 模态框（Modal）修改信息 -->
+<div class="modal fade" id="shouhoufuwumodal3" tabindex="-1" role="dialog"
+     aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog" style="width: 60%">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close"
+                        data-dismiss="modal" aria-hidden="true">
+                    &times;
+                </button>
+                <h4 class="modal-title" id="myModalLabel">
+                    修改信息
+                </h4>
+            </div>
+            <div class="modal-body">
+
+                <table>
+                    <tbody><tr style="height: 40px">
+                        <td class="text-right">负责单位：</td>
+                        <td><input type="text" class="input-sm form-control" ng-model="afterSale.responsibleDepartment"></td>
+                        <td class="text-right">&nbsp;&nbsp;负责单位电话：</td>
+                        <td><input type="text" class="input-sm form-control" ng-model="afterSale.responsibleDepartmentPhone"></td>
+                        <td class="text-right">&nbsp;&nbsp;负责项目：</td>
+                        <td><input type="text" class="input-sm form-control" ng-model="afterSale.responsibleProject"></td>
+                    </tr>
+
+
+                    <tr style="height: 40px">
+                        <td class="text-right">负责事项：</td>
+                        <td><input type="text" class="input-sm form-control" ng-model="afterSale.responsibleItems"></td>
+                        <td class="text-right">&nbsp;&nbsp;售后开始时间：</td>
+                        <td><input type="text" class="input-sm form-control" ng-model="afterSale.afterStartTime"></td>
+                        <td class="text-right">&nbsp;&nbsp;售后结束时间：</td>
+                        <td><input type="text" class="input-sm form-control" ng-model="afterSale.afterEndTime"></td>
+                    </tr>
+
+                    <tr style="height: 40px">
+                        <td class="text-right">服务房屋编号：</td>
+                        <td><input type="text" class="input-sm form-control" ng-model="afterSale.serviceHomeNum"></td>
+                        <td class="text-right">&nbsp;&nbsp;房屋地址：</td>
+                        <td><input type="text" class="input-sm form-control" ng-model="afterSale.homeAddress"></td>
+                        <td class="text-right">&nbsp;&nbsp;户主类型：</td>
+                        <td><input type="text" class="input-sm form-control" ng-model="afterSale.clientType"></td>
+                    </tr>
+                    <tr style="height: 40px">
+                        <td class="text-right">户主姓名：</td>
+                        <td><input type="text" class="input-sm form-control" ng-model="afterSale.clientName"></td>
+                        <td class="text-right">&nbsp;&nbsp;户主电话：</td>
+                        <td><input type="text" class="input-sm form-control" ng-model="afterSale.clientPhone"></td>
+                        <td class="text-right">&nbsp;&nbsp;客户评价：</td>
+                        <td><input type="text" class="input-sm form-control" ng-model="afterSale.clientEvaluate"></td>
+                    </tr>
+
+                    </tbody></table>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default"
+                        data-dismiss="modal">关闭
+                </button>
+                <button type="button" ng-click="update()" data-dismiss="modal" class="btn btn-primary">
+                    确认修改
+                </button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal -->
+</div>
+
+</body>
+</html>

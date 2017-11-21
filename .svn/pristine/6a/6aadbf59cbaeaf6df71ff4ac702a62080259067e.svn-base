@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>商铺验房添加个人</title>
+</head>
+<body ng-controller="personalCtrl">
+<div class="panel_info" style="margin: 20px 20px">
+    <div class="col-lg-2" style="background-color: bisque">
+        <a href="#"><img src="images/company/u223.png" width="95" height="95"></a>
+    </div>
+    <div class="col-lg-2" style="margin-left: 30px;margin-right: 10px">
+        <a href="#"><img src="images/personnel/zrf.jpg" width="95" height="95"></a>
+    </div>
+    <div class="complaint_user_info_icon">
+        <span style="white-space: nowrap">客户姓名：周润发</span><br>
+        <span style="white-space: nowrap">客户编号：V009</span><br>
+        <img src="images/propertyService/VIP.png" width="30" height="20">
+        <img src="images/propertyService/red.png" width="20" height="15">
+    </div>
+    <div class="col-lg-2" style="margin-left:50px;margin-right: 10px">
+        <a href="#"><img src="images/company/u211.jpg" width="95" height="95"></a>
+    </div>
+    <div class="complaint_user_info_icon">
+        <span style="white-space: nowrap">客户姓名：林心如</span><br>
+        <span style="white-space: nowrap">客户编号：V009</span><br>
+        <img src="images/propertyService/VIP.png" width="30" height="20">
+        <img src="images/propertyService/red.png" width="20" height="15">
+    </div>
+</div>
+</body>
+</html>

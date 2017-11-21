@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.flf.mapper.ProjectBillingMapper" >
+  <resultMap id="BaseResultMap" type="com.flf.entity.ProjectBilling" >
+    <id column="project_billing_id" property="projectBillingId" jdbcType="VARCHAR" />
+    <result column="project_id" property="projectId" jdbcType="VARCHAR" />
+    <result column="billing_start_time" property="billingStartTime" jdbcType="DATE" />
+    <result column="billing_end_time" property="billingEndTime" jdbcType="DATE" />
+    <result column="sum" property="sum" jdbcType="DOUBLE" />
+    <result column="is_posting" property="isPosting" jdbcType="VARCHAR" />
+    <result column="month" property="month" jdbcType="VARCHAR" />
+     <result column="current_sum" property="currentSum" jdbcType="DOUBLE" />
+     <result column="last_sum" property="lastSum" jdbcType="DOUBLE" />
+     <result column="project_name" property="projectName" jdbcType="VARCHAR" />
+  </resultMap>
+  
+  <insert id="insertProjectBilling" parameterType="com.flf.entity.ProjectBilling" >
+    insert into tc_project_billing (project_billing_id, project_id, billing_start_time, 
+      billing_end_time, sum, is_posting, 
+      month,current_sum,last_sum)
+    values (#{projectBillingId,jdbcType=VARCHAR}, #{projectId,jdbcType=VARCHAR}, #{billingStartTime,jdbcType=DATE}, 
+      #{billingEndTime,jdbcType=DATE}, #{sum,jdbcType=DOUBLE}, #{isPosting,jdbcType=VARCHAR}, 
+      #{month,jdbcType=VARCHAR},#{currentSum,jdbcType=DOUBLE},#{lastSum,jdbcType=DOUBLE})
+  </insert>
+  
+  <update id="updateProjectBilling" parameterType="com.flf.entity.ProjectBilling" >
+    update tc_project_billing
+    <set >
+      <if test="projectId != null" >
+        project_id = #{projectId,jdbcType=VARCHAR},
+      </if>
+      <if test="billingStartTime != null" >
+        billing_start_time = #{billingStartTime,jdbcType=DATE},
+      </if>
+      <if test="billingEndTime != null" >
+        billing_end_time = #{billingEndTime,jdbcType=DATE},
+      </if>
+      <if test="sum != null" >
+        sum = #{sum,jdbcType=DOUBLE},
+      </if>
+      <if test="isPosting != null" >
+        is_posting = #{isPosting,jdbcType=VARCHAR},
+      </if>
+      <if test="month != null" >
+        month = #{month,jdbcType=VARCHAR},
+      </if>
+      <if test="currentSum != null" >
+        current_sum = #{currentSum,jdbcType=INTEGER},
+      </if>
+      <if test="lastSum != null" >
+        last_sum = #{lastSum,jdbcType=INTEGER},
+      </if>
+    </set>
+    where project_billing_id = #{projectBillingId,jdbcType=VARCHAR}
+  </update>
+  
+  <!-- 根据项目 分页查询 使用收费项目列表 -->
+  <select id="listPageProjectBiling"  parameterType="com.flf.entity.ProjectBilling"  resultMap="BaseResultMap">
+  	select a.*,b.project_name from tc_project_billing a left join t_project b on a.project_id = b.project_id
+  	where 1=1 ORDER BY a.month DESC
+  	<if test="projectId!='' and projectId!=null">
+  		and a.project_id= #{projectId,jdbcType=VARCHAR}
+  	</if>  	
+	and b.is_use_system=0
+	order by a.billing_end_time desc  
+  </select>
+  <!-- 根据id查询项目计费信息 -->
+  <select id="getProjectBillingById"  resultMap="BaseResultMap">
+  	select * from tc_project_billing where project_billing_id= #{projectBillingId,jdbcType=VARCHAR}
+  </select>
+  
+  <!-- 根据projectid和年月查询项目计费信息 -->
+  <select id="getProjectBillingByProjectIdAndMonth" parameterType="java.util.Map" resultMap="BaseResultMap">
+  	select * from tc_project_billing where project_id=#{projectId,jdbcType=VARCHAR} and month=#{month,jdbcType=VARCHAR}
+  </select>
+  <update id="updateProjectBillingByProjectBillingId">
+  	update tc_project_billing set is_posting = 0 where project_billing_id = #{0}
+  </update>
+  
+</mapper>

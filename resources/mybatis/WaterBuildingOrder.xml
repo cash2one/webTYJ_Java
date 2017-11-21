@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.flf.mapper.WaterBuildingOrderMapper" >
+  <resultMap id="BaseResultMap" type="com.flf.entity.WaterBuildingOrder" >
+    <id column="water_building_order_id" property="waterBuildingOrderId" jdbcType="VARCHAR" />
+    <result column="water_order_id" property="waterOrderId" jdbcType="VARCHAR" />
+    <result column="building_structure_id" property="buildingStructureId" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    water_building_order_id, water_order_id, building_structure_id
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from ts_water_building_order
+    where water_building_order_id = #{waterBuildingOrderId,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from ts_water_building_order
+    where water_building_order_id = #{waterBuildingOrderId,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.flf.entity.WaterBuildingOrder" >
+    insert into ts_water_building_order (water_building_order_id, water_order_id, 
+      building_structure_id)
+    values (#{waterBuildingOrderId,jdbcType=VARCHAR}, #{waterOrderId,jdbcType=VARCHAR}, 
+      #{buildingStructureId,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.flf.entity.WaterBuildingOrder" >
+    insert into ts_water_building_order
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="waterBuildingOrderId != null" >
+        water_building_order_id,
+      </if>
+      <if test="waterOrderId != null" >
+        water_order_id,
+      </if>
+      <if test="buildingStructureId != null" >
+        building_structure_id,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="waterBuildingOrderId != null" >
+        #{waterBuildingOrderId,jdbcType=VARCHAR},
+      </if>
+      <if test="waterOrderId != null" >
+        #{waterOrderId,jdbcType=VARCHAR},
+      </if>
+      <if test="buildingStructureId != null" >
+        #{buildingStructureId,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.flf.entity.WaterBuildingOrder" >
+    update ts_water_building_order
+    <set >
+      <if test="waterOrderId != null" >
+        water_order_id = #{waterOrderId,jdbcType=VARCHAR},
+      </if>
+      <if test="buildingStructureId != null" >
+        building_structure_id = #{buildingStructureId,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where water_building_order_id = #{waterBuildingOrderId,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.flf.entity.WaterBuildingOrder" >
+    update ts_water_building_order
+    set water_order_id = #{waterOrderId,jdbcType=VARCHAR},
+      building_structure_id = #{buildingStructureId,jdbcType=VARCHAR}
+    where water_building_order_id = #{waterBuildingOrderId,jdbcType=VARCHAR}
+  </update>
+</mapper>

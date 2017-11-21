@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.flf.mapper.ProjectBillingMapper" >
+  <resultMap id="BaseResultMap" type="com.flf.entity.ProjectBilling" >
+    <id column="project_billing_id_" property="projectBillingId" jdbcType="CHAR" />
+    <result column="project_id_" property="projectId" jdbcType="CHAR" />
+    <result column="month_" property="month" jdbcType="VARCHAR" />
+    <result column="billing_month_" property="billingMonth" jdbcType="VARCHAR" />
+    <result column="amount_" property="amount" jdbcType="DECIMAL" />
+    <result column="status_" property="status" jdbcType="CHAR" />
+    <result column="create_user_" property="createUser" jdbcType="CHAR" />
+    <result column="create_time_" property="createTime" jdbcType="VARCHAR" />
+    <result column="update_user_" property="updateUser" jdbcType="CHAR" />
+    <result column="update_time_" property="updateTime" jdbcType="VARCHAR" />
+    <!-- 项目名称字段，附加，数据表中无 -->
+    <result column="project_name" property="projectName" jdbcType="VARCHAR"/>
+  </resultMap>
+  <sql id="Base_Column_List" >
+    project_billing_id_, project_id_, month_, billing_month_, amount_, status_, create_user_, 
+    create_time_, update_user_, update_time_
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from tc_project_billing
+    where project_billing_id_ = #{projectBillingId,jdbcType=CHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from tc_project_billing
+    where project_billing_id_ = #{projectBillingId,jdbcType=CHAR}
+  </delete>
+  <insert id="insert" parameterType="com.flf.entity.ProjectBilling" >
+    insert into tc_project_billing (project_billing_id_, project_id_, month_, 
+      billing_month_, amount_, status_, 
+      create_user_, create_time_, update_user_, 
+      update_time_)
+    values (#{projectBillingId,jdbcType=CHAR}, #{projectId,jdbcType=CHAR}, #{month,jdbcType=VARCHAR}, 
+      #{billingMonth,jdbcType=VARCHAR}, #{amount,jdbcType=DECIMAL}, #{status,jdbcType=CHAR}, 
+      #{createUser,jdbcType=CHAR}, #{createTime,jdbcType=VARCHAR}, #{updateUser,jdbcType=CHAR}, 
+      #{updateTime,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.flf.entity.ProjectBilling" >
+    insert into tc_project_billing
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="projectBillingId != null" >
+        project_billing_id_,
+      </if>
+      <if test="projectId != null" >
+        project_id_,
+      </if>
+      <if test="month != null" >
+        month_,
+      </if>
+      <if test="billingMonth != null" >
+        billing_month_,
+      </if>
+      <if test="amount != null" >
+        amount_,
+      </if>
+      <if test="status != null" >
+        status_,
+      </if>
+      <if test="createUser != null" >
+        create_user_,
+      </if>
+      <if test="createTime != null" >
+        create_time_,
+      </if>
+      <if test="updateUser != null" >
+        update_user_,
+      </if>
+      <if test="updateTime != null" >
+        update_time_,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="projectBillingId != null" >
+        #{projectBillingId,jdbcType=CHAR},
+      </if>
+      <if test="projectId != null" >
+        #{projectId,jdbcType=CHAR},
+      </if>
+      <if test="month != null" >
+        #{month,jdbcType=VARCHAR},
+      </if>
+      <if test="billingMonth != null" >
+        #{billingMonth,jdbcType=VARCHAR},
+      </if>
+      <if test="amount != null" >
+        #{amount,jdbcType=DECIMAL},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=CHAR},
+      </if>
+      <if test="createUser != null" >
+        #{createUser,jdbcType=CHAR},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=VARCHAR},
+      </if>
+      <if test="updateUser != null" >
+        #{updateUser,jdbcType=CHAR},
+      </if>
+      <if test="updateTime != null" >
+        #{updateTime,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.flf.entity.ProjectBilling" >
+    update tc_project_billing
+    <set >
+      <if test="projectId != null" >
+        project_id_ = #{projectId,jdbcType=CHAR},
+      </if>
+      <if test="month != null" >
+        month_ = #{month,jdbcType=VARCHAR},
+      </if>
+      <if test="billingMonth != null" >
+        billing_month_ = #{billingMonth,jdbcType=VARCHAR},
+      </if>
+      <if test="amount != null" >
+        amount_ = #{amount,jdbcType=DECIMAL},
+      </if>
+      <if test="status != null" >
+        status_ = #{status,jdbcType=CHAR},
+      </if>
+      <if test="createUser != null" >
+        create_user_ = #{createUser,jdbcType=CHAR},
+      </if>
+      <if test="createTime != null" >
+        create_time_ = #{createTime,jdbcType=VARCHAR},
+      </if>
+      <if test="updateUser != null" >
+        update_user_ = #{updateUser,jdbcType=CHAR},
+      </if>
+      <if test="updateTime != null" >
+        update_time_ = #{updateTime,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where project_billing_id_ = #{projectBillingId,jdbcType=CHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.flf.entity.ProjectBilling" >
+    update tc_project_billing
+    set project_id_ = #{projectId,jdbcType=CHAR},
+      month_ = #{month,jdbcType=VARCHAR},
+      billing_month_ = #{billingMonth,jdbcType=VARCHAR},
+      amount_ = #{amount,jdbcType=DECIMAL},
+      status_ = #{status,jdbcType=CHAR},
+      create_user_ = #{createUser,jdbcType=CHAR},
+      create_time_ = #{createTime,jdbcType=VARCHAR},
+      update_user_ = #{updateUser,jdbcType=CHAR},
+      update_time_ = #{updateTime,jdbcType=VARCHAR}
+    where project_billing_id_ = #{projectBillingId,jdbcType=CHAR}
+  </update>
+  
+  <select id="listPageProjectBilling" parameterType="com.flf.entity.ProjectBilling"  resultMap="BaseResultMap">
+	select a.*,p.project_name from tc_project_billing as a 
+	left join t_project as p on a.project_id_ = p.project_id 
+	where 1=1  
+	<if test="projectId != null">
+		and a.project_id_=#{projectId} 
+	</if>
+	order by a.amount_ asc
+  </select>
+</mapper>

@@ -1,0 +1,136 @@
+<!--
+    页面名称：任务详情【主页】
+    负责人：刘洋
+    js路径：js/externalProfession/taskDetails/taskDetails.js
+-->
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>任务详情</title>
+    <link rel="stylesheet" href="css/internalPro.css">
+</head>
+<body>
+<div class="row">
+    <!--任务详情-->
+    <div class="complaint_user">
+        <div class="col-md-2"style="margin-left: -25px">
+            <div style="width:100px;height: 80px;border: solid 1px;margin: 20px;background-color: #ffffff;text-align: center">
+                <h2>修</h2>
+            </div>
+        </div>
+        <div class="col-md-4" style="margin-top: 20px;margin-left: -35px">
+            <p>任务ID：1011212413234</p>
+            <p><span>客户姓名：周润发</span>&nbsp;&nbsp;&nbsp;<span>服务编号：1001</span></p>
+            <p><span>客户编号：V009</span>&nbsp;&nbsp;&nbsp;<span>服务类型：前台</span></p>
+        </div>
+        <div class="col-md-3" style="margin-top: 20px;margin-left: -35px">
+            <p><span>项目：桃源居</span>&nbsp;&nbsp;&nbsp;<span>单元：3</span></p>
+            <p><span>区：1 区</span>&nbsp;&nbsp;&nbsp;<span>层：5层</span></p>
+            <p><span>栋/座：3</span>&nbsp;&nbsp;&nbsp;<span>房号：502</span></p>
+        </div>
+        <div class="col-md-4" style="margin-top: 20px;margin-left: -35px">
+            <span>描述：</span>
+            <span>XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX</span>
+            <P>XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX</P>
+        </div>
+        <div class="clear"></div>
+    </div>
+    <!--任务详情 end-->
+    <!--处理进度-->
+    <div class="complaint_user">
+        <div class="row col-md-12" style="margin-left: 18px;margin-top: 5px">
+            <div class="col-md-2">
+                <span>报价</span>
+            </div>
+            <div class="col-md-2">
+                <span>检测</span>
+            </div>
+            <div class="col-md-2">
+                <span>报价</span>
+            </div>
+            <div class="col-md-2">
+                <span>处理</span>
+            </div>
+            <div class="col-md-4"></div>
+        </div>
+        <div class="row col-md-12">
+            <div class="col-md-2">
+                <span>
+                    <div class="doted">
+                        <a ui-sref="index.externalProfession.taskDetails.quote"><span class="dot_Check"></span></a>
+                    </div>
+                </span>
+            </div>
+            <div class="col-md-2">
+                <span>
+                    <div class="doted">
+                        <a ui-sref="index.externalProfession.taskDetails.detection"><span class="dot_unChecked"></span></a>
+                    </div>
+                </span>
+            </div>
+            <div class="col-md-2">
+                <span>
+                    <div class="doted">
+                        <a ui-sref="index.externalProfession.taskDetails.quote"><span class="dot_unChecked"></span></a>
+                    </div>
+                </span>
+            </div>
+            <div class="col-md-2">
+                <span>
+                    <div class="doted">
+                        <a ui-sref="index.externalProfession.taskDetails.handle"><span class="dot_unChecked"></span></a>
+                    </div>
+                </span>
+            </div>
+            <div class="col-md-4">
+                <span>
+                  <div class="doted">
+                    <span class="dot_unChecked"></span>
+                  </div>
+                </span>
+            </div>
+        </div>
+        <div class="row col-md-12" style="margin-top: 25px;margin-left: 1px">
+            <div class="col-md-2">
+                <span>04-30&nbsp;&nbsp;&nbsp; 12:33</span>
+            </div>
+            <div class="col-md-2">
+                <span>04-30&nbsp;&nbsp;&nbsp; 12:40</span>
+            </div>
+            <div class="col-md-2">
+                <span>04-30&nbsp;&nbsp;&nbsp; 12:40</span>
+            </div>
+            <div class="col-md-2">
+                <span>04-30 &nbsp;&nbsp;&nbsp;12:40</span>
+            </div>
+            <div class="col-md-4"></div>
+        </div>
+        <div class="clear"></div>
+    </div>
+    <!--处理进度 end-->
+    <!--新建工单-->
+    <div class="col-md-12">
+        <div class="col-md-2"><button class="btn btn-xs" style="border: 1px solid lightskyblue;background-color: #ffffff">新建工单</button></div>
+        <div class="col-md-9">
+            工单类型：<select>
+            <option><a ui-sref="">报价单</a></option>
+            <option><a ui-sref="">检测</a></option>
+            <option>处理</option>
+            <option>验收</option>
+            <option>向业主索赔</option>
+            <option>表扬</option>
+            <option>结算</option>
+        </select>
+            <a ui-sref="index.externalProfession.taskDetails.taskQuoteEditor">
+            <button class="btn btn-xs" style="border: 1px solid lightskyblue;background-color: #ffffff">确定</button>
+                </a>
+        </div>
+    </div>
+    <!--新建工单 end-->
+</div>
+<div class="row">
+    <div ui-view></div>
+</div>
+</body>
+</html>

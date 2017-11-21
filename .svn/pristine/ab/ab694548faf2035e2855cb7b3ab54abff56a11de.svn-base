@@ -1,0 +1,66 @@
+package com.flf.mapper;
+
+import com.flf.entity.ElectricityMeter;
+import com.flf.entity.SearchMeter;
+import com.flf.entity.WaterMeter;
+
+import java.sql.SQLException;
+import java.util.List;
+
+/* Created by Administrator on 2015/6/15. 
+author:尹磊
+修改时间：2015/6/15  修改人：尹磊 */
+public interface ElectricityMeterMapper {
+	int deleteElectricityMeter(String electricityMeterId); // 删除电表信息
+
+	int insertElectricityMeter(ElectricityMeter electricityMeter); // 新增电表信息
+
+	List<ElectricityMeter> listPageElectricityMeter(ElectricityMeter electricityMeter);// 分页查询电表信息
+
+	List<ElectricityMeter> listAllElectricityMeter(); // 查询所有电表信息
+
+	ElectricityMeter getElectricityMeterbyElectricityMeterNum(String electricityMeterNum); //根据电表编号查询电表信息是否存在
+	    
+	ElectricityMeter getElectricityMeterbyPropertyNumber(String propertyNumber); //根据资产编号查询电表信息是否存在
+	 
+	/**
+	 * 根据建筑结构查询电表id
+	 * 
+	 * @return
+	 */
+	List<ElectricityMeter> getElectricityMeterByBuildingStructureId(ElectricityMeter electricityMeter);
+
+	ElectricityMeter getElectricityMeterbyId(String electricityMeterId); // 根据电表id查询电表信息
+
+	int updateElectricityMeter(ElectricityMeter electricityMeter);// 修改电表信息
+
+	ElectricityMeter getElectricityMeterbyElectricityMeterRecordsId(String electricityMeterRecordsId); // 根据电表使用记录id查询电表信息
+
+
+	/**
+	 * 根据单元的建筑结构id查询使用中的水表及建筑全名
+	 * 
+	 * @param parentId
+	 * @return
+	 */
+	List<ElectricityMeter> getWaterMeterAndFullNameByParentId(String parentId);
+    
+    
+    ElectricityMeter getElectricityMeterbyElectricityMeterId(String electricityMeterId);  //根据水表id查询水表信息
+    
+    List<ElectricityMeter> listElectricityMeterbyParent(String parentId); //根据父级id查询水表信息
+    
+    /**
+     * 根据抄表计划id查询电表表及建筑全名
+     * @param meterReadingProgramId
+     * @return
+     */
+    List<ElectricityMeter> getElectricityMeterAndFullNameByMeterReadingProgramId(String meterReadingProgramId);
+    
+    /**
+     *  根据电表使用记录查询电表信息
+     * @param waterMeterRecordsId
+     * @return
+     */
+    ElectricityMeter getElectricityMeterbyMeterRecordId(String electricityMeterRecordId); 
+}

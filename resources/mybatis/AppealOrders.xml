@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.flf.mapper.AppealOrdersMapper" >
+  <resultMap id="BaseResultMap" type="AppealOrders" >
+    <id column="order_id" property="orderId" jdbcType="VARCHAR" />
+    <result column="order_type" property="orderType" jdbcType="VARCHAR" />
+    <result column="order_state" property="orderState" jdbcType="TINYINT" />
+    <result column="task_id" property="tasksId" jdbcType="VARCHAR" />
+    <result column="service_request_id" property="serviceRequestId" jdbcType="VARCHAR" />
+    <result column="operator_id" property="operatorId" jdbcType="VARCHAR" />
+    <result column="finish_time" property="finishTime" jdbcType="TIMESTAMP" />
+    <result column="remarks" property="remarks" jdbcType="VARCHAR" />
+    <result column="close_time" property="closeTime" jdbcType="TIMESTAMP" />
+    <result column="close_person_id" property="closePerson" jdbcType="VARCHAR" />
+    <result column="close_remarks" property="closeRemarks" jdbcType="VARCHAR" />
+  </resultMap>
+  
+  <resultMap type="AppealOrders" id="resultAppealOrdersMap" extends="BaseResultMap">
+    	<association property="staff" column="operator_id" javaType="Staff" select="com.flf.mapper.StaffMapper.selectByid"></association>
+  	<collection property="annexs" column="order_id" ofType="Annex" select="com.flf.mapper.AnnexMapper.getAnnexbyRelationId"></collection>
+  </resultMap>
+  
+  <select id="getAppealOrdersbyId" parameterType="String" resultMap="resultAppealOrdersMap">
+  	select * from ts_appeal_orders where order_id=#{0}
+  </select>
+  
+  <select id="getAppealOrdersbyTaskId" parameterType="String" resultMap="resultAppealOrdersMap">
+  	select * from ts_appeal_orders where task_id = #{0}
+  </select>
+  
+  <insert id="insertAppealOrders" parameterType="AppealOrders" >      
+      insert into ts_appeal_orders (order_id,order_type,order_state,task_id,service_request_id,operator_id,finish_time,remarks,close_time,close_person_id,close_remarks)
+    values (UUID(), #{orderType,jdbcType=TINYINT}, #{orderState,jdbcType=TINYINT}, #{tasksId,jdbcType=VARCHAR},#{serviceRequestId,jdbcType=VARCHAR},
+  #{operatorId,jdbcType=VARCHAR}, #{finishTime,jdbcType=TIMESTAMP},#{remarks,jdbcType=VARCHAR},#{closeTime,jdbcType=TIMESTAMP},#{closePerson,jdbcType=VARCHAR},#{closeRemarks,jdbcType=VARCHAR})
+  </insert>
+  
+  <insert id="insertAppealOrdersUUID" parameterType="AppealOrders" >      
+      insert into ts_appeal_orders (order_id,order_type,order_state,task_id,service_request_id,operator_id,finish_time,remarks,close_time,close_person_id,close_remarks)
+    values (#{orderId,jdbcType=VARCHAR}, #{orderType,jdbcType=TINYINT}, #{orderState,jdbcType=TINYINT}, #{tasksId,jdbcType=VARCHAR},#{serviceRequestId,jdbcType=VARCHAR},
+  #{operatorId,jdbcType=VARCHAR}, #{finishTime,jdbcType=TIMESTAMP},#{remarks,jdbcType=VARCHAR},#{closeTime,jdbcType=TIMESTAMP},#{closePerson,jdbcType=VARCHAR},#{closeRemarks,jdbcType=VARCHAR})
+  </insert>
+  
+  <update id="updateAppealOrders" parameterType="AppealOrders">
+  	update ts_appeal_orders 
+  	set order_type = #{orderType,jdbcType=TINYINT},
+  	order_state = #{orderState,jdbcType=TINYINT},
+  	task_id = #{tasksId,jdbcType=VARCHAR},
+  	service_request_id = #{serviceRequestId,jdbcType=VARCHAR},
+  	operator_id = #{operatorId,jdbcType=VARCHAR},
+  	finish_time = #{finishTime,jdbcType=TIMESTAMP},
+  	remarks = #{remarks,jdbcType=VARCHAR},
+  	close_time = #{closeTime,jdbcType=TIMESTAMP},
+  	close_person_id = #{closePerson,jdbcType=VARCHAR},
+  	close_remarks = #{closeRemarks,jdbcType=VARCHAR}
+  	where order_id = #{orderId,jdbcType=VARCHAR}
+  </update>
+  <update id="closeAppealOrders" parameterType="String">
+  	update ts_appeal_orders set order_state = 0 where order_id =#{0}
+  </update>
+</mapper>

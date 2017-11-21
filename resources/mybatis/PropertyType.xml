@@ -1,0 +1,197 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.flf.mapper.PropertyTypeMapper" >
+  <resultMap id="BaseResultMap" type="PropertyType" >
+    <id column="property_type_id" property="propertyTypeId"  />
+    <result column="property_type_number" property="propertyTypeNumber" jdbcType="VARCHAR" />
+    <result column="property_type_name" property="propertyTypeName" jdbcType="VARCHAR" />
+    <result column="founder" property="founder" jdbcType="VARCHAR" />
+    <result column="founder_time" property="founderTime" />
+    <result column="parent_id" property="parentId" jdbcType="VARCHAR" />
+    <result column="modify_time" property="modifyTime" />
+    <result column="modifier" property="modifier" jdbcType="VARCHAR" />
+    <association property="propertyTypeParent" column="parent_id" javaType="PropertyType" select="com.flf.mapper.PropertyTypeMapper.selectByPrimaryKey" />
+  </resultMap>
+  
+  <resultMap id="PropertyResultMap" type="PropertyType" >
+    <id column="property_type_id" property="propertyTypeId"  />
+    <result column="property_type_number" property="propertyTypeNumber" jdbcType="VARCHAR" />
+    <result column="property_type_name" property="propertyTypeName" jdbcType="VARCHAR" />
+    <result column="founder" property="founder" jdbcType="VARCHAR" />
+    <result column="founder_time" property="founderTime" jdbcType="DATE" />
+    <result column="parent_id" property="parentId" jdbcType="VARCHAR" />
+    <result column="founder_time" property="founderTime" />
+    <result column="parent_id" property="parentId" jdbcType="VARCHAR" />
+      <result column="modify_time" property="modifyTime" />
+    <result column="modifier" property="modifier" jdbcType="VARCHAR" />
+  </resultMap>
+  
+    <resultMap id="ResultMapWithType" type="PropertyType" >
+    <id column="property_type_id" property="propertyTypeId"  />
+    <result column="property_type_number" property="propertyTypeNumber" jdbcType="VARCHAR" />
+    <result column="property_type_name" property="propertyTypeName" jdbcType="VARCHAR" />
+    <result column="founder" property="founder" jdbcType="VARCHAR" />
+    <result column="founder_time" property="founderTime"/>
+    <result column="parent_id" property="parentId" jdbcType="VARCHAR" />
+    <result column="modify_time" property="modifyTime" />
+    <result column="modifier" property="modifier" jdbcType="VARCHAR" />
+    <association property="propertyType" column="parent_id" javaType="PropertyType" select="com.flf.mapper.PropertyTypeMapper.selectByPrimaryKey" />
+  </resultMap>
+  
+  <resultMap id="PropertyTypeResultMap" type="PropertyType" >
+    <id column="property_type_id" property="propertyTypeId"  />
+    <result column="property_type_number" property="propertyTypeNumber" jdbcType="VARCHAR" />
+    <result column="property_type_name" property="propertyTypeName" jdbcType="VARCHAR" />
+    <result column="founder" property="founder" jdbcType="VARCHAR" />
+    <result column="founder_time" property="founderTime"  />
+    <result column="parent_id" property="parentId" jdbcType="VARCHAR" />
+      <result column="modify_time" property="modifyTime"  />
+    <result column="modifier" property="modifier" jdbcType="VARCHAR" />
+    <association property="propertyType" javaType="PropertyType">
+    	<id column="alias_property_type_id" property="propertyTypeId"  />
+	    <result column="alias_property_type_number" property="propertyTypeNumber" jdbcType="VARCHAR" />
+	    <result column="alias_property_type_name" property="propertyTypeName" jdbcType="VARCHAR" />
+	    <result column="alias_founder" property="founder" jdbcType="VARCHAR" />
+	    <result column="alias_founder_time" property="founderTime" jdbcType="DATE" />
+	    <result column="alias_parent_id" property="parentId" jdbcType="VARCHAR" />
+    </association>
+  </resultMap>
+  
+  <select id="selectPropertyTypeByProperty" resultMap="ResultMapWithType">
+	  select * from t_property_type where property_type_id = #{0}
+  </select>
+  
+   <select id="listPropertyType" resultMap="BaseResultMap" parameterType="PropertyType" >
+    select * from t_property_type
+  </select>
+  
+  <select id="listParentPropertyType" resultMap="BaseResultMap">
+  	select * from t_property_type where parent_id is null
+  </select>
+  
+  <select id="listClassifyPropertyType" resultMap="PropertyTypeResultMap">
+  	SELECT a.property_type_id,a.property_type_number,a.property_type_name,a.founder,a.founder_time,a.parent_id,a.modify_time,a.modifier,b.property_type_id AS alias_property_type_id,b.property_type_number AS alias_property_type_number,b.property_type_name AS alias_property_type_name,b.founder AS alias_founder,b.founder_time AS alias_founder_time,b.parent_id AS alias_parent_id 
+  	FROM t_property_type a 
+  	LEFT JOIN t_property_type b ON a.parent_id=b.property_type_id
+  	WHERE a.parent_id IS NOT NULL ORDER BY CONVERT(alias_property_type_name USING gbk)
+  </select>
+  <select id="selectPropertyTypeByParent" parameterType="PropertyType" resultMap="PropertyTypeResultMap">
+  	select * from t_property_type where parent_id is null and property_type_id=#{propertyTypeId}
+  </select>
+  <!-- 分页查询开始 -->
+  <select id="listPageParentPropertyType" parameterType="PropertyType" resultMap="PropertyTypeResultMap">
+  	select * from t_property_type where parent_id is null and company_id=#{companyId,jdbcType=VARCHAR}
+  	<if test="propertyTypeId != null">
+  	and	property_type_id = #{propertyTypeId}
+  	</if>
+  	<if test="propertyTypeNumber!=null and propertyTypeNumber!='' ">
+  	and property_type_number LIKE CONCAT('%',#{propertyTypeNumber},'%')
+  	</if>
+  	<if test="propertyTypeName!=null and propertyTypeName!='' ">
+  	and property_type_name LIKE CONCAT('%',#{propertyTypeName},'%')
+  	</if>
+  	order by founder_time desc
+  </select>
+  <!-- Bug832 陈浪 2016.3.7 -->
+  <select id="listPageClassifyPropertyType" parameterType="PropertyType" resultMap="BaseResultMap">
+  	  	SELECT *
+    FROM t_property_type
+    WHERE parent_id = #{propertyTypeId}
+  <!-- Bug112 陈浪 2016.3.7 -->
+    <if test="propertyTypeNumber != null">
+    	and property_type_number LIKE CONCAT('%',#{propertyTypeNumber},'%')
+    </if>
+    <if test="propertyTypeName != null">
+    	and property_type_name LIKE CONCAT('%',#{propertyTypeName},'%')
+    </if>
+  </select>
+  <!-- 分页查询结束 -->
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="String" >
+    select *
+    from t_property_type
+    where property_type_id = #{propertyTypeId}
+  </select>
+  <!-- Bug 840
+  	修改人：陈浪
+  	2016年3月3日 -->
+  <delete id="deleteByPrimaryKey" parameterType="String" >
+    delete from t_property_type
+    where property_type_id = #{propertyTypeId} or parent_id = #{propertyTypeId};
+  </delete>
+ 
+  <insert id="insert" parameterType="PropertyType" >
+    insert into t_property_type (property_type_id,property_type_number, 
+      property_type_name, founder, founder_time,parent_id,modify_time,modifier,company_id
+    )
+    values (#{propertyTypeId},#{propertyTypeNumber,jdbcType=VARCHAR}, 
+      #{propertyTypeName,jdbcType=VARCHAR}, #{founder,jdbcType=VARCHAR}, 
+      NOW(),#{parentId}, #{modifyTime,jdbcType=DATE}, #{modifier,jdbcType=VARCHAR},#{companyId,jdbcType=VARCHAR})
+  </insert>
+ 
+ 
+
+  
+  <update id="updateByPrimaryKeySelective" parameterType="PropertyType" >
+    update t_property_type
+    <set >
+      <if test="propertyTypeNumber != null" >
+        property_type_number = #{propertyTypeNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="propertyTypeName != null" >
+        property_type_name = #{propertyTypeName,jdbcType=VARCHAR},
+      </if>
+      <if test="founder != null" >
+        founder = #{founder,jdbcType=VARCHAR},
+      </if>
+      <if test="founderTime != null" >
+        founder_time = #{founderTime,jdbcType=DATE},
+      </if>
+      <if test="parentId != null" >
+        parent_id = #{parentId,jdbcType=VARCHAR},
+      </if>
+       <if test="parentId != null" >
+        modifier = #{modifier,jdbcType=VARCHAR},
+      </if>
+       <if test="parentId != null" >
+        modify_time = #{modifyTime,jdbcType=DATE},
+      </if>
+    </set>
+    where property_type_id = #{propertyTypeId}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="PropertyType" >
+    update t_property_type
+    set property_type_number = #{propertyTypeNumber,jdbcType=VARCHAR},
+      property_type_name = #{propertyTypeName,jdbcType=VARCHAR},
+      founder = #{founder,jdbcType=VARCHAR},
+      parent_id = #{parentId,jdbcType=VARCHAR},
+      modify_time = #{modifyTime},
+       modifier = #{modifier,jdbcType=VARCHAR}
+    where property_type_id = #{propertyTypeId}
+  </update>
+  
+  <!-- 查询父级节点下的子节点 -->
+  <select id="selectByIds" parameterType="String" resultMap="BaseResultMap">
+  	SELECT b.* FROM  t_property_type a, t_property_type b WHERE a.property_type_id=b.parent_id 
+	AND a.property_type_id=#{propertyTypeId}
+  </select>
+  
+	<!-- 获取资产专业中的编号最大值（分为专业和分类两种）  王洲  2016.1.21 -->
+	<select id="getMaxNum" parameterType="String" resultType="String">
+		select max(property_type_number) from t_property_type
+		<where>
+			<choose><!-- 传入简单类型参数的时候可以用_parameter代替参数 -->
+				<when test="_parameter != null and _parameter != ''">
+					parent_id = #{0}			
+				</when>
+				<otherwise>
+					parent_id is null
+				</otherwise>
+			</choose>
+		</where>
+	</select>
+	
+	<select id="selectPropertyTypeByParentId" parameterType="String" resultMap="BaseResultMap">
+		SELECT * FROM t_property_type WHERE property_type_id = #{0} OR parent_id = #{0}
+	</select>
+
+</mapper>

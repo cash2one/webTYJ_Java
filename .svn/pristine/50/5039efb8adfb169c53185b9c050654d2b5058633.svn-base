@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.flf.mapper.BuildingNewMapper" >
+  
+  <resultMap id="BaseResultMap" type="BuildingNew" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="building_num" property="buildingNum" jdbcType="VARCHAR" />
+    <result column="building_name" property="buildingName" jdbcType="VARCHAR" />
+    <result column="region_id" property="regionId" jdbcType="VARCHAR" />
+    <result column="stage_id" property="stageId" jdbcType="VARCHAR" />
+    <result column="building_area" property="buildingArea" jdbcType="DOUBLE" />
+    <result column="total_area" property="totalArea" jdbcType="DOUBLE" /> <!-- 增加用地总面积  王洲  2016.1.7 -->
+    <result column="commonality_area" property="commonalityArea" jdbcType="DOUBLE" />
+    <result column="inside_area" property="insideArea" jdbcType="DOUBLE" />
+    <result column="completion_area" property="completionArea" jdbcType="DOUBLE" />
+    <result column="utility_ratio" property="utilityRatio" jdbcType="DOUBLE" />
+    <result column="project_id" property="projectId" jdbcType="VARCHAR" />
+    <result column="parcel_id" property="parcelId" jdbcType="VARCHAR" /><!-- 增加宗地id  王洲  2016.2.2 -->
+  </resultMap>
+  
+  
+  
+  	<resultMap id="BuildingAreaNewResultMap" type="BuildingNew"   extends="BaseResultMap">
+  	 	<collection property="areaNew" column="id" select="com.flf.mapper.AreaNewMapper.listAllAreaNewByBuildingId"></collection>
+  	 	<collection property="buildingStructureNews" column="id" select="com.flf.mapper.BuildingStructureNewMapper.ListBuildingStructureNewByBuildingId" />
+  	</resultMap>
+  
+ 	<resultMap type="BuildingNew" id="BuildingNewPropertyResultMap" extends="BaseResultMap">
+  	<collection property="buildingStructureNews" column="id" select="com.flf.mapper.BuildingStructureNewMapper.ListBuildingStructureNewByProjectId"></collection>
+  	</resultMap> 
+  
+  <select id="ListBuildingNewByprojectId" parameterType="String" resultMap="BaseResultMap">
+  	select * from tc_building where project_id=#{0} and (region_id IS NULL or region_id='')
+  </select>
+  
+  <select id="listBuildingNewsByProjectIdAndRegionId" parameterType="String" resultMap="BaseResultMap">
+  	select * from tc_building where project_id=#{0} and region_id=#{1}
+  </select>
+  
+	<select id="ListBuildingNewprojectIdAll" parameterType="String" resultMap="BuildingNewPropertyResultMap">
+  	select * from tc_building where project_id=#{0} 
+  </select> 
+  
+  
+  <select id="BuildingAreaNewResultMap" parameterType="String" resultMap="BuildingAreaNewResultMap">
+  	select * from tc_building where id=#{0}
+  </select>
+  
+  <select id="listBuildingNewByRegionId" parameterType="String" resultMap="BaseResultMap">
+  	select * from tc_building where region_id=#{0}
+  </select>
+  
+  
+ 
+  
+
+ <delete id="deleteBuildingNew" parameterType="String">
+  delete from tc_building
+    where id = #{0,jdbcType=VARCHAR}
+  </delete>
+  
+  <select id="listPageBuildingNew" parameterType="BuildingNew" resultMap="BaseResultMap">
+  select * from tc_building 
+  </select>
+  
+  <select id="listAllBuildingNew"  resultMap="BaseResultMap">
+  select * from tc_building 
+  </select>
+  
+
+  
+  <select id="getBuildingNewbyId" parameterType="String" resultMap="BaseResultMap">
+  select * from tc_building where id=#{0}
+  </select>
+  
+  <insert id="insertBuildingNew" parameterType="BuildingNew" >
+    insert into tc_building (id, building_num,building_name,region_id, 
+      stage_id, building_area, total_area, commonality_area, 
+      inside_area, completion_area, utility_ratio,project_id
+      )
+    values (UUID(), #{buildingNum,jdbcType=VARCHAR},#{buildingName,jdbcType=VARCHAR}, #{regionId,jdbcType=VARCHAR}, 
+      #{stageId,jdbcType=VARCHAR}, #{buildingArea,jdbcType=DOUBLE}, #{totalArea,jdbcType=DOUBLE}, #{commonalityArea,jdbcType=DOUBLE}, 
+      #{insideArea,jdbcType=DOUBLE}, #{completionArea,jdbcType=DOUBLE}, #{utilityRatio,jdbcType=DOUBLE},
+      #{projectId,jdbcType=VARCHAR}
+      )
+  </insert>
+  
+  
+  <insert id="insertBuildingNewUUID" parameterType="BuildingNew" >
+    insert into tc_building (id, building_num,building_name,region_id, 
+      stage_id, building_area, total_area, commonality_area, 
+      inside_area, completion_area, utility_ratio,project_id,parcel_id
+      )
+    values (#{id,jdbcType=VARCHAR}, #{buildingNum,jdbcType=VARCHAR},#{buildingName,jdbcType=VARCHAR}, #{regionId,jdbcType=VARCHAR}, 
+      #{stageId,jdbcType=VARCHAR}, #{buildingArea,jdbcType=DOUBLE}, #{totalArea,jdbcType=DOUBLE}, #{commonalityArea,jdbcType=DOUBLE}, 
+      #{insideArea,jdbcType=DOUBLE}, #{completionArea,jdbcType=DOUBLE}, #{utilityRatio,jdbcType=DOUBLE}
+      , #{projectId,jdbcType=VARCHAR},#{parcelId,jdbcType=VARCHAR}
+      )
+  </insert>
+  
+  
+ 
+  <update id="updateBuildingNew" parameterType="BuildingNew" >
+    update tc_building
+    set building_num = #{buildingNum,jdbcType=VARCHAR},
+      building_name = #{{buildingName,jdbcType=VARCHAR},
+      region_id = #{regionId,jdbcType=VARCHAR},
+      stage_id = #{stageId,jdbcType=VARCHAR},
+      building_area = #{buildingArea,jdbcType=DOUBLE},
+      total_area = #{totalArea,jdbcType=DOUBLE},
+      commonality_area = #{commonalityArea,jdbcType=DOUBLE},
+      inside_area = #{insideArea,jdbcType=DOUBLE},
+      completion_area = #{completionArea,jdbcType=DOUBLE},
+      utility_ratio = #{utilityRatio,jdbcType=DOUBLE},
+      project_id = #{projectId,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=VARCHAR}
+    </update>
+    
+   <update id="updateBuildingNewSetRegionId" parameterType="BuildingNew" >
+    update tc_building
+    set
+      region_id = #{regionId,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=VARCHAR}
+    </update>
+    
+    <update id="moveOutFromRegion" parameterType="String">
+    	update tc_building
+    		set region_id = null
+    	where id = #{0}
+    </update>
+    
+    <update id="moveToRegion" parameterType="String">
+    	update tc_building
+    		set region_id = #{0}
+    	where id = #{1}
+    </update>
+    
+    <update id="cleanAllBuildingsInRegion" parameterType="String">
+    	update tc_building
+    	set region_id = null
+    	where region_id = #{0}
+    </update>
+    
+    <!-- 批量插入建筑信息（用于Excel导入） -->
+	<insert id="insertList"  parameterType="java.util.List">
+		insert into tc_building 
+		(id,building_name,building_area,total_area,project_id,parcel_id)
+    	values 
+		<foreach collection="list" item="item" index="index" separator="," >
+			(#{item.id,jdbcType=VARCHAR},#{item.buildingName,jdbcType=VARCHAR},#{item.buildingArea,jdbcType=DOUBLE}, #{item.totalArea,jdbcType=DOUBLE},#{item.projectId,jdbcType=VARCHAR},#{item.parcelId,jdbcType=VARCHAR}
+      )
+		</foreach>
+	</insert>
+	
+	<select id="getBuildingNewByBuildingName" parameterType="String" resultMap="BaseResultMap">
+  		select * from tc_building where building_name=#{0} 
+  	</select>
+  	
+  	<!-- 判断宗地下是否存在该建筑 -->
+  	<select id="getBuildingNewByBuildingNameAndParcelId" parameterType="String" resultMap="BaseResultMap">
+  		select * from tc_building where building_name=#{0} and parcel_id = #{1}
+  	</select>
+</mapper>

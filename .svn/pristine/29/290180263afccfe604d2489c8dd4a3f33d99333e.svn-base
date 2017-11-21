@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.flf.mapper.AcceptanceInformationRecordsMapper" >
+  <resultMap id="BaseResultMap" type="AcceptanceInformationRecords" >
+    <id column="record_id" property="recordId" jdbcType="VARCHAR" />
+    <result column="order_id" property="orderId" jdbcType="VARCHAR" />
+    <result column="acceptance_item_type" property="acceptanceItemType" jdbcType="TINYINT" />
+    <result column="acceptance_item_name" property="acceptanceItemName" jdbcType="VARCHAR" />
+    <result column="acceptance_item_result" property="acceptanceItemResult" jdbcType="VARCHAR" />
+  </resultMap>
+  
+  <resultMap type="AcceptanceInformationRecords" id="resultAcceptanceInformationRecordsMap" extends="BaseResultMap">
+  	<collection property="acceptanceOrders" column="order_id" select="com.flf.mapper.AcceptanceOrdersMapper.getAcceptanceOrdersbyId"></collection>
+  </resultMap>
+  
+ <delete id="deleteAcceptanceInformationRecords" parameterType="String">
+  delete from ts_acceptance_information_records where record_id=#{0}
+  </delete>
+  
+  <select id="listAllAcceptanceInformationRecords"  resultMap="resultAcceptanceInformationRecordsMap" >
+ 	 select * from ts_acceptance_information_records 
+  </select>
+  
+  <select id="getAcceptanceInformationRecordsbyId" parameterType="String" resultMap="resultAcceptanceInformationRecordsMap">
+  	select * from ts_acceptance_information_records where record_id=#{0}
+  </select>
+  
+  <insert id="insertAcceptanceInformationRecords" parameterType="AcceptanceInformationRecords" >      
+      insert into ts_acceptance_information_records (record_id, order_id,acceptance_item_type, acceptance_item_name, 
+      acceptance_item_result)
+    values (UUID(), #{orderId,jdbcType=VARCHAR}, #{acceptanceItemType,jdbcType=TINYINT}, #{acceptanceItemName,jdbcType=VARCHAR}, 
+      #{acceptanceItemResult,jdbcType=VARCHAR})
+  </insert>
+ 
+  <update id="updateAcceptanceInformationRecords" parameterType="AcceptanceInformationRecords" >
+    update ts_acceptance_information_records
+    set order_id = #{orderId,jdbcType=VARCHAR},
+    	acceptance_item_type = #{acceptanceItemType,jdbcType=TINYINT},
+      acceptance_item_name = #{acceptanceItemName,jdbcType=VARCHAR},
+      acceptance_item_result = #{acceptanceItemResult,jdbcType=VARCHAR}
+    where record_id = #{recordId,jdbcType=VARCHAR}
+  </update>
+</mapper>

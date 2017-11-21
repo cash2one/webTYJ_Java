@@ -1,0 +1,68 @@
+<!--
+    作者:彭婷婷
+    页面名称:质检标准
+    js路径:js/controllers/externalProfession/qualityManagement
+-->
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+<div class="complaint_user_list" style="margin: 10px 10px;height:400px">
+    <div class="col-lg-4 col-md-4 col-sm-6" style="width: 360px;" >
+        <div class="program_panel" style="background: darkgrey">
+            <div class="program_panel_info">
+                <div class="col-md-3" style="margin-left: -10px" >
+                    <div class="col-md-3" style="margin-left: -10px" >
+                        <img src="images/company/3566.png" width="70px" height="50px">
+                    </div>
+                </div>
+                <div class="col-md-8">
+                    <p>质检活动管理</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-4 col-md-4 col-sm-6" style="width: 360px"  >
+        <div class="program_panel" style="background: darkgrey">
+            <div class="program_panel_info">
+                <div class="col-md-3" style="margin-left: -10px" >
+                    <div class="col-md-3" style="margin-left: -10px" >
+                        <img src="images/company/3569.png" width="70px" height="50px">
+                    </div>
+                </div>
+                <div class="col-md-8">
+                    <p>质检标准表管理</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-4 col-md-4 col-sm-6" style="width: 360px;"  >
+        <div class="program_panel" style="background: darkgrey">
+            <div class="program_panel_info">
+                <div class="col-md-3" style="margin-left: -10px" >
+                    <img src="images/company/3570.png" width="70px" height="50px">
+                </div>
+                <div class="col-md-8">
+                    <p>质检活动模板管理</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-4 col-md-4 col-sm-6" style="width: 360px"  >
+        <div class="program_panel" style="background: darkgrey">
+            <div class="program_panel_info">
+                <div class="col-md-3" style="margin-left: -10px" >
+                    <img src="images/company/3507.png" width="70px" height="50px">
+                </div>
+                <div class="col-md-8">
+                    <p>待完成质检任务</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

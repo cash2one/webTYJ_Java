@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.flf.mapper.InspectionOrderMapper" >
+  <resultMap id="BaseResultMap" type="com.flf.entity.InspectionOrder" >
+    <id column="order_id" property="orderId" jdbcType="VARCHAR" />
+    <result column="order_type" property="orderType" jdbcType="TINYINT" />
+    <result column="order_state" property="orderState" jdbcType="TINYINT" />
+    <result column="task_id" property="taskId" jdbcType="VARCHAR" />
+    <result column="service_request_id" property="serviceRequestId" jdbcType="VARCHAR" />
+    <result column="operator_id" property="operatorId" jdbcType="VARCHAR" />
+    <result column="finish_time" property="finishTime" jdbcType="TIMESTAMP" />
+    <result column="remarks" property="remarks" jdbcType="VARCHAR" />
+    <result column="close_time" property="closeTime" jdbcType="TIMESTAMP" />
+    <result column="close_person_id" property="closePersonId" jdbcType="VARCHAR" />
+    <result column="close_remarks" property="closeRemarks" jdbcType="VARCHAR" />
+    <result column="state" property="state" jdbcType="VARCHAR" />
+  </resultMap>
+  
+  <insert id="insertInspectionOrderUUID" parameterType="com.flf.entity.InspectionOrder" >      
+      insert into ts_inspection_orders (order_id, order_type, order_state
+      , task_id, service_request_id, operator_id
+      , finish_time,remarks,close_time
+      , close_person_id , close_remarks)
+    values (#{orderId,jdbcType=VARCHAR},#{orderType,jdbcType=TINYINT},#{orderState,jdbcType=TINYINT}
+    , #{taskId,jdbcType=VARCHAR}, #{serviceRequestId,jdbcType=VARCHAR}, #{operatorId,jdbcType=VARCHAR}
+    , #{finishTime,jdbcType=TIMESTAMP},#{remarks,jdbcType=VARCHAR},  #{closeTime,jdbcType=TIMESTAMP}
+    , #{closePersonId,jdbcType=VARCHAR},#{closeRemarks,jdbcType=VARCHAR})
+  </insert>
+  <update id="submitInspectionOrder" parameterType="String">
+  	update ts_inspection_orders set state = 1 ,order_state = 2  where order_id =#{0}
+  </update>
+  <select id="getInspectionOrderById" parameterType="String" resultMap="BaseResultMap">
+  select * from ts_inspection_orders where order_id=#{0}
+  </select>
+  
+  </mapper>

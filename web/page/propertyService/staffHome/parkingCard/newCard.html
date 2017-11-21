@@ -1,0 +1,223 @@
+<!--
+    author:钟加诚
+    pageName:物业服务人员主页中停车卡---新增子页面
+   jsPath:js/controllers/propertyService/parkingCard/newCard.js
+   	修改时间：2015/5/28
+-->
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body ng-controller="newCardCtrl">
+<div class="complaint_user">
+    <!--停车卡信息增加填写-->
+    <div class="row" style="margin-left: 20px;height: 400px;margin-top: 20px">
+        <div class="col-md-5" style="line-height: 35px;margin-left: 250px">
+            <div class="row">
+                <div class="col-md-3">停车卡号:</div>
+                <div class="col-md-9" style="margin-left: -30px"><input type="text" class="input-sm form-control" ng-model="caraccesscards.idcardNum"></div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-3">车牌号:</div>
+                <div class="col-md-8" style="margin-left: -30px"><input type="text" class="input-sm form-control" ng-model="carNum"></div>
+                <div class="col-md-1" ><a  href="#myModale" data-toggle="modal" data-target="#myModale"><span class="glyphicon glyphicon-search" aria-hidden="true" ng-click="getCarInfo()"></span></a></div>
+            </div>
+
+            <div class="row ">
+                <div class="col-md-3">启用日期:</div>
+                <div class="col-md-9" style="margin-left: -30px"><input type="text" class="input-sm form-control" ng-model="caraccesscards.startDate"></div>
+            </div>
+
+            <div class="row ">
+                <div class="col-md-3">截止日期:</div>
+                <div class="col-md-9" style="margin-left: -30px"><input type="text" class="input-sm form-control" ng-model="caraccesscards.endDate"></div>
+            </div>
+
+            <div class="row ">
+                <div class="col-md-3">车位类型:</div>
+                <div class="col-md-9" style="margin-left: -30px"><input type="text" class="input-sm form-control" ng-model="type"></div>
+            </div>
+
+            <div class="row ">
+                <div class="col-md-3">车位编号:</div>
+                <div class="col-md-8" style="margin-left: -30px"><input type="text" class="input-sm form-control" ng-model="stallId"></div>
+                <div class="col-md-1" ><a  href="#myModal" data-toggle="modal" data-target="#myModal"><span class="glyphicon glyphicon-search" aria-hidden="true" ng-click="getStall()"></span></a></div>
+            </div>
+
+            <div class="row ">
+                <div class="col-md-3">车位状态:</div>
+                <div class="col-md-9" style="margin-left: -30px"><input type="text" class="input-sm form-control" ng-model="state"></div>
+            </div>
+
+            <div class="row ">
+                <div class="col-md-3">管理费:</div>
+                <div class="col-md-9" style="margin-left: -30px" ng-model="caraccesscards.idcardNum">200元/月</div>
+            </div>
+
+            <div class="row ">
+                <div class="col-md-3">工本费:</div>
+                <div class="col-md-9" style="margin-left: -30px" ng-model="caraccesscards.idcardNum">10元</div>
+            </div>
+
+            <div class="row ">
+                <div class="col-md-3">应缴金额:</div>
+                <div class="col-md-9" style="margin-left: -30px" ng-model="caraccesscards.idcardNum">210元</div>
+            </div>
+
+        </div>
+    </div>
+
+    <!--车牌号中选择模态框-->
+    <div class="modal fade" id="myModale" tabindex="-1" role="dialog"
+         aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content" style="width: 700px">
+                <div class="modal-header">
+                    <button type="button" class="close"
+                            data-dismiss="modal" aria-hidden="true">
+                        &times;
+                    </button>
+                    <p>车辆列表</p>
+                </div>
+                <div class="modal-body" style="line-height:30px;white-space: nowrap">
+                    <div style="margin-top: 10px">
+                        <div class="row" ng-repeat="items in carInfos">
+                            <div class="col-md-3">
+                                <!--3509.png为车辆图片-->
+                                <img src="images/company/3509.png" style="margin-left: 15px;width:80px;height: 60px" ng-click="inCarInfo(items.carNum)">
+                            </div>
+
+                            <div class="col-md-9" >
+                                <div class="row">
+                                    <div class="col-md-6"> 车牌号码：{{items.carNum}}</div>
+                                    <div class="col-md-6"> 车辆颜色：{{items.carColor}}</div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6"> 行驶证号：{{items.drivingLicense}}</div>
+                                    <div class="col-md-6"> 车辆型号：{{items.carStyle}}</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row" style="margin-top: 10px">
+                            <div class="col-md-3">
+                                <img src="images/company/3509.png" style="margin-left: 15px;width:80px;height: 60px">
+                            </div>
+                            <div class="col-md-9" >
+                                <div class="row">
+                                    <div class="col-md-6"> 车牌号码：粤B12343</div>
+                                    <div class="col-md-6"> 车辆颜色：银色</div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6"> 行驶证号：3344556677</div>
+                                    <div class="col-md-6"> 车辆型号：宝马740</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row" style="margin-top: 10px">
+                            <div class="col-md-3">
+                                <img src="images/company/3509.png" style="margin-left: 15px;width:80px;height: 60px">
+                            </div>
+                            <div class="col-md-9" >
+                                <div class="row">
+                                    <div class="col-md-6"> 车牌号码：粤B12343</div>
+                                    <div class="col-md-6"> 车辆颜色：银色</div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6"> 行驶证号：3344556677</div>
+                                    <div class="col-md-6"> 车辆型号：宝马740</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!--车位信息模态框-->
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default btn-sm" aria-label="Left Align" data-dismiss="modal">
+                        <span aria-hidden="true">确定</span>
+                    </button>
+                    <button type="button" class="btn btn-sm btn-default" data-dismiss="modal">
+                        <span aria-hidden="true">取消</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+   <!--车位信息模态框-->
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog"
+         aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content" style="width: 700px">
+                <div class="modal-header">
+                    <button type="button" class="close"
+                            data-dismiss="modal" aria-hidden="true">
+                        &times;
+                    </button>
+                    <p>车位信息</p>
+                </div>
+                <div class="modal-body" style="line-height:30px;white-space: nowrap" >
+                    <div class="row" ng-repeat="item in stalls">
+                        <div class="col-md-3">
+                            <img src="images/company/3509.png" style="margin-left: 15px;width:80px;height: 60px" ng-click="inStall(item.stallCoding,item.stallState,item.stallType)">
+                        </div>
+                        <div class="col-md-9" >
+                            <div class="row">
+                                <div class="col-md-6"> 车位编号：{{item.stallCoding}}</div>
+                                <div class="col-md-6"> 车库位置：{{item.garagePosition}}</div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6"> 车位状态：{{item.stallState}}</div>
+                                <div class="col-md-6"> 产权人：{{item.propertyPerson}}</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row" style="margin-top: 10px">
+                        <div class="col-md-3">
+                            <img src="images/company/3509.png" style="margin-left: 15px;width:80px;height: 60px">
+                        </div>
+                        <div class="col-md-9" >
+                            <div class="row">
+                                <div class="col-md-6"> 车位编号：D2-007</div>
+                                <div class="col-md-6"> 车库位置：地下二层</div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6"> 车位状态：正常</div>
+                                <div class="col-md-6"> 产权人：周润发</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row"  style="margin-top: 10px">
+                        <div class="col-md-3">
+                            <img src="images/company/3509.png" style="margin-left: 15px;width:80px;height: 60px">
+                        </div>
+                        <div class="col-md-9" >
+                            <div class="row">
+                                <div class="col-md-6"> 车位编号：D2-007</div>
+                                <div class="col-md-6"> 车库位置：地下二层</div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6"> 车位状态：正常</div>
+                                <div class="col-md-6"> 产权人：周润发</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!--车位信息模态框-->
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default btn-sm" aria-label="Left Align" data-dismiss="modal">
+                        <span aria-hidden="true">确定</span>
+                    </button>
+                    <button type="button" class="btn btn-sm btn-default" data-dismiss="modal">
+                        <span aria-hidden="true">取消</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <button type="button" class="btn btn-default" style="margin-top: -60px;margin-left: 400px" ng-click="AddCaraccesscard()">提交</button><button type="button" class="btn btn-default" style="margin-left: 10px;margin-top: -60px">取消</button><button type="button" class="btn btn-default" style="margin-left: 10px;margin-top: -60px">打印</button>
+</div>
+</body>
+</html>

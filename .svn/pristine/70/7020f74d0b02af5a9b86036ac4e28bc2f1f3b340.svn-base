@@ -1,0 +1,46 @@
+<!--
+创建时间：2015/6/1
+创建人：陶勇超
+JS路径;'controllers/externalProfession/departmentQualityManagementServiceRequest/allDepartmentQualityManagementServiceRequest',
+
+-->
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+<div class="complaint_user row">
+    <div style="margin: 50px">
+        活动类型：<select style="width: 200px"><option>园林</option><option>清洁</option><option>安保</option><option>维修</option></select>
+        <button ui-sref="index.externalProfession.qualityinspectionactivity" class="btn btn-md pull-right">创建部门质检服务请求</button>
+    </div>
+    <div class="row col-md-12">
+        <div class="col-md-2">
+            <div style="border: solid 1px;height: 600px;width: 150px">
+                <div style="padding-left:35px;border-top: 1px solid lightgray;margin-bottom: 30px;">
+                    <a ui-sref="index.externalProfession.departmentQualityManagementServiceRequest.allDepartmentQualityManagementServiceRequest.dayActivity">
+                        <button class="btn btn-default col-md-9" style="margin-top: 100px;">日检请求</button>
+                    </a>
+                    <a ui-sref="index.externalProfession.departmentQualityManagementServiceRequest.allDepartmentQualityManagementServiceRequest.weekActivity">
+                        <button class="btn btn-default col-md-9" style="margin-top:100px;">周检请求</button>
+                    </a>
+                    <a ui-sref="index.externalProfession.departmentQualityManagementServiceRequest.allDepartmentQualityManagementServiceRequest.biWeekActivity">
+                        <button class="btn btn-default col-md-9" style="margin-top:100px;">半月检请求</button>
+                    </a>
+                    <a ui-sref="index.externalProfession.departmentQualityManagementServiceRequest.allDepartmentQualityManagementServiceRequest.monthActivity">
+                        <button class="btn btn-default col-md-9" style="margin-top:100px;">月检请求</button>
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-10">
+            <div class="row" style="margin-top: -30px">
+                <div ui-view></div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

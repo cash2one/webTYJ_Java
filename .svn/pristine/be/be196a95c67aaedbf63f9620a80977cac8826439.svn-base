@@ -1,0 +1,56 @@
+<!--
+作者：陶勇超
+创建日期：2015/5/25
+名称：岗位人员配置
+JS路径： 'controllers/internalProfession/postPersonnelConfiguration',
+修改人：彭婷婷
+修改内容：数据通过js显示
+修改时间:2015/6/4
+-->
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>岗位人员配置</title>
+</head>
+<body>
+<div class="order">
+    <div class="row">
+        <div style="width:97%; margin:0 auto; background:#f0f0f0; -moz-border-radius:7px; -webkit-border-radius:7px; border-radius:7px; border:1px solid #bbb; padding-bottom:15px; height:auto; ">
+            <div style="border: 1px solid ;width: 80%;height: 200px;margin: 20px ;background-color: ghostwhite" >
+                <div class="row" style="margin: 10px 10px 0px 10px;">
+                    <div class="col-md-1" ng-repeat="items in staff" >
+                        <img style="width: 60px;height: 60px;" src="images/staffHome/u116.jpg">
+                        <p style="text-align: center">{{items.staffName}}</p>
+                    </div>
+                </div>
+            </div>
+            <!--上部分结束-->
+            <div style="border: 1px solid ;width: 45%;margin: 20px auto;background-color: ghostwhite">
+                <table class="table-bordered" style="width:100%;text-align: center">
+                    <tr style="height: 40px;" ng-repeat="items in title">
+                        <td>{{items.title}}</td>
+                        <td>{{items.projectTitle}}</td>
+                        <td>{{items.clean}}</td>
+                        <td>{{items.park}}</td>
+                        <td>{{items.security}}</td>
+                        <td>{{items.maintain}}</td>
+                        <td>{{items.fireFighting}}</td>
+                    </tr>
+                    <tr style="height: 40px;" ng-repeat="item in person">
+                        <td>{{item.id}}</td>
+                        <td>{{item.project}}</td>
+                        <td>{{item.clean}}</td>
+                        <td>{{item.park}}</td>
+                        <td>{{item.security}}</td>
+                        <td>{{item.maintain}}</td>
+                        <td>{{item.fireFighting}}</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+        <div class="clear"></div>
+    </div>
+</div>
+</body>
+</html>

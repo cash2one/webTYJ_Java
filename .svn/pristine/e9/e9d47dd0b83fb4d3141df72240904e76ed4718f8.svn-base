@@ -1,0 +1,30 @@
+package com.flf.service.impl;
+import java.util.List;
+
+import com.flf.entity.BillingRecord;
+import com.flf.entity.PageRestful;
+import com.flf.mapper.BillingRecordMapper;
+import com.flf.service.BillingRecordService;
+
+public class BillingRecordServiceImpl implements BillingRecordService {
+	private BillingRecordMapper billingRecordMapper;
+
+	public BillingRecordMapper getBillingRecordMapper() {
+		return billingRecordMapper;
+	}
+
+	public void setBillingRecordMapper(BillingRecordMapper billingRecordMapper) {
+		this.billingRecordMapper = billingRecordMapper;
+	}
+
+	@Override
+	public PageRestful listPageBillingRecord(BillingRecord billingRecord) {
+		PageRestful pageRestful=new PageRestful();
+		List<BillingRecord> billingRecords = billingRecordMapper.listPageBillingRecord(billingRecord);
+		billingRecords.add(0,null);
+		pageRestful.setBillingRecords(billingRecords);
+		pageRestful.setPage(billingRecord.getPage());
+		return pageRestful;
+	}
+	
+}

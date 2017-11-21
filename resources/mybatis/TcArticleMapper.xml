@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.flf.mapper.TcArticleMapper" >
+  <resultMap id="BaseResultMap" type="TcArticle" >
+    <id column="article_id" property="articleId" jdbcType="VARCHAR" />
+    <result column="article_name" property="articleName" jdbcType="VARCHAR" />
+    <result column="article_describe" property="articleDescribe" jdbcType="VARCHAR" />
+    <result column="state" property="state" jdbcType="INTEGER" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    article_id, article_name, article_describe, state
+  </sql>
+ 
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from tc_article
+    where article_id = #{articleId,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from tc_article
+    where article_id = #{articleId,jdbcType=VARCHAR}
+  </delete>
+  
+  <insert id="insert" parameterType="TcArticle" >
+    insert into tc_article (article_id, article_name, article_describe, 
+      state)
+    values (#{articleId,jdbcType=VARCHAR}, #{articleName,jdbcType=VARCHAR}, #{articleDescribe,jdbcType=VARCHAR}, 
+      #{state,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="TcArticle" >
+    insert into tc_article
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="articleId != null" >
+        article_id,
+      </if>
+      <if test="articleName != null" >
+        article_name,
+      </if>
+      <if test="articleDescribe != null" >
+        article_describe,
+      </if>
+      <if test="state != null" >
+        state,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="articleId != null" >
+        #{articleId,jdbcType=VARCHAR},
+      </if>
+      <if test="articleName != null" >
+        #{articleName,jdbcType=VARCHAR},
+      </if>
+      <if test="articleDescribe != null" >
+        #{articleDescribe,jdbcType=VARCHAR},
+      </if>
+      <if test="state != null" >
+        #{state,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  
+  <update id="updateByPrimaryKeySelective" parameterType="TcArticle" >
+    update tc_article
+    <set >
+      <if test="articleName != null" >
+        article_name = #{articleName,jdbcType=VARCHAR},
+      </if>
+      <if test="articleDescribe != null" >
+        article_describe = #{articleDescribe,jdbcType=VARCHAR},
+      </if>
+      <if test="state != null" >
+        state = #{state,jdbcType=INTEGER},
+      </if>
+    </set>
+    where article_id = #{articleId,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="TcArticle" >
+    update tc_article
+    set article_name = #{articleName,jdbcType=VARCHAR},
+      article_describe = #{articleDescribe,jdbcType=VARCHAR},
+      state = #{state,jdbcType=INTEGER}
+    where article_id = #{articleId,jdbcType=VARCHAR}
+  </update>
+  
+  <select id="listPageTcArticles" resultMap="BaseResultMap" parameterType="TcArticle" >
+    select 
+    <include refid="Base_Column_List" />
+    from tc_article
+    WHERE state=#{state} AND article_id  IN 
+    (SELECT article_id FROM tc_article_state WHERE state=#{state} AND article_state_id NOT IN 
+    (SELECT article_state_id FROM t_article_get ))
+  </select>
+  
+  <select id="listAllTcArticles" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from tc_article
+  </select>
+</mapper>

@@ -1,0 +1,507 @@
+package com.flf.service.impl;
+
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Date;
+import java.util.Iterator;
+import java.util.List;
+import java.util.UUID;
+
+import javax.servlet.http.HttpServletRequest;
+
+import org.apache.poi.hssf.usermodel.HSSFRow;
+import org.apache.poi.hssf.usermodel.HSSFSheet;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import com.alibaba.fastjson.JSONArray;
+import com.flf.entity.BuildingStructureNew;
+import com.flf.entity.ElectricityLoss;
+import com.flf.entity.ElectricityMeterProject;
+import com.flf.entity.ElectricityMeterReadingData;
+import com.flf.entity.ElectricityMeterReadingProgram;
+import com.flf.entity.ElectricityMeterRecords;
+import com.flf.entity.Log;
+import com.flf.entity.MeterReadingData;
+import com.flf.entity.MeterReadingProgram;
+import com.flf.entity.PageRestful;
+import com.flf.entity.SearchMeter;
+import com.flf.entity.Staff;
+import com.flf.entity.WaterLoss;
+import com.flf.mapper.ElectricityLossMapper;
+import com.flf.entity.WaterMeterProject;
+import com.flf.entity.WaterMeterRecords;
+import com.flf.mapper.ElectricityMeterProjectMapper;
+import com.flf.mapper.ElectricityMeterReadingDataMapper;
+import com.flf.mapper.ElectricityMeterReadingProgramMapper;
+import com.flf.mapper.ElectricityMeterRecordsMapper;
+import com.flf.mapper.StaffMapper;
+import com.flf.mapper.WaterLossMapper;
+import com.flf.request.ExcelInfo;
+import com.flf.service.ElectricityMeterProjectService;
+import com.flf.service.ElectricityMeterReadingProgramService;
+import com.flf.service.ElectricityMeterRecordsService;
+import com.flf.service.LogService;
+import com.flf.util.Excel;
+import com.flf.util.JsonUtil;
+
+public class ElectricityMeterReadingProgramServiceImpl implements
+		ElectricityMeterReadingProgramService {
+	
+	private LogService logService;
+	
+	private ElectricityMeterReadingProgramMapper electricityMeterReadingProgramMapper;
+	
+	private ElectricityMeterRecordsService electricityMeterRecordsService;
+	
+	private ElectricityMeterProjectService electricityMeterProjectService;
+	
+	private ElectricityMeterProjectMapper electricityMeterProjectMapper;
+	
+	private ElectricityMeterRecordsMapper electricityMeterRecordsMapper;
+	
+	private ElectricityMeterReadingDataMapper electricityMeterReadingDataMapper;
+	
+	private ElectricityLossMapper electricityLossMapper;
+	
+	private StaffMapper staffMapper;
+	
+	public ElectricityLossMapper getElectricityLossMapper() {
+		return electricityLossMapper;
+	}
+
+	public void setElectricityLossMapper(ElectricityLossMapper electricityLossMapper) {
+		this.electricityLossMapper = electricityLossMapper;
+	}
+	
+	public LogService getLogService() {
+		return logService;
+	}
+
+	public void setLogService(LogService logService) {
+		this.logService = logService;
+	}
+	
+	public ElectricityMeterReadingDataMapper getElectricityMeterReadingDataMapper() {
+		return electricityMeterReadingDataMapper;
+	}
+
+	public void setElectricityMeterReadingDataMapper(
+			ElectricityMeterReadingDataMapper electricityMeterReadingDataMapper) {
+		this.electricityMeterReadingDataMapper = electricityMeterReadingDataMapper;
+	}
+
+	public ElectricityMeterProjectMapper getElectricityMeterProjectMapper() {
+		return electricityMeterProjectMapper;
+	}
+
+	public void setElectricityMeterProjectMapper(
+			ElectricityMeterProjectMapper electricityMeterProjectMapper) {
+		this.electricityMeterProjectMapper = electricityMeterProjectMapper;
+	}
+
+	public ElectricityMeterRecordsMapper getElectricityMeterRecordsMapper() {
+		return electricityMeterRecordsMapper;
+	}
+
+	public void setElectricityMeterRecordsMapper(
+			ElectricityMeterRecordsMapper electricityMeterRecordsMapper) {
+		this.electricityMeterRecordsMapper = electricityMeterRecordsMapper;
+	}
+
+	public ElectricityMeterRecordsService getElectricityMeterRecordsService() {
+		return electricityMeterRecordsService;
+	}
+
+	public void setElectricityMeterRecordsService(
+			ElectricityMeterRecordsService electricityMeterRecordsService) {
+		this.electricityMeterRecordsService = electricityMeterRecordsService;
+	}
+
+	public ElectricityMeterProjectService getElectricityMeterProjectService() {
+		return electricityMeterProjectService;
+	}
+
+	public void setElectricityMeterProjectService(
+			ElectricityMeterProjectService electricityMeterProjectService) {
+		this.electricityMeterProjectService = electricityMeterProjectService;
+	}
+
+	public ElectricityMeterReadingProgramMapper getElectricityMeterReadingProgramMapper() {
+		return electricityMeterReadingProgramMapper;
+	}
+
+	public void setElectricityMeterReadingProgramMapper(
+			ElectricityMeterReadingProgramMapper electricityMeterReadingProgramMapper) {
+		this.electricityMeterReadingProgramMapper = electricityMeterReadingProgramMapper;
+	}
+
+	@Override
+	public List<ElectricityMeterReadingProgram> listAllElectricityMeterReadingProgram() {
+		return electricityMeterReadingProgramMapper.listAllElectricityMeterReadingProgram();
+	}
+
+	@Override
+	public ElectricityMeterReadingProgram getUserByIdRest(
+			String electricityMeterReadingProgramId) {
+		return electricityMeterReadingProgramMapper.getElectricityMeterReadingProgrambyId(electricityMeterReadingProgramId);
+	}
+
+	@Override
+	public List<ElectricityMeterReadingProgram> listElectricityMeterReadingProgrambyDate(
+			Date date) {
+		return null;
+	}
+
+	@Override
+	public List<ElectricityMeterReadingProgram> listElectricityMeterReadingProgrambyStaff(
+			String currentExecutor) {
+		return electricityMeterReadingProgramMapper.listElectricityMeterReadingProgrambyStaff(currentExecutor);
+	}
+
+	@Override
+	public List<ElectricityMeterReadingProgram> listElectricityMeterReadingProgrambyState(
+			byte programExecutionStatus) {
+		return null;
+	}
+
+	@Override
+	public List<ElectricityMeterReadingProgram> listElectricityMeterReadingProgrambyTeam(
+			String executiveTeam) {
+		return null;
+	}
+
+	@Override
+	public List<ElectricityMeterReadingProgram> listElectricityMeterReadingProgrambyName(
+			String projectName) {
+		return null;
+	}
+
+	@Override
+	public PageRestful listPageElectricityMeterReadingProgram(
+			SearchMeter searchMeter) {
+		PageRestful pageRestful =new PageRestful();
+		List<ElectricityMeterReadingProgram> electricityMeterReadingPrograms=electricityMeterReadingProgramMapper.listPageElectricityMeterReadingProgram(searchMeter);
+		for(ElectricityMeterReadingProgram item:electricityMeterReadingPrograms){
+			if (item.getCurrentExecutor()!=null) {
+				Staff staff=staffMapper.findStaffBystaffId(item.getCurrentExecutor());
+				if (staff!=null) {
+					if (staff.getStaffName()!=null) {
+						item.setStaffExecutor(staff.getStaffName());
+					}
+				}else {
+					item.setStaffExecutor(item.getCurrentExecutor());
+				}
+			}
+		}
+		electricityMeterReadingPrograms.add(0,null);
+		pageRestful.setElectricityMeterReadingProgram(electricityMeterReadingPrograms);
+		pageRestful.setPage(searchMeter.getPage());
+		return pageRestful;
+	}
+
+	//electricityMeterRecordId
+	@Override
+	public void insertElectricityMeterReadingProgramrest(
+		ElectricityMeterReadingProgram electricityMeterReadingProgram) {
+		String uuid = UUID.randomUUID().toString();
+		electricityMeterReadingProgram.setElectricityMeterReadingProgramId(uuid);
+		electricityMeterReadingProgram.setProgramExecutionStatus(0);
+		electricityMeterReadingProgram.setAllNum(electricityMeterReadingProgram.getIds().size());
+		electricityMeterReadingProgram.setMeterReadingNum(0);
+		electricityMeterReadingProgram.setUnfinishedNum(electricityMeterReadingProgram.getIds().size());
+		electricityMeterReadingProgramMapper.insertSelective(electricityMeterReadingProgram);
+		for (String str : electricityMeterReadingProgram.getIds()) {
+			ElectricityMeterProject electricityMeterProject = new ElectricityMeterProject();
+			electricityMeterProject.setElectricityMeterRecordsId(str);
+			electricityMeterProject.setReadingProgramId(uuid);
+			electricityMeterProjectMapper.insertElectricityMeterProject(electricityMeterProject);
+			ElectricityMeterReadingData electricityMeterReadingData = new ElectricityMeterReadingData();
+			ElectricityMeterReadingData item = electricityMeterReadingDataMapper.selectLastMonthReading(str);
+			if (item != null) {
+				electricityMeterReadingData.setLastMonthReading(item.getReading());
+			} else {
+				ElectricityMeterRecords electricityMeterRecords = electricityMeterRecordsMapper.selectByPrimePrimaryKey(str);
+				electricityMeterReadingData.setLastMonthReading(electricityMeterRecords.getInitialReading());
+			}
+			electricityMeterReadingData.setElectricityMeterReadingProgramId(uuid);
+			electricityMeterReadingData.setElectricityMeterReadingDataId(UUID.randomUUID().toString());
+			electricityMeterReadingData.setElectricityMeterRecordId(str);
+			electricityMeterReadingData.setMeterReadingPeople(electricityMeterReadingProgram.getCurrentExecutor());
+			electricityMeterReadingData.setSpecifiedDate(electricityMeterReadingProgram.getStartTime());
+			electricityMeterReadingDataMapper.insertElectricityMeterReadingData(electricityMeterReadingData);
+		}
+		
+		/*String uuid=UUID.randomUUID().toString();
+		electricityMeterReadingProgram.setElectricityMeterReadingProgramId(uuid);
+		electricityMeterReadingProgram.setProgramExecutionStatus(0);
+		electricityMeterReadingProgram.setAllNum(electricityMeterReadingProgram.getIds().size());
+		electricityMeterReadingProgram.setMeterReadingNum(0);
+		electricityMeterReadingProgram.setUnfinishedNum(electricityMeterReadingProgram.getIds().size());
+		electricityMeterReadingProgramMapper.insertElectricityMeterReadingProgram(electricityMeterReadingProgram);
+		ElectricityMeterProject electricityMeterProject=new ElectricityMeterProject();
+		List<String> ids=new ArrayList<String>();
+		for (BuildingStructureNew buildingStructureNew : electricityMeterReadingProgram.getBuildingStructureNew()) {
+			ids.add(buildingStructureNew.getId());
+		}
+		List<ElectricityMeterRecords> electricityMeterRecords=electricityMeterRecordsService.listElectricityMeterRecordsbybuildigIds(ids);
+		for (ElectricityMeterRecords electricityMeterRecords2 : electricityMeterRecords) {
+			electricityMeterProject.setReadingProgramId(uuid);
+			electricityMeterProject.setElectricityMeterRecordsId(electricityMeterRecords2.getElectricityMeterRecordsId());
+			electricityMeterProjectService.insertElectricityMeterProjectrest(electricityMeterProject);
+			ElectricityMeterReadingData electricityMeterReadingData=new ElectricityMeterReadingData();
+			electricityMeterReadingData.setElectricityMeterRecordId(electricityMeterRecords2.getElectricityMeterRecordsId());
+			electricityMeterReadingData.setBuildingStructureId(electricityMeterRecords2.getBuildingStructureId());
+			electricityMeterReadingData.setElectricityMeterReadingProgramId(uuid);
+			electricityMeterReadingDataMapper.insertElectricityMeterReadingData(electricityMeterReadingData);
+		}*/
+	}
+
+	@Override
+	public void updateElectricityMeterReadingProgramrest(
+			ElectricityMeterReadingProgram electricityMeterReadingProgram) {
+				Date date = new Date();
+				electricityMeterReadingProgramMapper.updateMeterReadingProgram(electricityMeterReadingProgram);
+				//生成日志给抄表结果
+				if (electricityMeterReadingProgramMapper.updateMeterReadingProgram(electricityMeterReadingProgram) > 0) {
+					Log log = new Log();
+					log.setOperation("修改");// 操作
+					log.setService("抄表计划");// 业务
+					log.setThing("修改：" + electricityMeterReadingProgram.getProjectName() + "抄表计划");
+					log.setStaff(electricityMeterReadingProgram.getCurrentExecutor());// 操作人
+					log.setTable("te_electricity_meter_reading_program");// 操作的表名
+					log.setTime(date);
+					log.setRelevanceId(electricityMeterReadingProgram.getElectricityMeterReadingProgramId());// 关联id
+					electricityMeterReadingProgram.setLogId(log.getId());
+					logService.insertElectricityLog(log);// 记录日志
+
+				}
+				
+				//electricityMeterProjectMapper.deleteByReadingProgramId(electricityMeterReadingProgram.getElectricityMeterReadingProgramId());
+				//electricityMeterReadingDataMapper.deleteByReadingProgramId(electricityMeterReadingProgram.getElectricityMeterReadingProgramId());
+				
+				electricityMeterReadingProgramMapper.updateByPrimaryKeySelective(electricityMeterReadingProgram);
+				for (String str : electricityMeterReadingProgram.getIds()) {
+					ElectricityMeterProject electricityMeterProject = new ElectricityMeterProject();
+					electricityMeterProject.setElectricityMeterRecordsId(str);
+					electricityMeterProject.setReadingProgramId(electricityMeterReadingProgram.getElectricityMeterReadingProgramId());
+					electricityMeterProjectMapper.updateElectricityMeterProject(electricityMeterProject);
+					ElectricityMeterReadingData electricityMeterReadingData = new ElectricityMeterReadingData();
+					ElectricityMeterReadingData item = electricityMeterReadingDataMapper.selectLastMonthReading(str);
+					ElectricityMeterRecords electricityMeterRecords = electricityMeterRecordsMapper.selectByPrimePrimaryKey(str);
+					
+					if (item != null) {
+						if (item.getReading()!=null) {
+							electricityMeterReadingData.setReading(item.getReading());
+						}else {
+							electricityMeterReadingData.setReading(0.0);
+						}
+						
+						if (item.getLastMonthReading()==null) {
+							electricityMeterReadingData.setLastMonthReading(0.0);
+						}else {
+							electricityMeterReadingData.setLastMonthReading(item.getLastMonthReading());
+						}
+					} else {
+						if (electricityMeterRecords.getInitialReading()==null) {
+							electricityMeterReadingData.setLastMonthReading(0.0);
+						}else {
+							electricityMeterReadingData.setLastMonthReading(electricityMeterRecords.getInitialReading());
+						}
+					}
+					electricityMeterReadingData.setElectricityMeterReadingProgramId(electricityMeterReadingProgram.getElectricityMeterReadingProgramId());
+					ElectricityMeterReadingData electricityMeterReadingDataaa=electricityMeterReadingDataMapper.listElectricityMeterReadingDatabyRecordId(str);
+					if (electricityMeterReadingDataaa.getElectricityMeterReadingDataId()!=null) {
+						electricityMeterReadingData.setElectricityMeterReadingDataId(electricityMeterReadingDataaa.getElectricityMeterReadingDataId());
+					}else{
+						electricityMeterReadingData.setElectricityMeterReadingDataId(UUID.randomUUID().toString());
+					};
+					
+					electricityMeterReadingData.setElectricityMeterRecordId(str);
+					electricityMeterReadingData.setMeterReadingPeople(electricityMeterReadingProgram.getCurrentExecutor());
+					electricityMeterReadingData.setSpecifiedDate(electricityMeterReadingProgram.getStartTime());
+					electricityMeterReadingDataMapper.updateElectricityMeterReadingData(electricityMeterReadingData);
+				}
+		
+		
+		
+		/*electricityMeterReadingProgramMapper.updateElectricityMeterReadingProgram(electricityMeterReadingProgram);
+		List<ElectricityMeterProject> electricityMeterProject=electricityMeterProjectMapper.listElectricityMeterProjectbyId(electricityMeterReadingProgram.getElectricityMeterReadingProgramId());
+		for (ElectricityMeterProject electricityMeterProjects : electricityMeterProject) {
+				String a=electricityMeterProjects.getBuildingStructureId();
+				List<BuildingStructureNew> buildingStructureNew=electricityMeterReadingProgram.getBuildingStructureNew();
+				for (BuildingStructureNew buildingStructureNews : buildingStructureNew) {
+					ElectricityMeterRecords electricityMeterRecords=electricityMeterRecordsMapper.listElectricityMeterRecordsbybuildigIds(buildingStructureNews.getId());
+					if(!a.equals(buildingStructureNews.getId())){
+						electricityMeterProjectMapper.deleteElectricityMeterProject(a);
+						ElectricityMeterProject electricityMeterProjectss=new ElectricityMeterProject();
+						electricityMeterProjectss.setElectricityMeterRecordsId(electricityMeterRecords.getElectricityMeterRecordsId());
+						electricityMeterProjectss.setBuildingStructureId(buildingStructureNews.getId());
+						electricityMeterProjectss.setReadingProgramId(electricityMeterReadingProgram.getElectricityMeterReadingProgramId());
+						electricityMeterProjectMapper.insertElectricityMeterProject(electricityMeterProjectss);
+					}
+				}
+			}*/
+		}
+
+	@Override
+	public void deleteElectricityMeterReadingProgramrest(
+			String electricityMeterReadingProgramId) {
+		electricityMeterReadingProgramMapper.deleteElectricityMeterReadingProgram(electricityMeterReadingProgramId);
+	}
+
+	@Override
+	public InputStream exportElectricityLossExcel(HttpServletRequest request) {
+		//return null;//测试添加的
+		Date date = null;
+		if(request.getParameter("queryDate") == null || request.getParameter("queryDate") == ""){
+			date = new Date();
+		} else {
+			SimpleDateFormat sf1 = new SimpleDateFormat("yyyy-MM-dd");
+			try {
+				date = sf1.parse(request.getParameter("queryDate"));
+			} catch (ParseException e) {
+				e.printStackTrace();
+			}
+		}
+		
+		List<ElectricityLoss> electricityLossList = electricityLossMapper.selectByDate(date);
+		
+		int maxLevel = electricityLossMapper.selectMaxLevelByDate(new Date());
+		
+		HSSFWorkbook wb = new HSSFWorkbook();
+		HSSFSheet sheet = wb.createSheet("电损分析");   //--->创建了一个工作簿  
+		
+		HSSFRow row = sheet.createRow(0);
+		for (short i = 0; i < maxLevel; i++) {
+			row.createCell(i).setCellValue("第"+ (i+1) + "级");
+		}
+        
+        row.createCell((short) maxLevel).setCellValue("表用量");
+        row.createCell((short) (maxLevel+1)).setCellValue("子表用量");
+        row.createCell((short) (maxLevel+2)).setCellValue("电损");
+        row.createCell((short) (maxLevel+3)).setCellValue("损耗率");
+        
+        for (int i = 0; i < electricityLossList.size(); i++) {
+        	HSSFRow item = sheet.createRow(i+1);
+        	item.createCell((short) (electricityLossList.get(i).getLevel()-1)).setCellValue(electricityLossList.get(i).getElectricityName());
+        	item.createCell((short) maxLevel).setCellValue((electricityLossList.get(i).getConsumption()));
+        	if(electricityLossList.get(i).getChildConsumption() != null){
+        		item.createCell((short) (maxLevel+1)).setCellValue((electricityLossList.get(i).getChildConsumption()));
+        	}
+        	if((electricityLossList.get(i).getElectricityLoss() != null)){
+        		if (electricityLossList.get(i).getElectricityLoss()!=null) {
+        			item.createCell((short) (maxLevel+2)).setCellValue((electricityLossList.get(i).getElectricityLoss()));
+				}
+        	}
+        	if((electricityLossList.get(i).getLossRate() != null)){
+        		item.createCell((short) (maxLevel+3)).setCellValue((electricityLossList.get(i).getLossRate()));
+        	}
+		}
+        
+		try {
+			ByteArrayOutputStream os = new ByteArrayOutputStream();
+			wb.write(os);
+			InputStream is = new ByteArrayInputStream(os.toByteArray());
+			os.close();
+			return is;
+		} catch (IOException e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
+	@Override
+	public String implementProgram(String meterReadingProgramIdJson) {
+		try {
+			List<String> meterReadingProgramIdList = JSONArray.parseArray(meterReadingProgramIdJson, String.class);
+			electricityMeterReadingProgramMapper.implementProgram(meterReadingProgramIdList);
+			return JsonUtil.success("执行成功", true);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return JsonUtil.failure("执行失败", false);
+		}
+	}
+	
+	@Override
+	public InputStream exportElectricityMeterReadingDataFile(HttpServletRequest request) {
+		Excel ex=new Excel();
+	    List<ExcelInfo> list=new ArrayList<ExcelInfo>();
+		String[] headers = { "主键","抄表人","电表编号","区域","上月读数", "本月读数"};
+		String[] fields = {"electricityMeterReadingDataId","meterReadingPeople","electricityMeterNum","fullName","lastMonthReading","reading"};
+        List<ElectricityMeterReadingData> dataset = electricityMeterReadingDataMapper.selectMeterReadingDateByMeterReadingProgramId(request.getParameter("meterReadingProgramId"));
+      
+        if(dataset.size() > 0){
+        	ExcelInfo exl=new ExcelInfo();
+			exl.setFields(fields);
+			exl.setTitles(headers);
+			exl.setSheetName(request.getParameter("fileName"));
+			exl.setList(dataset);
+			list.add(exl);
+        }
+		try {
+		    return ex.createExcelInputStream(list);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
+
+	@Override
+	public ElectricityMeterReadingProgram editData(String meterReadingProgramId) {
+		return electricityMeterReadingProgramMapper.editData(meterReadingProgramId);
+	}
+
+	@Override
+	public PageRestful listPageMeterReadingResult(SearchMeter searchMerter) {
+		PageRestful pageRestful = new PageRestful();
+		List<ElectricityMeterReadingProgram> meterReadingPrograms = electricityMeterReadingProgramMapper.listPageMeterReadingResult(searchMerter);
+		for(ElectricityMeterReadingProgram item: meterReadingPrograms){
+			if (item.getCurrentExecutor()!=null) {
+				Staff staff=staffMapper.findStaffBystaffId(item.getCurrentExecutor());
+				if (staff!=null) {
+					if (staff.getStaffName()!=null) {
+						item.setCurrentExecutor(staff.getStaffName());
+					}
+				}
+			}
+		}
+		if (meterReadingPrograms != null && meterReadingPrograms.size() > 0) {
+			for (int i=0; i<meterReadingPrograms.size(); i++) {
+				if(meterReadingPrograms.get(i).getMeterReadingErrorNum()>0){
+					meterReadingPrograms.get(i).setProgramExceptionStatus(2);
+				}
+				else if(meterReadingPrograms.get(i).getMeterReadingWarningNum()>0){
+					meterReadingPrograms.get(i).setProgramExceptionStatus(1);
+				}
+				else {
+					meterReadingPrograms.get(i).setProgramExceptionStatus(0);
+				}
+				electricityMeterReadingProgramMapper.updateMeterReadingProgram(meterReadingPrograms.get(i));
+			}
+		}
+		List<ElectricityMeterReadingProgram> meterReadingPrograms1 = electricityMeterReadingProgramMapper.listPageMeterReadingResult(searchMerter);
+		meterReadingPrograms1.add(0, null);
+		pageRestful.setElectricityMeterReadingProgram(meterReadingPrograms1);
+		pageRestful.setPage(searchMerter.getPage());
+		return pageRestful;
+	}
+
+	@Override
+	public List<ElectricityMeterReadingProgram> selectMeterChecked(String meterReadingProgramId) {
+		return electricityMeterReadingProgramMapper.selectMeterChecked(Arrays.asList(meterReadingProgramId.split(",")));
+	}
+
+	public StaffMapper getStaffMapper() {
+		return staffMapper;
+	}
+
+	public void setStaffMapper(StaffMapper staffMapper) {
+		this.staffMapper = staffMapper;
+	}
+
+}

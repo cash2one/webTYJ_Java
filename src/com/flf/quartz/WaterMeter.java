@@ -1,0 +1,121 @@
+package com.flf.quartz;
+
+import java.text.DecimalFormat;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import org.quartz.JobExecutionContext;
+import org.quartz.JobExecutionException;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.quartz.QuartzJobBean;
+
+import com.flf.entity.WaterLoss;
+import com.flf.entity.WaterMeterRecords;
+import com.flf.mapper.MeterRecordsMapper;
+import com.flf.mapper.WaterLossMapper;
+
+public class WaterMeter  extends QuartzJobBean{
+
+	@Autowired
+	private MeterRecordsMapper meterRecordsMapper;
+	@Autowired
+	private WaterLossMapper waterLossMapper;
+	
+	@Override
+	protected void executeInternal(JobExecutionContext arg0) throws JobExecutionException {
+		// TODO Auto-generated method stub
+		
+	}
+	public void getWaterDamage(){
+		Date nowDate = new Date();
+		WaterMeterRecords waterMeterRecords = new WaterMeterRecords();
+		waterMeterRecords.setQueryDate(nowDate);
+		qwer(waterMeterRecords, 1);
+	}
+	
+	
+	public List<WaterMeterRecords> qwer(WaterMeterRecords waterMeterRecords, int count){
+		List<WaterMeterRecords> waterMeterRecordList = new ArrayList<WaterMeterRecords>();
+		if(waterMeterRecords.getParentNumList() == null || waterMeterRecords.getParentNumList().size() == 0){
+			waterMeterRecordList = meterRecordsMapper.getWaterDamage(waterMeterRecords); //查询所有父表编号为空的水表
+			waterLossMapper.deleteByMeterDate(waterMeterRecords.getQueryDate());
+		} else {
+			Map<String, Object> map = new HashMap<String, Object>();
+			map.put("queryDate", waterMeterRecords.getQueryDate());
+			map.put("parentNumList", waterMeterRecords.getParentNumList());
+			waterMeterRecordList = meterRecordsMapper.getWaterDamageTwo(map);
+		}
+		
+		for (WaterMeterRecords item : waterMeterRecordList) {
+			item.setChildMeterReading(0.0);
+			Double sumReading = meterRecordsMapper.selectSumReadingByParentNum(item.getWaterMeterNum(), waterMeterRecords.getQueryDate());//主表的子表总量
+			if(sumReading != null){
+				item.setChildMeterReading(sumReading + item.getChildMeterReading());
+			}
+			if(item.getFromNum() != null && !"".equals(item.getFromNum())){ //如果从表id不为空
+				WaterMeterRecords meterRecords = meterRecordsMapper.selectReadingById(item.getFromNum(), waterMeterRecords.getQueryDate()); //查询从表读数
+				if(meterRecords.getReading() != null && !"".equals(meterRecords.getReading())){
+					item.setReading((Double.parseDouble(meterRecords.getReading()) + Double.parseDouble(item.getReading())) + "");//主从表读数相加
+				}
+				item.setWaterMeterDescribed(item.getWaterMeterDescribed() + "," + meterRecords.getWaterMeterDescribed());//主从表描述相加
+				item.setWaterMeterNum(item.getWaterMeterNum() + "," + meterRecords.getWaterMeterNum());//主从表编号相加
+				
+				sumReading = meterRecordsMapper.selectSumReadingByParentNum(meterRecords.getWaterMeterNum(), waterMeterRecords.getQueryDate());//从表的子表总量
+				if(sumReading != null){
+					item.setChildMeterReading(sumReading + item.getChildMeterReading());
+				}
+			}
+			
+			Double bootReading = 0.0;
+
+			java.util.List<String> pnList = new java.util.ArrayList<String>();
+			String s[] = item.getWaterMeterNum().split(",");
+			for (String b : s) {
+				pnList.add(b);
+			}
+
+			Map<String, Object> bootMap = new HashMap<String, Object>();
+			bootMap.put("queryDate", waterMeterRecords.getQueryDate());
+			bootMap.put("parentNumList", pnList);
+			List<WaterMeterRecords> bootWaterMeterRecordList = meterRecordsMapper.getWaterDamageTwo(bootMap);
+
+			for (WaterMeterRecords bootItem : bootWaterMeterRecordList) {
+				Double tmp = meterRecordsMapper.selectSumReadingByParentNum_AndIsBilling1(bootItem.getWaterMeterNum(),
+						waterMeterRecords.getQueryDate());// 子表的子表总量
+
+				if (tmp != null) {
+					bootReading += tmp;
+				}
+			}
+			
+			item.setParentNumList(Arrays.asList(item.getWaterMeterNum().split(",")));
+			item.setQueryDate(waterMeterRecords.getQueryDate());
+			WaterLoss waterLoss = new WaterLoss();
+			waterLoss.setWaterNum(item.getWaterMeterNum());
+			waterLoss.setWaterName(item.getWaterMeterDescribed());
+			waterLoss.setLevel(count);
+			if (item.getReading()==null) {
+				waterLoss.setConsumption(0.0);
+			}else{
+				waterLoss.setConsumption(Double.parseDouble(item.getReading()));
+			}			
+			if(item.getChildMeterReading() != 0.0){
+				waterLoss.setChildConsumption(item.getChildMeterReading());
+				waterLoss.setBootChildConsumption(bootReading);
+				waterLoss.setWaterLoss(waterLoss.getConsumption() - waterLoss.getChildConsumption());
+				DecimalFormat df = new DecimalFormat("#.00");
+				waterLoss.setLossRate(df.format((waterLoss.getConsumption() - waterLoss.getChildConsumption())/waterLoss.getConsumption()*100) + "%");
+			}
+			waterLoss.setMeterDate(item.getQueryDate());
+			waterLossMapper.insertSelective(waterLoss);
+			qwer(item,count + 1);
+		}
+		
+		return null;
+	}
+	
+}

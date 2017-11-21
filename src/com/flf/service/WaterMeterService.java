@@ -1,0 +1,164 @@
+package com.flf.service;
+
+import java.io.InputStream;
+import java.util.List;
+
+import javax.jws.WebService;
+import javax.ws.rs.Consumes;
+import javax.ws.rs.DELETE;
+import javax.ws.rs.GET;
+import javax.ws.rs.POST;
+import javax.ws.rs.PUT;
+import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
+import javax.ws.rs.Produces;
+import javax.ws.rs.core.MediaType;
+
+import com.flf.entity.Annex;
+import com.flf.entity.PageRestful;
+import com.flf.entity.SearchMeter;
+import com.flf.entity.WaterMeter;
+import com.flf.request.Info;
+/* Created by Administrator on 2015/6/15. 
+author:尹磊
+修改时间：2015/6/15  修改人：尹磊 */
+@WebService
+@Path("/WaterMeter")
+public interface WaterMeterService {
+
+	/**
+	 * 查询所有水表信息
+	 * @return
+	 */
+	@GET
+	@Path("/listAllWaterMeter")
+	@Produces(MediaType.APPLICATION_JSON)
+	List<WaterMeter> listAllWaterMeter();
+
+	
+	/**
+	 * 根据id查询所有水表信息
+	 * @return
+	 */
+	@GET
+	@Path("/getWaterMeterbyId/{waterMeterId}")
+	@Produces(MediaType.APPLICATION_JSON)
+	WaterMeter getWaterMeterbyId(@PathParam("waterMeterId") String waterMeterId);
+
+	
+	/**
+	 * 根据水表使用记录id查询所有水表信息
+	 * @return
+	 */
+	@GET
+	@Path("/getWaterMeterbywaterMeterRecordsId/{waterMeterRecordsId}")
+	@Produces(MediaType.APPLICATION_JSON)
+	WaterMeter getWaterMeterbywaterMeterRecordsId(@PathParam("waterMeterRecordsId") String waterMeterRecordsId);
+
+	
+	/**
+	 * 根据父级id查询所有水表信息
+	 * @return
+	 */
+	@GET
+	@Path("/listWaterMeterbyParent/{parentId}")
+	@Produces(MediaType.APPLICATION_JSON)
+	List<WaterMeter> listWaterMeterbyParent(@PathParam("parentId") String parentId);
+	
+	
+	
+	/**
+	 * 新增水表信息
+	 * @return
+	 */
+	@POST
+	@Path("/insertWaterMeter")
+	@Consumes({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
+	Info insertWaterMeterrest(WaterMeter waterMeter);
+	
+	/**
+	 * 水表多功能查询接口
+	 * @return
+	 */
+	@POST
+	@Path("/listPageWaterMeter")
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
+	PageRestful listPageWaterMeter(WaterMeter waterMeter);
+	
+	/**
+	 * 根据建筑结构id获取水表及房屋信息
+	 * @return
+	 */
+	@POST
+	@Path("/getWaterMeterByBuildingStructureId")
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
+	List<WaterMeter> getWaterMeterByBuildingStructureId(WaterMeter waterMeter);
+	
+	/**
+	 * 修改水表信息
+	 * @return
+	 */
+	@PUT
+	@Path("/updateWaterMeter")
+	@Consumes({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
+	Info updateWaterMeterrest(WaterMeter waterMeter);
+
+	
+	/**
+	 * 删除水表信息
+	 * @return
+	 */
+	@DELETE
+	@Path("/deleteWaterMeter/{waterMeterId}")
+	void deleteWaterMeterrest(@PathParam("waterMeterId") String waterMeterId);
+	
+	
+	/**
+  	 * 导入Excel数据文档
+  	 * @param annex
+  	 * @return
+  	 */
+  	@POST
+  	@Path("/importExcelFileWater")
+  	@Produces(MediaType.APPLICATION_JSON)
+  	@Consumes({MediaType.APPLICATION_JSON,MediaType.APPLICATION_XML})
+  	Info importExcelFileWater(Annex annex);
+  	
+  	 /**
+     * 将需要进行EXCEL导入的数据先写入模板并导出到本地
+     */
+    InputStream exportWaterMeterFile();
+
+
+	/**
+	 * 根据id查询所有水表信息信息和使用记录
+	 * @return
+	 */
+	@GET
+	@Path("/getWaterMeterbyWaterMeterId/{waterMeterId}")
+	@Produces(MediaType.APPLICATION_JSON)
+	WaterMeter getWaterMeterbyWaterMeterId(@PathParam("waterMeterId") String waterMeterId);
+	
+	/**
+	 * 根据单元的建筑结构id查询使用中的水表及建筑全名
+	 * @param parentId
+	 * @return
+	 */
+	@GET
+	@Path("/getWaterMeterAndFullNameByParentId/{parentId}")
+	@Produces(MediaType.APPLICATION_JSON)
+	String getWaterMeterAndFullNameByParentId(@PathParam("parentId") String parentId);
+	
+	/**
+	 * 根据水表使用记录id查询水表循环值
+	 * @param waterMeterRecordId
+	 * @return
+	 */
+	@GET
+	@Path("/getWaterMeterbyWaterMeterRecordId/{waterMeterRecordId}")
+	@Produces(MediaType.APPLICATION_JSON)
+	WaterMeter getWaterMeterbyWaterMeterRecordId(@PathParam("waterMeterRecordId") String waterMeterRecordId);
+	
+}

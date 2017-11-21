@@ -1,0 +1,66 @@
+<!--创建人：李斌  日期：2015/5/21
+    页面名称：外部专业线的工单详情
+    JS路径：'page\externalProfession\workingSingleDetail.html',
+-->
+
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>工单详情</title>
+</head>
+<body>
+<div class="row">
+    <!--工单详情的工单信息显示-->
+    <div class="complaint_user">
+        <div class="col-md-2">
+            <div style="width:100px;height: 90px;border: solid 1px;margin: 20px;background-color: #ffffff;text-align: center">
+                <h2>工单</h2>
+            </div>
+        </div>
+        <div class="col-md-3" style="margin: 20px">
+            <p>任务名称：{{workingSingle.name}}</p>
+            <p>关联任务：{{workingSingle.relatedTask}}</p>
+            <p>质检对象：{{workingSingle.object}}</p>
+        </div>
+        <div class="col-md-6" style="margin: 20px">
+            <span>描述：{{workingSingle.describe}}</span>
+        </div>
+        <div class="clear"></div>
+    </div>
+    <!--工单详情的工单信息显示end-->
+
+    <div class="complaint_user">
+        <div style="margin: 20px">
+            <p>{{workingSingle.tableName}}</p>
+        </div>
+        <!--园林质检表的园林表格-->
+        <div>
+            <table border="1" style="width: 90% ;margin:20px auto;text-align: center">
+                <tr style="background-color: #31b0d5">
+                    <td style="width: 10%">部门</td>
+                    <td style="width: 15%">部门人员</td>
+                    <td style="width: 15%">{{tableHead1.date1}}</td>
+                    <td style="width: 15%">{{tableHead1.date2}}</td>
+                    <td style="width: 15%">{{tableHead1.date3}}</td>
+                    <td style="width: 15%">{{tableHead1.date4}}</td>
+                    <td style="width: 15%">{{tableHead1.date5}}</td>
+                </tr>
+
+                <tr ng-repeat="item in items">
+                    <td>{{item.departmentName}}</td>
+                    <td>{{item.name}}</td>
+                    <td><a ui-sref="index.externalProfession.personalScoreDetails">{{item.score1}}</a></td>
+                    <td>{{item.score2}}</td>
+                    <td>{{item.score3}}</td>
+                    <td>{{item.score4}}</td>
+                    <td>{{item.score5}}</td>
+                </tr>
+            </table>
+        </div>
+        <!--园林质检表的园林表格end-->
+        <div class="clear"></div>
+    </div>
+</div>
+</body>
+</html>

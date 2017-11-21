@@ -1,0 +1,283 @@
+<!--
+    页面名称：【专业资产初始化】新增资产
+    前端负责人：刘洋
+    js路径：js/controllers/internalProfession/majorAssetInitialization/queryAssets.js
+    创建时间：2015/5/6
+    修改日期：2015/5/28
+-->
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>查询资产</title>
+    <script src="js/controllers/internalProfession/majorAssetInitialization/queryAssets.js"></script>
+    <link href="css/internalProfession/main.css" rel="stylesheet">
+</head>
+<body ng-controller="queryAssetsCtrl">
+
+<div class="professional_search_panner">
+    <div class="professional_title" >筛选条件：</div>
+    <div class="">
+        <div class="professional_select_group">
+            <span class=" professional_checkbox"> <form> <input name="" type="checkbox" value=""  class="checkbox"/></form></span>
+            <span class="professional_select_span"> 强电</span>
+        </div>
+        <div class="professional_select_group">
+            <span class=" professional_checkbox"> <form> <input name="" type="checkbox" value=""  class="checkbox"/></form></span>
+            <span class="professional_select_span"> 弱电</span>
+        </div>
+        <div class="professional_select_group">
+            <span class=" professional_checkbox"> <form> <input name="" type="checkbox" value=""  class="checkbox"/></form></span>
+            <span class="professional_select_span"> 家私</span>
+        </div>
+        <div class="professional_select_group">
+            <span class=" professional_checkbox"> <form> <input name="" type="checkbox" value=""  class="checkbox"/></form></span>
+            <span class="professional_select_span"> 设备</span>
+        </div>
+        <div class="professional_select_group">
+            <span class=" professional_checkbox"> <form> <input name="" type="checkbox" value=""  class="checkbox"/></form></span>
+            <span class="professional_select_span"> 装修</span>
+        </div>
+        <div class="professional_select_group">
+            <span class=" professional_checkbox"> <form> <input name="" type="checkbox" value=""  class="checkbox"/></form></span>
+            <span class="professional_select_span"> 土建</span>
+        </div>
+        <div class="professional_select_group">
+            <span class=" professional_checkbox"> <form> <input name="" type="checkbox" value=""  class="checkbox"/></form></span>
+            <span class="professional_select_span"> 防水</span>
+        </div>
+        <div class="professional_select_group">
+            <span class=" professional_checkbox"> <form> <input name="" type="checkbox" value=""  class="checkbox"/></form></span>
+            <span class="professional_select_span"> 给水</span>
+        </div>
+        <div class="professional_select_group">
+            <span class=" professional_checkbox"> <form> <input name="" type="checkbox" value=""  class="checkbox"/></form></span>
+            <span class="professional_select_span"> 排水</span>
+        </div>
+        <div class="professional_select_group">
+            <span class=" professional_checkbox"> <form> <input name="" type="checkbox" value=""  class="checkbox"/></form></span>
+            <span class="professional_select_span"> 消防</span>
+        </div>
+        <div class="professional_select_group">
+            <!--搜索框样式-->
+            <div class="search clear">
+                <form id="form1" name="form1" method="post" action="">
+                    <input type="text" class="professional_search_input" placeholder="搜索资产相关内容">
+                    <input name="" type="button" class="professional_search_button">
+                </form>
+            </div>
+            <!--搜索框样式结束-->
+        </div>
+        <div class="clear"></div>
+    </div>
+</div>
+<div class="professional_search_height clear">
+    <table width="100%" >
+        <tr>
+            <td class="search_td_top"  height="50px" width="25%" bgcolor="dddddd">
+                资产编号
+            </td>
+            <td class="search_td_top"  height="50px"  width="25%">
+                名称
+            </td>
+            <td class="search_td_top"  height="50px"  width="25%">
+                规格
+            </td>
+            <td class="search_td_top"  height="50px"  width="25%">
+                型号
+            </td>
+        </tr>
+        <tr>
+            <td colspan="10">  </td>
+        </tr>
+        <tr>
+            <td class="info_td"  height="42px" align="left" valign="middle">
+                <span class="taarea5">01</span>
+            </td>
+            <td class="info_td"  height="42px" align="center" valign="middle">
+                强电
+            </td>
+            <td class="info_td"  height="42px" align="center" valign="middle">
+
+            </td>
+            <td class="info_td"  height="42px" align="center" valign="middle">
+
+            </td>
+        </tr>
+        <tr>
+            <td class="info_td"  height="42px" align="left" valign="middle">
+                <span class="taarea15">0102</span>
+            </td>
+            <td class="info_td"  height="42px" align="center" valign="middle">
+                室外照明
+            </td>
+            <td class="info_td"  height="42px" align="center" valign="middle">
+
+            </td>
+            <td class="info_td"  height="42px" align="center" valign="middle">
+
+            </td>
+        </tr>
+        <tr>
+            <td class="info_td"  height="42px" align="left" valign="middle">
+                <span class="taarea15">0103</span>
+            </td>
+            <td class="info_td"  height="42px" align="center" valign="middle">
+                线材
+            </td>
+            <td class="info_td"  height="42px" align="center" valign="middle">
+
+            </td>
+            <td class="info_td"  height="42px" align="center" valign="middle">
+
+            </td>
+        </tr>
+        <tr>
+            <td class="info_td"  height="42px" align="left" valign="middle">
+                <span class="taarea25">010301</span>
+            </td>
+            <td class="info_td"  height="42px" align="center" valign="middle">
+                屏蔽聚氯乙烯护套软电缆
+            </td>
+            <td class="info_td"  height="42px" align="center" valign="middle">
+                2*1.5cm
+            </td>
+            <td class="info_td"  height="42px" align="center" valign="middle">
+                RVVP
+            </td>
+        </tr>
+        <tr>
+            <td class="info_td"  height="42px" align="left" valign="middle">
+                <span class="taarea25">010302</span>
+            </td>
+            <td class="info_td"  height="42px" align="center" valign="middle">
+                超五类非屏蔽双绞线
+            </td>
+            <td class="info_td"  height="42px" align="center" valign="middle">
+                2*1.5cm
+            </td>
+            <td class="info_td"  height="42px" align="center" valign="middle">
+                RVVP
+            </td>
+        </tr>
+        <tr>
+            <td class="info_td"  height="42px" align="left" valign="middle">
+                <span class="taarea5">01</span>
+            </td>
+            <td class="info_td"  height="42px" align="center" valign="middle">
+                强电
+            </td>
+            <td class="info_td"  height="42px" align="center" valign="middle">
+
+            </td>
+            <td class="info_td"  height="42px" align="center" valign="middle">
+
+            </td>
+        </tr>
+        <tr>
+            <td colspan="10">  </td>
+        </tr>
+        <tr>
+            <td class="info_td"  height="42px" align="left" valign="middle">
+                <span class="taarea15">0102</span>
+            </td>
+            <td class="info_td"  height="42px" align="center" valign="middle">
+                室外照明
+            </td>
+            <td class="info_td"  height="42px" align="center" valign="middle">
+
+            </td>
+            <td class="info_td"  height="42px" align="center" valign="middle">
+
+            </td>
+        </tr>
+        <tr>
+            <td class="info_td"  height="42px" align="left" valign="middle">
+                <span class="taarea15">0103</span>
+            </td>
+            <td class="info_td"  height="42px" align="center" valign="middle">
+                线材
+            </td>
+            <td class="info_td"  height="42px" align="center" valign="middle">
+
+            </td>
+            <td class="info_td"  height="42px" align="center" valign="middle">
+
+            </td>
+        </tr>
+        <tr>
+            <td class="info_td"  height="42px" align="left" valign="middle">
+                <span class="taarea25">010301</span>
+            </td>
+            <td class="info_td"  height="42px" align="center" valign="middle">
+                屏蔽聚氯乙烯护套软电缆
+            </td>
+            <td class="info_td"  height="42px" align="center" valign="middle">
+                2*1.5cm
+            </td>
+            <td class="info_td"  height="42px" align="center" valign="middle">
+                RVVP
+            </td>
+        </tr>
+        <tr>
+            <td class="info_td"  height="42px" align="left" valign="middle">
+                <span class="taarea25">010302</span>
+            </td>
+            <td class="info_td"  height="42px" align="center" valign="middle">
+                超五类非屏蔽双绞线
+            </td>
+            <td class="info_td"  height="42px" align="center" valign="middle">
+                2*1.5cm
+            </td>
+            <td class="info_td"  height="42px" align="center" valign="middle">
+                RVVP
+            </td>
+        </tr>
+    </table>
+</div>
+</div>
+<input type="button"  class="authorizationb" value="册除">
+<input type="button"  class="authorization_save" value="修改">
+</div>
+
+</div>
+
+<!--<div style="padding:15px 15px 0">-->
+    <!--&lt;!&ndash;资产查询条件&ndash;&gt;-->
+<!--<div class="checkbox col-md-offset-2">-->
+    <!--<span>选择专业：</span>-->
+    <!--<label><input type="checkbox" >强电</label>-->
+    <!--<label><input type="checkbox"> 弱电</label>-->
+    <!--<label><input type="checkbox"> 家私</label>-->
+    <!--<label><input type="checkbox"> 设备</label>-->
+    <!--<label><input type="checkbox"> 装修</label>-->
+    <!--<label><input type="checkbox"> 土建</label>-->
+    <!--<label><input type="checkbox"> 防水</label>-->
+    <!--<label><input type="checkbox"> 给水</label>-->
+    <!--<label><input type="checkbox"> 排水</label>-->
+    <!--<label><input type="checkbox"> 消防</label>-->
+<!--</div>-->
+
+<!--&lt;!&ndash;表格显示查询信息&ndash;&gt;-->
+    <!--<div class="col-md-offset-1 tab-pane" id="livingAssert">-->
+        <!--<table class="table table-bordered table-hover" style="background-color: #ffffff;margin-top: 50px;">-->
+
+            <!--<tr class="info text-center">-->
+                <!--<td>资产编号</td>-->
+                <!--<td>名称</td>-->
+                <!--<td>规格</td>-->
+                <!--<td>型号</td>-->
+            <!--</tr>-->
+
+            <!--<tr  style="text-align: left" ng-repeat="item in items">-->
+                <!--<td>{{item.assetNumber}}</td>-->
+                <!--<td>{{item.assetName}}</td>-->
+                <!--<td>{{item.sizeName}}</td>-->
+                <!--<td>{{item.model}}</td>-->
+            <!--</tr>-->
+        <!--</table>-->
+    <!--</div>-->
+<!--&lt;!&ndash;表格显示查询信息 end&ndash;&gt;-->
+<!--</div>-->
+</body>
+</html>

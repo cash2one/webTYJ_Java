@@ -1,0 +1,238 @@
+package com.flf.service;
+
+import java.util.List;
+
+import javax.jws.WebService;
+import javax.ws.rs.GET;
+import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
+import javax.ws.rs.Produces;
+import javax.ws.rs.core.MediaType;
+
+import com.flf.entity.Tasks;
+import com.flf.entity.TasksJournal;
+
+@WebService
+@Path("/PropertyApp")
+/**
+ * 任务表
+ * 创建人：朱琪
+ * 创建时间：2016/7/29
+ */
+public interface PropertyAppService {
+
+	/**
+	 * @TODO 通过staffid和2个状态获取任务信息（待接受4,5，处理中3,100，历史任务2,0）
+	 * @param staffId 员工id, state1 状态1, state2 状态2
+	 * @author zhuqi
+	 * @return
+	 * @date 2016/7/29
+	 */
+	public String getTasksbyState2(String staffId,String state1,String state2);
+	
+	/**
+	 * @TODO 通过staffid和状态获取任务信息
+	 * @param staffId 员工id, state 状态
+	 * @author zhuqi
+	 * @return
+	 * @date 2016/7/29
+	 */
+	public String getTasksByState(String staffId, String state);
+	
+	/**
+	 * @TODO 通过staffid和多个状态（用，号隔开）获取任务信息
+	 * @param staffId 员工id, states 状态
+	 * @author zhuqi
+	 * @return
+	 * @date 2016/8/05
+	 */
+	public String getTasksByStates(String staffId, String states);
+	
+	/**
+	 * @TODO 获取所有任务
+	 * @param 
+	 * @author zhuqi 
+	 * @return
+	 * @date 2016/7/29
+	 */
+	public String listAllTasks();
+	
+	/**
+	 * @TODO 获取未接受任务
+	 * @param
+	 * @author zhuqi 
+	 * @return
+	 * @date 2016/7/29
+	 */
+	public String listTasksbyStateRestful();
+	
+	/**
+	 * @TODO 根据员工id获取所有任务
+	 * @param  staffId 员工id
+	 * @author zhuqi 
+	 * @return
+	 * @date 2016/8/01
+	 */
+	public String getTasksbyStaffId(String staffId);
+	
+	/**                              
+	 * @TODO 根据员工id和任务id接受任务           
+	 * @param  staffId 员工id, tasksId 任务id                      
+     * @author zhuqi                 
+     * @return                       
+     * @date 2016/8/01               
+     */                
+	 public String acceptTasks(String staffId, String tasksId);
+	 
+	 /**                              
+	  * @TODO 修改任务状态
+	  * 0.关闭 1.重启 2.已完成   3.已接受 4.未接受  5.转出   6.提交完成  7.处理中 
+	  * 8.合并9.转专项  10.转集中处理(这三个特殊处理),11指派
+	  * 
+	  * @param  Tasks 实体类,                     
+	  * @author zhuqi                 
+	  * @return                       
+	  * @date 2016/8/02           
+	 */ 
+	 public String changeTaskState(String tasksJson);
+	 
+	 /**
+		 * 通过任务Id查询任务日志信息
+		 * @param tasksId 任务id
+		 * @return
+		 * @data 2016/08/03
+		 */
+	public String getTasksJournalbyTasksId(String tasksId);
+	
+	/**                              
+	 * @TODO 根据任务类型和状态获取任务      
+	 * @param  Type 任务类型 , State 任务类型                   
+     * @author zhuqi                 
+     * @return                       
+     * @date 2016/8/04               
+     */  
+	public String getTasksByTypeState(String Type, String State);
+	
+	/**                              
+	 * @TODO 根据员工id 或 任务类型（多个用，隔开）和状态（多个用，隔开）获取任务      
+	 * @param  staffId 员工id,Types 任务类型 （多个用，隔开）, States 任务状态（多个用，隔开）               
+     * @author zhuqi                 
+     * @return                       
+     * @date 2016/8/05               
+     */  
+	public String listTasksByTypesStates(String staffId, String Types, String States);
+	
+	/**                              
+	 * @TODO 根据条件模糊查询员工列表（姓名、工号、电话、证件号）
+	 * @param  all 模糊查询条件（姓名、工号、电话、证件号）            
+     * @author zhuqi                 
+     * @return                       
+     * @date 2016/8/08               
+     */  
+	public String listStaffByAll(String all);
+	
+	/**                              
+	 * @TODO 根据条件模糊查询客户列表（姓名、注册电话、证件号）
+	 * @param  all 模糊查询条件（姓名、注册电话、证件号）            
+     * @author zhuqi                 
+     * @return                       
+     * @date 2016/8/09               
+     */  
+	public String listPersonCustByAll(String all);
+	
+	/**                              
+	 * @TODO 添加好友
+	 * @param  primaryId 主账号，primaryId好友id，type 好友类型
+     * @author zhuqi
+     * @return                       
+     * @date 2016/8/09               
+     */  
+	public String addFriends(String primaryId, String secondaryId, String type);
+	
+	/**                              
+	 * @TODO 删除好友
+	 * @param  friendsId 主键id
+     * @author zhuqi
+     * @return                       
+     * @date 2016/8/09               
+     */  
+	public String failureFriends(String friendsId);
+	
+	/**                              
+	 * @TODO 获取好友
+	 * @param  primaryId 主账号  friendsType 好友类型（1员工2客户）
+     * @author zhuqi
+     * @return                       
+     * @date 2016/8/09               
+     */  
+	public String listFriends(String primaryId, String friendsType);
+	
+	/**                              
+	 * @TODO 根据用户id获取员工信息
+	 * @param  loginName 登录账号
+     * @author zhuqi
+     * @return                       
+     * @date 2016/8/10
+     */   
+	public String getStaffByLoginName(String loginName);
+	
+	/**                              
+	 * @TODO 任务池负责人非当前员工
+	 * @param  staffId 员工id
+     * @author zhuqi
+     * @return                       
+     * @date 2016/8/10
+     */  
+	public String listTasksPoolNotStaffId(String staffId);
+	
+	/**                              
+	 * @TODO 获取客户详情
+	 * @param  customerId 客户id
+     * @author zhuqi
+     * @return                       
+     * @date 2016/8/10
+     */  
+	public String customerDetails(String customerId);
+	
+	/**                              
+	 * @TODO 获取内部联系人详情
+	 * @param  staffId 员工id
+     * @author zhuqi
+     * @return
+     * @date 2016/8/11
+     */  
+	public String staffDetails(String staffId);
+	
+	/**                              
+	 * @TODO 通过客户id查询投诉信息
+	 * @param  customerId 客户id
+     * @author zhuqi
+     * @return
+     * @date 2016/8/11
+     */ 
+	public String listComplaintOrders(String customerId);
+	
+	/**                              
+	 * @TODO 通过客户id查询房屋信息
+	 * @param  customerId 客户id
+     * @author zhuqi
+     * @return
+     * @date 2016/8/11
+     */ 
+	public String listHouseByCustomerId(String customerId);
+	
+	/**                              
+	 * @TODO 通过时间和类型查询工单详情
+	 * 
+	 * 0报价、1处理、2验收、3检测、4结算、5赔偿给业主、6部门质检、7回访、8申诉、
+	 * 9炒水表、10炒电表、11投诉、12咨询、13固定车位、14装修核查、15装修巡检、
+	 * 16装修核查、17表扬、18验房、19施工核查、20施工巡检、21施工验收、22维修、
+	 * 23向业主索赔、24失效
+	 * 
+	 * @param  creOrderType 工单类型、operationTime 操作时间
+     * @author zhuqi
+     * @return
+     * @date 2016/8/11
+     */ 
+	public String getTasksJournalbyDateandType(String creOrderType,String operationTime);
+}

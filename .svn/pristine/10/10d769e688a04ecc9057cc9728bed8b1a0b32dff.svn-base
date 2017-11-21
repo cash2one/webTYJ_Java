@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.flf.mapper.TeamPermissionsMapper" >
+  <resultMap id="BaseResultMap" type="com.flf.entity.TeamPermissions" >
+    <id column="team_permissions_id" property="teamPermissionsId" jdbcType="VARCHAR" />
+    <result column="project_id" property="projectId" jdbcType="VARCHAR" />
+    <result column="professional_line_id" property="professionalLineId" jdbcType="VARCHAR" />
+    <result column="staff_id" property="staffId" jdbcType="VARCHAR" />
+    <result column="teamwork_id" property="teamworkId" jdbcType="VARCHAR" />
+    <result column="staff_name" property="staffName" jdbcType="VARCHAR" />
+    <result column="core_position_id" property="corePositionId" jdbcType="VARCHAR" />
+  </resultMap>
+  
+  <resultMap type="TeamPermissions" id="ResultMapWithCore" extends="BaseResultMap">
+  	<association property="corePosition" column="core_position_id" javaType="CorePosition" select="com.flf.mapper.CorePositionMapper.getCorePositionbyId" />
+  </resultMap>
+  
+   <select id="isStaffPermissions" parameterType="String"  resultMap="BaseResultMap">
+  	SELECT * FROM t_team_permissions 
+  	WHERE project_id=#{0} AND professional_line_id=#{1} AND staff_id=#{2}
+  </select>
+  
+  <select id="checkPremissions" parameterType="String" resultMap="BaseResultMap">
+  	select * from t_team_permissions where project_id = #{0} and professional_line_id = #{1} and core_position_id = #{2}
+  </select>
+  
+<!--   根据项目id和专业线id查询项目专业线负责人 -->
+  <select id="getTeamPermissions" parameterType="TeamPermissions" resultMap="BaseResultMap">
+      select a.*,b.staff_name from t_team_permissions a
+      left join t_staff b on a.staff_id =b.staff_id
+      where a.professional_line_id= #{professionalLineId} and a.project_id=#{projectId}
+  </select>
+  
+  
+  <!--   查询项目专业线负责人 -->
+  <select id="listAllTeamPermissionsStaff"  resultMap="BaseResultMap">
+      SELECT a.*,b.project_name,c.specialty_name,d.staff_name FROM t_team_permissions a
+		LEFT JOIN t_project b ON a.project_id=b.project_id
+		LEFT JOIN t_specialty_info c ON a.professional_line_id=c.specialty_id
+		LEFT JOIN t_staff d ON a.staff_id=d.staff_id
+  </select>
+  
+  
+  
+  <insert id="insertTeamPermissions" parameterType="com.flf.entity.TeamPermissions" >
+    insert into t_team_permissions (team_permissions_id, project_id, professional_line_id, 
+      staff_id, teamwork_id,core_position_id)
+    values (#{teamPermissionsId,jdbcType=VARCHAR}, #{projectId,jdbcType=VARCHAR}, #{professionalLineId,jdbcType=VARCHAR}, 
+      #{staffId,jdbcType=VARCHAR}, #{teamworkId,jdbcType=VARCHAR},#{corePositionId,jdbcType=VARCHAR})
+  </insert>
+  
+  <update id="updateTeamPermissions" parameterType="com.flf.entity.TeamPermissions" >
+    update t_team_permissions
+    <set >
+      <if test="projectId != null" >
+        project_id = #{projectId,jdbcType=VARCHAR},
+      </if>
+      <if test="professionalLineId != null" >
+        professional_line_id = #{professionalLineId,jdbcType=VARCHAR},
+      </if>
+      <if test="staffId != null" >
+        staff_id = #{staffId,jdbcType=VARCHAR},
+      </if>
+      <if test="teamworkId != null" >
+        teamwork_id = #{teamworkId,jdbcType=VARCHAR},
+      </if>
+      <if test="corePositionId != null and corePositionId != ''">
+      	core_position_id = #{corePositionId,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where team_permissions_id = #{teamPermissionsId,jdbcType=VARCHAR}
+  </update>
+  
+	<select id="getCorePositionByProjectAndSpecialty" parameterType="TeamPermissions" resultMap="ResultMapWithCore">
+		select * from t_team_permissions where project_id = #{projectId,jdbcType=VARCHAR} and professional_line_id = #{professionalLineId,jdbcType=VARCHAR}
+	</select>
+ 
+   <delete id="deleteTeamPermissionsByTeamworkId"  parameterType="String">
+     delete from t_team_permissions  where  teamwork_id=#{0}
+ </delete>
+  
+  <select id="getTeamPermissionsByTeamworkId" parameterType="String"  resultMap="BaseResultMap">
+   	SELECT * FROM t_team_permissions 
+  	WHERE teamwork_id=#{0}
+  </select>
+  
+  <!--   查询项目专业线负责人 -->
+  <!-- <select id="getTeamPermissions" parameterType="TeamPermissions" resultMap="BaseResultMap">
+      select a.*,b.staff_name from t_team_permissions a
+      left join t_staff b on a.staff_id =b.staff_id
+      where a.professional_line_id= #{professionalLineId} and a.project_id=#{projectId}
+  </select> -->
+</mapper>

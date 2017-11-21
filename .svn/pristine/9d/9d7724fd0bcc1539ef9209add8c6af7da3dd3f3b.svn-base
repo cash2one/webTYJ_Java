@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="com.flf.mapper.UnionpayCollectionDetailMapper">
+
+	<resultMap id="BaseResultMap" type="UnionpayCollectionDetail">
+		<id column="unionpay_collection_detai_id" property="unionpayCollectionDetaiId"
+			jdbcType="VARCHAR" />
+		<result column="merchants_date" property="merchantsDate"
+			jdbcType="DATE" />
+		<result column="cust_num" property="custNum" jdbcType="VARCHAR" />
+		<result column="bank_account" property="bankAccount" jdbcType="VARCHAR" />
+		<result column="account_type" property="accountType" jdbcType="TINYINT" />
+		<result column="sum" property="sum" jdbcType="BIGINT" />
+		<result column="private_domain" property="privateDomain"
+			jdbcType="VARCHAR" />
+		<result column="project_id" property="projectId" jdbcType="VARCHAR" />
+		<result column="unionpay_counteroffer_detai_id" property="unionpayCounterofferDetaiId"
+			jdbcType="VARCHAR" />
+		<result column="unionpay_collection_totall_id" property="unionpayCollectionTotallId"
+			jdbcType="VARCHAR" />
+		<result column="bill_id" property="billId" jdbcType="VARCHAR" />
+		<result column="cust_name" property="custName" jdbcType="VARCHAR" />
+		<result column="collection_state" property="collectionState"
+			jdbcType="INTEGER" />
+		<result column="merchDateToString" property="merchDateToString"
+			jdbcType="VARCHAR" />
+
+		<!-- 新增字段 -->
+		<result column="order_num" property="orderNum" jdbcType="VARCHAR" />
+		<result column="cardid_type" property="cardIDType" jdbcType="VARCHAR" />
+		<result column="cardid" property="cardIDNum" jdbcType="VARCHAR" />
+		<result column="bank_num" property="bankNum" jdbcType="VARCHAR" />
+		<result column="purpose" property="purpose" jdbcType="VARCHAR" />
+		<result column="house_num" property="houseNum" jdbcType="VARCHAR" />
+		<result column="house_address" property="houseAddress"
+			jdbcType="VARCHAR" />
+
+		<result column="building_id" property="buildingId" jdbcType="VARCHAR" />
+		<result column="charge_type_id" property="chargeTypeId"
+			jdbcType="VARCHAR" />
+		<!-- <association property="unionpayCollectionTotall" column="unionpay_collection_totall_id" 
+			javaType="UnionpayCollectionTotall" select="com.flf.mapper.UnionpayCollectionTotallMapper.getUnionpayCollectionTotallById" 
+			/> -->
+	</resultMap>
+
+	<select id="listAllDetailByOrderNum" parameterType="UnionpayCollectionDetail"
+		resultMap="BaseResultMap">
+		select * from tc_unionpay_collection_detail where 1=1
+		<if test="orderNum != null and orderNum != ''">
+			AND order_num = #{orderNum}
+		</if>
+	</select>
+
+	<!-- 修改状态为已托收 -->
+	<update id="updateCollectionState" parameterType="java.lang.String">
+		UPDATE
+		tc_unionpay_collection_detail
+		SET collection_state=1
+		WHERE
+		unionpay_collection_totall_id=#{0}
+	</update>
+
+	<update id="updateCollectionStateToTwo" parameterType="UnionpayCollectionDetail">
+		UPDATE
+		tc_unionpay_collection_detail
+		SET collection_state=2
+		WHERE
+		unionpay_collection_detai_id=#{unionpayCollectionDetaiId}
+	</update>
+
+	<delete id="deleteDetailById" parameterType="java.lang.String">
+		DELETE FROM
+		tc_unionpay_collection_detail
+		WHERE unionpay_collection_totall_id=#{0}
+	</delete>
+
+	<insert id="insertUnionpayCollectionDetail" parameterType="UnionpayCollectionDetail">
+		INSERT INTO tc_unionpay_collection_detail(
+		unionpay_collection_detai_id,
+		merchants_date,
+		cust_num,
+		bank_account,
+		account_type,
+		sum,
+		private_domain,
+		project_id,
+		unionpay_counteroffer_detai_id,
+		unionpay_collection_totall_id,
+		bill_id,
+		cust_name,
+		collection_state,
+		order_num,
+		bank_num,
+		purpose,
+		house_address,
+		cardid,
+		cardid_type,
+		building_id,
+		charge_type_id)
+		VALUES(
+		#{unionpayCollectionDetaiId},
+		#{merchantsDate},
+		#{custNum},
+		#{bankAccount},
+		#{accountType},
+		#{sum},
+		#{privateDomain},
+		#{projectId},
+		#{unionpayCounterofferDetaiId},
+		#{unionpayCollectionTotallId},
+		#{billId},
+		#{custName},
+		#{collectionState},
+		#{orderNum},
+		#{bankNum},
+		#{purpose},
+		#{houseAddress},
+		#{cardIDNum},
+		#{cardIDType},
+		#{buildingId},
+		#{chargeTypeId}
+		)
+	</insert>
+
+	<select id="getUnionpayCollectionDetailById" parameterType="String"
+		resultMap="BaseResultMap">
+		SELECT * FROM tc_unionpay_collection_detail a
+		LEFT JOIN
+		tc_unionpay_collection_totall b ON
+		a.unionpay_collection_totall_id=b.unionpay_collection_totall_id WHERE
+		a.unionpay_collection_totall_id=#{0}
+	</select>
+	<select id="listPageUnionpayCollectionDetailById" parameterType="UnionpayCollectionDetail"
+		resultMap="BaseResultMap">
+		SELECT a.* FROM tc_unionpay_collection_detail a
+		LEFT JOIN
+		tc_unionpay_collection_totall b ON
+		a.unionpay_collection_totall_id=b.unionpay_collection_totall_id WHERE
+		a.unionpay_collection_totall_id=#{unionpayCollectionTotallId}
+	</select>
+	<select id="getUnionpayCollectionDetails" parameterType="String"
+		resultMap="BaseResultMap">
+		SELECT * ,merchants_date as merchDateToString FROM
+		tc_unionpay_collection_detail a
+		LEFT JOIN tc_unionpay_collection_totall
+		b ON
+		a.unionpay_collection_totall_id=b.unionpay_collection_totall_id
+		WHERE
+		a.unionpay_collection_totall_id=#{0}
+	</select>
+</mapper>

@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.flf.mapper.SchedulingLogMapper" >
+  <resultMap id="BaseResultMap" type="SchedulingLog" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="staff_id" property="staffId" jdbcType="INTEGER" />
+    <result column="staff_name" property="staffName" jdbcType="VARCHAR" />
+    <result column="classes_type_id" property="classesTypeId" jdbcType="INTEGER" />
+    <result column="classes_type_name" property="classesTypeName" jdbcType="VARCHAR" />
+    <result column="classes_id" property="classesId" jdbcType="INTEGER" />
+    <result column="classes_name" property="classesName" jdbcType="VARCHAR" />
+    <result column="currentDate" property="currentdate" jdbcType="DATE" />
+    <result column="STATUS_CD" property="statusCd" jdbcType="VARCHAR" />
+    <result column="START_DT" property="startDt" jdbcType="VARCHAR" />
+    <result column="END_DT" property="endDt" jdbcType="VARCHAR" />
+    <result column="post_id" property="postId" jdbcType="INTEGER" />
+    <result column="post_name" property="postName" jdbcType="VARCHAR" />
+    <result column="operator_id" property="operatorId" jdbcType="INTEGER" />
+    <result column="operator_name" property="operatorName" jdbcType="VARCHAR" />
+    <result column="operator_time" property="operatorTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  
+  <select id="listAllSchedulingLog" resultMap="BaseResultMap"  >
+    select * from t_scheduling_log
+  </select>
+  
+  <select id="getSchedulingLogById" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select * from t_scheduling_log
+    where id = #{0}
+  </select>
+  
+  <insert id="insertSchedulingLog" parameterType="SchedulingLog" >
+    insert into t_scheduling_log (staff_id, staff_name, 
+      classes_type_id, classes_type_name, classes_id, 
+      classes_name, currentDate, STATUS_CD, 
+      START_DT, END_DT, post_id, 
+      post_name, operator_id, operator_name, 
+      operator_time)
+    values (#{staffId,jdbcType=INTEGER}, #{staffName,jdbcType=VARCHAR}, 
+      #{classesTypeId,jdbcType=INTEGER}, #{classesTypeName,jdbcType=VARCHAR}, #{classesId,jdbcType=INTEGER}, 
+      #{classesName,jdbcType=VARCHAR}, #{currentdate,jdbcType=DATE}, #{statusCd,jdbcType=VARCHAR}, 
+      #{startDt,jdbcType=VARCHAR}, #{endDt,jdbcType=VARCHAR}, #{postId,jdbcType=INTEGER}, 
+      #{postName,jdbcType=VARCHAR}, #{operatorId,jdbcType=INTEGER}, #{operatorName,jdbcType=VARCHAR}, 
+      #{operatorTime,jdbcType=TIMESTAMP})
+  </insert>
+  
+  <update id="updateSchedulingLog" parameterType="SchedulingLog" >
+    update t_scheduling_log
+    set staff_id = #{staffId,jdbcType=INTEGER},
+      staff_name = #{staffName,jdbcType=VARCHAR},
+      classes_type_id = #{classesTypeId,jdbcType=INTEGER},
+      classes_type_name = #{classesTypeName,jdbcType=VARCHAR},
+      classes_id = #{classesId,jdbcType=INTEGER},
+      classes_name = #{classesName,jdbcType=VARCHAR},
+      currentDate = #{currentdate,jdbcType=DATE},
+      STATUS_CD = #{statusCd,jdbcType=VARCHAR},
+      START_DT = #{,jdbcType=VARCHAR},
+      END_DT = #{endDt,jdbcType=VARCHAR},
+      post_id = #{postId,jdbcType=INTEGER},
+      post_name = #{postName,jdbcType=VARCHAR},
+      operator_id = #{operatorId,jdbcType=INTEGER},
+      operator_name = #{operatorName,jdbcType=VARCHAR},
+      operator_time = #{operatorTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  
+  <delete id="deleteSchedulingLog" parameterType="java.lang.Integer" >
+    delete from t_scheduling_log
+    where id = #{0}
+  </delete>
+</mapper>

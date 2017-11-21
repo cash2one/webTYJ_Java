@@ -1,0 +1,169 @@
+package com.flf.entity;
+
+import java.util.List;
+
+import javax.xml.bind.annotation.XmlRootElement;
+@XmlRootElement(name = "Post") 
+public class Post {
+    private String postId;//岗位id
+
+    private String professionalLineId;
+
+    private String nameOfCustom;
+
+    private Byte isCorePost;
+
+    private String projectId;
+    
+    private int postNum;    
+    
+    private String prepareId;
+
+	private String permissionsName;//功能权限（查询显示用）
+    
+    private String actionName;//操作权限（查询显示用）
+    
+	private Byte status;//标识（查询显示用）
+	
+	
+
+	
+
+	
+
+	
+	
+	
+
+	public Byte getStatus() {
+		return status;
+	}
+
+	public void setStatus(Byte status) {
+		this.status = status;
+	}
+
+    
+    public String getPermissionsName() {
+		return permissionsName;
+	}
+
+	public void setPermissionsName(String permissionsName) {
+		this.permissionsName = permissionsName;
+	}
+
+	public String getActionName() {
+		return actionName;
+	}
+
+	public void setActionName(String actionName) {
+		this.actionName = actionName;
+	}
+
+    public int getPostNum() {
+		return postNum;
+	}
+
+	public void setPostNum(int postNum) {
+		this.postNum = postNum;
+	}
+
+	private List<Prepare> prepares;
+    
+    private List<Staff> staffList;
+    
+    private Byte state; //岗位开启状态
+    
+    private List<String> postIds; //岗位id集合
+    
+    private SpecialtyInfo specialtyInfo;
+    
+	public void setSpecialtyInfo(SpecialtyInfo specialtyInfo) {
+		this.specialtyInfo = specialtyInfo;
+	}
+
+	public List<String> getPostIds() {
+		return postIds;
+	}
+
+	public void setPostIds(List<String> postIds) {
+		this.postIds = postIds;
+	}
+
+	public Byte getState() {
+		return state;
+	}
+
+	public void setState(Byte state) {
+		this.state = state;
+	}
+
+	public List<Prepare> getPrepares() {
+		return prepares;
+	}
+
+	public void setPrepares(List<Prepare> prepares) {
+		this.prepares = prepares;
+	}
+
+	public String getPostId() {
+        return postId;
+    }
+
+    public void setPostId(String postId) {
+        this.postId = postId;
+    }
+
+    public String getProfessionalLineId() {
+        return professionalLineId;
+    }
+
+    public void setProfessionalLineId(String professionalLineId) {
+        this.professionalLineId = professionalLineId;
+    }
+
+    public String getNameOfCustom() {
+        return nameOfCustom;
+    }
+
+    public void setNameOfCustom(String nameOfCustom) {
+        this.nameOfCustom = nameOfCustom;
+    }
+
+    public Byte getIsCorePost() {
+        return isCorePost;
+    }
+
+    public void setIsCorePost(Byte isCorePost) {
+        this.isCorePost = isCorePost;
+    }
+
+    public String getProjectId() {
+        return projectId;
+    }
+
+    public void setProjectId(String projectId) {
+        this.projectId = projectId;
+    }
+
+	public List<Staff> getStaffList() {
+		return staffList;
+	}
+
+	public void setStaffList(List<Staff> staffList) {
+		this.staffList = staffList;
+	}
+
+	public SpecialtyInfo getSpecialtyInfo() {
+		// TODO 自动生成的方法存根
+		return null;
+	}
+
+	public String getPrepareId() {
+		return prepareId;
+	}
+
+	public void setPrepareId(String prepareId) {
+		this.prepareId = prepareId;
+	}
+}

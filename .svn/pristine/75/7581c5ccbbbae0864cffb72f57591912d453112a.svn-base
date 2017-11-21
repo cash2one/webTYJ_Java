@@ -1,0 +1,423 @@
+package com.flf.quartz;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.List;
+import java.util.UUID;
+
+import org.quartz.JobExecutionContext;
+import org.quartz.JobExecutionException;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.quartz.QuartzJobBean;
+
+import com.flf.entity.ExecutionTimeRecords;
+import com.flf.entity.FrequencyRecord;
+import com.flf.entity.InspectionConfiguration;
+import com.flf.entity.InspectionOrder;
+import com.flf.entity.InspectionRecords;
+import com.flf.entity.ServiceRequest;
+import com.flf.entity.Tasks;
+import com.flf.entity.TasksJournal;
+import com.flf.mapper.ExecutionTimeRecordsMapper;
+import com.flf.mapper.FrequencyRecordMapper;
+import com.flf.mapper.InspectionConfigurationMapper;
+import com.flf.mapper.InspectionOrderMapper;
+import com.flf.mapper.InspectionRecordsMapper;
+import com.flf.mapper.TasksJournalMapper;
+import com.flf.mapper.TasksMapper;
+import com.flf.service.ServiceRequestService;
+
+public class InspectionTrigger extends QuartzJobBean {
+	@Autowired
+	private ServiceRequestService serviceRequestService;
+	@Autowired
+	private FrequencyRecordMapper frequencyRecordMapper;
+	@Autowired
+	private ExecutionTimeRecordsMapper executionTimeRecordsMapper;
+	@Autowired
+	private TasksMapper tasksMapper;
+	@Autowired
+	private InspectionOrderMapper inspectionOrderMapper;
+	@Autowired
+	private TasksJournalMapper tasksJournalMapper;
+	@Autowired
+	private InspectionConfigurationMapper inspectionConfigurationMapper;
+	@Autowired
+	private InspectionRecordsMapper inspectionRecordsMapper;
+
+	@Override
+	protected void executeInternal(JobExecutionContext arg0) throws JobExecutionException {
+
+	}
+
+	/**
+	 * 巡检频率自动生成任务 
+	 * 杨升权 2016/7/31
+	 */
+	public void InspectionTime() {
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		SimpleDateFormat sdfYear = new SimpleDateFormat("yyyy");//年
+		SimpleDateFormat sdfMouth = new SimpleDateFormat("MM");//月
+		SimpleDateFormat sdfDay = new SimpleDateFormat("dd");//日
+		SimpleDateFormat sdfDate = new SimpleDateFormat("HH:mm:ss");//时间
+		SimpleDateFormat dateFm = new SimpleDateFormat("EEEE");//星期
+		Date DATE = new Date();
+
+
+		//查询处理中的巡检请求
+		List<ServiceRequest> serviceRequestList = serviceRequestService.getInspectionServiceRequest();
+		for(ServiceRequest serviceRequest : serviceRequestList){
+			String serviceRequestId = serviceRequest.getServiceRequestId();//请求id
+
+			FrequencyRecord frequencyRecord =frequencyRecordMapper.getFrequencyRecordbyServieId(serviceRequestId);//根据请求id查询频率记录信息 
+
+				/****/
+			if(frequencyRecord.getFrequencyType()==0){ //日检
+				String recordId =  frequencyRecord.getrecordId();
+				List<ExecutionTimeRecords>executionTimeRecordsList = executionTimeRecordsMapper.getExecutionTimeRecordsbyRecordId(recordId);
+				String tasksUUID =null;
+				Integer type=0;
+				String ExecuteTime =null;//执行时间
+				for(ExecutionTimeRecords executionTimeRecords : executionTimeRecordsList){
+					Date ExecutiveNumTime =executionTimeRecords.getExecutiveNumTime();
+					Tasks tasks = serviceRequest.getTasks(); //任务
+					tasksUUID = UUID.randomUUID().toString();
+					tasks.setTaskId(tasksUUID);
+					tasks.setServerId(serviceRequestId);
+					String time = sdfDate.format(ExecutiveNumTime);//执行时间
+					String date1 = sdf.format(DATE);
+					ExecuteTime = date1+" "+time;
+					tasks.setCreateTime(ExecuteTime);
+					tasks.setTaskType(20);
+					tasks.setTaskState(4);//未接受状态
+					tasks.setPrincipal(serviceRequest.getStaff().getStaffId());
+					tasks.setTaskDescription(serviceRequest.getRemarks());
+					type = tasks.getTaskType();
+					tasksMapper.insertTasksUUID(tasks);
+					if(type==20){
+						List<InspectionConfiguration> list = serviceRequest.getInspectionConfiguration();
+						if(list.size()>0&&list!=null){
+							//巡检单
+							InspectionOrder inspectionOrder = null;
+							String uuid3 = UUID.randomUUID().toString();
+							inspectionOrder = new InspectionOrder();
+							inspectionOrder.setOrderId(uuid3);
+							inspectionOrder.setOrderType(20);
+							inspectionOrder.setOrderState(1);
+							inspectionOrder.setTaskId(tasksUUID);
+							inspectionOrder.setOperatorId(serviceRequest.getStaff().getStaffId());
+							inspectionOrder.setServiceRequestId(serviceRequestId);
+	
+							inspectionOrder.setRemarks("巡检管理");
+							int tmp = inspectionOrderMapper.insertInspectionOrderUUID(inspectionOrder);
+							if(tmp>0){
+								//任务记录
+								TasksJournal journal = new TasksJournal();
+								journal.setTaskId(inspectionOrder.getTaskId());
+								journal.setCreOrderId(uuid3);
+								journal.setCreOrderType(inspectionOrder.getOrderType());
+								journal.setChangeOrderState(inspectionOrder.getOrderState());
+								if(inspectionOrder.getOperatorId()!=null){
+									journal.setOperatorId(inspectionOrder.getOperatorId());
+								}
+								journal.setRemarks(inspectionOrder.getRemarks());
+								journal.setOperationTime(ExecuteTime);
+								tasksJournalMapper.insertTasksJournal(journal);
+							}
+	
+							for(InspectionConfiguration sor : list){
+								//巡检方案
+								String uuid2 = UUID.randomUUID().toString();
+								sor.setReordId(uuid2);
+								sor.setServiceRequestId(serviceRequestId);
+								sor.setPrincipalId(serviceRequest.getStaff().getStaffId());
+								inspectionConfigurationMapper.insertSelective(sor);
+								//巡检单信息记录
+								InspectionRecords inspectionRecords = new InspectionRecords();
+								String uuid4 = UUID.randomUUID().toString();
+								inspectionRecords.setRecordId(uuid4);
+								inspectionRecords.setOrderId(uuid3);
+								inspectionRecords.setInspectionPropertyId(sor.getInspectionPropertyId());
+								inspectionRecords.setInspectionPlanId(sor.getInspectionPlanId());
+								inspectionRecordsMapper.inserInspectionRecords(inspectionRecords);
+	
+	
+							}
+	
+						}
+					}
+				}
+		
+			}else if(frequencyRecord.getFrequencyType()==1){//周检
+				String recordId =  frequencyRecord.getrecordId();
+				String executionFrequencys = frequencyRecord.getExecutionFrequency();//执行频率
+				String[] obj=executionFrequencys.split(",");
+				for(String executionFrequency : obj){
+					if(executionFrequency.equals("mon")){
+						executionFrequency="星期日";
+					}else if(executionFrequency.equals("tue")){
+						executionFrequency="星期一";
+					}else if(executionFrequency.equals("wed")){
+						executionFrequency="星期二";
+					}else if(executionFrequency.equals("thu")){
+						executionFrequency="星期三";
+					}else if(executionFrequency.equals("fri")){
+						executionFrequency="星期四";
+					}else if(executionFrequency.equals("sat")){
+						executionFrequency="星期五";
+					}else if(executionFrequency.equals("sun")){
+						executionFrequency="星期六";
+					}
+					String  Week = dateFm.format(DATE);//获取当天星期
+					if(Week.equals(executionFrequency)){ //判断当天的星期与执行频率是否相同
+							List<ExecutionTimeRecords>executionTimeRecordsList = executionTimeRecordsMapper.getExecutionTimeRecordsbyRecordId(recordId);
+							String tasksUUID =null;
+							Integer type=0;
+							String ExecuteTime =null;//执行时间
+							for(ExecutionTimeRecords executionTimeRecords : executionTimeRecordsList){
+								Date ExecutiveNumTime =executionTimeRecords.getExecutiveNumTime();
+								Tasks tasks = serviceRequest.getTasks(); //任务
+								tasksUUID = UUID.randomUUID().toString();
+								tasks.setTaskId(tasksUUID);
+								tasks.setServerId(serviceRequestId);
+								String time = sdfDate.format(ExecutiveNumTime);//执行时间
+								String date1 = sdf.format(DATE);
+								ExecuteTime = date1+time;
+								tasks.setCreateTime(ExecuteTime);
+								tasks.setTaskType(20);
+								tasks.setTaskState(4);//未接受状态
+								tasks.setPrincipal(serviceRequest.getStaff().getStaffId());
+								tasks.setTaskDescription(serviceRequest.getRemarks());
+								type = tasks.getTaskType();
+								tasksMapper.insertTasksUUID(tasks);
+								if(type==20){
+									List<InspectionConfiguration> list = serviceRequest.getInspectionConfiguration();
+									if(list.size()>0&&list!=null){
+										//巡检单
+										InspectionOrder inspectionOrder = null;
+										String uuid3 = UUID.randomUUID().toString();
+										inspectionOrder = new InspectionOrder();
+										inspectionOrder.setOrderId(uuid3);
+										inspectionOrder.setOrderType(20);
+										inspectionOrder.setOrderState(1);
+										inspectionOrder.setTaskId(tasksUUID);
+										inspectionOrder.setOperatorId(serviceRequest.getStaff().getStaffId());
+										inspectionOrder.setServiceRequestId(serviceRequestId);
+			
+										inspectionOrder.setRemarks("巡检管理");
+										int tmp = inspectionOrderMapper.insertInspectionOrderUUID(inspectionOrder);
+										if(tmp>0){
+											//任务记录
+											TasksJournal journal = new TasksJournal();
+											journal.setTaskId(inspectionOrder.getTaskId());
+											journal.setCreOrderId(uuid3);
+											journal.setCreOrderType(inspectionOrder.getOrderType());
+											journal.setChangeOrderState(inspectionOrder.getOrderState());
+											if(inspectionOrder.getOperatorId()!=null){
+												journal.setOperatorId(inspectionOrder.getOperatorId());
+											}
+											journal.setRemarks(inspectionOrder.getRemarks());
+											journal.setOperationTime(ExecuteTime);
+											tasksJournalMapper.insertTasksJournal(journal);
+										}
+			
+										for(InspectionConfiguration sor : list){
+											//巡检方案
+											String uuid2 = UUID.randomUUID().toString();
+											sor.setReordId(uuid2);
+											sor.setServiceRequestId(serviceRequestId);
+											sor.setPrincipalId(serviceRequest.getStaff().getStaffId());
+											inspectionConfigurationMapper.insertSelective(sor);
+											//巡检单信息记录
+											InspectionRecords inspectionRecords = new InspectionRecords();
+											String uuid4 = UUID.randomUUID().toString();
+											inspectionRecords.setRecordId(uuid4);
+											inspectionRecords.setOrderId(uuid3);
+											inspectionRecords.setInspectionPropertyId(sor.getInspectionPropertyId());
+											inspectionRecords.setInspectionPlanId(sor.getInspectionPlanId());
+											inspectionRecordsMapper.inserInspectionRecords(inspectionRecords);
+			
+			
+										}
+			
+									}
+								}
+							}
+						}
+					
+				}				
+		
+			}else if(frequencyRecord.getFrequencyType()==2){//半月检
+				String recordId =  frequencyRecord.getrecordId();
+				String executionFrequencys = frequencyRecord.getExecutionFrequency();//执行频率
+				String[] obj=executionFrequencys.split(",");
+				String DateDay = Integer.parseInt((sdfDate.format(DATE)))+"";
+				for(String executionFrequency : obj){
+					if(executionFrequency.equals(DateDay)){
+						List<ExecutionTimeRecords>executionTimeRecordsList = executionTimeRecordsMapper.getExecutionTimeRecordsbyRecordId(recordId);
+						String tasksUUID =null;
+						Integer type=0;
+						String ExecuteTime =null;//执行时间
+						for(ExecutionTimeRecords executionTimeRecords : executionTimeRecordsList){
+							Date ExecutiveNumTime =executionTimeRecords.getExecutiveNumTime();
+							Tasks tasks = serviceRequest.getTasks(); //任务
+							tasksUUID = UUID.randomUUID().toString();
+							tasks.setTaskId(tasksUUID);
+							tasks.setServerId(serviceRequestId);
+							String time = sdfDate.format(ExecutiveNumTime);//执行时间
+							String date1 = sdf.format(DATE);
+							ExecuteTime = date1+time;
+							tasks.setCreateTime(ExecuteTime);
+							tasks.setTaskType(20);
+							tasks.setTaskState(4);//未接受状态
+							tasks.setPrincipal(serviceRequest.getStaff().getStaffId());
+							tasks.setTaskDescription(serviceRequest.getRemarks());
+							type = tasks.getTaskType();
+							tasksMapper.insertTasksUUID(tasks);
+							if(type==20){
+								List<InspectionConfiguration> list = serviceRequest.getInspectionConfiguration();
+								if(list.size()>0&&list!=null){
+									//巡检单
+									InspectionOrder inspectionOrder = null;
+									String uuid3 = UUID.randomUUID().toString();
+									inspectionOrder = new InspectionOrder();
+									inspectionOrder.setOrderId(uuid3);
+									inspectionOrder.setOrderType(20);
+									inspectionOrder.setOrderState(1);
+									inspectionOrder.setTaskId(tasksUUID);
+									inspectionOrder.setOperatorId(serviceRequest.getStaff().getStaffId());
+									inspectionOrder.setServiceRequestId(serviceRequestId);
+		
+									inspectionOrder.setRemarks("巡检管理");
+									int tmp = inspectionOrderMapper.insertInspectionOrderUUID(inspectionOrder);
+									if(tmp>0){
+										//任务记录
+										TasksJournal journal = new TasksJournal();
+										journal.setTaskId(inspectionOrder.getTaskId());
+										journal.setCreOrderId(uuid3);
+										journal.setCreOrderType(inspectionOrder.getOrderType());
+										journal.setChangeOrderState(inspectionOrder.getOrderState());
+										if(inspectionOrder.getOperatorId()!=null){
+											journal.setOperatorId(inspectionOrder.getOperatorId());
+										}
+										journal.setRemarks(inspectionOrder.getRemarks());
+										journal.setOperationTime(ExecuteTime);
+										tasksJournalMapper.insertTasksJournal(journal);
+									}
+		
+									for(InspectionConfiguration sor : list){
+										//巡检方案
+										String uuid2 = UUID.randomUUID().toString();
+										sor.setReordId(uuid2);
+										sor.setServiceRequestId(serviceRequestId);
+										sor.setPrincipalId(serviceRequest.getStaff().getStaffId());
+										inspectionConfigurationMapper.insertSelective(sor);
+										//巡检单信息记录
+										InspectionRecords inspectionRecords = new InspectionRecords();
+										String uuid4 = UUID.randomUUID().toString();
+										inspectionRecords.setRecordId(uuid4);
+										inspectionRecords.setOrderId(uuid3);
+										inspectionRecords.setInspectionPropertyId(sor.getInspectionPropertyId());
+										inspectionRecords.setInspectionPlanId(sor.getInspectionPlanId());
+										inspectionRecordsMapper.inserInspectionRecords(inspectionRecords);
+		
+		
+									}
+		
+								}
+							}
+						}
+					}
+					
+				}
+			}else if(frequencyRecord.getFrequencyType()==3){//月检
+				String recordId =  frequencyRecord.getrecordId();
+				String executionFrequencys = frequencyRecord.getExecutionFrequency();//执行频率
+				String[] obj=executionFrequencys.split(",");
+				String DateDay = Integer.parseInt((sdfDate.format(DATE)))+"";
+				for(String executionFrequency : obj){
+					if(executionFrequency.equals(DateDay)){
+						List<ExecutionTimeRecords>executionTimeRecordsList = executionTimeRecordsMapper.getExecutionTimeRecordsbyRecordId(recordId);
+						String tasksUUID =null;
+						Integer type=0;
+						String ExecuteTime =null;//执行时间
+						for(ExecutionTimeRecords executionTimeRecords : executionTimeRecordsList){
+							Date ExecutiveNumTime =executionTimeRecords.getExecutiveNumTime();
+							Tasks tasks = serviceRequest.getTasks(); //任务
+							tasksUUID = UUID.randomUUID().toString();
+							tasks.setTaskId(tasksUUID);
+							tasks.setServerId(serviceRequestId);
+							String time = sdfDate.format(ExecutiveNumTime);//执行时间
+							String date1 = sdf.format(DATE);
+							ExecuteTime = date1+time;
+							tasks.setCreateTime(ExecuteTime);
+							tasks.setTaskType(20);
+							tasks.setTaskState(4);//未接受状态
+							tasks.setPrincipal(serviceRequest.getStaff().getStaffId());
+							tasks.setTaskDescription(serviceRequest.getRemarks());
+							type = tasks.getTaskType();
+							tasksMapper.insertTasksUUID(tasks);
+							if(type==20){
+								List<InspectionConfiguration> list = serviceRequest.getInspectionConfiguration();
+								if(list.size()>0&&list!=null){
+									//巡检单
+									InspectionOrder inspectionOrder = null;
+									String uuid3 = UUID.randomUUID().toString();
+									inspectionOrder = new InspectionOrder();
+									inspectionOrder.setOrderId(uuid3);
+									inspectionOrder.setOrderType(20);
+									inspectionOrder.setOrderState(1);
+									inspectionOrder.setTaskId(tasksUUID);
+									inspectionOrder.setOperatorId(serviceRequest.getStaff().getStaffId());
+									inspectionOrder.setServiceRequestId(serviceRequestId);
+		
+									inspectionOrder.setRemarks("巡检管理");
+									int tmp = inspectionOrderMapper.insertInspectionOrderUUID(inspectionOrder);
+									if(tmp>0){
+										//任务记录
+										TasksJournal journal = new TasksJournal();
+										journal.setTaskId(inspectionOrder.getTaskId());
+										journal.setCreOrderId(uuid3);
+										journal.setCreOrderType(inspectionOrder.getOrderType());
+										journal.setChangeOrderState(inspectionOrder.getOrderState());
+										if(inspectionOrder.getOperatorId()!=null){
+											journal.setOperatorId(inspectionOrder.getOperatorId());
+										}
+										journal.setRemarks(inspectionOrder.getRemarks());
+										journal.setOperationTime(ExecuteTime);
+										tasksJournalMapper.insertTasksJournal(journal);
+									}
+		
+									for(InspectionConfiguration sor : list){
+										//巡检方案
+										String uuid2 = UUID.randomUUID().toString();
+										sor.setReordId(uuid2);
+										sor.setServiceRequestId(serviceRequestId);
+										sor.setPrincipalId(serviceRequest.getStaff().getStaffId());
+										inspectionConfigurationMapper.insertSelective(sor);
+										//巡检单信息记录
+										InspectionRecords inspectionRecords = new InspectionRecords();
+										String uuid4 = UUID.randomUUID().toString();
+										inspectionRecords.setRecordId(uuid4);
+										inspectionRecords.setOrderId(uuid3);
+										inspectionRecords.setInspectionPropertyId(sor.getInspectionPropertyId());
+										inspectionRecords.setInspectionPlanId(sor.getInspectionPlanId());
+										inspectionRecordsMapper.inserInspectionRecords(inspectionRecords);
+		
+		
+									}
+		
+								}
+							}
+						}
+					}
+					
+				}
+		
+			}
+		}
+	}
+
+}

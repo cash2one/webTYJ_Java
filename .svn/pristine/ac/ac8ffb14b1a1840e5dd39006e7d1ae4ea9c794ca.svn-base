@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.flf.mapper.BillAdvancePaymentsDetailsRelationMapper" >
+  <resultMap id="BaseResultMap" type="com.flf.entity.BillAdvancePaymentsDetailsRelation" >
+    <id column="bill_advance_payments_details_relation_id" property="billAdvancePaymentsDetailsRelationId" jdbcType="VARCHAR" />
+    <result column="bill_id" property="billId" jdbcType="VARCHAR" />
+    <result column="advance_payments_details_id" property="advancePaymentsDetailsId" jdbcType="VARCHAR" />
+  </resultMap>
+ 
+  <insert id="insertBillPaymentRelation" parameterType="com.flf.entity.BillPaymentRelation" >
+    insert into tc_bill_advance_payments_details_relation (bill_advance_payments_details_relation_id, bill_id, advance_payments_details_id
+      )
+    values (#{billAdvancePaymentsDetailsRelationId,jdbcType=VARCHAR}, #{billId,jdbcType=VARCHAR}, #{advancePaymentsDetailsId,jdbcType=VARCHAR}
+      )
+  </insert>
+  
+  
+  
+</mapper>

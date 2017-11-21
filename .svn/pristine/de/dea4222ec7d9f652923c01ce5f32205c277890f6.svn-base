@@ -1,0 +1,30 @@
+<!--
+    创建人：钟加诚
+    创建时间：2015/6/9
+    js路径：js/controllers/externalProfession/accounting
+-->
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>计费accounting</title>
+</head>
+<body ng-controller="accountingCtrl">
+<div class="row">
+    <div class="complaint_user">
+        <div class="complaint_user_info">
+            <div class="complaint_user_info_navigation">
+                <a ui-sref="index.externalProfession.">计费明细</a>
+                <a ui-sref="index.externalProfession.">电价管理</a>
+                <a ui-sref="index.externalProfession.">水价管理</a>
+                <a ui-sref="index.externalProfession.accounting.propertyGeneralExpenses">物业管理费管理</a>
+                <a ui-sref="index.externalProfession.">违约金初始化管理</a>
+            </div>
+        </div>
+        <div class="row" style="padding:10px 10px 0">
+            <div ui-view></div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

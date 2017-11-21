@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.flf.mapper.LeaseContractMapper" >
+  <resultMap id="BaseResultMap" type="com.flf.entity.LeaseContract" >
+    <id column="contract_id" property="contractId" jdbcType="VARCHAR" />
+    <result column="product_bs_id" property="productBsId" jdbcType="VARCHAR" />
+    <result column="lease_start_date" property="leaseStartDate" jdbcType="TIMESTAMP" />
+    <result column="lease_end_date" property="leaseEndDate" jdbcType="TIMESTAMP" />
+    <result column="free_start_date" property="freeStartDate" jdbcType="TIMESTAMP" />
+    <result column="free_end_date" property="freeEndDate" jdbcType="TIMESTAMP" />
+    <result column="strAttach" property="strattach" jdbcType="VARCHAR" />
+    <result column="cust_id" property="custId" jdbcType="VARCHAR" />
+     <association property="person" column="cust_id" javaType="PersonCustNew" select="com.flf.mapper.PersonCustNewMapper.getPersonCustNewById" />
+     <association property="productBs" column="product_bs_id" javaType="ProductBs" select="com.flf.mapper.ProductBsMapper.selectByPrimaryKey" />
+  </resultMap>
+ 
+  <sql id="Base_Column_List" >
+    contract_id, product_bs_id, lease_start_date, lease_end_date, free_start_date, free_end_date, 
+    strAttach, cust_id
+  </sql>
+ 
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_lease_contract
+    where contract_id = #{contractId,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from t_lease_contract
+    where contract_id = #{contractId,jdbcType=VARCHAR}
+  </delete>
+  
+  <insert id="insert" parameterType="com.flf.entity.LeaseContract" >
+    insert into t_lease_contract (contract_id, product_bs_id, lease_start_date, 
+      lease_end_date, free_start_date, free_end_date, 
+      strAttach, cust_id)
+    values (#{contractId,jdbcType=VARCHAR}, #{productBsId,jdbcType=VARCHAR}, #{leaseStartDate,jdbcType=TIMESTAMP}, 
+      #{leaseEndDate,jdbcType=TIMESTAMP}, #{freeStartDate,jdbcType=TIMESTAMP}, #{freeEndDate,jdbcType=TIMESTAMP}, 
+      #{strattach,jdbcType=VARCHAR}, #{custId,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.flf.entity.LeaseContract" >
+    insert into t_lease_contract
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="contractId != null" >
+        contract_id,
+      </if>
+      <if test="productBsId != null" >
+        product_bs_id,
+      </if>
+      <if test="leaseStartDate != null" >
+        lease_start_date,
+      </if>
+      <if test="leaseEndDate != null" >
+        lease_end_date,
+      </if>
+      <if test="freeStartDate != null" >
+        free_start_date,
+      </if>
+      <if test="freeEndDate != null" >
+        free_end_date,
+      </if>
+      <if test="strattach != null" >
+        strAttach,
+      </if>
+      <if test="custId != null" >
+        cust_id,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="contractId != null" >
+        #{contractId,jdbcType=VARCHAR},
+      </if>
+      <if test="productBsId != null" >
+        #{productBsId,jdbcType=VARCHAR},
+      </if>
+      <if test="leaseStartDate != null" >
+        #{leaseStartDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="leaseEndDate != null" >
+        #{leaseEndDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="freeStartDate != null" >
+        #{freeStartDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="freeEndDate != null" >
+        #{freeEndDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="strattach != null" >
+        #{strattach,jdbcType=VARCHAR},
+      </if>
+      <if test="custId != null" >
+        #{custId,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+ 
+  
+  <update id="updateByPrimaryKeySelective" parameterType="com.flf.entity.LeaseContract" >
+    update t_lease_contract
+    <set >
+      <if test="productBsId != null" >
+        product_bs_id = #{productBsId,jdbcType=VARCHAR},
+      </if>
+      <if test="leaseStartDate != null" >
+        lease_start_date = #{leaseStartDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="leaseEndDate != null" >
+        lease_end_date = #{leaseEndDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="freeStartDate != null" >
+        free_start_date = #{freeStartDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="freeEndDate != null" >
+        free_end_date = #{freeEndDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="strattach != null" >
+        strAttach = #{strattach,jdbcType=VARCHAR},
+      </if>
+      <if test="custId != null" >
+        cust_id = #{custId,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where contract_id = #{contractId,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.flf.entity.LeaseContract" >
+    update t_lease_contract
+    set product_bs_id = #{productBsId,jdbcType=VARCHAR},
+      lease_start_date = #{leaseStartDate,jdbcType=TIMESTAMP},
+      lease_end_date = #{leaseEndDate,jdbcType=TIMESTAMP},
+      free_start_date = #{freeStartDate,jdbcType=TIMESTAMP},
+      free_end_date = #{freeEndDate,jdbcType=TIMESTAMP},
+      strAttach = #{strattach,jdbcType=VARCHAR},
+      cust_id = #{custId,jdbcType=VARCHAR}
+    where contract_id = #{contractId,jdbcType=VARCHAR}
+  </update>
+  
+   <select id="listAllLeaseContract" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from t_lease_contract
+  </select>
+  
+   <select id="listPageLeaseContracts" resultMap="BaseResultMap" parameterType="LeaseContract">
+     SELECT a. * FROM (select * from t_lease_contract where 1=1
+     <if test="leaseStartDate!= null and leaseEndDate!=null" >
+     and lease_end_date BETWEEN #{leaseStartDate} and #{leaseEndDate}
+      </if>
+      <if test="freeStartDate!= null" >
+        and free_start_date &gt;= #{freeStartDate}
+      </if>
+      <if test="freeEndDate!=null " >
+        and free_end_date &lt;= #{freeEndDate}
+      </if>
+       <if test="state==1" >
+        and now() BETWEEN  lease_start_date and lease_end_date
+      </if>
+       <if test="state==2 ">
+        and  now() &lt;= lease_end_date and now() &gt;= DATE_SUB(lease_end_date, INTERVAL 1 MONTH)
+      </if>
+      <if test="state==3">
+        and lease_end_date &lt;= now()
+      </if>
+     ) a 
+     INNER JOIN (SELECT * FROM tc_product_bs) b ON a.product_bs_id=b.product_bs_id
+     INNER JOIN (SELECT * FROM  tc_product WHERE 1=1 
+     <if test="payWay!= null" >
+       and pay_way=#{payWay}
+      </if>
+      <if test="rentType!= null" >
+       and rent_type=#{rentType}
+      </if>) c ON c.product_id=b.product_id
+     INNER JOIN (SELECT * FROM tc_building_structure WHERE 1=1 
+     <if test="projectId!= null" >
+       and project_id=#{projectId}
+      </if>)  d ON d.id=b.building_structure_id
+     INNER JOIN (SELECT * FROM tc_person_cust WHERE 1=1 
+     <if test="name!= null" >
+       and name like CONCAT('%',#{name},'%')
+      </if>) e ON e.cust_id = a.cust_id
+  </select>
+</mapper>

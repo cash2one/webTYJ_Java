@@ -1,0 +1,64 @@
+<!--创建人：李斌   日期：2015/5/6
+    页面名称：外部专业线的抄表管理的新增活动的页面1
+    JS路径： 'controllers/externalProfession/meterReadingManagement/newActivities/meterReading01',
+    修改时间：2015/5/29
+    修改人：李斌
+-->
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>抄表管理1</title>
+    <!--选择左边table的tr在右边table显示数据js-->
+    <script type="text/javascript">
+        function butD(rows) {
+            var rows = rows.parentNode.parentNode.rowIndex;    //找到当前选中的行
+            var myTable = document.getElementById('tables');  //找到当前这个 table;
+            var Rom_price = myTable.rows[rows].cells[0].innerHTML; //找到当前行的第一列的值;
+            //找到table2，并给table2新增一行
+            var x = document.getElementById('table2').insertRow();
+            x.align = "center";  //设置行样式
+            var Rom_typename = x.insertCell(0);
+            Rom_typename.innerHTML = Rom_price;
+        }
+    </script>
+
+</head>
+<body>
+<!--外部专业线的抄表管理的新增活动的页面1的团队信息显示-->
+<div style="padding:15px 0px 0" class="row">
+    <div class="complaint_user_list" style="height:500px;">
+        <div class="row pull-right" style="margin: 5px;">
+            <button style="height: 30px;width: 120px" ui-sref="index.externalProfession.meterReadingManagement.meterReading03">下一步</button>
+        </div>
+        <div class="row col-md-12">
+            <div class="col-md-3 col-md-offset-1">
+                <table border='1px' width="150px" id="tables">
+                    <!--循环显示js房屋信息-->
+                    <tr ng-repeat="people in peoples">
+                        <td>
+                            <a href="" id="but1" onclick="butD(this);">
+                                <img style="width: 60px;height: 60px;" src="images/staffHome/u81.jpg">
+                            </a>
+                                <span>{{people.name}}</span><br/>
+                                <span>{{people.department}}</span>
+                                <a href="#" ui-sref="index.externalProfession.meterReadingManagement.detailedInformation"><span>{{people.detailedInformation}}</span></a>
+                        </td>
+                    </tr>
+                    <!--循环显示js房屋信息end-->
+                </table>
+            </div>
+            <div class="col-md-3">
+                <span class="glyphicon glyphicon-menu-right" style="font-size: 40px;margin-top: 170px"></span>
+            </div>
+            <div class="col-md-3">
+                <table border='1px' width="150px" id="table2">
+
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

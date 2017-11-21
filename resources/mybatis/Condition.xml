@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.flf.mapper.ConditionMapper" >
+  <resultMap id="BaseResultMap" type="Condition" >
+    <id column="condition_id" property="conditionId" jdbcType="VARCHAR" />
+    <result column="condition_name" property="conditionName" jdbcType="VARCHAR" />
+    <result column="formula_id" property="formulaId" jdbcType="VARCHAR" />
+    <result column="condition_expression" property="conditionExpression" jdbcType="VARCHAR" />
+  </resultMap>
+ 
+  <insert id="insertCondition" parameterType="Condition" >
+    insert into tc_condition (condition_id, condition_name, formula_id, 
+      condition_expression)
+    values (#{conditionId,jdbcType=VARCHAR}, #{conditionName,jdbcType=VARCHAR}, #{formulaId,jdbcType=VARCHAR}, 
+      #{conditionExpression,jdbcType=VARCHAR})
+  </insert>
+ 
+  <update id="updateCondition" parameterType="Condition" >
+    update tc_condition
+    <set >
+      <if test="conditionName != null" >
+        condition_name = #{conditionName,jdbcType=VARCHAR},
+      </if>
+      <if test="formulaId != null" >
+        formula_id = #{formulaId,jdbcType=VARCHAR},
+      </if>
+      <if test="conditionExpression != null" >
+        condition_expression = #{conditionExpression,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where condition_id = #{conditionId,jdbcType=VARCHAR}
+  </update>
+  
+  <select id="getConditionByFormulaId" parameterType="String" resultMap="BaseResultMap">
+  	select * from tc_condition where formula_id = #{formulaId}
+  </select>
+
+
+</mapper>

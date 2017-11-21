@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.flf.mapper.ArchitectureNewMapper" >
+  <resultMap id="BaseResultMap" type="ArchitectureNew" >
+    <result column="architecture_id" property="architectureId" jdbcType="VARCHAR" />
+    <result column="architecture_name" property="architectureName" jdbcType="VARCHAR" />
+    <result column="description" property="description" jdbcType="VARCHAR" />
+    <result column="usable_area" property="usableArea" jdbcType="DOUBLE" />
+    <result column="building_id" property="buildingId" jdbcType="VARCHAR" />
+    <result column="building_structure_id" property="buildingStructureId" jdbcType="VARCHAR" />
+    
+  </resultMap>
+  
+
+  <select id="selectArchitectureNewById" parameterType="String" resultMap="BaseResultMap">
+  	select * from tc_architecture where architecture_id=#{0}
+  </select>
+  
+   <select id="listPageArchitectureNew" parameterType="ArchitectureNew" resultMap="BaseResultMap">
+  	select * from tc_architecture 
+  </select>
+  
+  
+   <select id="listArchitectureNew" resultMap="BaseResultMap">
+  	select * from tc_architecture 
+  </select>
+  
+   <select id="listArchitectureByBuildingStructureId" parameterType="String" resultMap="BaseResultMap">
+  	select * from tc_architecture  where building_structure_id=#{0}
+  </select>
+  
+  <delete id="deleteArchitectureNewById" parameterType="String" >
+  	delete from tc_architecture  where architecture_id=#{0}
+  </delete>
+
+  <insert id="insert" parameterType="ArchitectureNew" >
+    insert into tc_architecture (architecture_id, architecture_name, 
+      description, usable_area, building_id, 
+      building_structure_id)
+    values (UUID(), #{architectureName,jdbcType=VARCHAR}, 
+      #{description,jdbcType=VARCHAR}, #{usableArea,jdbcType=DOUBLE}, #{buildingId,jdbcType=VARCHAR}, 
+      #{buildingStructureId,jdbcType=VARCHAR})
+  </insert>
+  
+
+ 
+  <update id="updateByExample" parameterType="ArchitectureNew" >
+    update tc_architecture
+    set architecture_id = #{architectureId,jdbcType=VARCHAR},
+      architecture_name = #{architectureName,jdbcType=VARCHAR},
+      description = #{description,jdbcType=VARCHAR},
+      usable_area = #{usableArea,jdbcType=DOUBLE},
+      building_id = #{buildingId,jdbcType=VARCHAR},
+      building_structure_id = #{buildingStructureId,jdbcType=VARCHAR}
+      where architecture_id=#{architectureId,jdbcType=VARCHAR}
+  </update>
+</mapper>

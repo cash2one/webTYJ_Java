@@ -1,0 +1,58 @@
+package com.flf.service.impl;
+
+import com.flf.service.PaymentDetailsService;
+import com.flf.service.ProductFixedparkingspaceService;
+
+import net.sf.json.JSONObject;
+
+import java.util.HashMap;
+import java.util.Map;
+import java.util.UUID;
+
+import com.flf.entity.BuildingStructureNew;
+import com.flf.entity.ProductFixedparkingspace;
+import com.flf.mapper.ProductCommonserviceMapper;
+import com.flf.mapper.ProductFixedparkingspaceChildMapper;
+import com.flf.mapper.ProductFixedparkingspaceMapper;
+
+
+public class ProductFixedparkingspaceServiceImpl implements ProductFixedparkingspaceService {
+	Map<String,String> map=new HashMap<String,String>();
+	private ProductFixedparkingspaceMapper productFixedparkingspaceMapper;
+	private ProductFixedparkingspaceChildMapper productFixedparkingspaceChildMapper;
+
+	public ProductFixedparkingspaceChildMapper getProductFixedparkingspaceChildMapper() {
+		return productFixedparkingspaceChildMapper;
+	}
+
+	public void setProductFixedparkingspaceChildMapper(
+			ProductFixedparkingspaceChildMapper productFixedparkingspaceChildMapper) {
+		this.productFixedparkingspaceChildMapper = productFixedparkingspaceChildMapper;
+	}
+
+	public ProductFixedparkingspaceMapper getProductFixedparkingspaceMapper() {
+		return productFixedparkingspaceMapper;
+	}
+
+	public void setProductFixedparkingspaceMapper(ProductFixedparkingspaceMapper productFixedparkingspaceMapper) {
+		this.productFixedparkingspaceMapper = productFixedparkingspaceMapper;
+	}
+
+	@Override
+	public String addPf(ProductFixedparkingspace pf) {
+		// TODO Auto-generated method stub
+		String fixedparkingspaceId = UUID.randomUUID().toString();
+		pf.setFixedparkingspaceId(fixedparkingspaceId);
+		for(BuildingStructureNew bsn:pf.getBuildingStructureNewList()){
+			String stallId = bsn.getId();
+			
+		}
+		
+		
+		map.put("code","0");
+	    return JSONObject.fromObject(map).toString();
+	}
+	
+	
+
+}

@@ -1,0 +1,77 @@
+package com.flf.service;
+
+import java.util.List;
+
+import javax.jws.WebService;
+import javax.ws.rs.Consumes;
+import javax.ws.rs.DELETE;
+import javax.ws.rs.GET;
+import javax.ws.rs.POST;
+import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
+import javax.ws.rs.Produces;
+import javax.ws.rs.core.MediaType;
+
+import com.flf.entity.Constant;
+
+/**
+ * 常量对象service
+ * @author lenovo
+ *
+ */
+@Path("/Constant")
+@WebService
+public interface ConstantService {
+	
+	/**
+	 * 查看常量
+	 * @param constant
+	 */
+	@GET
+	@Path("/getConstantByConstantId/{constantId}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Constant getConstantByConstantId(@PathParam("constantId") String constantId);
+	
+	/**
+	 * 删除常量
+	 * @param constant
+	 */
+	@DELETE
+	@Path("/deleteConstantByConstantId/{constantId}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public void deleteConstantByConstantId(@PathParam("constantId") String constantId);
+
+	/**
+	 * 新增常量
+	 * @param constant
+	 */
+	@POST
+	@Path("/insertConstant")
+	@Consumes({MediaType.APPLICATION_XML,MediaType.APPLICATION_JSON})
+	public String insertConstant(Constant constant);
+	
+	/**
+	 * 根据方案id查询关联的常量
+	 * @param schemeId
+	 * @return
+	 */
+	@GET
+	@Path("/getConstantBySchemeId/{schemeId}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public List<Constant> getConstantBySchemeId(@PathParam("schemeId") String schemeId);
+	
+	/**
+	 * 查询顶级常量
+	 * @param schemeId
+	 * @return
+	 */
+	@GET
+	@Path("/getTopConstantBySchemeId")
+	@Produces(MediaType.APPLICATION_JSON)
+	public List<Constant> getTopConstantBySchemeId(@PathParam("schemeId") String schemeId);
+	
+	@POST
+	@Path("/listAllConstant")
+	@Produces(MediaType.APPLICATION_JSON)
+	public List<Constant> listAllConstant(Constant constant);
+}

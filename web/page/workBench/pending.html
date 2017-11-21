@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>工作台待办</title>
+</head>
+<body>
+
+<div class="row" style="height: 532px">
+    <!--右侧面板1-->
+    <div class="col-lg-12 col-md-12 col-sm-12">
+        <h4 style="text-align: center;margin-top:20px"><strong>待办</strong></h4>
+            <div class="panel_info">
+                <div class="" >
+                    <div class="search_style "><form>
+                        <input type="text"   class="search_style_input" ng-model="Order.lastName" placeholder="请输入搜索条件" />
+                        <button type="submit" class="search_style_button" ng-click="searchPaginator._load()">查找</button>
+                    </form>
+                    </div>
+
+                        <div class="button_group">
+                            <a  data-toggle="modal" data-target="#myModal_service" class="btn" ng-click="GetOrder(0)">增加</a>
+                            <div class="modal fade" id="myModal_service" tabindex="-1" role="dialog"
+                                 aria-labelledby="myModalLabel" aria-hidden="true">
+                                <div class="modal-dialog">
+                                    <div class="modal-content" style="width: 700px">
+                                        <div class="modal-header">
+                                            <button type="button" class="close"
+                                                    data-dismiss="modal" aria-hidden="true">
+                                                &times;
+                                            </button>
+                                            <p>增加待办</p>
+                                        </div>
+
+                                        <div class="modal-body" style="line-height:40px;">
+                                            <div>
+                                                <form>
+                                                    <table style="margin: 0 auto;text-align: center">
+                                                        <tr>
+                                                            <td>工单编号</td>
+                                                            <td><input type="text" class="form-control input-sm"  ng-model="order.workOrderId"/></td>
+                                                            <td width="100px">房屋编号</td>
+                                                            <td><input type="text" class="form-control input-sm" ng-model="order.houstId"/></td>
+                                                        </tr>
+                                                        <tr>														
+                                                            <td>联系电话</td>
+                                                            <td><input type="text" class="form-control input-sm" ng-model="order.calledNum"/></td>
+                                                            <td>业主姓名</td>
+                                                            <td><input type="text" class="form-control input-sm" ng-model="order.lastName"/></td>
+                                                        </tr>
+
+
+
+                                                        <tr>
+                                                            <td><span>一级分类</span></td>
+                                                                <td><select class="btn-sm" style="width: 150px" ng-model="order.todoCd">
+                                                                    <option value="1">所有</option>
+                                                                    <option value="2">维修（室内）</option>
+                                                                    <option value="3">维修（室外）</option>
+                                                                    <option value="4">清洁</option>
+                                                                    <option value="5">园林</option>
+                                                                    <option value="6">保安</option>
+                                                                    <option value="7">邻里纠纷</option>
+                                                                </select></td>
+
+                                                            <td> <span>&nbsp;&nbsp;二级分类</span></td>
+                                                                <td><select class="btn-sm" style="width: 200px" ng-model="order.classify">
+                                                                    <option value="1">所有</option>
+                                                                    <option value="2">智能化</option>
+                                                                    <option value="3">水</option>
+                                                                    <option value="4">门</option>
+                                                                    <option value="5">窗</option>
+                                                                    <option value="6">信报箱</option>
+                                                                    <option value="7">房屋主体</option>
+                                                                    <option value="8">抄水电表</option>
+                                                                    <option value="9">开关水电</option>
+                                                                    <option value="10">核实水电表</option>
+                                                                    <option value="11">电器</option>
+                                                                    <option value="12">洁具</option>
+                                                                    <option value="13">栏杆</option>
+                                                                </select></td>
+                                                        </tr>
+                       																	 							
+                                                        <tr>
+                                                            <td><span>&nbsp;&nbsp;三级分类</span></td>
+                                                                <td><select class="btn-sm" style="width: 150px" ng-model="order.calTypeCd">
+                                                                    <option value="1">所有</option>
+                                                                    <option value="2">智能化</option>
+                                                                    <option value="3">水</option>
+                                                                    <option value="4">门</option>
+                                                                    <option value="5">窗</option>
+                                                                    <option value="6">信报箱</option>
+                                                                    <option value="7">房屋主体</option>
+                                                                    <option value="8">抄水电表</option>
+                                                                    <option value="9">开关水电</option>
+                                                                    <option value="10">核实水电表</option>
+                                                                    <option value="11">电器</option>
+                                                                    <option value="12">洁具</option>
+                                                                    <option value="13">栏杆</option>
+                                                                </select></td>
+                                                            <td>问题描述</td>
+                                                            <td><input type="text" class="form-control input-sm" ng-model="order.commentsLong"/></td>
+                                                        </tr>
+
+                                                    </table>
+                                                </form>
+                                            </div>
+                                        </div>
+
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-default btn-sm" aria-label="Left Align" data-dismiss="modal">
+                                                <span class="glyphicon glyphicon-remove" aria-hidden="true">关闭</span>
+                                            </button>
+                                            <button type="button" class="btn btn-sm btn-default" ng-click="AddOrUpdateOrder(0)">
+                                                <span class="glyphicon glyphicon-ok"></span>提交
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+
+                            <a href="#" class="delete"  ng-click="deleteOrder()">删除</a>
+
+                        </div>
+                    
+
+
+                </div>
+
+                <!--<div class="panel_info clear">-->
+                <!--<input type="checkbox"><a href="#">状&nbsp;&nbsp;态  <span class="col-sm-offset-1" style="text-align: center">任务名称</span><span class="col-sm-offset-2">任务描述</span><span class="col-sm-offset-2">相关工单&nbsp;&nbsp; </span><span class="col-sm-offset-2" >&nbsp;&nbsp;&nbsp;参与人</span><span class="pull-right">时间</span></a><br/>-->
+                <!--<input type="checkbox"><a href="#">待处理  <span class="col-sm-offset-1">任务一</span><span class="col-sm-offset-2">任务描述</span><span class="col-sm-offset-2">1-142692952</span><span class="col-sm-offset-2">参与人</span><span class="pull-right">2015-4-4</span></a><br/>-->
+                <!--<input type="checkbox"><a href="#">待处理  <span class="col-sm-offset-1">任务二</span><span class="col-sm-offset-2">任务描述</span><span class="col-sm-offset-2">1-142692952</span><span class="col-sm-offset-2">参与人</span><span class="pull-right">2015-4-4</span></a><br/>-->
+                <!--<input type="checkbox"><a href="#">待处理  <span class="col-sm-offset-1">任务三</span><span class="col-sm-offset-2">任务描述</span><span class="col-sm-offset-2">1-142692952</span><span class="col-sm-offset-2">参与人</span><span class="pull-right">2015-4-4</span></a><br/>-->
+                <!--<input type="checkbox"><a href="#">待处理  <span class="col-sm-offset-1">任务四</span><span class="col-sm-offset-2">任务描述</span><span class="col-sm-offset-2">1-142692952</span><span class="col-sm-offset-2">参与人</span><span class="pull-right">2015-4-4</span></a><br/>-->
+                <!--<input type="checkbox"><a href="#">待处理  <span class="col-sm-offset-1">任务五</span><span class="col-sm-offset-2">任务描述</span><span class="col-sm-offset-2">1-142692952</span><span class="col-sm-offset-2">参与人</span><span class="pull-right">2015-4-4</span></a><br/>-->
+                <!--<span class="pull-right">详情<a href="#">>></a><br/><br/></span>-->
+                <!--</div>-->
+                <table width="100%" border="0" cellpadding="0" cellspacing="0" class="table_style">
+                    <tr>
+                        <td width="50" align="center" valign="middle" class="table_style_toptd">&nbsp;</td>
+                        <td align="center" valign="middle" class="table_style_toptd">状态</td>
+                        <td align="center" valign="middle" class="table_style_toptd">工单编号</td>
+                        <td width="70" align="center" valign="middle" class="table_style_toptd">优先级 <select class="btn-xs">
+                        <option value="">所有</option>
+                        <option value="">低</option>
+                        <option value="">中</option>
+                        <option value="">高</option></select></td>
+                        <td align="center" valign="middle" class="table_style_toptd">房屋编号</td>
+                        <td align="center" valign="middle" class="table_style_toptd">业主姓名</td>
+                        <td align="center" valign="middle" class="table_style_toptd">业主类型</td>
+                        <td align="center" valign="middle" class="table_style_toptd">联系电话</td>
+                        <td width="90" align="center" valign="middle" class="table_style_toptd">一级分类
+                            <select class="btn-xs" style="width: 60px">
+                                <option value="">所有</option>
+                                <option value="">维修（室内）</option>
+                                <option value="">维修（室外）</option>
+                                <option value="">清洁</option>
+                                <option value="">园林</option>
+                                <option value="">保安</option>
+                                <option value="">邻里纠纷</option>
+                            </select></td>
+                        <td width="80" align="center" valign="middle" class="table_style_toptd">二级分类
+                            <select class="btn-xs" style="width: 60px">
+                                <option value="">所有</option>
+                                <option value="">智能化</option>
+                                <option value="">水</option>
+                                <option value="">门</option>
+                                <option value="">窗</option>
+                                <option value="">信报箱</option>
+                                <option value="">房屋主体</option>
+                                <option value="">抄水电表</option>
+                                <option value="">开关水电</option>
+                                <option value="">核实水电表</option>
+                                <option value="">电器</option>
+                                <option value="">洁具</option>
+                                <option value="">栏杆</option>
+                            </select></td>
+                        <td width="80" align="center" valign="middle" class="table_style_toptd">三级分类
+                            <select class="btn-xs" style="width: 60px">
+                                <option value="">所有</option>
+                                <option value="">智能化</option>
+                                <option value="">水</option>
+                                <option value="">门</option>
+                                <option value="">窗</option>
+                                <option value="">信报箱</option>
+                                <option value="">房屋主体</option>
+                                <option value="">抄水电表</option>
+                                <option value="">开关水电</option>
+                                <option value="">核实水电表</option>
+                                <option value="">电器</option>
+                                <option value="">洁具</option>
+                                <option value="">栏杆</option>
+                            </select></td>
+                        <td width="80" align="center" valign="middle" class="table_style_toptd">问题描述</td>
+                        <td align="center" valign="middle" class="table_style_toptd">操作</td>
+                    </tr>
+                   <tr ng-repeat="items in searchPaginator.object.orders" ng-show="items.workOrderId!=null"> 
+                    	<td width="50" align="center" valign="middle"><input type="checkbox" ng-model="items.value"  name="checkbox" id="checkbox1"></td>
+                    	<td>{{items.evtStatCd}}</td>
+                    	<td>{{items.workOrderId}}</td>
+                        <td>{{items.evtPriorityCd}}</td>
+                        <td>{{items.houstId}}</td>
+                        <td>{{items.lastName}}</td>
+                        <td>一般业主</td>
+                        <td>{{items.calledNum}}</td>
+                        <td>{{items.todoCd}}</td>
+                        <td>{{items.classify}}</td>
+                        <td>{{items.calTypeCd}}</td>
+                        <td>{{items.commentsLong}}</td>
+                        <td align="center" valign="middle">
+                        <a  data-toggle="modal" ng-click="GetOrder(items.workOrderId)" data-target="#myModal_VIP"
+                        class="btn">修改</a></td>
+                    </tr>
+                 <!--    <tr>
+                        <td width="50" align="center" valign="middle"><input type="checkbox" name="checkbox" id="checkbox1"></td>
+                        <td align="center" valign="middle">待回访</td>
+                        <td align="center" valign="middle">1-234567</td>
+                        <td align="center" valign="middle">中</td>
+                        <td align="center" valign="middle">1426921</td>
+                        <td align="center" valign="middle">D001</td>
+                        <td align="center" valign="middle">一般业主</td>
+                        <td align="center" valign="middle">13798907889</td>
+                        <td align="center" valign="middle">维修（室内）</td>
+                        <td align="center" valign="middle">电</td>
+                        <td align="center" valign="middle">电</td>
+                        <td width="50" align="center" valign="middle">电灯坏了</td>
+                        <td align="center" valign="middle">修改</td>
+                    </tr> -->
+                    <!-- <tr>
+                        <td width="50" align="center" valign="middle"><input type="checkbox" name="checkbox" id="checkbox2"></td>
+                        <td align="center" valign="middle">待回访</td>
+                        <td align="center" valign="middle">1-234567</td>
+                        <td align="center" valign="middle">中</td>
+                        <td align="center" valign="middle">1426921</td>
+                        <td align="center" valign="middle">D001</td>
+                        <td align="center" valign="middle">一般业主</td>
+                        <td align="center" valign="middle">13798907889</td>
+                        <td align="center" valign="middle">维修（室内）</td>
+                        <td align="center" valign="middle">电</td>
+                        <td align="center" valign="middle">电</td>
+                        <td width="50" align="center" valign="middle">电灯坏了</td>
+                        <td align="center" valign="middle">修改</td>
+                    </tr>
+                    <tr>
+                        <td width="50" align="center" valign="middle"><input type="checkbox" name="checkbox" id="checkbox5"></td>
+                        <td align="center" valign="middle">待回访</td>
+                        <td align="center" valign="middle">1-234587</td>
+                        <td align="center" valign="middle">中</td>
+                        <td align="center" valign="middle">1426929</td>
+                        <td align="center" valign="middle">D001</td>
+                        <td align="center" valign="middle">一般业主</td>
+                        <td align="center" valign="middle">1379890567889</td>
+                        <td align="center" valign="middle">维修（室内）</td>
+                        <td align="center" valign="middle">电</td>
+                        <td align="center" valign="middle">电</td>
+                        <td width="50" align="center" valign="middle">电灯坏了</td>
+                        <td align="center" valign="middle">修改</td>
+                    </tr>
+                    <tr>
+                        <td width="50" align="center" valign="middle"><input type="checkbox" name="checkbox" id="checkbox6"></td>
+                        <td align="center" valign="middle">待回访</td>
+                        <td align="center" valign="middle">1-234567</td>
+                        <td align="center" valign="middle">中</td>
+                        <td align="center" valign="middle">1426927</td>
+                        <td align="center" valign="middle">D001</td>
+                        <td align="center" valign="middle">一般业主</td>
+                        <td align="center" valign="middle">13798907889</td>
+                        <td align="center" valign="middle">维修（室内）</td>
+                        <td align="center" valign="middle">电</td>
+                        <td align="center" valign="middle">电</td>
+                        <td width="50" align="center" valign="middle">开关坏了</td>
+                        <td align="center" valign="middle">修改</td>
+                    </tr>
+                    <tr>
+                        <td width="50" align="center" valign="middle"><input type="checkbox" name="checkbox" id="checkbox7"></td>
+                        <td align="center" valign="middle">待回访</td>
+                        <td align="center" valign="middle">1-234567</td>
+                        <td align="center" valign="middle">中</td>
+                        <td align="center" valign="middle">1426921</td>
+                        <td align="center" valign="middle">D001</td>
+                        <td align="center" valign="middle">一般业主</td>
+                        <td align="center" valign="middle">13798907889</td>
+                        <td align="center" valign="middle">维修（室内）</td>
+                        <td align="center" valign="middle">水</td>
+                        <td align="center" valign="middle">水</td>
+                        <td width="50" align="center" valign="middle">水龙头坏了</td>
+                        <td align="center" valign="middle">修改</td>
+                    </tr>
+                    <tr>
+                        <td width="50" align="center" valign="middle"><input type="checkbox" name="checkbox" id="checkbox8"></td>
+                        <td align="center" valign="middle">待回访</td>
+                        <td align="center" valign="middle">1-234567</td>
+                        <td align="center" valign="middle">中</td>
+                        <td align="center" valign="middle">1426921</td>
+                        <td align="center" valign="middle">D001</td>
+                        <td align="center" valign="middle">一般业主</td>
+                        <td align="center" valign="middle">13798907889</td>
+                        <td align="center" valign="middle">维修（室内）</td>
+                        <td align="center" valign="middle">电</td>
+                        <td align="center" valign="middle">电</td>
+                        <td width="50" align="center" valign="middle">电灯坏了</td>
+                        <td align="center" valign="middle">修改</td>
+                    </tr>
+                    <tr>
+                        <td width="50" align="center" valign="middle"><input type="checkbox" name="checkbox" id="checkbox9"></td>
+                        <td align="center" valign="middle">待回访</td>
+                        <td align="center" valign="middle">1-234567</td>
+                        <td align="center" valign="middle">中</td>
+                        <td align="center" valign="middle">1426921</td>
+                        <td align="center" valign="middle">D001</td>
+                        <td align="center" valign="middle">一般业主</td>
+                        <td align="center" valign="middle">13798907889</td>
+                        <td align="center" valign="middle">维修（室内）</td>
+                        <td align="center" valign="middle">水</td>
+                        <td align="center" valign="middle">水</td>
+                        <td width="50" align="center" valign="middle">水管坏了</td>
+                        <td align="center" valign="middle">修改</td>
+                    </tr> -->
+                </table>
+                 <div class="pagination">
+                    <a href="#" ng-show="searchPaginator.hasPrevious()" ng-click="searchPaginator.previous()">上一页</a>
+                    <a href="#" ng-repeat="i in searchPaginator.pages"  ng-click="searchPaginator.go(i)" class="number">{{i}}</a>
+                    <a href="#" ng-show="searchPaginator.hasNext()" ng-click="searchPaginator.next()">下一页</a>
+    			</div>
+            </div>
+
+        </div>
+    </div>
+
+
+<div class="modal fade" id="myModal_VIP" tabindex="-1" role="dialog"
+     aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content" style="width: 700px">
+            <div class="modal-header">
+                <button type="button" class="close"
+                        data-dismiss="modal" aria-hidden="true">
+                    &times;
+                </button>
+                <p>修改工单</p>
+            </div>
+
+            <div class="modal-body"style="line-height:40px;">
+                <div>
+                    <form>
+                                 <table style="margin: 0 auto;text-align: center">
+                                                        <tr>
+                                                            <td>工单编号</td>
+                                                            <td><input type="text" class="form-control input-sm"  ng-model="order.workOrderId"/></td>
+                                                            <td width="100px">房屋编号</td>
+                                                            <td><input type="text" class="form-control input-sm" ng-model="order.houstId"/></td>
+                                                        </tr>
+                                                        <tr>														
+                                                            <td>联系电话</td>
+                                                            <td><input type="text" class="form-control input-sm" ng-model="order.calledNum"/></td>
+                                                            <td>业主姓名</td>
+                                                            <td><input type="text" class="form-control input-sm" ng-model="order.lastName"/></td>
+                                                        </tr>
+
+
+
+                                                        <tr>
+                                                            <td><span>一级分类</span></td>
+                                                                <td><select class="btn-sm" style="width: 150px" ng-model="order.todoCd">
+                                                                    <option value="1">所有</option>
+                                                                    <option value="2">维修（室内）</option>
+                                                                    <option value="3">维修（室外）</option>
+                                                                    <option value="4">清洁</option>
+                                                                    <option value="5">园林</option>
+                                                                    <option value="6">保安</option>
+                                                                    <option value="7">邻里纠纷</option>
+                                                                </select></td>
+
+                                                            <td> <span>&nbsp;&nbsp;二级分类</span></td>
+                                                                <td><select class="btn-sm" style="width: 200px" ng-model="order.classify">
+                                                                    <option value="1">所有</option>
+                                                                    <option value="2">智能化</option>
+                                                                    <option value="3">水</option>
+                                                                    <option value="4">门</option>
+                                                                    <option value="5">窗</option>
+                                                                    <option value="6">信报箱</option>
+                                                                    <option value="7">房屋主体</option>
+                                                                    <option value="8">抄水电表</option>
+                                                                    <option value="9">开关水电</option>
+                                                                    <option value="10">核实水电表</option>
+                                                                    <option value="11">电器</option>
+                                                                    <option value="12">洁具</option>
+                                                                    <option value="13">栏杆</option>
+                                                                </select></td>
+                                                        </tr>
+                       																	 							
+                                                        <tr>
+                                                            <td><span>&nbsp;&nbsp;三级分类</span></td>
+                                                                <td><select class="btn-sm" style="width: 150px" ng-model="order.calTypeCd">
+                                                                    <option value="1">所有</option>
+                                                                    <option value="2">智能化</option>
+                                                                    <option value="3">水</option>
+                                                                    <option value="4">门</option>
+                                                                    <option value="5">窗</option>
+                                                                    <option value="6">信报箱</option>
+                                                                    <option value="7">房屋主体</option>
+                                                                    <option value="8">抄水电表</option>
+                                                                    <option value="9">开关水电</option>
+                                                                    <option value="10">核实水电表</option>
+                                                                    <option value="11">电器</option>
+                                                                    <option value="12">洁具</option>
+                                                                    <option value="13">栏杆</option>
+                                                                </select></td>
+                                                            <td>问题描述</td>
+                                                            <td><input type="text" class="form-control input-sm" ng-model="order.commentsLong"/></td>
+                                                        </tr>
+
+                                                    </table>
+                    </form>
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default btn-sm" aria-label="Left Align" data-dismiss="modal">
+                    <span class="glyphicon glyphicon-remove" aria-hidden="true">关闭</span>
+                </button>
+                <button type="button" class="btn btn-sm btn-default" data-dismiss="modal" ng-click="AddOrUpdateOrder(order.workOrderId)">
+                    <span class="glyphicon glyphicon-ok"></span>提交
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+</body>
+
+</html>

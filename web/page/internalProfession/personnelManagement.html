@@ -1,0 +1,46 @@
+<!--
+    创建人:彭婷婷
+    页面名称:人员管理设置
+    js路径:js/controllers/internalProfession/personalManagement
+    修改内容:数据动态显示,表格单元格点击颜色改变
+    修改时间:2015/6/4
+-->
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>人员管理设置</title>
+    <script>
+        function bgChange(obj){
+            obj.bgColor=obj.bgColor==""?"#ff5577":"";
+        }
+    </script>
+</head>
+<body>
+<div class="container">
+    <p>人员管理设置</p>
+    <table border="1" style="width: 70%;text-align: center">
+        <tr ng-repeat="items in title">
+            <td>{{items.title}}</td>
+            <td>{{items.projectTitle}}</td>
+            <td>{{items.manager}}</td>
+            <td>{{items.clean}}</td>
+            <td>{{items.park}}</td>
+            <td>{{items.security}}</td>
+            <td>{{items.maintain}}</td>
+            <td>{{items.fireFighting}}</td>
+        </tr>
+        <tr  ng-repeat="item in person">
+            <td>{{item.id}}</td>
+            <td>{{item.project}}</td>
+            <td id="td2">{{item.manager}}</td>
+            <td onclick="bgChange(this)">{{item.cleaning}}</td>
+            <td onclick="bgChange(this)">{{item.park}}</td>
+            <td onclick="bgChange(this)">{{item.security}}</td>
+            <td onclick="bgChange(this)">{{item.maintain}}</td>
+            <td onclick="bgChange(this)">{{item.fireFighting}}</td>
+        </tr>
+        </table>
+</div>
+</body>
+</html>

@@ -1,0 +1,412 @@
+package com.flf.service.impl;
+
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import net.sf.json.JSONObject;
+
+import org.apache.commons.lang.StringUtils;
+import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+
+import com.flf.entity.BuildingStructureNew;
+import com.flf.entity.ChargeItemNew;
+import com.flf.entity.ChargeItemNewBuilding;
+import com.flf.entity.ChargeItemNewDetails;
+import com.flf.entity.ChargeType;
+import com.flf.entity.ChargeTypeProjectBilling;
+import com.flf.entity.DataDictionarySlave;
+import com.flf.entity.Formula;
+import com.flf.entity.ProjectBilling;
+import com.flf.entity.Scheme;
+import com.flf.mapper.BuildingStructureNewMapper;
+import com.flf.mapper.ChargeItemNewBuildingMapper;
+import com.flf.mapper.ChargeItemNewDetailsMapper;
+import com.flf.mapper.ChargeItemNewMapper;
+import com.flf.mapper.ChargeTypeMapper;
+import com.flf.mapper.ChargeTypeProjectBillingMapper;
+import com.flf.mapper.FormulaMapper;
+import com.flf.mapper.ProjectBillingMapper;
+import com.flf.mapper.SchemeMapper;
+import com.flf.service.DataDictionarySlaveService;
+import com.flf.service.SchemeService;
+import com.flf.util.DateUtil;
+import com.flf.util.Tools;
+
+public class SchemeServiceImpl implements SchemeService {
+	private Logger log = Logger.getLogger(SchemeServiceImpl.class);  
+
+	private SchemeMapper schemeMapper;
+	@Autowired
+	private ChargeItemNewMapper chargeItemNewMapper;
+	@Autowired
+	private ChargeItemNewDetailsMapper chargeItemNewDetailsMapper;
+	@Autowired
+	private FormulaMapper formulaMapper;
+	@Autowired
+	private BuildingStructureNewMapper buildingStructureNewMapper;
+	@Autowired
+	private ChargeItemNewBuildingMapper chargeItemNewBuildingMapper;
+	@Autowired
+	private DataDictionarySlaveService dataDictionarySlaveService;
+	@Autowired
+	private ChargeTypeMapper chargeTypeMapper;
+	@Autowired
+	private ProjectBillingMapper projectBillingMapper;
+	@Autowired
+	private ChargeTypeProjectBillingMapper chargeTypeProjectBillingMapper;
+	
+	public SchemeMapper getSchemeMapper() {
+		return schemeMapper;
+	}
+
+	public void setSchemeMapper(SchemeMapper schemeMapper) {
+		this.schemeMapper = schemeMapper;
+	}
+
+	@Override
+	public List<Scheme> getSchemeByProjectId(String projectId) {
+		List<Scheme> list = schemeMapper.getSchemeByProjectId(projectId);
+		return list;
+	}
+
+	@Override
+	public List<Scheme> getSmByProjectId(String projectId) {
+		List<Scheme> smList = schemeMapper.getSchemeByProjectId(projectId);
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		for(Scheme sm:smList){
+			try {
+				Date startDate = sdf.parse(sm.getStartDate());
+				Date nowDate = sdf.parse(sdf.format(new Date()));
+				if(nowDate.getTime()>=startDate.getTime()){
+					sm.setStatus("启用中");
+				}else{
+					sm.setStatus("待启用");
+				}
+				if(sm.getEndDate() != null){
+					Date endDate = sdf.parse(sm.getEndDate());
+					if(nowDate.getTime()>=endDate.getTime()){
+						sm.setStatus("失效");
+					}
+				}
+			} catch (ParseException e) {
+				e.printStackTrace();
+				log.error("方案生效时间日期格式转换错误！");
+			}
+			List<DataDictionarySlave> chargeFreList = dataDictionarySlaveService.getDataDictionarySlaveRes("chargeFre", projectId);
+			for(DataDictionarySlave dds:chargeFreList){
+				if(dds.getSlaveName().equals(sm.getChargeFre())){
+					sm.setChargeFre(dds.getDescription());
+				}
+			}
+			
+			List<DataDictionarySlave> chargeTimeList = dataDictionarySlaveService.getDataDictionarySlaveRes("chargeTime", projectId);
+			for(DataDictionarySlave dds:chargeTimeList){
+				if(dds.getSlaveName().equals(sm.getChargeTime())){
+					sm.setChargeTime(dds.getDescription());
+				}
+			}
+			
+		}
+		return smList;
+	}
+
+	@Override
+	public String insertScheme(Scheme scheme) {
+		Map<String,String> map=new HashMap<String,String>();
+		if(StringUtils.isBlank(scheme.getSchemeName())){
+			map.put("code","3001");
+			map.put("information","请输入方案名称！");
+		    return JSONObject.fromObject(map).toString();//3001表示参数不全    200表示成功
+		}
+		if(StringUtils.isBlank(scheme.getStartDate())){
+			map.put("code","3001");
+			map.put("information","请选择生效日期！");
+		    return JSONObject.fromObject(map).toString();//3001表示参数不全    200表示成功
+		}
+		
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		Date newDate = new Date();
+		try {
+			newDate  = sdf.parse(sdf.format(newDate));
+			Date StartDate = sdf.parse(scheme.getStartDate());
+			if(newDate.getTime() >= StartDate.getTime()){
+				map.put("code","3001");
+				map.put("information","生效日期必须大于今天！");
+			    return JSONObject.fromObject(map).toString();//3001表示参数不全    200表示成功
+			}
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		Scheme sm = new Scheme();
+		sm.setSchemeId(scheme.getProjectId());
+		sm.setChargeTypeId(scheme.getChargeTypeId());
+		List<Scheme> smList = schemeMapper.listAllScheme(sm);
+		for(Scheme schm:smList){
+			try {
+				Date schmEndDate = new Date();
+				if(schm.getEndDate() == null){
+					schmEndDate = sdf.parse("3200-01-01");
+				}else{
+					schmEndDate = sdf.parse(schm.getEndDate());
+				}
+				Date schmstartDate = sdf.parse(schm.getStartDate());
+				Date startDate = sdf.parse(scheme.getStartDate());
+				Date endDate = new Date();
+				if(scheme.getEndDate() == null){
+					endDate = sdf.parse("3200-01-01");
+				}else{
+					endDate = sdf.parse(scheme.getEndDate());
+				}
+				
+				if(startDate.getTime() >= schmstartDate.getTime() &&startDate.getTime() <= schmEndDate.getTime()){
+					map.put("code","3001");
+					map.put("information","时间区间不能在同类型计费方案时间段内！");
+				    return JSONObject.fromObject(map).toString();//    200表示成功
+				}
+				if(endDate.getTime() >= schmstartDate.getTime() &&endDate.getTime() <= schmEndDate.getTime()){
+					map.put("code","3001");
+					map.put("information","时间区间不能在同类型计费方案时间段内！");
+				    return JSONObject.fromObject(map).toString();//    200表示成功
+				}
+				if(endDate.getTime() >= schmEndDate.getTime() &&startDate.getTime() <= schmEndDate.getTime()){
+					map.put("code","3001");
+					map.put("information","时间区间不能在同类型计费方案时间段内！");
+				    return JSONObject.fromObject(map).toString();//    200表示成功
+				}
+				if(endDate.getTime() >= schmstartDate.getTime() &&startDate.getTime() <= schmstartDate.getTime()){
+					map.put("code","3001");
+					map.put("information","时间区间不能在同类型计费方案时间段内！");
+				    return JSONObject.fromObject(map).toString();//    200表示成功
+				}
+			} catch (ParseException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		
+		if(StringUtils.isBlank(scheme.getChargeSet())){
+			map.put("code","3001");
+			map.put("information","请选择计费设置！");
+		    return JSONObject.fromObject(map).toString();//3001表示参数不全    200表示成功
+		}
+		if(StringUtils.isBlank(scheme.getChargeTypeId())){
+			map.put("code","3001");
+			map.put("information","请选择收费类型！");
+		    return JSONObject.fromObject(map).toString();//3001表示参数不全    200表示成功
+		}
+		if("01".equals(scheme.getChargeSet())){
+			if(StringUtils.isBlank(scheme.getChargeFre())){
+				map.put("code","3001");
+				map.put("information","请选择计费频率！");
+			    return JSONObject.fromObject(map).toString();//3001表示参数不全    200表示成功
+			}
+			if(StringUtils.isBlank(scheme.getChargeTime())){
+				map.put("code","3001");
+				map.put("information","请选择自动计费时间！");
+			    return JSONObject.fromObject(map).toString();//3001表示参数不全    200表示成功
+			}
+		}else{
+			scheme.setChargeFre(null);
+			scheme.setChargeTime(null);
+		}
+		String schemeId = scheme.getSchemeId();
+		ChargeItemNew chargeItemNew = new ChargeItemNew();
+		chargeItemNew.setSchemeId(schemeId);
+		List<ChargeItemNew> cinList = chargeItemNewMapper.listAllChargeItemNew(chargeItemNew);
+		if(cinList.size() == 0){
+			map.put("code","3001");
+			map.put("information","请新建收费项目！");
+		    return JSONObject.fromObject(map).toString();//3001表示参数不全    200表示成功
+		}
+		int buildingNum = 0;
+		for(ChargeItemNew cin:cinList){
+			ChargeItemNewDetails chargeItemNewDetails = new ChargeItemNewDetails();
+			chargeItemNewDetails.setChargeItemNewId(cin.getChargeItemNewId());
+			List<ChargeItemNewDetails> cindList = chargeItemNewDetailsMapper.listAllChargeItemNewDetails(chargeItemNewDetails);
+			if(cindList.size() == 0){
+				map.put("code","3001");
+				map.put("information","请删除收费项目重新新建！");
+			    return JSONObject.fromObject(map).toString();//3001表示参数不全    200表示成功
+			}
+			
+			for(ChargeItemNewDetails cind:cindList){
+				Formula formula = new Formula();
+				formula.setChargeItemDetailsId(cind.getChargeItemDetailsId());
+				List<Formula> formulaList = formulaMapper.listAllFormula(formula);
+				if(formulaList.size() == 0){
+					map.put("code","3001");
+					map.put("information","请确认收费项目详情下是否都建立了公式！");
+				    return JSONObject.fromObject(map).toString();// 200表示成功
+				}
+			}
+			
+			ChargeItemNewBuilding cib = new ChargeItemNewBuilding();
+			cib.setChargeItemNewId(cin.getChargeItemNewId());
+			List<ChargeItemNewBuilding> cibList = chargeItemNewBuildingMapper.listAllChargeItemNewBuilding(cib);
+			buildingNum = buildingNum + cibList.size();
+		}
+		String projectId = scheme.getProjectId();
+		List<BuildingStructureNew>  buildingList = buildingStructureNewMapper.getBuildingListByProidAndSchemeid(projectId,schemeId);
+		if(buildingList.size()>0){
+			map.put("code","3001");
+			map.put("information","使用范围必须全部选择！");
+		    return JSONObject.fromObject(map).toString();// 200表示成功
+		}
+		scheme.setSchemeStatus("01");//01-待启用 启用中
+		schemeMapper.insertSelective(scheme);
+		map.put("code","200");
+		map.put("information","保存成功");
+	    return JSONObject.fromObject(map).toString();//3001表示参数不全    200表示成功
+	}
+	
+	@Override
+	public String updateScheme(String schemeId) {
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		Map<String,String> map=new HashMap<String,String>();
+		boolean bool = true;
+		if (!Tools.isEmpty(schemeId)) {
+			String[] array = schemeId.split(",");
+			for (int i = 0 ; i < array.length; i++) {
+				Scheme sm = schemeMapper.selectByPrimaryKey(array[i]);
+				try {
+					Date nowDate = sdf.parse(sdf.format(new Date()));
+					if(sm.getEndDate() != null){
+						Date endDate = sdf.parse(sm.getEndDate());
+						if(nowDate.getTime()>=endDate.getTime()){
+							bool = false;
+						}
+					}
+				} catch (ParseException e) {
+					bool = false;
+					e.printStackTrace();
+					log.error("方案生效时间日期格式转换错误！");
+				}
+				
+			}
+			if(bool){
+				for (int i = 0 ; i < array.length; i++) {
+					Scheme sm = schemeMapper.selectByPrimaryKey(array[i]);
+					sm.setEndDate(DateUtil.getToday("yyyy-MM-dd"));
+					//修改方案
+					schemeMapper.updateByPrimaryKeySelective(sm);
+				}
+				map.put("code","200");
+				map.put("information","操作成功");
+			    return JSONObject.fromObject(map).toString();//3001表示不成功    200表示成功
+			}else{
+				map.put("code","3001");
+				map.put("information","已失效方案不能再次失效！");
+			    return JSONObject.fromObject(map).toString();//3001表示不成功    200表示成功
+			}
+		}else{
+			map.put("code","200");
+			map.put("information","操作成功");
+		    return JSONObject.fromObject(map).toString();//3001表示不成功    200表示成功
+		}
+	}
+
+	@Override
+	public Scheme getSchemeById(String schemeId) {
+		Scheme scheme = schemeMapper.selectByPrimaryKey(schemeId);
+		return scheme;
+	}
+
+	@Override
+	public void updateSchemeEndDate(Scheme scheme) {
+		Scheme newScheme = schemeMapper.selectByPrimaryKey(scheme.getSchemeId());
+		newScheme.setEndDate(scheme.getEndDate());
+		schemeMapper.updateByPrimaryKeySelective(newScheme);
+	}
+	
+	@Override
+	public List<Scheme> getSchemeByChargeTypeId(String chargeTypeId) {
+		List<Scheme> list=schemeMapper.getSchemeByChargeTypeId(chargeTypeId);
+		return list;
+	}
+
+	@Override
+	public Scheme showSchemeById(String schemeId) {
+		Scheme scheme = schemeMapper.selectByPrimaryKey(schemeId);
+		List<DataDictionarySlave> chargeFreList = dataDictionarySlaveService.getDataDictionarySlaveRes("chargeFre", scheme.getProjectId());
+		for(DataDictionarySlave dds:chargeFreList){
+			if(dds.getSlaveName().equals(scheme.getChargeFre())){
+				scheme.setChargeFre(dds.getDescription());
+			}
+		}
+		
+		List<DataDictionarySlave> chargeTimeList = dataDictionarySlaveService.getDataDictionarySlaveRes("chargeTime", scheme.getProjectId());
+		for(DataDictionarySlave dds:chargeTimeList){
+			if(dds.getSlaveName().equals(scheme.getChargeTime())){
+				scheme.setChargeTime(dds.getDescription());
+			}
+		}
+		ChargeType chargeType = chargeTypeMapper.selectByPrimaryKey(scheme.getChargeTypeId());
+		scheme.setChargeTypeName(chargeType.getChargeTypeName());
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		try {
+			Date nowDate = new Date();
+			scheme.setStatus("01");//可编辑、可失效
+			if(scheme.getEndDate() != null){
+				Date endDate = sdf.parse(scheme.getEndDate());
+				if(nowDate.getTime()>=endDate.getTime()){
+					scheme.setStatus("02");//已失效
+				}
+			}
+		} catch (ParseException e) {
+			e.printStackTrace();
+			log.error("方案生效时间日期格式转换错误！");
+		}
+		return scheme;
+	}
+
+	@Override
+	public List<Scheme> getManualSchemeList() {
+		Date nowDate = new Date();
+		SimpleDateFormat sdfMonth = new SimpleDateFormat("yyyy-MM");
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		String nowDateStr = sdf.format(nowDate);
+		List<Scheme> list=schemeMapper.getManualSchemeList(nowDateStr);
+		List<Scheme> newList = new ArrayList<Scheme>();
+		for(int i = 0;i<list.size();i++){
+			Scheme sm = list.get(i);
+			ProjectBilling projectBilling = new ProjectBilling();
+			projectBilling.setProjectId(sm.getProjectId());
+			Calendar cal = Calendar.getInstance(); 
+		    cal.add(Calendar.MONTH, -1);//获取上个月月份
+			projectBilling.setMonth(sdfMonth.format(cal.getTime()));
+			List<ProjectBilling> projectBillingList = projectBillingMapper.listPageProjectBilling(projectBilling);
+			if(projectBillingList.size() > 0){
+				ProjectBilling pb = projectBillingList.get(0);
+				ChargeTypeProjectBilling chargeTypeProjectBilling = new ChargeTypeProjectBilling();
+				chargeTypeProjectBilling.setProjectBillingId(pb.getProjectBillingId());
+				chargeTypeProjectBilling.setChargeTypeId(sm.getChargeTypeId());
+				List<ChargeTypeProjectBilling> ctpbList = chargeTypeProjectBillingMapper.listAllChargeTypeProjectBilling(chargeTypeProjectBilling);
+				if(ctpbList.size() == 0){
+					newList.add(sm);
+				}
+			}else{
+				newList.add(sm);
+			}
+			
+		}
+		return newList;
+	}
+
+	@Override
+	public List<Scheme> getAutoSchemeList() {
+		Date nowDate = new Date();
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		String nowDateStr = sdf.format(nowDate);
+		List<Scheme> list=schemeMapper.getAutoSchemeList(nowDateStr);
+		return list;
+	}
+}

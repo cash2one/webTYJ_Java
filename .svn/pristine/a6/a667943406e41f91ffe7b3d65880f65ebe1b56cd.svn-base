@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.flf.mapper.RenovationAcceptanceOrdersMapper" >
+  <resultMap id="BaseResultMap" type="RenovationAcceptanceOrders" >
+    <id column="order_id" property="orderId" jdbcType="VARCHAR" />
+    <result column="order_type" property="orderType" jdbcType="TINYINT" />
+    <result column="order_state" property="orderState" jdbcType="TINYINT" />
+    <result column="task_id" property="taskId" jdbcType="VARCHAR" />
+    <result column="service_request_id" property="serviceRequestId" jdbcType="VARCHAR" />
+    <result column="operator_id" property="operatorId" jdbcType="VARCHAR" />
+    <result column="finish_time" property="finishTime" jdbcType="TIMESTAMP" />
+    <result column="inspector_normal" property="normal" jdbcType="TINYINT" />
+    <result column="remarks" property="remarks" jdbcType="VARCHAR" />
+    <result column="close_time" property="closeTime" jdbcType="TIMESTAMP" />
+    <result column="close_person_id" property="closePersonId" jdbcType="VARCHAR" />
+    <result column="close_remarks" property="closeRemarks" jdbcType="VARCHAR" />
+    <result column="wall_area" property="wallArea" jdbcType="DOUBLE" />
+  </resultMap>
+  
+  <resultMap type="RenovationAcceptanceOrders" id="resultRenovationAcceptanceOrdersMap" extends="BaseResultMap">
+  	<association property="staff" column="operator_id" javaType="Staff" select="com.flf.mapper.StaffMapper.selectByid"></association>
+  	<collection property="annexs" column="order_id" ofType="Annex" select="com.flf.mapper.AnnexMapper.getAnnexbyRelationId"></collection>
+  	<collection property="renovationAcceptanceRecords" column="order_id" ofType="RenovationAcceptanceRecords" select="com.flf.mapper.RenovationAcceptanceRecordsMapper.getRenovationAcceptanceRecordsbyOrderId"></collection>
+  	<collection property="letterRecords" column="order_id" ofType="LetterRecords" select="com.flf.mapper.LetterRecordsMapper.getLetterRecordsbyOrderId"></collection>
+  </resultMap>
+  
+  <select id="listAllRenovationAcceptanceOrders"  resultMap="resultRenovationAcceptanceOrdersMap" >
+  	select * from ts_renovation_acceptance_orders
+  </select>
+  
+  <select id="getRenovationAcceptanceOrdersbyId" parameterType="String" resultMap="resultRenovationAcceptanceOrdersMap">
+  	select * from ts_renovation_acceptance_orders where order_id=#{0}
+  </select>
+  <select id="getRenovationAcceptanceOrdersbyTypeAndTaskId" parameterType="String" resultMap="resultRenovationAcceptanceOrdersMap">
+  	select * from ts_renovation_acceptance_orders where  order_type=#{0} and task_id=#{1}
+  </select>
+  <insert id="insertRenovationAcceptanceOrders" parameterType="RenovationAcceptanceOrders" >
+  	insert into ts_renovation_acceptance_orders (order_id,order_type,order_state,task_id,service_request_id,operator_id,
+  		finish_time,inspector_normal,remarks,close_time,close_person_id,close_remarks,wall_area)
+  	values (UUID(),#{orderType,jdbcType=TINYINT},#{orderState,jdbcType=TINYINT},#{taskId,jdbcType=VARCHAR},
+  		#{serviceRequestId,jdbcType=VARCHAR},#{operatorId,jdbcType=VARCHAR},#{finishTime,jdbcType=TIMESTAMP},
+  		#{normal,jdbcType=TINYINT},#{remarks,jdbcType=VARCHAR},#{closeTime,jdbcType=TIMESTAMP},
+  		#{closePersonId,jdbcType=VARCHAR},#{closeRemarks,jdbcType=VARCHAR},#{wallArea,jdbcType=DOUBLE})
+  </insert>
+  
+  <insert id="insertRenovationAcceptanceOrdersUUID" parameterType="RenovationAcceptanceOrders" >   
+  	insert into ts_renovation_acceptance_orders (order_id,order_type,order_state,task_id,service_request_id,operator_id,
+  		finish_time,inspector_normal,remarks,close_time,close_person_id,close_remarks,wall_area)
+  	values (#{orderId,jdbcType=VARCHAR},#{orderType,jdbcType=TINYINT},#{orderState,jdbcType=TINYINT},#{taskId,jdbcType=VARCHAR},
+  		#{serviceRequestId,jdbcType=VARCHAR},#{operatorId,jdbcType=VARCHAR},#{finishTime,jdbcType=TIMESTAMP},
+  		#{normal,jdbcType=TINYINT},#{remarks,jdbcType=VARCHAR},#{closeTime,jdbcType=TIMESTAMP},
+  		#{closePersonId,jdbcType=VARCHAR},#{closeRemarks,jdbcType=VARCHAR},#{wallArea,jdbcType=DOUBLE})
+  </insert>
+ 
+  <update id="updateRenovationAcceptanceOrders" parameterType="RenovationAcceptanceOrders" >
+    update ts_renovation_acceptance_orders set 
+    	order_type = #{orderType,jdbcType=TINYINT},
+    	order_state = #{orderState,jdbcType=TINYINT},
+      	task_id = #{taskId,jdbcType=VARCHAR},
+      	service_request_id = #{serviceRequestId,jdbcType=VARCHAR},
+      	operator_id = #{operatorId,jdbcType=VARCHAR},
+     	finish_time = #{finishTime,jdbcType=TIMESTAMP},
+     	inspector_normal = #{normal,jdbcType=TINYINT},
+      	remarks = #{remarks,jdbcType=VARCHAR},
+      	close_time = #{closeTime,jdbcType=TIMESTAMP},
+      	close_person_id = #{closePersonId,jdbcType=VARCHAR},
+      	close_remarks = #{closeRemarks,jdbcType=VARCHAR},
+      	wall_area = #{wallArea,jdbcType=DOUBLE}
+    where order_id = #{orderId,jdbcType=VARCHAR}
+  </update>
+  <select id="getRenovationAcceptanceOrdersbyTaskId" parameterType="String" resultMap="resultRenovationAcceptanceOrdersMap">
+  		select * from ts_renovation_acceptance_orders where task_id=#{0}
+  </select>
+</mapper>

@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.flf.mapper.ImportantEventTypeJournalMapper" >
+  <resultMap id="BaseResultMap" type="ImportantEventTypeJournal" >
+    <id column="reord_id" property="recordId" jdbcType="VARCHAR" />
+    <result column="important_event_type_id" property="eventTypeId" jdbcType="VARCHAR" />
+    <result column="operator_id" property="operatatorId" jdbcType="VARCHAR" />
+    <result column="change_state" property="changeState" jdbcType="TINYINT" />
+    <result column="operator_time" property="operatorTime" jdbcType="DATE" />
+    <result column="remarks" property="remarks" jdbcType="VARCHAR" />
+  </resultMap>
+  
+  <select id="getImportantEventTypeJournalbyEventTypeId" parameterType="String" resultMap="BaseResultMap">
+  	select * from ts_important_event_type_journal where important_event_type_id=#{0}
+  </select>
+  
+  <insert id="insertImportantEventTypeJournal" parameterType="ImportantEventTypeJournal" >      
+      insert into ts_important_event_type_journal(reord_id,important_event_type_id,operator_id,change_state,operator_time,remarks)
+    values (#{recordId,jdbcType=VARCHAR},#{eventTypeId,jdbcType=VARCHAR},#{operatatorId,jdbcType=VARCHAR},#{changeState,jdbcType=TINYINT},
+    #{operatorTime,jdbcType=DATE},#{remarks,jdbcType=VARCHAR})
+  </insert>
+  
+  <!-- 根据机制id查询日志 -->
+  <select id="getDataByReordId" parameterType="String" resultMap="BaseResultMap">
+  	select * from ts_important_event_type_journal where reord_id=#{0}
+  </select>
+  
+</mapper>

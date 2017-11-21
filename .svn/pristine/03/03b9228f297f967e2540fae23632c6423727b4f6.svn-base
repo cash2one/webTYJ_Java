@@ -1,0 +1,70 @@
+<!--
+    创建时间：2015/5/19
+    作者:
+    修改者：钟加诚
+    修改时间：2015/6/1
+    修改内容：Js数据，查询效果
+    页面名称:施工管理-审批
+    js路径:js/controllers/externalProfession/allPets
+-->
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>施工管理-审批</title>
+    <link rel="stylesheet" href="css/propertyService.css">
+</head>
+<body>
+<div class="tabList">
+    <!--审批-->
+    <table class="table">
+        <tr>
+            <td>工单号：{{}}</td>
+            <td>负责人：{{}}</td>
+            <td>预约时间：{{}}</td>
+        </tr>
+        <tr>
+            <td>核查编号</td>
+            <td>核查事项</td>
+            <td>核查结果</td>
+        </tr>
+        <tr>
+            <td>{{}}</td>
+            <td></td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>{{}}</td>
+            <td></td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>{{}}</td>
+            <td></td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>{{}}</td>
+            <td></td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>{{}}</td>
+            <td></td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>{{}}</td>
+            <td></td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>{{}}</td>
+            <td></td>
+            <td></td>
+        </tr>
+    </table>
+    <button type="submit" class="btn btn-default">提交审批</button>
+</div>
+</body>
+</html>

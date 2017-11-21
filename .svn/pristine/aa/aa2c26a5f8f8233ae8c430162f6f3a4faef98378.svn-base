@@ -1,0 +1,40 @@
+package com.flf.service.impl;
+
+import java.util.List;
+
+import com.flf.entity.BuildingBilling;
+import com.flf.entity.ChargeItemBilling;
+import com.flf.entity.PageRestful;
+import com.flf.mapper.BuildingBillingMapper;
+import com.flf.service.BuildingBillingService;
+
+public class BuildingBillingServiceImpl implements BuildingBillingService {
+
+	private BuildingBillingMapper buildingBillingMapper;
+	
+	public BuildingBillingMapper getBuildingBillingMapper() {
+		return buildingBillingMapper;
+	}
+	public void setBuildingBillingMapper(BuildingBillingMapper buildingBillingMapper) {
+		this.buildingBillingMapper = buildingBillingMapper;
+	}
+	@Override
+	public PageRestful listPageBuildingBillingListRes(
+			BuildingBilling buildingBilling) {
+		// TODO Auto-generated method stub
+		PageRestful pageRestful=new PageRestful();
+		List<BuildingBilling> building=buildingBillingMapper.listPageBuildingBillingList(buildingBilling);
+		building.add(0,null);
+		pageRestful.setBuildingBillings(building);
+		pageRestful.setPage(buildingBilling.getPage());
+		return pageRestful;
+		
+	}
+	@Override
+	public void updateBuildingBilling(BuildingBilling buildingBilling) {
+		// TODO Auto-generated method stub
+		buildingBilling.setBillingState(0);
+		buildingBillingMapper.updateBuildingBilling(buildingBilling);
+	}
+
+}

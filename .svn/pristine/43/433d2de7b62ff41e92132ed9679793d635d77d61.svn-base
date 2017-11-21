@@ -1,0 +1,623 @@
+package com.flf.quartz;
+
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.UUID;
+
+import org.apache.commons.lang3.StringUtils;
+import org.quartz.JobDetail;
+import org.quartz.JobExecutionContext;
+import org.quartz.JobExecutionException;
+import org.springframework.scheduling.quartz.QuartzJobBean;
+
+import com.flf.entity.AssetAccount;
+import com.flf.entity.Bill;
+import com.flf.entity.Billing;
+import com.flf.entity.BuildingBilling;
+import com.flf.entity.BuildingStructureNew;
+import com.flf.entity.ChargeItemBilling;
+import com.flf.entity.ChargeItemNew;
+import com.flf.entity.Condition;
+import com.flf.entity.Constant;
+import com.flf.entity.DataDictionarySlave;
+import com.flf.entity.ElectricityMeterReadingData;
+import com.flf.entity.Formula;
+import com.flf.entity.Project;
+import com.flf.entity.ProjectBilling;
+import com.flf.entity.Scheme;
+import com.flf.entity.SchemeDatails;
+import com.flf.entity.SchemeRelation;
+import com.flf.entity.WaterMeterOrderRecords;
+import com.flf.mapper.AssetAccountMapper;
+import com.flf.mapper.BillMapper;
+import com.flf.mapper.BuildingStructureNewMapper;
+import com.flf.mapper.ChargeItemNewMapper;
+import com.flf.mapper.ConditionMapper;
+import com.flf.mapper.ConstantMapper;
+import com.flf.mapper.DataDictionarySlaveMapper;
+import com.flf.mapper.ElectricityMeterReadingDataMapper;
+import com.flf.mapper.ElectronicBillingMapper;
+import com.flf.mapper.FormulaMapper;
+import com.flf.mapper.ProjectBillingMapper;
+import com.flf.mapper.ProjectMapper;
+import com.flf.mapper.SchemeDatailsMapper;
+import com.flf.mapper.SchemeMapper;
+import com.flf.mapper.SchemeRelationMapper;
+import com.flf.mapper.WaterMeterOrderRecordsMapper;
+import com.flf.util.CalculatorUtils;
+
+public class ChargeItemJob extends QuartzJobBean{
+
+	@Override
+	protected void executeInternal(JobExecutionContext arg0)
+			throws JobExecutionException {
+		// TODO Auto-generated method stub
+		
+	}
+
+	private ProjectMapper projectMapper;
+	private SchemeMapper schemeMapper;
+	private SchemeRelationMapper schemeRelationMapper;
+	private ChargeItemNewMapper chargeItemNewMapper;
+	private SchemeDatailsMapper schemeDatailsMapper;
+	private ConditionMapper conditionMapper;
+	private FormulaMapper formulaMapper;
+	private ConstantMapper constantMapper;
+	private BillMapper billMapper;
+	private ProjectBillingMapper projectBillingMapper;
+	private BuildingStructureNewMapper buildingStructureNewMapper;
+	private AssetAccountMapper assetAccountMapper;
+	private ElectronicBillingMapper electronicBillingMapper;
+	private ElectricityMeterReadingDataMapper electricityMeterReadingDataMapper;
+	private WaterMeterOrderRecordsMapper waterMeterOrderRecordsMapper;
+	private DataDictionarySlaveMapper dataDictionarySlaveMapper;
+	
+	public ProjectMapper getProjectMapper() {
+		return projectMapper;
+	}
+
+	public void setProjectMapper(ProjectMapper projectMapper) {
+		this.projectMapper = projectMapper;
+	}
+
+	public SchemeMapper getSchemeMapper() {
+		return schemeMapper;
+	}
+
+	public void setSchemeMapper(SchemeMapper schemeMapper) {
+		this.schemeMapper = schemeMapper;
+	}
+
+	public SchemeRelationMapper getSchemeRelationMapper() {
+		return schemeRelationMapper;
+	}
+
+	public void setSchemeRelationMapper(SchemeRelationMapper schemeRelationMapper) {
+		this.schemeRelationMapper = schemeRelationMapper;
+	}
+
+	public ChargeItemNewMapper getChargeItemNewMapper() {
+		return chargeItemNewMapper;
+	}
+
+	public void setChargeItemNewMapper(ChargeItemNewMapper chargeItemNewMapper) {
+		this.chargeItemNewMapper = chargeItemNewMapper;
+	}
+
+	public SchemeDatailsMapper getSchemeDatailsMapper() {
+		return schemeDatailsMapper;
+	}
+
+	public void setSchemeDatailsMapper(SchemeDatailsMapper schemeDatailsMapper) {
+		this.schemeDatailsMapper = schemeDatailsMapper;
+	}
+
+	public ConditionMapper getConditionMapper() {
+		return conditionMapper;
+	}
+
+	public void setConditionMapper(ConditionMapper conditionMapper) {
+		this.conditionMapper = conditionMapper;
+	}
+
+	public FormulaMapper getFormulaMapper() {
+		return formulaMapper;
+	}
+
+	public void setFormulaMapper(FormulaMapper formulaMapper) {
+		this.formulaMapper = formulaMapper;
+	}
+
+	public ConstantMapper getConstantMapper() {
+		return constantMapper;
+	}
+
+	public void setConstantMapper(ConstantMapper constantMapper) {
+		this.constantMapper = constantMapper;
+	}
+
+	public BillMapper getBillMapper() {
+		return billMapper;
+	}
+
+	public void setBillMapper(BillMapper billMapper) {
+		this.billMapper = billMapper;
+	}
+
+	public ProjectBillingMapper getProjectBillingMapper() {
+		return projectBillingMapper;
+	}
+
+	public void setProjectBillingMapper(ProjectBillingMapper projectBillingMapper) {
+		this.projectBillingMapper = projectBillingMapper;
+	}
+
+	public BuildingStructureNewMapper getBuildingStructureNewMapper() {
+		return buildingStructureNewMapper;
+	}
+
+	public void setBuildingStructureNewMapper(BuildingStructureNewMapper buildingStructureNewMapper) {
+		this.buildingStructureNewMapper = buildingStructureNewMapper;
+	}
+
+	public AssetAccountMapper getAssetAccountMapper() {
+		return assetAccountMapper;
+	}
+
+	public void setAssetAccountMapper(AssetAccountMapper assetAccountMapper) {
+		this.assetAccountMapper = assetAccountMapper;
+	}
+
+	public ElectronicBillingMapper getElectronicBillingMapper() {
+		return electronicBillingMapper;
+	}
+
+	public void setElectronicBillingMapper(ElectronicBillingMapper electronicBillingMapper) {
+		this.electronicBillingMapper = electronicBillingMapper;
+	}
+
+	public ElectricityMeterReadingDataMapper getElectricityMeterReadingDataMapper() {
+		return electricityMeterReadingDataMapper;
+	}
+
+	public void setElectricityMeterReadingDataMapper(ElectricityMeterReadingDataMapper electricityMeterReadingDataMapper) {
+		this.electricityMeterReadingDataMapper = electricityMeterReadingDataMapper;
+	}
+
+	public WaterMeterOrderRecordsMapper getWaterMeterOrderRecordsMapper() {
+		return waterMeterOrderRecordsMapper;
+	}
+
+	public void setWaterMeterOrderRecordsMapper(WaterMeterOrderRecordsMapper waterMeterOrderRecordsMapper) {
+		this.waterMeterOrderRecordsMapper = waterMeterOrderRecordsMapper;
+	}
+
+	public DataDictionarySlaveMapper getDataDictionarySlaveMapper() {
+		return dataDictionarySlaveMapper;
+	}
+
+	public void setDataDictionarySlaveMapper(DataDictionarySlaveMapper dataDictionarySlaveMapper) {
+		this.dataDictionarySlaveMapper = dataDictionarySlaveMapper;
+	}
+//
+//	@Override
+//	protected void executeInternal(JobExecutionContext arg0) throws JobExecutionException {
+//		// 公式计算工具类对象
+//		// 最终要插入到数据库的计费信息
+//		List<Billing> billingListAll = new ArrayList<Billing>();
+//		// 最终要插入到数据库的建筑收费项目计费信息
+//		List<BuildingBilling> buildingBillingListAll = new ArrayList<BuildingBilling>();
+//		// 最终要插入到数据库的收费项目计费信息
+//		List<ChargeItemBilling> chargeItemBillingListAll = new ArrayList<ChargeItemBilling>();
+//		// 根据建筑结构ID和父级收费项目统计建筑收费项目信息，其中key是由建筑结构ID和父级收费项目ID组成
+//		Map<String, List<Billing>> mapForBuildingBillingMap = new HashMap<String, List<Billing>>();
+//		// 根据父级收费项目ID收费项目计费信息
+//		Map<String, List<BuildingBilling>> mapForChargeItemBillingMap = new HashMap<String, List<BuildingBilling>>();
+//		CalculatorUtils cu = new CalculatorUtils();
+//		JobDetail jobDetail = arg0.getJobDetail();
+//		String jobName = jobDetail.getName();
+//		String cinParentId = jobName.split("_")[1];
+//		SchemeRelation sr = schemeRelationMapper.getSchemeByChargeItemId(cinParentId);
+//		Scheme scheme = schemeMapper.getSchemeById(sr.getSchemeId());
+//		String projectId = scheme.getProjectId();
+//		Project project = projectMapper.getProject(projectId);
+//		List<DataDictionarySlave> dictionaryList = dataDictionarySlaveMapper.getDropboxList("conditionusetype",
+//				projectId);
+//		// 判断需要计费的方案方案的生效时间和失效时间
+//		Date schemeStartDate = scheme.getStartDate();
+//		Date schemeEndDate = scheme.getEndDate();
+//
+//		// 获取上个月的最后一天
+//		Calendar calendar = Calendar.getInstance();
+//		int month = calendar.get(Calendar.MONTH);
+//		calendar.set(Calendar.MONTH, month - 1);
+//		calendar.set(Calendar.DAY_OF_MONTH, calendar.getActualMaximum(Calendar.DAY_OF_MONTH));
+//		// 获取上个月的第一天
+//		Calendar calendarOther = Calendar.getInstance();
+//		int monthOther = calendarOther.get(Calendar.MONTH);
+//		calendarOther.set(Calendar.MONTH, monthOther - 1);
+//		calendarOther.set(Calendar.DAY_OF_MONTH, calendarOther.getActualMinimum(Calendar.DAY_OF_MONTH));
+//		/**
+//		 * 1、上个月的最后一天大于方案的生效时间 2、上个月的最后一天小于方案的失效时间
+//		 * 或者上个月的最后一天大于方案的失效时间但是属于同一个年月份
+//		 */
+//		boolean startBoolean = schemeStartDate.getTime() < calendar.getTime().getTime();
+//		boolean endBoolean = calendar.getTime().getTime() < schemeEndDate.getTime();
+//		boolean endBooleanSpecial = calendar.getTime().getTime() > schemeEndDate.getTime();
+//		// 用于年月对比
+//		Calendar calendarForCompare = Calendar.getInstance();
+//		calendarForCompare.setTime(schemeEndDate);
+//		boolean endForYearAndMonth = calendar.get(Calendar.YEAR) == calendarForCompare.get(Calendar.YEAR) && calendar.get(Calendar.MONTH) == calendarForCompare.get(Calendar.MONTH);
+//		if (startBoolean && (endBoolean || (endBooleanSpecial && endForYearAndMonth))) {
+//			// 获取方案下的常量列表，匹配公式信息，查找是水费、电费、物业费、车位费等
+//			List<Constant> constantList = constantMapper.listConstantBySchemeId(scheme.getSchemeId());
+//			// 获取方案收费项目关系列表
+//			List<SchemeRelation> schemeRelationList = schemeRelationMapper
+//					.getSchemeRelationBySchemeId(scheme.getSchemeId());
+//			if (schemeRelationList != null && schemeRelationList.size() > 0) {
+//				for (SchemeRelation schemeRelation : schemeRelationList) {
+//					String cinId = schemeRelation.getChargeItemId();
+//					if (StringUtils.isNotEmpty(cinId)) {
+//						// 获取该收费项目下的收费项目详情列表
+//						List<ChargeItemNew> cinList = chargeItemNewMapper.getChargeItemNewByIds(cinId);
+//						if (cinList != null && cinList.size() > 0) {
+//							// 遍历收费项目列表
+//							for (ChargeItemNew chargeItemNew : cinList) {
+//								// 根据收费子项目获取收费项目公式和建筑的关联信息
+//								List<SchemeDatails> sdList = schemeDatailsMapper.getSchemeDatailsByChargeItemId(chargeItemNew.getCiId());
+//
+//								// 获取建筑Id,用于查询对应建筑是否有历史计费记录
+//								String buildingStructureId = null;
+//
+//								// 遍历方案公式项目收费关系列表，查找符合条件的信息，生成对应的建筑收费项目计费信息
+//								for (SchemeDatails schemeDatails : sdList) {
+//									/**
+//									 * 此处需要获取该建筑的水电抄表信息，
+//									 * 在获取水电抄表信息之前要确定该收费项目时哪种收费类型
+//									 * 是水费还是电费
+//									 */
+//									// 保存计费类型
+//									String chargeType = "";
+//									// 遍历收费项目公式列表，获取该收费项目下的所有公式，选择符合要求的条件，找到对应公式用来计算
+//									String formulaId = schemeDatails.getFormulaId();
+//									// 获取公式信息，用于判断条件类型
+//									Formula formula = formulaMapper.getFormulaById(formulaId);
+//									String formulaExspression = formula.getFormulaExpression();
+//									if (StringUtils.isNotEmpty(formulaExspression)) {
+//										for (Constant constant : constantList) {
+//											if (formulaExspression
+//													.indexOf(constant.getConstantName()) > -1) {
+//												chargeType = constant.getCommonValue();
+//												break;
+//											}
+//										}
+//									}
+//									List<Condition> conditionList = conditionMapper
+//											.getConditionByFormulaId(formulaId);
+//									byte conditionUseType = formula.getConditionUseType();// 全部1
+//																							// 任何2
+//
+//									Billing billing = cerateBill(chargeType, conditionUseType,
+//											calendarForCompare, buildingStructureId, conditionList,
+//											constantList, dictionaryList, formulaExspression, cu,
+//											calendarOther, endBoolean, endBooleanSpecial,
+//											endForYearAndMonth, schemeStartDate, schemeEndDate,
+//											chargeItemNew, schemeDatails, project);
+//									// 建筑结构收费项目计费ID还未生成,此时拼接key,组成为建筑结构ID和父级收费项目ID
+//									if (billing != null) {
+//										String bbKey = buildingStructureId + "|"
+//												+ chargeItemNew.getCiId();
+//										List<Billing> billingListNew = new ArrayList<Billing>();
+//										if (mapForBuildingBillingMap.containsKey(bbKey)) {
+//											billingListNew = mapForBuildingBillingMap.get(bbKey);
+//										}
+//										billingListNew.add(billing);
+//										mapForBuildingBillingMap.put(bbKey, billingListNew);
+//									}
+//								}
+//							}
+//						}
+//					}
+//				}
+//				// 循环mapForBuildingBillingMap用来生成建筑收费项目计费信息
+//				if (mapForBuildingBillingMap.keySet().size() > 0) {
+//					for (String bbMapKey : mapForBuildingBillingMap.keySet()) {
+//						List<Billing> list = mapForBuildingBillingMap.get(bbMapKey);
+//						if (list != null && list.size() > 0) {
+//							BuildingBilling bb = new BuildingBilling();
+//							String bbNewId = UUID.randomUUID().toString();
+//							Date bbStartDate = list.get(0).getBillingStartTime();
+//							Date bbEndDate = list.get(0).getBillingEndTime();
+//							int bbState = list.get(0).getBillingState();
+//							String ciId = bbMapKey.split("|")[1];
+//							String buildingStructureId = bbMapKey.split("|")[0];
+//							double currentBBMoney = 0d;
+//							double lastBBMoney = 0d;
+//							double currentSumMoney = 0d;
+//							for (Billing billing : list) {
+//								billing.setBuildingBillingId(bbNewId);
+//								billingListAll.add(billing);
+//								currentBBMoney += billing.getCurrentSum();
+//								lastBBMoney += billing.getLastSum();
+//								currentSumMoney += billing.getBillingBalance();
+//							}
+//							bb.setBillingBalance(currentSumMoney);
+//							bb.setBillingEndTime(bbEndDate);
+//							bb.setBillingStartTime(bbStartDate);
+//							bb.setBillingState(bbState);
+//							bb.setBuildingBillingId(bbNewId);
+//							bb.setBuildingId(buildingStructureId);
+//							bb.setChargeItemId(ciId);
+//							ChargeItemNew cin = chargeItemNewMapper.getChargeItemNewById(ciId);
+//							bb.setChargeItemName(cin.getCiName());
+//							bb.setCurrentSum(currentBBMoney);
+//							bb.setLastSum(lastBBMoney);
+//							// 此处未保存项目计费Id
+//							// 判断在map中是否存在父级收费项目Id
+//							List<BuildingBilling> chargeItemBillingNewList = new ArrayList<BuildingBilling>();
+//							if (mapForChargeItemBillingMap.containsKey(ciId)) {
+//								chargeItemBillingNewList = mapForChargeItemBillingMap.get(ciId);
+//							}
+//							chargeItemBillingNewList.add(bb);
+//							mapForChargeItemBillingMap.put(ciId, chargeItemBillingNewList);
+//						}
+//					}
+//				}
+//				
+//				ChargeItemBilling cib = null;
+//				// 循环mapForChargeItemBillingMap计算根据父级收费项目统计收费项目计费信息
+//				if (mapForChargeItemBillingMap.keySet().size() > 0) {
+//					for (String cibMapKey : mapForChargeItemBillingMap.keySet()) {
+//						List<BuildingBilling> list = mapForChargeItemBillingMap.get(cibMapKey);
+//						if (list != null && list.size() > 0) {
+//							cib = new ChargeItemBilling();
+//							String cibId = UUID.randomUUID().toString();
+//							double currentMoney = 0d;// 本期金额
+//							double preMoney = 0d;// 上期金额
+//							double sumMoney = 0d;// 总金额
+//							Date bbStartDate = list.get(0).getBillingStartTime();
+//							Date bbEndDate = list.get(0).getBillingEndTime();
+//							int bbState = list.get(0).getBillingState();
+//							for (BuildingBilling buildingBilling : list) {
+//								buildingBilling.setChargeItemBillingId(cibId);
+//								buildingBillingListAll.add(buildingBilling);
+//								currentMoney += buildingBilling.getCurrentSum();
+//								preMoney += buildingBilling.getLastSum();
+//								sumMoney += buildingBilling.getBillingBalance();
+//							}
+//							// 填充收费计费项目实体信息
+//							ChargeItemNew cin = chargeItemNewMapper.getChargeItemNewById(cibMapKey);
+//							cib.setBillingEndTime(bbEndDate);
+//							cib.setBillingStartTime(bbStartDate);
+//							cib.setBillingType(bbState);
+//							cib.setChargeItemBillingId(cibId);
+//							cib.setChargeItemId(cibMapKey);
+//							cib.setChargeItemName(cin.getCiName());
+//							cib.setCurrentSum(currentMoney);
+//							cib.setLastSum(preMoney);
+//							cib.setProjectId(project.getProjectId());
+//							cib.setProjectName(project.getProjectName());
+//							cib.setSum(sumMoney);
+//						}
+//					}
+//				}
+//				String searchYear = calendar.get(Calendar.YEAR)+"";
+//				int originMonth = calendar.get(Calendar.MONTH)+1;
+//				String searchMonth = searchYear+(originMonth<10?"0"+originMonth:originMonth+"");
+//				Map<String,String> map = new HashMap<String,String>();
+//				map.put("projectId", projectId);
+//				map.put("month", searchMonth);
+//				ProjectBilling pb = projectBillingMapper.getProjectBillingByProjectIdAndMonth(map);
+//				Double preMoney = 0d;
+//				Double currentMoney = 0d;
+//				Double sumMoney = 0d;
+//				if(pb!=null){
+//					cib.setProjectBillingId(pb.getProjectBillingId());
+//					preMoney = pb.getLastSum()+cib.getLastSum();
+//					currentMoney = pb.getCurrentSum()+cib.getCurrentSum();
+//					sumMoney = pb.getSum()+cib.getSum();
+//					pb.setLastSum(preMoney);
+//					pb.setCurrentSum(currentMoney);
+//					pb.setSum(sumMoney);
+//					projectBillingMapper.updateProjectBilling(pb);
+//				}else{
+//					ProjectBilling pbNew = new ProjectBilling();
+//					String pbNewId = UUID.randomUUID().toString();
+//					cib.setProjectBillingId(pbNewId);
+//					preMoney = cib.getLastSum();
+//					currentMoney = cib.getCurrentSum();
+//					sumMoney = cib.getSum();
+//					pbNew.setBillingEndTime(cib.getBillingEndTime());
+//					pbNew.setBillingStartTime(cib.getBillingStartTime());
+//					pbNew.setCurrentSum(currentMoney);
+//					pbNew.setLastSum(preMoney);
+//					pbNew.setSum(sumMoney);
+//					pbNew.setProjectBillingId(pbNewId);
+//					pbNew.setProjectId(projectId);
+//					pbNew.setIsPosting("2");
+//					projectBillingMapper.insertProjectBilling(pbNew);
+//				}
+//				chargeItemBillingMapper.insertChargeItemBilling(cib);
+//				
+//				buildingBillingMapper.insertList(buildingBillingListAll);
+//				billingMapper.insertList(billingListAll);
+//			}
+//		}
+//	}
+//	
+//	public Billing cerateBill(String chargeType, byte conditionUseType, Calendar calendar,
+//			String buildingStructureId, List<Condition> conditionList, List<Constant> constantList,
+//			List<DataDictionarySlave> dictionaryList, String formulaExspression, CalculatorUtils cu,
+//			Calendar calendarOther, boolean endBoolean, boolean endBooleanSpecial, boolean endForYearAndMonth,
+//			Date schemeStartDate, Date schemeEndDate, ChargeItemNew chargeItemNew, SchemeDatails schemeDatails,
+//			Project project){
+//		//SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddhhmmss");
+//		boolean isFormulaMatch = true;
+//		double realValue = 0d;
+//		if ("w".equals(chargeType) || "wp".equals(chargeType)) {
+//			WaterMeterOrderRecords wmor = waterMeterOrderRecordsMapper
+//					.getWaterMeterOrderRecordsByBuildingId(buildingStructureId);
+//			realValue = wmor.getWaterMeterReading() - wmor.getWaterLastReading();
+//		}
+//		if ("e".equals(chargeType) || "ep".equals(chargeType)) {
+//			Map<String, Object> mapSearch = new HashMap<String, Object>();
+//			mapSearch.put("buildingStructureId", buildingStructureId);
+//			mapSearch.put("month", calendar.getTime());
+//			List<ElectricityMeterReadingData> list = electricityMeterReadingDataMapper
+//					.getElectricityMeterReadingbyId(mapSearch);
+//			if (list != null && list.size() > 0)
+//				realValue = list.get(0).getReading() - list.get(0).getLastMonthReading();
+//		}
+//		BuildingStructureNew bsn = buildingStructureNewMapper.getBuildingStructureNewbyId(buildingStructureId);
+//		if ("pmf".equals(chargeType) || "cmf".equals(chargeType)) {
+//			realValue = bsn.getBuildingArea();
+//		}
+//		if (conditionUseType == 1) {
+//			for (Condition condition : conditionList) {
+//				String conditionExpression = condition.getConditionExpression();
+//				String conditionusetype = "";
+//				for (DataDictionarySlave dataDictionarySlave : dictionaryList) {
+//					if (conditionExpression.indexOf(dataDictionarySlave.getSlaveName()) > -1) {
+//						conditionusetype = dataDictionarySlave.getSlaveName();
+//						break;
+//					}
+//				}
+//				double standardValue = 0d;
+//				standardValue = Double.valueOf(conditionExpression.split(conditionusetype)[1]);
+//				String conditionusetypeMatch = "";
+//				double calculateValue = realValue - standardValue;
+//				if (calculateValue > 0) {
+//					conditionusetypeMatch = ">";
+//				}
+//				if (calculateValue >= 0) {
+//					conditionusetypeMatch = ">=";
+//				}
+//				if (calculateValue < 0) {
+//					conditionusetypeMatch = "<";
+//				}
+//				if (calculateValue <= 0) {
+//					conditionusetypeMatch = "<=";
+//				}
+//				if (!conditionusetype.equals(conditionusetypeMatch)) {
+//					isFormulaMatch = false;
+//					break;
+//				}
+//			}
+//		}
+//		if (conditionUseType == 2) {
+//			boolean isAnyMatch = false;
+//			for (Condition condition : conditionList) {
+//				String conditionExpression = condition.getConditionExpression();
+//				String conditionusetype = "";
+//				for (DataDictionarySlave dataDictionarySlave : dictionaryList) {
+//					if (conditionExpression.indexOf(dataDictionarySlave.getSlaveName()) > -1) {
+//						conditionusetype = dataDictionarySlave.getSlaveName();
+//						break;
+//					}
+//				}
+//				double standardValue = 0d;
+//				standardValue = Double.valueOf(conditionExpression.split(conditionusetype)[1]);
+//				String conditionusetypeMatch = "";
+//				double calculateValue = realValue - standardValue;
+//				if (calculateValue > 0) {
+//					conditionusetypeMatch = ">";
+//				}
+//				if (calculateValue >= 0) {
+//					conditionusetypeMatch = ">=";
+//				}
+//				if (calculateValue < 0) {
+//					conditionusetypeMatch = "<";
+//				}
+//				if (calculateValue <= 0) {
+//					conditionusetypeMatch = "<=";
+//				}
+//				if (conditionusetype.equals(conditionusetypeMatch)) {
+//					isAnyMatch = true;
+//					break;
+//				}
+//			}
+//			if (!isAnyMatch) {
+//				isFormulaMatch = false;
+//			}
+//		}
+//		// 公式匹配则进行计算
+//		if (isFormulaMatch) {
+//			// 通过公式计算本期金额,先将字符串替换为实际的数值，然后调用公式计算工具类的方法
+//			double currentBillingMoney = 0d;
+//			for (Constant constant : constantList) {
+//				if (formulaExspression.indexOf(constant.getConstantName()) > -1) {
+//					formulaExspression.replace(constant.getConstantName(), realValue + "");
+//					break;
+//				}
+//			}
+//			try {
+//				currentBillingMoney = cu.analysis(formulaExspression);
+//			} catch (Exception e) {
+//				e.printStackTrace();
+//			}
+//			Billing billing = new Billing();// 计费实体
+//			String billId = UUID.randomUUID().toString();
+//			String billingId = UUID.randomUUID().toString();
+//			Date chargeStartDate = null;
+//			Date chargeEndDate = null;
+//			double preBillingMoney = 0d;// 上期计费金额
+//
+//			/**
+//			 * 根据建筑ID和对应的收费子项目查询应收款记录，如果没有记录则上期金额为0，
+//			 * 如果有记录，则查询最近的应收款记录，获取未收金额作为该条计费记录的上期金额
+//			 */
+//			Map<String, String> mapForBill = new HashMap<String, String>();
+//			List<Bill> billList = billMapper.getBillBySearchMap(mapForBill);
+//			if (billList != null && billList.size() > 0) {
+//				preBillingMoney = billList.get(0).getNoCollectSum();// 获取未收金额
+//				// 如果存在记录则证明之前已经有计费记录存在
+//				// 计费开始时间是一个月的第一天
+//				chargeStartDate = calendarOther.getTime();
+//				// 如果失效日期不在计费的结束时间则取上个月的最后一天
+//				if (endBoolean) {
+//					chargeEndDate = calendar.getTime();
+//				}
+//				// 如果失效日期和计费结束时间在同一个月则取失效日期
+//				if (endBooleanSpecial && endForYearAndMonth) {
+//					chargeEndDate = schemeEndDate;
+//				}
+//			} else {
+//				chargeStartDate = schemeStartDate;
+//				chargeEndDate = calendar.getTime();
+//			}
+//			String cinName = chargeItemNew.getCiName();
+//			buildingStructureId = schemeDatails.getBuildingId();
+//			String fullName = "未知";
+//			if (bsn != null)
+//				fullName = bsn.getFullName();
+//			// 获取满足条件的公式，用来计算收费项目的费用
+//			// 计费金额
+//			double currentMoneySum = 0d;
+//			// 计费金额为
+//			currentMoneySum = currentBillingMoney + preBillingMoney;
+//			// 设置计费表实体值
+//			billing.setBillId(billId);
+//			billing.setBillingId(billingId);
+//			billing.setCurrentSum(currentBillingMoney);
+//			billing.setLastSum(preBillingMoney);
+//			billing.setBillingStartTime(chargeStartDate);
+//			billing.setBillingEndTime(chargeEndDate);
+//			billing.setBillingBalance(currentMoneySum);// 计费金额
+//			billing.setSchemeDatailsId(schemeDatails.getSchemeDatailsId());
+//			billing.setChargeItemName(cinName);
+//			billing.setBuildingId(buildingStructureId);
+//			billing.setBillingState(0);
+//			billing.setProjectId(project.getProjectId());
+//			billing.setFullName(fullName);
+//			billing.setProjectName(project.getProjectName());
+//			billing.setIsDepositDeduct((byte) 0);// 默认为不是押金扣款
+//			return billing;
+//		}
+//		return null;
+//	}
+}

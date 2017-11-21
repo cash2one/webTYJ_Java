@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.flf.mapper.ComplaintOrdersMapper" >
+  <resultMap id="BaseResultMap" type="ComplaintOrders" >
+    <id column="order_id" property="orderId" jdbcType="VARCHAR" />
+    <result column="order_type" property="orderType" jdbcType="TINYINT" />
+    <result column="order_state" property="orderState" jdbcType="TINYINT" />
+    <result column="task_id" property="taskId" jdbcType="VARCHAR" />
+    <result column="service_request_id" property="serviceRequestId" jdbcType="VARCHAR" />
+    <result column="operator_id" property="operatorId" jdbcType="VARCHAR" />
+    <result column="finish_time" property="finishTime" jdbcType="TIMESTAMP" />
+    <result column="complaint_object_id" property="complaintObjectId" jdbcType="VARCHAR" />
+    <result column="complaint_object_name" property="complaintObjectName" jdbcType="VARCHAR" />
+    <result column="remarks" property="remarks" jdbcType="VARCHAR" />
+    <result column="close_time" property="closeTime" jdbcType="TIMESTAMP" />
+    <result column="close_person_id" property="closePersonId" jdbcType="VARCHAR" />
+    <result column="close_remarks" property="closeRemarks" jdbcType="VARCHAR" />
+    <result column="staff_name" property="staffName" jdbcType="VARCHAR" />
+  </resultMap>
+  
+  <resultMap type="ComplaintOrders" id="resultComplaintOrdersMap" extends="BaseResultMap">
+  	<association property="staff" column="operator_id" javaType="Staff" select="com.flf.mapper.StaffMapper.selectByid"></association>
+  	<collection property="annexs" column="order_id" ofType="Annex" select="com.flf.mapper.AnnexMapper.getAnnexbyRelationId"></collection>
+  </resultMap>
+  
+  <delete id="deleteComplaintOrders" parameterType="String">
+  	delete from ts_complaint_orders where order_id=#{0}
+  </delete>
+  
+  <select id="listAllComplaintOrders"  resultMap="resultComplaintOrdersMap" >
+  	select * from ts_complaint_orders
+  </select>
+  
+  <select id="getComplaintOrdersbyId" parameterType="String" resultMap="resultComplaintOrdersMap">
+  	select * from ts_complaint_orders where order_id=#{0}
+  </select>
+  
+  <select id="getCountComplaintOrdersComplete" parameterType="String" resultType="Integer">
+  	<!-- SELECT co.*,s.staff_name FROM ts_complaint_orders co -->
+  	SELECT COUNT(*) FROM ts_complaint_orders co
+	LEFT JOIN ts_tasks t ON t.customer_id = #{customerId}
+	LEFT JOIN t_staff s ON s.staff_id = t.principal
+	WHERE t.task_id = co.task_id AND task_state 
+	<if test="type==1">
+		not
+	</if>
+	IN (0,2,8,9,10)
+  </select>
+  
+   <select id="getComplaintOrdersComplete" parameterType="String" resultMap="BaseResultMap" >
+  	SELECT co.*,s.staff_name FROM ts_complaint_orders co
+	LEFT JOIN ts_tasks t ON t.customer_id = #{customerId}
+	LEFT JOIN t_staff s ON s.staff_id = t.principal
+	WHERE t.task_id = co.task_id
+  </select>
+  
+  <insert id="insertComplaintOrders" parameterType="ComplaintOrders" >
+  	insert into ts_complaint_orders (order_id,order_type,order_state,task_id,service_request_id,operator_id,
+  		finish_time,complaint_object_id,complaint_object_name,remarks,close_time,close_person_id,close_remarks)
+  	values (UUID(),#{orderType,jdbcType=TINYINT},#{orderState,jdbcType=TINYINT},#{taskId,jdbcType=VARCHAR},
+  		#{serviceRequestId,jdbcType=VARCHAR},#{operatorId,jdbcType=VARCHAR},#{finishTime,jdbcType=TIMESTAMP},
+  		#{complaintObjectId,jdbcType=VARCHAR},#{complaintObjectName,jdbcType=VARCHAR},#{remarks,jdbcType=VARCHAR},
+  		#{closeTime,jdbcType=TIMESTAMP},#{closePersonId,jdbcType=VARCHAR},#{closeRemarks,jdbcType=VARCHAR})
+  </insert>
+  
+  <insert id="insertComplaintOrdersUUID" parameterType="ComplaintOrders" >   
+  	insert into ts_complaint_orders (order_id,order_type,order_state,task_id,service_request_id,operator_id,
+  		finish_time,complaint_object_id,complaint_object_name,remarks,close_time,close_person_id,close_remarks)
+  	values (#{orderId,jdbcType=VARCHAR},#{orderType,jdbcType=TINYINT},#{orderState,jdbcType=TINYINT},#{taskId,jdbcType=VARCHAR},
+  		#{serviceRequestId,jdbcType=VARCHAR},#{operatorId,jdbcType=VARCHAR},#{finishTime,jdbcType=TIMESTAMP},
+  		#{complaintObjectId,jdbcType=VARCHAR},#{complaintObjectName,jdbcType=VARCHAR},#{remarks,jdbcType=VARCHAR},
+  		#{closeTime,jdbcType=TIMESTAMP},#{closePersonId,jdbcType=VARCHAR},#{closeRemarks,jdbcType=VARCHAR})
+  </insert>
+ 
+  <update id="updateComplaintOrders" parameterType="ComplaintOrders" >
+    update ts_complaint_orders set 
+    	order_type = #{orderType,jdbcType=TINYINT},
+    	order_state = #{orderState,jdbcType=TINYINT},
+      	task_id = #{taskId,jdbcType=VARCHAR},
+      	service_request_id = #{serviceRequestId,jdbcType=VARCHAR},
+      	operator_id = #{operatorId,jdbcType=VARCHAR},
+     	finish_time = #{finishTime,jdbcType=TIMESTAMP},
+     	complaint_object_id = #{complaintObjectId,jdbcType=VARCHAR},
+     	complaint_object_name = #{complaintObjectName,jdbcType=VARCHAR},
+      	remarks = #{remarks,jdbcType=VARCHAR},
+      	close_time = #{closeTime,jdbcType=TIMESTAMP},
+      	close_person_id = #{closePersonId,jdbcType=VARCHAR},
+      	close_remarks = #{closeRemarks,jdbcType=VARCHAR}
+    where order_id = #{orderId,jdbcType=VARCHAR}
+  </update>
+  <update id="closeComplaintOrders" parameterType="String">
+  	update ts_complaint_orders set order_state = 0 where order_id =#{0}
+  </update>
+</mapper>

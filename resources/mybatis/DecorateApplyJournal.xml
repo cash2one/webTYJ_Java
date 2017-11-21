@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.flf.mapper.DecorateApplyJournalMapper" >
+	<resultMap id="BaseResultMap" type="DecorateApplyJournal">
+		<id column="record_id" property="recordId" jdbcType="VARCHAR" />
+		<result column="apply_id" property="applyId" jdbcType="VARCHAR" />
+		<result column="operator_id" property="operatorId" jdbcType="VARCHAR" />
+		<result column="operation_time" property="operationTime"
+			jdbcType="TIMESTAMP" />
+		<result column="change_state" property="changeState" jdbcType="TINYINT" />
+		<result column="remarks" property="remarks" jdbcType="VARCHAR" />
+
+	</resultMap>
+  
+  <resultMap type="DecorateApplyJournal" id="resultDecorateObjectsAssociatedMap" extends="BaseResultMap">
+  	<!--  <collection property="decorateComponentRecords" column="apply_id" select="com.flf.mapper.DecorateComponentRecordsMapper.getDecorateComponentRecordsbyId"></collection>
+  --></resultMap>
+  
+ <delete id="deleteDecorateApplyJournal" parameterType="String">
+  delete from ts_decorate_apply_journal where record_id=#{0}
+  </delete>
+  
+  <select id="listAllDecorateApplyJournal"  resultMap="resultDecorateApplyJournalMap" >
+ 	 select * from ts_decorate_apply_journal 
+  </select>
+  
+  <select id="getDecorateApplyJournalbyId" parameterType="String" resultMap="resultDecorateApplyJournalMap">
+  	select * from ts_decorate_apply_journal where record_id=#{0}
+  </select>
+  
+  <insert id="insertDecorateApplyJournal" parameterType="DecorateApplyJournal" >      
+      insert into ts_decorate_apply_journal (record_id, apply_id,operator_id,operation_time,change_state,remarks)
+    values (UUID(), #{applyId,jdbcType=VARCHAR}, #{operatorId,jdbcType=VARCHAR}, #{operationTime,jdbcType=TIMESTAMP}, #{changeState,jdbcType=TINYINT}
+    , #{remarks,jdbcType=VARCHAR})
+  </insert>
+ 
+  <update id="updateDecorateApplyJournal" parameterType="DecorateApplyJournal" >
+    update ts_decorate_apply_journal
+    set apply_id = #{applyId,jdbcType=VARCHAR},
+      operator_id = #{operatorId,jdbcType=VARCHAR},
+        operation_time = #{operationTime,jdbcType=TIMESTAMP},
+          change_state = #{changeState,jdbcType=TINYINT},
+            remarks = #{remarks,jdbcType=VARCHAR},
+    where record_id = #{recordId,jdbcType=VARCHAR}
+  </update>
+</mapper>

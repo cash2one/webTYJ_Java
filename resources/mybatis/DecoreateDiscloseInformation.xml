@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.flf.mapper.DecoreateDiscloseInformationMapper" >
+  <resultMap id="BaseResultMap" type="DecoreateDiscloseInformation" >
+    <id column="file_id" property="fileId" jdbcType="VARCHAR" />
+    <result column="apply_id" property="applyId" jdbcType="VARCHAR" />
+    <result column="file_name" property="fileName" jdbcType="VARCHAR" />
+    <result column="file_type" property="fileType" jdbcType="TINYINT" />
+     <result column="file_address" property="fileAddress" jdbcType="VARCHAR" />
+  </resultMap>
+  
+ <delete id="deleteDecoreateDiscloseInformation" parameterType="String">
+  delete from ts_decoreate_disclose_information where file_id=#{0}
+  </delete>
+  
+  <select id="listAllDecoreateDiscloseInformation"  resultMap="BaseResultMap" >
+ 	 select * from ts_decoreate_disclose_information 
+  </select>
+  
+  <select id="getDecoreateDiscloseInformationbyId" parameterType="String" resultMap="BaseResultMap">
+  	select * from ts_decoreate_disclose_information where file_id=#{0}
+  </select>
+  
+  <select id="getDecoreateDiscloseInformationbyApplyId" parameterType="String" resultMap="BaseResultMap">
+  	select * from ts_decoreate_disclose_information where apply_id=#{0}
+  </select>
+  
+  <insert id="insertDecoreateDiscloseInformation" parameterType="DecoreateDiscloseInformation" >      
+      insert into ts_decoreate_disclose_information (file_id, apply_id,file_name, file_type,file_address)
+    values (UUID(), #{applyId,jdbcType=VARCHAR}, #{fileName,jdbcType=VARCHAR}, 
+      #{fileType,jdbcType=TINYINT},  #{fileAddress,jdbcType=VARCHAR})
+  </insert>
+ 
+  <update id="updateDecoreateDiscloseInformation" parameterType="DecoreateDiscloseInformation" >
+    update ts_decoreate_disclose_information
+    set apply_id = #{applyId,jdbcType=VARCHAR},
+      file_name = #{decorateId,jdbcType=VARCHAR},
+      file_type = #{fileType,jdbcType=TINYINT},
+      file_address=#{fileAddress,jdbcType=VARCHAR}
+    where file_id = #{fileId,jdbcType=VARCHAR}
+  </update>
+</mapper>

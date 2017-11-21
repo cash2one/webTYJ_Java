@@ -1,0 +1,30 @@
+package com.flf.mapper;
+
+import com.flf.entity.ProjectBilling;
+
+import java.util.List;
+import java.util.Map;
+
+import org.apache.ibatis.annotations.Param;
+
+public interface ProjectBillingMapper {
+	/*查询所有的项目计费信息*/
+	List<ProjectBilling> listAllProjectBilling();
+	/*分页查询项目计费信息*/
+    List<ProjectBilling> listPageProjectBiling(ProjectBilling projectBilling);
+    /*根据id查询项目计费信息*/
+    ProjectBilling getProjectBillingById(String projectBillingId);
+    /*删除项目计费信息*/
+    int deleteProjectBilling(String ProjectBillingId);
+    /*新增项目计费信息*/
+    int insertProjectBilling(ProjectBilling ProjectBilling);
+    /*修改项目计费信息*/
+    int updateProjectBilling(ProjectBilling ProjectBilling);
+    //批量插入项目计费表
+	int insertList(List<ProjectBilling> projectBillingListAll);
+	
+	//查询项目上个月的计费信息是否已经生成
+	ProjectBilling getProjectBillingByProjectIdAndMonth(Map<String, String> map);
+	//根据id更改计费状态
+	int updateProjectBillingByProjectBillingId (String projectBillingId);
+}

@@ -1,0 +1,125 @@
+package com.flf.mapper;
+
+import java.util.List;
+import java.util.Map;
+
+import com.flf.entity.Staff;
+
+public interface StaffMapper {// 员工表
+	List<Staff> findAll();// 查询所有员工信息
+
+	Staff findStaffBystaffId(String staffId);// 通过Id查询员工信息
+	
+	Staff getStaffByUserId(String userId);//根据用户id查询员工信息
+	
+	int insertList(List<Staff> lsit);//批量插入员工数据
+
+	int deleteStaff(String staffId);// 删除员工信息
+
+	int updateStaff(Staff Staff);// 修改员工信息
+
+	int insertStaff(Staff Staff);// 添加员工信息
+
+	int insertStaffUUID(Staff staff); // 添加员工信息UUID
+
+	List<Staff> listAllStaff();// 查询所有员工信息
+
+	Staff selectByid(String id); // 根据员工id查询员工信息
+
+	List<Staff> listStaffByHillockId(String hillockId);// 通过Id查询员工信息
+
+	List<Staff> listStaffByCurrentDateAndPostId(Map map);// 查询当天没有排班且当前岗位的优先
+
+	int updateStaffByworkCount(String staffid, int workCount); // 修改员工连续上班的天数
+
+	int updateStaffworkCount(String postid); // 修改连续上班天数为0的员工连续上班的天数改为1
+
+	List<Staff> listPageStaff(Staff staff);
+
+	List<Staff> listStaffByteamworkId(String teamworkId);// 根据团队工作id查询员工信息
+
+	List<Staff> getStaffbyPostType(String postId); // 根据岗位id查询人员信息
+
+	List<Staff> getStaffbyName(String staffName, String teamworkId); // 根据团队id和人员名称查询团队负责人信息
+
+	List<Staff> getStaffbyProjectId(String projectId); // 根据项目id查询人员信息
+
+	List<Staff> listStaffprojectManager();// 查询核心岗位人员
+
+	List<Staff> listStaffBypostId(String postId);// 根据岗位id查询核心岗位成员
+
+	List<Staff> listStaffByListpostId(List<String> postId);// 根据多个岗位id查询核心岗位成员
+
+	List<Staff> listStaffByProjectManager(String staffId);// 根据项目经理id查询项目下的人数
+
+	List<Staff> listStaffBySpecialtyInfoManager(String staffId);// 根据专业线经理id查询项目下的人数
+
+	List<Staff> listStaffByleader(String staffId);// 根据团队领袖id查询项目下的人数
+
+	List<Staff> listTeamWorkStaffBystaffId(String staffId);// 根据员工id获取团队成员信息
+
+	List<Staff> listProjectStaffBystaffId(String staffId);// 根据员工id获取项目下的成员信息
+
+	List<Staff> listSpecialtyInfoStaffBystaffId(String staffId);// 根据员工id获取专业线下的成员信息
+
+	/*
+	 * List<Staff> getStaffbyInstanceId(String instanceId); //根据实例id查询人员信息
+	 */
+	List<Staff> listAllStaffNoAllot(String id,String companyId);// 查询所以普未分配的员工
+
+	List<Staff> listPageAllStaff(Staff staff);
+
+	/**
+	 * 分页查询所有未分配为管理员的员工信息
+	 * 
+	 * @param staff
+	 * @return
+	 */
+	List<Staff> listPageStaffForUser(Staff staff);
+
+	/**
+	 * 删除员工 将状态 置为0
+	 */
+	int updateStaffStateById(Staff staff);
+
+	/**
+	 * 分页查询角色type为n的及没有用户的员工信息
+	 */
+	List<Staff> listPageAllStaffByRoleType(Staff staff);
+
+	/**
+	 * 查询编号
+	 */
+	String selectCustCode();
+
+	/**
+	 * 查询所有在团队成员关联表中有数据的成员
+	 * 
+	 * @return
+	 */
+	List<Staff> getStaffInTeamworkStaff();
+
+	List<Staff> listStaffList(Staff staff);
+
+	/**
+	 * 根据公司id查询公司下的所有员工 王洲 2016.2.1
+	 * 
+	 * @param companyId
+	 * @return
+	 */
+	List<Staff> getStaffByCompanyId(String companyId);
+	
+	/**
+	 * 根据工号或员工名查找员工
+	 * 朱琪 2016.02.23
+	 */
+	List<Staff> listPageStaffOr(Staff staff);
+
+	/**
+	 * 根据登录名查询员工
+	 * @param loginName
+	 * @return
+	 */
+	Staff selectStaffByLoginName(String loginName);
+
+}

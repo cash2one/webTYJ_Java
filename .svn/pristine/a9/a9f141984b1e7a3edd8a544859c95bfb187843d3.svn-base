@@ -1,0 +1,142 @@
+package com.flf.service.impl;
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.List;
+import java.util.UUID;
+
+import com.flf.entity.AcceptanceOrders;
+import com.flf.entity.Annex;
+import com.flf.entity.TasksJournal;
+import com.flf.mapper.AcceptanceOrdersMapper;
+import com.flf.mapper.AnnexMapper;
+import com.flf.mapper.TasksJournalMapper;
+import com.flf.service.AcceptanceOrdersService;
+
+public class AcceptanceOrdersServiceImpl implements AcceptanceOrdersService {
+
+	private AcceptanceOrdersMapper acceptanceOrdersMapper;
+	private TasksJournalMapper tasksJournalMapper;
+	private AnnexMapper annexMapper;
+	
+	public AnnexMapper getAnnexMapper() {
+		return annexMapper;
+	}
+
+	public void setAnnexMapper(AnnexMapper annexMapper) {
+		this.annexMapper = annexMapper;
+	}
+
+	public TasksJournalMapper getTasksJournalMapper() {
+		return tasksJournalMapper;
+	}
+
+	public void setTasksJournalMapper(TasksJournalMapper tasksJournalMapper) {
+		this.tasksJournalMapper = tasksJournalMapper;
+	}
+
+	public AcceptanceOrdersMapper getAcceptanceOrdersMapper() {
+		return acceptanceOrdersMapper;
+	}
+
+	public void setAcceptanceOrdersMapper(
+			AcceptanceOrdersMapper acceptanceOrdersMapper) {
+		this.acceptanceOrdersMapper = acceptanceOrdersMapper;
+	}
+
+	@Override
+	public void deleteAcceptanceOrders(String orderId) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public AcceptanceOrders getAcceptanceOrdersbyId(String orderId) {
+		// TODO Auto-generated method stub
+		return acceptanceOrdersMapper.getAcceptanceOrdersbyId(orderId);
+	}
+
+	@Override
+	public void insertAcceptanceOrders(AcceptanceOrders acceptanceOrders) {
+
+//		String uuid = UUID.randomUUID().toString();
+//		List<AcceptanceInformationRecords>  acceptanceInformation = acceptanceOrders.getAcceptanceInformation();
+//		
+//		if(acceptanceOrders != null){
+//			acceptanceOrders.setOrderId(uuid);
+//			int result = acceptanceOrdersMapper.insertAcceptanceOrdersUUID(acceptanceOrders);
+//			if(result>0 && acceptanceInformation.size()>0){
+//				for(AcceptanceInformationRecords records : acceptanceInformation){
+//					records.setOrderId(uuid);
+//					acceptanceInformationRecordsMapper.insertAcceptanceInformationRecords(records);
+//				}
+//			}
+//		}
+		
+		String uuid = UUID.randomUUID().toString();
+		String date = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()).toString();
+		
+		if(acceptanceOrders != null){
+			
+			List<Annex> annexList = acceptanceOrders.getAnnexs();
+			acceptanceOrders.setOrderId(uuid);
+			acceptanceOrders.setFinishTime(date);
+			
+			int result = acceptanceOrdersMapper.insertAcceptanceOrdersUUID(acceptanceOrders);
+			if(result>0){
+				
+				//附件信息保存
+				if(annexList!=null && annexList.size()>0){
+					for(Annex annex :annexList){
+						annex.setRelationId(uuid.toString());
+						annex.setAnnexTime(date);
+						annexMapper.insertAnnex(annex);
+					}
+				}
+				//记录日志信息
+				TasksJournal journal = new TasksJournal();
+				journal.setTaskId(acceptanceOrders.getTaskId());
+				journal.setCreOrderId(acceptanceOrders.getOrderId());
+				journal.setCreOrderType(acceptanceOrders.getOrderType());
+				journal.setChangeOrderState(acceptanceOrders.getOrderState());
+				journal.setOperatorId(acceptanceOrders.getOperatorId());
+				journal.setRemarks(acceptanceOrders.getRemarks());
+				journal.setOperationTime(date);
+				tasksJournalMapper.insertTasksJournal(journal);
+			}
+		}
+		return;
+		
+	}
+
+	@Override
+	public List<AcceptanceOrders> listAllAcceptanceOrders() {
+		// TODO Auto-generated method stub
+		return acceptanceOrdersMapper.listAllAcceptanceOrders();
+	}
+
+	@Override
+	public void updateAcceptanceOrders(AcceptanceOrders acceptanceOrders) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void closeAcceptanceOrders(AcceptanceOrders acceptanceOrders) {
+		// TODO Auto-generated method stub
+		if(acceptanceOrders != null){
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+			String date = sdf.format(new Date());
+			Integer orderState = acceptanceOrders.getOrderState();
+			String closePersonId = acceptanceOrders.getClosePerson();
+			
+			if(orderState != null && closePersonId != null){
+				acceptanceOrders.setOrderState(0);
+				acceptanceOrders.setCloseTime(date);
+				acceptanceOrdersMapper.updateAcceptanceOrders(acceptanceOrders);
+			}
+		}
+		return ;
+	}
+
+}

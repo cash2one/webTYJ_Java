@@ -1,0 +1,81 @@
+<!--创建人：李斌
+    日期：2015/5/29
+    js路径：'controllers/externalProfession/meterReadingManagement/detailedInformation',
+    名称：抄表管理的房屋详细信息
+-->
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>房屋详细信息</title>
+       <!--全选反选JS代码-->
+    <!--<script language="javascript">-->
+        <!--function checkAll() {-->
+            <!--var allCheckBoxs=document.getElementsByName("isBuy");-->
+            <!--for(var i = 0; i<allCheckBoxs.length;i++) {-->
+                <!--if(allCheckBoxs[i].type="checkbox") {-->
+                    <!--if(allCheckBoxs[i].checked==true){-->
+                        <!--allCheckBoxs[i].checked=false;-->
+                    <!--}else if(allCheckBoxs[i].checked==false){-->
+                        <!--allCheckBoxs[i].checked=true;-->
+                    <!--}-->
+                <!--}-->
+            <!--}-->
+        <!--}-->
+    <!--</script>-->
+    <script>
+        function bgChange(obj){
+            obj.bgColor=obj.bgColor==""?"#FFC863":"";
+        }
+    </script>
+</head>
+<body>
+    <div class="complaint_user_list">
+        <!--抄表管理的房屋详细信息却换按钮-->
+        <div style="margin:40px; " class="row">
+            <button class="btn btn-sm" href="#divOne_1" tabindex="-1" data-toggle="tab">1单元</button>
+            <button class="btn btn-sm" href="#divOne_2" tabindex="-1" data-toggle="tab">2单元</button>
+
+            <button class="btn btn-md pull-right" ui-sref="index.externalProfession.meterReadingManagement.meterReading01">确定</button>
+        </div>
+        <!--抄表管理的房屋详细信息却换按钮end-->
+
+        <!--抄表管理的房屋详细信息的TAB页却换-->
+        <div style="margin-top: 15px;">
+            <div id="divOne_0" style="display: block;margin: 10px 20px">
+                <div class="tab-content">
+                    <!--抄表管理的房屋详细信息的TAB页却换1单元页面-->
+                    <div id="divOne_1" class="tab-pane fade in active">
+                        <table class="table table-bordered" style="text-align: center">
+                            <!--循环显示1单元房屋信息-->
+                            <tr ng-repeat="house in houes">
+                                <td id="td2">{{house.floor}}</td>
+                                <td onclick="bgChange(this)">{{house.roomNumber}}</td>
+                                <td onclick="bgChange(this)">{{house.roomNumber1}}</td>
+                            </tr>
+                            <!--循环显示1单元房屋信息end-->
+                        </table>
+                    </div>
+                    <!--抄表管理的房屋详细信息的TAB页却换1单元页面end-->
+
+                    <!--抄表管理的房屋详细信息的TAB页却换2单元页面-->
+                    <div id="divOne_2" class="tab-pane fade" >
+                        <table class="table table-bordered">
+                            <!--循环显示2单元房屋信息-->
+                            <tr ng-repeat="house in houes1" style="text-align: center">
+                                <td id="td1">{{house.floor}}</td>
+                                <td onclick="bgChange(this)">{{house.roomNumber}}</td>
+                                <td onclick="bgChange(this)">{{house.roomNumber1}}</td>
+                                <td onclick="bgChange(this)">{{house.roomNumber2}}</td>
+                            </tr>
+                            <!--循环显示2单元房屋信息end-->
+                        </table>
+                    </div>
+                    <!--抄表管理的房屋详细信息的TAB页却换2单元页面end-->
+                </div>
+            </div>
+        </div>
+        <!--抄表管理的房屋详细信息的TAB页却换end-->
+    </div>
+</body>
+</html>

@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.flf.mapper.PooledNewMapper" >
+  <resultMap id="BaseResultMap" type="PooledNew" >
+    <result column="pooled_id" property="pooledId" jdbcType="VARCHAR" />
+    <result column="pooled_name" property="pooledName" jdbcType="VARCHAR" />
+    <result column="description" property="description" jdbcType="VARCHAR" />
+    <result column="usable_area" property="usableArea" jdbcType="DOUBLE" />
+    <result column="building_id" property="buildingId" jdbcType="VARCHAR" />
+    <result column="building_structure_id" property="buildingStructureId" jdbcType="VARCHAR" />
+  </resultMap>
+  
+  
+  <select id="selectPooledNewById" parameterType="String" resultMap="BaseResultMap">
+  	select * from tc_pooled where pooled_id=#{0}
+  </select>
+  
+  <select id="ListPagePooledNew" parameterType="PooledNew" resultMap="BaseResultMap">
+  	select * from tc_pooled 
+  </select>
+  
+  <select id="ListPooledNew"  resultMap="BaseResultMap">
+  	select * from tc_pooled 
+  </select>
+  
+   <select id="listPooledByBuildingStructureId" resultMap="BaseResultMap" parameterType="String">
+  	select * from tc_pooled  where   building_structure_id=#{0}
+  </select>
+
+  <delete id="deleteByExample" parameterType="String" >
+    delete from tc_pooled where pooled_id=#{0}
+ 
+  </delete>
+  <insert id="insertPooledNew" parameterType="PooledNew" >
+    insert into tc_pooled (pooled_id, pooled_name, description, 
+      usable_area, building_id, building_structure_id
+      )
+    values (UUID(), #{pooledName,jdbcType=VARCHAR}, #{description,jdbcType=VARCHAR}, 
+      #{usableArea,jdbcType=DOUBLE}, #{buildingId,jdbcType=VARCHAR}, #{buildingStructureId,jdbcType=VARCHAR}
+      )
+  </insert>
+  
+    <insert id="insertPooledNewUUID" parameterType="PooledNew" >
+    insert into tc_pooled (pooled_id, pooled_name, description, 
+      usable_area, building_id, building_structure_id
+      )
+    values (#{pooledId,jdbcType=VARCHAR}, #{pooledName,jdbcType=VARCHAR}, #{description,jdbcType=VARCHAR}, 
+      #{usableArea,jdbcType=DOUBLE}, #{buildingId,jdbcType=VARCHAR}, #{buildingStructureId,jdbcType=VARCHAR}
+      )
+  </insert>
+  
+
+  <update id="updatePooledNew" parameterType="PooledNew" >
+    update tc_pooled
+    set 
+      pooled_name = #{pooledName,jdbcType=VARCHAR},
+      description = #{description,jdbcType=VARCHAR},
+      usable_area = #{usableArea,jdbcType=DOUBLE},
+      building_id = #{buildingId,jdbcType=VARCHAR},
+      building_structure_id = #{record.buildingStructureId,jdbcType=VARCHAR}
+   	where pooled_id=#{pooledId,jdbcType=VARCHAR}
+  </update>
+</mapper>

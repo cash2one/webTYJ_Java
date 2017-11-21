@@ -1,0 +1,4 @@
+ALTER TABLE `tc_house`
+	ADD COLUMN `equity` TINYINT(4) NULL DEFAULT NULL COMMENT '产权' AFTER `building_certificate`,
+	ADD COLUMN `towards` TINYINT(4) NULL DEFAULT NULL COMMENT '朝向' AFTER `equity`,
+	ADD COLUMN `floor` VARCHAR(50) NULL DEFAULT NULL COMMENT '楼层' AFTER `towards`;

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.flf.mapper.MeterReadingRecordsMapper" >
+  <resultMap id="BaseResultMap" type="MeterReadingRecords" >
+    <id column="record_id" property="recordId" jdbcType="VARCHAR" />
+    <result column="order_id" property="orderId" jdbcType="VARCHAR" />
+    <result column="meter_id" property="meterId" jdbcType="VARCHAR" />
+    <result column="water_meter_reading" property="waterMeterReading" jdbcType="DOUBLE" />
+    <result column="water_meter_last_reading" property="waterLastReading" jdbcType="DOUBLE" />
+  </resultMap>
+  
+  <resultMap type="MeterReadingRecords" id="resultElectrucityMeterMap" extends="BaseResultMap">
+  	<association property="electricityMeter" column="meter_id" javaType="ElectricityMeter" select="com.flf.mapper.ElectricityMeterMapper.getElectricityMeterbyId"></association>
+  </resultMap>
+  <select id="getMeterReadingRecordsbyOrderId" parameterType="String" resultMap="resultElectrucityMeterMap">
+  	select * from ts_meter_reading_records where order_id=#{0}
+  </select>
+  
+  <insert id="insertMeterReadingRecords" parameterType="MeterReadingRecords" >      
+      insert into ts_meter_reading_records (record_id,order_id,meter_id,water_meter_reading,water_meter_last_reading)
+    values (UUID(),#{orderId,jdbcType=VARCHAR}, #{meterId,jdbcType=VARCHAR}, #{waterMeterReading,jdbcType=DOUBLE}, #{waterLastReading,jdbcType=DOUBLE})
+  </insert>
+</mapper>

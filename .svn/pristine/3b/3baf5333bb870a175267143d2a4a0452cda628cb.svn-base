@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.flf.mapper.IntakeActivityRelationMapper" >
+  <resultMap id="BaseResultMap" type="com.flf.entity.IntakeActivityRelation" >
+    <result column="intake_activity_relation_id" property="intakeActivityRelationId" jdbcType="VARCHAR" />
+    <result column="staff_id" property="staffId" jdbcType="VARCHAR" />
+    <result column="intake_activity_id" property="intakeActivityId" jdbcType="VARCHAR" />
+  </resultMap>
+ 
+  <insert id="insertIntakeActivityRelation" parameterType="com.flf.entity.IntakeActivityRelation" >
+    insert into t_intake_activity_relation (intake_activity_relation_id, staff_id, 
+      intake_activity_id)
+    values (#{intakeActivityRelationId,jdbcType=VARCHAR}, #{staffId,jdbcType=VARCHAR}, 
+      #{intakeActivityId,jdbcType=VARCHAR})
+  </insert>
+  
+  <update id="updateIntakeActivityRelation" parameterType="IntakeActivityRelation" >
+    update t_intake_activity_relation
+    set 
+      staff_id = #{staffId,jdbcType=VARCHAR},
+      intake_activity_id = #{intakeActivityId,jdbcType=VARCHAR}
+    where intake_activity_relation_id = #{intakeActivityRelationId,jdbcType=VARCHAR}
+  </update>
+</mapper>

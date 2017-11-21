@@ -1,0 +1,29 @@
+<!--
+    作者:彭婷婷
+    页面名称:宠物登记
+    js路径:js/controllers/propertyService/staffHome/petRegistration
+-->
+
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>宠物登记</title>
+    <link rel="stylesheet" href="css/propertyService.css">
+</head>
+<body ng-controller="petCtrl">
+<div class="complaint_user">
+    <div class="complaint_user_info">
+        <div class="complaint_user_info_navigation">
+            <a class="btn" ui-sref="index.propertyService.staffHome.petRegistration.newPet">新增宠物</a>
+            <a class="btn" ui-sref="index.propertyService.staffHome.petRegistration.history">历史记录</a>
+        </div>
+    </div>
+    <div class="clear"></div>
+    <div class="row">
+        <div ui-view></div>
+    </div>
+</div>
+
+</body>
+</html>

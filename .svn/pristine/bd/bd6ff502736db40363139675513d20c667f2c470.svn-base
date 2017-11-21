@@ -1,0 +1,278 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.flf.mapper.AuthorizationMapper" >
+  <resultMap id="BaseResultMap" type="Authorization" >
+    <id column="authorization_id" property="authorizationId" jdbcType="VARCHAR" />
+    <result column="authorized_personId" property="authorizedPersonid" jdbcType="VARCHAR" />
+    <result column="authorizer_personId" property="authorizerPersonid" jdbcType="VARCHAR" />
+    <result column="house_id" property="houseId" jdbcType="VARCHAR" />
+    <result column="authorization_type" property="authorizationType" jdbcType="INTEGER" />
+    <result column="sta_date" property="staDate" jdbcType="DATE" />
+    <result column="end_date" property="endDate" jdbcType="DATE" />
+    <result column="accessoryAddress" property="accessoryAddress" jdbcType="VARCHAR" />
+    <result column="remark" property="remark" jdbcType="VARCHAR" />
+    <result column="status" property="status" jdbcType="VARCHAR" />
+     <result column="operate_date" property="operateDate"  />
+     <result column="authorizer_name" property="authorizerName" jdbcType="VARCHAR"/>
+     <result column="authorization_project_name" property="authorizationProjectName" jdbcType="VARCHAR"/>
+     <result column="authorization_project_id" property="authorizationProjectId" jdbcType="VARCHAR"></result>
+  </resultMap>
+  <resultMap id="PersonCustNewResultMap" type="PersonCustNew" >
+    <result column="cust_id" property="custId" jdbcType="VARCHAR" />
+    <result column="cust_code" property="custCode" jdbcType="VARCHAR" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="sex" property="sex" jdbcType="VARCHAR" />
+    <result column="native_place" property="nativePlace" jdbcType="VARCHAR" />
+    <result column="census" property="census" jdbcType="VARCHAR" />
+    <result column="birthday" property="birthday" jdbcType="DATE" />
+    <result column="card_type" property="cardType" jdbcType="TINYINT" />
+    <result column="card_num" property="cardNum" jdbcType="VARCHAR" />
+    <result column="jiajia_num" property="jiajiaNum" jdbcType="VARCHAR" />
+    <result column="weixin_num" property="weixinNum" jdbcType="VARCHAR" />
+    <result column="work_units" property="workUnits" jdbcType="VARCHAR" />
+    <result column="position" property="position" jdbcType="VARCHAR" />
+    <result column="marrie_state" property="marrieState" jdbcType="TINYINT" />
+    <result column="edu_level" property="eduLevel" jdbcType="TINYINT" />
+    <result column="social" property="social" jdbcType="VARCHAR" />
+    <result column="landscape" property="landscape" jdbcType="TINYINT" />
+    <result column="hobby" property="hobby" jdbcType="VARCHAR" />
+    <result column="cust_level" property="custLevel" jdbcType="VARCHAR" />
+    <result column="is_enterprise" property="isEnterprise" jdbcType="TINYINT" />
+    <result column="urgent_contact_person" property="urgentContactPerson" jdbcType="VARCHAR" />
+    <result column="urgent_contact_phone" property="urgentContactPhone" jdbcType="VARCHAR" />
+    <result column="upload_image" property="uploadImage" jdbcType="VARCHAR" />
+    <result column="phone_num" property="phoneNum" jdbcType="VARCHAR" />
+  </resultMap>
+  
+  <resultMap id="HouseNewResultMap" type="HouseNew" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="building_id" property="buildingId" jdbcType="VARCHAR" />
+    <result column="building_structure_id" property="buildingStructureId" jdbcType="VARCHAR" />
+    <result column="house_num" property="houseNum" jdbcType="VARCHAR" />
+    <result column="property" property="property" jdbcType="VARCHAR" />
+    <result column="land_price" property="landPrice" jdbcType="DOUBLE" />
+    <result column="last_transcation_price" property="lastTranscationPrice" jdbcType="DOUBLE" />
+    <result column="house_postcode" property="housePostcode" jdbcType="VARCHAR" />
+    <result column="manage_fee" property="manageFee" jdbcType="DOUBLE" />
+    <result column="complete_date" property="completeDate" jdbcType="DATE" />
+    <result column="elevator" property="elevator" jdbcType="TINYINT" />
+    <result column="gate_guard" property="gateGuard" jdbcType="TINYINT" />
+    <result column="join_date" property="joinDate" jdbcType="DATE" />
+    <result column="join_state" property="joinState" jdbcType="TINYINT" />
+    <result column="designer_draw" property="designerDraw" jdbcType="VARCHAR" />
+    <result column="is_billing" property="isBilling" jdbcType="TINYINT" />
+    <result column="price" property="price" jdbcType="DOUBLE" />
+    <result column="land_certificate" property="landCertificate" jdbcType="VARCHAR" />
+    <result column="market_state" property="marketState" jdbcType="TINYINT" />
+    <result column="special_fund" property="specialFund" jdbcType="TINYINT" />
+    <result column="capital_type" property="capitalType" jdbcType="TINYINT" />
+    <result column="password" property="password" jdbcType="VARCHAR" />
+    <result column="sip_id" property="sipId" jdbcType="VARCHAR" />
+    <result column="usable_area" property="usableArea" jdbcType="DOUBLE" />
+      <result column="full_name" property="fullName" jdbcType="VARCHAR" />
+  </resultMap>
+  
+  <resultMap id="AuthorizationResultMap" type="Authorization" extends="BaseResultMap">
+  	<association property="personCustNew" select="selectPersonCustNew" javaType="PersonCustNew" column="authorizer_personId">
+  	<result column="cust_id" property="custId" jdbcType="VARCHAR" />
+    <result column="cust_code" property="custCode" jdbcType="VARCHAR" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="sex" property="sex" jdbcType="VARCHAR" />
+    <result column="native_place" property="nativePlace" jdbcType="VARCHAR" />
+    <result column="census" property="census" jdbcType="VARCHAR" />
+    <result column="birthday" property="birthday" jdbcType="DATE" />
+    <result column="card_type" property="cardType" jdbcType="TINYINT" />
+    <result column="card_num" property="cardNum" jdbcType="VARCHAR" />
+    <result column="jiajia_num" property="jiajiaNum" jdbcType="VARCHAR" />
+    <result column="weixin_num" property="weixinNum" jdbcType="VARCHAR" />
+    <result column="work_units" property="workUnits" jdbcType="VARCHAR" />
+    <result column="position" property="position" jdbcType="VARCHAR" />
+    <result column="marrie_state" property="marrieState" jdbcType="TINYINT" />
+    <result column="edu_level" property="eduLevel" jdbcType="TINYINT" />
+    <result column="social" property="social" jdbcType="VARCHAR" />
+    <result column="landscape" property="landscape" jdbcType="TINYINT" />
+    <result column="hobby" property="hobby" jdbcType="VARCHAR" />
+    <result column="cust_level" property="custLevel" jdbcType="VARCHAR" />
+    <result column="is_enterprise" property="isEnterprise" jdbcType="TINYINT" />
+    <result column="urgent_contact_person" property="urgentContactPerson" jdbcType="VARCHAR" />
+    <result column="urgent_contact_phone" property="urgentContactPhone" jdbcType="VARCHAR" />
+    <result column="upload_image" property="uploadImage" jdbcType="VARCHAR" />
+    <result column="phone_num" property="phoneNum" jdbcType="VARCHAR" />
+    <result column="operate_date" property="operateDate"  />
+  	</association>
+  	<association property="house" select="selectHouse" column="house_id" javaType="HouseNew">	
+	<id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="building_id" property="buildingId" jdbcType="VARCHAR" />
+    <result column="building_structure_id" property="buildingStructureId" jdbcType="VARCHAR" />
+    <result column="house_num" property="houseNum" jdbcType="VARCHAR" />
+    <result column="property" property="property" jdbcType="VARCHAR" />
+    <result column="land_price" property="landPrice" jdbcType="DOUBLE" />
+    <result column="last_transcation_price" property="lastTranscationPrice" jdbcType="DOUBLE" />
+    <result column="house_postcode" property="housePostcode" jdbcType="VARCHAR" />
+    <result column="manage_fee" property="manageFee" jdbcType="DOUBLE" />
+    <result column="complete_date" property="completeDate" jdbcType="DATE" />
+    <result column="elevator" property="elevator" jdbcType="TINYINT" />
+    <result column="gate_guard" property="gateGuard" jdbcType="TINYINT" />
+    <result column="join_date" property="joinDate" jdbcType="DATE" />
+    <result column="join_state" property="joinState" jdbcType="TINYINT" />
+    <result column="designer_draw" property="designerDraw" jdbcType="VARCHAR" />
+    <result column="is_billing" property="isBilling" jdbcType="TINYINT" />
+    <result column="price" property="price" jdbcType="DOUBLE" />
+    <result column="land_certificate" property="landCertificate" jdbcType="VARCHAR" />
+    <result column="market_state" property="marketState" jdbcType="TINYINT" />
+    <result column="special_fund" property="specialFund" jdbcType="TINYINT" />
+    <result column="capital_type" property="capitalType" jdbcType="TINYINT" />
+    <result column="password" property="password" jdbcType="VARCHAR" />
+    <result column="sip_id" property="sipId" jdbcType="VARCHAR" />
+    <result column="usable_area" property="usableArea" jdbcType="DOUBLE" />
+    <result column="full_name" property="fullName" jdbcType="VARCHAR" />
+	</association>
+	<collection property="authorizationProjects" select="com.flf.mapper.AuthorizationProjectMapper.getDataById" ofType="AuthorizationProject" column="authorization_id">
+	</collection>
+ 
+  </resultMap>
+   <select id="selectPersonCustNew"  resultMap="PersonCustNewResultMap" parameterType="String">
+  	select * from tc_person_cust pc where cust_id=#{0}
+  </select>
+ <select id="selectHouse"  resultMap="HouseNewResultMap" parameterType="String">
+  	select a.*,b.full_name from tc_house a
+  	left join tc_building_structure b on b.id=a.building_structure_id
+  	 where a.id=#{0}
+  </select>
+   <select id="listAuthorization"  resultMap="BaseResultMap" parameterType="String">
+  	select * from t_authorization where STATUS ='1'
+  </select>
+  
+  <!-- 根据房屋id查询出所有授权的历史记录 -->
+   <select id="listAuthorizationByHouseId"  resultMap="BaseResultMap" parameterType="String">
+  	select * from t_authorization where house_id = #{houseId,jdbcType=VARCHAR}
+  </select>
+  
+  <!--  	 
+	 *肖聪 添加查询
+	 *查询在有效时间内租赁授权有效的授权信息
+	 *creat 2015/5/29
+	  -->
+  <select id="selectByauthorizedIdlease"  resultMap="BaseResultMap" parameterType="String">
+  	select * from t_authorization where STATUS ='1' and authorized_personId = #{authorizedPersonid,jdbcType=VARCHAR} and now() between sta_date and end_date and lease=1
+  </select>
+  
+  
+  <select id="selectByauthorizationId" parameterType="String"  resultMap="BaseResultMap">
+  	select * from t_authorization where STATUS ='1' and authorization_id = #{authorizationId,jdbcType=VARCHAR} 
+  </select>
+ 
+     <select id="selectByauthorizedId" parameterType="String"  resultMap="AuthorizationResultMap">
+  	select * from t_authorization where STATUS ='1' and authorized_personId = #{authorizedPersonid,jdbcType=VARCHAR} 
+     </select>
+  
+  
+  <delete id="deleteAuthorization" parameterType="String" >
+    delete from t_authorization
+    where authorization_id = #{authorizationId,jdbcType=VARCHAR}
+  </delete>
+  
+  <insert id="insert" parameterType="Authorization" >
+    insert into t_authorization ( authorization_id,authorized_personId, 
+      authorizer_personId, house_id, 
+      authorization_type, 
+      sta_date, end_date, accessoryAddress, 
+      remark,operate_date,status)
+    values (#{authorizationId,jdbcType=VARCHAR}, #{authorizedPersonid,jdbcType=VARCHAR}, 
+      #{authorizerPersonid,jdbcType=VARCHAR}, #{houseId,jdbcType=VARCHAR},       
+      #{authorizationType,jdbcType=INTEGER}, 
+      #{staDate,jdbcType=DATE}, #{endDate,jdbcType=DATE}, #{accessoryAddress,jdbcType=VARCHAR}, 
+      #{remark,jdbcType=VARCHAR},
+      now(),1)
+           
+  </insert>
+  
+ 
+
+  <update id="updateAuthorization" parameterType="Authorization" >
+    update t_authorization
+    set authorized_personId = #{authorizedPersonid,jdbcType=VARCHAR},
+      authorizer_personId = #{authorizerPersonid,jdbcType=VARCHAR},
+      house_id = #{houseId,jdbcType=VARCHAR},
+      authorization_type = #{authorizationType,jdbcType=INTEGER},
+      sta_date = #{staDate,jdbcType=DATE},
+      end_date = #{endDate,jdbcType=DATE},
+      accessoryAddress = #{accessoryAddress,jdbcType=VARCHAR},
+      remark = #{remark,jdbcType=VARCHAR},
+      operate_date=now(),
+      status=#{status,jdbcType=VARCHAR}
+    where authorization_id = #{authorizationId,jdbcType=VARCHAR}
+  </update>
+  
+  <select id="listSearchAuthorization" parameterType="Search" resultMap="BaseResultMap">
+ 		SELECT b.*  FROM t_authorization b 
+ 		LEFT JOIN tc_person_cust a ON b.authorized_personId = a.`cust_id`
+ 		LEFT JOIN tc_person_cust c ON b.authorizer_personId = c.`cust_id`	
+ 		WHERE b.STATUS ='1'
+ 		
+  		<if test="staffName!='' and staffName!=null">
+  			and a.name like CONCAT('%',#{authorizedName},'%')
+  		</if>
+  		<if test="staffName!='' and staffName!=null">
+  			and c.name like CONCAT('%',#{authorizerName},'%')
+  		</if>
+  		<if test="idNum!='' and idNum!=null">
+  			and a.card_num like CONCAT('%',#{idNum},'%')
+  		</if>
+  		<if test="phone!='' and phone!=null">
+  			and a.phone_num like CONCAT('%',#{phone},'%')
+  		</if>
+  		
+  		group by b.authorization_id
+ 	</select>
+ 	
+ 	<resultMap id="AllResultMap" type="Authorization" extends="BaseResultMap">
+  	<association property="personCustNew" select="selectPersonCustNew" javaType="PersonCustNew" column="authorizer_personId">
+	  	<result column="cust_id" property="custId" jdbcType="VARCHAR" />
+	    <result column="cust_code" property="custCode" jdbcType="VARCHAR" />
+	    <result column="name" property="name" jdbcType="VARCHAR" />
+	    <result column="sex" property="sex" jdbcType="VARCHAR" />
+	    <result column="birthday" property="birthday" jdbcType="DATE" />
+	    <result column="card_type" property="cardType" jdbcType="TINYINT" />
+	    <result column="card_num" property="cardNum" jdbcType="VARCHAR" />
+   </association>
+  	<association property="house" select="com.flf.mapper.HouseNewMapper.selectHouseNewById" column="house_id" javaType="HouseNew">	
+	<id column="id" property="id" jdbcType="VARCHAR" />
+	    <result column="building_id" property="buildingId" jdbcType="VARCHAR" />
+	    <result column="building_structure_id" property="buildingStructureId" jdbcType="VARCHAR" />
+	    <result column="house_num" property="houseNum" jdbcType="VARCHAR" />
+	    <result column="full_name" property="fullName" jdbcType="VARCHAR" />
+	</association>
+	<collection property="authorizationProjects" select="com.flf.mapper.AuthorizationProjectMapper.getDataById" ofType="AuthorizationProject" column="authorization_id">
+	</collection>
+	</resultMap>
+ 
+ 	
+ 	
+ 	
+ 	<!-- 根据被 授权人查询授权信息 -->
+ 	<select id="listPageAuthorization" parameterType="Authorization"  resultMap="AllResultMap">
+  		<!-- select b.*,a1.name
+  		, apt.authorization_project_name, apt.authorization_project_id
+  		from t_authorization b 
+ 		left join tc_person_cust a on b.authorized_personId = a.cust_id	
+		left join tc_person_cust  as a1  on authorizer_personId= a1.cust_id 
+		left join t_authorization_project ap on ap.authorization_id=b.authorization_id
+		left join t_authorization_project_type apt on ap.authorization_project_type_id= apt.authorization_project_id		
+ 		 
+ 		 where authorized_personId = #{authorizedPersonid,jdbcType=VARCHAR} 
+ 		 or authorizer_personId = #{authorizerPersonid,jdbcType=VARCHAR}  		
+  		<if test="authorizerName!='' and authorizerName!=null">
+  			and a1.name like CONCAT('%',#{authorizerName},'%')
+  		</if>
+  		<if test="authorizationType!='' and authorizationType!=null">
+  			and b.authorization_type =#{authorizationType,jdbcType=VARCHAR}
+  		</if> -->
+  		select a.*,b.name from t_authorization a 
+  		left join tc_person_cust b on a.authorizer_personId =b.cust_id 
+		where a.authorized_personId = #{authorizedPersonid,jdbcType=VARCHAR}
+		<if test="authorizerName != null and authorizerName != ''">
+		 and b.name like CONCAT('%',#{authorizerName},'%')
+		</if>
+     </select>
+</mapper>

@@ -1,0 +1,589 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.flf.mapper.CaraccesscardMapper" >
+  <resultMap id="ResultCaraccesscard" type="Caraccesscard" >
+    <id column="card_id" property="cardId"/>
+    <result column="house_id" property="houseId"/>
+    <result column="idcard_num" property="idcardNum"/>
+    <result column="do_card_date" property="doCarddate"/>
+    <result column="card_state" property="cardState"/>
+    <result column="start_date" property="startDate"/>
+    <result column="end_date" property="endDate"/>
+    <result column="park_id" property="parkId"/>
+    <result column="refund_date" property="refundDate"/>
+    <result column="payment_amount" property="paymentAmount"/>
+    <result column="cust_code" property="custCode"  />
+    <result column="user_name" property="userName" />
+    <result column="kinsfolk" property="kinsfolk"  />
+    <result column="nominal_fee" property="nominalFee"  />
+    <result column="photograph" property="photograph"  />
+    <result column="customer_id" property="customerId"  />
+    <result column="creater" property="creater"  />
+    <result column="registration_status" property="registrationStatus"  />
+    <result column="parking_location" property="parkingLocation"  />
+    <result column="note" property="note"  />
+    <result column="car_id" property="carId"  />
+     <result column="operate_date" property="operateDate"  />
+  </resultMap>
+  
+  <resultMap id="PersonCustResultMap" type="PersonCustNew" >
+    <result column="cust_id" property="custId" jdbcType="VARCHAR" />
+    <result column="cust_code" property="custCode" jdbcType="VARCHAR" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="sex" property="sex" jdbcType="VARCHAR" />
+    <result column="native_place" property="nativePlace" jdbcType="VARCHAR" />
+    <result column="census" property="census" jdbcType="VARCHAR" />
+    <result column="birthday" property="birthday" jdbcType="DATE" />
+    <result column="card_type" property="cardType" jdbcType="TINYINT" />
+    <result column="card_num" property="cardNum" jdbcType="VARCHAR" />
+    <result column="jiajia_num" property="jiajiaNum" jdbcType="VARCHAR" />
+    <result column="weixin_num" property="weixinNum" jdbcType="VARCHAR" />
+    <result column="work_units" property="workUnits" jdbcType="VARCHAR" />
+    <result column="position" property="position" jdbcType="VARCHAR" />
+    <result column="marrie_state" property="marrieState" jdbcType="TINYINT" />
+    <result column="edu_level" property="eduLevel" jdbcType="TINYINT" />
+    <result column="social" property="social" jdbcType="VARCHAR" />
+    <result column="landscape" property="landscape" jdbcType="TINYINT" />
+    <result column="hobby" property="hobby" jdbcType="VARCHAR" />
+    <result column="cust_level" property="custLevel" jdbcType="VARCHAR" />
+    <result column="is_enterprise" property="isEnterprise" jdbcType="TINYINT" />
+    <result column="urgent_contact_person" property="urgentContactPerson" jdbcType="VARCHAR" />
+    <result column="urgent_contact_phone" property="urgentContactPhone" jdbcType="VARCHAR" />
+    <result column="upload_image" property="uploadImage" jdbcType="VARCHAR" />
+    <result column="phone_num" property="phoneNum" jdbcType="VARCHAR" />
+  </resultMap>
+  
+  <resultMap id="HouseNewResultMap" type="HouseNew" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="building_id" property="buildingId" jdbcType="VARCHAR" />
+    <result column="building_structure_id" property="buildingStructureId" jdbcType="VARCHAR" />
+    <result column="house_num" property="houseNum" jdbcType="VARCHAR" />
+    <result column="property" property="property" jdbcType="VARCHAR" />
+    <result column="land_price" property="landPrice" jdbcType="DOUBLE" />
+    <result column="last_transcation_price" property="lastTranscationPrice" jdbcType="DOUBLE" />
+    <result column="house_postcode" property="housePostcode" jdbcType="VARCHAR" />
+    <result column="manage_fee" property="manageFee" jdbcType="DOUBLE" />
+    <result column="complete_date" property="completeDate" jdbcType="DATE" />
+    <result column="elevator" property="elevator" jdbcType="TINYINT" />
+    <result column="gate_guard" property="gateGuard" jdbcType="TINYINT" />
+    <result column="join_date" property="joinDate" jdbcType="DATE" />
+    <result column="join_state" property="joinState" jdbcType="TINYINT" />
+    <result column="designer_draw" property="designerDraw" jdbcType="VARCHAR" />
+    <result column="is_billing" property="isBilling" jdbcType="TINYINT" />
+    <result column="price" property="price" jdbcType="DOUBLE" />
+    <result column="land_certificate" property="landCertificate" jdbcType="VARCHAR" />
+    <result column="market_state" property="marketState" jdbcType="TINYINT" />
+    <result column="special_fund" property="specialFund" jdbcType="TINYINT" />
+    <result column="capital_type" property="capitalType" jdbcType="TINYINT" />
+    <result column="password" property="password" jdbcType="VARCHAR" />
+    <result column="sip_id" property="sipId" jdbcType="VARCHAR" />
+    <result column="usable_area" property="usableArea" jdbcType="DOUBLE" />
+    <result column="full_name" property="fullName" jdbcType="VARCHAR" />
+  </resultMap>
+  
+  <resultMap id="CarInfoResultMap" type="CarInfo" >
+    <id column="car_id" property="carId" jdbcType="VARCHAR" />
+    <result column="person_id" property="personId" jdbcType="VARCHAR" />
+    <result column="car_num" property="carNum" jdbcType="VARCHAR" />
+    <result column="car_brand" property="carBrand" jdbcType="VARCHAR" />
+    <result column="car_type" property="carType"  />
+    <result column="car_style" property="carStyle"  />
+    <result column="engine_num" property="engineNum" jdbcType="VARCHAR" />
+    <result column="discriminate_code" property="discriminateCode" jdbcType="VARCHAR" />
+    <result column="passengers" property="passengers" jdbcType="INTEGER" />
+    <result column="car_color" property="carColor" jdbcType="VARCHAR" />
+    <result column="regedit_date" property="regeditDate" jdbcType="DATE" />
+    <result column="certification_date" property="certificationDate" jdbcType="DATE" />
+    <result column="business_style" property="businessStyle"  />
+    <result column="owner" property="owner"/>
+     <result column="driving_license" property="drivingLicense"/>
+    <result column="commissionagent" property="commissionAgent"/>
+     <result column="transactor" property="transactor"/>
+     <result column="record_date" property="recordDate"/>
+      <result column="address" property="address"/>
+    <result column="owner" property="owner"  />
+    <result column="driving_license" property="drivingLicense"  />
+    <result column="delete_car" property="deleteCar"  />
+     <result column="operate_date" property="operateDate"  />
+  </resultMap>
+  
+  <resultMap id="StallNewResultMap" type="StallNew" >
+    <result column="stall_id" property="stallId" jdbcType="VARCHAR" />
+    <result column="maintenance_price" property="maintenancePrice" jdbcType="DOUBLE" />
+    <result column="garage_id" property="garageId" jdbcType="INTEGER" />
+    <result column="person_id" property="personId" jdbcType="INTEGER" />
+    <result column="floor_number" property="floorNumber" jdbcType="VARCHAR" />
+    <result column="bairro" property="bairro" jdbcType="VARCHAR" />
+    <result column="is_mechanical_stall" property="isMechanicalStall" jdbcType="TINYINT" />
+    <result column="stall_number" property="stallNumber" jdbcType="VARCHAR" />
+    <result column="stall_position" property="stallPosition" jdbcType="VARCHAR" />
+    <result column="stall_property" property="stallProperty" jdbcType="VARCHAR" />
+    <result column="fixed_parking" property="fixedParking" jdbcType="TINYINT" />
+    <!-- <result column="completion_date" property="completionDate" jdbcType="DATE" /> -->
+    <result column="intake_date" property="intakeDate" jdbcType="DATE" />
+    <result column="sales_state" property="salesState" jdbcType="TINYINT" />
+    <result column="intake_state" property="intakeState" jdbcType="TINYINT" />
+    <result column="rent_state" property="rentState" jdbcType="TINYINT" />
+    <result column="project_number" property="projectNumber" jdbcType="VARCHAR" />
+    <result column="project_name" property="projectName" jdbcType="VARCHAR" />
+    <result column="parcel_number" property="parcelNumber" jdbcType="VARCHAR" />
+    <result column="stall_coding" property="stallCoding" jdbcType="VARCHAR" />
+    <result column="garage_number" property="garageNumber" jdbcType="VARCHAR" />
+    <result column="garage_position" property="garagePosition" jdbcType="VARCHAR" />
+    <result column="contract_number" property="contractNumber" jdbcType="VARCHAR" />
+    <result column="subscription_date" property="subscriptionDate" jdbcType="DATE" />
+    <result column="contract_date" property="contractDate" jdbcType="DATE" />
+    <result column="Property_person" property="propertyPerson" jdbcType="VARCHAR" />
+    <result column="property_type" property="propertyType" jdbcType="VARCHAR" />
+    <result column="register_price" property="registerPrice" jdbcType="DOUBLE" />
+    <result column="mortgage_amount" property="mortgageAmount" jdbcType="DOUBLE" />
+    <result column="registrant" property="registrant" jdbcType="VARCHAR" />
+    <result column="registration_date" property="registrationDate" jdbcType="DATE" />
+    <result column="down_payment_amount" property="downPaymentAmount" jdbcType="DOUBLE" />
+    <result column="payment_method" property="paymentMethod" jdbcType="VARCHAR" />
+    <result column="transaction_type" property="transactionType" jdbcType="VARCHAR" />
+    <result column="discounted_prices" property="discountedPrices" jdbcType="DOUBLE" />
+    <result column="house_number" property="houseNumber" jdbcType="VARCHAR" />
+    <result column="parking_information" property="parkingInformation" jdbcType="VARCHAR" />
+    <result column="trade_information" property="tradeInformation" jdbcType="VARCHAR" />
+    <result column="stall_Type" property="stallType" jdbcType="VARCHAR" />
+    <result column="building_structure_id" property="buildingStructureId" jdbcType="VARCHAR" />
+    <result column="building_id" property="buildingId" jdbcType="VARCHAR" />   
+    <result column="usable_area" property="usableArea" jdbcType="DOUBLE"  />
+   <result column="full_name" property="fullName" jdbcType="VARCHAR" />
+  </resultMap>
+  
+    <resultMap id="ResultCaraccesscardMap" type="Caraccesscard" >
+    <id column="card_id" property="cardId"/>
+    <result column="idcard_num" property="idcardNum"/>
+    <result column="do_card_date" property="doCarddate"/>
+    <result column="card_state" property="cardState"/>
+    <result column="start_date" property="startDate"/>
+    <result column="end_date" property="endDate"/>
+    <result column="cust_code" property="custCode" jdbcType="VARCHAR" />
+    <result column="user_name" property="userName" jdbcType="VARCHAR" />
+    <result column="kinsfolk" property="kinsfolk" jdbcType="VARCHAR" />
+    <result column="nominal_fee" property="nominalFee" jdbcType="DOUBLE" />
+    <result column="photograph" property="photograph" jdbcType="VARCHAR" />
+     <result column="customer_id" property="customerId" jdbcType="VARCHAR" />
+     <result column="creater" property="creater"  />
+    <result column="registration_status" property="registrationStatus"  />
+    <result column="parking_location" property="parkingLocation"  />
+    <result column="note" property="note"  />
+    <result column="park_id" property="parkId"  />
+    <result column="car_id" property="carId"  />
+     <result column="operate_date" property="operateDate"  />
+      <result column="node_name" property="nodeName" />
+		<association property="house" select="selectHouse" column="house_id" javaType="HouseNew">	
+		  	<id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="building_id" property="buildingId" jdbcType="VARCHAR" />
+    <result column="building_structure_id" property="buildingStructureId" jdbcType="VARCHAR" />
+    <result column="house_num" property="houseNum" jdbcType="VARCHAR" />
+    <result column="property" property="property" jdbcType="VARCHAR" />
+    <result column="land_price" property="landPrice" jdbcType="DOUBLE" />
+    <result column="last_transcation_price" property="lastTranscationPrice" jdbcType="DOUBLE" />
+    <result column="house_postcode" property="housePostcode" jdbcType="VARCHAR" />
+    <result column="manage_fee" property="manageFee" jdbcType="DOUBLE" />
+    <result column="complete_date" property="completeDate" jdbcType="DATE" />
+    <result column="elevator" property="elevator" jdbcType="TINYINT" />
+    <result column="gate_guard" property="gateGuard" jdbcType="TINYINT" />
+    <result column="join_date" property="joinDate" jdbcType="DATE" />
+    <result column="join_state" property="joinState" jdbcType="TINYINT" />
+    <result column="designer_draw" property="designerDraw" jdbcType="VARCHAR" />
+    <result column="is_billing" property="isBilling" jdbcType="TINYINT" />
+    <result column="price" property="price" jdbcType="DOUBLE" />
+    <result column="land_certificate" property="landCertificate" jdbcType="VARCHAR" />
+    <result column="market_state" property="marketState" jdbcType="TINYINT" />
+    <result column="special_fund" property="specialFund" jdbcType="TINYINT" />
+    <result column="capital_type" property="capitalType" jdbcType="TINYINT" />
+    <result column="password" property="password" jdbcType="VARCHAR" />
+    <result column="sip_id" property="sipId" jdbcType="VARCHAR" />
+    <result column="usable_area" property="usableArea" jdbcType="DOUBLE" />
+    <result column="full_name" property="fullName" jdbcType="VARCHAR" />
+		</association>
+		<association property="carInfo" select="selectCarInfo" column="car_id" javaType="CarInfo">
+		     <id column="car_id" property="carId" jdbcType="VARCHAR" />
+    <result column="person_id" property="personId" jdbcType="VARCHAR" />
+    <result column="car_num" property="carNum" jdbcType="VARCHAR" />
+    <result column="car_brand" property="carBrand" jdbcType="VARCHAR" />
+    <result column="car_type" property="carType"  />
+    <result column="car_style" property="carStyle"  />
+    <result column="engine_num" property="engineNum" jdbcType="VARCHAR" />
+    <result column="discriminate_code" property="discriminateCode" jdbcType="VARCHAR" />
+    <result column="passengers" property="passengers" jdbcType="INTEGER" />
+    <result column="car_color" property="carColor" jdbcType="VARCHAR" />
+    <result column="regedit_date" property="regeditDate" jdbcType="DATE" />
+    <result column="certification_date" property="certificationDate" jdbcType="DATE" />
+    <result column="business_style" property="businessStyle"  />
+    <result column="owner" property="owner"/>
+     <result column="driving_license" property="drivingLicense"/>
+    <result column="commissionagent" property="commissionAgent"/>
+     <result column="transactor" property="transactor"/>
+     <result column="record_date" property="recordDate"/>
+      <result column="address" property="address"/>
+    <result column="owner" property="owner"  />
+    <result column="driving_license" property="drivingLicense"  />
+    <result column="delete_car" property="deleteCar"  />
+		</association>
+		<association property="stall" select="selectStall" column="park_id" javaType="StallNew">	     
+    <id  column="stall_id" property="stallId" jdbcType="VARCHAR" />
+    <result column="maintenance_price" property="maintenancePrice" jdbcType="DOUBLE" />
+    <result column="garage_id" property="garageId" jdbcType="INTEGER" />
+    <result column="person_id" property="personId" jdbcType="INTEGER" />
+    <result column="floor_number" property="floorNumber" jdbcType="VARCHAR" />
+    <result column="bairro" property="bairro" jdbcType="VARCHAR" />
+    <result column="is_mechanical_stall" property="isMechanicalStall" jdbcType="TINYINT" />
+    <result column="stall_number" property="stallNumber" jdbcType="VARCHAR" />
+    <result column="stall_position" property="stallPosition" jdbcType="VARCHAR" />
+    <result column="stall_property" property="stallProperty" jdbcType="VARCHAR" />
+    <result column="fixed_parking" property="fixedParking" jdbcType="TINYINT" />
+    <!-- <result column="completion_date" property="completionDate" jdbcType="DATE" /> -->
+    <result column="intake_date" property="intakeDate" jdbcType="DATE" />
+    <result column="sales_state" property="salesState" jdbcType="TINYINT" />
+    <result column="intake_state" property="intakeState" jdbcType="TINYINT" />
+    <result column="rent_state" property="rentState" jdbcType="TINYINT" />
+    <result column="project_number" property="projectNumber" jdbcType="VARCHAR" />
+    <result column="project_name" property="projectName" jdbcType="VARCHAR" />
+    <result column="parcel_number" property="parcelNumber" jdbcType="VARCHAR" />
+    <result column="stall_coding" property="stallCoding" jdbcType="VARCHAR" />
+    <result column="garage_number" property="garageNumber" jdbcType="VARCHAR" />
+    <result column="garage_position" property="garagePosition" jdbcType="VARCHAR" />
+    <result column="contract_number" property="contractNumber" jdbcType="VARCHAR" />
+    <result column="subscription_date" property="subscriptionDate" jdbcType="DATE" />
+    <result column="contract_date" property="contractDate" jdbcType="DATE" />
+    <result column="Property_person" property="propertyPerson" jdbcType="VARCHAR" />
+    <result column="property_type" property="propertyType" jdbcType="VARCHAR" />
+    <result column="register_price" property="registerPrice" jdbcType="DOUBLE" />
+    <result column="mortgage_amount" property="mortgageAmount" jdbcType="DOUBLE" />
+    <result column="registrant" property="registrant" jdbcType="VARCHAR" />
+    <result column="registration_date" property="registrationDate" jdbcType="DATE" />
+    <result column="down_payment_amount" property="downPaymentAmount" jdbcType="DOUBLE" />
+    <result column="payment_method" property="paymentMethod" jdbcType="VARCHAR" />
+    <result column="transaction_type" property="transactionType" jdbcType="VARCHAR" />
+    <result column="discounted_prices" property="discountedPrices" jdbcType="DOUBLE" />
+    <result column="house_number" property="houseNumber" jdbcType="VARCHAR" />
+    <result column="parking_information" property="parkingInformation" jdbcType="VARCHAR" />
+    <result column="trade_information" property="tradeInformation" jdbcType="VARCHAR" />
+    <result column="stall_Type" property="stallType" jdbcType="VARCHAR" />
+    <result column="building_structure_id" property="buildingStructureId" jdbcType="VARCHAR" />
+    <result column="building_id" property="buildingId" jdbcType="VARCHAR" />   
+    <result column="usable_area" property="usableArea" jdbcType="DOUBLE"  />
+  <result column="full_name" property="fullName" jdbcType="VARCHAR" />
+		</association>
+		<association property="personCust" select="selectPersonCust" column="cust_code" javaType="personCustNew">
+		     <result column="cust_id" property="custId" jdbcType="VARCHAR" />
+    <result column="cust_code" property="custCode" jdbcType="VARCHAR" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="sex" property="sex" jdbcType="VARCHAR" />
+    <result column="native_place" property="nativePlace" jdbcType="VARCHAR" />
+    <result column="census" property="census" jdbcType="VARCHAR" />
+    <result column="birthday" property="birthday" jdbcType="DATE" />
+    <result column="card_type" property="cardType" jdbcType="TINYINT" />
+    <result column="card_num" property="cardNum" jdbcType="VARCHAR" />
+    <result column="jiajia_num" property="jiajiaNum" jdbcType="VARCHAR" />
+    <result column="weixin_num" property="weixinNum" jdbcType="VARCHAR" />
+    <result column="work_units" property="workUnits" jdbcType="VARCHAR" />
+    <result column="position" property="position" jdbcType="VARCHAR" />
+    <result column="marrie_state" property="marrieState" jdbcType="TINYINT" />
+    <result column="edu_level" property="eduLevel" jdbcType="TINYINT" />
+    <result column="social" property="social" jdbcType="VARCHAR" />
+    <result column="landscape" property="landscape" jdbcType="TINYINT" />
+    <result column="hobby" property="hobby" jdbcType="VARCHAR" />
+    <result column="cust_level" property="custLevel" jdbcType="VARCHAR" />
+    <result column="is_enterprise" property="isEnterprise" jdbcType="TINYINT" />
+    <result column="urgent_contact_person" property="urgentContactPerson" jdbcType="VARCHAR" />
+    <result column="urgent_contact_phone" property="urgentContactPhone" jdbcType="VARCHAR" />
+    <result column="upload_image" property="uploadImage" jdbcType="VARCHAR" />
+    <result column="phone_num" property="phoneNum" jdbcType="VARCHAR" />
+		</association>
+		</resultMap>
+		
+  
+ 		 <!--   Created by Administrator on 2015/6/3. 
+ 		 		author:尹磊
+ 				修改时间：2015/6/3  修改人：尹磊 -->
+ 
+	
+    	<!-- 根据车辆id查询车辆信息 -->
+   
+  
+ <!--  @author xiaocong
+  @date 2015/6/17 
+     修改
+  -->
+   
+      <!--    根据搜索条件查询停车卡信息 -->
+    <select id="listSearchCaraccesscard" parameterType="Search" resultMap="ResultCaraccesscardMap">
+        select a.* from t_car_access_card a
+        left join  tc_person_cust b on a.cust_code = b.cust_id
+         where 1=1
+        	<if test="staffName!='' and staffName!=null">
+  			and b.name like CONCAT('%',#{staffName},'%')
+  		</if>
+  		<if test="idNum!='' and idNum!=null">
+  			and b.card_num like CONCAT('%',#{idNum},'%')
+  		</if>
+  		<if test="phone!='' and phone!=null">
+  			and b.phone_num like CONCAT('%',#{phone},'%')
+  		</if> 
+  		<if test="custId!='' and custId!=null">
+  			and a.cust_code = #{custId}
+  		</if>
+  		group by  a.card_id
+    </select>
+    
+         <!--    根据搜索条件查询办理人停车卡和授权人停车卡信息信息 
+                  
+         -->
+    <select id="listSearchCaraccesscardAu" parameterType="Search" resultMap="ResultCaraccesscardMap">
+        select a.* from t_car_access_card a
+        LEFT JOIN  tc_person_cust b ON a.cust_code = b.cust_id
+        LEFT JOIN t_authorization e ON e.authorizer_personId =b.cust_id
+		WHERE e.status = '1' and e.authorized_personId=#{custId} AND e.parking_card=1  AND NOW() BETWEEN e.sta_date AND e.end_date 	
+        	<if test="staffName!='' and staffName!=null">
+  			and b.name like CONCAT('%',#{staffName},'%')
+  		</if>
+  		<if test="idNum!='' and idNum!=null">
+  			and b.card_num like CONCAT('%',#{idNum},'%')
+  		</if>
+  		<if test="phone!='' and phone!=null">
+  			and b.phone_num like CONCAT('%',#{phone},'%')
+  		</if> 
+  		
+  		group by  a.card_id
+    </select>
+    
+           <!--    根据搜索条件查询办理人停车卡和授权人停车卡信息信息 
+                  
+         -->
+    <select id="listSearchCaraccesscardEX" parameterType="Search" resultMap="ResultCaraccesscardMap">
+       SELECT a.*,e.node_name FROM t_car_access_card a 
+       LEFT JOIN t_car_info b ON a.`car_id`=b.`car_id`
+       LEFT JOIN tc_stall c ON a.`park_id`=c.`stall_id`
+       LEFT JOIN tc_building_structure e ON c.`building_structure_id`=e.`id`
+       LEFT JOIN tc_person_cust d ON a.`cust_code`=d.`cust_id`	
+       where 1=1
+        	<if test="staffName!='' and staffName!=null">
+  			and d.name like CONCAT('%',#{staffName},'%')
+  		</if>
+  		<if test="idNum!='' and idNum!=null">
+  			and b.card_num like CONCAT('%',#{idNum},'%')
+  		</if>
+  		<if test="phone!='' and phone!=null">
+  			and d.phone_num like CONCAT('%',#{phone},'%')
+  		</if> 
+  		<if test="idcardNum!='' and idcardNum!=null">
+  			and a.idcard_num like CONCAT('%',#{idcardNum},'%')
+  		</if> 
+  		<if test="carportNum!='' and carportNum!=null">
+  			and c.stall_number like CONCAT('%',#{carportNum},'%')
+  		</if> 
+  		<if test="carNum!='' and carNum!=null">
+  			and b.car_num like CONCAT('%',#{carNum},'%')
+  		</if>
+  		
+  		group by  a.card_id
+    </select>
+    
+    <select id="selectCarInfo" parameterType="String" resultMap="CarInfoResultMap">
+        select * from t_car_info where car_id=#{0}
+    </select>
+    
+     <select id="selectPersonCust" parameterType="String" resultMap="PersonCustResultMap">
+        select * from tc_person_cust where cust_id=#{0}
+    </select>
+    	
+    	<!-- 根据车位id查询车位信息 -->
+     <select id="selectStall" parameterType="String" resultMap="StallNewResultMap">
+        select a.*,b.full_name from tc_stall a	
+  	left join tc_building_structure b on b.id=a.building_structure_id
+  	where stall_id=#{0}
+    </select>
+    
+
+    <!-- 根据房屋id查询房屋信息 -->
+    <select id="selectHouse" resultMap="HouseNewResultMap" parameterType="String">	    
+	 select a.*,b.full_name from tc_house a
+  	left join tc_building_structure b on b.id=a.building_structure_id
+  	 where a.id=#{0}
+	</select>
+	
+	
+	 <!-- 根据客户id查询车位信息 -->
+	<select id="listCaraccesscardByCustId" parameterType="String" resultMap="ResultCaraccesscardMap">
+			select * from t_car_access_card where cust_code=#{0} and card_state!=3
+		
+	</select>
+    
+      <!--停车卡禁用 -->
+	 <update id="updateCaraccesscardById" parameterType="String" >
+	 		 update t_car_access_card
+		    set card_state=3,
+		    operate_date=now()
+		    where card_id=#{0}
+	 </update>
+    
+    <!--修改停车卡信息 -->
+	  <update id="updateCaraccesscard" parameterType="Caraccesscard" >
+		    update t_car_access_card
+      set house_id = #{houseId,jdbcType=VARCHAR},
+      <!-- card_kind = #{cardKind,jdbcType=TINYINT}, -->
+      idcard_num = #{idcardNum,jdbcType=VARCHAR},
+      do_card_date = #{doCarddate,jdbcType=DATE},
+      card_state = #{cardState,jdbcType=TINYINT},
+      start_date = #{startDate,jdbcType=DATE},
+      end_date = #{endDate,jdbcType=DATE},
+      cust_code = #{custCode,jdbcType=VARCHAR},
+      user_name = #{userName,jdbcType=VARCHAR},
+      kinsfolk = #{kinsfolk,jdbcType=VARCHAR},
+      nominal_fee = #{nominalFee,jdbcType=DOUBLE},
+      photograph = #{photograph,jdbcType=VARCHAR},
+      customer_id = #{customerId,jdbcType=VARCHAR},
+      park_id = #{parkId,jdbcType=VARCHAR},
+      refund_date = #{refundDate,jdbcType=DATE},
+      payment_amount = #{paymentAmount,jdbcType=DOUBLE},
+      creater=#{creater},
+      parking_location=#{parkingLocation},
+      registration_status=#{registrationStatus},
+      note=#{note},
+      car_id=#{carId},
+      operate_date=now()
+    where card_id = #{cardId,jdbcType=VARCHAR}
+  </update>
+    
+    	<!-- 停车卡挂失处理 -->
+     <update id="LossCaraccesscardById" parameterType="String">
+         update t_car_access_card
+         set card_state=2,
+         operate_date=now()
+         where card_id=#{0} 
+     </update>
+    
+    <!--新增停车卡 -->
+	<insert id="insertCaraccesscard" parameterType="Caraccesscard" >
+	    insert into t_car_access_card (card_id,house_id, 
+      idcard_num, do_card_date, card_state, 
+      start_date, end_date, cust_code, 
+      user_name, kinsfolk, nominal_fee, 
+      photograph, customer_id, park_id, 
+      refund_date, payment_amount,parking_location,creater,registration_status,note,car_id,operate_date)
+    values ( UUID(),#{houseId,jdbcType=VARCHAR}, #{idcardNum,jdbcType=VARCHAR},now(), 1, 
+      #{startDate,jdbcType=DATE}, #{endDate,jdbcType=DATE}, #{custCode,jdbcType=VARCHAR}, 
+      #{userName,jdbcType=VARCHAR}, #{kinsfolk,jdbcType=VARCHAR}, #{nominalFee,jdbcType=DOUBLE}, 
+      #{photograph,jdbcType=VARCHAR}, #{customerId,jdbcType=VARCHAR}, #{parkId,jdbcType=VARCHAR}, 
+      #{refundDate,jdbcType=DATE}, #{paymentAmount,jdbcType=DOUBLE},#{parkingLocation},#{creater},#{registrationStatus},#{note},#{carId},now())
+    </insert>
+       
+       	<!-- 根据停车卡状态查询停车卡信息 -->
+	<select id="getCaraccesscardByCardIdRest" resultMap="ResultCaraccesscard" parameterType="String" >
+		SELECT * FROM t_car_access_card where card_state=#{0}
+	</select>
+       
+         <!--   停车卡退卡处理 -->
+     <update id="RefundCaraccessBycardId" parameterType="String">
+         update t_car_access_card
+         set card_state=3,
+         refund_date = now(),
+         operate_date=now()
+         where card_id=#{0} 
+     </update>
+     
+        
+    <!-- 分页查询所有停车卡信息 -->
+  <select id="listPageCaraccesscard" resultMap="ResultCaraccesscardMap" parameterType="Caraccesscard">
+		SELECT * FROM t_car_access_card
+	</select>
+     
+     
+     
+    
+    
+    <!-- 根据房屋id查询车位信息 -->
+	<!-- <select id="listCaraccesscardByCustcode" parameterType="String" resultMap="ResultCaraccesscard">
+			select * from t_car_access_card where card_kind=1 and card_state!=3 and  house_id=#{0}		
+	</select> -->
+
+ 
+	
+  	<!--查询所有停车卡信息 -->
+	<select id="listAllCaraccesscard" resultMap="ResultCaraccesscard" >
+		SELECT * FROM t_car_access_card 
+	</select>
+	
+
+	
+	<!--根绝停车卡id查询停车卡信息 -->
+	<select id="getCaraccesscard" parameterType="String" resultMap="ResultCaraccesscard">
+		select * from t_car_access_card where card_id=#{0}
+	</select>
+	
+	<!--根据车位id查询停车卡信息 -->
+	<select id="getParkbyId" parameterType="String" resultMap="ResultCaraccesscardMap">
+		select * from t_car_access_card where Park_id=#{0}
+	</select>
+	
+	
+	<!--删除停车卡信息 -->
+	<delete id="deleteCaraccesscardById" parameterType="String">
+		delete from t_car_access_card where card_id=#{0}
+	</delete>
+
+    
+	
+	   <!-- 分页查询客户停车卡信息 -->
+  <select id="listPageCaraccesscardByCustCode" resultMap="ResultCaraccesscardMap" parameterType="Caraccesscard">
+		SELECT a.* FROM t_car_access_card a
+		   LEFT JOIN  tc_person_cust b ON a.cust_code = b.cust_id
+        LEFT JOIN t_authorization e ON e.authorizer_personId =b.cust_id
+		where a.cust_code=#{custCode} and card_state != 3
+		group by a.card_id
+	</select>	
+  
+<!--   <resultMap type="Entrance" id="ResultMaplistPage" extends="BaseResultMap">
+	<association property="user" column="user_id" javaType="PersonCustNew" select="com.flf.mapper.PersonCustNewMapper.getPersonCustNewById" />
+ </resultMap> -->
+ 
+  <!-- 条件分页查询客户停车卡信息 -->
+	<select id="listPageCaraccesscardByContion" resultMap="ResultCaraccesscardMap" parameterType="Caraccesscard">
+		select a.* from t_car_access_card a
+		inner join  tc_person_cust b on a.cust_code = b.cust_id
+		where card_state!=3 
+		<if test="name!='' and name!=null">
+  			and b.name like CONCAT('%',#{name},'%')
+  		</if>   		
+  		<if test="cardNum!='' and cardNum!=null">
+  			and b.card_num like CONCAT('%',#{cardNum},'%')
+  		</if> 
+  		<if test="idcardNum!='' and idcardNum!=null">
+  			and a.idcard_num like CONCAT('%',#{idcardNum},'%')
+  		</if> 
+  		<if test="cardType!='' and cardType!=null">
+  			and b.card_type=#{cardType,jdbcType=VARCHAR}
+  		</if> 
+  		
+	</select>	
+     <select id="listPageCaraccesscardBySearch" resultMap="ResultCaraccesscardMap" parameterType="Caraccesscard">
+		select a.* from t_car_access_card a
+		inner join  tc_person_cust b on a.cust_code = b.cust_id
+		INNER JOIN t_car_info c ON a.car_id = c.car_id
+		where card_state!=3 
+		<if test="name!='' and name!=null">
+  			and b.name like CONCAT('%',#{name},'%')
+  		</if>   		
+  		<if test="cardNum!='' and cardNum!=null">
+  			and b.card_num like CONCAT('%',#{cardNum},'%')
+  		</if> 
+  		<if test="idcardNum!='' and idcardNum!=null">
+  			and a.idcard_num like CONCAT('%',#{idcardNum},'%')
+  		</if> 
+  		<if test="cardType!='' and cardType!=null">
+  			and b.card_type=#{cardType,jdbcType=VARCHAR}
+  		</if> 
+  		<if test="carNum!='' and carNum!=null">
+  			and c.car_num like CONCAT('%',#{carNum,jdbcType=VARCHAR},'%')
+  		</if> 
+  		
+	</select>
+     
+      
+</mapper>

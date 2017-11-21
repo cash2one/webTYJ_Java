@@ -1,0 +1,410 @@
+<!--
+    页面名称：【专业资产初始化】新增资产
+    前端负责人：刘洋
+    js路径：js/controllers/internalProfession/majorAssetInitialization/newAssets.js
+    创建时间：2015/5/6
+    修改日期：2015/5/28
+    修改人：钟加诚
+    最后修改时间：2015/6/9
+-->
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>新增资产(专业资产初始化)</title>
+    <link href="css/internalProfession/main.css" rel="stylesheet">
+    <!--<style type="text/css" media="all">-->
+        <!--a,a:visited {color:#333;text-decoration:none;}-->
+        <!--a:hover {color:#f60;}-->
+        <!--.TreeWrap td {font:13px "Geneva","宋体", "Arial", "Helvetica",sans-serif;}-->
+        <!--ul,li {margin:0;padding:0;list-style:none;}-->
+        <!--h1,h2,h3,h4,h5,h6 {margin:0;padding:0;}-->
+        <!--h1 {padding:5px;color:#900;font-size:16px;}-->
+        <!--h1 small {font-size:11px;font-weight:normal;color:#660;}-->
+        <!--.TreeWrap {border: 1px solid lightgray;padding:10px;}-->
+        <!--.MenuBox2{margin-top: 8px;}-->
+        <!--.MenuBox .titBox a,-->
+        <!--.MenuBox .titBox a:visited,-->
+        <!--.MenuBox2 .titBox a,-->
+        <!--.MenuBox2 .titBox a:visited {margin-left:5px;color:#003;font-size:12px;display:block;}-->
+        <!--.MenuBox2 .txtBox {display:none;}-->
+        <!--.MenuBox .txtBox ul li {padding-left:35px;line-height:20px;}-->
+        <!--.MenuBox .txtBox .num {color:#e00;}-->
+        <!--.assertInfo p{line-height: 40px;}-->
+    <!--</style>-->
+    <!--<script type="text/javascript">-->
+        <!--function ExChgClsName(Obj,NameA,NameB){-->
+            <!--var Obj=document.getElementById(Obj)?document.getElementById(Obj):Obj;-->
+            <!--Obj.className=Obj.className==NameA?NameB:NameA;-->
+        <!--}-->
+        <!--function showMenu(iNo){-->
+        	<!--alert(iNo);-->
+            <!--ExChgClsName("Menu_"+iNo,"MenuBox","MenuBox2");-->
+        <!--}-->
+    <!--</script>-->
+</head>
+<body  ng-controller="newAssetsCtrl">
+<div class="row ">
+    <!--专业类型选择表格-->
+    <div class="col-lg-3 col-md-3 col-sm-6">
+        <div class="row architecture_padding">
+            <div class="architecture_list">
+                <span class="professional_title">选择专业：</span>
+                <div class="professional_list_height">
+                    <ul>
+                        <li>01强电
+                            <div class="professional_list_title">
+                                <input type="button"  class="added_button" value="新增">
+                                <input type="button"  class="delate_button" value="册除">
+                            </div>
+                        </li>
+                        <ul>
+                            <li>0101室内照明
+                                <div class="professional_list_title">
+                                    <input type="button"  class="added_button" value="新增">
+                                    <input type="button"  class="delate_button" value="册除">
+                                </div>
+                            </li>
+                            <li>0102室内照明
+                                <div class="professional_list_title">
+                                    <input type="button"  class="added_button" value="新增">
+                                    <input type="button"  class="delate_button" value="册除">
+                                </div>
+                            </li>
+                            <li>0103室内照明
+                                <div class="professional_list_title">
+                                    <input type="button"  class="added_button" value="新增">
+                                    <input type="button"  class="delate_button" value="册除">
+                                </div>
+                            </li>
+                        </ul>
+                        <li>02弱电
+                            <div class="professional_list_title">
+                                <input type="button"  class="added_button" value="新增">
+                                <input type="button"  class="delate_button" value="册除">
+                            </div>
+                        </li>
+                        <li>03消防
+                            <div class="professional_list_title">
+                                <input type="button"  class="added_button" value="新增">
+                                <input type="button"  class="delate_button" value="册除">
+                            </div>
+                        </li>
+                        <li>04设备
+                            <div class="professional_list_title">
+                                <input type="button"  class="added_button" value="新增">
+                                <input type="button"  class="delate_button" value="册除">
+                            </div>
+                        </li>
+                        <li>05装修
+                            <div class="professional_list_title">
+                                <input type="button"  class="added_button" value="新增">
+                                <input type="button"  class="delate_button" value="册除">
+                            </div>
+                        </li>
+                        <li>06地建
+                            <div class="professional_list_title">
+                                <input type="button"  class="added_button" value="新增">
+                                <input type="button"  class="delate_button" value="册除">
+                            </div>
+                        </li>
+                        <li>07防水
+                            <div class="professional_list_title">
+                                <input type="button"  class="added_button" value="新增">
+                                <input type="button"  class="delate_button" value="册除">
+                            </div>
+                        </li>
+                        <li>08家私
+                            <div class="professional_list_title">
+                                <input type="button"  class="added_button" value="新增">
+                                <input type="button"  class="delate_button" value="册除">
+                            </div>
+                        </li>
+                        <li>09给水
+                            <div class="professional_list_title">
+                                <input type="button"  class="added_button" value="新增">
+                                <input type="button"  class="delate_button" value="册除">
+                            </div>
+                        </li>
+                        <li>10排水
+                            <div class="professional_list_title">
+                                <input type="button"  class="added_button" value="新增">
+                                <input type="button"  class="delate_button" value="册除">
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--专业类型选择表格结束-->
+    <!--楼层勾选列表-->
+    <div class="col-lg-4 col-md-4 col-sm-6">
+        <div class="row architecture_table_padding">
+            <div class="contract_table">
+                <div class="architecture_table_height">
+                    <ul>
+                        <li>
+                            <span class="architecture_input_span">资产编号：</span>
+                            <form><input name="input" type="text" class="architecture_input" /></form>
+                            <div class="clear"></div>
+                        </li>
+                        <li>
+                            <span class="architecture_input_span">资产名称：</span>
+                            <form><input name="input" type="text" class="architecture_input" /></form>
+                            <div class="clear"></div>
+                        </li>
+                        <li>
+                            <span class="architecture_input_span">资产规格：</span>
+                            <form><input name="input" type="text" class="architecture_input" /></form>
+                            <div class="clear"></div>
+                        </li>
+                        <li>
+                            <span class="architecture_input_span">资产型号：</span>
+                            <form><input name="input" type="text" class="architecture_input" /></form>
+                            <div class="clear"></div>
+                        </li>
+                        <li>
+                            <span class="architecture_input_span">上级分类：</span>
+                            <form><input name="input" type="text" class="architecture_input" /></form>
+                            <div class="clear"></div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <input type="button"  class="authorization_save" value="保存">
+        </div>
+    </div>
+    <!--楼层勾选列表结束-->
+    <!--楼层勾选列表-->
+    <div class="col-lg-5 col-md-5 col-sm-6">
+        <div class="row professional-padding">
+            <div class="assets_table">
+                <div class="architecture_table_title">
+                    <span class="architecture_span_left">同类资产预览：</span>
+                </div>
+                <div class="assets_table_height">
+                    <table width="100%">
+                        <tr>
+                            <td  width="30%" height="42px" align="center" valign="middle" >
+                                <span >资产编号</span>
+                            </td>
+                            <td  width="28%" height="42px" align="center" valign="middle" >
+                                <span >名称</span>
+                            </td>
+                            <td  width="16%" height="42px" align="center" valign="middle">
+                                <span >规格</span>
+                            </td>
+                            <td  width="16%" height="42px" align="center" valign="middle">
+                                <span >型号</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="taarea5"  width="30%" height="42px">
+                                01
+                            </td>
+                            <td  width="20%" height="42px" align="center" valign="middle">
+                                强电
+                            </td>
+                            <td  width="20%" height="42px" align="center" valign="middle">
+
+                            </td>
+                            <td  width="20%" height="42px" align="center" valign="middle">
+
+                            </td>
+                        </tr>
+                        <tr>
+                            <td   height="42px" align="left">
+                                <span class="taarea15"> 0101</span>
+                            </td>
+                            <td  height="42px" align="center" valign="middle">
+                                室内照明
+                            </td>
+                            <td  height="42px" align="center" valign="middle">
+
+                            </td>
+                            <td  height="42px" align="center" valign="middle">
+
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="taarea5" height="42px">
+                                <span class="taarea15">010301</span>
+                            </td>
+                            <td   height="42px" align="center" valign="middle">
+                                屏蔽聚氯乙烯护套软电缆
+                            </td>
+                            <td   height="42px" align="center" valign="middle">
+                                2*1.5cm
+                            </td>
+                            <td   height="42px" align="center" valign="middle">
+                                RVVP
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="taarea5" height="42px">
+                                <span class="taarea15">010301</span>
+                            </td>
+                            <td   height="42px" align="center" valign="middle">
+                                屏蔽聚氯乙烯护套软电缆
+                            </td>
+                            <td   height="42px" align="center" valign="middle">
+                                2*1.5cm
+                            </td>
+                            <td   height="42px" align="center" valign="middle">
+                                RVVP
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="taarea5" height="42px">
+                                <span class="taarea15">010301</span>
+                            </td>
+                            <td   height="42px" align="center" valign="middle">
+                                屏蔽聚氯乙烯护套软电缆
+                            </td>
+                            <td   height="42px" align="center" valign="middle">
+                                2*1.5cm
+                            </td>
+                            <td   height="42px" align="center" valign="middle">
+                                RVVP
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="taarea5" height="42px">
+                                <span class="taarea15">010301</span>
+                            </td>
+                            <td   height="42px" align="center" valign="middle">
+                                屏蔽聚氯乙烯护套软电缆
+                            </td>
+                            <td   height="42px" align="center" valign="middle">
+                                2*1.5cm
+                            </td>
+                            <td   height="42px" align="center" valign="middle">
+                                RVVP
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--楼层勾选列表结束-->
+</div>
+
+
+
+<!--<div style="padding:15px 15px 0" class="col-md-12">-->
+        <!--&lt;!&ndash;选择专业&ndash;&gt;-->
+        <!--<div class="col-md-2">-->
+        <!--<p>选择专业：</p>-->
+        <!--&lt;!&ndash;新增资产【选择专业】&ndash;&gt;-->
+        <!--<div class="TreeWrap">-->
+            <!--<div class="MenuBox" id='Menu_0'  ng-repeat="items in propertyTypes">-->
+                <!--<div class="titBox">-->
+                    <!--<h3 class="Fst">-->
+                        <!--<a href="javascript:showMenu({{$index}});">-->
+                            <!--<span class="glyphicon glyphicon-play" aria-hidden="true" style="margin-right:2px;" ></span>-->
+                            <!--{{items.propertyTypeNumber}}{{items.propertyTypeName}}</a></h3>-->
+                <!--</div>-->
+                <!--<div class="txtBox">-->
+                    <!--<ul ng-repeat="item in propertys"  ng-show="item.propertyTypeId == items.propertyTypeId">-->
+                        <!--<li > <a href="#addProfession"  data-toggle="tab" ng-click="findpropertyById(item.propertyId)">{{item.propertyNumber}}{{item.propertyName}}</a></li>-->
+                        <!--&lt;!&ndash; <li><a href="#xiancai" data-toggle="tab">0102室外照明</a></li>-->
+                        <!--<li class="Lst"><a href="#xiancai" data-toggle="tab">0103线材</a></li> &ndash;&gt;-->
+                    <!--</ul>-->
+                <!--</div>-->
+            <!--</div>-->
+        <!--</div>-->
+        <!--&lt;!&ndash;新增资产【选择专业】 end&ndash;&gt;-->
+        <!--</div>-->
+        <!--&lt;!&ndash;选择专业 end&ndash;&gt;-->
+        <!--&lt;!&ndash;添加资产信息&ndash;&gt;-->
+        <!--<div class="col-md-3 assertInfo tab-pane fade" id="addProfession" style="border: 1px solid lightgray;height:300px;margin:40px 10px;">-->
+            <!--<form class="form-inline" style="line-height: 40px;">-->
+                <!--<div class="form-group">-->
+                    <!--<label for="exampleInputName2">资产编号:</label>-->
+                    <!--<input type="text" class="input-sm form-control" id="exampleInputName2" placeholder="">-->
+                <!--</div>-->
+                <!--<div class="form-group">-->
+                    <!--<label for="exampleInputEmail3">资产名称:</label>-->
+                    <!--<input type="email" class="input-sm form-control" id="exampleInputEmail3" placeholder="">-->
+                <!--</div>-->
+                <!--<div class="form-group">-->
+                    <!--<label for="exampleInputName4">资产规格:</label>-->
+                    <!--<input type="text" class="input-sm form-control" id="exampleInputName4" placeholder="">-->
+                <!--</div>-->
+                <!--<div class="form-group">-->
+                    <!--<label for="exampleInputEmail5">资产型号:</label>-->
+                    <!--<input type="email" class="input-sm form-control" id="exampleInputEmail5" placeholder="">-->
+                <!--</div>-->
+                <!--<div class="form-group">-->
+                    <!--<label for="exampleInputEmail6">上级分类:</label>-->
+                    <!--<input type="email" class="input-sm form-control" id="exampleInputEmail6" placeholder="">-->
+                <!--</div>-->
+             <!--<button type="submit" class="btn btn-default" style="margin-right: 45px;">保存</button>-->
+                <!--<button type="submit" class="btn btn-default">取消</button>-->
+            <!--</form>-->
+        <!--</div>-->
+        <!--&lt;!&ndash;<div class="col-md-3 assertInfo tab-pane fade" id="addProfession" style="border: 1px solid lightgray;height:200px;margin: 50px 10px;">&ndash;&gt;-->
+            <!--&lt;!&ndash;<p>资产编号：{{property.propertyNumber}}</p>&ndash;&gt;-->
+            <!--&lt;!&ndash;<p>资产名称：{{property.propertyName}}</p>&ndash;&gt;-->
+            <!--&lt;!&ndash;<p>资产规格：{{property.propertySpecification}}</p>&ndash;&gt;-->
+            <!--&lt;!&ndash;<p>资产型号：{{property.propertyModel}}</p>&ndash;&gt;-->
+        <!--&lt;!&ndash;</div>&ndash;&gt;-->
+        <!--&lt;!&ndash;添加资产信息&ndash;&gt;-->
+        <!--&lt;!&ndash;表格预览信息&ndash;&gt;-->
+        <!--<div class="col-md-6">-->
+            <!--<p>同类资产预览：</p>-->
+                <!--<div style="width: 540px;height: 300px;border: 1px solid lightgray;background-color: white">-->
+                    <!--<table class="table table-bordered table-hover" style="width: 500px;text-align: center;margin: 20px ">-->
+                        <!--<tr class="info">-->
+                            <!--<td>资产编号</td>-->
+                            <!--<td>名称</td>-->
+                            <!--<td>规格</td>-->
+                            <!--<td>型号</td>-->
+                        <!--</tr>-->
+                        <!--<tr  style="text-align: left">-->
+                            <!--<td>01</td>-->
+                            <!--<td>强电</td>-->
+                            <!--<td></td>-->
+                            <!--<td></td>-->
+                        <!--</tr>-->
+                        <!--<tr class="warning">-->
+                            <!--<td>0101</td>-->
+                            <!--<td>室内照明</td>-->
+                            <!--<td></td>-->
+                            <!--<td></td>-->
+                        <!--</tr>-->
+                        <!--<tr>-->
+                            <!--<td>0102</td>-->
+                            <!--<td>室外照明</td>-->
+                            <!--<td></td>-->
+                            <!--<td></td>-->
+                        <!--</tr>-->
+                        <!--<tr style="text-align: left">-->
+                            <!--<td>02</td>-->
+                            <!--<td>弱电</td>-->
+                            <!--<td></td>-->
+                            <!--<td></td>-->
+                        <!--</tr>-->
+                        <!--<tr>-->
+                            <!--<td>0202</td>-->
+                            <!--<td>橱柜</td>-->
+                            <!--<td></td>-->
+                            <!--<td></td>-->
+                        <!--</tr>-->
+                        <!--<tr>-->
+                            <!--<td>0203</td>-->
+                            <!--<td>吊灯</td>-->
+                            <!--<td></td>-->
+                            <!--<td></td>-->
+                        <!--</tr>-->
+                    <!--</table>-->
+                <!--</div>-->
+
+
+        <!--</div>-->
+        <!--&lt;!&ndash;表格预览信息&ndash;&gt;-->
+    <!--</div>-->
+</body>
+</html>

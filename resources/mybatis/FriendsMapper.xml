@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.flf.mapper.FriendsMapper" >
+  <resultMap id="BaseResultMap" type="com.flf.entity.Friends" >
+    <id column="friends_id" property="friendsId" jdbcType="VARCHAR" />
+    <result column="primary_id" property="primaryId" jdbcType="VARCHAR" />
+    <result column="secondary_id" property="secondaryId" jdbcType="VARCHAR" />
+    <result column="friends_type" property="friendsType" jdbcType="VARCHAR" />
+    <result column="state" property="state" jdbcType="VARCHAR" />
+    <result column="creation_time" property="creationTime" jdbcType="TIMESTAMP" />
+    <result column="secondaryName" property="secondaryName" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    friends_id, primary_id, secondary_id, friends_type, state, creation_time
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_friends
+    where friends_id = #{friendsId,jdbcType=VARCHAR}
+  </select>
+  
+  <select id="selectByPrimaryId" resultMap="BaseResultMap" parameterType="com.flf.entity.Friends" >
+    select 
+    f.*,
+    <if test="friendsType == 1">
+    	s.staff_name as secondaryName
+    </if>
+    <if test="friendsType != 1">
+    	pc.name as secondaryName
+    </if>
+    from t_friends f
+    <if test="friendsType == 1">
+	    left join t_staff s on s.staff_id = secondary_id 
+    </if>
+    <if test="friendsType != 1">
+	    left join tc_person_cust pc on pc.cust_id = secondary_id 
+    </if>
+    where f.primary_id = #{primaryId} and f.state = '1' and f.friends_type = #{friendsType}
+  </select>
+  
+  <select id="selectByFriends" resultMap="BaseResultMap" parameterType="com.flf.entity.Friends" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_friends
+    where primary_id = #{primaryId,jdbcType=VARCHAR} and secondary_id = #{secondaryId,jdbcType=VARCHAR}
+  </select>
+  
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from t_friends
+    where friends_id = #{friendsId,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.flf.entity.Friends" >
+    insert into t_friends (friends_id, primary_id, secondary_id, 
+      friends_type, state, creation_time
+      )
+    values (#{friendsId,jdbcType=VARCHAR}, #{primaryId,jdbcType=VARCHAR}, #{secondaryId,jdbcType=VARCHAR}, 
+      #{friendsType,jdbcType=VARCHAR}, #{state,jdbcType=VARCHAR}, #{creationTime,jdbcType=TIMESTAMP}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.flf.entity.Friends" >
+    insert into t_friends
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="friendsId != null" >
+        friends_id,
+      </if>
+      <if test="primaryId != null" >
+        primary_id,
+      </if>
+      <if test="secondaryId != null" >
+        secondary_id,
+      </if>
+      <if test="friendsType != null" >
+        friends_type,
+      </if>
+      <if test="state != null" >
+        state,
+      </if>
+      <if test="creationTime != null" >
+        creation_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="friendsId != null" >
+        #{friendsId,jdbcType=VARCHAR},
+      </if>
+      <if test="primaryId != null" >
+        #{primaryId,jdbcType=VARCHAR},
+      </if>
+      <if test="secondaryId != null" >
+        #{secondaryId,jdbcType=VARCHAR},
+      </if>
+      <if test="friendsType != null" >
+        #{friendsType,jdbcType=VARCHAR},
+      </if>
+      <if test="state != null" >
+        #{state,jdbcType=VARCHAR},
+      </if>
+      <if test="creationTime != null" >
+        #{creationTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.flf.entity.Friends" >
+    update t_friends
+    <set >
+      <if test="primaryId != null" >
+        primary_id = #{primaryId,jdbcType=VARCHAR},
+      </if>
+      <if test="secondaryId != null" >
+        secondary_id = #{secondaryId,jdbcType=VARCHAR},
+      </if>
+      <if test="friendsType != null" >
+        friends_type = #{friendsType,jdbcType=VARCHAR},
+      </if>
+      <if test="state != null" >
+        state = #{state,jdbcType=VARCHAR},
+      </if>
+      <if test="creationTime != null" >
+        creation_time = #{creationTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where friends_id = #{friendsId,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.flf.entity.Friends" >
+    update t_friends
+    set primary_id = #{primaryId,jdbcType=VARCHAR},
+      secondary_id = #{secondaryId,jdbcType=VARCHAR},
+      friends_type = #{friendsType,jdbcType=VARCHAR},
+      state = #{state,jdbcType=VARCHAR},
+      creation_time = #{creationTime,jdbcType=TIMESTAMP}
+    where friends_id = #{friendsId,jdbcType=VARCHAR}
+  </update>
+</mapper>

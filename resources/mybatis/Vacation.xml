@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!-- create by:ruanmeixing create date:2015-05-28 假期管理信息映射XML文件 -->
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.flf.mapper.VacationMapper">
+	<resultMap id="VacationResultMap" type="Vacation">
+		<id column="id" property="id" jdbcType="INTEGER" />
+		<result column="vacation_name" property="vacationName" jdbcType="VARCHAR" />
+		<result column="vacation_start_date" property="vacationStartDate"
+			jdbcType="DATE" />
+		<result column="vacation_end_date" property="vacationEndDate"
+			jdbcType="DATE" />
+		<result column="dayCount" property="dayCount" jdbcType="INTEGER" />
+		<result column="state" property="state" jdbcType="BOOLEAN" />
+	</resultMap>
+
+	<!-- 获取所有假期管理信息(用于分页) -->
+	<select id="getAllVacation" resultMap="VacationResultMap"
+		parameterType="Vacation">
+		SELECT * FROM t_vacation WHERE 1 = 1
+		<if test="vacationName!=null and vacationName!= '' ">
+			AND vacation_name LIKE
+			CONCAT(CONCAT('%', #{vacationName}),
+			'%')
+		</if>
+	</select>
+
+	<!-- 获取所有假期管理信息 -->
+	<select id="getVacation" resultMap="VacationResultMap">
+		SELECT * FROM t_vacation
+	</select>
+
+	<!-- 根据假期名称模糊查询假期信息 (暂时不用) -->
+	<select id="getVacationByName" resultMap="VacationResultMap"
+		parameterType="String">
+		SELECT * FROM t_vacation WHERE vacation_name LIKE
+		CONCAT(CONCAT('%', #{0}), '%');
+	</select>
+
+	<!-- 根据id获取假期管理对象 -->
+	<select id="getVacationById" resultMap="VacationResultMap"
+		parameterType="int">
+		SELECT * FROM t_vacation WHERE id=#{0};
+	</select>
+
+	<!-- 增加假期信息 -->
+	<insert id="addVacation" parameterType="Vacation">
+		INSERT INTO
+		t_vacation(vacation_name,vacation_start_date,vacation_end_date,dayCount)
+		vALUES(#{vacationName},#{vacationStartDate},#{vacationEndDate},#{dayCount});
+	</insert>
+
+	<!-- 修改假期信息 -->
+	<update id="editVacation" parameterType="Vacation">
+		UPDATE t_vacation SET
+		vacation_name=#{vacationName},vacation_start_date=#{vacationStartDate},vacation_end_date=#{vacationEndDate},dayCount=#{dayCount}
+		WHERE id=#{id};
+	</update>
+
+	<!-- 根据id删除假期信息 (修改假期信息状态) -->
+	<delete id="delVacationById" parameterType="int">
+		UPDATE t_vacation SET
+		state =0
+		WHERE id=#{id};
+	</delete>
+</mapper>
+

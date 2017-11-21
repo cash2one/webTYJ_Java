@@ -1,0 +1,308 @@
+package com.flf.service;
+
+import java.io.InputStream;
+import java.util.List;
+
+import javax.jws.WebService;
+import javax.servlet.http.HttpServletResponse;
+import javax.ws.rs.Consumes;
+import javax.ws.rs.GET;
+import javax.ws.rs.POST;
+import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
+import javax.ws.rs.Produces;
+import javax.ws.rs.core.Context;
+import javax.ws.rs.core.MediaType;
+
+import org.springframework.stereotype.Component;
+
+import com.flf.entity.Annex;
+import com.flf.entity.HouseNew;
+import com.flf.entity.PageRestful;
+import com.flf.entity.PersonCustNew;
+import com.flf.entity.Search;
+import com.flf.request.Info;
+import com.flf.request.propertyService;
+
+
+/**
+ * @author Administrator
+ *
+ */
+@WebService
+@Path(value="/HouseNew")
+public interface HouseNewService {
+	List<HouseNew> listPageHouseNew(HouseNew house);
+	
+	List<HouseNew> listAllHouseNew();
+	
+	HouseNew getHouseNewById(String id);
+	
+	int insertHouseNew(HouseNew house);
+	
+	int updateHouseNew(HouseNew house);
+	
+	int deleteHouseNew(String id);
+	
+	//Cxf
+	String listAllHouseNewCxf();
+    
+	String getHouseNewByIdCxf(String id);
+
+    String insertHouseNewCxf(String house);
+    
+    String updateHouseNewCxf(String house);
+    
+    String deleteHouseNewCxf(String id);
+    
+    String listHouseByhouseGates(String houseGates);
+    
+    int joinGang(String houseId,int state);//入伙
+    
+    //根据房屋id修改房屋密码
+    String updateHousePasswordByhouseId(String houseId,String password);
+    
+    //根据家家账号查询房屋列表和开门密码
+    String listHousePasswordByjiajiaNum(String jiajiaNum);
+    
+    //获取房屋信息和sip账号
+    String getHouseNewSipmanageByhouseId(String houseId);
+    
+    //开门验证
+    int openGateVerify(String houseId,String password);
+    
+    //根据家家账号查询房屋列表
+    String listHouseByjiajiaNum(String jiajiaNum);
+    /**
+     * 根据人员信息查询房屋信息
+     * @param personCustNew
+     * @return
+     */
+    @POST
+  	@Path("/listAllHouseNewByPerson")
+  	@Produces(MediaType.APPLICATION_JSON)
+    List<HouseNew> listAllHouseNewByPerson(PersonCustNew personCustNew);
+    
+    /**
+     * 根据搜索条件查询房屋信息
+     * @param Search
+     * @return
+     */
+    @POST
+  	@Path("/listAllHouseNewBySearch")
+  	@Produces(MediaType.APPLICATION_JSON)
+    List<HouseNew> listAllHouseNewBySearch(Search search);
+
+    
+    @POST
+	@Path("/AddHouseNew")
+	@Consumes({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
+	void AddHouseNew(HouseNew houseNew);
+
+    /**
+     * 根据客户id查询客户关联的房屋
+     * @param personCustId
+     * @return
+     */
+    @POST
+	@Path("/listHouseByPersonCustId")
+    @Produces(MediaType.APPLICATION_JSON)
+    List<HouseNew> listHouseByPersonCustId(Search search);
+    	
+    /**
+     * 根据企业客户id查询企业客户关联的房屋
+     * @param personCustId
+     * @return
+     */
+    @GET
+	@Path("/listHouseByenterpriseId/{enterpriseId}")
+    @Produces(MediaType.APPLICATION_JSON)
+    List<HouseNew> listHouseByenterpriseId(@PathParam("enterpriseId") String enterpriseId);
+
+    /**
+     * 通过条件查询办理人和其授权人的房屋信息（租赁授权或者产权变更授权）
+     * @param search
+     * @return
+     */
+    @POST
+  	@Path("/listHouseBySearchAu")
+    @Produces(MediaType.APPLICATION_JSON)
+    List<HouseNew> listHouseBySearchAu(Search search);
+    
+    /**
+     * 根据客户名称查询房屋信息
+     * @param search
+     * @return
+     */
+    @GET
+  	@Path("/listHouseByName/{name}")
+    @Produces(MediaType.APPLICATION_JSON)
+    List<HouseNew> listHouseByName(@PathParam("name") String name);
+    
+    /**
+     * 根据企业名称查询房屋信息
+     * @param search
+     * @return
+     */
+    @GET
+  	@Path("/listHouseByEnterpriseName/{enterpriseName}")
+    @Produces(MediaType.APPLICATION_JSON)
+    List<HouseNew> listHouseByEnterpriseName(@PathParam("enterpriseName") String enterpriseName);
+    
+    /**
+  	 * 导入Excel数据文档
+  	 * @param annex
+  	 * @return
+  	 */
+  	@POST
+  	@Path("/importExcelFile")
+  	@Produces(MediaType.APPLICATION_JSON)
+  	@Consumes({MediaType.APPLICATION_JSON,MediaType.APPLICATION_XML})
+  	Info importExcelFile(Annex annex);
+  	 /**
+     * 根据建筑结构Id查询房屋信息
+     * @param buildingStructureId
+     * @return
+     */
+    @GET
+  	@Path("/listHouseByBuildingStructureId/{buildingStructureId}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public HouseNew listHouseByBuildingStructureId(@PathParam("buildingStructureId") String buildingStructureId);
+    
+    /**
+     * 根据HouseId修改入伙状态
+     * @param houseId
+     * @return
+     */
+    @GET
+  	@Path("/updataJoinStateByHouseId/{houseId}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public int updataJoinStateByHouseId(@PathParam("houseId") String houseId);
+
+    /**
+     * 分页查询住宅数据
+     * @author wangzhou
+     * @param search
+     * @return
+     */
+    @POST
+    @Path("/listPageHouseNewBySearch")
+    @Produces(MediaType.APPLICATION_JSON)
+    PageRestful listPageHouseNewBySearch(Search search);
+    
+    /**
+     * 分页查询住宅数据根据HouseNew
+     * @author wangzhou
+     * @param search
+     * @return
+     */
+    @POST
+    @Path("/listPageHouseNewByHouseNew")
+    @Produces(MediaType.APPLICATION_JSON)
+    PageRestful listPageHouseNewByHouseNew(HouseNew houseNew);
+    
+    /**
+     * 
+     *//**
+     * 根据搜索条件分页查询房屋信息
+     * @param Search
+     * @return
+     */
+    @POST
+  	@Path("/listPageAllHouseNewBySearch")
+  	@Produces(MediaType.APPLICATION_JSON)
+    PageRestful listPageAllHouseNewBySearch(Search search);
+    
+    /**
+     * 分页查询客户房屋信息
+     */
+    @POST
+  	@Path("/listPagelistHouseBySearchAu")
+    @Produces(MediaType.APPLICATION_JSON)
+    PageRestful listPagelistHouseBySearchAu(Search search);
+    
+    /**
+     * 根据客户id查询客户关联的房屋
+     * @param personCustId
+     * @return
+     */
+    @POST
+	@Path("/listPageHouseByPerson")
+    @Produces(MediaType.APPLICATION_JSON)
+    PageRestful listPageHouseByPerson(HouseNew houseNew);
+    
+    /**
+	 * 分页查询
+	 */
+    @POST
+ 	@Path("/listPageByContionRestful")
+  	@Produces(MediaType.APPLICATION_JSON)
+    PageRestful listPageByContion(HouseNew houseNew);
+    
+    /**
+     * 将需要进行EXCEL导入的数据先写入模板并导出到本地
+     */
+    InputStream exportHouseNewFile(String projectId);
+    
+    /**
+     * 导出所有的住宅记录
+     * 王洲
+     * 2016.1.8
+     * @return
+     */
+    InputStream exportAllHouseNew();
+    
+    String getSipByhouseAddress(String houseAddress);//根据房屋地址获取房屋新sip帐密码
+    
+    @POST
+    @Path("/updateHouse")
+    @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+    void updateHouse(HouseNew houseNew);
+    
+    /**
+     * 根据parentId集合查询houseId集合
+     * @param parentIds
+     * @return
+     */
+    List<String> getHouseIdListByParentId(String parentIds);
+    
+    /**
+     * 建筑初始化根据项目id分页查询住宅
+     * @author wangzhou
+     * @date 2016-03-24
+     * @param houseNew
+     * @return
+     */
+    @POST
+    @Path("/listPageHouseByProjectId")
+    @Produces(MediaType.APPLICATION_JSON)
+    PageRestful listPageHouseByProjectId(HouseNew houseNew);
+    
+    @POST
+    @Path("/updateHouseNews")
+    @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+    void updateHouseNews(HouseNew houseNew);
+    
+    /**
+     * 根据客户id的集合查询关联的房屋
+     * @param custIds
+     * @return
+     */
+	String listHouseByCustIds(List<String> custIds);
+	
+	/**
+	 * 根据houseId查询房屋信息
+	 * @param houseId
+	 * @return
+	 */
+	String selectHouseInfoByHouseId(String houseId);
+	
+	/**
+	 * 根据房屋id获取sip信息和与房屋关联的客户
+	 * @param houseId
+	 * @return
+	 * create by shaozheng
+	 * 2016年6月17日 下午3:22:44
+	 */
+	String getSipAndCust(String houseId);
+}

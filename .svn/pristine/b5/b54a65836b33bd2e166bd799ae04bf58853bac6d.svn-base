@@ -1,0 +1,32 @@
+<!--auhor:王志刚-->
+<!--页面名称：物业服务装修主页面-->
+<!--js:controllers/propertyService/staffHome/decorate-->
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>人员信息里的装修</title>
+</head>
+<body ng-controller="decorateCtrl">
+<div class="complaint_user_list ">
+
+    <!--tab-->
+    <div style="padding:5px 18px 0">
+        <div class="complaint_user_info_navigation" style="margin-top:10px;">
+            <a class="btn" ui-sref="index.propertyService.staffHome.decorate.decoration.chooseHouse">办理装修</a>
+            <a class="btn" ui-sref="index.propertyService.staffHome.decorate.history">历史记录</a>
+        </div>
+    </div>
+    <!--tab end-->
+
+
+    <!--模板-->
+    <div class="row">
+        <div style="padding:0px 30px 0;">
+            <div ui-view></div>
+        </div>
+    </div>
+    <!--模板 end-->
+</div>
+</body>
+</html>

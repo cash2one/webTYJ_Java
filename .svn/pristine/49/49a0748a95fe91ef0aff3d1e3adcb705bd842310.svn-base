@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.flf.mapper.RegionNewMapper" >
+  
+  <resultMap id="BaseResultMap" type="RegionNew" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="project_id" property="projectId" jdbcType="VARCHAR" />
+    <result column="region_name" property="regionName" jdbcType="VARCHAR" />
+   
+  </resultMap>
+  
+   <resultMap id="RegionNewAndBuildingNewMap" type="RegionNew" extends="BaseResultMap" >
+    <collection property="buildingNews" column="id" select="com.flf.mapper.BuildingNewMapper.listBuildingNewByRegionId"/>
+  </resultMap>
+  
+  <select id="getRegionNewprojectIdRest" parameterType="String" resultMap="RegionNewAndBuildingNewMap">
+  	select * from tc_region where project_id=#{0}
+  </select>
+  
+
+ <delete id="deleteRegionNew" parameterType="String">
+  delete from tc_region
+    where id = #{0,jdbcType=VARCHAR}
+  </delete>
+  
+  <select id="listPageRegionNew" parameterType="RegionNew" resultMap="BaseResultMap">
+  select * from tc_region 
+  </select>
+  
+  <select id="listAllRegionNew"  resultMap="BaseResultMap">
+  select * from tc_region 
+  </select>
+  
+
+  
+  <select id="getRegionNewById" parameterType="String" resultMap="BaseResultMap">
+  select * from tc_region where id=#{0}
+  </select>
+  
+  <insert id="insertRegionNew" parameterType="RegionNew" >
+    insert into tc_region (id, project_id, region_name
+      )
+    values (UUID(), #{projectId,jdbcType=VARCHAR}, #{regionName,jdbcType=VARCHAR}
+      )
+  </insert>
+ 
+  <update id="updateRegionNew" parameterType="RegionNew" >
+    update tc_region
+    set project_id = #{projectId,jdbcType=VARCHAR},
+      region_name = #{regionName,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=VARCHAR}
+    </update>
+    
+   <!--  创建 by 肖聪   2015/6/25 -->
+   <select id="getRegionNewByHouseId" parameterType="String" resultMap="BaseResultMap">
+  SELECT * FROM tc_region WHERE id = (SELECT region_id FROM tc_building WHERE id = (SELECT building_id FROM tc_house WHERE id=#{0}) )
+  </select>
+  
+  <select id="getRegionNewByStallNewId" parameterType="String" resultMap="BaseResultMap">
+   SELECT * FROM tc_region WHERE id = (SELECT region_id FROM tc_building WHERE id = (SELECT building_id FROM tc_stall WHERE stall_id =#{0}) )
+  </select>
+</mapper>

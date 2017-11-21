@@ -1,0 +1,128 @@
+/**
+ * @Title: ContractService.java
+ * @Package com.flf.service
+ * @Description: TODO
+ * Copyright: Copyright (c) 2011 
+ * Company:武汉闻风多奇软件开发有限公司
+ * 
+ * @author wangtao
+ * @date 2015-6-11 下午4:03:14
+ * @version V1.0
+ */
+
+package com.flf.service;
+
+import java.util.List;
+
+import javax.jws.WebService;
+import javax.ws.rs.Consumes;
+import javax.ws.rs.DELETE;
+import javax.ws.rs.GET;
+import javax.ws.rs.POST;
+import javax.ws.rs.PUT;
+import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
+import javax.ws.rs.Produces;
+import javax.ws.rs.core.MediaType;
+
+import com.flf.entity.Contract;
+import com.flf.entity.ContractPropertyStructure;
+import com.flf.entity.CorePosition;
+import com.flf.entity.Corporatenews;
+import com.flf.entity.TeamPermissions;
+import com.flf.entity.TeamPermissionsResult;
+import com.flf.request.PropertyResult;
+import com.flf.request.TeamworkResult;
+
+/**
+ * @ClassName: ContractService
+ * @Description: TODO
+ * @author yinlei
+ * @date 2015-7-29 
+ *s
+ */
+//团队权限管理
+@WebService
+@Path("/TeamPermissions")
+public interface TeamPermissionsService {
+		
+		
+	/**
+	 * 修改新增项目专业线经理权限
+	 * @param corePosition
+	 */
+	@POST
+	@Path("/AddTeamPermissions")
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+	void AddCorePosition(TeamPermissionsResult teamPermissionsResult);
+	
+//	/**
+//	 * 根据项目id和专业线id查询项目专业线负责人
+//	 * @param corePosition
+//	 */
+//	@POST
+//	@Path("/getTeamPermissions")
+//	@Produces(MediaType.APPLICATION_JSON)
+//	@Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+//	TeamPermissions getTeamPermissions(TeamPermissions teamPermissions);
+//	
+	/**
+	 * 查询项目专业线负责人
+	 * @param corePosition
+	 */
+	@GET
+	@Path("/listAllTeamPermissionsStaff")
+	@Produces(MediaType.APPLICATION_JSON)
+	List<TeamPermissions> listAllTeamPermissionsStaff();
+	
+	/**
+	 * 根据项目id和专业线id查询项目专业线负责人
+	 * @param corePosition
+	 */
+	@POST
+	@Path("/getTeamPermissions")
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+	List<TeamPermissions> getTeamPermissions(TeamPermissions teamPermissions);
+	
+	/**
+	 * 查询项目、专业线关联的团队
+	 * @return
+	 */
+	@GET
+	@Path("/getTeamworkByProjectAndSpecialty")
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+	TeamworkResult getTeamworkByProjectAndSpecialty();
+	
+	/**
+	 * 查询项目和专业线对应的核心团队信息
+	 * @return
+	 */
+	@GET
+	@Path("/getCorePositionByProjectAndSpecialty2")
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+	TeamworkResult getCorePositionByProjectAndSpecialty2();
+	
+	/**
+	 * 查询项目和专业线对应的核心团队信息
+	 * @return
+	 */
+	@GET
+	@Path("/getCorePositionByProjectAndSpecialty")
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+	TeamworkResult getCorePositionByProjectAndSpecialty();
+	
+	/**
+	 * 根据传入的对象新增或修改核心岗位关联数据
+	 * @param teamPermissions
+	 */
+	@POST
+	@Path("/addOrUpdateTeamPermissions")
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+	void addOrUpdateTeamPermissions(TeamPermissions teamPermissions);
+}

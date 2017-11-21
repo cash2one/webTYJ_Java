@@ -1,0 +1,64 @@
+<!DOCTYPE>
+<html ng-app="FeedbackApp">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>Insert title here</title>
+</head >
+<link type="text/css" rel="stylesheet" href="/Home/css/main.css"/>
+<script src="/Home/js/AngularJS/angular-1.2.3.js"></script>
+<script src="/Home/js/AngularJS/FeedbackController.js"></script>
+<body>
+<script type="text/ng-template" id="listView">
+	<table class="main_head" width="100%" border="0" cellpadding="0" cellspacing="0" class="main_table">
+		<tr class="main_head">
+			<td>反馈人Id</td>
+			<td>反馈人编号</td>
+			<td>反馈人姓名</td>
+			<td>反馈时间</td>
+			<td>反馈信息</td>
+		</tr>
+		<tr ng-repeat="items in feedbacks" class="main_head">
+			<td>{{items.feedbackId}}</td>
+			<td>{{items.feedbackCode}}</td>
+			<td>{{items.feedbackName}}</td>
+			<td>{{items.feedbackTime}}</td>
+			<td>{{items.feedbackInformation}}</td>
+			<td><a href="#" ng-click="GetFeedback(items.feedbackId)" class="myBtn"><em>修改</em></a></td>
+			<td><a href="#" ng-click="deleteFeedback(items.feedbackId)" class="myBtn"><em>删除</em></a></td>
+		</tr>
+	</table>
+	<div class="page_and_btn">
+			<a href="#" ng-click="GetFeedback(0)" class="myBtn"><em>新增</em></a>
+		</div>
+</script>
+<script type="text/ng-template" id="AddOrUpdateView">
+     <table class="main_head" width="100%" border="0" cellpadding="0" cellspacing="0" class="main_table">
+		<tr class="main_head">
+			<th>反馈人编号</th>
+			<td>
+				<input type="text" ng-model="feedback.feedbackCode" />
+				<input type="hidden" ng-model="feedback.feedbackId" /> 
+			</td>
+		</tr>
+		<tr class="main_head">
+			<th>反馈人姓名</th>
+			<td><input type="text" ng-model="feedback.feedbackName"/> </td>
+		</tr>
+		<tr class="main_head">
+			<th>反馈时间</th>
+			<td><input type="text" ng-model="feedback.feedbackTime"/> </td>
+		</tr>
+		<tr class="main_head">
+			<th>反馈信息</th>
+			<td><input type="text" ng-model="feedback.feedbackInformation"/> </td>
+		</tr>
+		<tr class="main_head">
+			<td colspan="2"><input type="button" value="保存" ng-click="AddOrUpdateFeedback()"/></td>
+		</tr>
+	</table>
+</script>
+<div ng-controller="FeedbackCtrl">
+	<div ng-include="templateUrl"></div>
+</div>
+</body>
+</html>

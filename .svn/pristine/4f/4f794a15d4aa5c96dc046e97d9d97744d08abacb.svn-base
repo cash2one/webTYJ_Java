@@ -1,0 +1,509 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.flf.mapper.MeterReadingDataMapper" >
+  <resultMap id="BaseResultMap" type="com.flf.entity.MeterReadingData" >
+    <id column="meter_reading_data_id" property="meterReadingDataId" jdbcType="VARCHAR" />
+    <result column="water_meter_record_id" property="waterMeterRecordId" jdbcType="VARCHAR" />
+    <result column="last_month_reading" property="lastMonthReading" jdbcType="DOUBLE" />
+    <result column="reading" property="reading" jdbcType="DOUBLE" />
+    <result column="meter_reading_people" property="meterReadingPeople" jdbcType="VARCHAR" />
+    <result column="meter_reading_state" property="meterReadingState" jdbcType="TINYINT" />
+    <result column="meter_reading_date" property="meterReadingDate" jdbcType="DATE" />
+    <result column="reading_state" property="readingState" jdbcType="TINYINT" />
+    <result column="note" property="note" jdbcType="VARCHAR" />
+    <result column="audit_state" property="auditState" jdbcType="TINYINT" />
+    <result column="audit_people" property="auditPeople" jdbcType="VARCHAR" />
+    <result column="correction" property="correction" jdbcType="DOUBLE" />
+    <result column="reason" property="reason" jdbcType="VARCHAR" />
+    <result column="water_damage" property="waterDamage" jdbcType="DOUBLE" />
+    <result column="meter_reading_program_id" property="meterReadingProgramId" jdbcType="VARCHAR" />
+    <result column="teamwork_id" property="teamworkId" jdbcType="VARCHAR" />
+    <result column="full_name" property="fullName" jdbcType="VARCHAR" />
+    <result column="dosage" property="dosage" jdbcType="DOUBLE" />
+    <result column="compared_same" property="comparedSame" jdbcType="DOUBLE" />
+    <result column="sequential" property="sequential" jdbcType="DOUBLE" />
+    <result column="water_meter_num" property="waterMeterNum" jdbcType="VARCHAR" />
+    <result column="water_meter_id" property="waterMeterId" jdbcType="VARCHAR" />
+    <result column="building_structure_id" property="buildingStructureId" jdbcType="VARCHAR" />
+	<result column="meter_executive_id" property="meterExecutiveId" jdbcType="VARCHAR" />
+	<result column="corrected_reading_id" property="correctedReadingId" jdbcType="VARCHAR" />
+	<result column="surplus" property="surplus" jdbcType="DOUBLE" />
+	<result column="verification_record" property="verificationRecord" jdbcType="TINYINT" />
+	<result column="specified_date" property="specifiedDate" jdbcType="DATE" />
+	<result column="abnormal_state" property="abnormalState" jdbcType="VARCHAR" />
+    <result column="consumption" property="consumption" jdbcType="DOUBLE" />
+    <result column="loop_num" property="loopNum" jdbcType="DOUBLE" />
+  </resultMap>
+  <resultMap type="MeterReadingData" id="resultMeterReadingDataMap" extends="BaseResultMap">
+      <association property="waterMeterRecords" column="water_meter_record_id" select="com.flf.mapper.MeterRecordsMapper.getWaterMeterRecordsbyIds" ></association>
+  </resultMap>
+  
+  <resultMap type="MeterReadingData" id="reportMeterReadingDataMap" extends="BaseResultMap">
+    <result column="water_meter_described" property="waterMeterDescribed" jdbcType="VARCHAR" />
+    <result column="project_name" property="projectName" jdbcType="VARCHAR" />
+  </resultMap>
+  
+ <!--  分页查询抄表数据信息 -->
+  <select id="listPageMeterReadingData" parameterType="MeterReadingData" resultMap="BaseResultMap">
+      select * from t_meter_reading_data
+      <trim prefix="where" prefixOverrides="and">
+      	<if test="buildingStructureId">
+      		building_structure_id = #{buildingStructureId}
+      	</if>
+      </trim>
+  </select>
+  
+  <!--  异常数据处理多条件查询功能 -->
+  <select id="listPageMeterReadingDate" parameterType="SearchMeter" resultMap="BaseResultMap">
+      SELECT a.*,f.water_meter_num,e.full_name,b.project_name FROM t_meter_reading_data a 
+      INNER JOIN t_meter_reading_program b ON a.meter_reading_program_id=b.meter_reading_program_id
+      INNER JOIN t_water_meter_records d ON a.water_meter_record_id=d.water_meter_records_id
+      INNER JOIN tc_building_structure e ON e.id = a.building_structure_id
+      INNER JOIN t_water_meter f ON f.water_meter_id =d.water_meter_id
+      WHERE 1=1
+      <if test="meterReadingDate != null and meterReadingDate != '' ">
+          and YEAR(meter_reading_date) =YEAR(#{meterReadingDate})  AND MONTH(meter_reading_date) = MONTH(#{meterReadingDate})
+      </if>
+      <if test="waterMeterNum !=null and waterMeterNum != '' ">
+          and f.water_meter_num = #{waterMeterNum}
+      </if>
+      <if test="readingState != null and readingState!=''">	
+          and a.reading_state =#{readingState}
+      </if>
+      <if test="fullName != null and fullName != ''  ">
+          and e.full_name like CONCAT('%',#{fullName},'%')
+      </if>
+      <if test="projectName != null and projectName != '' ">
+          and b.project_name =#{projectName}
+      </if>
+      <if test="meterReadingProgramId != null and meterReadingProgramId != '' ">
+          and a.meter_reading_program_id = #{meterReadingProgramId}
+      </if>
+      <if test="waterMeterRecordsId !=null and waterMeterRecordsId !='' ">
+          and d.water_meter_records_id =#{waterMeterRecordsId}
+      </if>
+      <if test="year != 0" >
+          and YEAR(meter_reading_date) = #{year}
+      </if>
+      <!-- <if test="meterReadingProgramIds !=null">
+          and a.meter_reading_program_id in <foreach collection="meterReadingProgramIds" index="index" open="(" close=")" separator="," item="items">#{items}</foreach>
+      </if> -->
+  </select>
+  
+ <!--  查询所有抄表数据信息 -->
+  <select id="listAllMeterReadingData"  resultMap="BaseResultMap">
+      select * from t_meter_reading_data 
+  </select>
+  
+  <!-- 根据id查询抄表数据信息 -->
+  <select id="getMeterReadingDatabyId" parameterType="String" resultMap="BaseResultMap">
+      select * from t_meter_reading_data where meter_reading_data_id=#{0}
+  </select>
+  
+   <!-- 根据日期查询抄表数据信息 -->
+  <select id="listMeterReadingDatebyDate" parameterType="Date" resultMap="BaseResultMap">
+      select * from t_meter_reading_data where YEAR(meter_reading_date)=YEAR(#{0}) AND MONTH(meter_reading_date) =MONTH(#{0})
+  </select>
+  
+  <!-- 根据计划名称查询抄表数据信息 -->
+  <select id="listMeterReadingDatebyName" parameterType="String" resultMap="BaseResultMap">
+       SELECT * FROM t_meter_reading_data WHERE meter_reading_program_id IN (SELECT meter_reading_program_id FROM t_meter_reading_program WHERE project_name=#{0})
+  </select>
+  
+   <!-- 根据水表id查询抄表数据信息 -->
+  <select id="listMeterReadingDatabyId" parameterType="String" resultMap="BaseResultMap">
+      select * from t_meter_reading_data where water_meter_record_id=#{0}
+  </select>
+  
+  <!-- 根据抄表日期和水表编号查询数据 -->
+  <select id="getMeterReadingDatabyDate" parameterType="SearchMeter" resultMap="BaseResultMap">
+      select a.*,f.water_meter_num,e.full_name,b.project_name from t_meter_reading_data a 
+      left join t_meter_reading_program b on a.meter_reading_program_id=b.meter_reading_program_id
+      left join t_water_meter_records d on a.water_meter_records_id=d.water_meter_records_id
+      left join tc_building_structure e on e.id = d.building_structure_id
+      left join t_water_meter f on f.water_meter_id =d.water_meter_id
+      where water_meter_num=#{waterMeterNum} and meter_reading_date=#{meterReadingDate}
+  </select>
+  
+  <!-- 删除抄表数据信息 -->
+  <delete id="deleteMeterReadingData" parameterType="String">
+      delete from t_meter_reading_data where meter_reading_data_id=#{0}
+  </delete>
+  
+<!--   新增抄表数据信息 -->
+  <insert id="insertMeterReadingData" parameterType="com.flf.entity.MeterReadingData" >
+    insert into t_meter_reading_data (meter_reading_data_id, water_meter_record_id, 
+      last_month_reading, reading, meter_reading_people, 
+      meter_reading_state, meter_reading_date, reading_state, 
+      note, audit_state, audit_people, 
+      correction, reason, water_damage,meter_reading_program_id,teamwork_id,building_structure_id,
+      meter_executive_id,corrected_reading_id,surplus,verification_record,specified_date
+      )
+    values (UUID(), #{waterMeterRecordId,jdbcType=VARCHAR}, 
+      #{lastMonthReading,jdbcType=DOUBLE}, #{reading,jdbcType=DOUBLE}, #{meterReadingPeople,jdbcType=VARCHAR}, 
+      #{meterReadingState,jdbcType=TINYINT}, #{meterReadingDate,jdbcType=DATE}, #{readingState,jdbcType=TINYINT}, 
+      #{note,jdbcType=VARCHAR}, #{auditState,jdbcType=TINYINT}, #{auditPeople,jdbcType=VARCHAR}, 
+      #{correction,jdbcType=DOUBLE}, #{reason,jdbcType=VARCHAR}, #{waterDamage,jdbcType=DOUBLE},#{meterReadingProgramId},#{teamworkId},#{buildingStructureId},
+     #{meterExecutiveId,jdbcType=VARCHAR},#{correctedReadingId,jdbcType=VARCHAR},  #{surplus,jdbcType=DOUBLE},#{verificationRecord,jdbcType=TINYINT},#{specifiedDate,jdbcType=DATE}
+      )
+  </insert>
+ 
+<!--   修改抄表数据信息 -->
+  <update id="updateMeterReadingData" parameterType="MeterReadingData" >
+    update t_meter_reading_data
+    <set >
+      <if test="waterMeterRecordId != null" >
+        water_meter_record_id = #{waterMeterRecordId,jdbcType=VARCHAR},
+      </if>
+      <if test="lastMonthReading != null" >
+        last_month_reading = #{lastMonthReading,jdbcType=DOUBLE},
+      </if>
+      <if test="reading != null" >
+        reading = #{reading,jdbcType=DOUBLE},
+      </if>
+      <if test="meterReadingPeople != null" >
+        meter_reading_people = #{meterReadingPeople,jdbcType=VARCHAR},
+      </if>
+      <if test="meterReadingState != null" >
+        meter_reading_state = #{meterReadingState,jdbcType=TINYINT},
+      </if>
+      <if test="meterReadingDate != null" >
+        meter_reading_date = #{meterReadingDate,jdbcType=DATE},
+      </if>
+      <if test="readingState != null" >
+        reading_state = #{readingState,jdbcType=TINYINT},
+      </if>
+      <if test="note != null" >
+        note = #{note,jdbcType=VARCHAR},
+      </if>
+      <if test="auditState != null" >
+        audit_state = #{auditState,jdbcType=TINYINT},
+      </if>
+      <if test="auditPeople != null" >
+        audit_people = #{auditPeople,jdbcType=VARCHAR},
+      </if>
+      <if test="correction != null" >
+        correction = #{correction,jdbcType=DOUBLE},
+      </if>
+      <if test="reason != null" >
+        reason = #{reason,jdbcType=VARCHAR},
+      </if>
+      <if test="waterDamage != null" >
+        water_damage = #{waterDamage,jdbcType=DOUBLE},
+      </if>
+      <if test="meterReadingProgramId != null" >
+        meter_reading_program_id = #{meterReadingProgramId,jdbcType=VARCHAR},
+      </if>
+      <if test="teamworkId != null" >
+        teamwork_id = #{teamworkId,jdbcType=VARCHAR},
+      </if>
+       <if test="correctedReadingId = null or correctedReadingId ='' ">
+          corrected_reading_id =  #{correctedReadingId},
+      </if>
+      <if test="consumption = null or consumption ='' ">
+          consumption =  #{consumption},
+      </if>
+      </set>
+    <!--    <if test="meterReadingDataIds != null and meterReadingDataIds =''">
+      where meter_reading_data_id in <foreach collection="meterReadingDataIds" open="(" close=")" separator="," item="item">#{item}</foreach>
+      </if>  -->
+      <if test="meterReadingDataId = null or meterReadingDataId ='' ">
+          where meter_reading_data_id =  #{meterReadingDataId}
+      </if>
+   
+  </update> 
+  
+  <!--   修改抄表信息 -->
+  <update id="updateMeterReading" parameterType="MeterReadingData" >
+    update t_meter_reading_data
+    set 
+      water_meter_record_id = #{waterMeterRecordId},
+      last_month_reading = #{lastMonthReading},
+      reading = #{reading},
+      meter_reading_people = #{meterReadingPeople},
+      meter_reading_state = #{meterReadingState},
+      meter_reading_date = #{meterReadingDate},
+      reading_state = #{readingState},
+      note = #{note},
+      audit_state = #{auditState},
+      audit_people = #{auditPeople},
+      correction = #{correction},
+      reason = #{reason},
+      water_damage = #{waterDamage},
+      abnormal_state = #{abnormalState},
+      meter_reading_program_id = #{meterReadingProgramId},
+      teamwork_id = #{teamworkId},
+      building_structure_id=#{buildingStructureId},
+      meter_executive_id=#{meterExecutiveId},
+      corrected_reading_id = #{correctedReadingId},
+      surplus = #{surplus}
+      verification_record=#{verificationRecord}
+      consumption=#{consumption}
+     where meter_reading_data_id = #{meterReadingDataId,jdbcType=VARCHAR}
+  </update>
+  
+    <!--   修改抄表信息 修正读数 -->
+  <update id="updateMeter" parameterType="String" >
+    update t_meter_reading_data
+    set  verification_record=1
+     where meter_reading_data_id = #{0}
+  </update>
+      <!--   修改抄表信息 核实 -->
+  <update id="updateMeterChecked">
+    update t_meter_reading_data
+    set  verification_record=1
+     where meter_reading_data_id in
+     <foreach collection="list" open="(" close=")" separator="," item="item">
+     	#{item}
+     </foreach>
+  </update>
+       <!--   修改抄表信息 添加重抄任务-->
+  <update id="updateMeterRecoed">
+    update t_meter_reading_data
+    set  verification_record=2
+     where meter_reading_data_id in 
+     <foreach collection="list" open="(" close=")" separator="," item="item">
+     	#{item}
+     </foreach>
+  </update>
+    <!--   修改抄表信息 驳回-->
+  <update id="updateMeterReject">
+    update t_meter_reading_data
+    set  verification_record=0
+     where meter_reading_data_id in 
+     <foreach collection="list" open="(" close=")" separator="," item="item">
+     	#{item}
+     </foreach>
+  </update>
+    <!--   修改抄表信息 重抄任务-->
+  <update id="updateVerification">
+    update t_meter_reading_data
+    set  verification_record=3
+     where meter_reading_data_id in 
+     <foreach collection="list" open="(" close=")" separator="," item="item">
+     	#{item}
+     </foreach>
+  </update>
+  <!-- 根据建筑结构id查询水表读数 -->
+  <select id="getMeterReadings" parameterType="String" resultMap="BaseResultMap">
+       select mrd.reading,mrd.last_month_reading 
+       from t_meter_reading_data as mrd
+       where mrd.building_structure_id=#{buildingStructureId,jdbcType=VARCHAR}
+  </select>
+  <!-- 根据建筑结构id查询水表信息 -->
+  <select id="getMeterReadingsByBuildingId" parameterType="String" resultMap="BaseResultMap">
+       	SELECT b.reading,
+		b.meter_reading_date,
+		d.water_meter_num,
+		d.water_meter_id
+		FROM
+			(select * from ts_tasks WHERE address_id=#{0} limit 0,1) a
+		INNER JOIN t_meter_reading_data b ON a.address_id = b.building_structure_id
+		INNER JOIN t_water_meter_records c ON b.water_meter_record_id = c.water_meter_records_id
+		INNER JOIN t_water_meter d ON c.water_meter_id = d.water_meter_id
+  </select>
+  
+  <!-- 根据水表建筑结构id和抄表日期查询水表用量 -->
+  <select id="selectByBuildingStructureIdAndMeterReadingDate" resultType="MeterReadingData">
+ <!--       	select last_month_reading,reading from t_meter_reading_data WHERE building_structure_id=#{0} and meter_reading_date=#{1}; -->
+       	select consumption from t_meter_reading_data WHERE building_structure_id=#{0} and YEAR(specified_date)=YEAR(#{1}) and  MONTH(specified_date) = MONTH(#{1});
+       	 
+       	
+  </select>
+  
+  
+<!--   查询当前月、上一个月、去年同月的数据 -->
+  <select id="listPageMeterReadingDates" parameterType="MeterReadingData"  resultMap="resultMeterReadingDataMap">
+  select a.* from t_meter_reading_data a 
+  left join  t_water_meter_records b on a.water_meter_record_id = b.water_meter_records_id
+  where (DATE_FORMAT(meter_reading_date,'%Y-%m')=DATE_FORMAT(CURDATE(),'%Y-%m') 
+ or  PERIOD_DIFF( date_format( CURDATE( ) , '%Y%m' ) , date_format( meter_reading_date, '%Y%m' ) ) =1 
+ or  PERIOD_DIFF( date_format( CURDATE( ) , '%Y%m' ) , date_format( meter_reading_date, '%Y%m' ) ) =12 )
+  and  a.water_meter_record_id = b.water_meter_records_id
+  </select>
+    <!-- 根据条件查询水表读数 -->
+  <select id="getMeterReadingByC" parameterType="java.util.Map" resultMap="BaseResultMap">
+       select mrd.reading,mrd.last_month_reading 
+       from t_meter_reading_data as mrd
+       where mrd.building_structure_id=#{buildingStructureId,jdbcType=VARCHAR} and meter_reading_date &gt;= #{month,jdbcType=DATE} group by meter_reading_date desc
+  </select>
+  
+  <select id="selectLastMonthReading" parameterType="java.lang.String" resultMap="BaseResultMap">
+  	select reading from t_meter_reading_data 
+	where water_meter_record_id=#{0}
+	order by specified_date desc
+	limit 0,1
+  </select>
+  
+  <select id="listPageMeterRecoedDateList" parameterType="MeterReadingData" resultMap="BaseResultMap">
+  	select a.*,d.water_meter_num,c.full_name from t_meter_reading_data a
+	join t_water_meter_records b on a.water_meter_record_id=b.water_meter_records_id
+	join tc_building_structure c on b.building_structure_id=c.id
+	join t_water_meter d on b.water_meter_id=d.water_meter_id
+	where a.meter_reading_program_id=#{meterReadingProgramId} 
+	<if test="fullName!='' and fullName!=null">
+	and c.full_name like "%"#{fullName}"%" 
+	</if>
+	<if test="waterMeterNum!='' and waterMeterNum!=null">
+	and d.water_meter_num like "%"#{waterMeterNum}"%"
+	</if>
+	order by a.abnormal_state desc
+  </select>
+  
+
+  <select id="listPageMeterRecoedDateList2" parameterType="MeterReadingData" resultMap="BaseResultMap">
+  	select a.*,d.water_meter_num,c.full_name from t_meter_reading_data a
+	join t_water_meter_records b on a.water_meter_record_id=b.water_meter_records_id
+	join tc_building_structure c on b.building_structure_id=c.id
+	join t_water_meter d on b.water_meter_id=d.water_meter_id
+	where a.verification_record='2'
+	<if test="fullName!='' and fullName!=null">
+	and c.full_name like "%"#{fullName}"%" 
+	</if>
+	<if test="waterMeterNum!='' and waterMeterNum!=null">
+	and d.water_meter_num like "%"#{waterMeterNum}"%"
+	</if>
+	order by a.abnormal_state desc
+  </select>
+  
+  <update id="examineProject">
+  	update t_meter_reading_data set audit_state='1'
+  	where meter_reading_program_id in
+  	<foreach item="item" collection="list" separator="," open="(" close=")" index="">  
+      #{item}  
+    </foreach>  
+  </update>
+  
+  <select id="selectMeterReadingDateByProgramId" parameterType="java.lang.String" resultMap="BaseResultMap">
+  	select * from t_meter_reading_data
+  	where meter_reading_program_id=#{0}
+  </select>
+  
+  <update id="updateByPrimaryKeySelective" parameterType="com.flf.entity.MeterReadingData" >
+    update t_meter_reading_data
+    <set >
+      <if test="waterMeterRecordId != null" >
+        water_meter_record_id = #{waterMeterRecordId,jdbcType=VARCHAR},
+      </if>
+      <if test="lastMonthReading != null" >
+        last_month_reading = #{lastMonthReading,jdbcType=DOUBLE},
+      </if>
+      <if test="reading != null" >
+        reading = #{reading,jdbcType=DOUBLE},
+      </if>
+      <if test="meterReadingPeople != null" >
+        meter_reading_people = #{meterReadingPeople,jdbcType=VARCHAR},
+      </if>
+      <if test="meterReadingState != null" >
+        meter_reading_state = #{meterReadingState,jdbcType=TINYINT},
+      </if>
+      <if test="meterReadingDate != null" >
+        meter_reading_date = #{meterReadingDate,jdbcType=DATE},
+      </if>
+      <if test="readingState != null" >
+        reading_state = #{readingState,jdbcType=TINYINT},
+      </if>
+      <if test="note != null" >
+        note = #{note,jdbcType=VARCHAR},
+      </if>
+      <if test="auditState != null" >
+        audit_state = #{auditState,jdbcType=TINYINT},
+      </if>
+      <if test="auditPeople != null" >
+        audit_people = #{auditPeople,jdbcType=VARCHAR},
+      </if>
+      <if test="correction != null" >
+        correction = #{correction,jdbcType=DOUBLE},
+      </if>
+      <if test="reason != null" >
+        reason = #{reason,jdbcType=VARCHAR},
+      </if>
+      <if test="waterDamage != null" >
+        water_damage = #{waterDamage,jdbcType=DOUBLE},
+      </if>
+      <if test="abnormalState != null" >
+        abnormal_state = #{abnormalState,jdbcType=TINYINT},
+      </if>
+      <if test="meterReadingProgramId != null" >
+        meter_reading_program_id = #{meterReadingProgramId,jdbcType=VARCHAR},
+      </if>
+      <if test="teamworkId != null" >
+        teamwork_id = #{teamworkId,jdbcType=VARCHAR},
+      </if>
+      <if test="meterExecutiveId != null" >
+        meter_executive_id = #{meterExecutiveId,jdbcType=VARCHAR},
+      </if>
+      <if test="correctedReadingId != null" >
+        corrected_reading_id = #{correctedReadingId,jdbcType=VARCHAR},
+      </if>
+      <if test="surplus != null" >
+        surplus = #{surplus,jdbcType=DOUBLE},
+      </if>
+      <if test="specifiedDate != null" >
+        specified_date = #{specifiedDate,jdbcType=DATE},
+      </if>
+      <if test="verificationRecord != null" >
+        verification_record = #{verificationRecord,jdbcType=TINYINT},
+      </if>
+      <if test="buildingStructureId != null" >
+        building_structure_id = #{buildingStructureId,jdbcType=VARBINARY},
+      </if>
+      <if test="consumption != null" >
+        consumption = #{consumption,jdbcType=DOUBLE},
+      </if>
+      <if test="loopNum != null" >
+        loop_num = #{loopNum,jdbcType=DOUBLE},
+      </if>
+    </set>
+    where meter_reading_data_id = #{meterReadingDataId,jdbcType=VARCHAR}
+  </update>
+  
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+  	select * from t_meter_reading_data where meter_reading_data_id=#{0} 
+  </select>
+  
+   <select id="selectByMeterReadingProgramId" parameterType="java.lang.String" resultMap="BaseResultMap">
+  	select * from t_meter_reading_data where meter_reading_program_id=#{0} 
+  </select>
+  
+  <select id="selectByWaterMeterRecordIdAndDate" resultMap="BaseResultMap">
+  	select * from t_meter_reading_data
+  	where water_meter_record_id=#{0}
+  	and  YEAR(specified_date)=YEAR(#{1}) AND MONTH(specified_date) = MONTH(#{1})
+  </select>
+  
+  <select id="selectMeterReadingDateByMeterReadingProgramId" parameterType="java.lang.String" resultMap="BaseResultMap">
+  	select a.meter_reading_data_id,a.meter_reading_people,d.water_meter_num,c.full_name,a.last_month_reading,a.reading from t_meter_reading_data a
+	join t_water_meter_records b on a.water_meter_record_id=b.water_meter_records_id
+	join tc_building_structure c on b.building_structure_id=c.id
+	join t_water_meter d on b.water_meter_id=d.water_meter_id
+	where a.meter_reading_program_id=#{0}
+  </select>
+  <select id="listPageWaterMeterRecordAll" parameterType="com.flf.entity.MeterReadingData" resultMap="reportMeterReadingDataMap">
+  	SELECT a.*,d.water_meter_num,b.water_meter_described,f.project_name FROM t_meter_reading_data a
+LEFT	JOIN t_water_meter_records b ON a.water_meter_record_id=b.water_meter_records_id
+LEFT	JOIN tc_building_structure c ON b.building_structure_id=c.id
+LEFT	JOIN t_water_meter d ON b.water_meter_id=d.water_meter_id
+LEFT	JOIN t_water_meter_project e ON e.water_meter_records_id=b.water_meter_records_id
+LEFT	JOIN t_meter_reading_program f ON e.reading_program_id=f.meter_reading_program_id
+      where 1=1 and f.meter_reading_program_id is not null
+      <if test="waterMeterNum !=null and waterMeterNum !=''">
+          and d.water_meter_num  LIKE CONCAT('%',#{waterMeterNum},'%')
+      </if>
+      group by f.project_name
+  </select>
+  
+  <delete id="deleteByReadingProgramId" parameterType="java.lang.String">
+  	delete from t_meter_reading_data where meter_reading_program_id=#{0}
+  </delete>
+  
+  <select id="listAllMeterReadingData1"  resultMap="reportMeterReadingDataMap">
+  	SELECT a.*,d.water_meter_num,b.water_meter_described,f.project_name FROM t_meter_reading_data a
+LEFT	JOIN t_water_meter_records b ON a.water_meter_record_id=b.water_meter_records_id
+LEFT	JOIN tc_building_structure c ON b.building_structure_id=c.id
+LEFT	JOIN t_water_meter d ON b.water_meter_id=d.water_meter_id
+LEFT	JOIN t_water_meter_project e ON e.water_meter_records_id=b.water_meter_records_id
+LEFT	JOIN t_meter_reading_program f ON e.reading_program_id=f.meter_reading_program_id
+  </select>
+  
+</mapper>

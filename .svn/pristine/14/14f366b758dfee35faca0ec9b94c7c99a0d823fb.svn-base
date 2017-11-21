@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.flf.mapper.ChangeTitleMapper" >
+  <resultMap id="BaseResultMap" type="com.flf.entity.ChangeTitle" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="house_id" property="houseId" jdbcType="VARCHAR" />
+    <result column="pact_id" property="pactId" jdbcType="VARCHAR" />
+    <result column="buy_date" property="buyDate" jdbcType="DATE" />
+    <result column="sign_contract_date" property="signContractDate" jdbcType="DATE" />
+    <result column="cust_name" property="custName" jdbcType="VARCHAR" />
+    <result column="new_cust_name" property="newCustName" jdbcType="VARCHAR" />
+    <result column="cust_id" property="custId" jdbcType="VARCHAR" />
+    <result column="new_cust_id" property="newCustId" jdbcType="VARCHAR" />
+    <result column="registration_price" property="registrationPrice" />
+    <result column="house_after_folding_price" property="houseAfterFoldingPrice"  />
+    <result column="building_area_price" property="buildingAreaPrice" />
+    <result column="setIn_building_price" property="setinBuildingPrice"  />
+    <result column="deal_type" property="dealType" jdbcType="VARCHAR" />
+    <result column="payment_type" property="paymentType" jdbcType="VARCHAR" />
+    <result column="down_payment_price" property="downPaymentPrice" />
+    <result column="property_type" property="propertyType" jdbcType="VARCHAR" />
+    <result column="pact_scan" property="pactScan" jdbcType="VARCHAR" />
+    <result column="property_scan" property="propertyScan" jdbcType="VARCHAR" />
+    <result column="stall_id" property="stallId" jdbcType="VARCHAR" />
+    <result column="arrearage_pay" property="arrearagePay" jdbcType="TINYINT" />
+    <result column="operate_date" property="operateDate" jdbcType="DATE"/>
+    <result column="store_id" property="storeId" jdbcType="VARCHAR"/>
+    
+    <result column="full_name" property="fullName" jdbcType="VARCHAR" />           
+    <result column="state" property="state" jdbcType="TINYINT" />           
+    <result column="building_area" property="buildingArea" jdbcType="DOUBLE" />           
+    <result column="house_num" property="houseNum" jdbcType="VARCHAR" />           
+    <result column="garage_number" property="garageNumber" jdbcType="VARCHAR" />           
+    <result column="store_number" property="storeNumber" jdbcType="VARCHAR" />           
+    <result column="building_type" property="buildingType" jdbcType="VARCHAR" />   
+    <result column="join_gang_state" property="joinGangState" jdbcType="TINYINT" />   
+    <result column="store_intake_state" property="storeIntakeState" jdbcType="TINYINT" />   
+    <result column="stall_intake_state" property="stallIntakeState" jdbcType="TINYINT" />   
+    <result column="stall_type" property="stallType" jdbcType="VARCHAR" />   
+    <result column="stall_coding" property="stallCoding" jdbcType="VARCHAR" />   
+    
+  </resultMap>
+ 
+ <select id="listPageChangeTitle" parameterType="ChangeTitle" resultMap="BaseResultMap">
+		select * from t_changetitle 
+		<!-- where 1=1  	
+  	<if test="developersNumber!=null and developersNumber!= '' ">
+  		and developers_number like CONCAT('%',#{developersNumber},'%')
+  	</if>	 -->	
+ </select>
+ 
+  <select id="listAllChangeTitle" parameterType="ChangeTitle" resultMap="BaseResultMap">
+		select * from t_changetitle 
+		<!-- where 1=1  	
+  	<if test="developersNumber!=null and developersNumber!= '' ">
+  		and developers_number like CONCAT('%',#{developersNumber},'%')
+  	</if>	 -->	
+ </select>
+
+ <select id="getChangeTitleById" resultMap="BaseResultMap" parameterType="String" >
+    select * from t_changetitle
+     where id = #{0}
+ </select>
+ 
+  <select id="getChangeTitleByStallId" resultMap="BaseResultMap" parameterType="String" >
+    select * from t_changetitle
+     where stall_id = #{0}
+ </select>
+
+	<select id="getHouseHistoryByCustId" resultMap="BaseResultMap" parameterType="String">
+		select ct.*,bs.full_name,bs.building_type,pb.state ,bs.building_area,h.house_num,h.join_gang_state 
+		from t_changetitle ct 
+		left join tc_house h on ct.house_id = h.id 
+		left join tc_person_building pb on h.building_structure_id = pb.building_structure_id 
+		left join tc_building_structure bs on h.building_structure_id = bs.id 
+		where ct.cust_id=#{cust_id,jdbcType=VARCHAR} and pb.state=1 and bs.building_type='住宅'
+		group by ct.id ORDER BY operate_date DESC
+	</select>
+	
+	<select id="getStallHistoryByCustId" resultMap="BaseResultMap" parameterType="String">
+		select ct.*,bs.full_name,bs.building_type,pb.state ,bs.building_area,s.garage_number,s.intake_state stall_intake_state,s.stall_type,s.stall_coding
+		from t_changetitle ct 
+		left join tc_stall s on s.stall_id = ct.stall_id 
+		left join tc_person_building pb on s.building_structure_id = pb.building_structure_id 
+		left join tc_building_structure bs on s.building_structure_id = bs.id 
+		where ct.cust_id=#{cust_id,jdbcType=VARCHAR} and pb.state=1 and bs.building_type='车位'
+		group by ct.id
+	</select>
+	
+	<select id="getStoreHistoryByCustId" resultMap="BaseResultMap" parameterType="String">
+		select ct.*,bs.full_name,bs.building_type,pb.state ,bs.building_area,t.store_number,t.intake_state store_intake_state
+		from t_changetitle ct 
+		left join tc_store t on t.store_id = ct.store_id 
+		left join tc_person_building pb on t.building_structure_id = pb.building_structure_id 
+		left join tc_building_structure bs on t.building_structure_id = bs.id 
+		where ct.cust_id=#{cust_id,jdbcType=VARCHAR} and pb.state=1 and bs.building_type='商铺' 
+		group by ct.id
+	</select>
+
+ <insert id="insertChangeTitle" parameterType="com.flf.entity.ChangeTitle" >
+    insert into t_changetitle (id, house_id, pact_id, 
+      buy_date, sign_contract_date, cust_name, 
+      new_cust_name, cust_id, new_cust_id, 
+      registration_price, house_after_folding_price, building_area_price, 
+      setIn_building_price, deal_type, payment_type, 
+      down_payment_price, property_type, pact_scan, 
+      property_scan, stall_id,arrearage_pay,operate_date,store_id)
+    values (UUID(), #{houseId,jdbcType=VARCHAR}, #{pactId,jdbcType=VARCHAR}, 
+      #{buyDate,jdbcType=DATE}, #{signContractDate,jdbcType=DATE}, #{custName,jdbcType=VARCHAR}, 
+      #{newCustName,jdbcType=VARCHAR}, #{custId,jdbcType=VARCHAR}, #{newCustId,jdbcType=VARCHAR}, 
+      #{registrationPrice,jdbcType=REAL}, #{houseAfterFoldingPrice,jdbcType=REAL}, #{buildingAreaPrice,jdbcType=REAL}, 
+      #{setinBuildingPrice,jdbcType=REAL}, #{dealType,jdbcType=VARCHAR}, #{paymentType,jdbcType=VARCHAR}, 
+      #{downPaymentPrice,jdbcType=REAL},#{propertyType,jdbcType=VARCHAR}, #{pactScan,jdbcType=VARCHAR}, 
+      #{propertyScan,jdbcType=VARCHAR}, #{stallId,jdbcType=VARCHAR},#{arrearagePay,jdbcType=TINYINT},now(),#{storeId,jdbcType=VARCHAR})
+  </insert>
+
+<update id="updateChangeTitle" parameterType="java.lang.Integer" >
+     update t_changetitle
+    set 
+      house_id = #{houseId,jdbcType=VARCHAR},
+      pact_id = #{pactId,jdbcType=VARCHAR},
+      buy_date = #{buyDate,jdbcType=DATE},
+      sign_contract_date = #{signContractDate,jdbcType=DATE},
+      cust_name = #{custName,jdbcType=VARCHAR},
+      new_cust_name = #{newCustName,jdbcType=VARCHAR},
+      cust_id = #{custId,jdbcType=VARCHAR},
+      new_cust_id = #{newCustId,jdbcType=VARCHAR},
+      registration_price = #{registrationPrice,jdbcType=REAL},
+      house_after_folding_price = #{houseAfterFoldingPrice,jdbcType=REAL},
+      building_area_price = #{buildingAreaPrice,jdbcType=REAL},
+      setIn_building_price = #{setinBuildingPrice,jdbcType=REAL},
+      deal_type = #{dealType,jdbcType=VARCHAR},
+      payment_type = #{paymentType,jdbcType=VARCHAR},
+      down_payment_price = #{downPaymentPrice,jdbcType=REAL},
+      property_type = #{propertyType,jdbcType=VARCHAR},
+      pact_scan = #{pactScan,jdbcType=VARCHAR},
+      property_scan = #{propertyScan,jdbcType=VARCHAR},
+      stall_id = #{stallId,jdbcType=VARCHAR},
+      arrearage_pay=#{arrearagePay},
+      operate_date=now(),
+      store_id=storeId
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  
+  <delete id="deleteChangeTitle" parameterType="String">
+    delete from t_changetitle
+    where id=#{0}
+  </delete>
+
+  </mapper>

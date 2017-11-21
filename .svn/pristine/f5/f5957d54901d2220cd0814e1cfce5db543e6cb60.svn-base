@@ -1,0 +1,126 @@
+package com.flf.service.impl;
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.List;
+import java.util.UUID;
+
+import org.springframework.beans.factory.annotation.Autowired;
+
+import com.flf.entity.ChargeType;
+import com.flf.entity.ChargeTypeDetails;
+import com.flf.entity.PageRestful;
+import com.flf.mapper.ChargeTypeDetailsMapper;
+import com.flf.mapper.ChargeTypeMapper;
+import com.flf.service.ChargeTypeService;
+/**
+ * 
+ * @author maogaofei
+ * @date 2016年6月28日 下午2:11:20
+ */
+public class ChargeTypeServiceImpl implements ChargeTypeService {
+	private ChargeTypeMapper chargeTypeMapper;
+	
+	@Autowired
+	private ChargeTypeDetailsMapper chargeTypeDetailsMapper;
+
+	public ChargeTypeMapper getChargeTypeMapper() {
+		return chargeTypeMapper;
+	}
+
+
+	public void setChargeTypeMapper(ChargeTypeMapper chargeTypeMapper) {
+		this.chargeTypeMapper = chargeTypeMapper;
+	}
+
+
+	@Override
+	public List<ChargeType> listAllChargeType(ChargeType chargeType) {
+		List<ChargeType>  chargeTypeList = chargeTypeMapper.listAllChargeType(chargeType);
+		return chargeTypeList;
+	}
+
+
+	@Override
+	public ChargeType getChargeTypeById(String chargeTypeId) {
+		return chargeTypeMapper.selectByPrimaryKey(chargeTypeId);
+	}
+	
+	@Override
+	public List<ChargeType> getChargeTypeProjectId(String projectId) {
+		List<ChargeType> list = chargeTypeMapper.getChargeTypeProjectId(projectId);
+		return list;
+	}
+
+
+	@Override
+	public void addChargeType(ChargeType chargeType) {
+		//生成ID
+		String chargetypeid=UUID.randomUUID().toString();
+		//设置ID
+		chargeType.setChargeTypeId(chargetypeid);
+		
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		
+		chargeType.setCreateTime(sdf.format(new Date()));
+		
+		if (chargeType.getChargetypedetailslist() != null
+				&& chargeType.getChargetypedetailslist().size() > 0) {
+			for (ChargeTypeDetails ad : chargeType.getChargetypedetailslist()) {
+				ad.setChargeTypeDetailsId(UUID.randomUUID().toString());
+				ad.setChargeTypeId(chargetypeid);
+				chargeTypeDetailsMapper.insertSelective(ad);
+			}
+		}
+		
+	    chargeTypeMapper.insertSelective(chargeType);
+
+	}
+
+
+	@Override
+	public void changeState(String chargeTypeId) {
+		
+			chargeTypeMapper.changeState(chargeTypeId);
+			
+		}
+
+
+	@Override
+	public void editChargeType(ChargeType chargeType) {
+		String chargetypeid=chargeType.getChargeTypeId();
+		chargeTypeDetailsMapper.deleteByChargeTypeId(chargetypeid);
+		if (chargeType.getChargetypedetailslist() != null
+				&& chargeType.getChargetypedetailslist().size() > 0) {
+			for (ChargeTypeDetails ad : chargeType.getChargetypedetailslist()) {
+				ad.setChargeTypeId(chargetypeid);
+				ad.setChargeTypeDetailsId(UUID.randomUUID().toString());
+				chargeTypeDetailsMapper.insertSelective(ad);
+			}
+		}
+		chargeTypeMapper.updateByPrimaryKeySelective(chargeType);
+		
+	}
+
+
+	@Override
+	public PageRestful listPageChargeType(ChargeType chargeType) {
+		PageRestful pageRestful = new PageRestful();
+		List<ChargeType> chargetypes = chargeTypeMapper.listPageChargeType(chargeType);
+		chargetypes.add(0, null);
+		pageRestful.setChargetypes(chargetypes);
+		pageRestful.setPage(chargeType.getPage());
+		return pageRestful;
+	}
+
+
+	
+
+
+	
+	
+	
+	
+	
+
+}

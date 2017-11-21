@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.flf.mapper.DivisionMapper" >
+    <resultMap id="BaseResultMap" type="Division" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="division_name" property="divisionName" jdbcType="VARCHAR" />
+    <result column="isinitialize" property="isinitialize" jdbcType="INTEGER" />
+  </resultMap>
+  
+  <delete id="deleteDivision" parameterType="String">
+  delete from t_division where id=#{0}
+  </delete>
+  
+  <select id="listPageDivision" parameterType="Division" resultMap="BaseResultMap">
+  select * from t_division  
+  </select>
+
+  
+  <select id="listAllDivision" resultMap="BaseResultMap">
+  select * from t_division 
+  </select>
+  
+  <select id="getDivisionbyId" parameterType="String" resultMap="BaseResultMap">
+  select * from t_division where id=#{0}
+  </select>
+  
+  <insert id="insertDivision" parameterType="Division">
+    insert into t_division (id,division_name)
+    values (UUID(),#{divisionName})
+  </insert>
+  
+  <update id="updateDivision" parameterType="Division" >
+      update t_division
+    set division_name = #{divisionName}
+	where id=#{id}
+  </update>
+  
+  <update id="updateDivisionisinitialize" parameterType="String">
+    update t_division
+    set isinitialize = 1
+	where id=#{id}
+  </update>
+</mapper>

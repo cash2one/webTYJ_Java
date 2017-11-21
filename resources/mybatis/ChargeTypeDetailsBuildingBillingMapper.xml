@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.flf.mapper.ChargeTypeDetailsBuildingBillingMapper" >
+  <resultMap id="BaseResultMap" type="com.flf.entity.ChargeTypeDetailsBuildingBilling" >
+    <id column="charge_type_details_building_billing_id_" property="chargeTypeDetailsBuildingBillingId" jdbcType="CHAR" />
+    <result column="charge_type_building_billing_id_" property="chargeTypeBuildingBillingId" jdbcType="CHAR" />
+    <result column="charge_type_details_id_" property="chargeTypeDetailsId" jdbcType="CHAR" />
+    <result column="charge_item_details_id_" property="chargeItemDetailsId" jdbcType="CHAR" />
+    <result column="billing_time_" property="billingTime" jdbcType="VARCHAR" />
+    <result column="amount_" property="amount" jdbcType="DECIMAL" />
+    <result column="status_" property="status" jdbcType="CHAR" />
+    <result column="create_user_" property="createUser" jdbcType="CHAR" />
+    <result column="create_time_" property="createTime" jdbcType="VARCHAR" />
+    <result column="update_user_" property="updateUser" jdbcType="CHAR" />
+    <result column="update_time_" property="updateTime" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    charge_type_details_building_billing_id_, charge_type_building_billing_id_, charge_type_details_id_, 
+    charge_item_details_id_, billing_time_, amount_, status_, create_user_, create_time_, 
+    update_user_, update_time_
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from tc_charge_type_details_building_billing
+    where charge_type_details_building_billing_id_ = #{chargeTypeDetailsBuildingBillingId,jdbcType=CHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from tc_charge_type_details_building_billing
+    where charge_type_details_building_billing_id_ = #{chargeTypeDetailsBuildingBillingId,jdbcType=CHAR}
+  </delete>
+  <insert id="insert" parameterType="com.flf.entity.ChargeTypeDetailsBuildingBilling" >
+    insert into tc_charge_type_details_building_billing (charge_type_details_building_billing_id_, charge_type_building_billing_id_, 
+      charge_type_details_id_, charge_item_details_id_, billing_time_, 
+      amount_, status_, create_user_, 
+      create_time_, update_user_, update_time_
+      )
+    values (#{chargeTypeDetailsBuildingBillingId,jdbcType=CHAR}, #{chargeTypeBuildingBillingId,jdbcType=CHAR}, 
+      #{chargeTypeDetailsId,jdbcType=CHAR}, #{chargeItemDetailsId,jdbcType=CHAR}, #{billingTime,jdbcType=VARCHAR}, 
+      #{amount,jdbcType=DECIMAL}, #{status,jdbcType=CHAR}, #{createUser,jdbcType=CHAR}, 
+      #{createTime,jdbcType=VARCHAR}, #{updateUser,jdbcType=CHAR}, #{updateTime,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.flf.entity.ChargeTypeDetailsBuildingBilling" >
+    insert into tc_charge_type_details_building_billing
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="chargeTypeDetailsBuildingBillingId != null" >
+        charge_type_details_building_billing_id_,
+      </if>
+      <if test="chargeTypeBuildingBillingId != null" >
+        charge_type_building_billing_id_,
+      </if>
+      <if test="chargeTypeDetailsId != null" >
+        charge_type_details_id_,
+      </if>
+      <if test="chargeItemDetailsId != null" >
+        charge_item_details_id_,
+      </if>
+      <if test="billingTime != null" >
+        billing_time_,
+      </if>
+      <if test="amount != null" >
+        amount_,
+      </if>
+      <if test="status != null" >
+        status_,
+      </if>
+      <if test="createUser != null" >
+        create_user_,
+      </if>
+      <if test="createTime != null" >
+        create_time_,
+      </if>
+      <if test="updateUser != null" >
+        update_user_,
+      </if>
+      <if test="updateTime != null" >
+        update_time_,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="chargeTypeDetailsBuildingBillingId != null" >
+        #{chargeTypeDetailsBuildingBillingId,jdbcType=CHAR},
+      </if>
+      <if test="chargeTypeBuildingBillingId != null" >
+        #{chargeTypeBuildingBillingId,jdbcType=CHAR},
+      </if>
+      <if test="chargeTypeDetailsId != null" >
+        #{chargeTypeDetailsId,jdbcType=CHAR},
+      </if>
+      <if test="chargeItemDetailsId != null" >
+        #{chargeItemDetailsId,jdbcType=CHAR},
+      </if>
+      <if test="billingTime != null" >
+        #{billingTime,jdbcType=VARCHAR},
+      </if>
+      <if test="amount != null" >
+        #{amount,jdbcType=DECIMAL},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=CHAR},
+      </if>
+      <if test="createUser != null" >
+        #{createUser,jdbcType=CHAR},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=VARCHAR},
+      </if>
+      <if test="updateUser != null" >
+        #{updateUser,jdbcType=CHAR},
+      </if>
+      <if test="updateTime != null" >
+        #{updateTime,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.flf.entity.ChargeTypeDetailsBuildingBilling" >
+    update tc_charge_type_details_building_billing
+    <set >
+      <if test="chargeTypeBuildingBillingId != null" >
+        charge_type_building_billing_id_ = #{chargeTypeBuildingBillingId,jdbcType=CHAR},
+      </if>
+      <if test="chargeTypeDetailsId != null" >
+        charge_type_details_id_ = #{chargeTypeDetailsId,jdbcType=CHAR},
+      </if>
+      <if test="chargeItemDetailsId != null" >
+        charge_item_details_id_ = #{chargeItemDetailsId,jdbcType=CHAR},
+      </if>
+      <if test="billingTime != null" >
+        billing_time_ = #{billingTime,jdbcType=VARCHAR},
+      </if>
+      <if test="amount != null" >
+        amount_ = #{amount,jdbcType=DECIMAL},
+      </if>
+      <if test="status != null" >
+        status_ = #{status,jdbcType=CHAR},
+      </if>
+      <if test="createUser != null" >
+        create_user_ = #{createUser,jdbcType=CHAR},
+      </if>
+      <if test="createTime != null" >
+        create_time_ = #{createTime,jdbcType=VARCHAR},
+      </if>
+      <if test="updateUser != null" >
+        update_user_ = #{updateUser,jdbcType=CHAR},
+      </if>
+      <if test="updateTime != null" >
+        update_time_ = #{updateTime,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where charge_type_details_building_billing_id_ = #{chargeTypeDetailsBuildingBillingId,jdbcType=CHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.flf.entity.ChargeTypeDetailsBuildingBilling" >
+    update tc_charge_type_details_building_billing
+    set charge_type_building_billing_id_ = #{chargeTypeBuildingBillingId,jdbcType=CHAR},
+      charge_type_details_id_ = #{chargeTypeDetailsId,jdbcType=CHAR},
+      charge_item_details_id_ = #{chargeItemDetailsId,jdbcType=CHAR},
+      billing_time_ = #{billingTime,jdbcType=VARCHAR},
+      amount_ = #{amount,jdbcType=DECIMAL},
+      status_ = #{status,jdbcType=CHAR},
+      create_user_ = #{createUser,jdbcType=CHAR},
+      create_time_ = #{createTime,jdbcType=VARCHAR},
+      update_user_ = #{updateUser,jdbcType=CHAR},
+      update_time_ = #{updateTime,jdbcType=VARCHAR}
+    where charge_type_details_building_billing_id_ = #{chargeTypeDetailsBuildingBillingId,jdbcType=CHAR}
+  </update>
+  <!-- 根据条件查询收费类型详情建筑计费列表 -->
+  <select id="listAllChargeTypeDetailsBuildingBilling" parameterType="com.flf.entity.ChargeTypeDetailsBuildingBilling" resultMap="BaseResultMap">
+		select a.* from tc_charge_type_details_building_billing a 
+		left join tc_charge_type_details b on a.charge_type_details_id_ = b.charge_type_details_id  where 1=1
+	<if test="chargeTypeDetailsId != null and chargeTypeDetailsId != ''">
+		and a.charge_type_details_id_ = #{chargeTypeDetailsId}
+	</if>
+	<if test="chargeTypeBuildingBillingId != null and chargeTypeBuildingBillingId != ''">
+		and a.charge_type_building_billing_id_ = #{chargeTypeBuildingBillingId}
+	</if>
+	order by b.charge_type_details_num asc
+  </select>
+</mapper>

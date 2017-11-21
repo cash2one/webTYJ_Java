@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.flf.mapper.ChargeItemNewDetailsMapper" >
+  <resultMap id="BaseResultMap" type="com.flf.entity.ChargeItemNewDetails" >
+    <id column="charge_item_details_id" property="chargeItemDetailsId" jdbcType="VARCHAR" />
+    <result column="charge_type_details_id" property="chargeTypeDetailsId" jdbcType="VARCHAR" />
+    <result column="charge_item_details_num" property="chargeItemDetailsNum" jdbcType="VARCHAR" />
+    <result column="charge_item_new_id" property="chargeItemNewId" jdbcType="VARCHAR" />
+    <result column="create_user" property="createUser" jdbcType="VARCHAR" />
+    <result column="create_time" property="createTime" jdbcType="VARCHAR" />
+    <result column="update_user" property="updateUser" jdbcType="VARCHAR" />
+    <result column="update_time" property="updateTime" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    charge_item_details_id, charge_type_details_id, charge_item_details_num,charge_item_new_id, create_user, 
+    create_time, update_user, update_time
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from tc_charge_item_new_details
+    where charge_item_details_id = #{chargeItemDetailsId,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from tc_charge_item_new_details
+    where charge_item_details_id = #{chargeItemDetailsId,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.flf.entity.ChargeItemNewDetails" >
+    insert into tc_charge_item_new_details (charge_item_details_id, charge_type_details_id, 
+      charge_item_details_num,charge_item_new_id, create_user, create_time, 
+      update_user, update_time)
+    values (#{chargeItemDetailsId,jdbcType=VARCHAR}, #{chargeTypeDetailsId,jdbcType=VARCHAR}, 
+      #{chargeItemDetailsNum,jdbcType=VARCHAR},#{chargeItemNewId,jdbcType=VARCHAR}, #{createUser,jdbcType=VARCHAR}, #{createTime,jdbcType=VARCHAR}, 
+      #{updateUser,jdbcType=VARCHAR}, #{updateTime,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.flf.entity.ChargeItemNewDetails" >
+    insert into tc_charge_item_new_details
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="chargeItemDetailsId != null" >
+        charge_item_details_id,
+      </if>
+      <if test="chargeTypeDetailsId != null" >
+        charge_type_details_id,
+      </if>
+      <if test="chargeItemDetailsNum != null" >
+        charge_item_details_num,
+      </if>
+      <if test="chargeItemNewId != null" >
+        charge_item_new_id,
+      </if>
+      <if test="createUser != null" >
+        create_user,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="updateUser != null" >
+        update_user,
+      </if>
+      <if test="updateTime != null" >
+        update_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="chargeItemDetailsId != null" >
+        #{chargeItemDetailsId,jdbcType=VARCHAR},
+      </if>
+      <if test="chargeTypeDetailsId != null" >
+        #{chargeTypeDetailsId,jdbcType=VARCHAR},
+      </if>
+      <if test="chargeItemDetailsNum != null" >
+        #{chargeItemDetailsNum,jdbcType=VARCHAR},
+      </if>
+      <if test="chargeItemNewId != null" >
+        #{chargeItemNewId,jdbcType=VARCHAR},
+      </if>
+      <if test="createUser != null" >
+        #{createUser,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=VARCHAR},
+      </if>
+      <if test="updateUser != null" >
+        #{updateUser,jdbcType=VARCHAR},
+      </if>
+      <if test="updateTime != null" >
+        #{updateTime,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.flf.entity.ChargeItemNewDetails" >
+    update tc_charge_item_new_details
+    <set >
+      <if test="chargeTypeDetailsId != null" >
+        charge_type_details_id = #{chargeTypeDetailsId,jdbcType=VARCHAR},
+      </if>
+      <if test="chargeItemDetailsNum != null" >
+        charge_item_details_num = #{chargeItemDetailsNum,jdbcType=VARCHAR},
+      </if>
+      <if test="chargeItemNewId != null" >
+        charge_item_new_id = #{chargeItemNewId,jdbcType=VARCHAR},
+      </if>
+      <if test="createUser != null" >
+        create_user = #{createUser,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=VARCHAR},
+      </if>
+      <if test="updateUser != null" >
+        update_user = #{updateUser,jdbcType=VARCHAR},
+      </if>
+      <if test="updateTime != null" >
+        update_time = #{updateTime,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where charge_item_details_id = #{chargeItemDetailsId,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.flf.entity.ChargeItemNewDetails" >
+    update tc_charge_item_new_details
+    set charge_type_details_id = #{chargeTypeDetailsId,jdbcType=VARCHAR},
+      charge_item_details_num = #{chargeItemDetailsNum,jdbcType=VARCHAR},
+      charge_item_new_id = #{chargeItemNewId,jdbcType=VARCHAR},
+      create_user = #{createUser,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=VARCHAR},
+      update_user = #{updateUser,jdbcType=VARCHAR},
+      update_time = #{updateTime,jdbcType=VARCHAR}
+    where charge_item_details_id = #{chargeItemDetailsId,jdbcType=VARCHAR}
+  </update>
+  <select id="getCIDByCtdAndCin" parameterType="java.lang.String" resultMap="BaseResultMap">
+  	select * from tc_charge_item_new_details where charge_type_details_id=#{0} 
+  		and charge_item_new_id=#{1}
+  </select>
+  <select id="listAllChargeItemNewDetails" parameterType="com.flf.entity.ChargeItemNewDetails" resultMap="BaseResultMap">
+  	select * from tc_charge_item_new_details where 1=1
+  		<if test="chargeItemNewId != null">
+  			and charge_item_new_id = #{chargeItemNewId}
+  		</if>
+  </select>
+</mapper>

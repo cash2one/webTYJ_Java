@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.flf.mapper.AnnexMapper" >
+  <resultMap id="BaseResultMap" type="Annex" >
+    <id column="annex_id" property="annexId" jdbcType="VARCHAR" />
+    <result column="relation_id" property="relationId" jdbcType="VARCHAR" />
+    <result column="annex_type" property="annexType" jdbcType="TINYINT" />
+    <result column="annex_address" property="annexAddress" jdbcType="VARCHAR" />
+    <result column="annex_name" property="annexName" jdbcType="VARCHAR" />
+    <result column="annex_time" property="annexTime" jdbcType="TIMESTAMP" />
+    <result column="pact_id" property="pactId" jdbcType="VARCHAR" />
+    <result column="is_main" property="isMain" jdbcType="VARCHAR"/>
+  </resultMap>
+  
+  <delete id="deleteAnnex" parameterType="String">
+      delete from ts_annex where pact_id=#{0}
+  </delete>
+  
+  <insert id="insertAnnex" parameterType="Annex" >      
+      insert into ts_annex (annex_id, relation_id, annex_type, annex_address,annex_name,annex_time,pact_id,is_main)
+    values (UUID(),#{relationId,jdbcType=VARCHAR}, #{annexType,jdbcType=TINYINT}, #{annexAddress,jdbcType=VARCHAR}, 
+      #{annexName,jdbcType=VARCHAR},#{annexTime,jdbcType=TIMESTAMP},#{pactId,jdbcType=VARCHAR},#{isMain,jdbcType=VARCHAR})
+  </insert>
+  
+  <insert id="insertAnnexUUID" parameterType="Annex" >      
+      insert into ts_annex (annex_id, relation_id, annex_type, annex_address,annex_name,annex_time,pact_id,is_main)
+    values (#{annexId,jdbcType=VARCHAR},#{relationId,jdbcType=VARCHAR}, #{annexType,jdbcType=TINYINT}, #{annexAddress,jdbcType=VARCHAR}, 
+      #{annexName,jdbcType=VARCHAR},#{annexTime,jdbcType=TIMESTAMP},#{pactId},#{isMain})
+  </insert>
+  
+  <select id="getAnnexbyRelationId" parameterType="String" resultMap="BaseResultMap">
+  	select * from ts_annex where relation_id = #{0} ORDER BY annex_time desc
+  </select>
+  
+  <select id="findAnnexByRelationIdAndPactId" parameterType="String" resultMap="BaseResultMap">
+  	select * from ts_annex where relation_id = #{0} and annex_address = #{1}
+  </select>
+  
+  <update id="updateAnnex" parameterType="Annex" >
+  	update ts_annex
+  		set annex_type = #{annexType,jdbcType=TINYINT},
+  			annex_address = #{annexAddress,jdbcType=VARCHAR},
+  			annex_name = #{annexName,jdbcType=VARCHAR},
+  			annex_time = #{annexTime,jdbcType=TIMESTAMP},
+  			pact_id = #{pactId},
+  			is_main = #{isMain}
+  		where annex_id = #{annexId,jdbcType=VARCHAR} and relation_id = #{relationId,jdbcType=VARCHAR}
+  </update>
+  <delete id="deleteAnnexByRelationId" parameterType="String">
+  	delete from ts_annex where relation_id=#{0}
+  </delete>
+  
+  <select id="getAnnexByPactId" parameterType="String" resultMap="BaseResultMap">
+  	select * from ts_annex where pact_id = #{pactId,jdbcType=VARCHAR}
+  </select>
+</mapper>

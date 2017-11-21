@@ -1,0 +1,244 @@
+package com.flf.entity;
+
+import java.util.Date;
+import java.util.List;
+
+import javax.xml.bind.annotation.XmlRootElement;
+
+import org.springframework.format.annotation.DateTimeFormat;
+
+/**
+ * 
+  * @ClassName: vip客户
+  * @Description: TODO
+  * @author wangyong
+  * @date 2015-6-17 上午11:43:27
+  *
+ */
+@XmlRootElement(name = "PersonVip")
+public class PersonVip {
+    private String vipId;  //vip客户id
+
+    private String custId;//个人客户id
+
+    private String enterpriseId;//企业客户id
+
+    private Byte vipGrade;//vip客户等级
+
+    private String vipNum;//vip客户编号
+
+    private @DateTimeFormat(pattern="yyyy-MM-dd")Date vipStart; //vip开始时间
+
+    private @DateTimeFormat(pattern="yyyy-MM-dd")Date vipEnd; //vip结束时间
+    
+    private PersonCustNew personCustNew;  //个人客户对象
+    
+    private EnterpriseCustNew  enterpriseCustNew; //企业客户对象
+   
+    private String applyReason ; //申请原因
+    
+    private String refuseReason ; // 拒绝原因
+    
+    private Byte reviewState ;//审核状态(0审核中1完成2驳回)
+    
+    private Byte applystype;//申请类型(0申请1失效)
+    
+    public Byte getApplystype() {
+		return applystype;
+	}
+
+	public void setApplystype(Byte applystype) {
+		this.applystype = applystype;
+	}
+
+	private Page page;
+    
+    private String name;  //客户姓名
+    
+    private String cardNum; //身份证号
+    
+    private String phoneNum ; //电话号
+    
+    private List<Annex> annexs; //上传资料实体    
+
+	private String applyfilePath;//上传路径
+    
+    private String staffId;//vip专员id    
+    
+    private String approvalId;//审批代办id
+
+    
+    private String theme;//主题
+    
+    public String getTheme() {
+		return theme;
+	}
+
+	public void setTheme(String theme) {
+		this.theme = theme;
+	}	
+    
+    public String getApprovalId() {
+		return approvalId;
+	}
+
+	public void setApprovalId(String approvalId) {
+		this.approvalId = approvalId;
+	}
+    
+    public String getApplyfilePath() {
+		return applyfilePath;
+	}
+
+	public void setApplyfilePath(String applyfilePath) {
+		this.applyfilePath = applyfilePath;
+	}
+
+	public String getStaffId() {
+		return staffId;
+	}
+
+	public void setStaffId(String staffId) {
+		this.staffId = staffId;
+	}
+
+
+	public List<Annex> getAnnexs() {
+		return annexs;
+	}
+
+	public void setAnnexs(List<Annex> annexs) {
+		this.annexs = annexs;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public String getCardNum() {
+		return cardNum;
+	}
+
+	public void setCardNum(String cardNum) {
+		this.cardNum = cardNum;
+	}
+
+	public String getPhoneNum() {
+		return phoneNum;
+	}
+
+	public void setPhoneNum(String phoneNum) {
+		this.phoneNum = phoneNum;
+	}
+
+	public String getApplyReason() {
+		return applyReason;
+	}
+
+	public void setApplyReason(String applyReason) {
+		this.applyReason = applyReason;
+	}
+
+	public String getRefuseReason() {
+		return refuseReason;
+	}
+
+	public void setRefuseReason(String refuseReason) {
+		this.refuseReason = refuseReason;
+	}
+
+	public Byte getReviewState() {
+		return reviewState;
+	}
+
+	public void setReviewState(Byte reviewState) {
+		this.reviewState = reviewState;
+	}
+
+	public EnterpriseCustNew getEnterpriseCustNew() {
+		return enterpriseCustNew;
+	}
+
+	public void setEnterpriseCustNew(EnterpriseCustNew enterpriseCustNew) {
+		this.enterpriseCustNew = enterpriseCustNew;
+	}
+
+	public PersonCustNew getPersonCustNew() {
+		return personCustNew;
+	}
+
+	public void setPersonCustNew(PersonCustNew personCustNew) {
+		this.personCustNew = personCustNew;
+	}
+
+	
+
+    public Page getPage() {
+		return page;
+	}
+
+	public void setPage(Page page) {
+		this.page = page;
+	}
+
+	public String getVipId() {
+        return vipId;
+    }
+
+    public void setVipId(String vipId) {
+        this.vipId = vipId;
+    }
+
+    public String getCustId() {
+        return custId;
+    }
+
+    public void setCustId(String custId) {
+        this.custId = custId;
+    }
+
+    public String getEnterpriseId() {
+        return enterpriseId;
+    }
+
+    public void setEnterpriseId(String enterpriseId) {
+        this.enterpriseId = enterpriseId;
+    }
+
+    public Byte getVipGrade() {
+        return vipGrade;
+    }
+
+    public void setVipGrade(Byte vipGrade) {
+        this.vipGrade = vipGrade;
+    }
+
+    public String getVipNum() {
+        return vipNum;
+    }
+
+    public void setVipNum(String vipNum) {
+        this.vipNum = vipNum;
+    }
+
+    public Date getVipStart() {
+        return vipStart;
+    }
+
+    public void setVipStart(Date vipStart) {
+        this.vipStart = vipStart;
+    }
+
+    public Date getVipEnd() {
+        return vipEnd;
+    }
+
+    public void setVipEnd(Date vipEnd) {
+        this.vipEnd = vipEnd;
+    }
+
+ }

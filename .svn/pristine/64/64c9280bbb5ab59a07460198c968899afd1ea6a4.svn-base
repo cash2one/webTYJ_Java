@@ -1,0 +1,140 @@
+package com.flf.service.impl;
+
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.UUID;
+import org.springframework.beans.factory.annotation.Autowired;
+import com.flf.entity.ElectricityMeter;
+import com.flf.entity.ElectricityMeterRecords;
+import com.flf.entity.Log;
+import com.flf.entity.PageRestful;
+import com.flf.entity.SearchMeter;
+import com.flf.mapper.ElectricityMeterMapper;
+import com.flf.mapper.ElectricityMeterRecordsMapper;
+import com.flf.service.ElectricityMeterRecordsService;
+import com.flf.service.LogService;
+import com.flf.util.Tools;
+
+public class ElectricityMeterRecordsServiceImpl implements ElectricityMeterRecordsService {
+	@Autowired
+	private LogService logService;
+	@Autowired
+	private ElectricityMeterRecordsMapper electricityMeterRecordsMapper;
+	@Autowired
+	private ElectricityMeterMapper electricityMeterMapper;
+	
+	@Override
+	public PageRestful listElectricityMeterRecords(SearchMeter searchMeter) {
+		// TODO Auto-generated method stub
+		PageRestful pageRestful = new PageRestful();
+		List<ElectricityMeterRecords> electricityMeterRecordss=electricityMeterRecordsMapper.listPageElectricityMeterRecords(searchMeter);
+		electricityMeterRecordss.add(0,null);
+		pageRestful.setElectricityMeterRecords(electricityMeterRecordss);
+		pageRestful.setPage(searchMeter.getPage());
+		return pageRestful;
+	}
+
+	@Override
+	public List<ElectricityMeterRecords> listAllElectricityMeterRecords() {
+		// TODO Auto-generated method stub
+		return electricityMeterRecordsMapper.listAllElectricityMeterRecords();
+	}
+
+	@Override
+	public ElectricityMeterRecords getUserByIdRest(
+			String electricityMeterRecordsId) {
+		// TODO Auto-generated method stub
+		return electricityMeterRecordsMapper.getElectricityMeterRecordsbyId(electricityMeterRecordsId);
+	}
+
+	@Override
+	public List<ElectricityMeterRecords> listElectricityMeterRecordsbyWaterId(
+			String waterMeterNum) {
+		// TODO Auto-generated method stub
+		List<ElectricityMeterRecords> aa= electricityMeterRecordsMapper.listElectricityMeterRecordsbyWaterId(waterMeterNum);
+		return aa;
+	}
+
+	@Override
+	public void insertElectricityMeterRecordsrest(
+			ElectricityMeterRecords electricityMeterRecords) {
+		// TODO Auto-generated method stub
+		String uuid=UUID.randomUUID().toString();
+		
+		electricityMeterRecords.setElectricityMeterRecordsId(uuid);
+		String  a = electricityMeterRecords.getElectricityMeterId();
+		ElectricityMeter electricityMeter = electricityMeterMapper.getElectricityMeterbyId(electricityMeterRecords.getElectricityMeterId());
+		if(electricityMeter!=null){
+			electricityMeter.setState(electricityMeterRecords.getState());
+			electricityMeterRecords.setAssetsId(electricityMeter.getAssetsId());
+			electricityMeterRecords.setParentId(electricityMeter.getElectricityMeterId());
+		
+//			propertyMapper.updateByPrimaryKey(waterMeterRecords.getProperty());		
+		}
+		electricityMeterRecordsMapper.insertElectricityMeterRecords(electricityMeterRecords);
+		electricityMeterMapper.updateElectricityMeter(electricityMeter);
+		//electricityMeterRecordsMapper.insertElectricityMeterRecords(electricityMeterRecords);
+	}
+
+	@Override
+	public void updateElectricityMeterRecordsrest(
+			ElectricityMeterRecords electricityMeterRecords) {
+		// TODO Auto-generated method stub
+		electricityMeterRecordsMapper.updateElectricityMeterRecords(electricityMeterRecords);
+	}
+
+	@Override
+	public void updateElectricityMeterRecordsrestbyNum(
+			ElectricityMeterRecords electricityMeterRecords) {
+		// TODO Auto-generated method stub
+        Date date =new Date();
+	if(electricityMeterRecordsMapper.updateElectricityMeterRecordsbyNum(electricityMeterRecords)>0){
+		Log log=new Log();
+		log.setOperation("停用");//操作
+		log.setService("电表停用");//业务
+		log.setThing("停用电表："+electricityMeterRecords.getElectricityMeterNum());
+		log.setRelevanceId(electricityMeterRecords.getMeterReadingPeople());//操作人
+		log.setTable("t_electricity_meter_records");//操作的表名
+		log.setTime(date);
+		log.setRelevanceId(electricityMeterRecords.getElectricityMeterRecordsId());//关联id
+		logService.insertElectricityLog(log);//记录日志
+		
+	}
+	ElectricityMeter electricityMeter = electricityMeterMapper.getElectricityMeterbyId(electricityMeterRecords.getElectricityMeterId());
+	if(electricityMeter!=null){
+		electricityMeter.setState(3);
+	}
+	electricityMeterMapper.updateElectricityMeter(electricityMeter);
+	electricityMeterRecordsMapper.updateElectricityMeterRecordsbyNum(electricityMeterRecords);
+
+	}
+
+	@Override
+	public void deleteElectricityMeterRecordsrest(
+			String electricityMeterRecordsId) {
+		// TODO Auto-generated method stub
+		electricityMeterRecordsMapper.deleteElectricityMeterRecords(electricityMeterRecordsId);
+	}
+
+	@Override
+	public List<ElectricityMeterRecords> listElectricityMeterRecordsbybuildigIds(
+			List<String> ids) {
+		// TODO Auto-generated method stub
+		List<ElectricityMeterRecords> electricityMeterRecords=new ArrayList<ElectricityMeterRecords>();
+		for(int i=0; i<ids.size();i++){
+			ElectricityMeterRecords electricityMeterRecord=electricityMeterRecordsMapper.listElectricityMeterRecordsbybuildigIds(ids.get(i));
+			electricityMeterRecords.add(electricityMeterRecord);
+		}
+		return electricityMeterRecords;
+	}
+
+	@Override
+	public ElectricityMeterRecords electricityMeterRecordsbybuildigId(
+			String buildingId) {
+		if(Tools.notEmpty(buildingId)){
+			return electricityMeterRecordsMapper.listElectricityMeterRecordsbybuildigIds(buildingId);
+		}
+		return null;
+	}
+}

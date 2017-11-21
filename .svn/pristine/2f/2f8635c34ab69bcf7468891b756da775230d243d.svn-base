@@ -1,0 +1,111 @@
+<!--author:王志刚-->
+<!--页面名称：物业服务装修办理流程中费用结算页面-->
+<!--js: 'controllers/propertyService/staffHome/decorate/costClearing'-->
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>费用结算</title>
+</head>
+<body ng-controller="costClearingCtrl">
+
+<div style="padding:20px 30px 0">
+
+    <table class="table table-hover text-center" style="margin-bottom: 0">
+        <tr>
+            <td class="col-md-4"><strong>收费编码</strong></td>
+            <td class="col-md-4"><strong>收费名称</strong></td>
+            <td class="col-md-4"><strong>收费金额</strong></td>
+        </tr>
+
+        <tr ng-repeat="items in Charge">
+            <td class="col-md-4">{{items.chargeCode}}</td>
+            <td class="col-md-4">{{items.chargeName}}</td>
+            <td class="col-md-4">{{items.chargeamount}}</td>
+        </tr>
+
+<!--  
+        <tr>
+            <td class="col-md-4">sz002</td>
+            <td class="col-md-4">临时水表押金</td>
+            <td class="col-md-4">200元</td>
+        </tr>
+
+        <tr>
+            <td class="col-md-4">sz003</td>
+            <td class="col-md-4">业户押金</td>
+            <td class="col-md-4">1000元</td>
+        </tr>
+        <tr>
+            <td class="col-md-4">sz003</td>
+            <td class="col-md-4">装修单位押金</td>
+            <td class="col-md-4">1000元</td>
+        </tr>
+        <tr>
+            <td class="col-md-4">sz003</td>
+            <td class="col-md-4">出入证押金</td>
+            <td class="col-md-4">100元</td>
+        </tr>
+        <tr>
+            <td class="col-md-4">sz003</td>
+            <td class="col-md-4">门禁卡押金</td>
+            <td class="col-md-4">200元</td>
+        </tr>-->
+
+        <tr>
+            <td class="col-md-4">实收费用合计</td>
+            <td class="col-md-4"></td>
+            <td class="col-md-4">1900元</td>
+        </tr>
+        <tr>
+            <td class="col-md-4">扣款金额</td>
+        </tr>
+         <tr ng-repeat="items5 in Charge">
+            <td class="col-md-4">{{items5.paymentId}}</td>
+            <td class="col-md-4">{{items5.paymentName}}</td>
+            <td class="col-md-4">{{items5.paymentamount}}</td>
+        </tr>
+        
+        <!--  
+        <tr>
+            <td class="col-md-4">sz003</td>
+            <td class="col-md-4">垃圾清运费</td>
+            <td class="col-md-4">200元</td>
+        </tr>
+        <tr>
+            <td class="col-md-4">sz003</td>
+            <td class="col-md-4">水费扣款</td>
+            <td class="col-md-4">200元</td>
+        </tr>
+        <tr>
+            <td class="col-md-4">sz003</td>
+            <td class="col-md-4">电费扣款</td>
+            <td class="col-md-4">200元</td>
+        </tr>
+        <tr>
+            <td class="col-md-4">sz003</td>
+            <td class="col-md-4">私接电表罚款</td>
+            <td class="col-md-4">100元</td>
+        </tr>
+        <tr>
+            <td class="col-md-4">sz003</td>
+            <td class="col-md-4">违规用线罚款</td>
+            <td class="col-md-4">200元</td>
+        </tr>
+        -->
+        <tr>
+            <td class="col-md-4">扣款金额合计</td>
+            <td class="col-md-4"></td>
+            <td class="col-md-4">1300元</td>
+        </tr>
+    </table>
+    <span style="padding-left: 600px">应退金额：2000元 </span>
+    <span style="padding-left: 20px">实退金额：<input style="width: 50px;height: 20px"></span><br>
+    <span style="padding-left: 600px">结算人：范冰冰 </span>
+    <span style="padding-left: 20px">结算时间：2015年4月8日</span>
+
+
+    <div class="col-md-offset-10" style="margin-top: 10px;margin-bottom: 10px"><button type="submit" class="btn btn-default">提交并打印</button></div>
+</div>
+</body>
+</html>

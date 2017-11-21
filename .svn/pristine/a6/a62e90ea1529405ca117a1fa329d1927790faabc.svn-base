@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.flf.mapper.BankDepositMapper" >
+  <resultMap id="BaseResultMap" type="com.flf.entity.BankDeposit" >
+    <id column="bank_deposit_id" property="bankDepositId" jdbcType="VARCHAR" />
+    <result column="bank_deposit_num" property="bankDepositNum" jdbcType="VARCHAR" />
+    <result column="sum" property="sum" jdbcType="DOUBLE" />
+     <result column="account_record_id" property="accountRecordId" jdbcType="VARCHAR" />
+ </resultMap>
+ 
+ <!--根据交账记录id查询银行存单表  -->
+ <select id="getBankDepositById" parameterType="String"  resultMap="BaseResultMap">
+ 	select * from tc_bank_deposit where account_record_id=#{0}
+ </select>
+ 
+ 
+ <!--新增  -->   
+  <insert id="insertBankDeposit" parameterType="com.flf.entity.BankDeposit" >
+    insert into tc_bank_deposit  (bank_deposit_id, bank_deposit_num, sum, account_record_id)
+    values (#{bankDepositId,jdbcType=VARCHAR}, #{bankDepositNum,jdbcType=VARCHAR}, #{sum,jdbcType=DOUBLE}, 
+      #{accountRecordId,jdbcType=VARCHAR})
+  </insert>
+  
+ </mapper>

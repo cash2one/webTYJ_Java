@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.flf.mapper.LetterRecordsMapper" >
+  <resultMap id="BaseResultMap" type="LetterRecords" >
+    <id column="record_id" property="recordId" jdbcType="VARCHAR" />
+    <result column="order_id" property="orderId" jdbcType="VARCHAR" />
+    <result column="letter_id" property="letterId" jdbcType="VARCHAR" />
+    <result column="letter_name" property="letterName" jdbcType="VARCHAR" />
+    <result column="whether_letter" property="whetherLetter" jdbcType="TINYINT" />
+  </resultMap>
+  
+  <insert id="insertLetterRecords" parameterType="LetterRecords" >      
+      insert into ts_letter_records (record_id, order_id,letter_id, letter_name,whether_letter)
+    	values (UUID(), #{orderId,jdbcType=VARCHAR}, #{letterId,jdbcType=VARCHAR},
+    	 #{letterName,jdbcType=VARCHAR}, #{whetherLetter,jdbcType=TINYINT})
+  </insert>
+  
+  <select id="getLetterRecordsbyOrderId" parameterType="String" resultMap="BaseResultMap">
+   select * from ts_letter_records where order_id= #{0}
+  </select>
+  
+</mapper>

@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.flf.mapper.ElectricityMeterReadingComplaintsMapper" >
+  <resultMap id="BaseResultMap" type="com.flf.entity.ElectricityMeterReadingComplaints" >
+    <id column="electricity_meter_reading_complaints_id" property="electricityMeterReadingComplaintsId" jdbcType="VARCHAR" />
+    <result column="complainant_people" property="complainantPeople" jdbcType="VARCHAR" />
+    <result column="complaint_description" property="complaintDescription" jdbcType="VARCHAR" />
+    <result column="electricity_meter_reading_data_id" property="electricityMeterReadingDataId" jdbcType="VARCHAR" />
+    <result column="project_name" property="projectName" jdbcType="VARCHAR" />
+    <result column="meter_reading_people" property="meterReadingPeople" jdbcType="VARCHAR" />
+    <result column="meter_reading_date" property="meterReadingDate" jdbcType="DATE" />
+    <result column="full_name" property="fullName" jdbcType="VARCHAR" />
+    <result column="project_id" property="projectId" jdbcType="VARCHAR" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="phone_num" property="phoneNum" jdbcType="VARCHAR" />
+  </resultMap>
+  
+ <!--  分页查询电表投诉表 -->
+  <select id="listPageElectricityMeterReadingComplaints" parameterType="ElectricityMeterReadingComplaints" resultMap="BaseResultMap">
+      select c.*,d.meter_reading_people,d.meter_reading_date,s.full_name,p.project_name,n.name,n.phone_num from te_electricity_meter_reading_complaints  c
+      left join te_electricity_meter_reading_data d on c.electricity_meter_reading_data_id=d.electricity_meter_reading_data_id
+      left join te_electricity_meter_records r on d.electricity_meter_record_id = r.electricity_meter_records_id
+      left join tc_building_structure s on s.id =r.building_structure_id
+      left join t_project p on p.project_id = c.project_id
+      LEFT JOIN tc_person_building b ON b.building_structure_id= s.id
+      LEFT JOIN tc_person_cust n ON n.cust_id=b.cust_id
+      where 1=1
+      <if test="projectName != null">
+         and p.project_name =#{projectName}
+      </if>
+  </select>
+  
+  <!--  查询电表投诉表 -->
+  <select id="listAllElectricityMeterReadingComplaints" resultMap="BaseResultMap">
+      select * from te_electricity_meter_reading_complaints 
+  </select>
+  
+  <!--  根据id查询电表投诉表 -->
+  <select id="getElectricityMeterReadingComplaintsbyId" parameterType="String" resultMap="BaseResultMap">
+      select * from te_electricity_meter_reading_complaints where electricity_meter_reading_complaints_id=#{electricityMeterReadingComplaintsId}
+  </select>
+  
+  <!--  删除电表投诉表 -->
+  <delete id="deleteElectricityMeterReadingComplaints" parameterType="String">
+      delete from te_electricity_meter_reading_complaints where electricity_meter_reading_complaints_id=#{electricityMeterReadingComplaintsId}
+  </delete>
+  
+  <!--  新增电表投诉表 -->
+  <insert id="insertElectricityMeterReadingComplaints" parameterType="com.flf.entity.ElectricityMeterReadingComplaints" >
+    insert into te_electricity_meter_reading_complaints (electricity_meter_reading_complaints_id, complainant_people, 
+      complaint_description, electricity_meter_reading_data_id
+      )
+    values (UUID(), #{complainantPeople,jdbcType=VARCHAR}, 
+      #{complaintDescription,jdbcType=VARCHAR}, #{electricityMeterReadingDataId,jdbcType=VARCHAR}
+      )
+  </insert>
+ 
+  <!--  修改电表投诉表 -->
+  <update id="updateElectricityMeterReadingComplaints" parameterType="com.flf.entity.ElectricityMeterReadingComplaints" >
+    update te_electricity_meter_reading_complaints
+    <set >
+      <if test="complainantPeople != null" >
+        complainant_people = #{complainantPeople,jdbcType=VARCHAR},
+      </if>
+      <if test="complaintDescription != null" >
+        complaint_description = #{complaintDescription,jdbcType=VARCHAR},
+      </if>
+      <if test="electricityMeterReadingDataId != null" >
+        electricity_meter_reading_data_id = #{electricityMeterReadingDataId,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where electricity_meter_reading_complaints_id = #{electricityMeterReadingComplaintsId,jdbcType=VARCHAR}
+  </update>
+
+</mapper>

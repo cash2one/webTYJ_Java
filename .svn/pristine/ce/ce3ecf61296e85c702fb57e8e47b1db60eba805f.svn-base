@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.flf.mapper.MeterProjectMapper" >
+  <resultMap id="BaseResultMap" type="com.flf.entity.WaterMeterProject" >
+    <id column="water_meter_project_id" property="waterMeterProjectId" jdbcType="VARCHAR" />
+    <result column="water_meter_records_id" property="waterMeterRecordsId" jdbcType="VARCHAR" />
+    <result column="reading_program_id" property="readingProgramId" jdbcType="VARCHAR" />
+    <result column="building_structure_id" property="buildingStructureId" jdbcType="VARCHAR" />
+  </resultMap>
+  
+  <resultMap id="WaterMeterRecordsResultMap" type="com.flf.entity.WaterMeterRecords" >
+    <id column="water_meter_records_id" property="waterMeterRecordsId" jdbcType="VARCHAR" />
+    <result column="water_meter_id" property="waterMeterId" jdbcType="VARCHAR" />
+    <result column="installation_time" property="installationTime" jdbcType="DATE" />
+    <result column="enabling_time" property="enablingTime" jdbcType="DATE" />
+    <result column="install" property="install" jdbcType="VARCHAR" />
+    <result column="outage_time" property="outageTime" jdbcType="DATE" />
+    <result column="using_nature" property="usingNature" jdbcType="VARCHAR" />
+    <result column="water_meter_building_id" property="waterMeterBuildingId" jdbcType="VARCHAR" />
+    <result column="assets_id" property="assetsId" jdbcType="VARCHAR" />
+    <result column="state" property="state" jdbcType="TINYINT" />
+    <result column="reading_way" property="readingWay" jdbcType="TINYINT" />
+    <result column="parent_id" property="parentId" jdbcType="VARCHAR" />
+    <result column="is_billing" property="isBilling" jdbcType="TINYINT" />
+    <result column="last_time_reading" property="lastTimeReading" jdbcType="DOUBLE" />
+    <result column="initial_reading" property="initialReading" jdbcType="DOUBLE" />
+    <result column="stop_reading" property="stopReading" jdbcType="DOUBLE" />
+    <result column="building_structure_id" property="buildingStructureId" jdbcType="VARCHAR" />
+  </resultMap>
+  
+  <resultMap id="MeterReadingProgramResultMap" type="com.flf.entity.MeterReadingProgram" >
+    <result column="meter_reading_program_id" property="meterReadingProgramId" jdbcType="VARCHAR" />
+    <result column="project_name" property="projectName" jdbcType="VARCHAR" />
+    <result column="project_id" property="projectId" jdbcType="VARCHAR" />
+    <result column="settlement_day" property="settlementDay" jdbcType="DATE" />
+    <result column="reviewers" property="reviewers" jdbcType="VARCHAR" />
+    <result column="program_execution_status" property="programExecutionStatus" jdbcType="TINYINT" />
+    <result column="meter_reading_num" property="meterReadingNum" jdbcType="INTEGER" />
+    <result column="unfinished_num" property="unfinishedNum" jdbcType="INTEGER" />
+    <result column="start_time" property="startTime" jdbcType="DATE" />
+    <result column="end_time" property="endTime" jdbcType="DATE" />
+    <result column="verify_time" property="verifyTime" jdbcType="DATE" />
+    <result column="meter_reading_type" property="meterReadingType" jdbcType="TINYINT" />
+    <result column="meter_reading_warning_num" property="meterReadingWarningNum" jdbcType="INTEGER" />
+    <result column="meter_reading_error_num" property="meterReadingErrorNum" jdbcType="INTEGER" />
+    <result column="no_meter_reading_num" property="noMeterReadingNum" jdbcType="INTEGER" />
+    <result column="review_meter_num" property="reviewMeterNum" jdbcType="INTEGER" />
+    <result column="meter_reading_normal_num" property="meterReadingNormalNum" jdbcType="INTEGER" />
+    <result column="current_executor" property="currentExecutor" jdbcType="VARCHAR" />
+    <result column="executive_team" property="executiveTeam" jdbcType="VARCHAR" />
+  </resultMap>
+  
+  
+  <resultMap id="WaterMeterProjectResultMap" type="com.flf.entity.WaterMeterProject" >
+    <id column="water_meter_project_id" property="waterMeterProjectId" jdbcType="VARCHAR" />
+    <result column="water_meter_records_id" property="waterMeterRecordsId" jdbcType="VARCHAR" />
+    <result column="reading_program_id" property="readingProgramId" jdbcType="VARCHAR" />
+    <result column="building_structure_id" property="buildingStructureId" jdbcType="VARCHAR" />
+    <association property="waterMeterRecords" select="selectWaterMeterRecords" column="water_meter_records_id" javaType="WaterMeterRecords">
+        <id column="water_meter_records_id" property="waterMeterRecordsId" jdbcType="VARCHAR" />
+    <result column="water_meter_id" property="waterMeterId" jdbcType="VARCHAR" />
+    <result column="installation_time" property="installationTime" jdbcType="DATE" />
+    <result column="enabling_time" property="enablingTime" jdbcType="DATE" />
+    <result column="install" property="install" jdbcType="VARCHAR" />
+    <result column="outage_time" property="outageTime" jdbcType="DATE" />
+    <result column="using_nature" property="usingNature" jdbcType="VARCHAR" />
+    <result column="water_meter_building_id" property="waterMeterBuildingId" jdbcType="VARCHAR" />
+    <result column="assets_id" property="assetsId" jdbcType="VARCHAR" />
+    <result column="state" property="state" jdbcType="TINYINT" />
+    <result column="reading_way" property="readingWay" jdbcType="TINYINT" />
+    <result column="parent_id" property="parentId" jdbcType="VARCHAR" />
+    <result column="is_billing" property="isBilling" jdbcType="TINYINT" />
+    <result column="last_time_reading" property="lastTimeReading" jdbcType="DOUBLE" />
+    <result column="initial_reading" property="initialReading" jdbcType="DOUBLE" />
+    <result column="stop_reading" property="stopReading" jdbcType="DOUBLE" />
+    <result column="building_structure_id" property="buildingStructureId" jdbcType="VARCHAR" />
+    </association>
+    <association property="meterReadingProgram" select="selectMeterReadingProgram" column="water_meter_project_id" javaType="MeterReadingProgram">
+        <result column="meter_reading_program_id" property="meterReadingProgramId" jdbcType="VARCHAR" />
+    <result column="project_name" property="projectName" jdbcType="VARCHAR" />
+    <result column="project_id" property="projectId" jdbcType="VARCHAR" />
+    <result column="settlement_day" property="settlementDay" jdbcType="DATE" />
+    <result column="reviewers" property="reviewers" jdbcType="VARCHAR" />
+    <result column="program_execution_status" property="programExecutionStatus" jdbcType="TINYINT" />
+    <result column="meter_reading_num" property="meterReadingNum" jdbcType="INTEGER" />
+    <result column="unfinished_num" property="unfinishedNum" jdbcType="INTEGER" />
+    <result column="start_time" property="startTime" jdbcType="DATE" />
+    <result column="end_time" property="endTime" jdbcType="DATE" />
+    <result column="verify_time" property="verifyTime" jdbcType="DATE" />
+    <result column="meter_reading_type" property="meterReadingType" jdbcType="TINYINT" />
+    <result column="meter_reading_warning_num" property="meterReadingWarningNum" jdbcType="INTEGER" />
+    <result column="meter_reading_error_num" property="meterReadingErrorNum" jdbcType="INTEGER" />
+    <result column="no_meter_reading_num" property="noMeterReadingNum" jdbcType="INTEGER" />
+    <result column="review_meter_num" property="reviewMeterNum" jdbcType="INTEGER" />
+    <result column="meter_reading_normal_num" property="meterReadingNormalNum" jdbcType="INTEGER" />
+    <result column="current_executor" property="currentExecutor" jdbcType="VARCHAR" />
+    <result column="executive_team" property="executiveTeam" jdbcType="VARCHAR" />
+    </association>
+  </resultMap>
+  
+
+  
+    
+    
+<!--   删除水表使用记录抄表计划关系信息 -->
+  <select id="listPageWaterMeterProject" parameterType="WaterMeterProject" resultMap="BaseResultMap">
+      select * from t_water_meter_project
+  </select>
+  
+  <!--   根据建筑结构id删除水表使用记录抄表计划关系信息 -->
+  <delete id="deleteWaterMeterProjectbyId" parameterType="String" >
+      delete from t_water_meter_project where building_structure_id=#{0}
+  </delete>
+  
+<!--   查询水表使用记录抄表计划关系信息 -->
+  <select id="listAllWaterMeterProject"  resultMap="WaterMeterProjectResultMap">
+      select * from t_water_meter_project
+  </select>
+  
+  
+  <!--   根据查表计划id查询建筑结构id-->
+  <select id="listWaterMeterProjectbyId"  resultMap="BaseResultMap">
+      select p.*,r.building_structure_id from t_water_meter_project p
+      left join t_water_meter_records r on r.water_meter_records_id=p.water_meter_records_id
+      where reading_program_id=#{0}
+  </select>
+  
+  
+  <!--   根据id查询水表使用记录 -->
+  <select id="selectWaterMeterRecords" parameterType="String" resultMap="WaterMeterRecordsResultMap">
+      select * from t_water_meter_records where water_meter_records_id=#{0}
+  </select>
+  
+  <!--   根据id查询抄表计划信息 -->
+  <select id="selectMeterReadingProgram" parameterType="String" resultMap="MeterReadingProgramResultMap">
+      select * from t_meter_reading_program where meter_reading_program_id=#{0}
+  </select>
+  
+   <!--   根据id查询关系表 -->
+  <select id="getWaterMeterProjectbyId" parameterType="String" resultMap="MeterReadingProgramResultMap">
+      select * from t_water_meter_project where water_meter_project_id=#{0}
+  </select>
+  
+<!--   删除水表使用记录抄表计划关系信息 -->
+  <delete id="deleteWaterMeterProject" parameterType="String" >
+      delete from t_water_meter_project where water_meter_project_id=#{0}
+  </delete>
+  
+<!--   新增水表使用记录抄表计划关系信息 -->
+  <insert id="insertWaterMeterProject" parameterType="com.flf.entity.WaterMeterProject" >
+    insert into t_water_meter_project (water_meter_project_id, water_meter_records_id, 
+      reading_program_id)
+    values (UUID(), #{waterMeterRecordsId,jdbcType=VARCHAR}, 
+      #{readingProgramId,jdbcType=VARCHAR})
+  </insert>
+ 
+<!--   修改水表使用记录抄表计划关系信息 -->
+  <update  id="updateWaterMeterProject" parameterType="com.flf.entity.WaterMeterProject" >
+    update t_water_meter_project
+    <set >
+      <if test="waterMeterRecordsId != null" >
+        water_meter_records_id = #{waterMeterRecordsId,jdbcType=VARCHAR},
+      </if>
+      <if test="readingProgramId != null" >
+        reading_program_id = #{readingProgramId,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where water_meter_project_id = #{waterMeterProjectId,jdbcType=VARCHAR}
+  </update>
+  
+  <delete id="deleteByReadingProgramId" parameterType="java.lang.String">
+  	delete from t_water_meter_project where reading_program_id=#{0}
+  </delete>
+</mapper>

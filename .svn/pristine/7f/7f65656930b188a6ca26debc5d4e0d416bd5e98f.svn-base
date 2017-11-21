@@ -1,0 +1,27 @@
+package com.flf.mapper;
+
+import java.util.List;
+
+import com.flf.entity.ComplaintOrders;
+
+/**
+ * 投诉工单表Mapper
+ * 创建人：倪明
+ * 创建时间：2015/8/11
+ */
+public interface ComplaintOrdersMapper {
+	
+	int deleteComplaintOrders(String orderId);   //删除投诉工单信息
+	
+	int insertComplaintOrders(ComplaintOrders complaintOrders);  //添加投诉工单信息
+	
+	int insertComplaintOrdersUUID(ComplaintOrders complaintOrders);   //添加投诉工单信息(UUID)
+	
+	List<ComplaintOrders> listAllComplaintOrders();   //查询所有检投诉工单信息
+	
+	ComplaintOrders getComplaintOrdersbyId(String orderId);   //通过id查询投诉工单信息
+	
+	int updateComplaintOrders(ComplaintOrders complaintOrders);   //修改投诉工单信息
+	
+	int closeComplaintOrders(String orderId);   //关闭投诉工单信息
+}

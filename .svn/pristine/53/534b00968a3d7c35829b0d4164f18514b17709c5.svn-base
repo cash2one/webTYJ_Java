@@ -1,0 +1,151 @@
+<!--创建人：李斌   日期：2015/5/6
+    页面名称：外部专业线的抄表管理的新增活动的页面3
+    JS路径： 'controllers/externalProfession/meterReadingManagement/newActivities/meterReading03',
+    修改时间：2015/5/29
+    修改人：李斌
+-->
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>抄表管理3</title>
+</head>
+<body>
+<!--抄表管理的3-->
+<div style="padding:15px 0px 0" class="row">
+    <div class="complaint_user_list">
+        <div class="row pull-right" style="margin: 5px;">
+            <button style="height: 30px;width: 120px;" ui-sref="index.externalProfession.meterReadingManagement.history01">完成</button>
+        </div>
+        <!--外部专业线的抄表管理的新增活动的页面3的抄表活动日程信息显示-->
+        <table style="width: 60%;margin:50px auto;"class="table-bordered">
+            <tr>
+                <td width="100px"><strong>活动计划日程</strong></td>
+                <td style="background:#61cd6e">谢逊</td>
+                <td style="background:#80fadf">成昆</td>
+                <td style="background:#fabf2e">张三丰</td>
+                <td style="text-align: center"><a style="cursor:pointer " data-toggle="modal" data-target="#modifyPet"><span class="glyphicon glyphicon-plus" ></span></a></td>
+            </tr>
+
+            <tr>
+                <td style="background:#c3c0b9">桃源居1期</td>
+                <td style="text-align: center"><span class="glyphicon glyphicon-ok" ></span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+
+            <tr>
+                <td style="background:#c3c0b9;text-align: center">1栋</td>
+                <td style="text-align: center"><span class="glyphicon glyphicon-ok" ></span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+
+            <tr>
+                <td style="background:#c3c0b9"><p class="pull-right">1单元</p></td>
+                <td style="text-align: center"><span class="glyphicon glyphicon-ok" ></span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td style="background:#c3c0b9"><p class="pull-right">2单元</p></td>
+                <td style="text-align: center"><span class="glyphicon glyphicon-ok" ></span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+
+            <tr>
+                <td style="background:#c3c0b9">桃源居2期</td>
+                <td></td>
+                <td style="text-align: center"><span class="glyphicon glyphicon-ok" ></span></td>
+                <td></td>
+                <td></td>
+            </tr>
+
+            <tr>
+                <td style="background:#c3c0b9;text-align: center">2栋</td>
+                <td></td>
+                <td style="text-align: center"><span class="glyphicon glyphicon-ok" ></span></td>
+                <td></td>
+                <td></td>
+            </tr>
+
+            <tr>
+                <td style="background:#c3c0b9"><p class="pull-right">1单元</p></td>
+                <td></td>
+                <td style="text-align: center"><span class="glyphicon glyphicon-ok" ></span></td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td style="background:#c3c0b9"><p class="pull-right">2单元</p></td>
+                <td></td>
+                <td style="text-align: center"><span class="glyphicon glyphicon-ok" ></span></td>
+                <td></td>
+                <td></td>
+            </tr>
+
+            <tr>
+                <td style="background:#c3c0b9;text-align: center">3栋</td>
+                <td></td>
+                <td></td>
+                <td style="text-align: center"><span class="glyphicon glyphicon-ok" ></span></td>
+                <td></td>
+            </tr>
+
+            <tr>
+                <td style="background:#c3c0b9"><p class="pull-right">1单元</p></td>
+                <td></td>
+                <td></td>
+                <td style="text-align: center"><span class="glyphicon glyphicon-ok" ></span></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td style="background:#c3c0b9"><p class="pull-right">2单元</p></td>
+                <td></td>
+                <td></td>
+                <td style="text-align: center"><span class="glyphicon glyphicon-ok" ></span></td>
+                <td></td>
+            </tr>
+
+        </table>
+        <!--外部专业线的抄表管理的新增活动的页面3的抄表活动日程信息显示end-->
+    </div>
+</div>
+
+<!--添加人员Modal-->
+<div class="modal fade" id="modifyPet" role="dialog" aria-label="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                成员添加
+            </div>
+            <div class="modal-body">
+                <table class="table table-bordered">
+                    <tr>
+                        <td>姓名</td>
+                        <td>部门</td>
+                        <td>手机号</td>
+                    </tr>
+                    <tr ng-repeat="item in  peoplesItem"  id="td2" onclick="bgChange(this)">
+                        <td>{{item.name}}</td>
+                        <td>{{item.department}}</td>
+                        <td>{{item.phone}}</td>
+                    </tr>
+                </table>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn bg-primary" data-dismiss="modal" aria-label="Close">确定</button>
+                <button type="button" class="btn bg-primary" data-dismiss="modal" aria-label="Close">取消</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+</body>
+</html>

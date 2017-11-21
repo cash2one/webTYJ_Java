@@ -1,0 +1,71 @@
+<!--
+author:王志刚
+createTime:2015/5/28
+pageName:内部专业线云平台物业查询页面
+jsPath:controllers/internalProfession/propertyInstanceCheck
+-->
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>内部专业线云平台物业实例查询</title>
+</head>
+<body ng-controller="propertyInstancepageCtrl">
+<div class="complaint_user_list">
+    <div class="row" style="margin-top: 30px">
+
+            <div class="row" style="margin-left: 15px">
+                <div class="col-md-7">物业云实例列表</div>
+                <div class="col-md-3"> <button type="button" class="btn btn-default">实例创建</button></div>
+            </div>
+    </div>
+</div>
+<div class="complaint_user" style="height: 60px">
+    <div class="row" style="margin-top: 15px">
+       <div class="col-md-2" style="margin-left: 10px">
+           <select class="input-sm form-control" ><option>请选择</option><option>实例ID</option><option>IP地址</option></select>
+        </div>
+        <div class="col-md-4">
+            <input type="text" class="input-sm form-control">
+       </div>
+        <div class="col-md-2">
+            <button type="button" >搜索</button>
+        </div>
+    </div>
+    <div class="clear"></div>
+</div>
+<div class="complaint_user_list" style="height: 400px">
+    <div style="padding:20px 30px 0">
+        <table class="table table-hover text-center">
+            <tr>
+                <td class="col-md-1"><strong> <label><input type="checkbox"></label></strong></td>
+                <td class="col-md-1"><strong>实例ID</strong></td>
+                <td class="col-md-2"><strong>实例名称</strong></td>
+                <td class="col-md-2"><strong>IP地址</strong></td>
+                <td class="col-md-2"><strong>cpu使用率</strong></td>
+                <td class="col-md-2"><strong>内存使用率</strong></td>
+                <td class="col-md-2"><strong>硬盘用量</strong></td>
+            </tr>
+            <tr>
+                <td class="col-md-1"><strong> <label><input type="checkbox"></label></strong></td>
+                <td class="col-md-1"><strong>1</strong></td>
+                <td class="col-md-2"><strong>物业公司1</strong></td>
+                <td class="col-md-2"><strong>202.103.25.155</strong></td>
+                <td class="col-md-2"><strong>60%</strong></td>
+                <td class="col-md-2"><strong>70%</strong></td>
+                <td class="col-md-2"><strong>15G</strong></td>
+            </tr>
+            <tr>
+                <td class="col-md-1"><strong> <label><input type="checkbox"></label></strong></td>
+                <td class="col-md-1"><strong>2</strong></td>
+                <td class="col-md-2"><strong>物业公司2</strong></td>
+                <td class="col-md-2"><strong>202.103.25.156</strong></td>
+                <td class="col-md-2"><strong>60%</strong></td>
+                <td class="col-md-2"><strong>55%</strong></td>
+                <td class="col-md-2"><strong>8G</strong></td>
+            </tr>
+        </table>
+    </div>
+</div>
+</body>
+</html>

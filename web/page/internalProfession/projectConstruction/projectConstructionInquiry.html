@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body ng-controller="projectConstructionInquiryCtrl">
+<div style="width:96%;margin-left:20px;border: 1px solid #000000;background-color: white">
+    <table class="table table-bordered" style="text-align: center">
+        <tr >
+            <td >区域名称</td>
+            <td >建筑面积</td>
+            <td >实用率</td>
+            <td >套内面积</td>
+            <td >户型</td>
+            <td >属性</td>
+            <td >销售状态</td>
+            <td >房屋编号</td>
+        </tr>
+        <tr ng-repeat="item in items">
+            <td >{{item.areaName}}</td>
+            <td >{{item.areaStructure}}</td>
+            <td >{{item.efficiencyRate}}</td>
+            <td >{{item.insideArea}}</td>
+            <td >{{item.houseType}}</td>
+            <td >{{item.property}}</td>
+            <td >{{item.saleState}}</td>
+            <td >{{item.houseId}}</td>
+        </tr>
+    </table>
+</div>
+</body>
+</html>

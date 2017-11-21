@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.flf.mapper.CollectionManageMapper">
+	<resultMap id="BaseResultMap" type="CollectionManage">
+		<id column="collection_manage_id" property="collectionManageId"
+			jdbcType="VARCHAR" />
+		<result column="cust_id" property="custId" jdbcType="VARCHAR" />
+		<result column="cust_name" property="custName" jdbcType="VARCHAR" />
+		<result column="bank_name" property="bankName" jdbcType="VARCHAR" />
+		<result column="bank_account" property="bankAccount" jdbcType="VARCHAR" />
+		<result column="start_time" property="startTime" jdbcType="DATE" />
+		<result column="end_time" property="endTime" jdbcType="DATE" />
+		<result column="province" property="province" jdbcType="VARCHAR" />
+		<result column="city" property="city" jdbcType="VARCHAR" />
+		<result column="collection_type" property="collectionType"
+			jdbcType="TINYINT" />
+		<result column="message" property="message" jdbcType="VARCHAR" />
+		<result column="account_type" property="accountType" jdbcType="TINYINT" />
+		<result column="contract_number" property="contractNumber"
+			jdbcType="VARCHAR" />
+		<result column="id" property="id" jdbcType="VARCHAR" />
+		<result column="full_name" property="fullName" jdbcType="VARCHAR" />
+		<result column="collection_state" property="collectionState" jdbcType="VARCHAR" />
+		<result column="create_time" property="createTime" jdbcType="VARCHAR"/>
+	</resultMap>
+
+	<resultMap type="CollectionManage" id="resulCollectionManageMap"
+		extends="BaseResultMap">
+		<association property="buildingStructure" column="id"
+			javaType="BuildingStructureNew"
+			select="com.flf.mapper.BuildingStructureNewMapper.getBuildingStructureNewbyId"></association>
+		<association property="financialBankNum" column="bank_name"
+			javaType="FinancialBankNum"
+			select="com.flf.mapper.FinancialBankNumMapper.getFinancialBankNumByBankNum"></association>
+		<association property="person" column="cust_id" javaType="PersonCustNew"
+			select="com.flf.mapper.PersonCustNewMapper.getPersonCustNewById"></association>
+		<association property="paymentDetails" column="payment_details_id" javaType="PaymentDetails"
+			select="com.flf.mapper.PaymentDetailsMapper.getPaymentDetailsById"></association>	
+		<collection property="annexs" column="order_id" ofType="Annex"
+			select="com.flf.mapper.AnnexMapper.getAnnexbyRelationId"></collection>
+	</resultMap>
+
+	<select id="listAllCollectionManage" resultMap="resulCollectionManageMap"
+		parameterType="CollectionManage">
+		select c.*,b.full_name from tc_collection_manage c left join
+		tc_building_structure b
+		on c.id = b.id
+	</select>
+
+	<select id="listPageCollectionManage" parameterType="CollectionManage"
+		resultMap="resulCollectionManageMap">
+		SELECT a.* FROM tc_collection_manage a
+		INNER JOIN tc_building_structure b ON a.id=b.id
+		LEFT JOIN tc_financial_bank_num d ON a.bank_name=d.bank_num
+		INNER JOIN (select * from tc_person_cust where 1=1 <if test="custId!=null">and cust_id=#{custId}</if>) c ON C.cust_id = a.cust_id 
+		order by create_time desc
+	</select>
+	<!--根据建筑结构id、托收类型和当前日期查询银行托收办理信息-->
+	<select id="listCollectionManagebybuildingId" parameterType="String"
+		resultMap="resulCollectionManageMap">
+		select tcm.*,tfbn.unionpay_bank_num,tpd.payment_details_id,tpd.transaction_date from (
+			select * from tc_collection_manage where id = #{0} AND collection_type = #{1} and collection_state = 0
+			<![CDATA[
+		  		AND start_time < #{2}
+			]]>
+		)tcm left join tc_financial_bank_num tfbn on tcm.bank_name = tfbn.bank_num 
+		left join tc_payment_details tpd on tcm.cust_id = tpd.cust_id
+	</select>
+
+	<select id="getCollectionManagebyId" parameterType="String"
+		resultMap="resulCollectionManageMap">
+		select * from tc_collection_manage where collection_manage_id = #{0}
+	</select>
+
+	<delete id="deleteCollectionManage" parameterType="String">
+		delete from tc_collection_manage where collection_manage_id =
+		#{collectionManageId}
+	</delete>
+
+	<insert id="insertCollectionManage" parameterType="CollectionManage">
+		insert into tc_collection_manage (
+		collection_manage_id,cust_id,cust_name,bank_name,bank_account,
+		start_time,end_time,province,city,collection_type,message,
+		account_type,contract_number,id,collection_state,create_time)
+		values (
+		#{collectionManageId,jdbcType=VARCHAR}, #{custId,jdbcType=VARCHAR},#{custName,jdbcType=VARCHAR},
+		#{bankName,jdbcType=VARCHAR}, #{bankAccount,jdbcType=VARCHAR}, #{startTime,jdbcType=DATE},
+		#{endTime,jdbcType=DATE}, #{province,jdbcType=VARCHAR},#{city,jdbcType=VARCHAR},
+		#{collectionType,jdbcType=TINYINT}, #{message,jdbcType=VARCHAR},#{accountType,jdbcType=TINYINT},
+		#{contractNumber,jdbcType=VARCHAR}, #{id,jdbcType=VARCHAR}, #{collectionState}, #{createTime})
+	</insert>
+
+	<update id="updateCollectionManage" parameterType="CollectionManage">
+		update tc_collection_manage
+		<set>
+			<if test="custId != null">
+				cust_id = #{custId,jdbcType=VARCHAR},
+			</if>
+			<if test="custName != null">
+				cust_name = #{custName,jdbcType=VARCHAR},
+			</if>
+			<if test="bankName != null">
+				bank_name = #{bankName,jdbcType=VARCHAR},
+			</if>
+			<if test="bankAccount != null">
+				bank_account = #{bankAccount,jdbcType=VARCHAR},
+			</if>
+			<if test="startTime != null">
+				start_time = #{startTime,jdbcType=DATE},
+			</if>
+			<if test="endTime != null">
+				end_time = #{endTime,jdbcType=DATE},
+			</if>
+			<if test="province != null">
+				province = #{province,jdbcType=VARCHAR},
+			</if>
+			<if test="city != null">
+				city = #{city,jdbcType=VARCHAR},
+			</if>
+			<if test="collectionType != null">
+				collection_type = #{collectionType,jdbcType=TINYINT},
+			</if>
+			<if test="message != null">
+				message = #{message,jdbcType=VARCHAR},
+			</if>
+			<if test="accountType != null">
+				account_type = #{accountType,jdbcType=TINYINT},
+			</if>
+			<if test="contractNumber != null">
+				contract_number = #{contractNumber,jdbcType=VARCHAR},
+			</if>
+			<if test="id != null">
+				id = #{id,jdbcType=VARCHAR},
+			</if>
+			<if test="collectionState != null">
+				collection_state = #{collectionState,jdbcType=VARCHAR},
+			</if>
+		</set>
+		where collection_manage_id = #{collectionManageId,jdbcType=VARCHAR}
+	</update>
+
+</mapper>

@@ -1,0 +1,374 @@
+<!--
+    创建人：钟加诚
+    页面名称：新增质检活动
+    修改人：陶勇超
+    修改时间：2015/5/28
+    js路径：js/controllers/externalProfession/qualityinspectionactivity
+-->
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>新增质检活动</title>
+    <style type="text/css">
+        #menu_zzjs_net{margin:10px;width:200px;overflow:hidden;}
+        #menu_zzjs_net li{line-height:25px;}
+        #menu_zzjs_net li a{color:#666666;padding-left:5px;outline:none;}
+        #menu_zzjs_net li input{vertical-align:middle;margin-left:5px;}
+        #menu_zzjs_net .two{padding-left:10px;display:none;}
+
+        #menu_zzjs_nett{margin:10px;width:200px;overflow:hidden;}
+        #menu_zzjs_nett li{line-height:25px;}
+        #menu_zzjs_nett li a{color:#666666;padding-left:5px;outline:none;}
+        #menu_zzjs_nett li input{vertical-align:middle;margin-left:5px;}
+        #menu_zzjs_nett .two{padding-left:10px;display:none;}
+        .col-md-2 button{width: 90px;height: 60px;margin-top: 20px;margin-bottom: 10px}
+    </style>
+</head>
+<body>
+
+<div class="complaint_user_list" style="margin: 10px auto;white-space: nowrap;height: auto">
+    <div class="row"  style="margin: 10px 120px;">
+        <div class="col-md-12">
+            <p class="col-md-4">质检活动编号：1001</p>
+            <p class="col-md-6">请求来源：前台</p>
+        </div>
+        <div class="col-md-12">
+            <div class="col-md-1">活动名称：</div>
+            <div class="col-md-3"><label><input type="text" class="form-control"></label></div>
+            <div class="col-md-1">活动周期：</div>
+            <div class="col-md-3"><label><select style="width: 100px"><option>日检</option><option>周检</option><option>半月检</option><option>月检</option></select></label></div>
+        </div>
+        <div class="col-md-12">
+            <p class="col-md-6">被检查对象:</p>
+        </div>
+        <!--tree-->
+        <div class="col-md-2" style="border: 1px solid;height: 300px;margin-left: 30px">
+            <ul id="menu_zzjs_net" style="margin-left:-30px;">
+                <li>
+                    <label><a href="javascript:" class="glyphicon glyphicon-play">桃源居</a></label>
+                    <ul class="two">
+                        <li>
+                            <label><a href="javascript:">园林部</a></label>
+                            <ul class="two">
+                                <li>
+                                    <label><input type="checkbox" value="123456"><a href="javascript:">一组</a></label>
+                                    <ul class="two">
+                                        <li>
+                                            <label><input type="checkbox" value="123456"><a href="#select"  data-toggle="tab">张无忌</a></label>
+                                        </li>
+                                        <li>
+                                            <label><input type="checkbox" value="123456"><a href="#select"  data-toggle="tab">谢逊</a></label>
+                                    </ul>
+                                <li>
+                                    <label><input type="checkbox" value="123456"><a href="javascript:">二组</a></label></li>
+                            </ul>
+                        </li>
+
+                        <li><label><a href="javascript:">清洁部</a></label></li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+        <!--tree end-->
+        <div class="col-md-1" style="margin-top:80px;margin-left:30px;">
+            <h1 class="btn" aria-hidden="true">》》</h1>
+        </div>
+        <!--选中tree-->
+        <div class="col-md-3 assertInfo tab-pane fade" id="select"
+             style="border: 1px solid;height:200px;margin: 50px 10px;text-align: center;">
+            <p>桃源居 园林部 一组</p>
+        </div>
+        <div class="col-md-12" style="margin-top: 10px">
+            <span>事由描述：</span>
+            <textarea style="width:450px" cols="3" placeholder="请输入内容"></textarea>
+        </div>
+        <!--选中tree end-->
+        <div class="col-md-12">
+            <a>
+                <span onclick="return click_a('divOne_0')" style="cursor:pointer;margin-top: 30px" class="glyphicon glyphicon-plus btn btn-lg" aria-hidden="true"></span>
+            </a>
+        </div>
+
+        <div id="divOne_0" style="display: none;margin: 10px 20px">
+            <div class="col-md-12">
+                <div class="col-md-3">任务类型：<label><select>
+                    <option>质检任务</option>
+                    <option>室内维修</option>
+                    <option>赔偿给业主</option>
+                    <option>清洁</option>
+                    <option>园林</option>
+                    <option>安保</option>
+                    <option>邻里纠纷</option>
+                    <option>重大事项</option>
+                    <option>质检任务</option>
+                </select></label></div>
+                <div class="col-md-4">任务ID:XXXXX</div>
+            </div>
+            <div class="col-md-12">
+                <div class="col-md-3">选择执行团队： </div>
+            </div>
+            <div class="col-md-12">
+                <div class="col-md-2" style="border: 1px solid;height: 300px">
+                    <ul id="menu_zzjs_nett" style="margin-left:-30px;">
+                        <li>
+                            <label><a href="javascript:" class="glyphicon glyphicon-play">桃源居</a></label>
+                            <ul class="two">
+                                <li>
+                                    <label><a href="javascript:">园林部</a></label>
+                                    <ul class="two">
+                                        <li>
+                                            <label><input type="checkbox" value="123456"><a href="javascript:">一组</a></label>
+                                            <ul class="two">
+                                                <li>
+                                                    <label><input type="checkbox" value="123456"><a href="#select1"  data-toggle="tab">张无忌</a></label>
+                                                </li>
+                                                <li>
+                                                    <label><input type="checkbox" value="123456"><a href="#select1"  data-toggle="tab">谢逊</a></label>
+                                            </ul>
+                                        <li>
+                                            <label><input type="checkbox" value="123456"><a href="javascript:">二组</a></label></li>
+                                    </ul>
+                                </li>
+
+                                <li><label><a href="javascript:">清洁部</a></label></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+                <!--tree end-->
+                <div class="col-md-1" style="margin-top:80px;margin-left:30px;">
+                    <h1 class="btn" aria-hidden="true">>></h1>
+                </div>
+                <!--选中tree-->
+                <div class="col-md-3 assertInfo tab-pane fade" id="select1"
+                     style="border: 1px solid;height:200px;margin: 50px 10px;text-align: center;">
+                    <p>桃源居 园林部 一组 张无忌</p>
+                </div>
+            </div>
+            <div class="col-md-12">
+                <div class="col-md-3">评分标准：</div>
+            </div>
+            <div class="col-md-12" style="text-align: center;margin: 40px">
+                <table border="1">
+                    <tr>
+                        <td width="130">成员</td>
+                        <td width="200">标准</td>
+                    </tr>
+                    <tr>
+                        <td>张三</td>
+                        <td><label><select><option>园林日检评分标准</option></select></label></td>
+                    </tr>
+                    <tr>
+                        <td>李四</td>
+                        <td><label><select><option>园林日检评分标准二</option></select></label></td>
+                    </tr>
+                </table>
+            </div>
+            <div class="col-md-12">
+                <div class="col-md-4">检查时间： <label><input type="date" class="form-control input-sm"></label></div>
+                <div class="col-md-3">预计完成时间：  <label><input type="date" class="form-control input-sm"></label></div>
+            </div>
+            <div class="col-md-12">
+                <div class="col-md-1">执行频率：</div>
+            </div>
+            <div class="col-md-12" style="white-space: nowrap;margin-left: 20px">
+                <div class="col-md-2" style="border: 1px solid;height:150px;text-align: center;padding: 50px">
+                    <p>日历</p>
+                </div>
+                <!--tree end-->
+                <div class="col-md-1" style="margin-top:45px;margin-left:10px;">
+                    <h1 class="btn" aria-hidden="true">>></h1>
+                </div>
+                <!--选中tree-->
+                <div class="col-md-3" style="border: 1px solid;height:150px;text-align: center">
+
+                </div>
+            </div>
+            <div class="col-md-12">
+                <div class="col-md-6">负责人：
+                    <label><select><option>谢XX</option></select></label>
+                </div>
+            </div>
+
+        </div>
+        <div class="col-md-12">
+            <div  style="margin-left: 200px;margin-top: 30px">
+                <button style="width: 80px">提交</button>
+            </div>
+            <div style="margin-left: 100px;margin-top: -30px">
+                <button style="width: 80px;">取消</button>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+
+</body>
+<script>
+    function click_a(divDisplay)
+    {
+        if(document.getElementById(divDisplay).style.display != "block")
+        {
+            document.getElementById(divDisplay).style.display = "block";
+        }
+        else
+        {
+            document.getElementById(divDisplay).style.display = "none";
+        }
+    }
+
+
+
+
+    function addEvent(el,name,fn){
+        if(el.addEventListener) return el.addEventListener(name,fn,false);
+        return el.attachEvent('on'+name,fn);
+    }
+    function nextnode(node){
+        if(!node)return ;
+        if(node.nodeType == 1)
+            return node;
+        if(node.nextSibling)
+            return nextnode(node.nextSibling);
+    }
+    function prevnode(node){
+        if(!node)return ;
+        if(node.nodeType == 1)
+            return node;
+        if(node.previousSibling)
+            return prevnode(node.previousSibling);
+    }
+    function parcheck(self,checked){
+        var par =  prevnode(self.parentNode.parentNode.parentNode.previousSibling);
+        if(par&&par.getElementsByTagName('input')[0]){
+            par.getElementsByTagName('input')[0].checked = checked;
+            parcheck(par.getElementsByTagName('input')[0],sibcheck(par.getElementsByTagName('input')[0]));
+        }
+    }
+    function sibcheck(self){
+        var sbi = self.parentNode.parentNode.parentNode.childNodes,n=0;
+        for(var i=0;i<sbi.length;i++){
+            if(sbi[i].nodeType != 1)
+                n++;
+            else if(sbi[i].getElementsByTagName('input')[0].checked)
+                n++;
+        }
+    }
+    addEvent(document.getElementById('menu_zzjs_net'),'click',function(e){
+        e = e||window.event;
+        var target = e.target||e.srcElement;
+        var tp = nextnode(target.parentNode.nextSibling);
+        switch(target.nodeName){
+            case 'A':
+                if(tp&&tp.nodeName == 'UL'){
+                    if(tp.style.display != 'block' ){
+                        tp.style.display = 'block';
+                    }else{
+                        tp.style.display = 'none';
+                    }
+                }
+                break;
+            case 'SPAN':
+                var ap = nextnode(nextnode(target.nextSibling).nextSibling);
+                if(ap.style.display != 'block' ){
+                    ap.style.display = 'block';
+                }else{
+                    ap.style.display = 'none';
+                }
+                break;
+            case 'INPUT':
+                if(target.checked){
+                    if(tp){
+                        var checkbox = tp.getElementsByTagName('input');
+                        for(var i=0;i<checkbox.length;i++)
+                            checkbox[i].checked = true;
+                    }
+                }else{
+                    if(tp){
+                        var checkbox= tp.getElementsByTagName('input');
+                        for(var i=0;i<checkbox.length;i++)
+                            checkbox[i].checked = false;
+                    }
+                }
+                parcheck(target,sibcheck(target));
+                break;
+        }
+    });
+    function addEvent(el,name,fn){
+        if(el.addEventListener) return el.addEventListener(name,fn,false);
+        return el.attachEvent('on'+name,fn);
+    }
+    function nextnode(node){
+        if(!node)return ;
+        if(node.nodeType == 1)
+            return node;
+        if(node.nextSibling)
+            return nextnode(node.nextSibling);
+    }
+    function prevnode(node){
+        if(!node)return ;
+        if(node.nodeType == 1)
+            return node;
+        if(node.previousSibling)
+            return prevnode(node.previousSibling);
+    }
+    function parcheck(self,checked){
+        var par =  prevnode(self.parentNode.parentNode.parentNode.previousSibling);
+        if(par&&par.getElementsByTagName('input')[0]){
+            par.getElementsByTagName('input')[0].checked = checked;
+            parcheck(par.getElementsByTagName('input')[0],sibcheck(par.getElementsByTagName('input')[0]));
+        }
+    }
+    function sibcheck(self){
+        var sbi = self.parentNode.parentNode.parentNode.childNodes,n=0;
+        for(var i=0;i<sbi.length;i++){
+            if(sbi[i].nodeType != 1)
+                n++;
+            else if(sbi[i].getElementsByTagName('input')[0].checked)
+                n++;
+        }
+    }
+    addEvent(document.getElementById('menu_zzjs_nett'),'click',function(e){
+        e = e||window.event;
+        var target = e.target||e.srcElement;
+        var tp = nextnode(target.parentNode.nextSibling);
+        switch(target.nodeName){
+            case 'A':
+                if(tp&&tp.nodeName == 'UL'){
+                    if(tp.style.display != 'block' ){
+                        tp.style.display = 'block';
+                    }else{
+                        tp.style.display = 'none';
+                    }
+                }
+                break;
+            case 'SPAN':
+                var ap = nextnode(nextnode(target.nextSibling).nextSibling);
+                if(ap.style.display != 'block' ){
+                    ap.style.display = 'block';
+                }else{
+                    ap.style.display = 'none';
+                }
+                break;
+            case 'INPUT':
+                if(target.checked){
+                    if(tp){
+                        var checkbox = tp.getElementsByTagName('input');
+                        for(var i=0;i<checkbox.length;i++)
+                            checkbox[i].checked = true;
+                    }
+                }else{
+                    if(tp){
+                        var checkbox= tp.getElementsByTagName('input');
+                        for(var i=0;i<checkbox.length;i++)
+                            checkbox[i].checked = false;
+                    }
+                }
+                parcheck(target,sibcheck(target));
+                break;
+        }
+    });
+</script>
+</html>

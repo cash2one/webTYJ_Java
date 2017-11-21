@@ -1,0 +1,245 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.flf.mapper.TeamworkMapper" >
+  <resultMap id="BaseResultMap" type="com.flf.entity.Teamwork" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="manage" property="manage" jdbcType="VARCHAR" />
+    <result column="team_members" property="teamMembers" jdbcType="INTEGER" />
+    <result column="team_name" property="teamName" jdbcType="VARCHAR" />
+    <result column="team_major" property="teamMajor" jdbcType="VARCHAR" />
+    <result column="leader" property="leader" jdbcType="VARCHAR" />
+    <result column="management_item" property="managementItem" jdbcType="VARCHAR" />
+    <result column="project_id" property="projectId" jdbcType="VARCHAR" />
+    <result column="instance_id" property="instanceId" jdbcType="VARCHAR" />
+    <result column="team_work_amount" property="teamworkAmount" jdbcType="VARCHAR" />  
+    <result column="staff_name" property="staffName" jdbcType="VARCHAR" />
+     <result column="core_position_id" property="corePositionId" jdbcType="VARCHAR" /> 
+  </resultMap>
+  
+  <resultMap id="TeamworkStaffResultMap" type="com.flf.entity.Teamwork" extends="BaseResultMap">
+  	<association property="staff" javaType="Staff">
+  		<id column="staff_id" property="staffId" jdbcType="VARCHAR" />
+	    <result column="company_id" property="companyId" jdbcType="VARCHAR" />
+	    <result column="staff_number" property="staffNumber" jdbcType="VARCHAR" />
+	    <result column="first_name" property="firstName" jdbcType="VARCHAR" />
+	    <result column="last_name" property="lastName" jdbcType="VARCHAR" />
+	    <result column="first_name_spell" property="firstNameSpell" jdbcType="VARCHAR" />
+	    <result column="last_name_spell" property="lastNameSpell" jdbcType="VARCHAR" />
+	    <result column="sex" property="sex" jdbcType="INTEGER" />
+	    <result column="native_place" property="nativePlace" jdbcType="VARCHAR" />
+	    <result column="married" property="married" jdbcType="INTEGER" />
+	    <result column="edu_lever" property="eduLever" jdbcType="INTEGER" />
+	    <result column="landscape" property="landscape" jdbcType="INTEGER" />
+	    <result column="birthday" property="birthday" jdbcType="DATE" />
+	    <result column="hobby" property="hobby" jdbcType="VARCHAR" />
+	    <result column="card_type" property="cardType" jdbcType="INTEGER" />
+	    <result column="staff_no" property="staffNo" jdbcType="VARCHAR" />
+	    <result column="card_num" property="cardNum" jdbcType="VARCHAR" />
+	    <result column="address" property="address" jdbcType="VARCHAR" />
+	    <result column="telphone" property="telphone" jdbcType="VARCHAR" />
+	    <result column="email" property="email" jdbcType="VARCHAR" />
+	    <result column="QQ" property="qq" jdbcType="VARCHAR" />
+	    <result column="position" property="position" jdbcType="INTEGER" />
+	    <result column="division_id" property="divisionId" jdbcType="VARCHAR" />
+	    <result column="divisionName" property="divisionname" jdbcType="VARCHAR" />
+	    <result column="post_id" property="postId" jdbcType="VARCHAR" />
+	    <result column="work_count" property="workCount" jdbcType="INTEGER" />
+	    <result column="state" property="state" jdbcType="VARCHAR" />
+	    <result column="staff_name" property="staffName" jdbcType="VARCHAR" />
+	    <result column="team_work_id" property="teamworkId" jdbcType="VARCHAR" />
+	    <result column="project_id" property="projectId" jdbcType="VARCHAR" />
+	    <result column="instance_id" property="instanceId" jdbcType="VARCHAR" />
+  	</association>
+  </resultMap>
+  
+    <resultMap id="TeamworkStaffResultMap1" type="com.flf.entity.Teamworkstaff" extends="BaseResultMap">
+  	<association property="staff" javaType="Staff">
+  		<id column="staff_id" property="staffId" jdbcType="VARCHAR" />
+	    <result column="company_id" property="companyId" jdbcType="VARCHAR" />
+	    <result column="staff_number" property="staffNumber" jdbcType="VARCHAR" />
+	    <result column="first_name" property="firstName" jdbcType="VARCHAR" />
+	    <result column="last_name" property="lastName" jdbcType="VARCHAR" />
+	    <result column="first_name_spell" property="firstNameSpell" jdbcType="VARCHAR" />
+	    <result column="last_name_spell" property="lastNameSpell" jdbcType="VARCHAR" />
+	    <result column="sex" property="sex" jdbcType="INTEGER" />
+	    <result column="native_place" property="nativePlace" jdbcType="VARCHAR" />
+	    <result column="married" property="married" jdbcType="INTEGER" />
+	    <result column="edu_lever" property="eduLever" jdbcType="INTEGER" />
+	    <result column="landscape" property="landscape" jdbcType="INTEGER" />
+	    <result column="birthday" property="birthday" jdbcType="DATE" />
+	    <result column="hobby" property="hobby" jdbcType="VARCHAR" />
+	    <result column="card_type" property="cardType" jdbcType="INTEGER" />
+	    <result column="card_num" property="cardNum" jdbcType="VARCHAR" />
+	    <result column="address" property="address" jdbcType="VARCHAR" />
+	    <result column="telphone" property="telphone" jdbcType="VARCHAR" />
+	    <result column="email" property="email" jdbcType="VARCHAR" />
+	    <result column="QQ" property="qq" jdbcType="VARCHAR" />
+	    <result column="position" property="position" jdbcType="INTEGER" />
+	    <result column="division_id" property="divisionId" jdbcType="VARCHAR" />
+	    <result column="divisionName" property="divisionname" jdbcType="VARCHAR" />
+	    <result column="post_id" property="postId" jdbcType="VARCHAR" />
+	    <result column="work_count" property="workCount" jdbcType="INTEGER" />
+	    <result column="state" property="state" jdbcType="VARCHAR" />
+	    <result column="staff_name" property="staffName" jdbcType="VARCHAR" />
+	    <result column="team_work_id" property="teamworkId" jdbcType="VARCHAR" />
+	    <result column="project_id" property="projectId" jdbcType="VARCHAR" />
+	    <result column="instance_id" property="instanceId" jdbcType="VARCHAR" />
+  	</association>
+  </resultMap>
+ 
+  <select id="listPageTeamwork" parameterType="Teamwork" resultMap="BaseResultMap">
+      select * from t_teamwork
+  </select>
+  
+  <select id="getTeamworkIdByStaffId" parameterType="java.lang.String" resultType="java.lang.String">
+      select id from t_teamwork where leader = #{0}
+  </select>
+  
+  <select id="getTeamworkBystaffId"  parameterType="String"  resultMap="TeamworkStaffResultMap">
+  	 select * from t_teamwork a left join t_staff b on a.leader=b.staff_id where a.leader=#{0}
+  </select>
+  
+    <select id="getStaffBystaffIdOrId"  parameterType="java.util.Map"  resultMap="TeamworkStaffResultMap1">
+  	 select b.* from t_teamwork a left join t_staff b on a.leader=b.staff_id 
+  	 <trim prefix="where" prefixOverrides="and">
+  	 	<if test="staffId != null and staffId != ''">
+  	 		a.leader=#{staffId,jdbcType=VARCHAR}
+  	 	</if>
+  	 	<if test="id != null and id != ''">
+  	 		a.id = #{id,jdbcType=VARCHAR}
+  	 	</if>
+  	 </trim>
+  </select>
+  
+  <select id="listAllTeamwork"  resultMap="TeamworkStaffResultMap">
+      select * from t_teamwork a left join t_staff b on a.leader=b.staff_id
+  </select>
+  
+  <select id="getTeamworkbyId" parameterType="String" resultMap="BaseResultMap">
+      select * from t_teamwork where id=#{0}
+  </select>
+  
+ <!--  根据实例id查询团队信息 -->
+  <select id="listTeamworkbyinstanceId" parameterType="String" resultMap="BaseResultMap">
+      select * from t_teamwork where instance_id=#{0}
+  </select>
+  
+   <!--  根据负责人查询团队信息 -->
+  <select id="getTeamworkbyLeader" parameterType="String" resultMap="BaseResultMap">
+      select * from t_teamwork where leader=#{0}
+  </select>
+  
+  <delete id="deleteTeamwork" parameterType="String" >
+      delete  from t_teamwork where id=#{0}
+  </delete>
+  <insert id="insertTeamwork" parameterType="com.flf.entity.Teamwork" >
+    insert into t_teamwork (id,manage, team_members, 
+      team_name, team_major, leader, 
+      management_item, project_id,core_position_id)
+    values (UUID(),#{manage,jdbcType=VARCHAR}, #{teamMembers,jdbcType=INTEGER}, 
+      #{teamName,jdbcType=VARCHAR}, #{teamMajor,jdbcType=VARCHAR}, #{leader,jdbcType=VARCHAR}, 
+      #{managementItem,jdbcType=VARCHAR}, #{projectId,jdbcType=VARCHAR},#{corePositionId,jdbcType=VARCHAR})
+  </insert>
+ 
+  <update id="updateTeamwork" parameterType="com.flf.entity.Teamwork" >
+    update t_teamwork
+    <set >
+      <if test="manage != null" >
+        manage = #{manage,jdbcType=VARCHAR},
+      </if>
+      <if test="teamMembers != null" >
+        team_members = #{teamMembers,jdbcType=INTEGER},
+      </if>
+      <if test="teamName != null" >
+        team_name = #{teamName,jdbcType=VARCHAR},
+      </if>
+      <if test="teamMajor != null" >
+        team_major = #{teamMajor,jdbcType=VARCHAR},
+      </if>
+      <if test="leader != null" >
+        leader = #{leader,jdbcType=VARCHAR},
+      </if>
+      <if test="managementItem != null" >
+        management_item = #{managementItem,jdbcType=VARCHAR},
+      </if>
+      <if test="projectId != null" >
+        project_id = #{projectId,jdbcType=INTEGER},
+      </if>
+       <if test="teamworkAmount != null" >
+        team_work_amount = #{teamworkAmount,jdbcType=INTEGER},
+      </if>
+      <if test="corePositionId!= null" >
+        core_position_id = #{corePositionId,jdbcType=VARCHAR},
+      </if>
+   </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  
+    <!-- 根据项目id和专业线id查询团队信息-->
+  <select id="getTeamworkIdBySearch" parameterType="String" resultMap="BaseResultMap">
+      SELECT a.* FROM t_teamwork a 
+     LEFT JOIN t_team_permissions b ON a.leader = b.staff_id
+     WHERE  b.project_id = #{0}  and   b.professional_line_id = #{1}
+      GROUP BY a.id
+  </select>
+  
+  <!-- 根据teamworkId获取成员数 -->
+  <select id="countStaffByTeamworkId" parameterType="String" resultType="Integer">
+  	select count(*) from t_teamwork_staff where teamwork_id = #{0}
+  </select>
+ 
+ <!-- 分页查询所有 的团队-->
+ <select id="listPageTeamworks"  parameterType="Teamwork" resultMap="TeamworkStaffResultMap">
+                  <!-- select a.*,b.* from t_teamwork a inner join t_staff b on a.leader=b.staff_id
+      left join t_core_position cp on cp.staff_id=b.staff_id
+       <if test="leader != null and leader !=''"> 
+      where b.staff_name like CONCAT('%',#{leader,jdbcType=VARCHAR},'%')</if> 
+      and manage is null order by cp.create_time DESC  -->
+      	SELECT a.*,b.* FROM t_teamwork a 
+		LEFT JOIN t_staff b ON a.leader=b.staff_id
+		WHERE b.staff_id IN ( SELECT cp.staff_id FROM t_core_position cp)
+		<if test="leader != null and leader !=''"> 
+      where b.staff_name like CONCAT('%',#{leader,jdbcType=VARCHAR},'%')</if> 
+  </select>
+  
+ <!-- 查询所有的信息 -->
+ <select id="listAllTeamworks" parameterType="String" resultMap="BaseResultMap">
+     SELECT t.id,s.staff_name 
+     FROM t_teamwork t ,t_staff s
+     WHERE t.leader=s.staff_id
+ </select>
+ 
+ <insert id="insertTeamworkUUID" parameterType="Teamwork">
+ 	insert into t_teamwork (id,manage, team_members, 
+      team_name, team_major, leader, 
+      management_item, project_id,core_position_id)
+    values (#{id},#{manage,jdbcType=VARCHAR}, #{teamMembers,jdbcType=INTEGER}, 
+      #{teamName,jdbcType=VARCHAR}, #{teamMajor,jdbcType=VARCHAR}, #{leader,jdbcType=VARCHAR}, 
+      #{managementItem,jdbcType=VARCHAR}, #{projectId,jdbcType=VARCHAR},#{corePositionId,jdbcType=VARCHAR})
+ </insert>
+ 
+ <select id="getChildTeam" resultMap="BaseResultMap">
+ 	select a.*,b.staff_name from t_teamwork a left join t_staff b on a.leader = b.staff_id where a.manage = 'safed'
+ </select>
+  
+  
+  <!--  根据核心岗位id查询团队信息 -->
+  <select id="getTeamworkbyCoreId" parameterType="String" resultMap="BaseResultMap">
+      select * from t_teamwork where core_position_id=#{0}
+  </select>
+  
+  <delete id="deleteTeamworkByCoreId" parameterType="String" >
+      delete  from t_teamwork where core_position_id=#{0}
+  </delete>
+  
+  <!-- 根据Staffid获取关联岗位数 -->
+  <select id="getNumberByMap" parameterType="java.util.Map" resultType="int">
+  	SELECT COUNT(core_position_id) FROM t_core_position 
+  	<trim prefix="where" prefixOverrides="and">
+  		<if test="staffId != null and staffId != ''">
+  			staff_id = #{staffId,jdbcType=VARCHAR}
+  		</if>
+  	</trim>
+  </select>
+  
+</mapper>

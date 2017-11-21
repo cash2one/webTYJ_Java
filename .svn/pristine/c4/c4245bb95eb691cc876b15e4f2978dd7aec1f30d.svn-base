@@ -1,0 +1,201 @@
+package com.flf.service.impl;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.jws.WebService;
+import com.flf.entity.Caraccesscard;
+import com.flf.entity.PageRestful;
+import com.flf.entity.Search;
+/*import com.flf.entity.Carclaiminfo;
+import com.flf.entity.CollectFees;
+import com.flf.mapper.AdjunctMapper;*/
+import com.flf.mapper.CaraccesscardMapper;
+/*import com.flf.mapper.CarclaiminfoMapper;*/
+import com.flf.service.CaraccesscardService;
+
+@WebService
+/**
+ * 
+ * @author xiaocong
+ * @date 2015/6/17
+ */
+public class CaraccesscardServiceImpl implements CaraccesscardService {
+	private CaraccesscardMapper caraccesscardMapper;
+
+	public CaraccesscardMapper getCaraccesscardMapper() {
+		return caraccesscardMapper;
+	}
+
+	public void setCaraccesscardMapper(CaraccesscardMapper caraccesscardMapper) {
+		this.caraccesscardMapper = caraccesscardMapper;
+	}
+
+	/* 查询所有停车卡信息 */
+	@Override
+	public List<Caraccesscard> listAllCaraccesscard() {
+		// TODO Auto-generated method stub
+		return caraccesscardMapper.listAllCaraccesscard();
+	}
+
+	/* 根据停车卡id查询停车卡信息 */
+	@Override
+	public Caraccesscard getUserByIdRest(String cardId) {
+		// TODO Auto-generated method stub
+		return caraccesscardMapper.getCaraccesscard(cardId);
+	}
+
+	/* 新增停车卡信息 */
+	@Override
+	public void insertCaraccesscardrest(Caraccesscard caraccesscard) {
+		// TODO Auto-generated method stub
+		caraccesscardMapper.insertCaraccesscard(caraccesscard);
+	}
+
+	/* 修改停车卡信息 */
+	@Override
+	public void updateCaraccesscardrest(Caraccesscard caraccesscard) {
+		// TODO Auto-generated method stub
+		caraccesscardMapper.updateCaraccesscard(caraccesscard);
+	}
+
+	/* 删除停车卡信息 */
+	@Override
+	public void deleteCaraccesscardrest(String cardId) {
+		// TODO Auto-generated method stub
+		caraccesscardMapper.deleteCaraccesscardById(cardId);
+	}
+
+	/*
+	 * <p>Title: listCaraccesscardByCustcode</p> <p>Description: </p>
+	 * 
+	 * @param custCode
+	 * 
+	 * @return
+	 * 
+	 * @see
+	 * com.flf.service.CaraccesscardService#listCaraccesscardByCustcode(java
+	 * .lang.Integer)
+	 */
+
+	/* 根据房屋id查询所有停车卡信息 */
+	@Override
+	public List<Caraccesscard> listCaraccesscardByCustcode(String houseId) {
+
+		return caraccesscardMapper.listCaraccesscardByCustcode(houseId);
+	}
+
+	/*
+	 * <p>Title: updateCaraccesscardByCardState</p> <p>Description: </p>
+	 * 
+	 * @param caraccesscard
+	 * 
+	 * @return
+	 * 
+	 * @see
+	 * com.flf.service.CaraccesscardService#updateCaraccesscardByCardState(com
+	 * .flf.entity.Caraccesscard)
+	 */
+
+	/* 更换停车卡 */
+	@Override
+	public void updateCaraccessBycardId(Caraccesscard caraccesscard) {
+		System.out.println(caraccesscard.getIdcardNum());
+		caraccesscardMapper.updateCaraccesscardById(caraccesscard.getCardId()); // 修改就停车门禁卡状态为禁用
+		caraccesscard.setIdcardNum(caraccesscard.getNewcardId());
+		System.out.println(caraccesscard.getIdcardNum());
+		caraccesscard.setCardState((byte) 1);
+		caraccesscardMapper.insertCaraccesscard(caraccesscard); // 创建新的停车门禁卡信息
+	}
+
+	/* 根据车位id查询所有停车卡信息 */
+	@Override
+	public Caraccesscard getParkByIdRest(String parkId) {
+		// TODO Auto-generated method stub
+		return caraccesscardMapper.getParkbyId(parkId);
+	}
+
+	/* 新增停车卡信息 */
+	@Override
+	public void insertParkcardrest(Caraccesscard caraccesscard) {
+		// TODO Auto-generated method stub
+		caraccesscardMapper.insertCaraccesscard(caraccesscard);
+	}
+
+	/* 根据客户id查询所有停车卡信息 */
+	@Override
+	public List<Caraccesscard> listCaraccesscardByCustId(String custCode) {
+		// TODO Auto-generated method stub
+		return caraccesscardMapper.listCaraccesscardByCustId(custCode);
+	}
+
+	/* 挂失停车卡 */
+	@Override
+	public void LossCaraccessBycardId(String cardId) {
+		// TODO Auto-generated method stub
+		caraccesscardMapper.LossCaraccesscardById(cardId);
+	}
+
+	/* 停车卡退卡 */
+	@Override
+	public void RefundCaraccessBycardId(String cardId) {
+		// TODO Auto-generated method stub
+		caraccesscardMapper.RefundCaraccessBycardId(cardId);
+	}
+
+	@Override
+	public List<Caraccesscard> listSearchCaraccesscard(	Search search) {
+		// TODO Auto-generated method stub
+		List<Caraccesscard> caraccesscards=caraccesscardMapper.listSearchCaraccesscard(search);
+		return caraccesscards;
+	}
+ 
+	 /**
+	  * 创建by肖聪  2015/7/10
+	  * 通过条件查询办理人和授权人的停车卡信息
+	  */
+	@Override
+	public List<Caraccesscard> listSearchCaraccesscardAu(Search search) {
+		// TODO Auto-generated method stub
+		List<Caraccesscard> caraccesscards=caraccesscardMapper.listSearchCaraccesscard(search);
+		List<Caraccesscard> caraccesscardsone=caraccesscardMapper.listSearchCaraccesscardAu(search);
+		
+		caraccesscards.addAll(caraccesscardsone);
+		
+		return caraccesscards;
+	}
+   
+	
+	@Override
+	public List<Caraccesscard> listSearchCaraccesscardEX(Search search) {
+		// TODO Auto-generated method stub
+		List<Caraccesscard> hnList = new ArrayList<Caraccesscard>();
+		hnList= caraccesscardMapper.listSearchCaraccesscard(search);
+		return hnList;
+	}
+
+	@Override
+	public PageRestful listPageCaraccesscardByCustCode(
+			Caraccesscard caraccesscard) {
+		// TODO Auto-generated method stub
+		PageRestful pagerestful=new PageRestful();
+		List<Caraccesscard> carInfos =caraccesscardMapper.listPageCaraccesscardBySearch(caraccesscard);
+		carInfos.add(0,null);
+		pagerestful.setCaraccesscards(carInfos);
+		pagerestful.setPage(caraccesscard.getPage());
+		return pagerestful;
+	}
+
+	@Override
+	public PageRestful listPageCaraccesscardByContion(
+			Caraccesscard caraccesscard) {
+		// TODO Auto-generated method stub
+		PageRestful pagerestful=new PageRestful();
+		List<Caraccesscard> carInfos =caraccesscardMapper.listPageCaraccesscardByContion(caraccesscard);
+		carInfos.add(0,null);
+		pagerestful.setCaraccesscards(carInfos);
+		pagerestful.setPage(caraccesscard.getPage());
+		return pagerestful;
+	}
+
+}

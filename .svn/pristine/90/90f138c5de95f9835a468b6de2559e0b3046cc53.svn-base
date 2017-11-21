@@ -1,0 +1,237 @@
+package com.flf.service;
+
+import java.io.InputStream;
+import java.util.List;
+
+import javax.jws.WebService;
+import javax.ws.rs.Consumes;
+import javax.ws.rs.DELETE;
+import javax.ws.rs.GET;
+import javax.ws.rs.POST;
+import javax.ws.rs.PUT;
+import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
+import javax.ws.rs.Produces;
+import javax.ws.rs.core.MediaType;
+
+import com.flf.entity.Annex;
+import com.flf.entity.PageRestful;
+import com.flf.entity.SearchMeter;
+import com.flf.entity.WaterMeterRecords;
+import com.flf.request.Info;
+/* Created by Administrator on 2015/6/15. 
+author:尹磊
+修改时间：2015/6/15  修改人：尹磊 */
+@WebService
+@Path("/WaterMeterRecords")
+public interface WaterMeterRecordsService {
+	
+	
+	/**
+	 * 分页查询水表使用记录
+	 * @return
+	 *//*
+	@POST
+	@Path("/listPageWaterMeterRecords")
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
+	PageRestful listPageWaterMeterRecords(WaterMeterRecords waterMeterRecords);
+	*/
+	
+	/**
+	 * 多条件查询水表接口	
+	 * @return
+	 */
+	@POST
+	@Path("/listWaterMeterRecords")
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
+	PageRestful listWaterMeterRecords(SearchMeter searchMeter);
+	
+	/**
+	 * 根据建筑结构id查询鼠标使用记录
+	 * @return
+	 */
+	@POST
+	@Path("/listWaterMeterRecordsbybuildigIds")
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
+	List<WaterMeterRecords> listWaterMeterRecordsbybuildigIds(List<String> ids);
+	
+
+	/**
+	 * 查询所有水表使用记录信息
+	 * @return
+	 */
+	@GET
+	@Path("/listAllWaterMeterRecords")
+	@Produces(MediaType.APPLICATION_JSON)
+	List<WaterMeterRecords> listAllWaterMeterRecords();
+
+	
+	/**
+	 * 根据id查询所有水表使用记录信息
+	 * @return
+	 */
+	@GET
+	@Path("/getWaterMeterRecordsbyId/{waterMeterRecordsId}")
+	@Produces(MediaType.APPLICATION_JSON)
+	WaterMeterRecords getUserByIdRest(@PathParam("waterMeterRecordsId") String waterMeterRecordsId);
+	
+	
+	/**
+	 * 根据水表id查询水表使用记录信息
+	 * @return
+	 */
+	@GET
+	@Path("/listWaterMeterRecordsbyWaterId/{waterMeterNum}")
+	@Produces(MediaType.APPLICATION_JSON)
+	List<WaterMeterRecords> listWaterMeterRecordsbyWaterId(@PathParam("waterMeterNum") String waterMeterNum);
+
+	
+	/**
+	 * 新增水表使用记录信息
+	 * @return
+	 */
+	@POST
+	@Path("/insertWaterMeterRecords")
+	@Consumes({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
+	void insertWaterMeterRecordsrest(WaterMeterRecords waterMeterRecords);
+
+	/**
+	 * 新增水表使用记录信息
+	 * @return
+	 */
+	@POST
+	@Path("/insertWaterMeterRecordsLink")
+	@Consumes({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
+	void insertWaterMeterRecords(WaterMeterRecords waterMeterRecords);
+	/**
+	 * 修改水表使用记录信息
+	 * @return
+	 */
+	@PUT
+	@Path("/updateWaterMeterRecords")
+	@Consumes({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
+	void updateWaterMeterRecordsrest(WaterMeterRecords waterMeterRecords);
+	
+	/**
+	 * 停用水表
+	 * @return
+	 */
+	@PUT
+	@Path("/updateWaterMeterRecordsrestbyNum")
+	@Consumes({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
+	void updateWaterMeterRecordsrestbyNum(WaterMeterRecords waterMeterRecords);
+
+	
+	/**
+	 * 删除水表使用记录信息
+	 * @return
+	 */
+	@DELETE
+	@Path("/deleteWaterMeterRecords/{waterMeterRecordsId}")
+	void deleteWaterMeterRecordsrest(@PathParam("waterMeterRecordsId") String waterMeterRecordsId);
+	
+	/**
+	 * 根据建筑结构id查询水表使用记录
+	 * @return
+	 */
+	@GET
+	@Path("/waterMeterRecordsbybuildigIds/{buldingId}")
+	@Produces(MediaType.APPLICATION_JSON)
+	WaterMeterRecords waterMeterRecordsbybuildigIds(@PathParam("buldingId") String buldingId);
+
+	
+	/**
+	 * 分页显示计划下抄表数据	
+	 * @return
+	 */
+	@POST
+	@Path("/listPageWaterMeterRecordsById")
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
+	PageRestful listPageWaterMeterRecordsById(WaterMeterRecords waterMeterRecords);
+	
+
+	 /**
+   * 将需要进行EXCEL导入的抄表计划下水表抄表结果数据先写入模板并导出到本地
+   * 2015-12-24陶勇超
+	* 水表管理抄表结果详情导入模版下载
+   */
+  InputStream exportMeterRecords();
+  
+	/**
+	 * 导入抄表结果详情数据Excel数据文档
+	 * @param annex
+	 * @return
+	 * 2015-12-24 陶勇超
+	 * 水表管理抄表结果详情导入
+	 */
+	@POST
+	@Path("/importExcelFileMeterRecords")
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes({MediaType.APPLICATION_JSON,MediaType.APPLICATION_XML})
+	Info importExcelFileMeterRecords(Annex annex);
+	
+	/**
+	 * 抄表管理--水表维护-水表列表--历史用表
+	 * 2015-12-25
+	 * 陶勇超
+	 * 根据建筑结构id查询停用水表使用记录
+	 * @return
+	 */
+	@GET
+	@Path("/listWaterMeterRecordsBybuildigIds/{buildingStructureId}")
+	@Produces(MediaType.APPLICATION_JSON)
+	 List<WaterMeterRecords> listWaterMeterRecordsBybuildigIds(@PathParam("buildingStructureId") String buildingStructureId);
+
+	/**
+	 * 抄表管理--水表维护-水表列表--换表记录
+	 * 2015-12-25
+	 * 陶勇超
+	 * 根据建筑结构id查询停用水表使用记录
+	 * @return
+	 */
+	@GET
+	@Path("/listWaterMeterRecordsByIds/{buildingStructureId}")
+	@Produces(MediaType.APPLICATION_JSON)
+	 List<WaterMeterRecords> listWaterMeterRecordsByIds(@PathParam("buildingStructureId") String buildingStructureId);
+
+	/**
+	 * 抄表管理--水表维护-水表列表--抄表历史
+	 * 2015-12-26
+	 * 陶勇超
+	 * 根据水表ID查询水表使用记录信息
+	 * @return
+	 */
+	@GET
+	@Path("/listWaterMeterRecordsByWaterMeterId/{waterMeterId}/{year}")
+	@Produces(MediaType.APPLICATION_JSON)
+	 List<WaterMeterRecords> listWaterMeterRecordsByWaterMeterId(@PathParam("waterMeterId") String waterMeterId,@PathParam("year") Integer year);
+
+	/**
+	 * 水损分析列表第一级
+	 * @return
+	 */
+	@POST
+	@Path("/getWaterDamage")
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
+	PageRestful getWaterDamage(WaterMeterRecords waterMeterRecords);
+	
+	/**
+	 * 水损分析列表第二级
+	 * @return
+	 */
+	@POST
+	@Path("/getWaterDamageTwo")
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
+	PageRestful getWaterDamageTwo(WaterMeterRecords waterMeterRecords);
+	
+	@GET
+	@Path("/qweqwe")
+	@Produces(MediaType.APPLICATION_JSON)
+	void getWaterDamage();
+}

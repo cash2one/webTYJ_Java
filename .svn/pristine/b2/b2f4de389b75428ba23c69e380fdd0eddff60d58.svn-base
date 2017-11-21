@@ -1,0 +1,17 @@
+package com.flf.mapper;
+
+import com.flf.entity.ProductFixedparkingspaceChild;
+
+public interface ProductFixedparkingspaceChildMapper {
+    int deleteByPrimaryKey(String fixedparkingspaceChildId);
+
+    int insert(ProductFixedparkingspaceChild record);
+
+    int insertSelective(ProductFixedparkingspaceChild record);
+
+    ProductFixedparkingspaceChild selectByPrimaryKey(String fixedparkingspaceChildId);
+
+    int updateByPrimaryKeySelective(ProductFixedparkingspaceChild record);
+
+    int updateByPrimaryKey(ProductFixedparkingspaceChild record);
+}

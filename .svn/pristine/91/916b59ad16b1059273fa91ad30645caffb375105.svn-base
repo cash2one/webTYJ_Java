@@ -1,0 +1,131 @@
+<!--
+    创建人：钟加诚
+    页面名称：组织结构
+    js路径：js/controllers/internalProfession/organizationStructure
+-->
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+    <style>
+        #menu_zzjs_net{margin:5px;width:200px;overflow:hidden;}
+        #menu_zzjs_net li{line-height:25px;}
+        #menu_zzjs_net li a{color:#666666;padding-left:3px;outline:none;}
+        #menu_zzjs_net li input{vertical-align:middle;margin-left:3px;}
+        #menu_zzjs_net .two{padding-left:10px;display:none;}
+    </style>
+</head>
+<body>
+<div class="complaint_user_list" style="margin-top: 15px;height: auto">
+    <div class="container" style="margin: 20px 10px">
+        <!--左边联级-->
+        <div class="col-md-2" style="border: 1px solid #797979;height: auto">
+            <ul id="menu_zzjs_net">
+                <li>
+                    <label><a href="javascript:">董事长</a></label>
+                    <ul class="two">
+                        <li>
+                            <label><a href="javascript:">专业CEO1</a></label>
+                            <ul class="two">
+                                <li><label><input type="checkbox"><a>保洁部1部</a></label></li>
+                                <li><label><input type="checkbox"><a>保安部1部</a></label></li>
+                            </ul>
+
+                        <li><label><a href="javascript:">专业CEO2</a></label></li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+
+        <!--右边结构图-->
+        <div class="col-md-2" style="border: 1px solid #797979;height: auto;width:auto;margin: 0 10px">
+            <br><button style="margin:0 320px"><span>董事长</span><br><span>熊大</span></button>
+            <br><br>
+            <button style="margin-left: 190px"><span>专业CEO1</span><br><span>大熊</span></button>
+            <button style="margin-left: 200px"><span>专业CEO1</span><br><span>大狗熊</span></button>
+            <br><br>
+            <button style="margin-left: 95px"><span>保洁部1部</span><br><span>大熊</span></button>
+            <button><span>保安部1部</span><br><span>大熊</span></button>
+        </div>
+    </div>
+</div>
+</body>
+<script>
+    function addEvent(el,name,fn){
+        if(el.addEventListener) return el.addEventListener(name,fn,false);
+        return el.attachEvent('on'+name,fn);
+    }
+    function nextnode(node){
+        if(!node)return ;
+        if(node.nodeType == 1)
+            return node;
+        if(node.nextSibling)
+            return nextnode(node.nextSibling);
+    }
+    function prevnode(node){
+        if(!node)return ;
+        if(node.nodeType == 1)
+            return node;
+        if(node.previousSibling)
+            return prevnode(node.previousSibling);
+    }
+    function parcheck(self,checked){
+        var par =  prevnode(self.parentNode.parentNode.parentNode.previousSibling);
+        if(par&&par.getElementsByTagName('input')[0]){
+            par.getElementsByTagName('input')[0].checked = checked;
+            parcheck(par.getElementsByTagName('input')[0],sibcheck(par.getElementsByTagName('input')[0]));
+        }
+    }
+    function sibcheck(self){
+        var sbi = self.parentNode.parentNode.parentNode.childNodes,n=0;
+        for(var i=0;i<sbi.length;i++){
+            if(sbi[i].nodeType != 1)
+                n++;
+            else if(sbi[i].getElementsByTagName('input')[0].checked)
+                n++;
+        }
+    }
+    addEvent(document.getElementById('menu_zzjs_net'),'click',function(e){
+        e = e||window.event;
+        var target = e.target||e.srcElement;
+        var tp = nextnode(target.parentNode.nextSibling);
+        switch(target.nodeName){
+            case 'A':
+                if(tp&&tp.nodeName == 'UL'){
+                    if(tp.style.display != 'block' ){
+                        tp.style.display = 'block';
+                    }else{
+                        tp.style.display = 'none';
+                    }
+                }
+                break;
+            case 'SPAN':
+                var ap = nextnode(nextnode(target.nextSibling).nextSibling);
+                if(ap.style.display != 'block' ){
+                    ap.style.display = 'block';
+                }else{
+                    ap.style.display = 'none';
+                }
+                break;
+            case 'INPUT':
+                if(target.checked){
+                    if(tp){
+                        var checkbox = tp.getElementsByTagName('input');
+                        for(var i=0;i<checkbox.length;i++)
+                            checkbox[i].checked = true;
+                    }
+                }else{
+                    if(tp){
+                        var checkbox= tp.getElementsByTagName('input');
+                        for(var i=0;i<checkbox.length;i++)
+                            checkbox[i].checked = false;
+                    }
+                }
+                parcheck(target,sibcheck(target));
+                break;
+        }
+    });
+
+</script>
+</html>

@@ -1,0 +1,68 @@
+package com.flf.service;
+
+import javax.jws.WebService;
+import javax.ws.rs.Consumes;
+import javax.ws.rs.GET;
+import javax.ws.rs.POST;
+import javax.ws.rs.PUT;
+import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
+import javax.ws.rs.Produces;
+import javax.ws.rs.core.MediaType;
+
+import com.flf.entity.WaterMeterOrders;
+import com.flf.request.Info;
+
+@WebService
+@Path("/WaterMeterOrders")
+public interface WaterMeterOrdersService {
+
+	/**
+	 * 通过Id查询抄水表工单信息
+	 * @param orderId
+	 * @return
+	 */
+	@GET
+	@Path("/getWaterMeterOrdersbyId/{orderId}")
+	@Produces(MediaType.APPLICATION_JSON)
+	WaterMeterOrders getWaterMeterOrdersbyId(@PathParam("orderId") String orderId);
+	
+	/**
+	 *
+	 * @param orderId
+	 * @return
+	 */
+	@GET
+	@Path("/submitWaterMeterOrders/{orderId}")
+	@Produces(MediaType.APPLICATION_JSON)
+	void submitWaterMeterOrders(@PathParam("orderId") String orderId);
+	
+	/**
+	 * 新增抄水表工单信息
+	 * @param acceptanceOrders
+	 */
+	@POST
+	@Path("/insertWaterMeterOrders")
+	@Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+	public Info insertWaterMeterOrders(WaterMeterOrders waterMeterOrders);
+	
+	/**
+	 * 修改水表工单
+	 * @param acceptanceOrders
+	 */
+	@PUT
+	@Path("/updateWaterMeterOrders")
+	@Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+	public void updateWaterMeterOrders(WaterMeterOrders waterMeterOrders);
+	
+	/**
+	 * 关闭水表工单
+	 * @param waterMeterOrders
+	 * @return
+	 */
+	@PUT
+	@Path("/closeWaterMeterOrders")
+	@Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+	public void closeWaterMeterOrders(WaterMeterOrders waterMeterOrders);
+	
+}

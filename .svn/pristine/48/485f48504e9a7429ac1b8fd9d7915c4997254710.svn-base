@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.flf.mapper.CommuntitnoticeMapper" >
+  <resultMap id="BaseResultMap" type="Communtitnotice" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="title" property="title" jdbcType="VARCHAR" />
+    <result column="brief_content" property="briefContent" jdbcType="VARCHAR" />
+    <result column="detailed_information" property="detailedInformation" jdbcType="VARCHAR" />
+    <result column="founder" property="founder" jdbcType="VARCHAR" />
+    <result column="creation_time" property="creationTime" jdbcType="DATE" />
+    <result column="final_modifier" property="finalModifier" jdbcType="VARCHAR" />
+    <result column="last_modification_time" property="lastModificationTime" jdbcType="VARCHAR" />
+    <result column="abstracts" property="abstracts" jdbcType="VARCHAR" />
+    <result column="department" property="department" jdbcType="VARCHAR" />
+    <result column="project" property="project" jdbcType="VARCHAR" />
+  </resultMap>
+<!--  
+  <select id="listPageCommuntitnotice" parameterType="Communtitnotice"  resultMap="BaseResultMap">
+      select * from t_communtit_notice
+  </select> -->
+  
+  <select id="listAllCommuntitnotice"  resultMap="BaseResultMap">
+      select * from t_communtit_notice ORDER BY creation_time DESC limit 5
+  </select>
+  
+  <select id="listAllsCommuntitnotice"  resultMap="BaseResultMap">
+      select * from t_communtit_notice ORDER BY creation_time DESC
+  </select>
+  
+  <select id="listPageCommuntitnoticeRestful"  resultMap="BaseResultMap">
+      select * from t_communtit_notice ORDER BY creation_time DESC
+  </select>
+  
+  <select id="getCommuntitnoticebyId" parameterType="String" resultMap="BaseResultMap">
+  
+  select * from t_communtit_notice where id=#{id}
+  </select>
+  
+  <delete id="deleteCommuntitnotice" parameterType="String" >
+      delete from t_communtit_notice where id=#{id}
+  </delete>
+  <select id="listPageCommuntitnotice" resultMap="BaseResultMap">
+      select * from t_communtit_notice
+  </select>
+  
+  <insert id="insertCommuntitnotice" parameterType="Communtitnotice" >
+    insert into t_communtit_notice (title, brief_content, 
+      detailed_information, founder, creation_time, 
+      final_modifier, last_modification_time,abstracts,department,project)
+    values (#{title,jdbcType=VARCHAR}, #{briefContent,jdbcType=VARCHAR}, 
+      #{detailedInformation,jdbcType=VARCHAR}, #{founder,jdbcType=VARCHAR}, #{creationTime,jdbcType=DATE}, 
+      #{finalModifier,jdbcType=VARCHAR}, #{lastModificationTime,jdbcType=DATE},#{abstracts},#{department},#{project})
+  </insert>
+  <!-- <insert id="AddCommuntitnotice" parameterType="Communtitnotice" >
+    insert into t_communtit_notice (contact_id,title, brief_content, 
+      detailed_information, founder, creation_time, 
+      final_modifier, last_modification_time)
+    values (UUID(),#{title,jdbcType=VARCHAR}, #{briefContent,jdbcType=VARCHAR}, 
+      #{detailedInformation,jdbcType=VARCHAR}, #{founder,jdbcType=VARCHAR}, #{creationTime,jdbcType=DATE}, 
+      #{finalModifier,jdbcType=VARCHAR}, #{lastModificationTime,jdbcType=DATE})
+  </insert> -->
+
+  <update id="updateCommuntitnotice" parameterType="Communtitnotice" >
+    update t_communtit_notice
+    set title = #{title,jdbcType=VARCHAR},
+      brief_content = #{briefContent,jdbcType=VARCHAR},
+      detailed_information = #{detailedInformation,jdbcType=VARCHAR},
+      founder = #{founder,jdbcType=VARCHAR},
+      creation_time = #{creationTime,jdbcType=DATE},
+      final_modifier = #{finalModifier,jdbcType=VARCHAR},
+      last_modification_time = #{lastModificationTime,jdbcType=DATE},
+      abstracts = #{abstracts,jdbcType=VARCHAR},
+      department = #{department,jdbcType=VARCHAR},
+      project = #{project,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+</mapper>

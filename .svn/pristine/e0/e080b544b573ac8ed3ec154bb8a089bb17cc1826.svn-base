@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.flf.mapper.TaskTurnSpecialRecordsMapper" >
+  <resultMap id="BaseResultMap" type="TaskTurnSpecialRecords" >
+    <id column="record_id" property="recordId" jdbcType="VARCHAR" />
+    <result column="special_repair_project_id" property="turnSpecialRecordsId" jdbcType="VARCHAR" />
+    <result column="task_id" property="taskId" jdbcType="VARCHAR" />
+  </resultMap>
+  
+  <select id="getTaskTurnSpecialRecordsbyId" parameterType="String" resultMap="BaseResultMap">
+  	select * from ts_task_shift_special_records where record_id=#{0}
+  </select>
+  
+  <select id="getTaskTurnSpecialRecordsbyProjectId" parameterType="String" resultMap="BaseResultMap">
+  	select * from ts_task_shift_special_records where special_repair_project_id=#{0}
+  </select>
+  
+  <insert id="insertTaskTurnSpecialRecords" parameterType="TaskTurnSpecialRecords" >      
+      insert into ts_task_shift_special_records (record_id, special_repair_project_id,task_id)
+    values (UUID(), #{turnSpecialRecordsId,jdbcType=VARCHAR}, #{taskId,jdbcType=VARCHAR})
+  </insert>
+</mapper>

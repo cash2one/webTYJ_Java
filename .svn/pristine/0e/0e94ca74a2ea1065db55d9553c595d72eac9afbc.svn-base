@@ -1,0 +1,208 @@
+package com.flf.service.impl;
+
+import com.flf.service.PaymentDetailsService;
+import com.flf.service.ProductFixedparkingspaceService;
+
+import net.sf.json.JSONObject;
+
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.UUID;
+
+import org.springframework.beans.factory.annotation.Autowired;
+
+import com.flf.entity.BuildingStructureNew;
+import com.flf.entity.Page;
+import com.flf.entity.PageRestful;
+import com.flf.entity.PaymentDetails;
+import com.flf.entity.Product;
+import com.flf.entity.ProductFixedparkingspace;
+import com.flf.entity.ProductFixedparkingspaceChild;
+import com.flf.mapper.BuildingStructureNewMapper;
+import com.flf.mapper.ProductCommonserviceMapper;
+import com.flf.mapper.ProductFixedparkingspaceChildMapper;
+import com.flf.mapper.ProductFixedparkingspaceMapper;
+import com.flf.mapper.ProductMapper;
+
+
+public class ProductFixedparkingspaceServiceImpl implements ProductFixedparkingspaceService {
+	Map<String,String> map=new HashMap<String,String>();
+	private ProductFixedparkingspaceMapper productFixedparkingspaceMapper;
+	private ProductFixedparkingspaceChildMapper productFixedparkingspaceChildMapper;
+	@Autowired
+	private BuildingStructureNewMapper buildingStructureNewMapper;
+	@Autowired
+	private ProductMapper productMapper;
+
+	public ProductFixedparkingspaceChildMapper getProductFixedparkingspaceChildMapper() {
+		return productFixedparkingspaceChildMapper;
+	}
+
+	public void setProductFixedparkingspaceChildMapper(
+			ProductFixedparkingspaceChildMapper productFixedparkingspaceChildMapper) {
+		this.productFixedparkingspaceChildMapper = productFixedparkingspaceChildMapper;
+	}
+
+	public ProductFixedparkingspaceMapper getProductFixedparkingspaceMapper() {
+		return productFixedparkingspaceMapper;
+	}
+
+	public void setProductFixedparkingspaceMapper(ProductFixedparkingspaceMapper productFixedparkingspaceMapper) {
+		this.productFixedparkingspaceMapper = productFixedparkingspaceMapper;
+	}
+
+	@Override//新增固定车位
+	public String addPf(ProductFixedparkingspace pf) {
+		// TODO Auto-generated method stub
+		//获得子表ID
+		ProductFixedparkingspaceChild pfc=new ProductFixedparkingspaceChild();
+		//获得主表ID
+		String fixedparkingspaceId = UUID.randomUUID().toString();	
+		//将主表ID写入子表
+		pfc.setFixedparkingspaceId(fixedparkingspaceId);
+		//写入主表
+		pf.setFixedparkingspaceId(fixedparkingspaceId);
+		//循环将车位ID导入子表中  并且新增
+		for(BuildingStructureNew bsn:pf.getBuildingStructureNewList()){
+			String fixedparkingspaceChildId = UUID.randomUUID().toString();
+			pfc.setFixedparkingspaceChildId(fixedparkingspaceChildId);
+			String stallId = bsn.getId();
+			pfc.setStallId(stallId);
+			productFixedparkingspaceChildMapper.insert(pfc);
+		}
+		int result=productFixedparkingspaceMapper.insert(pf);
+		updateEndDate(pf.getEndDate());
+		if(result==1){
+			map.put("code","1");
+		    return JSONObject.fromObject(map).toString();
+	    }
+		else{
+			map.put("code","0");
+		    return JSONObject.fromObject(map).toString();
+		}
+	}
+
+	@Override//分页显示固定车位
+	public PageRestful listPageWithPf(ProductFixedparkingspace pf) {
+		// TODO Auto-generated method stub
+		PageRestful pageRestful=new PageRestful();
+		List<ProductFixedparkingspace> lpf=productFixedparkingspaceMapper.listPageLpf(pf);
+		lpf.add(0, null);
+		pageRestful.setProductFixedparkingspaces(lpf);
+		pageRestful.setPage(pf.getPage());
+		return pageRestful;
+	}
+
+	@Override
+	public PageRestful listPageWithPfc(ProductFixedparkingspaceChild pfc) {
+		// TODO Auto-generated method stub
+		PageRestful pageRestful=new PageRestful();
+		List<ProductFixedparkingspaceChild> lpfc=productFixedparkingspaceChildMapper.listPageFullnNameById(pfc);
+		lpfc.add(0, null);
+		pageRestful.setProductFixedparkingspaceChilds(lpfc);
+		pageRestful.setPage(pfc.getPage());
+		ProductFixedparkingspace pf=new ProductFixedparkingspace();
+		pf=productFixedparkingspaceMapper.selectByPrimaryKey(pfc.getFixedparkingspaceId());
+		pageRestful.setProductFixedparkingspace(pf);
+		return pageRestful;
+	}
+
+	@Override
+	public ProductFixedparkingspace getPf(String productId) {
+		// TODO Auto-generated method stub
+		ProductFixedparkingspace pf=new ProductFixedparkingspace();
+		pf=productFixedparkingspaceMapper.selectByPrimaryKey(productId);
+		return pf;
+	}
+
+	@Override
+	public String updatePf(ProductFixedparkingspace pf) {
+		// TODO Auto-generated method stub
+		productFixedparkingspaceMapper.updateByPrimaryKey(pf);
+		updateEndDate(pf.getEndDate());
+		productFixedparkingspaceChildMapper.deleteByPfId(pf.getFixedparkingspaceId());
+		ProductFixedparkingspaceChild pfkc=new ProductFixedparkingspaceChild();
+		pfkc.setFixedparkingspaceId(pf.getFixedparkingspaceId());
+		for(BuildingStructureNew bsn:pf.getBuildingStructureNewList()){
+			String fixedparkingspaceChildId = UUID.randomUUID().toString();
+			pfkc.setStallId(bsn.getId());
+			pfkc.setFixedparkingspaceChildId(fixedparkingspaceChildId);
+			productFixedparkingspaceChildMapper.insert(pfkc);
+		}
+		return null;
+	}
+
+	@Override
+	public String updatePfDate(ProductFixedparkingspace pf) {
+		// TODO Auto-generated method stub
+		String _ids[]=pf.getIds();
+		int result=0;
+		int _result=0;
+		for(int i=0;i<_ids.length;i++)
+		{
+			String id=_ids[i];
+			result=productFixedparkingspaceMapper.deleteByPrimaryKey(id)+result;
+			_result=productFixedparkingspaceChildMapper.deleteByPfId(id)+_result;
+		}		
+		map.put("result",Integer.toString(result));
+		map.put("results",Integer.toString(_result));
+	    return JSONObject.fromObject(map).toString();
+	}
+
+	@Override
+	public List<BuildingStructureNew> getBuildingListByTypeOrId(String id) {
+		// TODO Auto-generated method stub
+		List<BuildingStructureNew>  buildingList = buildingStructureNewMapper.getBuildingListByTypeOrId(id);
+		List<BuildingStructureNew> buidingParentList=buildingStructureNewMapper.getBuildingParentListByTypeOrId(id);
+		for(BuildingStructureNew bsn:buidingParentList){
+			buildingList.add(bsn);
+		}
+		List<BuildingStructureNew> buidingParentTopList=buildingStructureNewMapper.getBuildingParentTopListByTypeOrId(id);
+		for(BuildingStructureNew bsn:buidingParentTopList){
+			buildingList.add(bsn);
+		}
+		return buildingList;
+	}
+
+	@Override
+	public List<BuildingStructureNew> getBuildingListById(String id) {
+		// TODO Auto-generated method stub
+		List<BuildingStructureNew>  buildingList = buildingStructureNewMapper.getBuildingListById(id);
+		return buildingList;
+	}
+	private void updateEndDate(String endDate){//失效时间为最新更改的时间   在新建和编辑的时候调用
+		int result=productFixedparkingspaceMapper.updateEndDate(endDate);
+	}
+
+	@Override
+	public void updateAndSubmit() {
+		// TODO Auto-generated method stub
+		int result=productMapper.updateStateByType();
+		String pid = UUID.randomUUID().toString();
+		Product pro=new Product();
+		//String endDate=productFixedparkingspaceMapper.getEndDate();	
+		pro.setProductId(pid);
+		pro.setProductName("固定车位价格表");
+		pro.setProductType("4");
+		Date date=new Date();
+		DateFormat format=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		pro.setModifyTime(date);
+		pro.setState("0");
+		productMapper.insertProduct(pro);
+	}
+
+	@Override
+	public PageRestful getAllPfc(ProductFixedparkingspaceChild pfc) {
+		PageRestful pageRestful=new PageRestful();
+		List<ProductFixedparkingspaceChild> lpfc=productFixedparkingspaceChildMapper.listPageAllPfc(pfc);
+		lpfc.add(0, null);
+		pageRestful.setProductFixedparkingspaceChilds(lpfc);
+		pageRestful.setPage(pfc.getPage());
+		return pageRestful;
+	}
+
+}

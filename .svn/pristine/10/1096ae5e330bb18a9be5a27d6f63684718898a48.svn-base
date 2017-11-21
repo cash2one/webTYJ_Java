@@ -1,0 +1,33 @@
+package com.flf.service.impl;
+
+import java.util.List;
+
+import com.flf.entity.AssetAccountDetail;
+import com.flf.mapper.AssetAccountDetailMapper;
+import com.flf.service.AssetAccountDetailService;
+
+public class AssetAccountDetailServiceImpl implements AssetAccountDetailService{
+	private AssetAccountDetailMapper assetAccountDetailMapper;//账单详情表
+	
+	
+
+	public AssetAccountDetailMapper getAssetAccountDetailMapper() {
+		return assetAccountDetailMapper;
+	}
+
+
+
+	public void setAssetAccountDetailMapper(
+			AssetAccountDetailMapper assetAccountDetailMapper) {
+		this.assetAccountDetailMapper = assetAccountDetailMapper;
+	}
+
+
+
+	@Override
+	public List<AssetAccountDetail> getAssetAccountDetailById(String assetAccountId) {
+		// TODO Auto-generated method stub
+		return assetAccountDetailMapper.getAssetAccountDetailById(assetAccountId);
+	}
+
+}

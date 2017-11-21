@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.flf.mapper.QuoteOrdersMapper" >
+  <resultMap id="BaseResultMap" type="QuoteOrders" >
+    <id column="order_id" property="orderId" jdbcType="VARCHAR" />
+    <result column="order_type" property="orderType" jdbcType="TINYINT" />
+    <result column="order_state" property="orderState" jdbcType="TINYINT" />
+    <result column="task_id" property="taskId" jdbcType="VARCHAR" />
+    <result column="service_request_id" property="serviceRequestId" jdbcType="VARCHAR" />
+    <result column="operator_id" property="operatorId" jdbcType="VARCHAR" />
+    <result column="discount" property="discount" jdbcType="VARCHAR" />
+    <result column="final_price" property="finalPrice" jdbcType="DOUBLE" />
+    <result column="finish_time" property="finishTime" jdbcType="TIMESTAMP" />
+    <result column="all_total" property="allTotal" jdbcType="DECIMAL" />
+    <result column="remarks" property="remarks" jdbcType="VARCHAR" />
+    <result column="close_time" property="closeTime" jdbcType="TIMESTAMP" />
+    <result column="close_person_id" property="closePerson" jdbcType="VARCHAR" />
+    <result column="close_remarks" property="closeRemarks" jdbcType="VARCHAR" />
+    <result column="signature" property="signature" jdbcType="VARCHAR" />
+    <collection property="itemRecords" column="order_id" ofType="QuoteItemRecords" select="com.flf.mapper.QuoteItemRecordsMapper.getQuoteItemRecordsbyOrderId"></collection>
+  </resultMap>
+  
+  <resultMap type="QuoteOrders" id="resultQuoteOrdersMap" extends="BaseResultMap">
+  	<association property="staff" column="operator_id" javaType="Staff" select="com.flf.mapper.StaffMapper.selectByid"></association>
+  	<collection property="annexs" column="order_id" ofType="Annex" select="com.flf.mapper.AnnexMapper.getAnnexbyRelationId"></collection>
+  </resultMap>
+  
+ <delete id="deleteQuoteOrders" parameterType="String">
+  delete from ts_quote_orders where order_id=#{0}
+  </delete>
+  
+  <select id="listPageQuoteOrders" parameterType="QuoteOrders" resultMap="resultQuoteOrdersMap">
+  select * from ts_quote_orders 
+  </select>
+  
+  <select id="listAllQuoteOrders"  resultMap="resultQuoteOrdersMap" >
+  select * from ts_quote_orders 
+  </select>
+  
+  <select id="getQuoteOrdersbyId" parameterType="String" resultMap="resultQuoteOrdersMap">
+  select * from ts_quote_orders where order_id=#{0}
+  </select>
+  
+   <select id="getAppQuoteOrdersbyId" parameterType="String" resultMap="BaseResultMap">
+   select * from ts_quote_orders where order_id=#{0}
+  </select>
+  
+  <select id="getQuoteOrdersbyTasksId" parameterType="String" resultMap="resultQuoteOrdersMap">
+  select * from ts_quote_orders where task_id=#{0}
+  </select>
+  
+  <insert id="insertQuoteOrders" parameterType="QuoteOrders" >      
+      insert into ts_quote_orders (order_id, order_type,order_state, task_id, 
+      service_request_id,operator_id,discount,final_price,finish_time, 
+      all_total, remarks,close_time,close_person_id,close_remarks,signature)
+    values (UUID(), #{orderType,jdbcType=TINYINT}, #{orderState,jdbcType=TINYINT},#{taskId,jdbcType=VARCHAR}, 
+      #{serviceRequestId,jdbcType=VARCHAR},#{orderType,jdbcType=TINYINT}, #{operatorId,jdbcType=VARCHAR}, #{discount,jdbcType=VARCHAR}, #{finalPrice,jdbcType=DOUBLE},#{finishTime,jdbcType=DATE}, 
+      #{allTotal,jdbcType=DECIMAL}, #{remarks,jdbcType=VARCHAR}, #{closeTime,jdbcType=TIMESTAMP},#{closePerson,jdbcType=VARCHAR},#{closeRemarks,jdbcType=VARCHAR},#{signature,jdbcType=VARCHAR})
+  </insert>
+  
+   <insert id="insertQuoteOrdersUUID" parameterType="QuoteOrders" >      
+     insert into ts_quote_orders (order_id, order_type,order_state, task_id, 
+      service_request_id,operator_id,discount,final_price,finish_time, 
+      all_total, remarks,close_time,close_person_id,close_remarks,signature)
+    values (#{orderId,jdbcType=VARCHAR}, #{orderType,jdbcType=TINYINT}, #{orderState,jdbcType=TINYINT},#{taskId,jdbcType=VARCHAR}, 
+      #{serviceRequestId,jdbcType=VARCHAR}, #{operatorId,jdbcType=VARCHAR}, #{discount,jdbcType=VARCHAR}, #{finalPrice,jdbcType=DOUBLE},#{finishTime,jdbcType=DATE}, 
+      #{allTotal,jdbcType=DECIMAL}, #{remarks,jdbcType=VARCHAR}, #{closeTime,jdbcType=TIMESTAMP},#{closePerson,jdbcType=VARCHAR},#{closeRemarks,jdbcType=VARCHAR},#{signature,jdbcType=VARCHAR})
+  </insert>
+ 
+  <update id="updateQuoteOrders" parameterType="QuoteOrders" >
+    update ts_quote_orders
+    set order_type = #{orderType,jdbcType=TINYINT},
+      order_state = #{orderState,jdbcType=TINYINT},
+      task_id = #{taskId,jdbcType=VARCHAR},
+      service_request_id = #{serviceRequestId,jdbcType=VARCHAR},
+      operator_id = #{operatorId,jdbcType=VARCHAR},
+      discount = #{discount,jdbcType=VARCHAR},
+      final_price = #{finalPrice,jdbcType=DOUBLE},
+      finish_time = #{finishTime,jdbcType=DATE},
+      all_total = #{allTotal,jdbcType=DECIMAL},
+      remarks = #{remarks,jdbcType=VARCHAR},
+      close_time = #{closeTime,jdbcType=TIMESTAMP},
+      close_person_id = #{closePerson,jdbcType=VARCHAR},
+      close_remarks = #{closeRemarks,jdbcType=VARCHAR},
+      signature =#{signature,jdbcType=VARCHAR}
+    where order_id = #{orderId,jdbcType=VARCHAR}
+  </update>
+  
+  <update id="closeQuoteOrders" parameterType="String">
+  	update ts_quote_orders set order_state = 0 where order_id = #{0}
+  </update>
+</mapper>

@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.flf.mapper.CheckItemRecordsMapper" >
+  <resultMap id="BaseResultMap" type="CheckItemRecords" >
+    <id column="record_id" property="recordId" jdbcType="VARCHAR" />
+    <result column="order_id" property="orderId" jdbcType="VARCHAR" />
+    <result column="check_item_type" property="checkItemType" jdbcType="TINYINT" />
+    <result column="check_item_name" property="checkItemName" jdbcType="VARCHAR" />
+    <result column="check_item_result" property="checkItemResult" jdbcType="VARCHAR" />
+    <!-- 新建字段 -->
+    <result column="is_through_insurance" property="isThroughInsurance" jdbcType="TINYINT"/>
+    <result column="is_abnormal" property="isAbnormal" jdbcType="TINYINT"/>
+    <result column="is_aftermarket" property="isAftermarket" jdbcType="TINYINT"/>
+  </resultMap>
+  
+ <delete id="deleteCheckItemRecords" parameterType="String">
+  delete from ts_check_item_records where record_id=#{0}
+  </delete>
+  
+  <select id="getCheckItemRecordsbyOrderId" parameterType="String" resultMap="BaseResultMap"> 
+  	select * from ts_check_item_records where order_id = #{0}
+  </select>
+  
+  <select id="listAllCheckItemRecords"  resultMap="BaseResultMap" >
+ 	 select * from ts_check_item_records 
+  </select>
+  
+  <select id="getCheckItemRecordsbyId" parameterType="String" resultMap="BaseResultMap">
+  	select * from ts_check_item_records where record_id=#{0}
+  </select>
+  
+  <insert id="insertCheckItemRecords" parameterType="CheckItemRecords" >      
+      insert into ts_check_item_records (record_id, order_id,check_item_type, check_item_name, 
+      check_item_result,is_through_insurance,is_abnormal,is_aftermarket)
+    values (UUID(), #{orderId,jdbcType=VARCHAR}, #{checkItemType,jdbcType=TINYINT}, #{checkItemName,jdbcType=VARCHAR}, 
+      #{checkItemResult,jdbcType=VARCHAR},#{isThroughInsurance,jdbcType=TINYINT},#{isAbnormal,jdbcType=TINYINT},#{isAftermarket,jdbcType=TINYINT})
+  </insert>
+ 
+  <update id="updateCheckItemRecords" parameterType="CheckItemRecords" >
+    update ts_check_item_records
+    set order_id = #{orderId,jdbcType=VARCHAR},
+    	check_item_type = #{checkItemType,jdbcType=TINYINT},
+      check_item_name = #{checkItemName,jdbcType=VARCHAR},
+      check_item_result = #{checkItemResult,jdbcType=VARCHAR},
+      is_through_insurance = #{isThroughInsurance,jdbcType=TINYINT},
+      is_abnormal = #{isAbnormal,jdbcType=TINYINT},
+      is_aftermarket = #{isAftermarket,jdbcType=TINYINT}
+    where record_id = #{recordId,jdbcType=VARCHAR}
+  </update>
+</mapper>

@@ -1,0 +1,138 @@
+package com.flf.service;
+
+import java.util.List;
+
+import javax.jws.WebService;
+import javax.ws.rs.Path;
+
+import com.flf.entity.Account;
+import com.flf.entity.AssetAccount;
+import com.flf.entity.Bill;
+import com.flf.entity.BuildingStructureNew;
+import com.flf.entity.ElectronicBilling;
+import com.flf.entity.NewLease;
+import com.flf.entity.PaymentDetails;
+import com.flf.entity.PersonBuildingNew;
+import com.flf.entity.Project;
+
+/**
+ * @TODO 统一支付系统接口统一接口service
+ * @author wangzhou
+ * @date 2016.04.26
+ * @version 1.0
+ */
+@WebService
+@Path("/PayMs")
+public interface PaymsService {
+
+	/**
+     * @TODO 根据客户姓名、证件号，电话号码查询个人客户id
+     * @param name 姓名, CardNum 证件号,  phoneNum 电话号码
+     * @return  客户id
+     * @author wangzhou
+     * @date 2016.04.26
+     */
+    String getPersonCustByPerson(String name,String cardNum,String phoneNum);
+    
+    /**
+     * @TODO 根据个人客户id查询关联的建筑信息（包括作为业主的资产和租赁的资产）
+     * @param custId
+     * @return list
+     * @author wangzhou
+     * @date 2016.04.26
+     */
+    List<PersonBuildingNew> listBuildingByCustId(String custId);
+    
+    /**
+     * @TODO 根据建筑结构id查询对应的建筑结构信息
+     * @param id
+     * @return buildingStructureNew obj
+     * @author wangzhou
+     * @date 2016.04.26
+     */
+    BuildingStructureNew getBuildingStructureNewById(String id);
+    
+    /**
+     * @TODO 根据租客id和建筑结构id查询租赁产品信息
+     * @param leasePersonId
+     * @param houseId
+     * @return newLease obj
+     * @author wangzhou
+     * @date 2016.04.27
+     */
+    NewLease getNewLeaseByleasePersonIdAndHouseId(String leasePersonId, String houseId);
+    
+    /**
+     * TODO 根据个人客户id获取账户信息
+     * @param custId
+     * @param projectId
+     * @return account
+     * @author wangzhou
+     * @date 2016.04.27
+     */
+    Account getAccountByCustId(String custId, String projectId);
+    
+    /**
+     * 根据客户id查询有资产的项目
+     * @param custId
+     * @return list
+     * @author wangzhou
+     * @date 2016.04.27
+     */
+    List<Project> listProjectByCustId(String custId);
+    
+    /**
+     *  根据客户id和建筑id或assetAccountId查询账户信息
+     * @param houseId、custId
+     * @return AssetAccount
+     * @author zhuqi
+     * @date 2016.04.28
+     */
+    AssetAccount listAssetAccountByHouseIdAndCustId(String houseId, String custId, String assetAccountId);
+    
+    /**
+     * 根据建筑id和客户id获取账单
+     * @param houseId
+     * @param custId
+     * @return ElectronicBilling
+     * @author zhuqi
+     * @date 2016.04.29
+     */
+    ElectronicBilling listElectronicBillingByHouseIdAndCustId(String houseId, String custId);
+    
+    /**
+     * 根据电子账单id查询账单
+     * @param electronicBillingId
+     * @return List
+     * @author zhuqi
+     * @date 2016.04.29
+     */
+    List<Bill> listBillByElectronicBillingId(String electronicBillingId);
+    
+    /**
+     * 根据账单json修改账单
+     * @param paymentDetailsJson   billId、outTradeNo、assetAccountId、ciName、custId、wechatSum
+     * @return int 0失败1成功
+     * @author zhuqi
+     * @date 2016.05.03
+     */
+    int updateBillByPaymentDetailsJson(String paymentDetailsJson);
+    
+    /**
+     * 根据收支明细id获取收支明细
+     * @param paymentDetailsId advancePaymentsDetailsId
+     * @return PaymentDetails
+     * @author zhuqi
+     * @date 2016.05.03
+     */
+    PaymentDetails getPaymentDetailsByPaymentDetailsId(String paymentDetailsId, String advancePaymentsDetailsId);
+    
+    /**
+	 * 收支明细list遍历交易类型及合计(公共方法)
+	 * @param paymentDetails
+	 * @return list (getPaymentType 0现金1刷卡2微信3预付款8混合)、(setSum合计金额)
+	 * @author zhuqi
+	 * @date 2016.05.04
+	 */
+	public List<PaymentDetails> getPaymentTypeByPaymentDetailsList(List<PaymentDetails> paymentDetails);
+}

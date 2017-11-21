@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.flf.mapper.HouseArticleMapper" >
+  <resultMap id="BaseResultMap" type="HouseArticle" >
+    <id column="article_id" property="articleId"/>
+    <result column="article_name" property="articleName"/>
+    <result column="quantity" property="quantity"/>
+    <result column="property_id" property="propertyId"/>
+    <result column="house_id" property="houseId"/>
+    <result column="article_state" property="articleState"/>
+  </resultMap>
+  
+  <select id="listAllHouseArticle" resultMap="BaseResultMap"> 
+      select * from tc_house_article
+  </select>
+  
+  <insert id="insertHouseArticle" parameterType="HouseArticle">
+      insert into tc_house_article
+      (article_id,article_name,quantity,
+      article_state)
+      values(#{articleId},#{articleName},#{quantity},
+      #{articleState})
+  </insert>
+  
+  <update id="updateHouseArticle" parameterType="HouseArticle">
+  	update tc_house_article
+  	set 
+  	    <if test="articleName != null">
+  	        article_name=#{articleName},
+  	    </if>
+  		<if test="quantity != null">
+  		    quantity=#{quantity},
+  		</if>
+  		<if test="articleState != null ">
+  		    article_state=#{articleState},
+  		</if>
+  		<if test="articleId != null">
+  		    article_id=#{articleId}
+  		</if>
+  		where article_id=#{articleId}
+  </update>
+</mapper>

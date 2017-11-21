@@ -1,0 +1,1359 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+	<bean id="logService" class="com.flf.service.impl.LogServiceImpl">
+		<property name="logMapper" ref="logMapper"></property>
+		<property name="logTypeService" ref="logTypeService"></property>
+	</bean>
+
+	<bean id="propertyConfigurer"
+		class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+		<property name="location">
+			<value>classpath:data.properties</value>
+		</property>
+	</bean>
+
+	<bean id="unionpayCollectionDetailService"
+		class="com.flf.service.impl.UnionpayCollectionDetailServiceImpl">
+		<property name="unionpayCollectionDetailMapper" ref="unionpayCollectionDetailMapper"></property>
+	</bean>
+
+	<bean id="unionpayCollectionTotallService"
+		class="com.flf.service.impl.UnionpayCollectionTotallServiceImpl">
+		<property name="unionpayCollectionTotallMapper" ref="unionpayCollectionTotallMapper"></property>
+		<property name="unionpayCollectionDetailMapper" ref="unionpayCollectionDetailMapper"></property>
+	</bean>
+
+	<bean id="infoService" class="com.flf.service.impl.InfoServiceImpl">
+		<property name="infoMapper" ref="infoMapper" />
+	</bean>
+
+	<bean id="userService" class="com.flf.service.impl.UserServiceImpl">
+		<property name="userMapper" ref="userMapper" />
+	</bean>
+
+	<bean id="menuService" class="com.flf.service.impl.MenuServiceImpl">
+		<property name="menuMapper" ref="menuMapper" />
+	</bean>
+
+	<bean id="roleService" class="com.flf.service.impl.RoleServiceImpl">
+		<property name="roleMapper" ref="roleMapper" />
+	</bean>
+
+	<bean id="meterReadingComplaintsService" class="com.flf.service.impl.MeterReadingComplaintsServiceImpl">
+		<property name="meterReadingComplaintsMapper" ref="meterReadingComplaintsMapper" />
+	</bean>
+
+	<bean id="meterReadingProgramService" class="com.flf.service.impl.MeterReadingProgramServiceImpl">
+		<property name="meterReadingProgramMapper" ref="meterReadingProgramMapper" />
+		<property name="waterMeterRecordsService" ref="waterMeterRecordsService" />
+		<property name="waterMeterProjectService" ref="waterMeterProjectService" />
+		<property name="meterProjectMapper" ref="meterProjectMapper" />
+		<property name="logService" ref="logService" />
+		<property name="logTypeService" ref="logTypeService" />
+		<property name="meterRecordsMapper" ref="meterRecordsMapper" />
+		<property name="meterReadingDataMapper" ref="meterReadingDataMapper" />
+		<property name="planLinkBuildingStructureMapper" ref="planLinkBuildingStructureMapper" />
+		<property name="waterLossMapper" ref="waterLossMapper" />
+	</bean>
+
+	<bean id="meterReadingDataService" class="com.flf.service.impl.MeterReadingDataServiceImpl">
+		<property name="meterReadingDataMapper" ref="meterReadingDataMapper" />
+		<property name="correctedReadingMapper" ref="correctedReadingMapper" />
+		<property name="meterReadingProgramMapper" ref="meterReadingProgramMapper" />
+		<property name="annexMapper" ref="annexMapper" />
+	</bean>
+	<bean id="waterMeterTypesService" class="com.flf.service.impl.WaterMeterTypesServiceImpl">
+		<property name="meterTypesMapper" ref="meterTypesMapper" />
+	</bean>
+	<bean id="correctedReadingService" class="com.flf.service.impl.CorrectedReadingServiceImpl">
+		<property name="correctedReadingMapper" ref="correctedReadingMapper" />
+		<property name="meterReadingDataMapper" ref="meterReadingDataMapper" />
+		<property name="electricityMeterReadingDataMapper" ref="electricityMeterReadingDataMapper" />
+		<property name="annexMapper" ref="annexMapper" />
+		<property name="meterMapper" ref="meterMapper" />
+		<property name="electricityMeterMapper" ref="electricityMeterMapper" />
+	</bean>
+	<bean id="meterReadingResultsService" class="com.flf.service.impl.MeterReadingResultsServiceImpl">
+		<property name="meterReadingResultsMapper" ref="meterReadingResultsMapper" />
+		<property name="meterReadingProgramMapper" ref="meterReadingProgramMapper" />
+	</bean>
+
+
+	<bean id="waterMeterService" class="com.flf.service.impl.WaterMeterServiceImpl">
+		<property name="meterMapper" ref="meterMapper" />
+		<property name="waterMeterRecordsService" ref="waterMeterRecordsService" />
+		<property name="propertyMapper" ref="propertyMapper" />
+	</bean>
+
+	<bean id="waterMeterRecordsService" class="com.flf.service.impl.WaterMeterRecordsServiceImpl">
+		<property name="meterRecordsMapper" ref="meterRecordsMapper" />
+		<property name="meterMapper" ref="meterMapper" />
+		<property name="propertyMapper" ref="propertyMapper" />
+		<property name="logService" ref="logService" />
+		<property name="logTypeService" ref="logTypeService" />
+		<property name="meterReadingDataMapper" ref="meterReadingDataMapper" />
+		<property name="meterProjectMapper" ref="meterProjectMapper" />
+		<property name="buildingStructureNewMapper" ref="buildingStructureNewMapper" />
+		<property name="waterLossMapper" ref="waterLossMapper" />
+	</bean>
+
+	<bean id="waterMeterProjectService" class="com.flf.service.impl.WaterMeterProjectServiceImpl">
+		<property name="meterProjectMapper" ref="meterProjectMapper" />
+	</bean>
+
+
+
+
+	<bean id="electricityMeterReadingComplaintsService"
+		class="com.flf.service.impl.ElectricityMeterReadingComplaintsServiceImpl">
+		<property name="electricityMeterReadingComplaintsMapper" ref="electricityMeterReadingComplaintsMapper" />
+	</bean>
+
+	<bean id="electricityMeterReadingProgramService"
+		class="com.flf.service.impl.ElectricityMeterReadingProgramServiceImpl">
+		<property name="electricityMeterReadingProgramMapper" ref="electricityMeterReadingProgramMapper" />
+		<property name="electricityMeterRecordsService" ref="electricityMeterRecordsService" />
+		<property name="electricityMeterProjectService" ref="electricityMeterProjectService" />
+		<property name="electricityMeterProjectMapper" ref="electricityMeterProjectMapper" />
+		<property name="electricityMeterRecordsMapper" ref="electricityMeterRecordsMapper" />
+		<property name="electricityMeterReadingDataMapper" ref="electricityMeterReadingDataMapper" />
+		<property name="electricityLossMapper" ref="electricityLossMapper" />
+		<property name="logService" ref="logService" />
+	</bean>
+
+	<bean id="electricityMeterReadingDataService"
+		class="com.flf.service.impl.ElectricityMeterReadingDataServiceImpl">
+		<property name="electricityMeterReadingDataMapper" ref="electricityMeterReadingDataMapper" />
+	</bean>
+
+	<bean id="electricityMeterTypesService" class="com.flf.service.impl.ElectricityMeterTypesServiceImpl">
+		<property name="electricityMeterTypesMapper" ref="electricityMeterTypesMapper" />
+	</bean>
+
+	<bean id="electricityMeterService" class="com.flf.service.impl.ElectricityMeterServiceImpl">
+		<property name="electricityMeterMapper" ref="electricityMeterMapper" />
+		<property name="electricityMeterRecordsService" ref="electricityMeterRecordsService" />
+		<property name="propertyMapper" ref="propertyMapper" />
+	</bean>
+
+	<bean id="electricityMeterRecordsService" class="com.flf.service.impl.ElectricityMeterRecordsServiceImpl">
+		<property name="electricityMeterRecordsMapper" ref="electricityMeterRecordsMapper" />
+		<property name="electricityMeterMapper" ref="electricityMeterMapper" />
+		<property name="logService" ref="logService" />
+		<property name="electricityLossMapper" ref="electricityLossMapper" />
+	</bean>
+
+	<bean id="electricityMeterProjectService" class="com.flf.service.impl.ElectricityMeterProjectServiceImpl">
+		<property name="electricityMeterProjectMapper" ref="electricityMeterProjectMapper" />
+	</bean>
+
+	<!-- 门控机接口 -->
+	<bean id="gateAccountService" class="com.flf.service.impl.GateAccountServiceImpl">
+		<property name="gateUrl" value="http://localhost:8888/Gate/cxfws" />
+	</bean>
+
+	<bean id="architectureNewService" class="com.flf.service.impl.ArchitectureNewServiceImpl">
+		<property name="architectureNewMapper" ref="architectureNewMapper"></property>
+	</bean>
+
+	<bean id="areaNewService" class="com.flf.service.impl.AreaNewServiceImpl">
+		<property name="areaNewMapper" ref="areaNewMapper" />
+	</bean>
+
+	<bean id="areaTypeNewService" class="com.flf.service.impl.AreaTypeNewServiceImpl">
+		<property name="areaTypeNewMapper" ref="areaTypeNewMapper" />
+	</bean>
+
+	<bean id="buildingNewService" class="com.flf.service.impl.BuildingNewServiceImpl">
+		<property name="buildingNewMapper" ref="buildingNewMapper" />
+		<property name="areaNewMapper" ref="areaNewMapper" />
+		<property name="buildingStructureNewMapper" ref="buildingStructureNewMapper" />
+		<property name="cassetRepositoryMapper" ref="cassetRepositoryMapper" />
+		<property name="areaTypeNewMapper" ref="areaTypeNewMapper" />
+		<property name="projectMapper" ref="projectMapper" />
+		<property name="sipmanageMapper" ref="sipmanageMapper" />
+		<property name="houseNewMapper" ref="houseNewMapper" />
+		<property name="stallNewMapper" ref="stallNewMapper" />
+		<property name="storeNewMapper" ref="storeNewMapper" />
+		<property name="assetAccountMapper" ref="assetAccountMapper" />
+		<property name="intakeMapper" ref="intakeMapper" />
+	</bean>
+
+	<bean id="buildingStructureNewService" class="com.flf.service.impl.BuildingStructureNewServiceImpl">
+		<property name="gateUrl" value="http://localhost:8888/Gate/cxfws" />
+		<property name="buildingStructureNewMapper" ref="buildingStructureNewMapper" />
+		<property name="houseNewMapper" ref="houseNewMapper" />
+		<property name="stallNewMapper" ref="stallNewMapper" />
+		<property name="storeNewMapper" ref="storeNewMapper" />
+		<property name="architectureNewMapper" ref="architectureNewMapper" />
+		<property name="pooledNewMapper" ref="pooledNewMapper" />
+		<property name="areaTypeNewMapper" ref="areaTypeNewMapper" />
+		<property name="meterProjectMapper" ref="meterProjectMapper" />
+		<property name="componentStructureMapper" ref="componentStructureMapper" />
+		<property name="buildingComponentMapper" ref="buildingComponentMapper" />
+		<property name="parcelMapper" ref="parcelMapper" />
+		<property name="buildingNewMapper" ref="buildingNewMapper" />
+		<property name="areaNewMapper" ref="areaNewMapper" />
+		<property name="sipmanageMapper" ref="sipmanageMapper" />
+		<property name="personBuildingNewMapper" ref="personBuildingNewMapper" />
+		<property name="personCustNewMapper" ref="personCustNewMapper" />
+		<property name="enterpriseCustNewMapper" ref="enterpriseCustNewMapper" />
+		<property name="assetAccountMapper" ref="assetAccountMapper" />
+		<property name="accountMapper" ref="accountMapper" />
+		<property name="accountRelationMapper" ref="accountRelationMapper" />
+		<property name="projectMapper" ref="projectMapper" />
+		<property name="productBsMapper" ref="productBsMapper" />
+	</bean>
+
+	<bean id="houseNewService" class="com.flf.service.impl.HouseNewServiceImpl">
+		<property name="houseNewMapper" ref="houseNewMapper" />
+		<property name="jiajiaUrl" value="${jiajiaUrl}"></property>
+		<property name="buildingStructureNewMapper" ref="buildingStructureNewMapper" />
+		<property name="areaTypeNewMapper" ref="areaTypeNewMapper" />
+		<property name="projectMapper" ref="projectMapper" />
+		<property name="sipmanageMapper" ref="sipmanageMapper" />
+		<property name="personCustNewMapper" ref="personCustNewMapper" />
+		<property name="entranceMapper" ref="entranceMapper" />
+		<property name="intakeMapper" ref="intakeMapper" />
+		<property name="personBuildingNewMapper" ref="personBuildingNewMapper" />
+	</bean>
+
+	<bean id="regionNewService" class="com.flf.service.impl.RegionNewServiceImpl">
+		<property name="regionNewMapper" ref="regionNewMapper" />
+		<property name="buildingNewMapper" ref="buildingNewMapper" />
+	</bean>
+	<bean id="itemsService" class="com.flf.service.impl.ItemsServiceImpl">
+		<property name="itemsMapper" ref="itemsMapper" />
+	</bean>
+
+	<bean id="enterpriseCustNewService" class="com.flf.service.impl.EnterpriseCustNewServiceImpl">
+		<property name="personBuildingNewMapper" ref="personBuildingNewMapper"></property>
+		<property name="enterpriseCustNewMapper" ref="enterpriseCustNewMapper"></property>
+		<property name="buildingStructureNewMapper" ref="buildingStructureNewMapper"></property>
+		<property name="annexMapper" ref="annexMapper"></property>
+	</bean>
+
+	<bean id="personCustNewService" class="com.flf.service.impl.PersonCustNewServiceImpl">
+		<property name="personCustNewMapper" ref="personCustNewMapper"></property>
+		<property name="personBuildingNewMapper" ref="personBuildingNewMapper"></property>
+		<property name="houseNewMapper" ref="houseNewMapper"></property>
+		<property name="carInfoMapper" ref="carInfoMapper"></property>
+		<property name="stallNewMapper" ref="stallNewMapper"></property>
+		<property name="storeNewMapper" ref="storeNewMapper"></property>
+		<property name="caraccesscardMapper" ref="caraccesscardMapper"></property>
+		<property name="entranceMapper" ref="entranceMapper"></property>
+		<property name="newLeaseMapper" ref="newLeaseMapper"></property>
+		<property name="petRegistrationMapper" ref="petRegistrationMapper"></property>
+		<property name="jiajiaUrl" value="${jiajiaUrl}" />
+		<property name="buildingStructureNewMapper" ref="buildingStructureNewMapper"></property>
+
+		<property name="annexMapper" ref="annexMapper"></property>
+		<property name="accountMapper" ref="accountMapper" />
+		<property name="assetAccountMapper" ref="assetAccountMapper" />
+		<property name="accountRelationMapper" ref="accountRelationMapper" />
+	</bean>
+
+
+
+	<bean id="pooledNewService" class="com.flf.service.impl.PooledNewServiceImpl">
+		<property name="pooledNewMapper" ref="pooledNewMapper"></property>
+	</bean>
+
+
+
+	<bean id="personBuildingNewService" class="com.flf.service.impl.PersonBuildingNewServiceImpl">
+		<property name="personBuildingNewMapper" ref="personBuildingNewMapper"></property>
+		<property name="personCustNewMapper" ref="personCustNewMapper"></property>
+		<property name="enterpriseCustNewMapper" ref="enterpriseCustNewMapper"></property>
+		<property name="buildingStructureNewMapper" ref="buildingStructureNewMapper"></property>
+		<property name="accountMapper" ref="accountMapper" />
+		<property name="assetAccountMapper" ref="assetAccountMapper" />
+		<property name="accountRelationMapper" ref="accountRelationMapper" />
+	</bean>
+
+	<bean id="personEmphasisService" class="com.flf.service.impl.PersonEmphasisServiceImpl">
+		<property name="personEmphasisMapper" ref="personEmphasisMapper"></property>
+		<property name="annexMapper" ref="annexMapper"></property>
+		<property name="pendingApprovalMapper" ref="pendingApprovalMapper"></property>
+	</bean>
+
+	<bean id="personVipService" class="com.flf.service.impl.PersonVipServiceImpl">
+		<property name="personVipMapper" ref="personVipMapper"></property>
+		<property name="personCustNewMapper" ref="personCustNewMapper"></property>
+		<property name="annexMapper" ref="annexMapper"></property>
+		<property name="vipProjectStaffMapper" ref="vipProjectStaffMapper"></property>
+		<property name="pendingApprovalMapper" ref="pendingApprovalMapper"></property>
+	</bean>
+
+
+	<bean id="storeNewService" class="com.flf.service.impl.StoreNewServiceImpl">
+		<property name="storeNewMapper" ref="storeNewMapper"></property>
+		<property name="areaTypeNewMapper" ref="areaTypeNewMapper" />
+		<property name="buildingStructureNewMapper" ref="buildingStructureNewMapper" />
+		<property name="projectMapper" ref="projectMapper" />
+	</bean>
+
+	<bean id="stallNewService" class="com.flf.service.impl.StallNewServiceImpl">
+		<property name="stallNewMapper" ref="stallNewMapper"></property>
+		<property name="areaTypeNewMapper" ref="areaTypeNewMapper" />
+		<property name="buildingStructureNewMapper" ref="buildingStructureNewMapper" />
+		<property name="projectMapper" ref="projectMapper" />
+	</bean>
+
+	<bean id="contractService" class="com.flf.service.impl.ContractServiceImpl">
+		<property name="contractMapper" ref="contractMapper"></property>
+		<property name="logService" ref="logService"></property>
+		<property name="orderAttachmentMapper" ref="orderAttachmentMapper"></property>
+		<property name="contractPropertyStructureMapper" ref="contractPropertyStructureMapper"></property>
+		<property name="annexMapper" ref="annexMapper"></property>
+		<property name="propertyMapper" ref="propertyMapper"></property>
+
+	</bean>
+
+	<bean id="orderAttachmentService" class="com.flf.service.impl.OrderAttachmentServiceImpl">
+		<property name="orderAttachmentMapper" ref="orderAttachmentMapper"></property>
+	</bean>
+
+	<bean id="propertyService" class="com.flf.service.impl.PropertyServiceImpl">
+		<property name="propertyMapper" ref="propertyMapper"></property>
+		<property name="logService" ref="logService"></property>
+		<property name="orderAttachmentMapper" ref="orderAttachmentMapper"></property>
+		<property name="contractPropertyStructureMapper" ref="contractPropertyStructureMapper"></property>
+		<property name="propertyTypeMapper" ref="propertyTypeMapper"></property>
+	</bean>
+
+	<bean id="propertyTypeService" class="com.flf.service.impl.PropertyTypeServiceImpl">
+		<property name="propertyTypeMapper" ref="propertyTypeMapper"></property>
+		<property name="logService" ref="logService"></property>
+		<property name="propertyMapper" ref="propertyMapper"></property>
+	</bean>
+
+	<bean id="logTypeService" class="com.flf.service.impl.LogTypeServiceImpl">
+		<property name="logTypeMapper" ref="logTypeMapper"></property>
+	</bean>
+
+	<bean id="componentPropertyService" class="com.flf.service.impl.ComponentPropertyServiceImpl">
+		<property name="componentPropertyMapper" ref="componentPropertyMapper"></property>
+		<property name="propertyMapper" ref="propertyMapper"></property>
+		<property name="functionalMapper" ref="functionalMapper"></property>
+		<property name="propertyTypeMapper" ref="propertyTypeMapper" />
+		<property name="dataDictionarySlaveMapper" ref="dataDictionarySlaveMapper" />
+	</bean>
+
+	<bean id="componentStructureService" class="com.flf.service.impl.ComponentStructureServiceImpl">
+		<property name="componentStructureMapper" ref="componentStructureMapper"></property>
+	</bean>
+	<!-- 内部专业线 -->
+
+	<bean id="faqService" class="com.flf.service.impl.FaqServiceImpl">
+		<property name="faqMapper" ref="faqMapper"></property>
+	</bean>
+
+	<bean id="vacationService" class="com.flf.service.impl.VacationServiceImpl">
+		<property name="vacationMapper" ref="vacationMapper"></property>
+	</bean>
+
+	<bean id="producepriceService" class="com.flf.service.impl.ProducepriceServiceImpl">
+		<property name="producepriceMapper" ref="producepriceMapper"></property>
+	</bean>
+
+	<bean id="afterSaleService" class="com.flf.service.impl.AfterSaleServiceImpl">
+		<property name="afterSaleMapper" ref="afterSaleMapper"></property>
+		<property name="afterSaleQueryMapper" ref="afterSaleQueryMapper"></property>
+	</bean>
+	<bean id="afterSaleProcessService" class="com.flf.service.impl.AfterSaleProcessServiceImpl">
+		<property name="afterSaleProcessMapper" ref="afterSaleProcessMapper"></property>
+	</bean>
+	
+
+
+
+	<bean id="staffService" class="com.flf.service.impl.StaffServiceImpl">
+		<property name="staffMapper" ref="staffMapper"></property>
+		<property name="annexMapper" ref="annexMapper"></property>
+		<property name="teamworkMapper" ref="teamworkMapper"></property>
+		<property name="postMapper" ref="postMapper"></property>
+	</bean>
+
+	<bean id="teamworkService" class="com.flf.service.impl.TeamworkServiceImpl">
+		<property name="staffMapper" ref="staffMapper"></property>
+		<property name="postMapper" ref="postMapper"></property>
+		<property name="projectMapper" ref="projectMapper"></property>
+		<property name="specialtyInfoMapper" ref="specialtyInfoMapper"></property>
+		<property name="teamPermissionsMapper" ref="teamPermissionsMapper"></property>
+		<property name="teamworkstaffMapper" ref="teamworkstaffMapper"></property>
+		<property name="corePositionMapper" ref="corePositionMapper"></property>
+		<property name="teamworkMapper" ref="teamworkMapper"></property>
+		<property name="prepareMapper" ref="prepareMapper"></property>
+		<property name="hrAuthorityMapper" ref="hrAuthorityMapper"></property>
+	</bean>
+
+	<bean id="teamworkstaffService" class="com.flf.service.impl.TeamworkstaffServiceImpl">
+	</bean>
+
+	<bean id="postService" class="com.flf.service.impl.PostServiceImpl">
+		<property name="postMapper" ref="postMapper"></property>
+		<property name="teamworkstaffMapper" ref="teamworkstaffMapper"></property>
+		<property name="staffMapper" ref="staffMapper"></property>
+		<property name="prepareMapper" ref="prepareMapper" />
+	</bean>
+
+	<bean id="prepareService" class="com.flf.service.impl.PrepareServiceImpl">
+		<property name="prepareMapper" ref="prepareMapper"></property>
+	</bean>
+	<bean id="parcelService" class="com.flf.service.impl.ParcelServiceImpl">
+		<property name="parcelMapper" ref="parcelMapper"></property>
+		<property name="projectMapper" ref="projectMapper"></property>
+	</bean>
+
+	<bean id="projectService" class="com.flf.service.impl.ProjectServiceImpl">
+	</bean>
+
+	<bean id="specialtyInfoService" class="com.flf.service.impl.SpecialtyInfoServiceImpl">
+		<property name="specialtyInfoMapper" ref="specialtyInfoMapper"></property>
+		<property name="postMapper" ref="postMapper"></property>
+	</bean>
+
+	<bean id="classesService" class="com.flf.service.impl.ClassesServiceImpl">
+		<property name="classesMapper" ref="classesMapper"></property>
+	</bean>
+
+	<bean id="classesTypeService" class="com.flf.service.impl.ClassesTypeServiceImpl">
+		<property name="classesTypeMapper" ref="classesTypeMapper"></property>
+	</bean>
+
+	<bean id="divisionService" class="com.flf.service.impl.DivisionServiceImpl">
+		<property name="divisionMapper" ref="divisionMapper"></property>
+	</bean>
+
+	<bean id="schedulingService" class="com.flf.service.impl.SchedulingServiceImpl">
+		<property name="schedulingMapper" ref="schedulingMapper"></property>
+	</bean>
+	<bean id="communtitnoticeService" class="com.flf.service.impl.CommuntitnoticeServiceImpl">
+		<property name="communtitnoticeMapper" ref="communtitnoticeMapper"></property>
+	</bean>
+
+	<bean id="informService" class="com.flf.service.impl.InformServiceImpl">
+		<property name="informMapper" ref="informMapper"></property>
+	</bean>
+
+	<bean id="rulesService" class="com.flf.service.impl.RulesServiceImpl">
+		<property name="rulesMapper" ref="rulesMapper"></property>
+		<property name="annexMapper" ref="annexMapper"></property>
+	</bean>
+
+	<bean id="corporatenewsService" class="com.flf.service.impl.CorporatenewsServiceImpl">
+		<property name="corporatenewsMapper" ref="corporatenewsMapper"></property>
+	</bean>
+
+	<bean id="newsService" class="com.flf.service.impl.NewsServiceImpl">
+		<property name="newsMapper" ref="newsMapper"></property>
+	</bean>
+
+	<bean id="changeTitleService" class="com.flf.service.impl.ChangeTitleServiceImpl">
+		<property name="changeTitleMapper" ref="changeTitleMapper" />
+		<property name="houseNewMapper" ref="houseNewMapper" />
+		<property name="stallNewMapper" ref="stallNewMapper" />
+		<property name="regionNewMapper" ref="regionNewMapper" />
+		<property name="personCustNewMapper" ref="personCustNewMapper" />
+		<property name="enterpriseCustNewMapper" ref="enterpriseCustNewMapper" />
+		<property name="personBuildingNewMapper" ref="personBuildingNewMapper" />
+		<property name="authorizationMapper" ref="authorizationMapper" />
+	</bean>
+
+	<bean id="intakeService" class="com.flf.service.impl.IntakeServiceImpl">
+		<property name="intakeMapper" ref="intakeMapper"></property>
+		<property name="houseNewService" ref="houseNewService"></property>
+		<property name="houseArticleMapper" ref="houseArticleMapper"></property>
+		<property name="giftArticleMapper" ref="giftArticleMapper"></property>
+	</bean>
+
+	<bean id="entranceService" class="com.flf.service.impl.EntranceServiceImpl">
+		<property name="entranceMapper" ref="entranceMapper" />
+	</bean>
+	<bean id="articleReleaseService" class="com.flf.service.impl.ArticleReleaseServiceImpl">
+		<property name="articleReleaseMapper" ref="articleReleaseMapper"></property>
+		<property name="itemsMapper" ref="itemsMapper"></property>
+		<property name="personCustNewMapper" ref="personCustNewMapper"></property>
+		<property name="enterpriseCustNewMapper" ref="enterpriseCustNewMapper"></property>
+	</bean>
+	<bean id="newLeaseService" class="com.flf.service.impl.NewLeaseServiceImpl">
+		<property name="newLeaseMapper" ref="newLeaseMapper" />
+		<property name="houseNewMapper" ref="houseNewMapper"></property>
+		<property name="personBuildingNewMapper" ref="personBuildingNewMapper" />
+		<property name="annexMapper" ref="annexMapper"></property>
+		<property name="storeNewMapper" ref="storeNewMapper"></property>
+	</bean>
+	<bean id="authorizationService" class="com.flf.service.impl.AuthorizationServiceImpl">
+		<property name="authorizationMapper" ref="authorizationMapper" />
+		<property name="authorizationProjectMapper" ref="authorizationProjectMapper" />
+		<property name="authorizationProjectTypeMapper" ref="authorizationProjectTypeMapper" />
+	</bean>
+	<bean id="carInfoService" class="com.flf.service.impl.CarInfoServiceImpl">
+		<property name="carInfoMapper" ref="carInfoMapper" />
+		<property name="caraccesscardMapper" ref="caraccesscardMapper" />
+		<!-- <property name="carclaiminfoMapper" ref="carclaiminfoMapper" /> -->
+		<!-- <property name="staffapppremMapper" ref="staffapppremMapper" /> -->
+		<property name="personCustNewMapper" ref="personCustNewMapper" />
+		<property name="staffMapper" ref="staffMapper" />
+		<property name="annexMapper" ref="annexMapper"></property>
+	</bean>
+	<bean id="caraccesscardService" class="com.flf.service.impl.CaraccesscardServiceImpl">
+		<property name="caraccesscardMapper" ref="caraccesscardMapper" />
+		<property name="billService" ref="billService" />
+	</bean>
+	<bean id="petRegistrationService" class="com.flf.service.impl.PetRegistrationServiceImpl">
+		<property name="petRegistrationMapper" ref="petRegistrationMapper" />
+		<property name="annexMapper" ref="annexMapper" />
+		<property name="buildingStructureNewMapper" ref="buildingStructureNewMapper" />
+	</bean>
+
+	<bean id="hillockService" class="com.flf.service.impl.HillockServiceImpl">
+		<property name="hillockMapper" ref="hillockMapper" />
+	</bean>
+
+	<bean id="postTypeService" class="com.flf.service.impl.PostTypeServiceImpl">
+		<property name="postTypeMapper" ref="postTypeMapper" />
+	</bean>
+
+	<bean id="schedulingLogService" class="com.flf.service.impl.SchedulingLogServiceImpl">
+		<property name="schedulingLogMapper" ref="schedulingLogMapper" />
+	</bean>
+
+	<bean id="serviceRequestService" class="com.flf.service.impl.ServiceRequestServiceImpl">
+		<property name="serviceRequestMapper" ref="serviceRequestMapper"></property>
+		<property name="tasksMapper" ref="tasksMapper"></property>
+		<property name="serviceObjectRecordsMapper" ref="serviceObjectRecordsMapper"></property>
+		<property name="frequencyRecordMapper" ref="frequencyRecordMapper"></property>
+		<property name="annexMapper" ref="annexMapper"></property>
+		<property name="serviceRequestJournalMapper" ref="serviceRequestJournalMapper"></property>
+		<property name="compensateObjectMapper" ref="compensateObjectMapper"></property>
+		<property name="importantEventTypeMapper" ref="importantEventTypeMapper"></property>
+		<property name="acceptanceOrdersMapper" ref="acceptanceOrdersMapper"></property>
+		<property name="waterMeterOrdersMapper" ref="waterMeterOrdersMapper"></property>
+		<property name="tasksJournalMapper" ref="tasksJournalMapper"></property>
+		<property name="waterMeterOrderRecordsMapper" ref="waterMeterOrderRecordsMapper"></property>
+		<property name="meterReadingDataMapper" ref="meterReadingDataMapper"></property>
+		<property name="inspectionConfigurationMapper" ref="inspectionConfigurationMapper"></property>
+	</bean>
+
+	<bean id="serviceRequestJournalService" class="com.flf.service.impl.ServiceRequestJournalServiceImpl">
+		<property name="serviceRequestJournalMapper" ref="serviceRequestJournalMapper"></property>
+	</bean>
+
+	<bean id="tasksService" class="com.flf.service.impl.TasksServiceImpl">
+		<property name="tasksMapper" ref="tasksMapper"></property>
+		<property name="tasksJournalMapper" ref="tasksJournalMapper"></property>
+		<property name="taskTurnSpecialRecordsMapper" ref="taskTurnSpecialRecordsMapper"></property>
+		<property name="centralizedProcessingRecordsMapper" ref="centralizedProcessingRecordsMapper"></property>
+		<property name="tasksMergeMapper" ref="tasksMergeMapper"></property>
+		<property name="serviceObjectRecordsMapper" ref="serviceObjectRecordsMapper"></property>
+		<property name="scoreCriteriaMapper" ref="scoreCriteriaMapper"></property>
+		<property name="compensateObjectMapper" ref="compensateObjectMapper"></property>
+		<property name="annexMapper" ref="annexMapper"></property>
+		<property name="staffMapper" ref="staffMapper"></property>
+		<property name="serviceRequestMapper" ref="serviceRequestMapper"></property>
+	</bean>
+
+	<bean id="serviceObjectRecordsService" class="com.flf.service.impl.ServiceObjectRecordsServiceImpl">
+		<property name="serviceObjectRecordsMapper" ref="serviceObjectRecordsMapper"></property>
+	</bean>
+
+	<bean id="tasksJournalService" class="com.flf.service.impl.TasksJournalServiceImpl">
+		<property name="tasksJournalMapper" ref="tasksJournalMapper"></property>
+		<property name="quoteOrdersMapper" ref="quoteOrdersMapper"></property>
+		<property name="disposeOrderMapper" ref="disposeOrderMapper"></property>
+		<property name="acceptanceOrdersMapper" ref="acceptanceOrdersMapper"></property>
+		<property name="checkOrdersMapper" ref="checkOrdersMapper"></property>
+		<property name="settleAccountsOrdersMapper" ref="settleAccountsOrdersMapper"></property>
+		<property name="departmentOrdersMapper" ref="departmentOrdersMapper"></property>
+		<property name="compensateOwnerMapper" ref="compensateOwnerMapper"></property>
+		<property name="ReturnVisitOrdersMapper" ref="returnVisitOrdersMapper"></property>
+		<property name="AppealOrdersMapper" ref="appealOrdersMapper"></property>
+		<property name="closedMapper" ref="closedMapper"></property>
+		<property name="waterMeterOrdersMapper" ref="waterMeterOrdersMapper"></property>
+		<property name="meterReadingOrdersMapper" ref="meterReadingOrdersMapper"></property>
+		<property name="complaintOrdersMapper" ref="complaintOrdersMapper"></property>
+		<property name="consultationOrdersMapper" ref="consultationOrdersMapper"></property>
+		<property name="fixedParkingOrdersMapper" ref="fixedParkingOrdersMapper"></property>
+		<property name="renovationCheckOrdersMapper" ref="renovationCheckOrdersMapper"></property>
+		<property name="renovationInspectionOrdersMapper" ref="renovationInspectionOrdersMapper"></property>
+		<property name="renovationAcceptanceOrdersMapper" ref="renovationAcceptanceOrdersMapper"></property>
+		<property name="praiseOrdersMapper" ref="praiseOrdersMapper"></property>
+		<property name="inspectorOrderMapper" ref="inspectorOrderMapper"></property>
+		<property name="constructionCheckOrdersMapper" ref="constructionCheckOrdersMapper"></property>
+		<property name="constructionInspectionOrdersMapper" ref="constructionInspectionOrdersMapper"></property>
+		<property name="constructionAcceptanceOrdersMapper" ref="constructionAcceptanceOrdersMapper"></property>
+		<property name="repairOrdersMapper" ref="repairOrdersMapper" />
+		<property name="claimToCustomerOrdersMapper" ref="claimToCustomerOrdersMapper" />
+	</bean>
+
+	<bean id="quoteOrdersService" class="com.flf.service.impl.QuoteOrdersServiceImpl">
+		<property name="quoteOrdersMapper" ref="quoteOrdersMapper"></property>
+		<property name="quoteItemRecordsMapper" ref="quoteItemRecordsMapper"></property>
+		<property name="tasksJournalMapper" ref="tasksJournalMapper"></property>
+		<property name="annexMapper" ref="annexMapper"></property>
+	</bean>
+
+	<bean id="disposeOrderService" class="com.flf.service.impl.DisposeOrderServiceImpl">
+		<property name="disposeOrderMapper" ref="disposeOrderMapper"></property>
+		<property name="disposeInformationRecordsMapper" ref="disposeInformationRecordsMapper"></property>
+		<property name="tasksJournalMapper" ref="tasksJournalMapper"></property>
+		<property name="annexMapper" ref="annexMapper"></property>
+	</bean>
+
+	<bean id="acceptanceOrdersService" class="com.flf.service.impl.AcceptanceOrdersServiceImpl">
+		<property name="acceptanceOrdersMapper" ref="acceptanceOrdersMapper"></property>
+		<property name="tasksJournalMapper" ref="tasksJournalMapper"></property>
+		<property name="annexMapper" ref="annexMapper"></property>
+		<property name="tasksMapper" ref="tasksMapper"></property>
+		<property name="serviceRequestMapper" ref="serviceRequestMapper"></property>
+	</bean>
+
+	<bean id="buildingComponentService" class="com.flf.service.impl.BuildingComponentServiceImpl">
+		<property name="buildingComponentMapper" ref="buildingComponentMapper" />
+		<property name="componentPropertyMapper" ref="componentPropertyMapper" />
+		<property name="areaTypeNewMapper" ref="areaTypeNewMapper" />
+		<property name="functionalMapper" ref="functionalMapper" />
+		<property name="propertyMapper" ref="propertyMapper" />
+		<property name="dataDictionarySlaveMapper" ref="dataDictionarySlaveMapper" />
+	</bean>
+
+	<bean id="functionalService" class="com.flf.service.impl.FunctionalServiceImpl">
+		<property name="functionalMapper" ref="functionalMapper"></property>
+	</bean>
+
+	<bean id="cassetRepositoryService" class="com.flf.service.impl.CassetRepositoryServiceimpl">
+		<property name="cassetRepositoryMapper" ref="cassetRepositoryMapper"></property>
+		<property name="propertyMapper" ref="propertyMapper"></property>
+		<property name="buildingStructureNewMapper" ref="buildingStructureNewMapper"></property>
+		<property name="componentStructureMapper" ref="componentStructureMapper"></property>
+	</bean>
+
+	<bean id="compensateOwnerService" class="com.flf.service.impl.CompensateOwnerServiceImpl">
+		<property name="compensateOwnerMapper" ref="compensateOwnerMapper"></property>
+		<property name="compensateMethodsMapper" ref="compensateMethodsMapper"></property>
+		<property name="tasksJournalMapper" ref="tasksJournalMapper"></property>
+		<property name="annexMapper" ref="annexMapper"></property>
+	</bean>
+
+	<bean id="checkOrdersService" class="com.flf.service.impl.CheckOrdersServiceImpl">
+		<property name="checkOrdersMapper" ref="checkOrdersMapper"></property>
+		<property name="checkItemRecordsMapper" ref="checkItemRecordsMapper"></property>
+		<property name="tasksJournalMapper" ref="tasksJournalMapper"></property>
+		<property name="annexMapper" ref="annexMapper"></property>
+	</bean>
+
+	<bean id="tasksMergeService" class="com.flf.service.impl.TasksMergeServiceImpl">
+		<property name="tasksMergeMapper" ref="tasksMergeMapper"></property>
+		<property name="tasksMapper" ref="tasksMapper"></property>
+		<property name="tasksJournalMapper" ref="tasksJournalMapper"></property>
+	</bean>
+
+	<bean id="quoteItemRecordsService" class="com.flf.service.impl.QuoteItemRecordsServiceImpl">
+		<property name="quoteItemRecordsMapper" ref="quoteItemRecordsMapper"></property>
+		<property name="quoteOrdersMapper" ref="quoteOrdersMapper"></property>
+		<property name="settleAccountsOrdersMapper" ref="settleAccountsOrdersMapper"></property>
+		<property name="settleAccountsItemRecordsMapper" ref="settleAccountsItemRecordsMapper"></property>
+	</bean>
+
+	<bean id="disposeInformationRecordsService"
+		class="com.flf.service.impl.DisposeInformationRecordsServiceImpl">
+		<property name="disposeInformationRecordsMapper" ref="disposeInformationRecordsMapper"></property>
+	</bean>
+
+	<bean id="checkItemRecordsService" class="com.flf.service.impl.CheckItemRecordsServiceImpl">
+		<property name="checkItemRecordsMapper" ref="checkItemRecordsMapper"></property>
+	</bean>
+
+	<!-- <bean id="settleAccountsItemRecordsService" class="com.flf.service.impl.SettleAccountsItemRecordsServiceImpl"> 
+		<property name="settleAccountsItemRecordsMapper" ref="settleAccountsItemRecordsMapper"></property> 
+		</bean> -->
+	<bean id="settleAccountsOrdersService" class="com.flf.service.impl.SettleAccountsOrdersServiceImpl">
+		<property name="settleAccountsOrdersMapper" ref="settleAccountsOrdersMapper"></property>
+		<property name="settleAccountsItemRecordsMapper" ref="settleAccountsItemRecordsMapper"></property>
+		<property name="tasksJournalMapper" ref="tasksJournalMapper"></property>
+		<property name="annexMapper" ref="annexMapper"></property>
+		<property name="billService" ref="billService"></property>
+	</bean>
+
+	<bean id="scoreCriteriaService" class="com.flf.service.impl.ScoreCriteriaServiceImpl">
+		<property name="scoreCriteriaMapper" ref="scoreCriteriaMapper"></property>
+		<property name="scoreCriteriaItemsMapper" ref="scoreCriteriaItemsMapper"></property>
+		<property name="scoreSubitemItemsMapper" ref="scoreSubitemItemsMapper"></property>
+	</bean>
+
+	<bean id="specialRepairProjectService" class="com.flf.service.impl.SpecialRepairProjectServiceImpl">
+		<property name="specialRepairProjectMapper" ref="specialRepairProjectMapper"></property>
+		<property name="specialRepairProjectJournalMapper" ref="specialRepairProjectJournalMapper"></property>
+		<property name="taskTurnSpecialRecordsMapper" ref="taskTurnSpecialRecordsMapper"></property>
+		<property name="tasksMapper" ref="tasksMapper"></property>
+		<property name="annexMapper" ref="annexMapper"></property>
+	</bean>
+
+	<bean id="organizationStructureService" class="com.flf.service.impl.OrganizationStructureServiceImpl">
+		<property name="organizationStructureMapper" ref="organizationStructureMapper"></property>
+	</bean>
+
+	<bean id="departmentOrdersService" class="com.flf.service.impl.DepartmentOrdersServiceImpl">
+		<property name="departmentOrdersMapper" ref="departmentOrdersMapper"></property>
+		<property name="departmentRecordsMapper" ref="departmentRecordsMapper"></property>
+		<property name="tasksJournalMapper" ref="tasksJournalMapper"></property>
+		<property name="annexMapper" ref="annexMapper"></property>
+	</bean>
+
+	<bean id="inspectorOrderService" class="com.flf.service.impl.InspectorOrderServiceImpl">
+		<property name="inspectorOrderMapper" ref="inspectorOrderMapper"></property>
+		<property name="inspectorRecordMapper" ref="inspectorRecordMapper"></property>
+		<property name="annexMapper" ref="annexMapper"></property>
+		<property name="tasksJournalMapper" ref="tasksJournalMapper"></property>
+		<property name="tasksMapper" ref="tasksMapper"></property>
+		<property name="serviceRequestMapper" ref="serviceRequestMapper"></property>
+		<property name="afterSaleMapper" ref="afterSaleMapper"></property>
+		<property name="componentPropertyMapper" ref="componentPropertyMapper"></property>
+	</bean>
+
+	<bean id="tenementInsuranceService" class="com.flf.service.impl.TenementInsuranceServiceImpl">
+		<property name="tenementInsuranceMapper" ref="tenementInsuranceMapper"></property>
+		<property name="annexMapper" ref="annexMapper"></property>
+	</bean>
+
+	<bean id="waterMeterOrdersService" class="com.flf.service.impl.WaterMeterOrdersServiceImpl">
+		<property name="waterMeterOrdersMapper" ref="waterMeterOrdersMapper"></property>
+		<property name="waterMeterOrderRecordsMapper" ref="waterMeterOrderRecordsMapper"></property>
+		<property name="annexMapper" ref="annexMapper"></property>
+		<property name="tasksJournalMapper" ref="tasksJournalMapper"></property>
+	</bean>
+
+	<bean id="waterMeterOrderRecordsService" class="com.flf.service.impl.WaterMeterOrderRecordsServiceImpl">
+		<property name="waterMeterOrderRecordsMapper" ref="waterMeterOrderRecordsMapper"></property>
+	</bean>
+
+	<bean id="meterReadingOrdersService" class="com.flf.service.impl.MeterReadingOrdersServiceImpl">
+		<property name="meterReadingOrdersMapper" ref="meterReadingOrdersMapper"></property>
+		<property name="meterReadingRecordsMapper" ref="meterReadingRecordsMapper"></property>
+		<property name="annexMapper" ref="annexMapper"></property>
+		<property name="tasksJournalMapper" ref="tasksJournalMapper"></property>
+	</bean>
+
+	<!-- 向客户索赔工单 -->
+	<bean id="claimToCustomerOrdersService" class="com.flf.service.impl.ClaimToCustomerOrdersServiceImpl">
+		<property name="claimToCustomerOrdersMapper" ref="claimToCustomerOrdersMapper"></property>
+		<property name="claimToCustomerRethodsMapper" ref="claimToCustomerRethodsMapper"></property>
+		<property name="annexMapper" ref="annexMapper"></property>
+		<property name="tasksJournalMapper" ref="tasksJournalMapper"></property>
+	</bean>
+	<!-- 重大事项 -->
+	<bean id="importantEventTypeService" class="com.flf.service.impl.ImportantEventTypeServiceImpl">
+		<property name="importantEventTypeMapper" ref="importantEventTypeMapper"></property>
+		<property name="handleMechanismMapper" ref="handleMechanismMapper"></property>
+	</bean>
+	<!-- <bean id="acceptanceInformationRecordsService" class="com.flf.service.impl.AcceptanceInformationRecordsServiceImpl"> 
+		<property name="acceptanceInformationRecordsMapper" ref="acceptanceInformationRecordsMapper"></property> 
+		</bean> <bean id="compensateMethodsService" class="com.flf.service.impl.CompensateMethodsServiceImpl"> 
+		<property name="compensateMethodsMapper" ref="compensateMethodsMapper"></property> 
+		</bean> http://10.0.0.4:1888/webTYJ/cxfws/TenementPact/insertTenementPactRest 
+		<bean id="compensateObjectService" class="com.flf.service.impl.CompensateObjectServiceImpl"> 
+		<property name="compensateObjectMapper" ref="compensateObjectMapper"></property> 
+		</bean> -->
+	<bean id="tenementPactService" class="com.flf.service.impl.TenementPactServiceImpl">
+		<property name="tenementPactMapper" ref="tenementPactMapper"></property>
+		<property name="chargeItemMapper" ref="chargeItemMapper"></property>
+		<property name="annexMapper" ref="annexMapper"></property>
+	</bean>
+
+	<!--<bean id="workOrderService" class="com.flf.service.impl.WorkOrderServiceImpl"> 
+		<property name="quoteOrdersMapper" ref="quoteOrdersMapper"></property> <property 
+		name="disposeOrderMapper" ref="disposeOrderMapper"></property> <property 
+		name="acceptanceOrdersMapper" ref="acceptanceOrdersMapper"></property> </bean> -->
+
+	<!-- 验房管理 -->
+	<bean id="acceptanceHouseService" class="com.flf.service.impl.AcceptanceHouseServiceImpl">
+		<property name="acceptanceHouseMapper" ref="acceptanceHouseMapper"></property>
+		<property name="acceptanceHouseRelationMapper" ref="acceptanceHouseRelationMapper"></property>
+		<property name="serviceRequestMapper" ref="serviceRequestMapper" />
+		<property name="tasksMapper" ref="tasksMapper" />
+	</bean>
+	<bean id="acceptanceHouseRelationService" class="com.flf.service.impl.AcceptanceHouseRelationServiceImpl">
+		<property name="acceptanceHouseRelationMapper" ref="acceptanceHouseRelationMapper"></property>
+	</bean>
+
+	<bean id="giftArticleService" class="com.flf.service.impl.GiftArticleServiceImpl">
+		<property name="giftArticleMapper" ref="giftArticleMapper"></property>
+		<property name="giftMapper" ref="giftMapper"></property>
+		<property name="houseArticleMapper" ref="houseArticleMapper"></property>
+	</bean>
+
+	<bean id="giftService" class="com.flf.service.impl.GiftServiceImpl">
+		<property name="giftMapper" ref="giftMapper"></property>
+	</bean>
+
+	<bean id="centralizedTreatmentProjectsService"
+		class="com.flf.service.impl.CentralizedTreatmentProjectsServiceImpl">
+		<property name="centralizedTreatmentProjectsMapper" ref="centralizedTreatmentProjectsMapper"></property>
+		<property name="centralizedTreatmentProjectsJournalMapper"
+			ref="centralizedTreatmentProjectsJournalMapper"></property>
+		<property name="centralizedProcessingRecordsMapper" ref="centralizedProcessingRecordsMapper"></property>
+		<property name="tasksMapper" ref="tasksMapper"></property>
+	</bean>
+
+	<bean id="intakeActivityRelationService" class="com.flf.service.impl.IntakeActivityRelationServiceImpl">
+		<property name="intakeActivityRelationMapper" ref="intakeActivityRelationMapper"></property>
+	</bean>
+
+	<bean id="intakeGiftRelationService" class="com.flf.service.impl.IntakeGiftRelationServiceImpl">
+		<property name="intakeGiftRelationMapper" ref="intakeGiftRelationMapper"></property>
+	</bean>
+
+	<bean id="intakeActivityService" class="com.flf.service.impl.IntakeActivityServiceImpl">
+		<property name="intakeActivityMapper" ref="intakeActivityMapper"></property>
+		<property name="intakeGiftRelationMapper" ref="intakeGiftRelationMapper"></property>
+		<property name="intakeActivityRelationMapper" ref="intakeActivityRelationMapper"></property>
+		<property name="areaTypeNewMapper" ref="areaTypeNewMapper" />
+		<property name="buildingStructureNewMapper" ref="buildingStructureNewMapper" />
+		<property name="personBuildingNewMapper" ref="personBuildingNewMapper" />
+	</bean>
+
+	<bean id="teamPermissionsService" class="com.flf.service.impl.TeamPermissionsServiceImpl">
+		<property name="teamPermissionsMapper" ref="teamPermissionsMapper"></property>
+		<property name="projectMapper" ref="projectMapper" />
+		<property name="specialtyInfoMapper" ref="specialtyInfoMapper" />
+		<property name="teamworkMapper" ref="teamworkMapper" />
+	</bean>
+
+	<bean id="lostService" class="com.flf.service.impl.LostServiceImpl">
+		<property name="lostMapper" ref="lostMapper"></property>
+	</bean>
+
+
+	<bean id="corePositionService" class="com.flf.service.impl.CorePositionServiceImpl">
+		<property name="corePositionMapper" ref="corePositionMapper"></property>
+		<property name="teamworkMapper" ref="teamworkMapper"></property>
+		<property name="postService" ref="postService"></property>
+		<property name="specialtyInfoMapper" ref="specialtyInfoMapper" />
+		<property name="teamworkstaffMapper" ref="teamworkstaffMapper" />
+		<property name="teamPermissionsMapper" ref="teamPermissionsMapper" />
+	</bean>
+
+	<bean id="ProjectService" class="com.flf.service.impl.ProjectServiceImpl">
+	</bean>
+
+	<bean id="returnVisitOrdersService" class="com.flf.service.impl.ReturnVisitOrdersServiceImpl">
+		<property name="returnVisitOrdersMapper" ref="returnVisitOrdersMapper"></property>
+		<property name="tasksJournalMapper" ref="tasksJournalMapper"></property>
+	</bean>
+	<bean id="appealOrdersService" class="com.flf.service.impl.AppealOrdersServiceImpl">
+		<property name="appealOrdersMapper" ref="appealOrdersMapper"></property>
+		<property name="tasksJournalMapper" ref="tasksJournalMapper"></property>
+		<property name="annexMapper" ref="annexMapper"></property>
+	</bean>
+	<bean id="closedOrdersService" class="com.flf.service.impl.ClosedOrdersServiceImpl">
+		<property name="closedMapper" ref="closedMapper"></property>
+		<property name="tasksJournalMapper" ref="tasksJournalMapper"></property>
+		<property name="annexMapper" ref="annexMapper"></property>
+	</bean>
+
+
+	<!-- 投诉工单 -->
+	<bean id="complaintOrdersService" class="com.flf.service.impl.ComplaintOrdersServiceImpl">
+		<property name="complaintOrdersMapper" ref="complaintOrdersMapper"></property>
+		<property name="tasksJournalMapper" ref="tasksJournalMapper"></property>
+		<property name="annexMapper" ref="annexMapper"></property>
+	</bean>
+
+	<!-- 咨询工单 -->
+	<bean id="ConsultationOrdersService" class="com.flf.service.impl.ConsultationOrdersServiceImpl">
+		<property name="consultationOrdersMapper" ref="consultationOrdersMapper"></property>
+		<property name="tasksJournalMapper" ref="tasksJournalMapper"></property>
+		<property name="faqsMapper" ref="faqsMapper" />
+	</bean>
+	<!-- 固定车位工单 -->
+	<bean id="FixedParkingOrdersService" class="com.flf.service.impl.FixedParkingOrdersServiceImpl">
+		<property name="fixedParkingOrdersMapper" ref="fixedParkingOrdersMapper"></property>
+		<property name="tasksJournalMapper" ref="tasksJournalMapper"></property>
+		<property name="annexMapper" ref="annexMapper"></property>
+	</bean>
+	<bean id="RenovationCheckOrdersService" class="com.flf.service.impl.RenovationCheckOrdersServiceImpl">
+		<property name="renovationCheckOrdersMapper" ref="renovationCheckOrdersMapper"></property>
+		<property name="renovationCheckRecordsMapper" ref="renovationCheckRecordsMapper"></property>
+		<property name="tasksJournalMapper" ref="tasksJournalMapper"></property>
+		<property name="annexMapper" ref="annexMapper"></property>
+		<property name="letterRecordsMapper" ref="letterRecordsMapper"></property>
+	</bean>
+	<bean id="RenovationInspectionOrdersService"
+		class="com.flf.service.impl.RenovationInspectionOrdersServiceImpl">
+		<property name="renovationInspectionOrdersMapper" ref="renovationInspectionOrdersMapper"></property>
+		<property name="renovationInspectionRecordsMapper" ref="renovationInspectionRecordsMapper"></property>
+		<property name="tasksJournalMapper" ref="tasksJournalMapper"></property>
+		<property name="annexMapper" ref="annexMapper"></property>
+		<property name="letterRecordsMapper" ref="letterRecordsMapper"></property>
+	</bean>
+	<bean id="RenovationAcceptanceOrdersService"
+		class="com.flf.service.impl.RenovationAcceptanceOrdersServiceImpl">
+		<property name="renovationAcceptanceOrdersMapper" ref="renovationAcceptanceOrdersMapper"></property>
+		<property name="renovationAcceptanceRecordsMapper" ref="renovationAcceptanceRecordsMapper"></property>
+		<property name="tasksJournalMapper" ref="tasksJournalMapper"></property>
+		<property name="annexMapper" ref="annexMapper"></property>
+		<property name="letterRecordsMapper" ref="letterRecordsMapper"></property>
+	</bean>
+
+	<!-- 表扬表 -->
+	<bean id="PraiseOrdersService" class="com.flf.service.impl.PraiseOrdersServiceImpl">
+		<property name="praiseOrdersMapper" ref="praiseOrdersMapper"></property>
+		<property name="tasksJournalMapper" ref="tasksJournalMapper"></property>
+		<property name="annexMapper" ref="annexMapper"></property>
+		<property name="praiseStaffMapper" ref="praiseStaffMapper"></property>
+	</bean>
+	<bean id="ApplicationDelayRecordsService" class="com.flf.service.impl.ApplicationDelayRecordsServiceImpl">
+		<property name="applicationDelayRecordsMapper" ref="applicationDelayRecordsMapper"></property>
+		<property name="tasksJournalMapper" ref="tasksJournalMapper"></property>
+	</bean>
+
+	<!-- 业主装修申请 -->
+	<bean id="ownerRenovationApplyService" class="com.flf.service.impl.OwnerRenovationApplyServiceImpl">
+		<property name="ownerRenovationApplyMapper" ref="ownerRenovationApplyMapper"></property>
+		<property name="decorateAssociatedRecordsMapper" ref="decorateAssociatedRecordsMapper"></property>
+		<property name="decorateAnnexMapper" ref="decorateAnnexMapper"></property>
+		<property name="decorateComponentRecordsMapper" ref="decorateComponentRecordsMapper"></property>
+		<property name="decoratePersonnelAssociatedMapper" ref="decoratePersonnelAssociatedMapper"></property>
+		<property name="decoreateDiscloseInformationMapper" ref="decoreateDiscloseInformationMapper"></property>
+		<property name="decoreateServiceRequestAssociatedMapper" ref="decoreateServiceRequestAssociatedMapper"></property>
+		<property name="serviceRequestMapper" ref="serviceRequestMapper"></property>
+		<property name="tasksMapper" ref="tasksMapper"></property>
+	</bean>
+	<!-- 施工核查工单 -->
+	<bean id="constructionCheckOrdersService" class="com.flf.service.impl.ConstructionCheckOrdersServiceImpl">
+		<property name="constructionCheckOrdersMapper" ref="constructionCheckOrdersMapper"></property>
+		<property name="constructionCheckRecordsMapper" ref="constructionCheckRecordsMapper"></property>
+		<property name="tasksJournalMapper" ref="tasksJournalMapper"></property>
+		<property name="annexMapper" ref="annexMapper"></property>
+		<property name="letterRecordsMapper" ref="letterRecordsMapper"></property>
+	</bean>
+	<!-- 施工巡检工单 -->
+	<bean id="constructionInspectionOrdersService"
+		class="com.flf.service.impl.ConstructionInspectionOrdersServiceImpl">
+		<property name="constructionInspectionOrdersMapper" ref="constructionInspectionOrdersMapper"></property>
+		<property name="constructionInspectionRecordsMapper" ref="constructionInspectionRecordsMapper"></property>
+		<property name="annexMapper" ref="annexMapper"></property>
+		<property name="tasksJournalMapper" ref="tasksJournalMapper"></property>
+		<property name="letterRecordsMapper" ref="letterRecordsMapper"></property>
+	</bean>
+	<!-- 施工验收工单 -->
+	<bean id="constructionAcceptanceOrdersService"
+		class="com.flf.service.impl.ConstructionAcceptanceOrdersServiceImpl">
+		<property name="constructionAcceptanceOrdersMapper" ref="constructionAcceptanceOrdersMapper"></property>
+		<property name="constructionAcceptanceRecordsMapper" ref="constructionAcceptanceRecordsMapper"></property>
+		<property name="annexMapper" ref="annexMapper"></property>
+		<property name="tasksJournalMapper" ref="tasksJournalMapper"></property>
+		<property name="letterRecordsMapper" ref="letterRecordsMapper"></property>
+	</bean>
+	<!-- VIP客户项目专员关联 -->
+	<bean id="VipProjectStaffService" class="com.flf.service.impl.VipProjectStaffServiceImpl">
+		<property name="vipProjectStaffMapper" ref="vipProjectStaffMapper"></property>
+	</bean>
+
+	<bean id="constructionRecordCardService" class="com.flf.service.impl.ConstructionRecordCardServiceImpl">
+		<property name="constructionRecordCardMapper" ref="constructionRecordCardMapper"></property>
+	</bean>
+
+	<bean id="urgeTaskRecordsService" class="com.flf.service.impl.UrgeTaskRecordsServiceImpl">
+		<property name="urgeTaskRecordsMapper" ref="urgeTaskRecordsMapper"></property>
+		<property name="tasksJournalMapper" ref="tasksJournalMapper"></property>
+	</bean>
+
+
+	<!-- 施工申请 -->
+	<bean id="ownerConstructionApplyService" class="com.flf.service.impl.OwnerConstructionApplyServiceImpl">
+		<property name="ownerConstructionApplyMapper" ref="ownerConstructionApplyMapper"></property>
+		<property name="constructionAssociatedRecordMapper" ref="constructionAssociatedRecordMapper"></property>
+		<property name="constructionAnnexMapper" ref="constructionAnnexMapper"></property>
+		<property name="constructionComponentRecordsMapper" ref="constructionComponentRecordsMapper"></property>
+		<property name="constructionPersonnelAssociatedMapper" ref="constructionPersonnelAssociatedMapper"></property>
+		<property name="constructionDiscloseInformationMapper" ref="constructionDiscloseInformationMapper"></property>
+		<property name="constructionServiceRequestAssociatedMapper"
+			ref="constructionServiceRequestAssociatedMapper"></property>
+		<property name="serviceRequestMapper" ref="serviceRequestMapper"></property>
+		<property name="tasksMapper" ref="tasksMapper"></property>
+	</bean>
+
+	<bean id="contractPropertyStructureService"
+		class="com.flf.service.impl.ContractPropertyStructureServiceImpl">
+		<property name="contractPropertyStructureMapper" ref="contractPropertyStructureMapper" />
+	</bean>
+	<!-- 计费方案 -->
+	<bean id="schemeService" class="com.flf.service.impl.SchemeServiceImpl">
+		<property name="schemeMapper" ref="schemeMapper" />
+	</bean>
+	<!-- 计费方案下收费项目 -->
+	<bean id="chargeItemNewService" class="com.flf.service.impl.ChargeItemNewServiceImpl">
+		<property name="chargeItemNewMapper" ref="chargeItemNewMapper"></property>
+	</bean>
+	<!-- 收费项目详情 -->
+	<bean id="chargeItemNewDetailsService" class="com.flf.service.impl.ChargeItemNewDetailsServiceImpl">
+		<property name="chargeItemNewDetailsMapper" ref="chargeItemNewDetailsMapper"></property>
+	</bean>
+	<!-- 收费项目建筑关系 -->
+	<bean id="chargeItemNewBuildingService" class="com.flf.service.impl.ChargeItemNewBuildingServiceImpl">
+		<property name="chargeItemNewBuildingMapper" ref="chargeItemNewBuildingMapper"></property>
+	</bean>
+	<!-- 收费类型 -->
+	<bean id="chargeTypeService" class="com.flf.service.impl.ChargeTypeServiceImpl">
+		<property name="chargeTypeMapper" ref="chargeTypeMapper"></property>
+	</bean>
+	<!-- 收费类型详情 -->
+	<bean id="chargeTypeDetailsService" class="com.flf.service.impl.ChargeTypeDetailsServiceImpl">
+		<property name="chargeTypeDetailsMapper" ref="chargeTypeDetailsMapper"></property>
+	</bean>
+
+	<!-- 计费收费 公式 -->
+	<bean id="formulaService" class="com.flf.service.impl.FormulaServiceImpl">
+		<property name="formulaMapper" ref="formulaMapper" />
+	</bean>
+
+	<!-- 计费收费 方案收费项目关联 -->
+	<bean id="schemeRelationService" class="com.flf.service.impl.SchemeRelationServiceImpl">
+		<property name="schemeRelationMapper" ref="schemeRelationMapper" />
+	</bean>
+
+
+
+	<!-- 计费收费 常量 -->
+	<bean id="constantService" class="com.flf.service.impl.ConstantServiceImpl">
+		<property name="constantMapper" ref="constantMapper" />
+	</bean>
+
+	<!-- 计费收费 条件 -->
+	<bean id="conditionService" class="com.flf.service.impl.ConditionServiceImpl">
+		<property name="conditionMapper" ref="conditionMapper" />
+	</bean>
+
+
+	<!-- 计费收费 方案公式收费项目关联 -->
+	<bean id="schemeDatailsService" class="com.flf.service.impl.SchemeDatailsServiceImpl">
+		<property name="schemeDatailsMapper" ref="schemeDatailsMapper" />
+		<property name="chargeItemNewMapper" ref="chargeItemNewMapper" />
+		<property name="constantMapper" ref="constantMapper" />
+		<property name="formulaMapper" ref="formulaMapper" />
+	</bean>
+
+	<bean id="collectionManageService" class="com.flf.service.impl.CollectionManageServiceImpl">
+		<property name="collectionManageMapper" ref="collectionManageMapper"></property>
+		<property name="annexMapper" ref="annexMapper"></property>
+	</bean>
+
+	<!--项目计费 -->
+	<bean id="projectBillingService" class="com.flf.service.impl.ProjectBillingServiceImpl">
+		<property name="projectBillingMapper" ref="projectBillingMapper" />
+	</bean>
+
+	<!--收费类型项目计费 -->
+	<bean id="chargeTypeProjectBillingService"
+		class="com.flf.service.impl.ChargeTypeProjectBillingServiceImpl">
+		<property name="chargeTypeProjectBillingMapper" ref="chargeTypeProjectBillingMapper" />
+	</bean>
+
+	<!--收费类型建筑计费 -->
+	<bean id="chargeTypeBuildingBillingService"
+		class="com.flf.service.impl.ChargeTypeBuildingBillingServiceImpl">
+		<property name="chargeTypeBuildingBillingMapper" ref="chargeTypeBuildingBillingMapper" />
+	</bean>
+
+	<!--收费类型详情建筑计费 -->
+	<bean id="chargeTypeDetailsBuildingBillingService"
+		class="com.flf.service.impl.ChargeTypeDetailsBuildingBillingServiceImpl">
+		<property name="chargeTypeDetailsBuildingBillingMapper" ref="chargeTypeDetailsBuildingBillingMapper" />
+	</bean>
+
+	<!--计费记录 -->
+	<bean id="billingRecordService" class="com.flf.service.impl.BillingRecordServiceImpl">
+	</bean>
+
+	<bean id="financialGroupTotalService" class="com.flf.service.impl.FinancialGroupTotalServiceImpl">
+		<property name="projectMapper" ref="projectMapper"></property>
+		<property name="financialGroupTotalMapper" ref="financialGroupTotalMapper" />
+	</bean>
+
+	<!--交账记录表 -->
+	<bean id="accountRecordService" class="com.flf.service.impl.AccountRecordServiceImpl">
+	</bean>
+	<!--银行存单表 -->
+	<bean id="bankDepositService" class="com.flf.service.impl.BankDepositServiceImpl">
+	</bean>
+	<!--财务人员表 -->
+	<bean id="financialStaffService" class="com.flf.service.impl.FinancialStaffServiceImpl">
+		<property name="financialStaffMapper" ref="financialStaffMapper" />
+	</bean>
+	<!--收款纪录表 -->
+	<bean id="paymentRecordsService" class="com.flf.service.impl.PaymentRecordsServiceImpl">
+		<property name="paymentRecordsMapper" ref="paymentRecordsMapper" />
+	</bean>
+	<!-- 个人账户 -->
+	<bean id="accountService" class="com.flf.service.impl.AccountServiceImpl">
+		<property name="accountMapper" ref="accountMapper"></property>
+		<property name="assetAccountMapper" ref="assetAccountMapper"></property>
+		<property name="accountRelationMapper" ref="accountRelationMapper"></property>
+		<property name="advancePaymentsDetailsMapper" ref="advancePaymentsDetailsMapper"></property>
+	</bean>
+	<!-- 电子账单 -->
+	<bean id="electronicBillingService" class="com.flf.service.impl.ElectronicBillingServiceImpl">
+		<property name="electronicBillingMapper" ref="electronicBillingMapper"></property>
+		<property name="billMapper" ref="billMapper"></property>
+	</bean>
+	<!-- 应收款表 -->
+	<bean id="billService" class="com.flf.service.impl.BillServiceImpl"></bean>
+	<!-- 资产账户 -->
+	<bean id="assetAccountService" class="com.flf.service.impl.AssetAccountServiceImpl"></bean>
+	<!--收支明细表 -->
+	<bean id="paymentDetailsService" class="com.flf.service.impl.PaymentDetailsServiceImpl"></bean>
+	<!-- 预付款明细表 -->
+	<bean id="advancePaymentsDetailsService" class="com.flf.service.impl.AdvancePaymentsDetailsServiceImpl">
+	</bean>
+	<!-- 金融联明细表 -->
+	<bean id="financialGroupDetailService" class="com.flf.service.impl.FinancialGroupDetailServiceImpl">
+		<property name="financialGroupDetailMapper" ref="financialGroupDetailMapper"></property>
+	</bean>
+	<!-- 金融联回盘明细表 -->
+	<bean id="financialCounterofferDetailService"
+		class="com.flf.service.impl.FinancialCounterofferDetailServiceImpl">
+		<property name="financialCounterofferDetailMapper" ref="financialCounterofferDetailMapper"></property>
+	</bean>
+	<!-- 金融联回盘总结表 -->
+	<bean id="financialCounterofferTotalService"
+		class="com.flf.service.impl.FinancialCounterofferTotalServiceImpl">
+		<property name="financialCounterofferTotalMapper" ref="financialCounterofferTotalMapper"></property>
+	</bean>
+	<!-- 金融联银行行别表 -->
+	<bean id="financialBankNumService" class="com.flf.service.impl.FinancialBankNumServiceImpl">
+		<property name="financialBankNumMapper" ref="financialBankNumMapper"></property>
+	</bean>
+	<!-- 资产账户表 -->
+	<bean id="assetAccountDetailService" class="com.flf.service.impl.AssetAccountDetailServiceImpl">
+	</bean>
+
+	<bean id="unionpayCounterofferTotalService"
+		class="com.flf.service.impl.UnionpayCounterofferTotalServiceImpl">
+		<property name="unionpayCounterofferTotalMapper" ref="unionpayCounterofferTotalMapper"></property>
+	</bean>
+
+	<!-- 产品表 -->
+	<bean id="productService" class="com.flf.service.impl.ProductServiceImpl">
+		<property name="productMapper" ref="productMapper" />
+		<property name="areaDivisionMapper" ref="areaDivisionMapper" />
+		<property name="annexMapper" ref="annexMapper" />
+		<property name="serviceProjectMapper" ref="serviceProjectMapper"></property>
+		<property name="stallNewMapper" ref="stallNewMapper" />
+		<property name="buildingStructureNewMapper" ref="buildingStructureNewMapper" />
+		<property name="productBsMapper" ref="productBsMapper" />
+	</bean>
+	<!-- 银联银行托收 -->
+	<bean id="unionpayCounterofferDetaiService"
+		class="com.flf.service.impl.UnionpayCounterofferDetaiServiceImpl">
+		<property name="unionpayCounterofferDetaiMapper" ref="unionpayCounterofferDetaiMapper" />
+
+	</bean>
+
+	<!-- 系统设置属性设置 -->
+	<bean id="dataDictionaryService" class="com.flf.service.impl.DataDictionaryServiceImpl">
+		<property name="dataDictionaryMasterMapper" ref="dataDictionaryMasterMapper" />
+		<property name="dataDictionarySlaveMapper" ref="dataDictionarySlaveMapper" />
+		<property name="dataDictionaryMasterProjectMapper" ref="dataDictionaryMasterProjectMapper" />
+		<property name="projectMapper" ref="projectMapper" />
+	</bean>
+
+	<!-- 系统设置管理员设置 -->
+	<bean id="adminService" class="com.flf.service.impl.AdminServiceImpl">
+		<property name="TUserMapper" ref="TUserMapper" />
+		<property name="TRoleMapper" ref="TRoleMapper" />
+		<property name="TUserPermissionsMapper" ref="TUserPermissionsMapper" />
+		<property name="TUserRoleMapper" ref="TUserRoleMapper" />
+		<property name="staffMapper" ref="staffMapper" />
+		<property name="hrPermissionsMapper" ref="hrPermissionsMapper" />
+		<property name="hrAuthorityMapper" ref="hrAuthorityMapper" />
+		<property name="teamworkstaffMapper" ref="teamworkstaffMapper" />
+		<property name="userPostMapper" ref="userPostMapper" />
+		<property name="teamworkStaffRoleMapper" ref="teamworkStaffRoleMapper" />
+	</bean>
+
+	<!-- 子公司 -->
+	<bean id="subCompanyService" class="com.flf.service.impl.SubCompanyServiceImpl">
+		<property name="subCompanyMapper" ref="subCompanyMapper"></property>
+		<property name="subCompanyProjectRelationMapper" ref="subCompanyProjectRelationMapper"></property>
+		<property name="projectMapper" ref="projectMapper"></property>
+		<property name="companyMapper" ref="companyMapper"></property>
+	</bean>
+
+	<!-- 重大事项机制 -->
+	<bean id="handleMechanismService" class="com.flf.service.impl.HandleMechanismServiceImpl">
+		<property name="handleMechanismMapper" ref="handleMechanismMapper"></property>
+		<property name="importantEventTypeJournalMapper" ref="importantEventTypeJournalMapper"></property>
+	</bean>
+	<!-- 装修巡检方案 -->
+	<bean id="decorationInspectionPlansService"
+		class="com.flf.service.impl.DecorationInspectionPlansServiceImpl">
+		<property name="decorationInspectionPlansMapper" ref="decorationInspectionPlansMapper"></property>
+		<property name="frequencyRecordMapper" ref="frequencyRecordMapper"></property>
+		<property name="executionTimeRecordsMapper" ref="executionTimeRecordsMapper"></property>
+	</bean>
+
+	<!-- 服务请求FAQ -->
+	<bean id="faqsService" class="com.flf.service.impl.FaqsServiceImpl">
+		<property name="faqsMapper" ref="faqsMapper" />
+		<property name="faqTypesMapper" ref="faqTypesMapper" />
+		<property name="faqJournalsMapper" ref="faqJournalsMapper" />
+	</bean>
+
+	<!-- 服务请求FAQ类型 -->
+	<bean id="faqTypesService" class="com.flf.service.impl.FaqTypesServiceImpl">
+		<property name="faqTypesMapper" ref="faqTypesMapper" />
+	</bean>
+
+
+	<!-- 巡检方案 -->
+	<bean id="inspectionPlanService" class="com.flf.service.impl.InspectionPlanServiceImpl">
+		<property name="inspectionPlanMapper" ref="inspectionPlanMapper"></property>
+		<property name="inspectionPropertyCheckItemMapper" ref="inspectionPropertyCheckItemMapper"></property>
+	</bean>
+
+	<!-- 维修单 -->
+	<bean id="repairOrdersService" class="com.flf.service.impl.RepairOrdersServiceImpl">
+		<property name="repairOrdersMapper" ref="repairOrdersMapper" />
+		<property name="tasksJournalMapper" ref="tasksJournalMapper" />
+		<property name="annexMapper" ref="annexMapper" />
+	</bean>
+	<!-- 巡检目标巡检项表 -->
+	<bean id="inspectionPropertyCheckItemService"
+		class="com.flf.service.impl.InspectionPropertyCheckItemServiceImpl">
+		<property name="inspectionPropertyCheckItemMapper" ref="inspectionPropertyCheckItemMapper" />
+	</bean>
+
+	<!-- 审核代办 -->
+	<bean id="pendingApprovalService" class="com.flf.service.impl.PendingApprovalServiceImpl">
+		<property name="pendingApprovalMapper" ref="pendingApprovalMapper" />
+		<!-- <property name="personVipMapper" ref="personVipMapper" /> <property 
+			name="personEmphasisMapper" ref="personEmphasisMapper" /> -->
+	</bean>
+
+	<bean id="authorizationProjectService" class="com.flf.service.impl.AuthorizationProjectServiceImpl">
+		<property name="authorizationProjectMapper" ref="authorizationProjectMapper" />
+	</bean>
+
+	<bean id="authorizationProjectTypeService"
+		class="com.flf.service.impl.AuthorizationProjectTypeServiceImpl">
+		<property name="authorizationProjectTypeMapper" ref="authorizationProjectTypeMapper" />
+	</bean>
+
+	<bean id="dataDictionarySlaveService" class="com.flf.service.impl.DataDictionarySlaveServiceImpl">
+		<property name="dataDictionarySlaveMapper" ref="dataDictionarySlaveMapper" />
+		<property name="buildingStructureNewMapper" ref="buildingStructureNewMapper" />
+	</bean>
+	<!-- 公司表 -->
+	<bean id="companyService" class="com.flf.service.impl.CompanyServiceImpl">
+		<property name="companyMapper" ref="companyMapper" />
+		<property name="projectMapper" ref="projectMapper" />
+		<property name="staffMapper" ref="staffMapper" />
+	</bean>
+
+	<!-- 岗位权限 -->
+	<bean id="postAuthorityService" class="com.flf.service.impl.PostAuthorityServiceImpl">
+		<property name="postAuthorityMapper" ref="postAuthorityMapper" />
+	</bean>
+
+	<!-- 遗失物品 -->
+	<bean id="tcArticleService" class="com.flf.service.impl.TcArticleServiceImpl">
+		<property name="tcArticleMapper" ref="tcArticleMapper" />
+	</bean>
+
+	<!-- 领取物品表物品 -->
+	<bean id="tcArticleGetService" class="com.flf.service.impl.TcArticleGetServiceImpl">
+		<property name="tcArticleGetMapper" ref="tcArticleGetMapper" />
+	</bean>
+
+	<!-- 遗失物品关联表 -->
+	<bean id="tcArticleStateService" class="com.flf.service.impl.TcArticleServiceStateImpl">
+		<property name="tcArticleStateMapper" ref="tcArticleStateMapper" />
+		<property name="tcArticleGetMapper" ref="tcArticleGetMapper" />
+		<property name="tcArticleMapper" ref="tcArticleMapper" />
+	</bean>
+
+	<!-- 登录 -->
+	<bean id="loginService" class="com.flf.service.impl.LoginServiceImpl">
+		<property name="loginUrl" value="${upfUrl}" />
+		<property name="TUserMapper" ref="TUserMapper" />
+		<property name="postAuthorityMapper" ref="postAuthorityMapper" />
+		<property name="hrAuthorityMapper" ref="hrAuthorityMapper" />
+	</bean>
+
+	<!-- 租赁（合同）管理品 -->
+	<bean id="leaseContractService" class="com.flf.service.impl.LeaseContractServiceImpl">
+		<property name="leaseContractMapper" ref="leaseContractMapper" />
+		<property name="annexMapper" ref="annexMapper" />
+	</bean>
+	<!-- 用户 -->
+	<bean id="userServiceNew" class="com.flf.service.impl.UserServiceNewImpl">
+		<property name="TUserMapper" ref="TUserMapper" />
+	</bean>
+	<!-- 用户团队信息 -->
+	<bean id="hrAuthorityService" class="com.flf.service.impl.HrAuthorityServiceImpl">
+		<property name="hrAuthorityMapper" ref="hrAuthorityMapper" />
+	</bean>
+
+
+	<!-- 租赁（合同）管理品 -->
+	<bean id="productBsService" class="com.flf.service.impl.ProductBsServiceImpl">
+		<property name="productBsMapper" ref="productBsMapper" />
+	</bean>
+	<!-- 重大事项类型日志记录表 -->
+	<bean id="importantEventTypeJournalService"
+		class="com.flf.service.impl.ImportantEventTypeJournalServiceImpl">
+		<property name="importantEventTypeJournalMapper" ref="importantEventTypeJournalMapper" />
+	</bean>
+	<!-- sip信息表 -->
+	<bean id="sipmanageService" class="com.flf.service.impl.SipmanageServiceImpl">
+		<property name="sipmanageMapper" ref="sipmanageMapper"></property>
+	</bean>
+
+	<!-- 项目入伙前置任务完成情况 -->
+	<bean id="projectCompletionService" class="com.flf.service.impl.ProjectCompletionServiceImpl">
+		<property name="projectCompletionMapper" ref="projectCompletionMapper" />
+		<property name="projectMapper" ref="projectMapper" />
+	</bean>
+
+	<!-- 支付系统提供接口 -->
+	<bean id="paymsService" class="com.flf.service.impl.PaymsServiceImpl"></bean>
+	<!-- 物业app提供接口 -->
+	<bean id="propertyAppService" class="com.flf.service.impl.PropertyAppServiceImpl"></bean>
+
+	<!-- 普通服务 -->
+	<bean id="productCommonserviceService" class="com.flf.service.impl.ProductCommonserviceServiceImpl">
+		<property name="productCommonserviceMapper" ref="productCommonserviceMapper" />
+	</bean>
+
+	<!-- 工作流 -->
+	<bean id="workFlowService" class="com.flf.service.impl.WorkFlowServiceImpl">
+		<!-- <property name="workFlowMapper" ref="workFlowMapper" /> -->
+	</bean>
+	<!-- 微信扫码支付 -->
+	<bean id="scanPayService" class="com.flf.service.impl.ScanPayServiceImpl">
+	
+	</bean>
+	<!-- 固定车位 -->
+	<bean id="productFixedparkingspaceService"
+		class="com.flf.service.impl.ProductFixedparkingspaceServiceImpl">
+		<property name="productFixedparkingspaceMapper" ref="productFixedparkingspaceMapper" />
+		<property name="productFixedparkingspaceChildMapper" ref="productFixedparkingspaceChildMapper" />
+	</bean>
+	<!-- 保险公司 -->
+	<bean id="insuranceService" class="com.flf.service.impl.InsuranceServiceImpl"></bean>
+
+	<!-- 巡检信息记录 -->
+	<bean id="inspectionRecordsService" class="com.flf.service.impl.InspectionRecordsServiceImp">
+	</bean>
+	<!-- 巡检单 -->
+	<bean id="inspectionOrderService" class="com.flf.service.impl.InspectionOrderServiceImp">
+	</bean>
+	
+	<bean id="appUserAuditService" class="com.flf.service.impl.AppUserAuditServiceImpl">
+	</bean>
+</beans>

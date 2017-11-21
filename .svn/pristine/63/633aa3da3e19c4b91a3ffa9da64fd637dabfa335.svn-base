@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.flf.mapper.ElectricityMeterMapper" >
+  <resultMap id="BaseResultMap" type="com.flf.entity.ElectricityMeter" >
+    <id column="electricity_meter_id" property="electricityMeterId" jdbcType="VARCHAR" />
+    <result column="assets_id" property="assetsId" jdbcType="VARCHAR" />
+    <result column="electricity_meter_num" property="electricityMeterNum" jdbcType="VARCHAR" />
+    <result column="state" property="state" jdbcType="TINYINT" />
+    <result column="ratio" property="ratio" jdbcType="DOUBLE" />
+    <result column="max" property="max" jdbcType="DOUBLE" />
+    <result column="min" property="min" jdbcType="DOUBLE" />
+    <result column="whether_repeated_use" property="whetherRepeatedUse" jdbcType="TINYINT" />
+    <result column="operator" property="operator" jdbcType="VARCHAR" />
+    <result column="property_number" property="propertyNumber" jdbcType="VARCHAR" />
+    <result column="property_specification" property="propertySpecification" jdbcType="VARCHAR" />
+    <result column="brand" property="brand" jdbcType="VARCHAR" />
+    <result column="full_name" property="fullName" jdbcType="VARCHAR" />
+    <result column="building_structure_id" property="buildingStructureId" jdbcType="VARCHAR" />
+    <result column="electricity_meter_records_id" property="electricityMeterRecordsId" jdbcType="VARCHAR" />
+  </resultMap>
+  <!-- 分页查询所有电表信息 -->
+  <select id="listPageElectricityMeter" parameterType="ElectricityMeter" resultMap="BaseResultMap">
+  	  select a.*,b.property_number,b.property_specification,b.brand,tw.building_structure_id,tw.electricity_meter_records_id,tb.full_name from te_electricity_meter a
+      left join t_property b on  a.assets_id=b.property_id
+        left join te_electricity_meter_records tw on a.electricity_meter_id=tw.electricity_meter_id
+      left join tc_building_structure tb on tw.building_structure_id=tb.id
+      where 1=1
+      <if test="electricityMeterNum !=null and electricityMeterNum !=''">
+          and a.electricity_meter_num  LIKE CONCAT('%',#{electricityMeterNum},'%')
+      </if>
+      <if test="state != null and state !='' ">
+          and a.state = #{state}
+      </if>
+      group by a.electricity_meter_id
+  </select>
+  
+    <select id="getElectricityMeterByBuildingStructureId" parameterType="ElectricityMeter" resultMap="BaseResultMap">
+      SELECT a.*,bs.id as building_structure_id,bs.full_name
+	  FROM te_electricity_meter a
+      LEFT JOIN tc_component_property cp ON cp.property_id = a.assets_id
+      LEFT JOIN tc_component_structure cs ON cs.component_property_id = cp.component_id
+      LEFT JOIN tc_building_structure  bs ON bs.id = cs.building_structure_id
+      LEFT JOIN tc_person_building pb ON pb.building_structure_id = bs.id
+      WHERE a.state = '1' AND bs.id = #{buildingStructureId}
+      <if test="electricityMeterNum">
+      	a.electricity_meter_num = like CONCAT('%',#{electricityMeterNum},'%')
+      </if>
+      <if test="fullName">
+      	bs.full_name like CONCAT('%',#{fullName},'%')
+      </if>
+  </select>
+  
+  <!-- 查询所有电表信息 -->
+  <select id="listAllElectricityMeter"  resultMap="BaseResultMap">
+      select * from te_electricity_meter
+  </select>
+  
+  <!-- 根据id查询所有电表信息 -->
+  <select id="getElectricityMeterbyId" parameterType="String" resultMap="BaseResultMap">
+      select * from te_electricity_meter where electricity_meter_id=#{electricityMeterId}
+  </select>
+ 
+  <!-- 删除电表信息 -->
+  <delete id="deleteElectricityMeter" parameterType="String">
+      delete from te_electricity_meter where electricity_meter_id=#{electricityMeterId}
+  </delete>
+  
+  <!-- 新增电表信息 -->
+  <insert id="insertElectricityMeter" parameterType="com.flf.entity.ElectricityMeter" >
+ 		insert into te_electricity_meter(electricity_meter_id,assets_id,electricity_meter_num,state,ratio,max,min,whether_repeated_use)
+ 		values (#{electricityMeterId,jdbcType=VARCHAR}, #{assetsId,jdbcType=VARCHAR}, #{electricityMeterNum,jdbcType=VARCHAR}, 
+       #{state,jdbcType=TINYINT}, #{ratio,jdbcType=DOUBLE}, 
+      #{max,jdbcType=DOUBLE},  
+      #{min,jdbcType=DOUBLE},#{whetherRepeatedUse,jdbcType=INTEGER}
+  </insert>
+  
+
+  <!-- 修改电表信息 -->
+  <update id="updateElectricityMeter" parameterType="com.flf.entity.ElectricityMeter" >
+    update te_electricity_meter
+    set
+        assets_id = #{assetsId,jdbcType=VARCHAR},
+        electricity_meter_num = #{electricityMeterNum,jdbcType=VARCHAR}, 
+        ratio = #{ratio,jdbcType=DOUBLE},
+        max = #{max,jdbcType=DOUBLE},
+        min = #{min,jdbcType=DOUBLE},
+        state=#{state,jdbcType=TINYINT},
+        whether_repeated_use = #{whetherRepeatedUse,jdbcType=TINYINT},
+        operator = #{operator,jdbcType=VARCHAR}
+    where electricity_meter_id = #{electricityMeterId,jdbcType=VARCHAR}
+  </update>
+  
+</mapper>

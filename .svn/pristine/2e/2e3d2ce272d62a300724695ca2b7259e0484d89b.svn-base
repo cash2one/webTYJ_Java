@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.flf.mapper.InspectorOrderMapper" >
+  <resultMap id="BaseResultMap" type="InspectorOrder" >
+    <id column="order_id" property="orderId" jdbcType="VARCHAR" />
+    <result column="order_state" property="orderState" jdbcType="TINYINT" />
+    <result column="order_type" property="orderType" jdbcType="TINYINT" />
+    <result column="task_id" property="taskId" jdbcType="VARCHAR" />
+    <result column="service_request_id" property="serviceRequestId" jdbcType="VARCHAR" />
+    <result column="create_person_id" property="createPersonId" jdbcType="VARCHAR" />
+    <result column="finish_time" property="finishTime" jdbcType="TIMESTAMP" />
+    <result column="inspector_normal" property="inspectorSituation" jdbcType="TINYINT" />
+    <result column="remarks" property="remarks" jdbcType="VARCHAR" />
+    <result column="close_person" property="closePerson" jdbcType="VARCHAR" />
+    <result column="close_time" property="closeTime" jdbcType="TIMESTAMP" />
+    <result column="close_remarks" property="closeRemarks" jdbcType="VARCHAR" />
+  </resultMap>
+  
+  <resultMap type="InspectorOrder" id="resultInspectorOrderMap" extends="BaseResultMap">
+  	<association property="staff" column="create_person_id" javaType="Staff" select="com.flf.mapper.StaffMapper.selectByid"></association>
+  	<collection property="recordList" column="order_id" ofType="InspectorRecord" select="com.flf.mapper.InspectorRecordMapper.getInspectorRecordbyOrderId"></collection>
+  	<collection property="annexs" column="order_id" ofType="Annex" select="com.flf.mapper.AnnexMapper.getAnnexbyRelationId"></collection>
+  </resultMap>
+  
+  <select id="getInspectorOrderBytaskId" resultMap="resultInspectorOrderMap" parameterType="String">
+  		select * from ts_inspector_order where task_id=#{0}
+  </select>
+  
+  <select id="getInspectorOrderbyId" resultMap="resultInspectorOrderMap" parameterType="String">
+  	select * from ts_inspector_order where order_id = #{0}
+  </select>
+  
+  <insert id="insertInspectorOrder" parameterType="InspectorOrder">
+  	 insert into ts_inspector_order (order_id, order_type, order_state,task_id, 
+      service_request_id, create_person_id, finish_time,inspector_normal,remarks,close_time,close_person,close_remarks)
+    values (UUID(),#{orderType,jdbcType=TINYINT},#{orderState,jdbcType=TINYINT}, #{taskId,jdbcType=VARCHAR}, 
+      #{serviceRequestId,jdbcType=VARCHAR}, #{createPersonId,jdbcType=VARCHAR}, #{finishTime,jdbcType=TIMESTAMP},#{inspectorSituation,jdbcType=TINYINT},#{remarks,jdbcType=VARCHAR},
+      #{closeTime,jdbcType=TIMESTAMP},#{closePerson,jdbcType=VARCHAR},#{closeRemarks,jdbcType=VARCHAR})
+  </insert>
+  
+  <insert id="insertInspectorOrderUUID" parameterType="InspectorOrder">
+  	 insert into ts_inspector_order (order_id, order_type, order_state,task_id, 
+      service_request_id, create_person_id, finish_time,inspector_normal,remarks,close_time,close_person,close_remarks)
+    values (#{orderId,jdbcType=VARCHAR},#{orderType,jdbcType=TINYINT},#{orderState,jdbcType=TINYINT}, #{taskId,jdbcType=VARCHAR}, 
+      #{serviceRequestId,jdbcType=VARCHAR}, #{createPersonId,jdbcType=VARCHAR}, #{finishTime,jdbcType=TIMESTAMP},#{inspectorSituation,jdbcType=TINYINT},#{remarks,jdbcType=VARCHAR},
+      #{closeTime,jdbcType=TIMESTAMP},#{closePerson,jdbcType=VARCHAR},#{closeRemarks,jdbcType=VARCHAR})
+  </insert>
+  
+  <update id="updateInspectorOrder" parameterType="InspectorOrder" >
+    update ts_inspector_order
+    set order_type = #{orderType,jdbcType=TINYINT},
+    	order_state = #{orderState,jdbcType=TINYINT},
+      task_id = #{taskId,jdbcType=VARCHAR},
+      service_request_id = #{serviceRequestId,jdbcType=VARCHAR},
+      create_person_id = #{createPersonId,jdbcType=VARCHAR},
+      finish_time = #{finishTime,jdbcType=TIMESTAMP},
+      inspector_normal = #{inspectorSituation,jdbcType=TINYINT},
+      remarks = #{remarks,jdbcType=VARCHAR},
+      close_time = #{closeTime,jdbcType=TIMESTAMP},
+      close_person = #{closePerson,jdbcType=VARCHAR},
+      close_remarks = #{closeRemarks,jdbcType=VARCHAR}
+    where order_id = #{orderId,jdbcType=VARCHAR}
+  </update>
+  
+  <select id="getInspectorOrderBySRId" parameterType="String" resultType="com.flf.entity.ComponentProperty">
+  	 select a.building_structure_id ,b.property_id,b.functional_id,c.functional_name,d.property_name 
+ 	from tc_component_structure a left join tc_component_property b on a.component_property_id = b.component_id 
+ 	left join tc_functional c on c.functional_id = b.functional_id 
+ 	left join t_property d on d.property_id = b.property_id 
+ 	where a.building_structure_id  = #{buildingStructureId}
+  </select>
+  
+</mapper>

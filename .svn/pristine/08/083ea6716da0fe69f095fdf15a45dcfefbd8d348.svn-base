@@ -1,0 +1,52 @@
+<!--
+    作者：彭婷婷
+    页面名称：外部专业线---服务请求详情--回访
+    js路径：js/controllers/externalProfession/serviceRequestDatil/visit
+    创建时间:2015/5/29
+-->
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>服务请求详情--回访</title>
+</head>
+<body>
+<div class="order">
+    <div class="row">
+        <div style="width:96%; margin:15px 30px; background:#f0f0f0; -moz-border-radius:7px; -webkit-border-radius:7px; border-radius:7px; border:1px solid #bbb; padding-bottom:15px; height:350px; ">
+            <div class="row" style="margin-top: 20px">
+                <div class="col-md-3" style="margin-left: 80px">
+                    回访联系人:周润发
+                </div>
+                <div class="col-md-6">
+                    回访联系电话:13456789098
+                </div>
+                <div class="col-md-12" style="margin-left: 80px">
+                    回访结果:
+                    <label class="radio-inline">
+                        <input type="radio" name="inlineRadioOptions" value="option1" checked>满意
+                    </label>
+                    <label class="radio-inline">
+                        <input type="radio" name="inlineRadioOptions" value="option1">不满意
+                    </label>
+                </div>
+
+                <div class="col-md-1" style="margin-left: 80px">
+                    备注说明：
+                </div>
+                <div class="col-md-7">
+                    <textarea></textarea>
+                </div>
+                <div class="col-md-4" style="margin-top: 20px">
+                    <button class="pull-right">取消</button>
+                </div>
+                <div class="col-md-4" style="margin-top: 20px">
+                    <button>提交</button>
+                </div>
+            </div>
+        </div>
+        <div class="clear"></div>
+    </div>
+</div>
+</body>
+</html>

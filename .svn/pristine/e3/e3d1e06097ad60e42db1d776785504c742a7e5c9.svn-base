@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.flf.mapper.ProjectCompletionMapper">
+	<resultMap type="ProjectCompletion" id="BaseResultMap">
+		<id column="id" property="id" jdbcType="VARCHAR" />
+		<result column="project_id" property="projectId" jdbcType="VARCHAR" />
+		<result column="company_id" property="companyId" jdbcType="VARCHAR" />
+		<result column="area_type" property="areaType" jdbcType="INTEGER" />
+		<result column="building" property="building" jdbcType="INTEGER" />
+		<result column="person" property="person" jdbcType="INTEGER" />
+		<result column="enterprise" property="enterprise" jdbcType="INTEGER" />
+		<result column="assetbinding" property="assetbinding" jdbcType="INTEGER" />
+	</resultMap>
+	
+	<sql id="Base_Column_List">
+		id,project_id,company_id,area_type,building,person,enterprise,assetbinding
+	</sql>
+	
+	<!-- 新增项目完成情况 -->
+	<insert id="insertProjectCompletion" parameterType="ProjectCompletion">
+		insert into t_project_completion (
+		id,
+		project_id,
+		company_id,
+		area_type,
+		building,
+		person,
+		enterprise,
+		assetbinding)
+		 values (
+		 #{id,jdbcType=VARCHAR},
+		 #{projectId,jdbcType=VARCHAR},
+		 #{companyId,jdbcType=VARCHAR},
+		 #{areaType,jdbcType=TINYINT},
+		 #{building,jdbcType=TINYINT},
+		 #{person,jdbcType=TINYINT},
+		 #{enterprise,jdbcType=TINYINT},
+		 #{assetbinding,jdbcType=TINYINT})
+	</insert>
+	
+	<!-- 根据id删除记录 -->
+	<delete id="deleteProjectCompletionById" parameterType="String">
+		delete from t_project_completion where id = #{0}
+	</delete>
+	
+	<!-- 修改记录 -->
+	<update id="updateProjectCompletion" parameterType="ProjectCompletion">
+		update t_project_completion
+		<set>
+			<if test="projectId != null and projectId != ''">
+				project_id = #{projectId,jdbcType=VARCHAR},
+			</if>
+			<if test="companyId != null and companyId != ''">
+				company_id = #{companyId,jdbcType=VARCHAR},
+			</if>
+			<if test="areaType != null and areaType != ''">
+				area_type = #{areaType,jdbcType=TINYINT},
+			</if>
+			<if test="building != null and building != ''">
+				building = #{building,jdbcType=TINYINT},
+			</if>
+			<if test="person != null and person != ''">
+				person = #{person,jdbcType=TINYINT},
+			</if>
+			<if test="enterprise != null and enterprise != ''">
+				enterprise = #{enterprise,jdbcType=TINYINT},
+			</if>
+			<if test="assetbinding != null and assetbinding != ''">
+				assetbinding = #{assetbinding,jdbcType=TINYINT},
+			</if>
+		</set>
+		where id = #{id,jdbcType=VARCHAR}
+	</update>
+	
+	<!-- 根据项目id获取记录 -->
+	<select id="getProjectCompletionByProjectId" parameterType="String" resultMap="BaseResultMap">
+		select <include refid="Base_Column_List" /> from t_project_completion where project_id = #{0}
+	</select>
+</mapper>

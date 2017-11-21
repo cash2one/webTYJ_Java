@@ -1,0 +1,27 @@
+package com.flf.mapper;
+
+import java.util.List;
+
+import com.flf.entity.InspectionPlan;
+
+public interface InspectionPlanMapper {
+    int deleteByPrimaryKey(String inspectionPlanId);
+
+    int insert(InspectionPlan record);
+
+    int insertSelective(InspectionPlan record);
+
+    InspectionPlan selectByPrimaryKey(String inspectionPlanId);
+
+    int updateByPrimaryKeySelective(InspectionPlan record);
+
+    int updateByPrimaryKey(InspectionPlan record);
+    
+    List<InspectionPlan> listAllInspectionPlan();//查询所有的巡检方案
+    
+    List<InspectionPlan> listAllInspectionPlan1(String state); //查询启动的巡检方案
+    
+    List<InspectionPlan> listPageInspectionPlanByState(InspectionPlan inspectionPlan);//分页查询巡检方案
+   
+    InspectionPlan getInspectionPlan1(String inspectionPlanId);//查询方案
+}

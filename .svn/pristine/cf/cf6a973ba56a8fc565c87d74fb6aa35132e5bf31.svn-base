@@ -1,0 +1,1028 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.flf.mapper.BuildingStructureNewMapper">
+
+	<resultMap id="BaseResultMap" type="BuildingStructureNew">
+		<id column="id" property="id" jdbcType="VARCHAR" />
+		<result column="full_name" property="fullName" jdbcType="VARCHAR" />
+		<result column="node_name" property="nodeName" jdbcType="VARCHAR" />
+		<result column="building_id" property="buildingId" jdbcType="VARCHAR" />
+		<result column="parent_id" property="parentId" jdbcType="VARCHAR" />
+		<result column="building_area" property="buildingArea"
+			jdbcType="DOUBLE" />
+		<result column="total_area" property="totalArea" jdbcType="DOUBLE" /><!-- 增加用地总面积  王洲  2016.1.7 -->
+		<result column="commonality_area" property="commonalityArea"
+			jdbcType="DOUBLE" />
+		<result column="inside_area" property="insideArea" jdbcType="DOUBLE" />
+		<result column="completion_area" property="completionArea"
+			jdbcType="DOUBLE" />
+		<result column="utility_ratio" property="utilityRatio"
+			jdbcType="DOUBLE" />
+		<result column="building_type" property="buildingType"
+			jdbcType="VARCHAR" />
+		<result column="area_id" property="areaId" jdbcType="VARCHAR" />
+		<result column="project_id" property="projectId" jdbcType="VARCHAR" />
+		<result column="cust_id" property="custId" jdbcType="VARCHAR" />
+		<result column="is_binding_assets" property="isBindingAssets" />
+		<result column="name" property="name" />
+		<result column="card_type" property="cardType" />
+		<result column="card_num" property="cardNum" />
+		<result column="enterprise_name" property="enterpriseName" />
+		<result column="office_phone" property="officePhone" />
+		<result column="product_id" property="productId" />
+		<result column="cust_type" property="custType" />
+		<result column="state" property="state" />
+		<result column="parcel_id" property="parcelId" /><!-- 增加宗地id  王洲  2016.2.2 -->
+	</resultMap>
+
+
+
+
+	<resultMap id="PersonAndHouseResultMap" type="PersonCustNew">
+		<result column="cust_code" property="custCode" jdbcType="VARCHAR" />
+		<result column="name" property="name" jdbcType="VARCHAR" />
+		<result column="sex" property="sex" jdbcType="VARCHAR" />
+		<result column="native_place" property="nativePlace" jdbcType="VARCHAR" />
+		<result column="census" property="census" jdbcType="VARCHAR" />
+		<result column="birthday" property="birthday" jdbcType="DATE" />
+		<result column="card_type" property="cardType" jdbcType="TINYINT" />
+		<result column="card_num" property="cardNum" jdbcType="VARCHAR" />
+		<result column="jiajia_num" property="jiajiaNum" jdbcType="VARCHAR" />
+		<result column="weixin_num" property="weixinNum" jdbcType="VARCHAR" />
+		<result column="work_units" property="workUnits" jdbcType="VARCHAR" />
+		<result column="position" property="position" jdbcType="VARCHAR" />
+		<result column="marrie_state" property="marrieState" jdbcType="TINYINT" />
+		<result column="edu_level" property="eduLevel" jdbcType="TINYINT" />
+		<result column="social" property="social" jdbcType="VARCHAR" />
+		<result column="landscape" property="landscape" jdbcType="TINYINT" />
+		<result column="hobby" property="hobby" jdbcType="VARCHAR" />
+		<result column="cust_level" property="custLevel" jdbcType="VARCHAR" />
+		<result column="is_enterprise" property="isEnterprise"
+			jdbcType="TINYINT" />
+		<result column="urgent_contact_person" property="urgentContactPerson"
+			jdbcType="VARCHAR" />
+		<result column="urgent_contact_phone" property="urgentContactPhone"
+			jdbcType="VARCHAR" />
+		<result column="upload_image" property="uploadImage" jdbcType="VARCHAR" />
+		<result column="phone_num" property="phoneNum" jdbcType="VARCHAR" />
+	</resultMap>
+
+
+	<!--新增 代码 -->
+	<resultMap id="EnterpriseCustNewAndHouseResultMap" type="EnterpriseCustNew">
+		<result column="enterprise_name" property="enterpriseName"
+			jdbcType="VARCHAR" />
+		<result column="address" property="address" jdbcType="VARCHAR" />
+		<result column="representative" property="representative"
+			jdbcType="VARCHAR" />
+		<result column="office_phone" property="officePhone" jdbcType="VARCHAR" />
+		<result column="fax_number" property="faxNumber" jdbcType="VARCHAR" />
+		<result column="enterprise_url" property="enterpriseUrl"
+			jdbcType="VARCHAR" />
+		<result column="tax_certificate" property="taxCertificate"
+			jdbcType="VARCHAR" />
+		<result column="enterprise_property" property="enterpriseProperty"
+			jdbcType="VARCHAR" />
+		<result column="trading_date" property="tradingDate" jdbcType="DATE" />
+		<result column="trading_number" property="tradingNumber"
+			jdbcType="VARCHAR" />
+		<result column="tax_number" property="taxNumber" jdbcType="VARCHAR" />
+		<result column="tax_date" property="taxDate" jdbcType="DATE" />
+		<result column="manage_type" property="manageType" jdbcType="VARCHAR" />
+		<result column="unit_number" property="unitNumber" jdbcType="VARCHAR" />
+		<result column="e_mail" property="email" jdbcType="VARCHAR" />
+		<result column="business_address" property="businessAddress"
+			jdbcType="VARCHAR" />
+		<result column="principal" property="principal" jdbcType="VARCHAR" />
+		<result column="emergency_contact" property="emergencyContact"
+			jdbcType="VARCHAR" />
+
+	</resultMap>
+
+	<resultMap type="BuildingStructureNew" id="BuildingStructureNewAllResultMap"
+		extends="BaseResultMap">
+		<association property="building" column="building_id" javaType="BuildingNew"
+			select="com.flf.mapper.BuildingNewMapper.BuildingAreaNewResultMap"/>
+		<association property="house" column="id" javaType="HouseNew"
+			select="com.flf.mapper.HouseNewMapper.listHouseByBuildingStructureId" />
+		<association property="stall" column="id" javaType="StallNew"
+			select="com.flf.mapper.StallNewMapper.listStallByBuildingStructureId" />
+		<association property="store" column="id" javaType="StoreNew"
+			select="com.flf.mapper.StoreNewMapper.listStoreByBuildingStructureId" />
+		<collection property="personCusts" ofType="PersonBuildingNew"
+			column="id" select="selectPersonCust">
+			<result column="cust_code" property="custCode" jdbcType="VARCHAR" />
+			<result column="name" property="name" jdbcType="VARCHAR" />
+			<result column="sex" property="sex" jdbcType="VARCHAR" />
+			<result column="native_place" property="nativePlace" jdbcType="VARCHAR" />
+			<result column="census" property="census" jdbcType="VARCHAR" />
+			<result column="birthday" property="birthday" jdbcType="DATE" />
+			<result column="card_type" property="cardType" jdbcType="TINYINT" />
+			<result column="card_num" property="cardNum" jdbcType="VARCHAR" />
+			<result column="jiajia_num" property="jiajiaNum" jdbcType="VARCHAR" />
+			<result column="weixin_num" property="weixinNum" jdbcType="VARCHAR" />
+			<result column="work_units" property="workUnits" jdbcType="VARCHAR" />
+			<result column="position" property="position" jdbcType="VARCHAR" />
+			<result column="marrie_state" property="marrieState" jdbcType="TINYINT" />
+			<result column="edu_level" property="eduLevel" jdbcType="TINYINT" />
+			<result column="social" property="social" jdbcType="VARCHAR" />
+			<result column="landscape" property="landscape" jdbcType="TINYINT" />
+			<result column="hobby" property="hobby" jdbcType="VARCHAR" />
+			<result column="cust_level" property="custLevel" jdbcType="VARCHAR" />
+			<result column="is_enterprise" property="isEnterprise"
+				jdbcType="TINYINT" />
+			<result column="urgent_contact_person" property="urgentContactPerson"
+				jdbcType="VARCHAR" />
+			<result column="urgent_contact_phone" property="urgentContactPhone"
+				jdbcType="VARCHAR" />
+			<result column="upload_image" property="uploadImage" jdbcType="VARCHAR" />
+			<result column="phone_num" property="phoneNum" jdbcType="VARCHAR" />
+		</collection>
+
+		<collection property="enterpriseCustNews" ofType="EnterpriseCustNew"
+			column="id" select="selectEnterpriseCust">
+			<result column="enterprise_name" property="enterpriseName"
+				jdbcType="VARCHAR" />
+			<result column="address" property="address" jdbcType="VARCHAR" />
+			<result column="representative" property="representative"
+				jdbcType="VARCHAR" />
+			<result column="office_phone" property="officePhone" jdbcType="VARCHAR" />
+			<result column="fax_number" property="faxNumber" jdbcType="VARCHAR" />
+			<result column="enterprise_url" property="enterpriseUrl"
+				jdbcType="VARCHAR" />
+			<result column="tax_certificate" property="taxCertificate"
+				jdbcType="VARCHAR" />
+			<result column="enterprise_property" property="enterpriseProperty"
+				jdbcType="VARCHAR" />
+			<result column="trading_date" property="tradingDate" jdbcType="DATE" />
+			<result column="trading_number" property="tradingNumber"
+				jdbcType="VARCHAR" />
+			<result column="tax_number" property="taxNumber" jdbcType="VARCHAR" />
+			<result column="tax_date" property="taxDate" jdbcType="DATE" />
+			<result column="manage_type" property="manageType" jdbcType="VARCHAR" />
+			<result column="unit_number" property="unitNumber" jdbcType="VARCHAR" />
+			<result column="e_mail" property="email" jdbcType="VARCHAR" />
+			<result column="business_address" property="businessAddress"
+				jdbcType="VARCHAR" />
+			<result column="principal" property="principal" jdbcType="VARCHAR" />
+			<result column="emergency_contact" property="emergencyContact"
+				jdbcType="VARCHAR" />
+		</collection>
+		<collection property="personBuildings" column="id"
+			select="com.flf.mapper.PersonBuildingNewMapper.getAllPersonBuildings"></collection>
+	</resultMap>
+
+	<resultMap type="BuildingStructureNew" id="BuildingStructureAllResultMap"
+		extends="BaseResultMap">
+		<association property="house" column="id" javaType="HouseNew"
+			select="com.flf.mapper.HouseNewMapper.listHouseByBuildingStructureId" />
+		<association property="stall" column="id" javaType="StallNew"
+			select="com.flf.mapper.StallNewMapper.listStallByBuildingStructureId" />
+		<association property="store" column="id" javaType="StoreNew"
+			select="com.flf.mapper.StoreNewMapper.listStoreByBuildingStructureId" />
+		<collection property="personCusts" ofType="PersonBuildingNew"
+			column="id" select="com.flf.mapper.PersonCustNewMapper.selectPersonCust">
+		</collection>
+		<collection property="enterpriseCustNews" ofType="EnterpriseCustNew"
+			column="id" select="com.flf.mapper.EnterpriseCustNewMapper.selectEnterpriseCust">
+		</collection>
+		<collection property="personBuildings" column="id"
+			select="com.flf.mapper.PersonBuildingNewMapper.getAllPersonBuildings"></collection>
+	</resultMap>
+
+
+	<resultMap id="HouseNewResultMap" type="HouseNew">
+		<id column="id" property="id" jdbcType="VARCHAR" />
+		<result column="building_id" property="buildingId" jdbcType="VARCHAR" />
+		<result column="building_structure_id" property="buildingStructureId"
+			jdbcType="VARCHAR" />
+		<result column="house_num" property="houseNum" jdbcType="VARCHAR" />
+		<result column="property" property="property" jdbcType="VARCHAR" />
+		<result column="land_price" property="landPrice" jdbcType="DOUBLE" />
+		<result column="last_transcation_price" property="lastTranscationPrice"
+			jdbcType="DOUBLE" />
+		<result column="house_postcode" property="housePostcode"
+			jdbcType="VARCHAR" />
+		<result column="manage_fee" property="manageFee" jdbcType="DOUBLE" />
+		<result column="complete_date" property="completeDate"
+			jdbcType="DATE" />
+		<result column="elevator" property="elevator" jdbcType="TINYINT" />
+		<result column="gate_guard" property="gateGuard" jdbcType="TINYINT" />
+		<result column="join_date" property="joinDate" jdbcType="DATE" />
+		<result column="join_state" property="joinState" jdbcType="TINYINT" />
+		<result column="designer_draw" property="designerDraw"
+			jdbcType="VARCHAR" />
+		<result column="is_billing" property="isBilling" jdbcType="TINYINT" />
+		<result column="price" property="price" jdbcType="DOUBLE" />
+		<result column="land_certificate" property="landCertificate"
+			jdbcType="VARCHAR" />
+		<result column="market_state" property="marketState" jdbcType="TINYINT" />
+		<result column="special_fund" property="specialFund" jdbcType="TINYINT" />
+		<result column="capital_type" property="capitalType" jdbcType="TINYINT" />
+		<result column="password" property="password" jdbcType="VARCHAR" />
+		<result column="sip_id" property="sipId" jdbcType="VARCHAR" />
+	</resultMap>
+
+	<resultMap id="TreeResultMap" type="Tree">
+		<id column="id" property="id" jdbcType="VARCHAR" />
+		<result column="node_name" property="name" jdbcType="VARCHAR" />
+		<result column="parent_id" property="pId" jdbcType="VARCHAR" />
+	</resultMap>
+
+	<resultMap id="SipmanageResultMap" type="Sipmanage" >
+	  <id column="id" property="id" jdbcType="VARCHAR" />
+	  <result column="sip_name" property="sipName" jdbcType="VARCHAR" />
+	  <result column="sip_pwd" property="sipPwd" jdbcType="VARCHAR" />
+	</resultMap>
+
+	<resultMap type="BuildingStructureNew" id="BuildingStructureNewResultMap"
+		extends="BaseResultMap">
+		<association property="house" column="id" javaType="HouseNew"
+			select="selectHouseNew"></association>
+		<association property="sipmanage" select="selectSip" javaType="Sipmanage" column="sip_id"></association>
+  		<association property="indoorSipInfo" select="selectSip" javaType="Sipmanage" column="indoor_sip_id"></association>
+	</resultMap>
+
+	<resultMap id="BuildingStructrueNewWithProduct" type="BuildingStructureNew">
+		<id column="id" property="id" jdbcType="VARCHAR" />
+		<result column="full_name" property="fullName" jdbcType="VARCHAR" />
+		<result column="product_id" property="productId" jdbcType="VARCHAR" />
+	</resultMap>
+
+	<resultMap type="BuildingStructureNew" id="CustAndAddressMap" extends="BaseResultMap">
+		<result column="person_building_id" property="personBuildingId" jdbcType="VARCHAR" />
+		<association property="custInfo" select="com.flf.mapper.PersonCustNewMapper.getPersonCustNewById" column="cust_id" />
+		<association property="house" select="com.flf.mapper.HouseNewMapper.getHouseNewAndProjectById" column="house_id" />
+	</resultMap>
+
+	<resultMap type="BuildingStructureNew" id="EnterpriseCustAndAddressMap" extends="BaseResultMap">
+		<association property="custInfo" select="com.flf.mapper.PersonCustNewMapper.getPersonCustNewById" column="cust_id" />
+		<association property="enterpriseCustInfo" select="com.flf.mapper.EnterpriseCustNewMapper.getEnterpriseCustNewById" column="enterprise_id" />
+	</resultMap>
+	
+	<select id="selectPersonCust" parameterType="String"
+		resultMap="PersonAndHouseResultMap">
+		select b.* from tc_person_building a
+		left join tc_person_cust b on a.cust_id=b.cust_id
+		where a.building_structure_id = #{0} and a.state=0 and a.cust_type='业主'
+	</select>
+
+	<!-- 查询企业客户 -->
+	<select id="selectEnterpriseCust" parameterType="String"
+		resultMap="EnterpriseCustNewAndHouseResultMap">
+		select b.* from tc_person_building a
+		left join tc_enterprise_cust b on a.enterprise_id=b.enterprise_id
+		where a.building_structure_id = #{0} and a.cust_type='业主' and a.state=0
+	</select>
+
+
+	<select id="ListBuildingStructureNewByProjectId" parameterType="String"
+		resultMap="BaseResultMap">
+		select * from tc_building_structure where project_id=#{0}
+	</select>
+
+	<select id="ListBuildingStructureNewByBuildingId" parameterType="String"
+		resultMap="BaseResultMap">
+		select * from tc_building_structure where building_id=#{0}
+	</select>
+
+	<select id="listBuildingStructureByParentId" parameterType="String"
+		resultMap="BaseResultMap">
+		select * from tc_building_structure where parent_id=#{0}
+	</select>
+	<select id="listBuildingStructureByPId" parameterType="String"
+		resultMap="BaseResultMap">
+		select * from tc_building_structure where parent_id=#{0} and building_type = "车位"
+	</select>
+
+	<select id="listBuildingStructureByProjectIdAndAreaId"
+		parameterType="BuildingStructureNew" resultMap="BaseResultMap">
+		select * from tc_building_structure where 1=1
+		<if test="projectId != null and projectId != ''">
+			and project_id=#{projectId}
+		</if>
+		<if test="areaId != null and areaId != ''">
+			and area_id=#{areaId}
+		</if>
+		<if test="buildingId != null and buildingId != ''">
+			and building_id = #{buildingId}
+		</if>
+	</select>
+
+	<select id="listAllBuildingStructureNewByAll" resultMap="BuildingStructureNewAllResultMap">
+		select a.* from tc_building_structure a
+	</select>
+
+	<select id="listAllBuildingStructureNewByAllOptimize" resultMap="BaseResultMap">
+		select a.* from tc_building_structure a
+	</select>
+
+	<select id="selectHouseNew" parameterType="String" resultMap="HouseNewResultMap">
+		select * from tc_house where building_structure_id=#{0}
+	</select>
+
+	<delete id="deleteBuildingStructureNew" parameterType="String">
+		delete from tc_building_structure
+		where id = #{0,jdbcType=VARCHAR}
+	</delete>
+
+	<select id="listPageBuildingStructureNew" parameterType="BuildingStructureNew"
+		resultMap="BaseResultMap">
+		select * from tc_building_structure
+	</select>
+
+	<select id="listAllBuildingStructureNew" resultMap="BuildingStructureNewAllResultMap"
+		parameterType="String">
+		select a.*, b.cust_id from tc_building_structure a
+		left join tc_person_building b on a.id = b.building_structure_id
+		where project_id=#{0}
+	</select>
+
+	<!-- 根据项目id查询所有建筑结构信息  修改：增加按照node_name进行排序  王洲  2016.1.21 -->
+	<select id="getBuildingStructureNewbyProjectId" resultMap="BaseResultMap"
+		parameterType="String">
+		select * from tc_building_structure where project_id=#{0} order by node_name
+	</select>
+	
+	<!-- 根据项目id查询所有建筑结构信息  只取必须字段 -->
+	<select id="getBuildingStructureTreeNewbyProjectId" resultMap="BaseResultMap"
+		parameterType="String">
+		select id,parent_id,node_name from tc_building_structure where project_id=#{0} order by node_name
+	</select>
+	
+	<!-- 根据项目id 和父节点查询父节点下一级的信息-->
+	<select id="getBuildingStructureNewbyProjectIdAndParentId" resultMap="BaseResultMap" parameterType="BuildingStructureNew">
+		select id,parent_id,node_name,project_id,building_id,parcel_id,building_type,is_binding_assets
+		from tc_building_structure 
+		where project_id=#{0}
+		and parent_id=#{1}
+		order by node_name
+	</select>
+	
+	<!-- 根据项目id 和父节点查询父节点下一级的信息-->
+	<select id="getBuildingStructureNewbyProjectIdAndParentId1" resultMap="BaseResultMap" parameterType="BuildingStructureNew">
+		select id,parent_id,node_name,project_id,building_id,parcel_id,building_type,is_binding_assets
+		from tc_building_structure 
+		where project_id=#{0}
+		and parent_id is null
+		order by node_name
+	</select>
+	
+<select id="getCusNameAndEnterNameByBuS" parameterType="BuildingStructureNew" resultMap="BaseResultMap" >
+	select DISTINCT *,pbb.cust_id as custid,pbb.name as cutname,pbb1.enterprisename as entername, pbb1.enterpriseId as enterid ,is_binding_assets from tc_building_structure bs
+		left join (select building_structure_id,pb.cust_id,pc.name from tc_person_building  pb 
+		LEFT JOIN (select cust_id,name from tc_person_cust) pc on pc.cust_id=pb.cust_id  where pb.cust_type=0)pbb on pbb.building_structure_id =bs.id
+		left join (select building_structure_id,pc1.enterprise_name as enterprisename ,pb1.enterprise_id as enterpriseId from tc_person_building  pb1 
+		LEFT JOIN (select enterprise_id,enterprise_name from tc_enterprise_cust) pc1 on pc1.enterprise_id=pb1.enterprise_id  )
+		pbb1 on pbb1.building_structure_id =bs.id
+		<where>
+		  <if test="fullName!=null and fullName!=''">
+	  	 full_name like CONCAT('%',#{fullName},'%')
+        </if>
+        <if test="name!=null and name!=''">
+	 	 and pbb.name like CONCAT('%',#{name},'%')
+        </if>
+         <if test="enterpriseName!=null and enterpriseName!=''">
+	 	 and pbb1.enterpriseName like CONCAT('%',#{enterpriseName},'%')
+        </if>
+          <if test="isBindingAssets!=null and isBindingAssets!=''">
+	 	 and bs.is_binding_assets= #{isBindingAssets}
+        </if>
+	  </where>
+	</select>
+	
+	
+	
+	<!-- 通过项目id获取建筑建构对象  夏平  2016.2.26 -->
+	<select id="getBuildingStructureNewVbyProjectId" resultMap="BaseResultMap"
+		parameterType="String">
+		select * from tc_building_structure where parent_id=#{0}
+		union all
+		select c.* from (SELECT
+					a.*
+				FROM
+					tc_building_structure a
+				WHERE
+					EXISTS (
+						SELECT
+							b.id
+						FROM
+							(
+								SELECT
+									id
+								FROM
+									tc_building_structure
+								WHERE
+									parent_id = #{0}
+							) AS b
+						WHERE
+							b.id = a.parent_id
+					) order by a.node_name
+		) as c
+	</select>
+	<!-- 根据项目id查询所有父节点 肖聪 -->
+	<select id="getAllFatherNodes" resultMap="BuildingStructureNewAllResultMap"
+		parameterType="String">
+		SELECT a.*, b.cust_id,b.cust_type FROM tc_building_structure a
+		LEFT JOIN tc_person_building b ON a.id = b.building_structure_id
+		WHERE a.id IN (SELECT a.parent_id FROM tc_building_structure a
+		LEFT JOIN tc_person_building b ON a.id = b.building_structure_id
+		WHERE a.project_id=#{0}
+		GROUP BY a.parent_id)
+	</select>
+
+	<select id="getBuildingStructureById" resultMap="BuildingStructureNewAllResultMap"
+		parameterType="String">
+		select * from tc_building_structure where id=#{0}
+	</select>
+	
+	
+	<select id="getBuildingStructureByIdTree" resultMap="BaseResultMap"
+		parameterType="String">
+		select * from tc_building_structure where id=#{0}
+	</select>
+
+	<select id="listBuildingStructureSearch" resultMap="BuildingStructureNewAllResultMap"
+		parameterType="BuildingStructureSearch">
+		select a.*, b.cust_id,b.cust_type from (select * from tc_building_structure where 1=1 
+		<if test="projectId != null and projectId != '' ">
+			and project_id=#{projectId}
+		</if>
+		<if test="isBindingAssets != null and isBindingAssets != '' ">
+			and is_binding_assets=#{isBindingAssets}
+		</if>
+		 <if test="fullName!=null and fullName!=''">
+	    and full_name like CONCAT('%',#{fullName},'%')
+        </if>) a
+		left join (select * from  tc_person_building where 1=1 
+		<if test="custType!=null and custType!=''">
+		    and state=0 and cust_type="业主"
+		</if>)  b on a.id = b.building_structure_id
+		left join (select * from tc_person_cust where 1=1 
+		<if test="name != null and name != ''">
+			and name like CONCAT('%',#{name},'%')
+		</if>) c on b.cust_id = c.cust_id
+		left join (select * from tc_enterprise_cust where 1=1 
+		<if test="enterpriseName != null and enterpriseName != ''">
+			and enterprise_name like CONCAT('%',#{enterpriseName},'%')
+		</if> ) d on d.enterprise_id=b.enterprise_id
+		where 1=1
+		<if test="name != null and name != ''">
+			and c.name like CONCAT('%',#{name},'%')
+		</if>
+		<if test="custType!=null and custType!=''">
+		    and state=0 and cust_type="业主"
+		</if>
+		order by a.full_name
+	</select>
+
+	<select id="listNotBuildingStructureSearch" resultMap="BuildingStructureNewAllResultMap"
+		parameterType="BuildingStructureSearch">
+		select a.*, b.cust_id,b.cust_type from tc_building_structure a
+		left join tc_person_building b on a.id = b.building_structure_id
+		left join tc_person_cust c on b.cust_id = c.cust_id
+		left join tc_enterprise_cust d on d.enterprise_id=b.enterprise_id
+		where 1=1 and a.is_binding_assets=0
+		<if test="projectId != null and projectId != '' ">
+			and a.project_id=#{projectId}
+		</if>
+
+		<if test="name != null and name != ''">
+			and c.name like CONCAT('%',#{name},'%')
+		</if>
+
+		<!-- 新增 企业客户 名称 -->
+		<if test="enterpriseName != null and enterpriseName != ''">
+			and d.enterprise_name like CONCAT('%',#{enterpriseName},'%')
+		</if>
+        <if test="custType!=null">
+		    and b.state=0 and b.cust_type="业主"
+		</if>
+		<if test="fullName!=null and fullName!=''">
+	        and a.full_name like CONCAT('%',#{fullName},'%')
+        </if>
+		order by a.full_name
+	</select>
+
+	<!-- 根据查询条件查询个人客户基本信息 -->
+	<select id="listBuildingStructureSearchone" resultMap="BaseResultMap"
+		parameterType="BuildingStructureSearch">
+		select a.*,c.name,c.card_type,c.card_num ,b.cust_type ,b.state from
+		tc_building_structure a
+		left join tc_person_building b on a.id = b.building_structure_id
+		left join tc_person_cust c on b.cust_id =c.cust_id
+		where 1=1
+		<if test="projectId != null and projectId != '' ">
+			and project_id=#{projectId}
+		</if>
+		<if test="isBindingAssets != null and isBindingAssets != '' ">
+			and is_binding_assets=#{isBindingAssets}
+		</if>
+		<if test="name != null and name != ''">
+			and name like CONCAT('%',#{name},'%')
+		</if>
+	</select>
+
+	<!-- 根据条件查询企业客户信息 -->
+	<select id="listBuildingStructureSearchtwo" resultMap="BaseResultMap"
+		parameterType="BuildingStructureSearch">
+		SELECT a.*,c.enterprise_name,c.office_phone
+		FROM tc_building_structure a
+		LEFT JOIN tc_person_building b ON a.id = b.building_structure_id
+		LEFT JOIN tc_enterprise_cust c ON b.enterprise_id =c.enterprise_id
+		where 1=1
+		<if test="projectId != null and projectId != '' ">
+			and project_id=#{projectId}
+		</if>
+		<if test="isBindingAssets != null and isBindingAssets != '' ">
+			and is_binding_assets=#{isBindingAssets}
+		</if>
+		<if test="enterpriseName != null and enterpriseName != ''">
+			and enterprise_name like CONCAT('%',#{enterpriseName},'%')
+		</if>
+	</select>
+
+
+	<select id="getBuildingStructureNewByparentId" parameterType="String"
+		resultMap="BaseResultMap">
+		SELECT * FROM tc_building_structure WHERE parent_id=#{0}
+	</select>
+
+
+	<!-- 根据房屋全名查询房屋信息 尹磊 -->
+	<select id="getBuildingStructureNewByfullName" parameterType="String"
+		resultMap="BaseResultMap">
+		select * from tc_building_structure where full_name=#{0}
+	</select>
+
+	<select id="listAllBuildingStructureNewTree" resultMap="TreeResultMap">
+		SELECT * FROM tc_building_structure ORDER BY CONVERT(node_name USING gbk)
+	</select>
+
+	<select id="listBuildingStructureNewByhouseGates" resultMap="BuildingStructureNewResultMap">
+		select * from tc_building_structure where id in
+		<foreach collection="list" open="(" close=")" separator=","
+			item="houseGate">
+			#{houseGate.houseId}
+		</foreach>
+	</select>
+
+	<select id="listBuildingStructureNewTreeByHouses" resultMap="TreeResultMap">
+		select * from tc_building_structure
+		where id in
+		<foreach collection="list" open="(" close=")" item="houseGate"
+			separator=",">
+			#{houseGate.houseId}
+		</foreach>
+	</select>
+
+	<select id="getBuildingStructureNewbyId" parameterType="String"
+		resultMap="BaseResultMap">
+		select * from tc_building_structure where id=#{0}
+	</select>
+
+
+	<select id="getBuildingStructureNewByCustId" parameterType="String"
+		resultMap="BaseResultMap">
+		SELECT * FROM tc_building_structure WHERE id IN (SELECT
+		building_structure_id FROM tc_person_building WHERE cust_id =#{0})
+	</select>
+
+	<insert id="insertBuildingStructureNew" parameterType="BuildingStructureNew">
+		insert into tc_building_structure (id, full_name, node_name,
+		building_id, parent_id, building_area,total_area,
+		commonality_area, inside_area, completion_area,
+		utility_ratio,building_type,area_id,project_id)
+		values (UUID(), #{fullName,jdbcType=VARCHAR}, #{nodeName,jdbcType=VARCHAR},
+		#{buildingId,jdbcType=VARCHAR}, #{parentId,jdbcType=VARCHAR},
+		#{buildingArea,jdbcType=DOUBLE},#{totalArea,jdbcType=DOUBLE},
+		#{commonalityArea,jdbcType=DOUBLE}, #{insideArea,jdbcType=DOUBLE}, #{completionArea,jdbcType=DOUBLE},
+		#{utilityRatio,jdbcType=DOUBLE},#{buildingType,jdbcType=VARCHAR},#{areaId,jdbcType=VARCHAR},#{projectId,jdbcType=VARCHAR})
+	</insert>
+	
+	<insert id="insertBuildingStructureNewSpec" parameterType="BuildingStructureNew">
+		insert into tc_building_structure (id, full_name, node_name,
+		building_id, parent_id, building_area,total_area,
+		commonality_area, inside_area, completion_area,
+		utility_ratio,building_type,area_id,project_id,parcel_id,is_binding_assets)
+		values (#{id,jdbcType=VARCHAR}, #{fullName,jdbcType=VARCHAR}, #{nodeName,jdbcType=VARCHAR},
+		#{buildingId,jdbcType=VARCHAR}, #{parentId,jdbcType=VARCHAR},
+		#{buildingArea,jdbcType=DOUBLE},#{totalArea,jdbcType=DOUBLE},
+		#{commonalityArea,jdbcType=DOUBLE}, #{insideArea,jdbcType=DOUBLE}, #{completionArea,jdbcType=DOUBLE},
+		#{utilityRatio,jdbcType=DOUBLE},#{buildingType,jdbcType=VARCHAR},#{areaId,jdbcType=VARCHAR},#{projectId,jdbcType=VARCHAR},#{parcelId,jdbcType=VARCHAR},#{isBindingAssets,jdbcType=TINYINT})
+	</insert>
+
+
+	<insert id="insertBuildingStructureNewUUID" parameterType="BuildingStructureNew">
+		insert into tc_building_structure (id, full_name, node_name,
+		building_id, parent_id, building_area,total_area,
+		commonality_area, inside_area, completion_area,
+		utility_ratio,building_type,area_id,project_id,is_binding_assets,parcel_id)
+		values (#{id,jdbcType=VARCHAR}, #{fullName,jdbcType=VARCHAR},
+		#{nodeName,jdbcType=VARCHAR},
+		#{buildingId,jdbcType=VARCHAR}, #{parentId,jdbcType=VARCHAR}, #{buildingArea,jdbcType=DOUBLE},#{totalArea,jdbcType=DOUBLE},
+		#{commonalityArea,jdbcType=DOUBLE}, #{insideArea,jdbcType=DOUBLE},
+		#{completionArea,jdbcType=DOUBLE},
+		#{utilityRatio,jdbcType=DOUBLE},#{buildingType,jdbcType=VARCHAR},#{areaId,jdbcType=VARCHAR},
+		#{projectId,jdbcType=VARCHAR},#{isBindingAssets,jdbcType=TINYINT},#{parcelId,jdbcType=VARCHAR})
+	</insert>
+
+	<insert id="NewinsertBuildingStructure" parameterType="BuildingStructureNew">
+		insert into tc_building_structure (id, full_name, node_name,
+		parent_id
+		)
+		values (#{id,jdbcType=VARCHAR}, #{fullName,jdbcType=VARCHAR},
+		#{nodeName,jdbcType=VARCHAR},
+		#{parentId,jdbcType=VARCHAR})
+	</insert>
+
+
+	<update id="updateBuildingStructureNew" parameterType="BuildingStructureNew">
+		update tc_building_structure
+		set
+		<if test="fullName != null and fullName != ''">
+			full_name = #{fullName,jdbcType=VARCHAR},
+		</if>
+		<if test="nodeName != null and nodeName != ''">
+			node_name = #{nodeName,jdbcType=VARCHAR},
+		</if>
+		<if test="buildingId != null and buildingId != ''">
+			building_id = #{buildingId,jdbcType=VARCHAR},
+		</if>
+		<if test="parentId != null and parentId != ''">
+			parent_id = #{parentId,jdbcType=VARCHAR},
+		</if>
+		<if test="buildingArea != null and buildingArea != ''">
+			building_area = #{buildingArea,jdbcType=DOUBLE},
+		</if>
+		<if test="totalArea != null and totalArea != ''">
+			total_area = #{totalArea,jdbcType=DOUBLE},
+		</if>
+		<if test="commonalityArea != null and commonalityArea != ''">
+			commonality_area = #{commonalityArea,jdbcType=DOUBLE},
+		</if>
+		<if test="insideArea != null and insideArea != ''">
+			inside_area = #{insideArea,jdbcType=DOUBLE},
+		</if>
+		<if test="completionArea != null and completionArea != ''">
+			completion_area = #{completionArea,jdbcType=DOUBLE},
+		</if>
+		<if test="utilityRatio != null and utilityRatio != ''">
+			utility_ratio = #{utilityRatio,jdbcType=DOUBLE},
+		</if>
+		<if test="buildingType != null and buildingType != ''">
+			building_type=#{buildingType,jdbcType=VARCHAR},
+		</if>
+		<if test="areaId != null and areaId != ''">
+			area_id=#{areaId,jdbcType=VARCHAR},
+		</if>
+		<if test="projectId != null and projectId != ''">
+			project_id=#{projectId,jdbcType=VARCHAR},
+		</if>
+		<if test="productId != null and productId != ''">
+			product_id = #{productId,jdbcType=VARCHAR}
+		</if>
+		where id = #{id,jdbcType=VARCHAR}
+	</update>
+
+	<update id="updateBuildingStructureById" parameterType="String">
+		update tc_building_structure
+		set
+		is_binding_assets=1
+		where id = #{0}
+	</update>
+
+	<!-- 根据建筑名和车库类型查询建筑信息 -->
+	<select id="listIdAndfullNameByType" resultMap="BaseResultMap"
+		parameterType="BuildingStructureNew">
+		select * from tc_building_structure where area_id = #{areaId}
+		<if test="fullName != null and fullName != ''">and full_name like
+			CONCAT(CONCAT('%',#{fullName,jdbcType=VARCHAR}),'%')</if>
+	</select>
+
+	<update id="updateBuildingStructureNewProductId" parameterType="BuildingStructureNew">
+		update tc_building_structure set product_id = #{productId} where id =
+		#{id}
+	</update>
+
+	<!-- 根据产品id查询关联的建筑结构信息 -->
+	<select id="listBuildingStructureNewByProductId" parameterType="String"
+		resultMap="BaseResultMap">
+		select bs.id,bs.full_name,bs.product_id from tc_building_structure as bs
+		where bs.product_id = #{productId}
+	</select>
+
+	<update id="updateBuildingStructureNewBytId" parameterType="String">
+		update tc_building_structure set product_id = '' where id = #{id}
+	</update>
+
+	<!-- 根据客户建筑关系id查询建筑结构信息 -->
+	<select id="getBuildingStructureNewByPersonBuildingId"
+		resultMap="BaseResultMap" parameterType="String">
+		select tbs.id,tbs.full_name from tc_building_structure tbs where tbs.id =
+		(select tpb.building_structure_id from tc_person_building tpb where
+		tpb.person_building_id = #{personBuildingId})
+	</select>
+
+	<!-- 根据客户id查询资产总数 肖聪 -->
+	<select id="getCountAll" resultMap="BaseResultMap"
+		parameterType="String">
+		SELECT a.*,b.* FROM tc_building_structure a
+		LEFT JOIN tc_person_building b ON a.id = b.building_structure_id
+		WHERE b.cust_id=#{0} AND b.cust_type='业主' and b.state=0
+	</select>
+
+	<!-- 根据客户id查询相关资产数量 肖聪 -->
+
+	<select id="getCountByType" resultMap="BaseResultMap"
+		parameterType="String">
+		SELECT a.*,b.* FROM tc_building_structure a
+		LEFT JOIN tc_person_building b ON a.id = b.building_structure_id
+		WHERE a.building_type=#{1} AND b.cust_id=#{0} AND b.cust_type='业主' and
+		b.state=0
+	</select>
+
+	<!-- 根据房屋全名查询单个房屋信息 尹磊 -->
+	<select id="getBuildingStructureNewByFullName" parameterType="String"
+		resultMap="BaseResultMap">
+		select * from tc_building_structure where full_name=#{0}
+	</select>
+
+	<!-- 查询所有车位建筑的父节点 肖聪 -->
+	<select id="listAllBuildingStructureNewByType" resultMap="BaseResultMap"
+		parameterType="BuildingStructureNew">
+		SELECT * FROM tc_building_structure WHERE id IN
+		( SELECT parent_id FROM tc_building_structure WHERE building_type="车位"
+		AND parent_id IS NOT NULL GROUP BY parent_id )
+		<if test="fullName!=null">
+			and full_name like CONCAT('%',#{fullName},'%')
+		</if>
+	</select>
+
+	<!-- 根据父id查询建筑结构信息 肖聪 -->
+	<select id="listAllBuildingStructureNewByParentId" resultMap="BaseResultMap"
+		parameterType="String">
+		SELECT * FROM tc_building_structure WHERE building_type="车位" AND
+		parent_id=#{0}
+	</select>
+
+	<select id="getBuildingStructurebyId" parameterType="String"
+		resultMap="BuildingStructureAllResultMap">
+		select * from tc_building_structure where id=#{0}
+	</select>
+	
+	<select id="listAllBuildingStructureByParentId" parameterType="String"
+		resultMap="BaseResultMap">
+		select * from tc_building_structure where parent_id=#{0}
+	</select>
+
+	<select id="listBuildingforconllection" parameterType="String" resultMap="BaseResultMap">
+		SELECT * FROM tc_building_structure	WHERE id IN (SELECT a.building_structure_id FROM (SELECT * FROM tc_person_building WHERE state=0 AND cust_type="业主" AND  cust_id=#{0}) a 
+		INNER JOIN tc_person_cust b ON a.cust_id=b.cust_id INNER JOIN (SELECT * FROM tc_building_structure WHERE id NOT IN (
+		SELECT id FROM tc_collection_manage WHERE NOW() &lt;= end_time AND NOW() &gt;= start_time and cust_id=#{0})) c ON c.id=a.building_structure_id GROUP BY c.id) and 
+		building_id NOT IN (SELECT building_id FROM tc_collection_manage a INNER JOIN tc_building_structure b ON a.id=b.id LEFT JOIN tc_financial_bank_num d ON a.bank_name=d.bank_num
+		INNER JOIN (select cust_id from tc_person_cust where cust_id=#{0})c ON C.cust_id = a.cust_id)
+		<!-- SELECT * FROM tc_building_structure WHERE id IN (SELECT a.building_structure_id FROM (SELECT * FROM tc_person_building WHERE state=0 AND cust_type="业主" AND  cust_id=#{0}) a 
+        INNER JOIN tc_person_cust b ON a.cust_id=b.cust_id
+        INNER JOIN (SELECT * FROM tc_building_structure WHERE id NOT IN (SELECT id FROM tc_collection_manage WHERE NOW()&lt;=end_time AND NOW() &gt;=start_time and cust_id=#{0})) c ON c.id=a.building_structure_id
+        GROUP BY c.id) -->
+	</select>
+	
+	
+	 <select id="listParentBuildingStructureCxf1" resultMap="BaseResultMap">
+	  	select a.id, a.full_name, a.node_name, 
+	      a.building_id,a.parent_id,a.building_area, 
+	      a.commonality_area,a.inside_area,a.completion_area, 
+	      a.utility_ratio 
+		from tc_building_structure a
+	  	WHERE a.building_id in 
+	  	(select b.building_id from tc_building_structure b where b.id in (<foreach collection="list" item="item" separator=",">
+	  		#{item}
+	  	</foreach>)) 
+	  	 and a.parent_id IS NULL OR a.parent_id=''
+  </select>
+  
+  <select id="listAllBuildingStructureNew1"  resultMap="BuildingStructureNewResultMap">
+   select a.id,a.full_name,a.node_name,a.building_id,a.parent_id,a.building_area,a.commonality_area,a.inside_area,a.completion_area,a.utility_ratio,b.id as id1,b.building_id as building_id1,b.building_structure_id,b.house_num,b.property,b.land_price,b.last_transcation_price,b.house_postcode,b.manage_fee,b.complete_date,b.elevator,b.gate_guard,b.join_date,b.join_state,b.designer_draw,b.is_billing,b.price,b.land_certificate,b.market_state,b.special_fund,b.capital_type,b.password,b.sip_id 
+  	from tc_building_structure a left join tc_house b on a.id=b.building_structure_id  
+  </select>
+
+	<!-- 修改建筑结构的全名和节点名  王洲  2016.02.24  -->
+	<update id="updateFullNameById" parameterType="BuildingStructureNew">
+		update tc_building_structure set full_name = #{fullName,jdbcType=VARCHAR},node_name = #{nodeName,jdbcType=VARCHAR} where id = #{id,jdbcType=VARCHAR}
+	</update>
+
+	
+	<select id="listBuildingStructureByParentIds" resultType="String">
+    	SELECT id FROM tc_building_structure WHERE parent_id IN 
+    	<foreach collection="array" open="(" close=")" item="item" separator=",">
+	  		#{item}
+	  	</foreach>
+    </select>
+	<!-- 根据id集合查询建筑结构 -->
+	<select id="selectByBuildingByIds" resultMap="BaseResultMap">
+		select * from tc_building_structure
+		where id in 
+		<foreach collection="list" open="(" close=")" separator="," item="item">
+  			#{item}
+  		</foreach>
+	</select>
+	
+	<!-- 根据项目id查询所有一级建筑结构 -->
+	<select id="selectParentBuildingByProjectId" parameterType="java.lang.String" resultMap="BaseResultMap">
+		select * from tc_building_structure 
+		where project_id = #{0}
+		and isnull(parent_id)
+	</select>
+	
+	<!-- 根据项目id和parent_id查询二级建筑结构 -->
+	<select id="selectChildrenBuilding" parameterType="java.util.Map" resultMap="BaseResultMap">
+		select * from tc_building_structure 
+		where project_id = #{projectId}
+		and parent_id=#{parentId}
+	</select>
+	
+	<!-- 批量插入建筑结构信息（用于Excel导入） -->
+	<insert id="insertList"  parameterType="java.util.List">
+		insert into tc_building_structure 
+		(id,
+		node_name,
+		building_id,
+		parent_id,
+		project_id,
+		building_type,
+		full_name)
+    	values 
+		<foreach collection="list" item="item" index="index" separator="," >
+		(#{item.id,jdbcType=VARCHAR},
+		#{item.nodeName,jdbcType=VARCHAR},
+		#{item.buildingId,jdbcType=VARCHAR},
+		#{item.parentId,jdbcType=VARCHAR},
+		#{item.projectId,jdbcType=VARCHAR},
+		#{item.buildingType,jdbcType=VARCHAR},
+		#{item.fullName,jdbcType=VARCHAR})
+		</foreach>
+	</insert>
+	
+	<select id="getBuildingStructureByBuildingId" parameterType="String"
+		resultMap="BaseResultMap">
+		select * from tc_building_structure where building_id=#{0} and parent_id is null
+	</select>
+	
+	<!-- 根据父节点查询所有住宅信息 -->
+	<select id="listBuildingStructureResidenceByParentId" parameterType="java.util.Map"
+		resultMap="BuildingStructureNewResultMap">
+		select a.*,b.sip_id,b.indoor_sip_id from tc_building_structure a 
+		left join tc_house b on a.id=b.building_structure_id
+		where a.parent_id=#{parentId} and a.id in
+		<foreach collection="houseIdList" open="(" close=")" separator=","
+			item="houseId">
+			#{houseId}
+		</foreach>
+	</select>
+	
+	<select id="getFullNameById" parameterType="String" resultType="String">
+		select full_name from tc_building_structure where id = #{0}
+	</select>
+	
+	<select id="getCustAndAddressByCustIdList" resultMap="CustAndAddressMap">
+		select a.id,a.full_name,b.cust_id,b.person_building_id,e.id as house_id from tc_building_structure a
+		join tc_person_building b on a.id=b.building_structure_id
+		join tc_person_cust c on c.cust_id=b.cust_id
+		join tc_house e on e.building_structure_id=a.id
+		where c.cust_id in
+		<foreach collection="list" open="(" close=")" separator=","
+			item="item">
+			#{item}
+		</foreach>
+	</select>
+	
+	<select id="getEnterpriseCustAndAddressByCustIdList" resultMap="EnterpriseCustAndAddressMap">
+		select a.full_name,c.representative as cust_id,c.enterprise_id from tc_building_structure a
+		join tc_person_building b on a.id=b.building_structure_id
+		join tc_enterprise_cust c on c.enterprise_id=b.enterprise_id
+		where c.representative in  
+		<foreach collection="list" open="(" close=")" separator=","
+			item="item">
+			#{item}
+		</foreach>
+	</select>
+	
+	<select id="getAuthorizationCustAndAddressByCustIdList" resultMap="CustAndAddressMap">
+		select e.id,e.full_name,a.authorized_personId as cust_id,f.person_building_id,d.id as house_id from t_authorization a
+		join t_authorization_project b on a.authorization_id=b.authorization_id
+		join t_authorization_project_type c on b.authorization_project_type_id=c.authorization_project_id
+		join tc_house d on a.house_id=d.building_structure_id
+		join tc_building_structure e on d.building_structure_id=e.id
+		join tc_person_building f on e.id=f.building_structure_id
+		where a.authorized_personId in 
+		<foreach collection="custIdList" open="(" close=")" separator=","
+			item="item">
+			#{item}
+		</foreach>
+		and c.authorization_project_name=#{authorizationName}
+		
+	</select>
+	
+	<select id="listProjectIdByCustId" parameterType="String" resultType="String">
+		select distinct a.project_id from tc_building_structure a left join tc_person_building b on a.id = b.building_structure_id where b.cust_id = #{0} and b.state = 0
+	</select>
+	
+	<select id="selectBuildingByParentId" parameterType="java.lang.String" resultMap="BaseResultMap">
+		select * from tc_building_structure 
+		where parent_id=#{parentId}
+	</select>
+	
+	<!-- 根据项目ID和计费方案ID查询可选建筑列表 -->
+	<select id="getBuildingListByProidAndSchemeid" parameterType="java.lang.String" resultMap="BaseResultMap">
+		SELECT * from tc_building_structure  where project_id = #{0}
+			AND building_type IS NOT NULL AND id NOT IN
+			(
+				SELECT building_id from tc_charge_item_new_building  where charge_item_new_id in
+				(
+				select charge_item_new_id from tc_charge_item_new where scheme_id = #{1}
+				)
+			)
+			order by node_name
+
+	</select>
+	<!-- 根据项目ID和计费方案ID查询可选建筑对应单元列表 -->
+	<select id="getBuildingUnitListByProidAndSchemeid" parameterType="java.lang.String" resultMap="BaseResultMap">
+		SELECT * FROM tc_building_structure WHERE id IN (
+			SELECT parent_id from tc_building_structure  where project_id = #{0}
+			AND building_type IS NOT NULL AND id NOT IN
+			(
+				SELECT building_id from tc_charge_item_new_building  where charge_item_new_id in
+				(
+				select charge_item_new_id from tc_charge_item_new where scheme_id = #{1}
+				)
+			)
+		)
+		order by node_name
+	</select>
+	<!-- 根据项目ID和计费方案ID查询可选建筑对应楼栋列表 -->
+	<select id="getBuildingBuildingListByProidAndSchemeid" parameterType="java.lang.String" resultMap="BaseResultMap">
+		SELECT * FROM tc_building_structure WHERE id IN(
+			SELECT parent_id FROM tc_building_structure WHERE id IN (
+				SELECT parent_id from tc_building_structure  where project_id = #{0}
+				AND building_type IS NOT NULL AND id NOT IN
+				(
+					SELECT building_id from tc_charge_item_new_building  where charge_item_new_id in
+					(
+					select charge_item_new_id from tc_charge_item_new where scheme_id = #{1}
+					)
+				)
+			)
+		)
+		order by node_name
+	</select>
+	<!-- 根据收费项目ID获取使用范围建筑列表 -->
+	<select id="getBuildingByChargeItemNewId" parameterType="java.lang.String" resultMap="BaseResultMap">
+		SELECT * FROM tc_building_structure WHERE id IN(
+			SELECT building_id from tc_charge_item_new_building  where charge_item_new_id = #{0}
+		)
+		order by node_name
+	</select>
+	<!-- 根据收费项目ID获取使用范围建筑对应单元列表 -->
+	<select id="getBuildingUnitByChargeItemNewId" parameterType="java.lang.String" resultMap="BaseResultMap">
+		SELECT * FROM tc_building_structure WHERE id IN(
+			SELECT parent_id FROM tc_building_structure WHERE id IN(
+				SELECT building_id from tc_charge_item_new_building  where charge_item_new_id = #{0}
+			)
+		)
+		order by node_name
+	</select>
+	<!-- 根据收费项目ID获取使用范围建筑对应楼栋列表 -->
+	<select id="getBuildingBuildingByChargeItemNewId" parameterType="java.lang.String" resultMap="BaseResultMap">
+		SELECT * FROM tc_building_structure WHERE id IN(
+			SELECT parent_id FROM tc_building_structure WHERE id IN(
+				SELECT parent_id FROM tc_building_structure WHERE id IN(
+					SELECT building_id from tc_charge_item_new_building  where charge_item_new_id = #{0}
+				)
+			)
+		)
+		order by node_name
+	</select>
+	
+	<select id="selectSip" parameterType="String" resultMap="SipmanageResultMap">
+	  select * from tc_sipmanage where sip_id=#{0}
+	</select>
+	<!-- 查询车位信息  BEGIN -->
+	<select id="getBuildingListByType" parameterType="java.lang.String" resultMap="BaseResultMap">
+		select * from tc_building_structure where building_type='车位'
+	</select>
+	<select id="getBuildingParentListByType" parameterType="java.lang.String" resultMap="BaseResultMap">
+		select b.* from(
+		(select * from tc_building_structure where building_type='车位')) a 
+		left join tc_building_structure b on b.id=a.parent_id 
+		GROUP BY id order by node_name
+	</select>
+	<select id="getBuildingParentTopListByType" parameterType="java.lang.String" resultMap="BaseResultMap">
+		select bb.* from (
+		select b.* from(
+		(select * from tc_building_structure where building_type='车位')) a 
+		left join tc_building_structure b on b.id=a.parent_id) aa LEFT JOIN
+		tc_building_structure bb on aa.parent_id=bb.id GROUP BY id order by node_name
+	</select>
+	<!-- 查询车位信息  END -->
+</mapper>

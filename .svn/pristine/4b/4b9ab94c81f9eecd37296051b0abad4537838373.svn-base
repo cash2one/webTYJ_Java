@@ -1,0 +1,466 @@
+package com.flf.service.impl;
+
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.math.BigDecimal;
+import java.net.URISyntaxException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.UUID;
+import org.springframework.beans.factory.annotation.Autowired;
+import com.flf.entity.Annex;
+import com.flf.entity.PageRestful;
+import com.flf.entity.TempDemo;
+import com.flf.entity.UnionpayCollectionTotall;
+import com.flf.entity.UnionpayCounterofferDetai;
+import com.flf.entity.UnionpayCounterofferTotal;
+import com.flf.mapper.AnnexMapper;
+import com.flf.mapper.UnionpayCollectionTotallMapper;
+import com.flf.mapper.UnionpayCounterofferDetaiMapper;
+import com.flf.mapper.UnionpayCounterofferTotalMapper;
+import com.flf.request.ExcelInfo;
+import com.flf.request.Info;
+import com.flf.service.UnionpayCounterofferTotalService;
+import com.flf.util.Excel;
+import com.flf.util.ExcelUtils;
+import com.flf.util.Tools;
+
+public class UnionpayCounterofferTotalServiceImpl implements UnionpayCounterofferTotalService {
+
+	private AnnexMapper annexMapper;
+	@Autowired
+	private UnionpayCounterofferTotalMapper unionpayCounterofferTotalMapper;
+	@Autowired
+	private UnionpayCollectionTotallMapper unionpayCollectionTotallMapper;
+	@Autowired
+	private UnionpayCounterofferDetaiMapper unionpayCounterofferDetaiMapper;
+
+	public AnnexMapper getAnnexMapper() {
+		return annexMapper;
+	}
+
+	public void setAnnexMapper(AnnexMapper annexMapper) {
+		this.annexMapper = annexMapper;
+	}
+
+	public UnionpayCounterofferTotalMapper getUnionpayCounterofferTotalMapper() {
+		return unionpayCounterofferTotalMapper;
+	}
+
+	public void setUnionpayCounterofferTotalMapper(UnionpayCounterofferTotalMapper unionpayCounterofferTotalMapper) {
+		this.unionpayCounterofferTotalMapper = unionpayCounterofferTotalMapper;
+	}
+
+	@Override
+	public int insertUnionpayCounterofferTotal(UnionpayCounterofferTotal unionpayCounterofferTotal) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public List<UnionpayCounterofferTotal> getUnionpayCounterofferTotalById(String unionpayCounterofferCotalId) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void insertUnionpayCounterofferTotal1(UnionpayCounterofferTotal unionpayCounterofferTotal) {
+		// TODO Auto-generated method stub
+		unionpayCounterofferTotalMapper.insertUnionpayCounterofferTotal(unionpayCounterofferTotal);
+	}
+
+	@Override
+	public List<UnionpayCounterofferTotal> getUnionpayCounterofferTotalById1(String unionpayCounterofferCotalId) {
+		// TODO Auto-generated method stub
+		return unionpayCounterofferTotalMapper.getUnionpayCounterofferTotalById(unionpayCounterofferCotalId);
+	}
+
+	@Override
+	public List<UnionpayCounterofferTotal> listPageUnionpayCounterofferTotal(
+			UnionpayCounterofferTotal unionpayCounterofferTotal) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public PageRestful listPageUnionpayCounterofferTotalRes(UnionpayCounterofferTotal unionpayCounterofferTotal) {
+		PageRestful pageRestful = new PageRestful();
+		List<UnionpayCounterofferTotal> unionpayCounterofferTotals = unionpayCounterofferTotalMapper
+				.listPageUnionpayCounterofferTotal(unionpayCounterofferTotal);
+		unionpayCounterofferTotals.add(0, null);
+		pageRestful.setUnionpayCounterofferTotals(unionpayCounterofferTotals);
+		pageRestful.setPage(unionpayCounterofferTotal.getPage());
+		return pageRestful;
+	}
+
+	@Override
+	public Info importExcelFile(UnionpayCounterofferTotal unionpayCounterofferTotal) {
+		// 1.判断总文件id是否为空
+		// 2.如果为空，总文件新增，子文件新增
+		// 3。如果不为空，子文件新增
+		// TODO Auto-generated method stub
+		List<UnionpayCounterofferTotal> unionpayCounterofferTotals = unionpayCounterofferTotal
+				.getUnionpayCounterofferTotals();// 存放导入的数据
+		if (unionpayCounterofferTotals != null) {
+			// unionpayCounterofferTotalMapper.inserts(unionpayCounterofferTotals);
+			for (UnionpayCounterofferTotal u : unionpayCounterofferTotals) {
+				unionpayCounterofferTotalMapper.insertUnionpayCounterofferTotal(u);
+			}
+			return Tools.msg("数据导入成功!", true);
+		}
+		return Tools.msg("数据导入失败!", true);
+	}
+
+	@Override
+	public List<UnionpayCounterofferTotal> returnImportExcelFile(Annex annex) {
+		// TODO Auto-generated method stub
+		List<UnionpayCounterofferTotal> unionpayCounterofferTotals = new ArrayList<UnionpayCounterofferTotal>();// 存放导入的数据
+		//SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		String filePath = annex.getAnnexAddress();
+
+		if (Tools.notEmpty(filePath)) {
+			try {
+				List<Map<Short, String>> dataList = new ExcelUtils().readExcel(filePath);
+				if (dataList != null && dataList.size() > 0) {
+					for (Map<Short, String> t : dataList) {
+						UnionpayCounterofferTotal unionpayCounterofferTotal = new UnionpayCounterofferTotal();
+						// String uuid = UUID.randomUUID().toString();
+						// unionpayCounterofferTotal.setUnionpayCollectionOfferDetaiId(uuid);//设置Id
+						unionpayCounterofferTotal.setUnionpayCounterofferCotalId(UUID.randomUUID().toString());
+						unionpayCounterofferTotal.setFileName(t.get((short) 0)); // 文件明
+						unionpayCounterofferTotal.setTotalTradeNum(Integer.parseInt(t.get((short) 1).trim()));// 总笔数
+						unionpayCounterofferTotal.setTotalSum(Double.parseDouble(t.get((short) 2)));// 总金额
+						unionpayCounterofferTotal.setSuccessTradeNum(Integer.parseInt(t.get((short) 3).trim()));// 总笔数
+						unionpayCounterofferTotal.setSuccessSum(Double.parseDouble(t.get((short) 4)));// 成功金额
+						unionpayCounterofferTotal.setUpDate(new Date());// 上传日期
+						unionpayCounterofferTotals.add(unionpayCounterofferTotal);// 将数据存入集合
+					}
+				}
+
+				// unionpayCounterofferTotalMapper.inserts(unionpayCounterofferTotals);
+
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+		return unionpayCounterofferTotals;
+	}
+
+	/**
+	 * 盘回总结文件模版
+	 * 
+	 * @author xiaocong
+	 * @date 下午7:18:00
+	 * @Description:TODO
+	 * @return
+	 * @updateby
+	 */
+	@Override
+	public InputStream exportUTotalMBFile() {
+		Excel ex = new Excel();
+		List<ExcelInfo> list = new ArrayList<ExcelInfo>();
+		String[] headers = { "文件名", "总笔数", "总金额", "成功笔数", "成功金额" };
+		String[] fields = { "fileName", "totalTradeNum", "totalSum", "successTradeNum", "successSum" };
+		List<UnionpayCounterofferTotal> dataset = new ArrayList<UnionpayCounterofferTotal>();
+		ExcelInfo exl = new ExcelInfo();
+		exl.setFields(fields);
+		exl.setTitles(headers);
+		exl.setSheetName("盘回总结文件模版 ");
+		exl.setList(dataset);
+		list.add(exl);
+		try {
+			return ex.createExcelInputStream(list);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
+
+	/**
+	 * 银联导入回盘文件
+	 */
+	@Override
+	public Info importCollectionFile(UnionpayCollectionTotall unionpayCollectionTotall) {
+		String unionpayFiles = unionpayCollectionTotall.getFileNames();
+		Info info = new Info();
+		String msg = "";
+		if (unionpayFiles == null || "".equals(unionpayFiles)) {
+			msg = "请选择文件上传";
+			info.setInfo(msg);
+			return info;
+		}
+		String[] files = unionpayFiles.split(",");
+		Map<String, String> fileNameMap = new HashMap<String, String>();
+		List<String> oldFileNameList = new ArrayList<String>();
+		List<String> newFileNameList = new ArrayList<String>();
+		// 查询已托收的托收记录
+		List<UnionpayCollectionTotall> uctList = unionpayCollectionTotallMapper.listAllUnionpay(1);
+
+		if (uctList.size() != 1) {
+			msg = "已托收的记录为空或者超过一条！";
+			info.setInfo(msg);
+			return info;
+		}
+		UnionpayCollectionTotall fct = uctList.get(0);
+		String batchNumber = fct.getBatchNum();
+		String projectId = fct.getProjectId();
+
+		// 删除未回盘状态的回盘总结文件和回盘明细文件
+		UnionpayCounterofferTotal uniontotal = new UnionpayCounterofferTotal();
+		uniontotal.setBatchNum(batchNumber);
+		uniontotal.setOfferState(0);
+		List<UnionpayCounterofferTotal> ucdd = unionpayCounterofferTotalMapper.listPageUnionpayCounterofferTotal(uniontotal);
+
+		for (UnionpayCounterofferTotal fcot : ucdd) {
+			UnionpayCounterofferDetai ucda = new UnionpayCounterofferDetai();
+			ucda.setUnionpayCounterofferTotalId(fcot.getUnionpayCounterofferCotalId());
+			List<UnionpayCounterofferDetai> ucdetail = unionpayCounterofferDetaiMapper.listAllgetUnionpayCounterofferDetai(ucda);
+
+			for (UnionpayCounterofferDetai fcd : ucdetail) {
+				unionpayCounterofferDetaiMapper.deleteByPrimaryKey(fcd.getUnionpayCounterofferDetaiId());
+			}
+			unionpayCounterofferTotalMapper.deleteByPrimaryKey(fcot.getUnionpayCounterofferCotalId());
+		}
+
+		for (int i = 0; i < files.length; i++) {
+			String fileName = files[i];
+			// String oldFileName = fileName.split("_")[2];
+			String oldFileName = getStr(fileName, 2);
+			oldFileNameList.add(oldFileName);
+			newFileNameList.add(fileName);
+			fileNameMap.put(oldFileName, fileName);
+		}
+
+		for (int i = 0; i < oldFileNameList.size(); i++) {
+			String oldFileName = oldFileNameList.get(i);
+			String fileNameExt = oldFileName.substring(oldFileName.lastIndexOf("."));
+			if (!".txt".equals(fileNameExt)) {
+				msg = "文件" + oldFileName + "格式不正确";
+				info.setInfo(msg);
+				return info;
+			}
+		}
+
+		StringBuffer sb = new StringBuffer();
+		sb.append("文件");
+		Boolean bl = false;
+		for (int i = 0; i < oldFileNameList.size(); i++) {
+			String oldFileName = oldFileNameList.get(i);
+			String fileNameExt = oldFileName.substring(oldFileName.lastIndexOf("."));
+			if (".txt".equals(fileNameExt)) {
+
+				try {
+					TempDemo temp = readAndInsert(projectId, batchNumber, oldFileName, fileNameMap.get(oldFileName));
+					if (!temp.getBool()) {
+						bl = true;
+						sb.append(oldFileName + ",");
+					}
+				} catch (Exception e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+					bl = true;
+					sb.append(oldFileName + ",");
+				}
+			}
+		}
+		if (bl) {
+			msg = sb.substring(0, sb.length() - 1) + "导入失败！";
+		} else {
+			msg = "导入成功！";
+		}
+		info.setCode(batchNumber);
+		info.setInfo(msg);
+		return info;
+	}
+
+	private static String getStr(String str, int n) {
+
+		int i = 0;
+		int s = 0;
+
+		while (i++ < n) {
+			s = str.indexOf("_", s + 1);
+			if (s == -1) {
+				return str;
+			}
+		}
+		return str.substring(s + 1);
+
+	}
+
+	private TempDemo readAndInsert(String projectId, String batchNumber, String totalFileName, String fileName)throws URISyntaxException {
+		
+		TempDemo temp = new TempDemo();
+		UnionpayCounterofferTotal counterofferTotal=new UnionpayCounterofferTotal();
+		counterofferTotal.setProjectId(projectId);
+		counterofferTotal.setFileName(totalFileName);
+		int num = unionpayCounterofferTotalMapper.selectFileCount(counterofferTotal);
+		if (num > 0) {
+			temp.setBool(false);
+			temp.setBuff("该文件已经导入过了！");
+			return temp;
+		}
+
+		String str = getClass().getClassLoader().getResource("").toURI().getPath();
+		// String totalFileNamePath = "/" + str.substring(str.indexOf("/", 0) +
+		// 1, str.lastIndexOf("WEB-INF/"))
+		// + totalFileName;
+		// 获取文件路径
+		String fileNamePath = "/" + str.substring(str.indexOf("/", 0) + 1, str.lastIndexOf("WEB-INF/")) + fileName;
+		try {
+			String encoding = "UTF-8";
+			File file = new File(fileNamePath);
+			if (file.isFile() && file.exists()) {
+				InputStreamReader detailRead = new InputStreamReader(new FileInputStream(file), encoding);// 考虑到编码格式
+				BufferedReader detailBufferedReader = new BufferedReader(detailRead);
+				String detailLineTxt = null;
+				int i = 0;
+				int count = 0;
+
+				UnionpayCounterofferTotal uct = new UnionpayCounterofferTotal();
+				List<UnionpayCounterofferDetai> ucdList = new ArrayList<UnionpayCounterofferDetai>();
+				String uuid1 = UUID.randomUUID().toString();
+				uct.setUnionpayCounterofferCotalId(uuid1);
+				while ((detailLineTxt = detailBufferedReader.readLine()) != null) {
+					String[] arr = detailLineTxt.split("\\|");
+
+					if ((arr.length < 10 && arr.length != 4) || arr.length > 10) {
+						detailBufferedReader.close();
+						detailRead.close();
+						temp.setBool(false);
+						temp.setBuff("文件内容不匹配！");
+						return temp;
+					} else if (arr.length == 10) {
+						UnionpayCounterofferDetai ucd = new UnionpayCounterofferDetai();
+						SimpleDateFormat data = new SimpleDateFormat("yyyyMMdd");
+						String uuid = UUID.randomUUID().toString();
+						ucd.setUnionpayCounterofferDetaiId(uuid);
+						ucd.setBankNum(arr[0]);// 开户行号
+						ucd.setTransactionDate(data.parse(arr[1]));// 交易日期
+						ucd.setOrderNum(arr[2]); // 订单号
+						ucd.setTransactionType(arr[3]);// 交易状态
+						ucd.setResponseCode(arr[4]);// 响应码
+						ucd.setAccountType(Integer.parseInt(arr[5]));// 卡折类型
+						ucd.setAccountNum(arr[6]);// 卡折号
+						ucd.setSum(Double.parseDouble(arr[7]));// 金额
+						ucd.setPurpose(arr[8]);// 用途
+						ucd.setPrivateDomain(arr[9]);// 私有域
+						ucd.setUnionpayCounterofferTotalId(uuid1);
+						ucd.setOfferState(0);// 回盘状态
+						ucd.setBatchNum(batchNumber);// 批次号
+						ucdList.add(ucd);
+						count++;
+					} else if (arr.length == 4) {
+						uct.setProjectId(projectId);//项目id
+						uct.setFileName(totalFileName);// 文件名称
+						uct.setUpDate(new Date());// 上传时间
+						uct.setTotalTradeNum(Integer.parseInt(arr[0]));// 总笔数
+						uct.setTotalSum(Double.parseDouble(arr[1]));// 总金额
+						uct.setSuccessTradeNum(Integer.parseInt(arr[2]));// 成功笔数
+						uct.setSuccessSum(Double.parseDouble(arr[3].substring(0, arr[3].length() - 256)));// 成功金额
+						uct.setBatchNum(batchNumber);// 批次号
+						uct.setOfferState(0);// 回盘状态
+						i++;
+					}
+
+				}
+				if (i > 1) {
+					detailBufferedReader.close();
+					detailRead.close();
+					temp.setBool(false);
+					temp.setBuff("总结数据内容不应超过1行！");
+					return temp;
+				}
+
+				if (count != uct.getTotalTradeNum()) {
+					detailBufferedReader.close();
+					detailRead.close();
+					temp.setBuff("总结文件中总笔数与明细笔数不对！");
+					temp.setBool(false);
+					return temp;
+				}
+				// 将回盘总文件插入数据库
+				unionpayCounterofferTotalMapper.insertUnionpayCounterofferTotal(uct);
+				// 将回盘明细文件插入数据库
+				for (UnionpayCounterofferDetai uDetail : ucdList) {
+					unionpayCounterofferDetaiMapper.insertUnionpayCounterofferDetai(uDetail);
+				}
+				detailBufferedReader.close();
+				detailRead.close();
+				temp.setBool(true);
+				return temp;
+			} else {
+				temp.setBool(false);
+				temp.setBuff("找不到指定的文件！");
+				return temp;
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			temp.setBool(false);
+			temp.setBuff("读取文件内容出错！");
+			return temp;
+		}
+	}
+
+	/**
+	 * 确认导入
+	 */
+	@Override
+	public Info confirmImport(UnionpayCollectionTotall unionpayCollectionTotall) {
+		Info info = new Info();
+		String msg = "确认导入成功！";
+		List<UnionpayCollectionTotall> uctList = unionpayCollectionTotallMapper.listPageUnionpay(unionpayCollectionTotall);
+		if (uctList.size() != 1) {
+			msg = "根据批次号查询托收总结记录不为1条！";
+		} else {
+			UnionpayCollectionTotall fgt = uctList.get(0);
+			int totalTradeNum = fgt.getTotalTradeNum();// 总笔数
+			Double totalSum = fgt.getTotalSum();// 总金额
+			BigDecimal b_sum = BigDecimal.valueOf(totalSum);
+			UnionpayCounterofferTotal unionpayCounterofferTotal = new UnionpayCounterofferTotal();
+			unionpayCounterofferTotal.setBatchNum(unionpayCollectionTotall.getBatchNum());
+			List<UnionpayCounterofferTotal> uctList1 = unionpayCounterofferTotalMapper
+					.listPageUnionpayCounterofferTotal(unionpayCounterofferTotal);
+			if (uctList1.size() == 0) {
+				msg = "文件导入失败！";
+				info.setInfo(msg);
+				return info;
+			}
+			int importNum = 0;
+			BigDecimal b_importSum = BigDecimal.valueOf(0);
+			for (UnionpayCounterofferTotal uct : uctList1) {
+				importNum = importNum + uct.getTotalTradeNum();
+				b_importSum = b_importSum.add(BigDecimal.valueOf(uct.getTotalSum()));
+			}
+
+			unionpayCounterofferTotal.setOfferState(0);// 未回盘
+			List<UnionpayCounterofferTotal> ucdList = unionpayCounterofferTotalMapper.listPageUnionpayCounterofferTotal(unionpayCounterofferTotal);
+
+			for (UnionpayCounterofferTotal ucot : ucdList) {
+				UnionpayCounterofferDetai unionpayCounterofferDetai = new UnionpayCounterofferDetai();
+				unionpayCounterofferDetai.setUnionpayCounterofferTotalId(ucot.getUnionpayCounterofferCotalId());
+				List<UnionpayCounterofferDetai> ucodList = unionpayCounterofferDetaiMapper.listPagegetUnionpayCounterofferDetai(unionpayCounterofferDetai);
+
+				for (UnionpayCounterofferDetai ucd : ucodList) {
+					ucd.setOfferState(1);// 1-已回盘
+					unionpayCounterofferDetaiMapper.updateOfferState(ucd);
+				}
+				ucot.setOfferState(1);// 1-已回盘
+				unionpayCounterofferTotalMapper.updateOfferTotalState(ucot);
+				
+				if ((totalTradeNum == importNum) && (b_sum.compareTo(b_importSum) == 0)) {// 户数相同，金额相同
+					unionpayCollectionTotallMapper.updateCollectionStateTo(ucodList.get(0).getOrderNum());
+				}
+			}
+		}
+		info.setInfo(msg);
+		return info;
+	}
+}

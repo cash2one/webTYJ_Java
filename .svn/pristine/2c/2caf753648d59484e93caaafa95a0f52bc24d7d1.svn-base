@@ -1,0 +1,386 @@
+package com.flf.mapper;
+
+import java.util.List;
+import java.util.Map;
+
+import com.flf.entity.BuildingStructureNew;
+import com.flf.entity.BuildingStructureSearch;
+import com.flf.entity.HouseGate;
+import com.flf.request.Tree;
+
+public interface BuildingStructureNewMapper {
+	List<BuildingStructureNew> listPageBuildingStructureNew(BuildingStructureNew buildingStructure);  //分页查询建筑结构id
+	
+	List<BuildingStructureNew> listAllBuildingStructureNew(String projectId); //查询根据项目id所有建筑结构id
+	
+	List<BuildingStructureNew> listAllBuildingStructureNewByAll(); //查询所有建筑结构信息
+	
+	BuildingStructureNew getBuildingStructureNewbyId(String id);  //根据id查询建筑结构信息
+	
+    int insertBuildingStructureNew(BuildingStructureNew buildingStructure);  //查询建筑结构信息
+    
+    int insertBuildingStructureNewSpec(BuildingStructureNew buildingStructure);
+    
+    int updateBuildingStructureNew(BuildingStructureNew buildingStructure); //修改建筑结构信息
+
+    int deleteBuildingStructureNew(String id);  //删除建筑结构信息
+    
+    List<Tree> listAllBuildingStructureNewTree();  //树形显示建筑结构信息
+    
+    List<Tree> listBuildingStructureNewTreeByHouses(List<HouseGate> houseGates); //门控机房屋树形显示
+    
+    List<BuildingStructureNew> listBuildingStructureNewByhouseGates(List<HouseGate> houseGates); //门控机房屋建筑结构
+    
+    int NewinsertBuildingStructure(BuildingStructureNew buildingStructure);//插入建筑结构结构
+    
+    int insertBuildingStructureNewUUID(BuildingStructureNew buildingStructure); //插入建筑结构信息主键以有
+    
+    List<BuildingStructureNew>  getBuildingStructureNewByCustId(String custId); //根据个人客户id查询客户资产信息
+    
+    List<BuildingStructureNew>  getBuildingStructureNewByparentId(String custId); //根据节点id 查询子节点信息 
+    List<BuildingStructureNew>  ListBuildingStructureNewByProjectId(String projectId); //根据建筑id 查询节点信息 
+    List<BuildingStructureNew>  ListBuildingStructureNewByBuildingId(String buildingId); //根据建筑id 查询节点信息
+    List<BuildingStructureNew>  listBuildingStructureByProjectIdAndAreaId(BuildingStructureNew bsn); //根据项目id及面积类型查询建筑结构
+    
+    List<BuildingStructureNew> listBuildingStructureByParentId(String parentId);//根据父id查询各个子对象建筑结构
+    
+    /**
+     * 根据房屋全名查询房屋信息     尹磊
+     * @param fullName
+     * @return
+     */
+    List<BuildingStructureNew>  getBuildingStructureNewByfullName(String fullName);  
+    
+    List<BuildingStructureNew> listBuildingStructureSearch(BuildingStructureSearch buildingStructureSearch); //根据项目id或资产绑定状态查询
+    
+    List<BuildingStructureNew> listBuildingStructureSearchone(BuildingStructureSearch buildingStructureSearch); //根据项目id或资产绑定状态查询(含业主姓名)
+    
+    List<BuildingStructureNew> listBuildingStructurebyScheme(String schemeId); //根据方案id查询建筑结构信息
+    
+    /**
+     * 根据项目id获取组织结构id   shaozehng
+     * 2015-8-31
+     * @param projectId
+     * @return
+     */
+    List<BuildingStructureNew> getBuildingStructureNewbyProjectId(String projectId);
+  
+    /**
+     * 根据项目id获取组织结构（视频对讲接口）   夏平
+     * 2015-8-31
+     * @param projectId
+     * @return
+     */
+    List<BuildingStructureNew> getBuildingStructureNewVbyProjectId(String projectId);
+    
+    List<BuildingStructureNew> listBuildingStructureSearchtwo(BuildingStructureSearch buildingStructureSearch); //根据项目id或资产绑定状态查询(含企业客户)
+    
+    List<BuildingStructureNew> listAllBuildingStructureNewByAllOptimize(); //查询所有建筑结构信息(优化版，仅用于建筑查询)
+    
+    
+   /**
+    *  根据建筑名和车库类型查询建筑
+    * @param fullName
+    * @return
+    */
+   List<BuildingStructureNew> listIdAndfullNameByType(BuildingStructureNew buildingStructureNew);
+   
+   /**
+    * 修改建筑结构
+    * @param buildingStructureNew
+    * @return
+    */
+   int updateBuildingStructureNewProductId(BuildingStructureNew buildingStructureNew);
+   
+   /**
+    * 根据产品id查询关联建筑信息
+    * @param productId
+    * @return
+    */
+   List<BuildingStructureNew> listBuildingStructureNewByProductId(String productId);
+   
+   /**
+    * 根据建筑结构id将关联产品id清除
+    * @param id
+    * @return
+    */
+   int updateBuildingStructureNewBytId(String id);
+   
+   /**
+    * 根据客户建筑关系id查询建筑信息
+    * @param personBuildingId
+    * @return
+    */
+   BuildingStructureNew getBuildingStructureNewByPersonBuildingId(String personBuildingId);
+    
+   /**
+    * 根据客户id查询资产总数
+    * @param custId
+    * @return
+    */
+    List<BuildingStructureNew> getCountAll(String custId);
+    
+    /**
+     * 根据客户id和资产类型查询相关资产类型的数量
+     * @param custId
+     * @return
+     */
+     List<BuildingStructureNew> getCountByType(String custId,String buildingType);
+     
+     /**
+      * 根据建筑id修改建筑结构关联状态
+      * @param id
+      * @return
+      */
+     int updateBuildingStructureById(String id); //修改建筑结构信息
+     
+     /**
+      * 根据项目id查询所有父节点
+      * @param projectId
+      * @return
+      */
+     List<BuildingStructureNew> getAllFatherNodes(String projectId);
+     
+     /**
+      * 查询未分配的建筑结构信息
+      * @param projectId
+      * @return
+      */
+	List<BuildingStructureNew> listNotBuildingStructureSearch(BuildingStructureSearch buildingStructureSearch);
+	
+	BuildingStructureNew getBuildingStructureNewByFullName(String fullName);
+	
+	/**
+	 * 查询所有车位建筑的父节点
+	  * creat by xiaocong
+      * time 2015/12/14
+      * @param projectId
+      * @return
+	 */
+	List<BuildingStructureNew> listAllBuildingStructureNewByType(BuildingStructureNew buildingStructureNew);
+	
+	/**
+	 * 根据父id查询建筑结构信息
+	  * creat by xiaocong
+      * time 2015/12/14
+      * @param projectId
+      * @return
+	 */
+	List<BuildingStructureNew> listAllBuildingStructureNewByParentId(String buildingType);
+	
+	/**
+	 * 根据建筑结构主键查询建筑结构信息，包含人员信息，人员建筑结构信息，具体建筑信息
+	 * @author xiaocong
+	 * @date 下午3:51:39
+	 * @Description:TODO
+	 * @param id
+	 * @return
+	 * @updateby
+	 */
+	BuildingStructureNew getBuildingStructurebyId(String id);
+	
+	/**
+	 * 查询父节点下一层级的建筑信息
+	 * @author xiaocong
+	 * @date 上午9:44:11
+	 * @Description:TODO
+	 * @return
+	 * @updateby
+	 */
+	List<BuildingStructureNew>listAllBuildingStructureByParentId(String buildingStructureId);
+	
+	/**
+	 * 根据建筑结构主键查询建筑结构信息，包含人员信息，人员建筑结构信息，具体建筑信息 与上面根据建筑结构id查询的数据的结构不同
+	 * @author xiaocong
+	 * @date 上午9:49:18
+	 * @Description:TODO
+	 * @param id
+	 * @return
+	 * @updateby
+	 */
+	BuildingStructureNew getBuildingStructureById(String id);  
+	
+	/**
+	 * 根据客户id查询能够办理银行托收的建筑信息
+	 * @author xiaocong
+	 * @date 下午4:13:01
+	 * @Description:TODO
+	 * @param custId
+	 * @return
+	 * @updateby
+	 */
+	List<BuildingStructureNew> listBuildingforconllection(String custId);
+	
+	List<BuildingStructureNew> listParentBuildingStructureCxf1(List<String> ids);
+	
+	List<BuildingStructureNew> listAllBuildingStructureNew1();
+	
+	/**
+	 * 修改建筑结构的全名和节点名
+	 * 王洲
+	 * 2016.02.24
+	 * @param buildingStructureNew
+	 * @return
+	 */
+	int updateFullNameById(BuildingStructureNew buildingStructureNew);
+
+	
+	//根据parentId获取建筑结构信息
+    List<String> listBuildingStructureByParentIds(String[] ids);	
+	
+  //根据parentId获取住宅建筑结构信息
+    List<BuildingStructureNew> listBuildingStructureByPId(String id);
+
+	/**
+	 * 根据id集合查询建筑结构
+	 * @param idList
+	 * @return
+	 */
+	List<BuildingStructureNew> selectByBuildingByIds(List<String> idList);
+
+	/**
+	 * 根据项目id查询所有一级建筑结构
+	 * @param projectId
+	 * @return
+	 */
+	List<BuildingStructureNew> selectParentBuildingByProjectId(String projectId);
+
+	/**
+	 * 根据项目id和parent_id查询二级建筑结构
+	 * @param map
+	 * @return
+	 */
+	List<BuildingStructureNew> selectChildrenBuilding(Map<String, Object> map);
+	
+	int insertList(List<BuildingStructureNew> list);//批量插入建筑结构信息
+	
+	BuildingStructureNew getBuildingStructureByBuildingId(String buildingId);
+
+	List<BuildingStructureNew> getBuildingStructureTreeNewbyProjectId(String projectId);
+
+	List<BuildingStructureNew> getBuildingStructureNewbyProjectIdAndParentId(String projectId,String parentId);
+	
+	List<BuildingStructureNew> getBuildingStructureNewbyProjectIdAndParentId1(String projectId,String parentId);
+
+	/**
+	 * 根据父节点查询所有住宅信息
+	 * @param map
+	 * @return
+	 */
+	List<BuildingStructureNew> listBuildingStructureResidenceByParentId(Map<String, Object> map);
+
+	/**
+	 * 根据条件查询
+	 * @param buildingStructureNew
+	 * @return
+	 */
+	List<BuildingStructureNew> getCusNameAndEnterNameByBuS(BuildingStructureNew buildingStructureNew);
+	
+	/**
+	 * 根据id查询
+	 * @param projectId
+	 * @return
+	 */
+	BuildingStructureNew getBuildingStructureByIdTree(String projectId);
+
+	/**
+	 * 根据客户id的集合查询个人房屋地址以及客户信息
+	 * @param custIdList
+	 * @return
+	 */
+	List<BuildingStructureNew> getCustAndAddressByCustIdList(List<String> custIdList);
+
+	/**
+	 * 根据客户id的集合查询企业房屋地址以及客户信息
+	 * @param custIdList
+	 * @return
+	 */
+	List<BuildingStructureNew> getEnterpriseCustAndAddressByCustIdList(List<String> custIdList);
+	
+	/**
+	 * 根据主键id获取房屋全名
+	 * @return String
+	 * @param String
+	 */
+	String getFullNameById(String id);
+
+	/**
+	 * 根据客户id的集合被授权的房屋地址及客户信息
+	 * @param custIdList
+	 * @return
+	 */
+	List<BuildingStructureNew> getAuthorizationCustAndAddressByCustIdList(Map<String, Object> map);
+	
+	/**
+	 * 根据客户id查询关联哪些项目
+	 * @param custId
+	 * @return list<String>
+	 * @author wangzhou
+	 * @date 2016.04.27
+	 */
+	List<String> listProjectIdByCustId(String custId);
+
+	/**
+	 * 根据父节点id查询建筑信息
+	 * @param id
+	 * @return
+	 */
+	List<BuildingStructureNew> selectBuildingByParentId(String id);
+	/**
+	 * 根据项目ID和计费方案ID查询可选建筑列表
+	 * @author maogaofei
+	 * @date 2016年7月8日 上午10:41:32
+	 * @param projectId
+	 * @param schemeId
+	 * @return
+	 */
+	List<BuildingStructureNew> getBuildingListByProidAndSchemeid(String projectId, String schemeId);
+	/**
+	 * 根据项目ID和计费方案ID查询可选建筑对应单元列表
+	 * @author maogaofei
+	 * @date 2016年7月8日 上午10:44:23
+	 * @param projectId
+	 * @param schemeId
+	 * @return
+	 */
+	List<BuildingStructureNew> getBuildingUnitListByProidAndSchemeid(String projectId, String schemeId);
+	/**
+	 * 根据项目ID和计费方案ID查询可选建筑对应楼栋列表
+	 * @author maogaofei
+	 * @date 2016年7月8日 上午10:44:23
+	 * @param projectId
+	 * @param schemeId
+	 * @return
+	 */
+	List<BuildingStructureNew> getBuildingBuildingListByProidAndSchemeid(String projectId, String schemeId);
+	/**
+	 * 根据收费项目ID获取使用范围建筑列表
+	 * @author maogaofei
+	 * @date 2016年7月8日 下午12:02:59
+	 * @param chargeItemNewId
+	 * @return
+	 */
+	List<BuildingStructureNew> getBuildingByChargeItemNewId(String chargeItemNewId);
+	/**
+	 * 根据收费项目ID获取使用范围建筑对应单元列表
+	 * @author maogaofei
+	 * @date 2016年7月8日 下午12:02:59
+	 * @param chargeItemNewId
+	 * @return
+	 */
+	List<BuildingStructureNew> getBuildingUnitByChargeItemNewId(String chargeItemNewId);
+	/**
+	 * 根据收费项目ID获取使用范围建筑对应楼栋列表
+	 * @author maogaofei
+	 * @date 2016年7月8日 下午12:02:59
+	 * @param chargeItemNewId
+	 * @return
+	 */
+	List<BuildingStructureNew> getBuildingBuildingByChargeItemNewId(String chargeItemNewId);
+	/**
+	 * 根据类型查询车位
+	 * @author hanyupeng
+	 * @date 2016年7月12日15:54:40
+	 */
+	List<BuildingStructureNew> getBuildingListByType();
+}

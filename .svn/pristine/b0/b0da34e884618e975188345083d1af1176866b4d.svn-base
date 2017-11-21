@@ -1,0 +1,15 @@
+package com.flf.service;
+
+import javax.jws.WebService;
+import javax.ws.rs.Path;
+
+/**
+ * 收费类型详情建筑计费service
+ * @author maogaofei
+ * @date 2016年7月9日 下午2:45:41
+ */
+@WebService
+@Path("/ChargeTypeDetailsBuildingBilling")
+public interface ChargeTypeDetailsBuildingBillingService {
+	
+}

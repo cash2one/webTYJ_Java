@@ -1,0 +1,746 @@
+package com.flf.service.impl;
+
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.UUID;
+
+import javax.ws.rs.PathParam;
+
+import com.flf.entity.HrAuthority;
+import com.flf.entity.HrPermissions;
+import com.flf.entity.PageRestful;
+import com.flf.entity.Staff;
+import com.flf.entity.TRole;
+import com.flf.entity.TUser;
+import com.flf.entity.TUserPermissions;
+import com.flf.entity.TUserRole;
+import com.flf.entity.TeamworkStaffRole;
+import com.flf.entity.Teamworkstaff;
+import com.flf.entity.UserPost;
+import com.flf.mapper.HrAuthorityMapper;
+import com.flf.mapper.HrPermissionsMapper;
+import com.flf.mapper.StaffMapper;
+import com.flf.mapper.TRoleMapper;
+import com.flf.mapper.TUserMapper;
+import com.flf.mapper.TUserPermissionsMapper;
+import com.flf.mapper.TUserRoleMapper;
+import com.flf.mapper.TeamworkStaffRoleMapper;
+import com.flf.mapper.TeamworkstaffMapper;
+import com.flf.mapper.UserPostMapper;
+import com.flf.service.AdminService;
+import com.flf.util.MD5Utils;
+import com.flf.util.PinYin4jUtil;
+
+public class AdminServiceImpl implements AdminService {
+
+	private TRoleMapper tRoleMapper;
+
+	private TUserRoleMapper tUserRoleMapper;
+
+	private TUserMapper tUserMapper;
+
+	private StaffMapper staffMapper;
+
+	private HrPermissionsMapper hrPermissionsMapper;
+
+	private TUserPermissionsMapper tUserPermissionsMapper;
+
+	private HrAuthorityMapper hrAuthorityMapper;
+
+	private TeamworkstaffMapper teamworkstaffMapper;
+
+	private UserPostMapper userPostMapper;
+
+	private TeamworkStaffRoleMapper teamworkStaffRoleMapper;
+
+	public TeamworkStaffRoleMapper getTeamworkStaffRoleMapper() {
+		return teamworkStaffRoleMapper;
+	}
+
+	public void setTeamworkStaffRoleMapper(TeamworkStaffRoleMapper teamworkStaffRoleMapper) {
+		this.teamworkStaffRoleMapper = teamworkStaffRoleMapper;
+	}
+
+	public UserPostMapper getUserPostMapper() {
+		return userPostMapper;
+	}
+
+	public void setUserPostMapper(UserPostMapper userPostMapper) {
+		this.userPostMapper = userPostMapper;
+	}
+
+	public TeamworkstaffMapper getTeamworkstaffMapper() {
+		return teamworkstaffMapper;
+	}
+
+	public void setTeamworkstaffMapper(TeamworkstaffMapper teamworkstaffMapper) {
+		this.teamworkstaffMapper = teamworkstaffMapper;
+	}
+
+	public TRoleMapper gettRoleMapper() {
+		return tRoleMapper;
+	}
+
+	public void settRoleMapper(TRoleMapper tRoleMapper) {
+		this.tRoleMapper = tRoleMapper;
+	}
+
+	public TUserRoleMapper gettUserRoleMapper() {
+		return tUserRoleMapper;
+	}
+
+	public void settUserRoleMapper(TUserRoleMapper tUserRoleMapper) {
+		this.tUserRoleMapper = tUserRoleMapper;
+	}
+
+	public TUserMapper gettUserMapper() {
+		return tUserMapper;
+	}
+
+	public void settUserMapper(TUserMapper tUserMapper) {
+		this.tUserMapper = tUserMapper;
+	}
+
+	public StaffMapper getStaffMapper() {
+		return staffMapper;
+	}
+
+	public void setStaffMapper(StaffMapper staffMapper) {
+		this.staffMapper = staffMapper;
+	}
+
+	public HrPermissionsMapper getHrPermissionsMapper() {
+		return hrPermissionsMapper;
+	}
+
+	public void setHrPermissionsMapper(HrPermissionsMapper hrPermissionsMapper) {
+		this.hrPermissionsMapper = hrPermissionsMapper;
+	}
+
+	public TUserPermissionsMapper gettUserPermissionsMapper() {
+		return tUserPermissionsMapper;
+	}
+
+	public void settUserPermissionsMapper(TUserPermissionsMapper tUserPermissionsMapper) {
+		this.tUserPermissionsMapper = tUserPermissionsMapper;
+	}
+
+	public HrAuthorityMapper getHrAuthorityMapper() {
+		return hrAuthorityMapper;
+	}
+
+	public void setHrAuthorityMapper(HrAuthorityMapper hrAuthorityMapper) {
+		this.hrAuthorityMapper = hrAuthorityMapper;
+	}
+
+	/**
+	 * 获取角色为HR管理员的用户
+	 */
+	@Override
+	public List<TUser> getTUserAsHrAdmin() {
+
+		// 设置返回集合
+		List<TUser> list = new ArrayList<TUser>();
+
+		// 获取HR管理员角色
+		TRole trole = tRoleMapper.getTRoleByRoleType("1");
+
+		// 获取用户角色关联表中角色id为HR管理员id的数据
+		List<TUserRole> tuserrolelist = tUserRoleMapper.listTUserRoleByRoleId(trole.getRoleId());
+
+		// 根据用户角色关联表的数据确认是否存在HR管理员
+		if (tuserrolelist != null && tuserrolelist.size() > 0) {
+			for (TUserRole tUserRole : tuserrolelist) {
+				TUser tUser = tUserMapper.selectByPrimaryKey(tUserRole.getUserId());
+				list.add(tUser);
+			}
+		} else {
+			list = null;
+		}
+
+		return list;
+	}
+
+	/**
+	 * 根据角色和员工查询用户信息
+	 */
+	@Override
+	public int getStateByRole(Staff staff) {
+		String roleType = staff.getRoleType();
+		if (roleType.equals("hradmin")) {
+			roleType = "3"; // 3系统管理员 //hr管理员
+		} else if (roleType.equals("systemadmin")) {
+			roleType = "0"; // 系统管理员
+		} else if (roleType.equals("normal")) {
+			roleType = "2"; // 普通用户
+		} else if (roleType.equals("projectAdmin")) {
+			roleType = "1"; // 1hr管理员 //系统用户
+		}
+		Map map = new HashMap();
+		map.put("roleType", roleType);
+		map.put("staffId", staff.getStaffId());
+		List<TUser> tuserList = tUserMapper.findRoleAndStaffIdByUser(map);
+		if (tuserList.size() == 0) {
+			return 0;
+		} else {
+			return 1;
+		}
+	}
+
+	/**
+	 * 获取员工信息设置为管理员 设置管理员bug修改 朱琪 2016.03.02
+	 */
+	@Override
+	public void insertAdminByStaff(Staff staff) {
+
+		TUserRole tur = new TUserRole();
+		// 1保留2不保留3普通
+		// 普通用户或保留
+		// 获取HR管理员角色
+		String roleType = staff.getRoleType();
+		TRole trole = new TRole();
+		if (roleType.equals("hradmin")) {
+			trole = tRoleMapper.getTRoleByRoleType("1"); // hr管理员
+		} else if (roleType.equals("systemadmin")) {
+			trole = tRoleMapper.getTRoleByRoleType("0"); // 超级管理员
+		} else if (roleType.equals("normal")) {
+			trole = tRoleMapper.getTRoleByRoleType("2"); // 普通用户
+		} else if (roleType.equals("projectAdmin")) {
+			trole = tRoleMapper.getTRoleByRoleType("3"); // 系统用户
+		}
+		// 角色id
+		tur.setRoleId(trole.getRoleId());
+
+		if (staff.getAddState().equals("3") || staff.getAddState().equals("1")) {
+			// 判断传入的员工是否有id，没有id先新增在提升为管理员，如果有id直接提升为管理员
+			if (staff.getStaffId() == null || staff.getStaffId().equals(null)) {
+				staff.setStaffId(UUID.randomUUID().toString());
+				staff.setState("1");// 增加状态
+				// 生成编号
+				String number = staffMapper.selectCustCode(); // 查询人员表中最大的员工编号
+				if (number == null || number.equals("")) {
+					number = "10000";
+				} else {
+					number = String.valueOf(Integer.parseInt(number) + 1);
+				}
+				staff.setStaffNumber(number);
+				if (staff.getCardNum().length() == 18) { // 如果等于18位就加上个字母"S",那么在前端取值时也会删除掉字母'S'
+					staff.setCardNum(staff.getCardNum() + "S");
+				}
+				staffMapper.insertStaff(staff);
+			}
+			TUser tUser = new TUser();
+			// 用户是否存在
+			tUser.setEmployId(staff.getStaffId());
+			tUser = tUserMapper.getReSultByTUser(tUser);
+			if (tUser == null) {
+				TUser tuser = new TUser();
+				tuser.setUserId(UUID.randomUUID().toString());
+				tuser.setEmployId(staff.getStaffId());
+				// 根据staff姓名生成登录名，为名字首字母+工号
+				// 如果工号为空，默认为123456，如果姓名+工号不足6位，在最后补全
+				String szm = PinYin4jUtil.converterToFirstSpell(staff.getStaffName());
+				String num = staff.getStaffNo();// 修改员工账户生成规则为姓名首字母+员工工号
+				if (num == null) {
+					num = "";
+				}
+				String loginname = szm + num;
+				for (int i = loginname.length(); i < 6; i++) {
+					loginname += "0";
+				}
+				tuser.setLoginName(loginname);
+				// 根据staff证件号码生成密码，为证件号6位，证件号不足6位补全
+				String password = staff.getCardNum();
+				if (password == null || password == "") {
+					password = "123456";
+				}
+				if (password.length() > 6) {
+					if (password.length() == 19) {
+						password = password.substring(password.length() - 7, password.length() - 1);
+					} else {
+						password = password.substring(password.length() - 6, password.length());
+					}
+				} else {
+					for (int i = password.length(); i < 6; i++) {
+						password += "0";
+					}
+				}
+				tuser.setPassword(MD5Utils.MD5(password));
+				tuser.setCreateTime(new Date());
+				tuser.setState((byte) 1);
+				tuser.setCompanyId(staff.getCompanyId());
+				tUserMapper.insert(tuser);
+				tur.setUserId(tuser.getUserId());
+			} else {
+				tur.setUserId(tUser.getUserId());
+			}
+			tur.setId(UUID.randomUUID().toString());
+			tur.setCreateTime(new Date());
+			tUserRoleMapper.insert(tur);
+		} else if (staff.getAddState().equals("2")) { // 不保留
+			Map map = new HashMap();
+			map.put("staffId", staff.getStaffId());
+			// 获取员工的角色关系
+			List<TUserRole> turList = tUserRoleMapper.getTURByStaffId(map);
+			// 获取系统管理员的信息
+			TRole trole1 = new TRole();
+			if (trole.getRoleType().equals("1")) {
+				trole1 = tRoleMapper.getTRoleByRoleType("3");
+			} else if (trole.getRoleType().equals("3")) {
+				trole1 = tRoleMapper.getTRoleByRoleType("1");
+			}
+			for (int i = 0; i < turList.size(); i++) {
+				// 员工角色关系为系统管理员
+				if (turList.get(i).getRoleId().equals(trole1.getRoleId())) {
+					// 覆盖
+					turList.get(i).setRoleId(trole.getRoleId());
+					turList.get(i).setCreateTime(new Date());
+					tUserRoleMapper.updateByPrimaryKeySelective(turList.get(i));
+					break;
+				}
+			}
+
+		}
+	}
+
+	/**
+	 * 获取员工信息设置为管理员
+	 */
+	@Override
+	public void insertAdminByStaffone(Staff staff) {
+
+		// 获取HR管理员角色
+		String roleType = staff.getRoleType();
+		TRole trole = new TRole();
+		if (roleType.equals("hradmin")) {
+			trole = tRoleMapper.getTRoleByRoleType("1"); // hr管理员
+		} else if (roleType.equals("systemadmin")) {
+			trole = tRoleMapper.getTRoleByRoleType("0"); // 系统管理员
+		} else if (roleType.equals("normal")) {
+			trole = tRoleMapper.getTRoleByRoleType("2"); // 普通用户
+		} else if (roleType.equals("projectAdmin")) {
+			trole = tRoleMapper.getTRoleByRoleType("3"); // 系统用户
+		}
+
+		// 根据员工id查询此员工的团队id和岗位id，有效关系
+		Teamworkstaff teamworkstaff = teamworkstaffMapper.getTeamworkstaffbyStaffId_one(staff.getStaffId());
+
+		// 根据员工id判断此员工有无帐号
+		TUser tUser = new TUser();
+		tUser.setEmployId(staff.getStaffId());
+		TUser tUser_check = tUserMapper.getReSultByTUser(tUser);
+		// 有帐号，则为此帐号添加一个hr管理员角色
+		if (tUser_check != null) {
+			TUserRole tur = new TUserRole();
+			tur.setId(UUID.randomUUID().toString());
+			tur.setCreateTime(new Date());
+			tur.setRoleId(trole.getRoleId());
+			tur.setUserId(tUser_check.getUserId());
+			tUserRoleMapper.insert(tur);
+			// 岗位id存在，则无帐号员工转用户需要绑定岗位中间表
+			if (teamworkstaff != null) {
+				if (teamworkstaff.getPostId() != null) {
+					// 根据岗位id和用户id查询员工是否在员工岗位表中存在有效关系
+					int count_userPost = userPostMapper.countUserPosts(teamworkstaff.getPostId(),
+							tUser_check.getUserId());
+					if (count_userPost < 1) {
+						UserPost userPost = new UserPost();
+						userPost.setId(UUID.randomUUID().toString());
+						userPost.setPostId(teamworkstaff.getPostId());
+						userPost.setUserId(tUser_check.getUserId());
+						// userPost.setState((byte)0);
+						userPost.setLastModifyId(tUser_check.getUserId());
+						userPostMapper.insert(userPost);
+					}
+				}
+
+			}
+		} else {// 员工无帐号的时候
+				// 为员工创建user用户帐号
+			TUser tuser = new TUser();
+			tuser.setUserId(UUID.randomUUID().toString());
+			tuser.setEmployId(staff.getStaffId());
+			String szm = PinYin4jUtil.converterToFirstSpell(staff.getStaffName());
+			String num = staff.getStaffNumber();
+			if (num == null) {
+				num = "";
+			}
+			String loginname = szm + num;
+			for (int i = loginname.length(); i < 6; i++) {
+				loginname += "0";
+			}
+			tuser.setLoginName(loginname);
+			// 根据staff证件号码生成密码，为证件号6位，证件号不足6位补全
+			String password = staff.getCardNum();
+			if (password == null || password == "") {
+				password = "123456";
+			}
+			if (password.length() > 6) {
+				password = password.substring(password.length() - 6, password.length());
+			} else {
+				for (int i = password.length(); i < 6; i++) {
+					password += "0";
+				}
+			}
+			tuser.setPassword(MD5Utils.MD5(password));
+			tuser.setCreateTime(new Date());
+			tuser.setState((byte) 1);
+			tUserMapper.insert(tuser);
+			// 新增用户角色表信息
+			TUserRole tur = new TUserRole();
+			tur.setId(UUID.randomUUID().toString());
+			tur.setCreateTime(new Date());
+			tur.setRoleId(trole.getRoleId());
+			tur.setUserId(tuser.getUserId());
+			tUserRoleMapper.insert(tur);
+			// 如果岗位id不为空，则添加用户岗位表数据
+			if (teamworkstaff != null) {
+				if (teamworkstaff.getPostId() != null) {
+					UserPost userPost = new UserPost();
+					userPost.setId(UUID.randomUUID().toString());
+					userPost.setPostId(teamworkstaff.getPostId());
+					userPost.setUserId(tuser.getUserId());
+					// userPost.setState((byte)0);
+					userPost.setLastModifyId(tuser.getUserId());
+					userPostMapper.insert(userPost);
+
+				}
+			}
+
+		}
+
+	}
+
+	@Override
+	public List<HrPermissions> listHrPermissions() {
+		return hrPermissionsMapper.listHrPermissions();
+	}
+
+	@Override
+	public void insertTUserPermissions(String userId, String permissionsId) {
+		TUserPermissions tUserPermissions = new TUserPermissions();
+		tUserPermissions.setUserId(userId);
+		tUserPermissions.setPermissionsId(permissionsId);
+		tUserPermissions.setRolePermissionsId(UUID.randomUUID().toString());
+		tUserPermissions.setCreateTime(new Date());
+		tUserPermissionsMapper.insert(tUserPermissions);
+	}
+
+	@Override
+	public List<TUserPermissions> listTUserPermissionsByuserId(String userId) {
+		return tUserPermissionsMapper.listTUserPermissionsByuserId(userId);
+	}
+
+	@Override
+	public void deleteTUserPermissions(String userId, String permissionsId) {
+		TUserPermissions tUserPermissions = new TUserPermissions();
+		tUserPermissions.setUserId(userId);
+		tUserPermissions.setPermissionsId(permissionsId);
+		tUserPermissionsMapper.deleteTUserPermissions(tUserPermissions);
+	}
+	
+	@Override
+	public void delHrAuthority(String staffId){
+		//删除关联权限
+		List<TRole> tRoleList = tRoleMapper.selectAllTRole();
+		Map<String, String> map = new HashMap<String, String>();
+		for (TRole tRole : tRoleList) {
+			map.put(tRole.getRoleType(), tRole.getRoleId());
+		}
+		String userId = tUserMapper.getUserIdByEmployId(staffId);
+		Map map1 = new HashMap<>();
+		map1.put("roleId", map.get("4"));
+		map1.put("userId", userId);
+		tUserRoleMapper.deleteByPrimaryKey(map1);
+		//删除hr_authority表数据
+		hrAuthorityMapper.deleteAuthrityByUserId(userId, 0);
+	}
+
+	@Override
+	public void insertHrAuthority(String tUserId, String corePositionId) {
+		HrAuthority hrAuthority = new HrAuthority();
+		hrAuthority.settUserId(tUserId);
+		hrAuthority.setCorePositionId(corePositionId);
+		hrAuthority.setAuthorityId(UUID.randomUUID().toString());
+		hrAuthorityMapper.insert(hrAuthority);
+	}
+
+	@Override
+	public List<HrAuthority> listAuthorityByuserId(String tUserId) {
+		return hrAuthorityMapper.listAuthorityByuserId(tUserId);
+	}
+
+	@Override
+	public void deleteHrAuthority(String tUserId, String corePositionId) {
+		HrAuthority hrAuthority = new HrAuthority();
+		hrAuthority.settUserId(tUserId);
+		hrAuthority.setCorePositionId(corePositionId);
+		hrAuthorityMapper.deleteHrAuthority(hrAuthority);
+	}
+
+	@Override
+	public String ifOderToAuthorityByuserId(String userId, String description) {
+		String flag = "";
+		// 查询系统管理员表是否有项目团队管理管理权限 zhuqi 2016.03.07
+		Map map = new HashMap();
+		map.put("permissionsDescription", description);
+		List<HrPermissions> hrPermissions = hrPermissionsMapper.selectByMap(map);
+		map.remove("permissionsDescription");
+		map.put("userId", userId);
+		if (hrPermissions.size() > 0) {
+			map.put("permissionsId", hrPermissions.get(0).getPermissionsId()); // 项目团队管理
+		} else {
+			return "0";
+		}
+		List<TUserPermissions> tUP = tUserPermissionsMapper.getTUserPermissionBytUserIdAndPermissionsId(map);
+		List<HrAuthority> ha = hrAuthorityMapper.getTUserPermissionByMap(map);
+		if (tUP.size() > 0 || ha.size() > 0) {
+			flag = "1";
+		} else {
+			flag = "0";
+		}
+		return flag;
+	}
+
+	@Override
+	public PageRestful listPageAdmin(TUserRole tUserRole) {
+		PageRestful pageRestful = new PageRestful();
+		List<TUserRole> tUserRoles = tUserRoleMapper.listPageAdmin(tUserRole);
+		tUserRoles.add(0, null);
+		pageRestful.settUserRoles(tUserRoles);
+		pageRestful.setPage(tUserRole.getPage());
+		return pageRestful;
+	}
+
+	@Override
+	public String getCountByTUser(TUser tUser) {
+		String flag = "";
+		TUser tuser = tUserMapper.getReSultByTUser(tUser);
+		if (tuser == null) {
+			flag = "0";
+		} else {
+			flag = "1";
+		}
+		return flag;
+	}
+
+	@Override
+	public TUser getTUserByStaffId(String staffId) {
+		TUser tUser = new TUser();
+		tUser.setEmployId(staffId);
+		return tUserMapper.getReSultByTUser(tUser);
+	}
+
+	@Override
+	public List<HrAuthority> listAuthorityForTeam(String userId) {
+		List<HrAuthority> hrAuthoritys = new ArrayList<HrAuthority>();
+		hrAuthoritys = hrAuthorityMapper.listTeamHrAuthoritysByUserId(userId);
+		return hrAuthoritys;
+	}
+
+	@Override
+	public List<HrAuthority> listAuthorityForProject(String userId) {
+		List<HrAuthority> hrAuthoritys = new ArrayList<HrAuthority>();
+		hrAuthoritys = hrAuthorityMapper.listProjectHrAuthoritysByUserId(userId);
+		return hrAuthoritys;
+	}
+
+	@Override
+	public List<HrAuthority> listAuthorityForPower(String userId) {
+		List<HrAuthority> hrAuthoritys = new ArrayList<HrAuthority>();
+		hrAuthoritys = hrAuthorityMapper.listAuthorityForPower(userId);
+		return hrAuthoritys;
+	}
+
+	@Override
+	public int insertAuthority(HrAuthority hrAuthority) {
+		hrAuthority.setAuthorityId(UUID.randomUUID().toString());
+		return hrAuthorityMapper.insert(hrAuthority);
+	}
+
+	@Override
+	public void changeRoleByUser(TUser tUser) {
+		/*
+		 * TUserRole tUserRole =
+		 * tUserRoleMapper.getTURbyUserId(tUser.getUserId()); List<TRole>
+		 * tRoleList = tRoleMapper.selectAllTRole(); Map<String, String> map =
+		 * new HashMap<String, String>(); for (TRole tRole : tRoleList) {
+		 * map.put(tRole.getRoleType(), tRole.getRoleId()); }
+		 * tUserRole.setRoleId(map.get("4"));
+		 * tUserRoleMapper.updateByPrimaryKey(tUserRole);
+		 */
+		TUserRole tUserRole = new TUserRole();
+		List<TRole> tRoleList = tRoleMapper.selectAllTRole();
+		Map<String, String> map = new HashMap<String, String>();
+		for (TRole tRole : tRoleList) {
+			map.put(tRole.getRoleType(), tRole.getRoleId());
+		}
+		tUserRole.setId(UUID.randomUUID().toString());
+		tUserRole.setUserId(tUser.getUserId());
+		tUserRole.setRoleId(map.get("4"));
+		tUserRoleMapper.insert(tUserRole);
+		// 获取团队信息
+		List<Teamworkstaff> teamworkStaff = teamworkstaffMapper
+				.getListStaffByTeamworkIdAndStaffId(tUser.getTeamworkId(), tUser.getEmployId());
+		// 将团队成员与用户角色关联
+		TeamworkStaffRole teamworkStaffRole = new TeamworkStaffRole();
+		teamworkStaffRole.setId(UUID.randomUUID().toString());
+		teamworkStaffRole.setTeamworkStaffId(teamworkStaff.get(0).getId());
+		teamworkStaffRole.setUserRoleId(tUserRole.getId());
+		teamworkStaffRoleMapper.insert(teamworkStaffRole);
+	}
+
+	@Override
+	public int getTUserRoleByUserId(String staffId) {
+		List<TRole> tRoleList = tRoleMapper.selectAllTRole();
+		Map<String, String> map = new HashMap<String, String>();
+		for (TRole tRole : tRoleList) {
+			map.put(tRole.getRoleType(), tRole.getRoleId());
+		}
+		Map map1 = new HashMap<>();
+		map1.put("staffId", staffId);
+		map1.put("roleId", map.get("4"));
+		if (teamworkStaffRoleMapper.findCountByMap(map1) != 0) {
+			return 1;
+		}
+		return 0;
+	}
+
+	@Override
+	public TeamworkStaffRole getTeamwoekStaffByStaffId(String staffId) {
+		List<TRole> tRoleList = tRoleMapper.selectAllTRole();
+		Map<String, String> map = new HashMap<String, String>();
+		for (TRole tRole : tRoleList) {
+			map.put(tRole.getRoleType(), tRole.getRoleId());
+		}
+		Map map1 = new HashMap<>();
+		map1.put("staffId", staffId);
+		map1.put("roleId", map.get("4"));
+		List<TeamworkStaffRole> teamworkStaffRoles = teamworkStaffRoleMapper.findTeamworkStaffRoleByMap(map1);
+		if (teamworkStaffRoles.size() != 0) {
+			return teamworkStaffRoles.get(0);
+		} else {
+			return null;
+		}
+	}
+
+	@Override
+	public void deleteAuthority(HrAuthority hrAuthority) {
+		if ("项目团队管理".equals(hrAuthority.getPowerName())) {
+			// 删除userId的所有的关联团队信息
+			hrAuthorityMapper.deleteAuthrityByUserId(hrAuthority.gettUserId(), hrAuthority.getType());
+		}
+		List<HrAuthority> ha = hrAuthorityMapper.selectHrAuthorityByUserIdAndTeamId(hrAuthority);
+		for (int i = 0; i < ha.size(); i++) {
+			hrAuthorityMapper.deleteByPrimaryKey(ha.get(i).getAuthorityId());
+		}
+	}
+
+	@Override
+	public void deletePermissions(HrAuthority hrAuthority) {
+		// hr管理员
+		List<HrAuthority> ha = hrAuthorityMapper.selectHrAuthorityByUserIdAndTeamId(hrAuthority);
+		if (ha.size() != 0) {
+			if ("项目团队管理".equals(hrAuthority.getPowerName())) {
+				// 删除userId的所有的关联团队信息
+				hrAuthorityMapper.deleteAuthrityByUserId(hrAuthority.gettUserId(), hrAuthority.getType());
+			}
+			for (int i = 0; i < ha.size(); i++) {
+				hrAuthorityMapper.deleteByPrimaryKey(ha.get(i).getAuthorityId());
+			}
+		}
+		// 系统管理员
+		Map map = new HashMap();
+		map.put("userId", hrAuthority.gettUserId());
+		map.put("permissionsId", hrAuthority.getPermissionsId());
+		List<TUserPermissions> tUserPermissions = tUserPermissionsMapper
+				.getTUserPermissionBytUserIdAndPermissionsId(map);
+		if (tUserPermissions.size() != 0) {
+			for (int i = 0; i < tUserPermissions.size(); i++) {
+				tUserPermissionsMapper.deleteTUserPermissions(tUserPermissions.get(i));
+			}
+		}
+	}
+
+	@Override
+	public void deleteAdmin(Staff staff) {
+		String roleType = staff.getRoleType();
+		TRole trole = new TRole();
+		TRole hradmin = new TRole();
+		TRole projectAdmin = new TRole();
+		if (roleType.equals("hradmin")) {
+			trole = tRoleMapper.getTRoleByRoleType("1"); // hr管理员
+			hradmin = trole;
+			projectAdmin = tRoleMapper.getTRoleByRoleType("3");
+		} else if (roleType.equals("systemadmin")) {
+			trole = tRoleMapper.getTRoleByRoleType("0"); // 超级管理员
+		} else if (roleType.equals("normal")) {
+			trole = tRoleMapper.getTRoleByRoleType("2"); // 普通用户
+		} else if (roleType.equals("projectAdmin")) {
+			trole = tRoleMapper.getTRoleByRoleType("3"); // 系统用户
+			projectAdmin = trole;
+			hradmin = tRoleMapper.getTRoleByRoleType("1");
+		}
+		Map map = new HashMap();
+		map.put("userId", staff.getId());
+		map.put("roleId", trole.getRoleId());
+		tUserRoleMapper.deleteByPrimaryKey(map);
+
+		map.put("roleIdProjectAdmin", projectAdmin.getRoleId());
+		map.put("roleIdHradmin", hradmin.getRoleId());
+		List<TUserRole> tur = tUserRoleMapper.getTUserRoleByMap(map);
+		if (tur.size() == 0) {
+			// 删除hr管理员
+			tUserPermissionsMapper.deleteByTUserPermissions(map);
+			HrAuthority ha = new HrAuthority();
+			ha.settUserId(staff.getId());
+			// 删除系统管理员
+			hrAuthorityMapper.deleteHrAuthority(ha);
+		}
+	}
+
+	@Override
+	public TUser getTUserByUserId(String userId) {
+		TUser tUser = new TUser();
+		tUser = tUserMapper.selectByPrimaryKey(userId);
+		return tUser;
+	}
+
+	public PageRestful listPageFindUserByPost(Staff staff) {
+		PageRestful pageRestful = new PageRestful();
+		List<Staff> t = staffMapper.listPageFindUserByPost(staff);
+		t.add(0, null);
+		pageRestful.setStaffs(t);
+		pageRestful.setPage(staff.getPage());
+		return pageRestful;
+	}
+
+	/**
+	 * 根据用户id修改审批状态
+	 */
+	public int updateAccountForStatus(TUser tUser) {
+		int num=0;
+		for (int i = 0; i < tUser.getListUserId().size(); i++) {
+			TUser t = new TUser();
+			t.setUserId(tUser.getListUserId().get(i));
+			//判断传入的是哪个值
+			if (tUser.getCashierLeaderStatus() != null)
+				t.setCashierLeaderStatus(tUser.getCashierLeaderStatus());
+			if (tUser.getCashierStatus() != null)
+				t.setCashierStatus(tUser.getCashierStatus());
+			if (tUser.getTellerStatus() != null)
+				t.setTellerStatus(tUser.getTellerStatus());
+			if (tUser.getAccountantStatus() != null)
+				t.setAccountantStatus(tUser.getAccountantStatus());
+			//必须有一个不为空才可以修改状态
+			if (tUser.getCashierLeaderStatus() != null || tUser.getCashierStatus() != null
+					|| tUser.getTellerStatus() != null || tUser.getAccountantStatus() != null) {
+				num = tUserMapper.updateAccountForStatus(t);
+			}
+		}
+		return num;
+	}
+}

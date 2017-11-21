@@ -1,0 +1,97 @@
+<!--
+    作者：彭婷婷
+    页面名称：外部专业线---服务请求详情--报价单详情
+    js路径：js/controllers/externalProfession/serviceRequestDatil/cleanQuery/quotationDetails
+    创建时间：2015/4/30
+-->
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>报价单详情</title>
+</head>
+<body>
+<div class="order">
+    <div class="row" style="margin-top: 20px">
+        <div style="width:97%; margin:0 auto">
+            <div class="row"  style="margin: 20px 0px 0px 20px">
+                <div class="col-md-2"><img src="images/u115.png"><strong>报价</strong></div>
+            </div>
+            <div class="row" style="margin: 10px 0px 0px 60px">
+                <table class="table-bordered" style="width: 60%;background: #ffffff;text-align: center;">
+                    <thead>
+                        <th style="text-align: center">收费类型</th>
+                        <th style="text-align: center">收费项</th>
+                        <th style="text-align: center">标准</th>
+                        <th style="text-align: center">个数</th>
+                        <th style="text-align: center">小计</th>
+                    </thead>
+
+                    <tr>
+                        <td>人工费</td>
+                        <td>电工</td>
+                        <td>1元/分</td>
+                        <td>60分钟</td>
+                        <td>60.00</td>
+                    </tr>
+
+                    <tr>
+                        <td>物料费</td>
+                        <td>灯管</td>
+                        <td>10元/个</td>
+                        <td>2</td>
+                        <td>20.00</td>
+                    </tr>
+
+                    <tr>
+                        <td>工具费</td>
+                        <td>升降梯</td>
+                        <td>10元/次</td>
+                        <td>1</td>
+                        <td>10.00</td>
+                    </tr>
+                </table>
+                <div class="row">
+                    <div class="col-md-9">
+                        <div class="col-md-3">总额：90.00</div>
+                        <div class="col-md-3">折扣：无</div>
+                        <div class="col-md-3">最终价格：90.00</div>
+                    </div>
+                </div>
+                <div class="row">
+                    <ul class="list-inline" style="margin-left: 20px">
+                        <li> 详情描述:</li>
+                        <li>
+                            <div style="margin-left:60px" class="col-md-6">
+                                描述描述描述描述描述描述描述描述描述描述描述描述
+                                描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述
+                                描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述
+                                描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述
+                                描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述
+                                描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述
+                                描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述
+                                描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述
+                                描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述
+                                描述描述描述描述描述描述描述描述描述
+                            </div></li>
+                    </ul>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="col-md-5">报价状态：同意/拒绝</div>
+                        <div class="col-md-5"><button class="btn btn-default">查看签名确认</button></div>
+                    </div>
+                    <div class="col-md-7">
+                      <button class="btn btn-default pull-right" style="margin:60px 10px 10px 20px">返回</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="clear"></div>
+
+</div>
+</body>
+</html>

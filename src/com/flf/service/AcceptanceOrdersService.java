@@ -1,0 +1,91 @@
+package com.flf.service;
+
+import java.util.List;
+
+import javax.jws.WebService;
+import javax.ws.rs.Consumes;
+import javax.ws.rs.DELETE;
+import javax.ws.rs.GET;
+import javax.ws.rs.POST;
+import javax.ws.rs.PUT;
+import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
+import javax.ws.rs.Produces;
+import javax.ws.rs.core.MediaType;
+
+import com.flf.entity.AcceptanceOrders;
+
+/**
+ * 验收单表
+ * @author shaozheng
+ * 创建时间:2015-6-24 
+ */
+@WebService
+@Path("/AcceptanceOrders")
+public interface AcceptanceOrdersService {
+	
+	/**
+	 * 查询所有验收单信息
+	 * @return
+	 */
+	@GET
+	@Path("/listAllAcceptanceOrders")
+	@Produces(MediaType.APPLICATION_JSON)
+	List<AcceptanceOrders> listAllAcceptanceOrders();
+	
+	/**
+	 * 通过Id查询验收单信息
+	 * @param orderId
+	 * @return
+	 */
+	@GET
+	@Path("/getAcceptanceOrdersbyId/{orderId}")
+	@Produces(MediaType.APPLICATION_JSON)
+	AcceptanceOrders getAcceptanceOrdersbyId(@PathParam("orderId") String orderId);
+	
+	/**
+	 * 通过服务器请Id查询验收单信息
+	 * @param orderId
+	 * @return
+	 */
+	@GET
+	@Path("/getAcceptanceOrdersbyServiceRequestId/{serviceRequestId}")
+	@Produces(MediaType.APPLICATION_JSON)
+	List<AcceptanceOrders> getAcceptanceOrdersbyServiceRequestId(@PathParam("serviceRequestId") String serviceRequestId);
+	
+	/**
+	 * 新增验收单信息（改为验收工单）
+	 * @param acceptanceOrders
+	 */
+	@POST
+	@Path("/insertAcceptanceOrders")
+	@Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+	public void insertAcceptanceOrders(AcceptanceOrders acceptanceOrders);
+	
+	/**
+	 * 修改验收单信息
+	 * @param acceptanceOrders
+	 */
+	@PUT
+	@Path("/updateAcceptanceOrders")
+	@Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+	public void updateAcceptanceOrders(AcceptanceOrders acceptanceOrders);
+	
+	/**
+	 * 删除验收单接口
+	 * @param orderId
+	 */
+	@DELETE
+	@Path("/deleteAcceptanceOrders/{orderId}")
+	public void deleteAcceptanceOrders(@PathParam("orderId") String orderId);
+	
+	/**
+	 * 改变验收单状态    0.关闭 1.完成
+	 * @param orderId
+	 */
+	@PUT
+	@Path("/changeAcceptanceOrders")
+	@Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+	public void closeAcceptanceOrders(AcceptanceOrders acceptanceOrders);
+	
+}

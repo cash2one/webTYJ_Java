@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.flf.mapper.InspectorRecordMapper" >
+  <resultMap id="BaseResultMap" type="InspectorRecord" >
+    <id column="record_id" property="recordId" jdbcType="VARCHAR" />
+    <result column="order_id" property="orderId" jdbcType="VARCHAR" />
+    <result column="check_items_id" property="checkItemsId" jdbcType="VARCHAR" />
+    <result column="check_items_name" property="checkItemsName" jdbcType="VARCHAR" />
+    <result column="check_items_normal" property="checkItemsNormal" jdbcType="TINYINT" />
+    <result column="guarantee_period" property="guaranteePeriod" jdbcType="TINYINT" />
+    <result column="whether_after_sale" property="ifAfterSale" jdbcType="TINYINT" />
+    <result column="remarks" property="remarks" jdbcType="VARCHAR" />
+  </resultMap>
+  
+  <insert id="insertInspectorRecord" parameterType="InspectorRecord">
+  	insert into ts_inspector_record (record_id,order_id,check_items_id,check_items_name,check_items_normal,guarantee_period,whether_after_sale,remarks)
+  	values(UUID(),#{orderId,jdbcType=VARCHAR},#{checkItemsId,jdbcType=VARCHAR},#{checkItemsName,jdbcType=VARCHAR},#{checkItemsNormal,jdbcType=TINYINT},
+  	#{guaranteePeriod,jdbcType=TINYINT},#{ifAfterSale,jdbcType=TINYINT},#{remarks,jdbcType=VARCHAR})
+  </insert>
+  
+  <select id="getInspectorRecordbyOrderId" parameterType="String" resultMap="BaseResultMap">
+  	select * from ts_inspector_record where order_id = #{0}
+  </select>
+  
+</mapper>

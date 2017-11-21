@@ -1,0 +1,60 @@
+package com.flf.service;
+
+@javax.jws.WebService
+@javax.ws.rs.Path("/LoginService")
+public interface LoginService {
+	
+	@javax.ws.rs.POST
+	@javax.ws.rs.Path("/login")
+	@javax.ws.rs.Produces(javax.ws.rs.core.MediaType.APPLICATION_JSON)
+	@javax.ws.rs.Consumes({javax.ws.rs.core.MediaType.APPLICATION_JSON,javax.ws.rs.core.MediaType.APPLICATION_XML})
+	String login(com.flf.entity.TUser user);
+	
+	@javax.ws.rs.POST
+	@javax.ws.rs.Path("/loginByAppUser")
+	@javax.ws.rs.Produces(javax.ws.rs.core.MediaType.APPLICATION_JSON)
+	@javax.ws.rs.Consumes({javax.ws.rs.core.MediaType.APPLICATION_JSON,javax.ws.rs.core.MediaType.APPLICATION_XML})
+	String loginAppUser(String loginName,String password);
+	
+	@javax.ws.rs.POST
+	@javax.ws.rs.Path("/checkUserByAppAccountId")
+	@javax.ws.rs.Produces(javax.ws.rs.core.MediaType.APPLICATION_JSON)
+	@javax.ws.rs.Consumes({javax.ws.rs.core.MediaType.APPLICATION_JSON,javax.ws.rs.core.MediaType.APPLICATION_XML})
+	com.flf.entity.Staff checkUserByAppAccountId(com.flf.entity.Staff staff);
+	
+	@javax.ws.rs.POST
+	@javax.ws.rs.Path("/importDataFromExcelFileNew")
+	@javax.ws.rs.Produces(javax.ws.rs.core.MediaType.APPLICATION_JSON)
+	@javax.ws.rs.Consumes({javax.ws.rs.core.MediaType.APPLICATION_JSON,javax.ws.rs.core.MediaType.APPLICATION_XML})
+	com.flf.request.Info importDataFromExcelFileNew(com.flf.entity.Annex annex);
+	
+	@javax.ws.rs.POST
+	@javax.ws.rs.Path("/checkUserByLoginNameAndSendMsg")
+	@javax.ws.rs.Produces(javax.ws.rs.core.MediaType.APPLICATION_JSON)
+	@javax.ws.rs.Consumes({javax.ws.rs.core.MediaType.APPLICATION_JSON,javax.ws.rs.core.MediaType.APPLICATION_XML})
+	String checkUserByLoginNameAndSendMsg(com.flf.entity.Staff staff);
+	
+	@javax.ws.rs.POST
+	@javax.ws.rs.Path("/disagree_UserByLoginNameAndSendMsg")
+	@javax.ws.rs.Produces(javax.ws.rs.core.MediaType.APPLICATION_JSON)
+	@javax.ws.rs.Consumes({javax.ws.rs.core.MediaType.APPLICATION_JSON,javax.ws.rs.core.MediaType.APPLICATION_XML})
+	String disagree_UserByLoginNameAndSendMsg(com.flf.entity.Staff staff);
+	
+	@javax.ws.rs.POST
+	@javax.ws.rs.Path("/agree_WelcomeUser")
+	@javax.ws.rs.Produces(javax.ws.rs.core.MediaType.APPLICATION_JSON)
+	@javax.ws.rs.Consumes({javax.ws.rs.core.MediaType.APPLICATION_JSON,javax.ws.rs.core.MediaType.APPLICATION_XML})
+	String agree_WelcomeUser(com.flf.entity.Staff staff);
+	
+	@javax.ws.rs.POST
+	@javax.ws.rs.Path("/sendMsg2UserByLoginName")
+	@javax.ws.rs.Produces(javax.ws.rs.core.MediaType.APPLICATION_JSON)
+	@javax.ws.rs.Consumes({javax.ws.rs.core.MediaType.APPLICATION_JSON,javax.ws.rs.core.MediaType.APPLICATION_XML})
+	String sendMsg2UserByLoginName(com.flf.entity.Staff staff);
+	
+	@javax.ws.rs.POST
+	@javax.ws.rs.Path("/putLoginNameInSystemFromAPP")
+	@javax.ws.rs.Produces(javax.ws.rs.core.MediaType.APPLICATION_JSON)
+	@javax.ws.rs.Consumes({javax.ws.rs.core.MediaType.APPLICATION_JSON,javax.ws.rs.core.MediaType.APPLICATION_XML})
+	String putLoginNameInSystemFromAPP(com.flf.entity.Staff staff);
+}

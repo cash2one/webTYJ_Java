@@ -1,0 +1,17 @@
+package com.flf.mapper;
+
+import com.flf.entity.ExecutionTimeRecords;
+
+public interface ExecutionTimeRecordsMapper {
+    int deleteByPrimaryKey(String executiveNumId);
+
+    int insert(ExecutionTimeRecords record);
+
+    int insertSelective(ExecutionTimeRecords record);
+
+    ExecutionTimeRecords selectByPrimaryKey(String executiveNumId);
+
+    int updateByPrimaryKeySelective(ExecutionTimeRecords record);
+
+    int updateByPrimaryKey(ExecutionTimeRecords record);
+}

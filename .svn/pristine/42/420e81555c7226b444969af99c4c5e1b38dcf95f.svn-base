@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.flf.mapper.HillockMapper" >
+    <resultMap id="BaseResultMap" type="Hillock" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="division_id" property="divisionId" jdbcType="VARCHAR" />
+    <result column="post" property="post" jdbcType="VARCHAR" />
+  </resultMap>
+  
+  <resultMap id="StaffResultMap" type="Staff" >
+    <id column="staff_id" property="staffId" jdbcType="INTEGER" />
+    <result column="company_id" property="companyId" jdbcType="INTEGER" />
+    <result column="staff_number" property="staffNumber" jdbcType="VARCHAR" />
+    <result column="first_name" property="firstName" jdbcType="VARCHAR" />
+    <result column="last_name" property="lastName" jdbcType="VARCHAR" />
+    <result column="first_name_spell" property="firstNameSpell" jdbcType="VARCHAR" />
+    <result column="last_name_spell" property="lastNameSpell" jdbcType="VARCHAR" />
+    <result column="sex" property="sex" jdbcType="INTEGER" />
+    <result column="native_place" property="nativePlace" jdbcType="VARCHAR" />
+    <result column="married" property="married" jdbcType="INTEGER" />
+    <result column="edu_lever" property="eduLever" jdbcType="INTEGER" />
+    <result column="landscape" property="landscape" jdbcType="INTEGER" />
+    <result column="birthday" property="birthday" jdbcType="DATE" />
+    <result column="hobby" property="hobby" jdbcType="VARCHAR" />
+    <result column="card_type" property="cardType" jdbcType="INTEGER" />
+    <result column="card_num" property="cardNum" jdbcType="VARCHAR" />
+    <result column="address" property="address" jdbcType="VARCHAR" />
+    <result column="telphone" property="telphone" jdbcType="VARCHAR" />
+    <result column="email" property="email" jdbcType="VARCHAR" />
+    <result column="QQ" property="qq" jdbcType="VARCHAR" />
+    <result column="position" property="position" jdbcType="INTEGER" />
+    <result column="division_id" property="divisionId" jdbcType="INTEGER" />
+    <result column="hillock_id" property="hillockId" jdbcType="INTEGER" />
+  </resultMap>
+  
+    <resultMap id="ClassesResultMap" type="Classes" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="classesName" property="classesname" jdbcType="VARCHAR" />
+    	<collection property="staffs" ofType="Staff" select="selectStaffs" column="id">
+    		<id column="staff_id" property="staffId" jdbcType="INTEGER" />
+		    <result column="company_id" property="companyId" jdbcType="INTEGER" />
+		    <result column="staff_number" property="staffNumber" jdbcType="VARCHAR" />
+		    <result column="first_name" property="firstName" jdbcType="VARCHAR" />
+		    <result column="last_name" property="lastName" jdbcType="VARCHAR" />
+		    <result column="first_name_spell" property="firstNameSpell" jdbcType="VARCHAR" />
+		    <result column="last_name_spell" property="lastNameSpell" jdbcType="VARCHAR" />
+		    <result column="sex" property="sex" jdbcType="INTEGER" />
+		    <result column="native_place" property="nativePlace" jdbcType="VARCHAR" />
+		    <result column="married" property="married" jdbcType="INTEGER" />
+		    <result column="edu_lever" property="eduLever" jdbcType="INTEGER" />
+		    <result column="landscape" property="landscape" jdbcType="INTEGER" />
+		    <result column="birthday" property="birthday" jdbcType="DATE" />
+		    <result column="hobby" property="hobby" jdbcType="VARCHAR" />
+		    <result column="card_type" property="cardType" jdbcType="INTEGER" />
+		    <result column="card_num" property="cardNum" jdbcType="VARCHAR" />
+		    <result column="address" property="address" jdbcType="VARCHAR" />
+		    <result column="telphone" property="telphone" jdbcType="VARCHAR" />
+		    <result column="email" property="email" jdbcType="VARCHAR" />
+		    <result column="QQ" property="qq" jdbcType="VARCHAR" />
+		    <result column="position" property="position" jdbcType="INTEGER" />
+		    <result column="division_id" property="divisionId" jdbcType="INTEGER" />
+		    <result column="hillock_id" property="hillockId" jdbcType="INTEGER" />
+    	</collection>
+  </resultMap>
+  
+  
+     <resultMap id="DivisionResultMap" type="Division" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="division_name" property="divisionName" jdbcType="VARCHAR" />
+  </resultMap>
+  
+     <resultMap id="HillockResultMap" type="Hillock" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="post" property="post" jdbcType="VARCHAR" />
+     <association property="division" select="selectDivision" column="division_id" javaType="Division">
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="division_name" property="divisionName" jdbcType="VARCHAR" />
+        </association>
+  </resultMap>
+  
+  <resultMap type="Hillock" id="HillockClassesResultMap" extends="BaseResultMap">
+    	<collection property="Classes" ofType="Classes" select="selectClasses" column="hillock_id">
+    		<id column="id" property="id" jdbcType="INTEGER" />
+    		<result column="classesName" property="classesname" jdbcType="VARCHAR" />
+    	</collection>
+    	
+  </resultMap>
+  
+     <select id="selectDivision" resultMap="DivisionResultMap" parameterType="int">
+  		select * from t_division where id=#{0}
+  </select>	
+  
+  <select id="selectStaffs" parameterType="int" resultMap="StaffResultMap">
+  	SELECT b.* FROM t_userscheduling a INNER JOIN t_staff b ON a.user_id=b.staff_id WHERE a.user_id=#{0}
+  </select>
+  
+  <select id="selectClasses"  resultMap="ClassesResultMap"  parameterType="int">
+  		select * from t_classes where id=#{0} 
+  </select>
+  
+  <select id="listHillockBydivisionId" resultMap="BaseResultMap" parameterType="int">
+  		select * from  t_Hillock  where division_id=#{divisionId}
+  </select>
+  
+  <delete id="deleteHillock" parameterType="int">
+  delete from t_Hillock where id=#{0}
+  </delete>
+  
+  <select id="listPageHillock" parameterType="Hillock" resultMap="HillockResultMap">
+  select * from t_Hillock 
+  </select>
+
+  
+  <select id="listAllHillock"  resultMap="HillockResultMap">
+  select * from t_Hillock 
+  </select>
+  
+  <select id="getHillockbyId" parameterType="int" resultMap="HillockResultMap">
+  select * from t_Hillock where id=#{0}
+  </select>
+  
+  <insert id="insertHillock" parameterType="Hillock" useGeneratedKeys="true" keyProperty="id">
+    insert into t_Hillock (division_id,post)
+    values (#{divisionId},#{post})
+  </insert>
+  
+  <update id="updateHillock" parameterType="Hillock" >
+      update t_Hillock
+    set division_id = #{divisionId},post= #{post}
+	where id = #{id}
+  </update>
+</mapper>

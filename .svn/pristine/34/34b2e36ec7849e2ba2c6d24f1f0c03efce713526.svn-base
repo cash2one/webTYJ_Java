@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.flf.mapper.UnionpayCounterofferTotalMapper">
+	<resultMap id="BaseResultMap" type="UnionpayCounterofferTotal">
+		<id column="unionpay_counteroffer_total_id" property="unionpayCounterofferCotalId"
+			jdbcType="VARCHAR" />
+		<result column="project_id" property="projectId" jdbcType="VARCHAR" />
+		<result column="file_name" property="fileName" jdbcType="VARCHAR" />
+		<result column="total_sum" property="totalSum" jdbcType="BIGINT" />
+		<result column="success_sum" property="successSum" jdbcType="BIGINT" />
+		<result column="unionpay_counteroffer_detai_id" property="unionpayCollectionOfferDetaiId"
+			jdbcType="VARCHAR" />
+		<result column="up_date" property="upDate" jdbcType="DATE" />
+		<result column="total_trade_num" property="totalTradeNum" jdbcType="TINYINT" />
+		<result column="success_trade_num" property="successTradeNum" jdbcType="TINYINT" />
+		<result column="batch_num" property="batchNum" jdbcType="VARCHAR" />
+		<result column="offer_state" property="offerState" jdbcType="TINYINT" />
+	</resultMap>
+
+	<select id="selectFileCount" parameterType="UnionpayCounterofferTotal"
+		resultType="int">
+		SELECT COUNT(*) FROM tc_unionpay_counteroffer_total WHERE
+		offer_state=1
+		<if test="projectId != null and projectId != ''">
+			and project_id=#{projectId}
+		</if>
+		<if test="fileName != null and fileName != ''">
+			and file_name=#{fileName}
+		</if>
+	</select>
+
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+		delete from
+		tc_unionpay_counteroffer_total
+		where unionpay_counteroffer_total_id =
+		#{0}
+	</delete>
+
+	<update id="updateOfferTotalState" parameterType="UnionpayCounterofferTotal">
+		update tc_unionpay_counteroffer_total
+		<set>
+			<if test="offerState != null  and offerState != '' or offerState == 0">
+				offer_state = #{offerState},
+			</if>
+		</set>
+		where
+		unionpay_counteroffer_total_id=#{unionpayCounterofferCotalId}
+	</update>
+
+	<select id="getUnionpayCounterofferTotalById" parameterType="String"
+		resultMap="BaseResultMap">
+		select * from tc_unionpay_counteroffer_total
+		where
+		unionpay_counteroffer_total_id=#{0}
+	</select>
+
+	<insert id="insertUnionpayCounterofferTotal" parameterType="UnionpayCounterofferTotal">
+		insert into
+		tc_unionpay_counteroffer_total(unionpay_counteroffer_total_id,project_id,file_name,
+		total_sum,success_sum,up_date,total_trade_num,success_trade_num,batch_num,offer_state)
+		values
+		(
+		#{unionpayCounterofferCotalId},
+		#{projectId},
+		#{fileName},
+		#{totalSum},
+		#{successSum},
+		#{upDate},
+		#{totalTradeNum},
+		#{successTradeNum},
+		#{batchNum},
+		#{offerState}
+		)
+	</insert>
+
+	<select id="listPageUnionpayCounterofferTotal" parameterType="UnionpayCounterofferTotal"
+		resultMap="BaseResultMap">
+		select * from tc_unionpay_counteroffer_total where 1=1
+		<if test="batchNum!=null and batchNum!=''">
+			and batch_num=#{batchNum}
+		</if>
+		<if test="offerState != null  and offerState != '' or offerState==0">
+			and offer_state=#{offerState}
+		</if>
+		<if test="projectId != null and projectId != ''">
+			and project_id=#{projectId}
+		</if>
+		<if test="minStaTime!=null and maxStaTime==null">
+			and up_date &gt;= #{minStaTime}
+		</if>
+		<if test="minStaTime==null and maxStaTime!=null">
+			and up_date &lt;= #{maxStaTime}
+		</if>
+		<if test="minStaTime!=null and maxStaTime!=null">
+			and up_date between #{minStaTime} and #{maxStaTime}
+		</if>
+		<if test="fileName!=null">
+			and file_name like CONCAT('%',#{fileName},'%')
+		</if>
+		ORDER BY up_date DESC
+	</select>
+
+	<insert id="inserts" parameterType="UnionpayCounterofferTotal">
+		insert into
+		tc_unionpay_counteroffer_total(unionpay_counteroffer_total_id,file_name,total_sum,success_sum,unionpay_collection_detail_id,up_date,total_trade_num,success_trade_num)
+		values
+		(
+		<foreach collection="list" separator="," item="items">
+			#{items.unionpayCounterofferCotalId},
+			#{items.fileName},
+			#{items.totalSum},
+			#{items.successSum},
+			#{items.unionpayCollectionOfferDetaiId},
+			#{items.upDate},
+			#{items.totalTradeNum},
+			#{items.successTradeNum}
+		</foreach>
+		)
+	</insert>
+
+</mapper>

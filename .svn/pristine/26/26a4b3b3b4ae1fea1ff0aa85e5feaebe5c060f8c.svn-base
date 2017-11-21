@@ -1,0 +1,282 @@
+package com.flf.service;
+
+import java.util.List;
+import javax.jws.WebService;
+import javax.ws.rs.Consumes;
+import javax.ws.rs.DELETE;
+import javax.ws.rs.GET;
+import javax.ws.rs.POST;
+import javax.ws.rs.PUT;
+import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
+import javax.ws.rs.Produces;
+import javax.ws.rs.core.MediaType;
+import com.flf.entity.PageRestful;
+import com.flf.entity.Staff;
+import com.flf.entity.Teamworkstaff;
+import com.flf.request.PrepareResult;
+import com.flf.request.TeamworkstaffResult;
+
+@WebService
+@Path("/Teamworkstaff")
+//团队工作人员中间表
+public interface TeamworkstaffService {
+	
+	/**
+	 * 团队工作人员中间表增删改查
+	 * @return
+	 */
+	@GET
+	@Path("/listPageTeamworkstaff")
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+	List<Teamworkstaff> listPageTeamworkstaff(Teamworkstaff teamworkstaff); 
+	
+	
+	
+	@GET
+	@Path("/listAllTeamworkstaff")
+	@Produces(MediaType.APPLICATION_JSON)
+	List<Teamworkstaff> listAllTeamworkstaff(); 
+
+	@GET
+	@Path("/getTeamworkstaffById/{id}")
+	@Produces(MediaType.APPLICATION_JSON)
+	Teamworkstaff getTeamworkstaffByIdRest(@PathParam("id") String id);
+	
+	
+	/**
+	 * 根据员工id查询员工团队信息
+	 * @param id
+	 * @return
+	 */
+	@GET
+	@Path("/getTeamworkstaffbyStaffId/{staffId}/{teamworkId}")
+	@Produces(MediaType.APPLICATION_JSON)
+	List<Teamworkstaff> getTeamworkstaffbyStaffId(@PathParam("staffId") String staffId, @PathParam("teamworkId") String teamworkId);
+	
+	
+	/**
+	 * 根据团队id查询员工团队信息
+	 * @param id
+	 * @return
+	 */
+	@GET
+	@Path("/getTeamworkstaffbyTeamworkId/{teamworkId}")
+	@Produces(MediaType.APPLICATION_JSON)
+	List<Teamworkstaff> getTeamworkstaffbyTeamworkId(@PathParam("teamworkId") String teamworkId);
+	
+	/**
+	 * 根据团队id查询该团队所管理的项目和岗位对应的人数
+	 * @param id
+	 * @return
+	 */
+	@GET
+	@Path("/getTeamworkstaffbyTeamworkId/{teamworkId}")
+	@Produces(MediaType.APPLICATION_JSON)
+	List<Teamworkstaff> listTeanworkstaffbyTeamworkId(@PathParam("teamworkId") String teamworkId);
+	 
+	/**
+	 * 根据岗位id查询对应岗位员工信息
+	 * @param id
+	 * @return
+	 */
+	@GET
+	@Path("/listTeamworkstaffbyPostId/{postId}")
+	@Produces(MediaType.APPLICATION_JSON)
+	List<Teamworkstaff> listTeamworkstaffbyPostId(@PathParam("postId") String postId);
+	
+	/**
+	 * 团队人员编制岗位项目关系表新增功能接口
+	 * 
+	 * @param teamworkstaff
+	 */
+	@POST
+	@Path("/AddTeamworkstaff")
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+	public void AddTeamworkstaff(Teamworkstaff teamworkstaff);
+	
+	@PUT
+	@Path("/UpdateTeamworkstaff")
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+	public void UpdateTeamworkstaff(Teamworkstaff teamworkstaff);
+	
+	@DELETE
+	@Path("/DeleteTeamworkstaffById/{id}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public void DeleteTeamworkstaffById(@PathParam("id") String id);
+	
+	
+	/**
+	 * 新增负责人的团队成员
+	 * 删除负责人的团队成员 zhuqi 2016.03.07
+	 * @param teamworkstaffResult
+	 */
+	@POST
+	@Path("/insertListTeamworkstaff")
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+	public void insertListTeamworkstaff(Teamworkstaff teamworkstaff);
+	
+	/**
+	 * 查询各项目的核心岗位的人员信息
+	 * @param teamworkstaff
+	 * @return
+	 */
+	@POST
+	@Path("/listTeanmworkstaffbyProject")
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+	List<Teamworkstaff> listTeanmworkstaffbyProject(Teamworkstaff teamworkstaff);
+	
+	/**
+	 * 查询核心岗位的人员信息
+	 * @return
+	 */
+	@GET
+	@Path("/listTeamworkstaffPostAndStaff")
+	@Produces(MediaType.APPLICATION_JSON)
+	List<Teamworkstaff> listTeamworkstaffPostAndStaff(); 
+	
+
+	
+	@POST
+	@Path("/insertListTeamworkstaffone")
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+	public void insertListTeamworkstaffone(TeamworkstaffResult teamworkstaffResult);
+	
+	/**
+	 * 向编制下添加员工
+	 * @return
+	 */
+	@POST
+	@Path("/prepareAddStaff")
+	@Consumes({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
+	void prepareAddStaff(PrepareResult prepareResult);
+	
+	/**
+	 * 通过编制id查询属于该编制下已有的员工数量
+	 */
+	@GET
+	@Path("/staffCountByPrepareId/{prepareId}")
+	@Produces(MediaType.APPLICATION_JSON)
+	int staffCountByPrepareId(@PathParam("prepareId") String prepareId); 
+	
+	@GET
+	@Path("/getTeamworkstaffbyProjectAndSpecial/{projectId}/{specialId}")
+	@Produces(MediaType.APPLICATION_JSON)
+	List<Teamworkstaff> getTeamworkstaffbyProjectAndSpecial(@PathParam("projectId")String projectId ,@PathParam("specialId")String specialId);
+	/**
+	 * 分页查询专业线下员工信息
+	 * @param teamworkstaff
+	 * @return
+	 */
+	@POST
+	@Path("/listPageTeamworkStaff")
+	@Produces(MediaType.APPLICATION_JSON)
+	PageRestful listPageTeamworkStaff(Teamworkstaff teamworkstaff);
+	
+	/**
+	 * 获取非项目经理团队下的成员
+	 * @param staffId
+	 * @return
+	 */
+	@GET
+	@Path("/getStaffNotInTeam/{staffId}")
+	@Produces(MediaType.APPLICATION_JSON)
+	List<Staff> getStaffNotInTeam(@PathParam("staffId") String staffId);
+	
+	
+	/**
+	 * 删除团队成员
+	 * 王洲
+	 * 2016.1.27
+	 * @param teamwork
+	 */
+	@POST
+	@Path("/deleteMember")
+	@Produces(MediaType.APPLICATION_JSON)
+	void deleteMember(Teamworkstaff teamworkstaff);
+	
+	/**
+	 * 根据员工id，岗位id和编制id查询该员工是否分配了岗位编制
+	 * @author xiaocong
+	 * @date 下午4:16:14
+	 * @Description:TODO
+	 * @param staffId
+	 * @param postId
+	 * @param prepareId
+	 * @return
+	 * @updateby
+	 */
+	@GET
+	@Path("/isFenpei/{staffId}/{postId}/{prepareId}")
+	@Produces(MediaType.APPLICATION_JSON)
+	String isFenpei(@PathParam("staffId") String staffId,@PathParam("postId") String postId,@PathParam("prepareId") String prepareId);
+	
+	/**
+	 * 通过岗位项目id和专业线id查询查询出在编人数，编制数目，专业线下各岗位人员信息
+	 * @author xiaocong
+	 * @date 下午4:13:47
+	 * @Description:TODO
+	 * @param postId
+	 * @param spcialtyId
+	 * @param projectId
+	 * @return
+	 * @updateby
+	 */
+	@GET
+	@Path("/getFenpeiguanxi/{postId}/{spcialtyId}/{projectId}")
+	@Produces(MediaType.APPLICATION_JSON)
+	String getFenpeiguanxi(@PathParam("postId") String postId,@PathParam("spcialtyId") String spcialtyId,@PathParam("projectId") String projectId);
+	
+	/**
+	 * 通过岗位项目id和专业线id查询关系数据及分配到该岗位编制下的员工信息
+	 * @author xiaocong
+	 * @date 下午4:13:47
+	 * @Description:TODO
+	 * @param postId
+	 * @param spcialtyId
+	 * @param projectId
+	 * @return
+	 * @updateby
+	 */
+	@GET
+	@Path("/getPostyuangongxinxi/{postId}/{spcialtyId}/{projectId}")
+	@Produces(MediaType.APPLICATION_JSON)
+	List<Teamworkstaff> getPostyuangongxinxi(@PathParam("postId") String postId,@PathParam("spcialtyId") String spcialtyId,@PathParam("projectId") String projectId);
+	
+	/**
+	 * 通过岗位项目id和专业线id查询查询出在编人数，编制数目，专业线下各岗位人员信息
+	 * @author xiaocong
+	 * @date 下午4:13:47
+	 * @Description:TODO
+	 * @param postId
+	 * @param spcialtyId
+	 * @param projectId
+	 * @return
+	 * @updateby
+	 */
+	@GET
+	@Path("/shanchuTeamworkstaff/{teamworkstaffId}")
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+	public String shanchuTeamworkstaff(@PathParam("teamworkstaffId") String teamworkstaffId);
+	
+	/**
+	 * 根据员工id查询关联的项目
+	 * @author wangzhou
+	 * 2016.04.21
+	 * @param staffId
+	 * @return
+	 */
+	@GET
+	@Path("/getProjectByStaffId/{staffId}")
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+	public List<Teamworkstaff> getProjectByStaffId(@PathParam("staffId") String staffId); 
+	
+}

@@ -1,0 +1,273 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.flf.mapper.PrepareMapper" >
+  <resultMap id="BaseResultMap" type="com.flf.entity.Prepare" >
+    <id column="prepare_id" property="prepareId" jdbcType="VARCHAR" />
+    <result column="project_id" property="projectId" jdbcType="VARCHAR" />
+    <result column="post_id" property="postId" jdbcType="VARCHAR" />
+    <result column="prepare_number" property="prepareNumber" jdbcType="INTEGER" />
+     <result column="prepare_num" property="prepareNum" jdbcType="INTEGER" />
+  </resultMap>
+    <resultMap type="Prepare" id="PrepareMap" extends="BaseResultMap" >
+	<association property="post" column="post_id" javaType="Post" select="com.flf.mapper.PostMapper.getPostById"></association>
+  </resultMap>
+   <resultMap id="BaseResultAMap" type="com.flf.entity.Prepare" >
+     <result column="project_id" property="projectId" jdbcType="VARCHAR" />
+    <result column="post_id" property="postId" jdbcType="VARCHAR" />
+    <result column="prepare_number" property="prepareNumber" jdbcType="INTEGER" />
+    <result column="specialty_id" property="specialtyId" jdbcType="VARCHAR" />
+    <result column="name_of_custom" property="nameOfCustom" jdbcType="VARCHAR" />
+    <result column="prepare_id" property="prepareId" jdbcType="VARCHAR" />
+  </resultMap>
+   <resultMap id="BaseResultBMap" type="com.flf.entity.Prepare" >
+     <result column="specialty_id" property="specialtyId" jdbcType="VARCHAR" />
+    <result column="project_id" property="projectId" jdbcType="VARCHAR" />
+    <result column="numStaff" property="numStaff" jdbcType="INTEGER" />
+   <result column="numStaffon" property="numStaffon" jdbcType="INTEGER" />
+  </resultMap>
+  
+  <resultMap id="ResultProject" type="Project" >
+    <id column="project_id" property="projectId"/>
+    <result column="cust_id" property="custId"/>
+    <result column="project_number" property="projectNumber"/>
+    <result column="project_name" property="projectName"/>
+    <result column="stall_matching" property="stallMatching"/>
+    <result column="park_area" property="parkArea"/>
+    <result column="car_entri_num" property="carEntrinum"/>
+    <result column="person_entri_num" property="personEntrinum"/>
+    <result column="car_stall_num" property="carStallnum"/>
+    <result column="add_capacitance_area" property="addCapacitancearea"/>
+    <result column="capacitance_area" property="capacitanceArea"/>
+    <result column="private_stall_num" property="privateStallnum"/>
+    <result column="private_stall_sold" property="privateStallsold"/>
+    <result column="private_stall_unsold" property="privateStallunsold"/>
+    <result column="garage_num" property="garageNum"/>
+    <result column="garage_sold" property="garageSold"/>
+    <result column="garage_ubsold" property="garageUbsold"/>
+    <result column="project_total_area" property="projectTotalarea"/>
+    <result column="discount_price" property="discountPrice"/>
+    <result column="house_total_num" property="houseTotalnum"/>
+    <result column="build_area_num" property="buildAreanum"/>
+    <result column="build_unit_num" property="buildUnitnum"/>
+    <result column="build_build_num" property="buildBuildnum"/>
+    <result column="stall_num" property="stallNum"/>
+    <result column="underground_parking_spaces_total" property="undergroundParkingspacestotal"/>
+    <result column="ground_parking_space_total" property="groundParkingspacetotal"/>
+    <result column="greening_rate" property="greeningRate"/>
+    <result column="total_build_area" property="totalBuildarea"/>
+    <result column="basement_area" property="basementArea"/>
+    <result column="province" property="province"/>
+    <result column="full_address" property="fullAddress"/>
+    <result column="postcode" property="postcode"/>
+    <result column="street" property="street"/>
+    <result column="address" property="address"/>
+    <result column="post_code" property="postCode"/>
+    <result column="company" property="company"/>
+    <result column="outline" property="outline"/>
+    <result column="phone" property="phone"/>
+    <result column="parcel" property="parcel"/>
+    <result column="planning" property="planning"/>   
+  </resultMap>
+  
+  <resultMap id="PostResultMap" type="Post" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="post_type_id" property="postTypeId" jdbcType="VARCHAR" />
+    <result column="post_name" property="postName" jdbcType="VARCHAR" />
+    <result column="post_priority" property="postPriority" jdbcType="INTEGER" />
+    <result column="area_id" property="areaId" jdbcType="INTEGER" />
+    <result column="ridge_num" property="ridgeNum" jdbcType="INTEGER" />
+    <result column="seat_num" property="seatNum" jdbcType="INTEGER" />
+    <result column="unit" property="unit" jdbcType="INTEGER" />
+    <result column="floor" property="floor" jdbcType="INTEGER" />
+    <result column="room_num" property="roomNum" jdbcType="INTEGER" />
+    <result column="position" property="position" jdbcType="VARCHAR" />
+  </resultMap>
+  
+  <resultMap id="PrepareResultMap" type="com.flf.entity.Prepare" >
+    <id column="prepare_id" property="prepareId" jdbcType="VARCHAR" />
+    <result column="project_id" property="projectId" jdbcType="VARCHAR" />
+    <result column="post_id" property="postId" jdbcType="VARCHAR" />
+    <result column="prepare_number" property="prepareNumber" jdbcType="INTEGER" />
+    <association property="post" select="selectPost" column="post_id" javaType="Post">
+         <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="post_type_id" property="postTypeId" jdbcType="VARCHAR" />
+    <result column="post_name" property="postName" jdbcType="VARCHAR" />
+    <result column="post_priority" property="postPriority" jdbcType="INTEGER" />
+    <result column="area_id" property="areaId" jdbcType="INTEGER" />
+    <result column="ridge_num" property="ridgeNum" jdbcType="INTEGER" />
+    <result column="seat_num" property="seatNum" jdbcType="INTEGER" />
+    <result column="unit" property="unit" jdbcType="INTEGER" />
+    <result column="floor" property="floor" jdbcType="INTEGER" />
+    <result column="room_num" property="roomNum" jdbcType="INTEGER" />
+    <result column="position" property="position" jdbcType="VARCHAR" />
+    </association>
+    <association property="project" select="selectProject" column="project_id" javaType="Project">
+        <id column="project_id" property="projectId"/>
+    <result column="cust_id" property="custId"/>
+    <result column="project_number" property="projectNumber"/>
+    <result column="project_name" property="projectName"/>
+    <result column="stall_matching" property="stallMatching"/>
+    <result column="park_area" property="parkArea"/>
+    <result column="car_entri_num" property="carEntrinum"/>
+    <result column="person_entri_num" property="personEntrinum"/>
+    <result column="car_stall_num" property="carStallnum"/>
+    <result column="add_capacitance_area" property="addCapacitancearea"/>
+    <result column="capacitance_area" property="capacitanceArea"/>
+    <result column="private_stall_num" property="privateStallnum"/>
+    <result column="private_stall_sold" property="privateStallsold"/>
+    <result column="private_stall_unsold" property="privateStallunsold"/>
+    <result column="garage_num" property="garageNum"/>
+    <result column="garage_sold" property="garageSold"/>
+    <result column="garage_ubsold" property="garageUbsold"/>
+    <result column="project_total_area" property="projectTotalarea"/>
+    <result column="discount_price" property="discountPrice"/>
+    <result column="house_total_num" property="houseTotalnum"/>
+    <result column="build_area_num" property="buildAreanum"/>
+    <result column="build_unit_num" property="buildUnitnum"/>
+    <result column="build_build_num" property="buildBuildnum"/>
+    <result column="stall_num" property="stallNum"/>
+    <result column="underground_parking_spaces_total" property="undergroundParkingspacestotal"/>
+    <result column="ground_parking_space_total" property="groundParkingspacetotal"/>
+    <result column="greening_rate" property="greeningRate"/>
+    <result column="total_build_area" property="totalBuildarea"/>
+    <result column="basement_area" property="basementArea"/>
+    <result column="province" property="province"/>
+    <result column="full_address" property="fullAddress"/>
+    <result column="postcode" property="postcode"/>
+    <result column="street" property="street"/>
+    <result column="address" property="address"/>
+    <result column="post_code" property="postCode"/>
+    <result column="company" property="company"/>
+    <result column="outline" property="outline"/>
+    <result column="phone" property="phone"/>
+    <result column="parcel" property="parcel"/>
+    <result column="planning" property="planning"/>
+    </association>
+  </resultMap>
+  
+  
+<!--    Created by Administrator on 2015/6/3. 
+  		author:尹磊
+  		修改时间：2015/6/3  修改人：尹磊 -->
+  		
+  		
+  		<!-- 分页查询所有编制信息 -->
+ 	<select id="listPagePrepare" parameterType="Prepare" resultMap="PrepareResultMap">
+ 	    select * from t_prepare
+ 	</select>
+  
+ 			<!-- 查询所有编制信息 -->
+ 	<select id="listAllPrepare"  resultMap="PrepareResultMap">
+ 	    select * from t_prepare
+ 	</select>
+ 	
+ 			<!-- 根据id查询编制信息 -->
+ 	<select id="getPreparebyId" parameterType="String" resultMap="PrepareResultMap">
+ 	    select * from t_prepare where prepare_id=#{0}
+ 	</select>
+ 	
+ 				<!-- 根据id查询编制信息 -->
+ 	<select id="getPreparebyIdone" parameterType="String" resultMap="BaseResultMap">
+ 	    select * from t_prepare where prepare_id=#{0}
+ 	</select>
+ 	
+ 	
+ 	<select id="selectPost" parameterType="String" resultMap="PostResultMap">
+ 	    select * from t_post where id=#{0}
+ 	</select>
+ 	
+ 	<select id="selectProject" parameterType="String" resultMap="ResultProject">
+ 	    select * from t_project where project_id=#{0}
+ 	</select>
+ 	
+ 	
+ 	<!-- 根据项目id查询编制信息 -->
+ 	<select id="getPreparebyprojectId" parameterType="String" resultMap="PrepareMap">
+ 	    select * from t_prepare where project_id=#{0}
+ 	</select>
+ 	
+ 	
+ 	<!-- 根据团队id查询编制信息 -->
+ 	<select id="getPreparebyteamworkId" parameterType="String" resultMap="PrepareResultMap">
+ 	    SELECT * FROM t_prepare p LEFT JOIN t_teamwork_staff t ON p.`prepare_id`=t.`prepare_id` WHERE teamwork_id=#{0} GROUP BY p.project_id
+ 	</select>
+ 	
+ 	
+ 	<!-- 删除编制信息 -->
+ 	<delete id="deletePrepare" parameterType="String">
+ 	    delete * from t_prepare where prepare_id=#{0}
+ 	</delete>
+ 	
+ 	<!-- 新增编制信息 -->
+  <insert id="insertPrepare" parameterType="com.flf.entity.Prepare" >
+    insert into t_prepare (prepare_id, project_id, post_id, 
+      prepare_number)
+    values (UUID(), #{projectId}, #{postId}, 
+      #{prepareNumber})
+  </insert>
+  
+  <insert id="insertListPrepare"  parameterType="Prepare">
+  	insert into t_prepare (prepare_id, project_id, post_id, 
+      prepare_number)
+    values <foreach collection="list" separator="," item="items">(
+    	UUID(), #{items.projectId}, #{items.postId}, 
+      #{items.prepareNumber})
+    </foreach>
+  </insert>
+
+  
+  			<!-- 	修改编制信息 -->
+  <update id="updatePrepare" parameterType="com.flf.entity.Prepare" >
+    update t_prepare
+    <set >
+      <if test="projectId != null" >
+        project_id = #{projectId,jdbcType=VARCHAR},
+      </if>
+      <if test="postId != null" >
+        post_id = #{postId,jdbcType=VARCHAR},
+      </if>
+      <if test="prepareNumber != null" >
+        prepare_number = #{prepareNumber},
+      </if>
+       <if test="prepareNum != null" >
+        prepare_num = #{prepareNum},
+      </if>
+    </set>
+    where prepare_id = #{prepareId,jdbcType=VARCHAR}
+  </update>
+  
+<!--  通过项目id和专业线id查询编制信息及编制下的岗位信息 -->
+  <select id="listAllSearchPrepare" resultMap="BaseResultAMap" parameterType="String">
+ 	    SELECT a.prepare_id,c.specialty_id,a.project_id,a.post_id,a.prepare_number,b.name_of_custom FROM t_prepare a 
+       LEFT JOIN t_post b ON b.post_id=a.post_id
+       LEFT JOIN t_specialty_info c ON b.professional_line_id=c.specialty_id
+       LEFT JOIN t_project d ON a.project_id=d.project_id
+       where a.project_id=#{0} and c.specialty_id=#{1} and b.is_core_post = 0 and b.state=1
+       group by a.prepare_id
+ 	</select>
+ 	
+ 	<select id="getMaxNumByProjectAndPostId" resultType="Integer" parameterType="String">
+ 		select prepare_number from t_prepare where project_id = #{0} and post_id = #{1}
+ 	</select>
+ 	
+ 	<!-- 根据项目id和岗位id查询编制信息  王洲  2016.1.29 -->
+ 	<select id="getPrepareByProjectIdAndPostId" parameterType="String" resultMap="BaseResultMap">
+ 		select * from t_prepare where project_id = #{0} and post_id = #{1}
+ 	</select>
+ 
+<!--  <select id="listAllSearchStaffA" resultMap="BaseResultAMap">
+ 	   SELECT a.prepare_id,b.`name_of_custom`,d.project_name,c.specialty_id,b.post_id,a.prepare_number,a.prepare_num FROM t_prepare a 
+       LEFT JOIN t_post b ON b.`post_id`=a.post_id
+       LEFT JOIN t_specialty_info c ON b.professional_line_id=c.specialty_id
+       LEFT JOIN t_project d ON a.project_id=d.project_id
+ 	</select>
+ 	
+ 	<select id="listAllSearchStaffB" resultMap="BaseResultBMap">
+ 	   SELECT a.prepare_id,b.`name_of_custom`,d.project_name,c.specialty_id,b.post_id,a.prepare_number,a.prepare_num FROM t_prepare a 
+       LEFT JOIN t_post b ON b.`post_id`=a.post_id
+       LEFT JOIN t_specialty_info c ON b.professional_line_id=c.specialty_id
+       LEFT JOIN t_project d ON a.project_id=d.project_id
+       GROUP BY a.project_id,c.specialty_id
+ 	</select> -->
+ 
+</mapper>

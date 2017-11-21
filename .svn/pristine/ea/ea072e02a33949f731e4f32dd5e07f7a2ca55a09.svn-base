@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html ng-app="accountApp">
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>登录验证</title>
+    <style>
+
+        /* 全局样式 */
+        body, p, div, ul, ol, li, dl, dd, dt, h1, h2, h3, h4, h5, h6, form, input, select, label, table, tr, td, th, thead, tbody, tfoot
+        {
+            margin: 0px auto;
+            padding: 0px;
+            border: 0;
+        }
+        body
+        {
+            font-size: 12px;
+            font-family: Tahoma,Geneva,sans-serif;
+            background-position: top;
+            background-repeat: repeat-x;
+        }
+        table
+        {
+            border-collapse: collapse;
+            border-spacing: 0px;
+            width: 910px;
+            border: 0px;
+            text-align: left;
+        }
+
+        /* 登录页面 */
+        div.login_box
+        {
+            width: 450px;
+            height: 200px;
+            padding-top: 70px;
+            margin-top: 150px;
+            font-size: 12pt;
+            font-weight: bold;
+        }
+        div.login_box table
+        {
+            width:98%;
+        }
+        div.login_box table tr td
+        {
+            padding-left: 5px;
+            height: 44px;
+        }
+        td.login_info
+        {
+            text-align: right;
+            width: 150px;
+            padding-right: 5px;
+        }
+        td.login_error_info
+        {
+            width:130px;
+        }
+        td.login_button
+        {
+            text-align: left;
+            padding-top: 5px;
+        }
+        td.login_button img
+        {
+            border-width: 0px;
+        }
+
+        /* 登录页面 */
+        body.login
+        {
+            background-color: #00629f;
+            background-image: url(../images/login_bgn.jpg);
+            background-position: center top;
+            background-repeat: no-repeat;
+        }
+        div.login_box
+        {
+            background: url(../images/login_box.png) no-repeat;
+        }
+        div.login_box table tr td
+        {
+            color: #FFF;
+        }
+    </style>
+</head>
+<body class="login" ng-controller="accountCtrl">
+<div class="login_box">
+    <table>
+        <tr>
+            <td class="login_info">账号：</td>
+            <td colspan="2"><input name="" type="text" style="width: 150px;height: 30px" /></td>
+        </tr>
+        <tr>
+            <td class="login_info">密码：</td>
+            <td colspan="2"><input name="" type="password" style="width: 150px;height: 30px" /></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td class="login_button" colspan="2">
+                <a style="cursor:pointer" ng-click="login()"><img src="../images/login_btn.png" /></a>
+            </td>
+        </tr>
+    </table>
+</div>
+</body>
+</html>

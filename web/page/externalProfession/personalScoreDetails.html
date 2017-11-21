@@ -1,0 +1,39 @@
+<!--
+日期：2015/5/29
+表格动态传送数据
+修改人：陶勇超
+-->
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>个人评分详情</title>
+</head>
+<body>
+<div class="container-fluid">
+    <div class="row">
+    <!--个人评分详情-->
+    <div class="program" style="margin-top: 15px;">
+        <!--表格数据通过JS传送  2015/5/29 修改-->
+        <table border="1" style="background-color: #ffffff;text-align: center;width: 90% ;margin:20px auto;">
+            <tr class="active">
+                <td><strong>{{tablehead.personal}}</strong></td>
+                <td><strong>{{tablehead.orderNumber}}</strong></td>
+                <td><strong>{{tablehead.content}}</strong></td>
+                <td><strong>{{tablehead.weight}}</strong></td>
+                <td><strong>{{tablehead.date}}</strong></td>
+            </tr>
+            <tr ng-repeat="item in items">
+                <th style="text-align: center">{{item.personal}}</th>
+                <td>{{item.orderNumber}}</td>
+                <td><a>{{item.content}}</a></td>
+                <td>{{item.weight}}</td>
+                <td>{{item.date}}</td>
+            </tr>
+        </table>
+    </div>
+    <!--个人评分详情 end-->
+    </div>
+</div>
+</body>
+</html>

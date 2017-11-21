@@ -1,0 +1,16 @@
+package com.flf.service.impl;
+import com.flf.mapper.BillingRecordMapper;
+import com.flf.service.BillingRecordService;
+
+public class BillingRecordServiceImpl implements BillingRecordService {
+	private BillingRecordMapper billingRecordMapper;
+
+	public BillingRecordMapper getBillingRecordMapper() {
+		return billingRecordMapper;
+	}
+
+	public void setBillingRecordMapper(BillingRecordMapper billingRecordMapper) {
+		this.billingRecordMapper = billingRecordMapper;
+	}
+	
+}

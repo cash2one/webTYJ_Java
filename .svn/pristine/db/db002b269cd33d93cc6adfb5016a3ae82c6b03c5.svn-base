@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+<meta charset="UTF-8">
+<title>产品管理</title>
+</head>
+<body>
+	<div class="container-fluid">
+		<div class="row" style="height: 532px">
+			<div class="table_list">
+				<h4 style="text-align: center">
+					<strong>产品管理</strong>
+				</h4>
+				<div class="search_style">
+					<form>
+						<input type="text" class="search_style_input"
+							placeholder="请输入搜索条件" />
+						<button type="submit" class="search_style_button">查找</button>
+					</form>
+				</div>
+				<div class="button_group">
+					<a
+						ui-sref="index.internalProfession.productManagement.productLaunch"
+						data-toggle="modal" data-target="#add">发布</a>
+				</div>
+			</div>
+			<div class="table_list">
+				<table width="100%" border="0" cellpadding="0" cellspacing="0"
+					class="table_style">
+					<tr>
+						<td width="50" align="center" valign="middle"
+							class="table_style_toptd"><input type="checkbox">全选
+						</td>
+						<td align="center" valign="middle" class="table_style_toptd">编号</td>
+						<td align="center" valign="middle" class="table_style_toptd">产品类型</td>
+						<td align="center" valign="middle" class="table_style_toptd">名称</td>
+						<td align="center" valign="middle" class="table_style_toptd">价格</td>
+						<td align="center" valign="middle" class="table_style_toptd">商家</td>
+						<td align="center" valign="middle" class="table_style_toptd">简述</td>
+						<td align="center" valign="middle" class="table_style_toptd">状态</td>
+						<td style="width: 200px" align="center" valign="middle"
+							class="table_style_toptd">操作</td>
+					</tr>
+					<tr ng-repeat="item in searchPaginator.object.produceprices"
+						ng-show="item.productId !=null">
+						<td width="50" align="center" valign="middle"><input
+							type="checkbox">
+						</td>
+						<td align="center" valign="middle">{{item.partNum}}</td>
+						<td align="center" valign="middle">{{item.type}}</td>
+						<td align="center" valign="middle">{{item.productName}}</td>
+						<td align="center" valign="middle">{{item.stdPriUnit}}</td>
+						<td align="center" valign="middle">{{'暂无'}}</td>
+						<td align="center" valign="middle">{{item.papar}}</td>
+						<td align="center" valign="middle" ng-show="item.state">上架</td>
+						<td align="center" valign="middle" ng-show="!item.state">下架</td>
+						<td align="center" valign="middle">
+							<button class="btn btn-sm btn-info">查询</button>
+							<button class="btn btn-sm btn-info">修改</button>
+							<button class="btn btn-sm btn-success" ng-show="!item.state">上架</button>
+							<button class="btn btn-sm btn-success" ng-show="item.state">下架</button>
+						</td>
+					</tr>
+				</table>
+				<!--分页-->
+				<div class="pagination">
+					<a href="#" ng-show="searchPaginator.hasPrevious()"
+						ng-click="searchPaginator.previous()">上一页</a> <a href="#"
+						ng-repeat="i in searchPaginator.pages"
+						ng-click="searchPaginator.go(i)" class="number">{{i}}</a> <a
+						href="#" ng-show="searchPaginator.hasNext()"
+						ng-click="searchPaginator.next()">下一页</a>
+				</div>
+				<!--分页 end-->
+			</div>
+		</div>
+	</div>
+<body >
+<div class="container-fluid">
+    <div class="row" style="height: 532px">
+        <div class="table_list">
+            <h4 style="text-align: center"><strong>产品管理</strong></h4>
+            <div class="search_style"><form>
+                <input type="text"   class="search_style_input"  placeholder="请输入搜索条件" />
+                <button type="submit" class="search_style_button">查找</button>
+            </form>
+            </div>
+            <div class="button_group">
+                <a ui-sref="index.internalProfession.productManagement.productLaunch" data-toggle="modal" data-target="#add">发布</a>
+            </div>
+        </div>
+        <div class="table_list">
+            <table width="100%" border="0" cellpadding="0" cellspacing="0" class="table_style">
+                <tr>
+                    <td width="50" align="center" valign="middle" class="table_style_toptd">
+                        <input type="checkbox">全选
+                    </td>
+                    <td align="center" valign="middle" class="table_style_toptd">编号</td>
+                    <td align="center" valign="middle" class="table_style_toptd">产品类型</td>
+                    <td align="center" valign="middle" class="table_style_toptd">名称</td>
+                    <td align="center" valign="middle" class="table_style_toptd">价格</td>
+                    <td align="center" valign="middle" class="table_style_toptd">商家</td>
+                    <td align="center" valign="middle" class="table_style_toptd">简述</td>
+                    <td align="center" valign="middle" class="table_style_toptd">状态</td>
+                    <td style="width: 200px" align="center" valign="middle" class="table_style_toptd">操作</td>
+                </tr>
+                <tr>
+                    <td width="50" align="center" valign="middle"><input type="checkbox"></td>
+                    <td align="center" valign="middle">123451</td>
+                    <td align="center" valign="middle">清洁</td>
+                    <td align="center" valign="middle">房屋</td>
+                    <td align="center" valign="middle">100元</td>
+                    <td align="center" valign="middle">桃源居</td>
+                    <td align="center" valign="middle">房屋打扫</td>
+                    <td align="center" valign="middle">上架</td>
+                    <td align="center" valign="middle">
+                        <button class="btn btn-sm btn-info">查询</button>
+                        <button class="btn btn-sm btn-info">修改</button>
+                        <button class="btn btn-sm btn-success">下架</button>
+                    </td>
+                </tr>
+                <tr>
+                    <td width="50" align="center" valign="middle"><input type="checkbox"></td>
+                    <td align="center" valign="middle">123452</td>
+                    <td align="center" valign="middle">普通保姆</td>
+                    <td align="center" valign="middle">保姆</td>
+                    <td align="center" valign="middle">200元</td>
+                    <td align="center" valign="middle">桃源居</td>
+                    <td align="center" valign="middle">保姆值班</td>
+                    <td align="center" valign="middle">上架</td>
+                    <td align="center" valign="middle">
+                        <button class="btn btn-sm btn-info">查询</button>
+                        <button class="btn btn-sm btn-info">修改</button>
+                        <button class="btn btn-sm btn-success">下架</button>
+                    </td>
+                </tr>
+                <tr>
+                    <td width="50" align="center" valign="middle"><input type="checkbox"></td>
+                    <td align="center" valign="middle">123453</td>
+                    <td align="center" valign="middle">清洁</td>
+                    <td align="center" valign="middle">房屋</td>
+                    <td align="center" valign="middle">100元</td>
+                    <td align="center" valign="middle">桃源居</td>
+                    <td align="center" valign="middle">房屋打扫</td>
+                    <td align="center" valign="middle">上架</td>
+                    <td align="center" valign="middle">
+                        <button class="btn btn-sm btn-info">查询</button>
+                        <button class="btn btn-sm btn-info">修改</button>
+                        <button class="btn btn-sm btn-success">下架</button>
+                    </td>
+                </tr>
+                <tr>
+                    <td width="50" align="center" valign="middle"><input type="checkbox"></td>
+                    <td align="center" valign="middle">123454</td>
+                    <td align="center" valign="middle">清洁</td>
+                    <td align="center" valign="middle">车辆</td>
+                    <td align="center" valign="middle">100元</td>
+                    <td align="center" valign="middle">桃源居</td>
+                    <td align="center" valign="middle">车辆打扫</td>
+                    <td align="center" valign="middle">上架</td>
+                    <td align="center" valign="middle">
+                        <button class="btn btn-sm btn-info">查询</button>
+                        <button class="btn btn-sm btn-info">修改</button>
+                        <button class="btn btn-sm btn-success">下架</button>
+                    </td>
+                </tr>
+                <tr>
+                    <td width="50" align="center" valign="middle"><input type="checkbox"></td>
+                    <td align="center" valign="middle">123454</td>
+                    <td align="center" valign="middle">店铺出租</td>
+                    <td align="center" valign="middle">房屋</td>
+                    <td align="center" valign="middle">500元</td>
+                    <td align="center" valign="middle">桃源居</td>
+                    <td align="center" valign="middle">房屋</td>
+                    <td align="center" valign="middle">上架</td>
+                <tr ng-repeat="items in searchPaginator.object.produceprices" ng-show="items.productId!=null">
+                    <td width="50" align="center" valign="middle"><input type="checkbox" name="checkbox2" ng-model="items.value" id="checkbox"></td>
+                    <td align="center" valign="middle">{{items.productId}}</td>
+                    <td align="center" valign="middle">{{items.type}}</td>
+                    <td align="center" valign="middle">{{items.productName}}</td>
+                    <td align="center" valign="middle">{{items.stdPriUnit}}</td>
+                    <td align="center" valign="middle">{{items.productId}}</td>
+                    <td align="center" valign="middle">{{items.papar}}</td>
+                    <td align="center" valign="middle">{{items.state}}</td>
+                    <td align="center" valign="middle">
+                        <button class="btn btn-sm btn-info">查询</button>
+                        <button class="btn btn-sm btn-info">修改</button>
+                        <button class="btn btn-sm btn-success" ng-click="updateStatebyId(items.productId)">下架</button>
+                    </td>
+                </tr>
+                
+            </table>
+        </div>
+
+        <div class="pagination">
+            <a href="#">上一页</a>
+            <a href="#"class="number">1</a>
+            <a href="#"class="number">2</a>
+            <a href="#"class="number">3</a>
+            <a href="#"class="number">4</a>
+            <a href="#"class="number">5</a>
+            <a href="#">下一页</a>
+        </div>
+
+
+    </div>
+</div>
+</body>
+</html>

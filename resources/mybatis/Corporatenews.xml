@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.flf.mapper.CorporatenewsMapper" >
+  <resultMap id="BaseResultMap" type="Corporatenews" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="title" property="title" jdbcType="VARCHAR" />
+    <result column="brief_content" property="briefContent" jdbcType="VARCHAR" />
+    <result column="detailed_information" property="detailedInformation" jdbcType="VARCHAR" />
+    <result column="founder" property="founder" jdbcType="VARCHAR" />
+    <result column="creation_time" property="creationTime" jdbcType="DATE" />
+    <result column="final_modifier" property="finalModifier" jdbcType="VARCHAR" />
+    <result column="last_modification_time" property="lastModificationTime" jdbcType="DATE" />
+    <result column="project" property="project" jdbcType="VARCHAR" />
+    <result column="department" property="department" jdbcType="VARCHAR" />
+  </resultMap>
+  
+  <resultMap type="Corporatenews" id="CorporatenewsMapWithProject" extends="BaseResultMap">
+  <association property="projects" column="project" javaType="Project" select="com.flf.mapper.ProjectMapper.getProjectNameByProjectId"></association>
+  </resultMap>
+<!--   <select id="listPageCorporatenews"  resultMap="BaseResultMap">
+      select * from t_corporate_news
+  </select> --> 
+  
+  <select id="listAllCorporatenews"  resultMap="BaseResultMap">
+      select * from t_corporate_news ORDER BY last_modification_time desc  limit 5
+  </select>
+  
+  <select id="listAllsCorporatenews"  resultMap="BaseResultMap">
+      select * from t_corporate_news ORDER BY last_modification_time desc
+  </select>
+  
+  <select id="listAllsCorporatenewsByUserId" resultMap="BaseResultMap" parameterType="String">
+      SELECT c.* FROM t_user a JOIN t_project b JOIN t_corporate_news c ON a.`company_id`=b.`company` AND b.`project_id`=c.`project`
+      WHERE a.`user_id`=#{0}
+      order by last_modification_time desc
+  </select>
+  
+  <select id="listPageCorporatenewsRestful" parameterType="Corporatenews"  resultMap="CorporatenewsMapWithProject">
+      select * from t_corporate_news ORDER BY last_modification_time desc
+  </select>
+  
+  <select id="getCorporatenewsbyId" parameterType="String" resultMap="BaseResultMap">
+      select * from t_corporate_news where id=#{id}
+  </select>
+  
+  <delete id="deleteCorporatenews" parameterType="String" >
+      delete from t_corporate_news where id=#{id}
+  </delete>
+  <select id="listPageCorporatenews" resultMap="BaseResultMap">
+      select * from t_corporate_news
+  </select>
+  
+  <insert id="insertCorporatenews" parameterType="Corporatenews" >
+    insert into t_corporate_news (title, brief_content, 
+      detailed_information, founder, creation_time, 
+      final_modifier, last_modification_time,department,project)
+    values (#{title,jdbcType=VARCHAR}, #{briefContent,jdbcType=VARCHAR}, 
+      #{detailedInformation,jdbcType=VARCHAR}, #{founder,jdbcType=VARCHAR}, #{creationTime,jdbcType=DATE}, 
+      #{finalModifier,jdbcType=VARCHAR}, #{lastModificationTime,jdbcType=DATE},#{department},#{project})
+  </insert>
+
+  <update id="updateCorporatenews" parameterType="Corporatenews" >
+    update t_corporate_news
+    set title = #{title,jdbcType=VARCHAR},
+      brief_content = #{briefContent,jdbcType=VARCHAR},
+      detailed_information = #{detailedInformation,jdbcType=VARCHAR},
+      founder = #{founder,jdbcType=VARCHAR},
+      creation_time = #{creationTime,jdbcType=DATE},
+      final_modifier = #{finalModifier,jdbcType=VARCHAR},
+      last_modification_time = #{lastModificationTime,jdbcType=DATE},
+      department = #{department},
+      project = #{project}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+</mapper>

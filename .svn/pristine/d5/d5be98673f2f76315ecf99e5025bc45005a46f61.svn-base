@@ -1,0 +1,65 @@
+package com.flf.entity;
+
+import javax.xml.bind.annotation.XmlRootElement;
+
+/**
+ * 任务合并记录表
+ * 创建人：邵政
+ * 创建时间：2015-7-7
+ */
+/**
+ * @author zhuqi
+ *
+ */
+@XmlRootElement(name = "TasksMerge")
+public class TasksMerge {
+    private String tasksMergeId;//任务合并id
+
+    private String mainTaskId;//主任务id
+
+    private String lesserTaskId;//子任务id
+    
+    private String remarks; //合并说明
+    
+    private String operatorId;//操作人id
+
+    public String getTasksMergeId() {
+        return tasksMergeId;
+    }
+
+    public void setTasksMergeId(String tasksMergeId) {
+        this.tasksMergeId = tasksMergeId;
+    }
+
+    public String getMainTaskId() {
+        return mainTaskId;
+    }
+
+    public void setMainTaskId(String mainTaskId) {
+        this.mainTaskId = mainTaskId;
+    }
+
+    public String getLesserTaskId() {
+        return lesserTaskId;
+    }
+
+    public void setLesserTaskId(String lesserTaskId) {
+        this.lesserTaskId = lesserTaskId;
+    }
+
+	public String getRemarks() {
+		return remarks;
+	}
+
+	public void setRemarks(String remarks) {
+		this.remarks = remarks;
+	}
+
+	public String getOperatorId() {
+		return operatorId;
+	}
+
+	public void setOperatorId(String operatorId) {
+		this.operatorId = operatorId;
+	}
+}

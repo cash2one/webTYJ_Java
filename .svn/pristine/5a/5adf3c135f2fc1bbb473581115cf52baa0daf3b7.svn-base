@@ -1,0 +1,76 @@
+<!--创建人：王志刚
+页面名称：物业服务人员主页办理租赁业务
+js路径：'controllers/propertyService/staffHome/lease/leaseHistory'
+
+更改 肖聪  2015/6/1
+填充数据和方法用于实现增删改查
+-->
+
+<!DOCTYPE html>
+<html>
+<head lang="en">
+<meta charset="UTF-8">
+<title>历史记录</title>
+<style>
+.addae {
+	border: 1px solid #797979;
+	margin: 10px 10px;
+	height: 105px;
+	padding: 15px 0;
+	white-space: nowrap;
+}
+</style>
+</head>
+<body>
+	<div class="complaint_user_list" style="margin-top: 40px">
+
+		<div class="addae" class="col-md-12" ng-repeat="lease in searchPaginator.object.newLeases" ng-show="lease.id!=null">
+			<div>
+				<div>
+					<button ng-click="deleteLease(lease.id)">删除</button>
+				</div>
+				<div class="col-md-1 adda">
+					<label><img src="images\company\u76.jpg"
+						style="width: 70px; height: 70px"> </label>
+				</div>
+				<div class="col-md-2">
+					<span>房屋编号：</span><span>{{lease.honseId}}</span>
+				</div>
+				<div class="col-md-3">
+					<span>业主姓名：</span><span>{{lease.custName}}</span>
+				</div>
+				<div class="col-md-3">
+					<span>客户类型：</span><span>租客</span>
+				</div>
+				<div class="col-md-2">
+					<span>申请人姓名：</span><span>{{lease.leasePerson.leasePersonName}}</span>
+				</div>
+				<div class="col-md-2">
+					<span>业主意见：</span><span>{{lease.userOpinion}}</span>
+				</div>
+				<div class="col-md-3">
+					<span>联系电话：</span>{{lease.leasePerson.leasePersonPhone}}
+				</div>
+				<div class="col-md-3">
+					<span>受理人：</span><span>{{lease.staffName}}</span>
+				</div>
+				<div class="col-md-3">
+					<span>受理日期:</span><span>{{lease.createDate|date:"yyyy-MM-dd"}}</span>
+				</div>
+			</div>
+		</div>
+
+		
+		<nav>
+			<div class="pagination">
+				<a href="#" ng-show="searchPaginator.hasPrevious()"
+					ng-click="searchPaginator.previous()">上一页</a> <a href="#"
+					ng-repeat="i in searchPaginator.pages"
+					ng-click="searchPaginator.go(i)" class="number">{{i}}</a> <a
+					href="#" ng-show="searchPaginator.hasNext()"
+					ng-click="searchPaginator.next()">下一页</a>
+			</div>
+		</nav>
+	</div>
+</body>
+</html>

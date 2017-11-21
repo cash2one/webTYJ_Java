@@ -1,0 +1,320 @@
+<!--
+作者：陶勇超
+创建日期：2015/6/1
+名称：部门质检服务请求详情
+JS路径：  'controllers/externalProfession/departmentServiceRequestForDetails',
+-->
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>部门质检服务请求详情</title>
+    <style type="text/css">
+        ul,li,{margin:0;padding:0;}
+        ul{list-style:none;}
+        #root{margin:10px;width:200px;overflow:hidden;}
+        #root li{line-height:25px;}
+        #root li a{color:#666666;padding-left:5px;outline:none;blr:expression(this.onFocus=this.blur());}
+        #root .two{padding-left:20px;display:none;}
+    </style>
+</head>
+<body>
+<div class="row">
+    <!--1-->
+    <div class="complaint_user_list" style="margin: 10px auto;">
+        <div class="row" style="margin-top: 10px">
+            <div class="col-md-2">
+                <div style="width: 150px;height: 90px;background-color: #ffffff;margin-top: 5px;padding-top: 5px;padding-left:10px;margin-left: 20px">
+                    <h2>服务请求</h2>
+                </div>
+            </div>
+            <div class="col-md-10" style="margin-top: 10px;margin-left: 0px">
+                <div class="row">
+                    <div class="col-md-3">质检活动级别：{{qualityActivity.level}}</div>
+                    <div class="col-md-8">描述：{{qualityActivity.describe}}</div>
+                </div>
+                <div class="row">
+                    <div class="col-md-3">请求名称：{{qualityActivity.name}}</div>
+                </div>
+                <div class="row">
+                    <div class="col-md-3">质检周期：{{qualityActivity.cycle}}</div>
+                    <div class="col-md-4">请求说明：{{qualityActivity.illustrate}}</div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <!--1 end-->
+    <!--2-->
+    <div class="complaint_user_list" style="margin: 10px auto;">
+        <div class="row"  style="margin: 10px 15px;">
+            <div class="col-lg-4 col-md-4 col-sm-6">
+                <div class="program_panel">
+                    <div class="program_panel_info">
+                        <span onclick="click_a('divOne_1')" class="glyphicon glyphicon-plus btn btn-lg" aria-hidden="true" style="margin-top: 30px;"></span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div ng-repeat="item in items" class="col-lg-4 col-md-4 col-sm-6">
+                <div class="program_panel">
+                    <div class="program_panel_info">
+                        <div class="col-md-3" style="margin-left: -10px">
+                            <div style="width: 80px;height: 80px;background-color: #ffffff;margin-top: 10px;padding: 5px">
+                                <h2>任务</h2>
+                            </div>
+                        </div>
+                        <div class="col-md-offset-4">
+                            <p>质检时间：{{item.date}}</p>
+                            <p>关联请求：{{item.activity}}</p>
+                            <p><a  ui-sref="index.externalProfession.qualityinspectiontaskdetails">请求名称：{{item.name}}</a></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div></div>
+    <!--2 end-->
+    <div class="complaint_user_list" id="divOne_1" style="margin: 10px auto;display: none;white-space: nowrap;height: auto">
+        <div class="row"  style="margin: 10px 120px;">
+            <div class="col-md-12">
+                <div class="col-md-3">任务类型：<label><select>
+                    <option>质检任务</option>
+                    <option>室内维修</option>
+                    <option>赔偿给业主</option>
+                    <option>清洁</option>
+                    <option>园林</option>
+                    <option>安保</option>
+                    <option>邻里纠纷</option>
+                    <option>重大事项</option>
+                    <option>质检任务</option>
+                </select></label></div>
+                <div class="col-md-4">任务ID:003992</div>
+            </div>
+            <div class="col-md-12">
+                <div class="col-md-3">选择执行团队： </div>
+            </div>
+            <!--tree-->
+            <div class="col-md-2" style="border: 1px solid rgba(0, 0, 0, 0.99);margin-left: 30px;">
+                <ul id="root" style="margin-left: -40px">
+                    <li>
+                        <label><a href="">
+                            <span class="glyphicon glyphicon-play" aria-hidden="true" style="margin-right:2px;"></span>
+                            桃源居</a></label>
+                        <ul class="two">
+                            <li >
+                                <label><a href="">
+                                    <span class="glyphicon glyphicon-play" aria-hidden="true" style="margin-right:2px;"></span>
+                                    {{teams[0].quality}}</a></label>
+                                <ul class="two">
+                                    <li>
+                                        <label><a href="#select"data-toggle="tab">
+                                            <span class="glyphicon glyphicon-play" aria-hidden="true" style="margin-right:2px;"></span>
+                                            {{teams[0].ranks1}}</a></label>
+                                        <ul class="two">
+                                            <li>
+                                                <label><a href="#select1" data-toggle="tab">
+                                                    <span class="glyphicon glyphicon-play" aria-hidden="true" style="margin-right:2px;"></span>
+                                                    {{teams[0].name1}}</a></label>
+                                            </li>
+                                            <li>
+                                                <label><a href="#select2" data-toggle="tab">
+                                                    <span class="glyphicon glyphicon-play" aria-hidden="true" style="margin-right:2px;"></span>
+                                                    {{teams[0].name2}}</a></label>
+                                            </li>
+                                        </ul>
+                                    </li>
+                                    <li>
+                                        <label><a href="#select"data-toggle="tab">
+                                            <span class="glyphicon glyphicon-play" aria-hidden="true" style="margin-right:2px;"></span>
+                                            {{teams[0].ranks2}}</a></label>
+                                        <ul class="two">
+                                            <li>
+                                                <label><a href="#select3" data-toggle="tab">
+                                                    <span class="glyphicon glyphicon-play" aria-hidden="true" style="margin-right:2px;"></span>
+                                                    {{teams[0].name3}}</a></label>
+                                            </li>
+                                            <li>
+                                                <label><a href="#select4" data-toggle="tab">
+                                                    <span class="glyphicon glyphicon-play" aria-hidden="true" style="margin-right:2px;"></span>
+                                                    {{teams[0].name4}}</a></label>
+                                            </li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li>
+                                <label><a href="">
+                                    <span class="glyphicon glyphicon-play" aria-hidden="true" style="margin-right:2px;"></span>
+                                    {{teams[1].quality}}</a></label>
+                                <ul class="two">
+                                    <li>
+                                        <label><a href="#select"data-toggle="tab">
+                                            <span class="glyphicon glyphicon-play" aria-hidden="true" style="margin-right:2px;"></span>
+                                            {{teams[1].ranks1}}</a></label>
+                                        <ul class="two">
+                                            <li>
+                                                <label><a href="#select5" data-toggle="tab">
+                                                    <span class="glyphicon glyphicon-play" aria-hidden="true" style="margin-right:2px;"></span>
+                                                    {{teams[1].name1}}</a></label>
+                                            </li>
+                                            <li>
+                                                <label><a href="#select6" data-toggle="tab">
+                                                    <span class="glyphicon glyphicon-play" aria-hidden="true" style="margin-right:2px;"></span>
+                                                    {{teams[1].name2}}</a></label>
+                                            </li>
+                                        </ul>
+                                    </li>
+                                    <li>
+                                        <label><a href="#select"data-toggle="tab">
+                                            <span class="glyphicon glyphicon-play" aria-hidden="true" style="margin-right:2px;"></span>
+                                            {{teams[1].ranks2}}</a></label>
+                                        <ul class="two">
+                                            <li>
+                                                <label><a href="#select7" data-toggle="tab">
+                                                    <span class="glyphicon glyphicon-play" aria-hidden="true" style="margin-right:2px;"></span>
+                                                    {{teams[1].name3}}</a></label>
+                                            </li>
+                                            <li>
+                                                <label><a href="#select8" data-toggle="tab">
+                                                    <span class="glyphicon glyphicon-play" aria-hidden="true" style="margin-right:2px;"></span>
+                                                    {{teams[1].name4}}</a></label>
+                                            </li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li >
+                                <label><a href="">
+                                    <span class="glyphicon glyphicon-play" aria-hidden="true" style="margin-right:2px;"></span>
+                                    {{teams[2].quality}}</a></label>
+                                <ul class="two">
+                                    <li>
+                                        <label><a href="#select"data-toggle="tab">
+                                            <span class="glyphicon glyphicon-play" aria-hidden="true" style="margin-right:2px;"></span>
+                                            {{teams[2].ranks1}}</a></label>
+                                        <ul class="two">
+                                            <li>
+                                                <label><a href="#select9" data-toggle="tab">
+                                                    <span class="glyphicon glyphicon-play" aria-hidden="true" style="margin-right:2px;"></span>
+                                                    {{teams[2].name1}}</a></label>
+                                            </li>
+                                            <li>
+                                                <label><a href="#select10" data-toggle="tab">
+                                                    <span class="glyphicon glyphicon-play" aria-hidden="true" style="margin-right:2px;"></span>
+                                                    {{teams[2].name2}}</a></label>
+                                            </li>
+                                        </ul>
+                                    </li>
+                                    <li>
+                                        <label><a href="#select"data-toggle="tab">
+                                            <span class="glyphicon glyphicon-play" aria-hidden="true" style="margin-right:2px;"></span>
+                                            {{teams[2].ranks2}}</a></label>
+                                        <ul class="two">
+                                            <li>
+                                                <label><a href="#select11" data-toggle="tab">
+                                                    <span class="glyphicon glyphicon-play" aria-hidden="true" style="margin-right:2px;"></span>
+                                                    {{teams[2].name3}}</a></label>
+                                            </li>
+                                            <li>
+                                                <label><a href="#select12" data-toggle="tab">
+                                                    <span class="glyphicon glyphicon-play" aria-hidden="true" style="margin-right:2px;"></span>
+                                                    {{teams[2].name4}}</a></label>
+                                            </li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+            <!--tree end-->
+            <div class="col-md-1" style="margin-top:80px;margin-left:30px;">
+                <h1 class="btn" aria-hidden="true">》》</h1>
+            </div>
+            <!--选中tree-->
+            <div class="col-md-3 assertInfo tab-pane fade" id="select"
+                 style="border: 1px solid;height:200px;margin: 50px 10px;text-align: center;">
+                <!--获取第一个子节点-->
+                <div style="margin-top: 60px;margin-left: 30px"  class="tab-pane fade" id="select1"><span>{{teams[0].quality}}</span><span>{{teams[0].ranks1}}</span><span>{{teams[0].name1}}</span></div>
+                <!--//获取第一个子节点-->
+                <div style="margin-top:-25px;margin-left: 30px"  class="tab-pane fade" id="select2"><span>{{teams[0].quality}}</span><span>{{teams[0].ranks1}}</span><span>{{teams[0].name2}}</span></div>
+
+                <!--//获取第二个子节点-->
+                <div style="margin-top:-25px;margin-left: 30px"  class="tab-pane fade" id="select3"><span>{{teams[0].quality}}</span><span>{{teams[0].ranks2}}</span><span>{{teams[0].name3}}</span></div>
+                <!--//获取第二个子节点-->
+                <div style="margin-top:-25px;margin-left: 30px"  class="tab-pane fade" id="select4"><span>{{teams[0].quality}}</span><span>{{teams[0].ranks2}}</span><span>{{teams[0].name4}}</span></div>
+                <!--//获取第三个子节点-->
+                <div style="margin-top:-25px;margin-left: 30px"  class="tab-pane fade" id="select5"><span>{{teams[1].quality}}</span><span>{{teams[1].ranks1}}</span><span>{{teams[1].name1}}</span></div>
+
+                <!--//获取第三个子节点-->
+                <div style="margin-top:-25px;margin-left: 30px"  class="tab-pane fade" id="select6"><span>{{teams[1].quality}}</span><span>{{teams[1].ranks1}}</span><span>{{teams[1].name2}}</span></div>
+                <!--//获取第四个子节点-->
+                <div style="margin-top:-25px;margin-left: 30px"  class="tab-pane fade" id="select7"><span>{{teams[1].quality}}</span><span>{{teams[1].ranks2}}</span><span>{{teams[1].name3}}</span></div>
+                <!--//获取第四个子节点-->
+                <div style="margin-top:-25px;margin-left: 30px"  class="tab-pane fade" id="select8"><span>{{teams[1].quality}}</span><span>{{teams[1].ranks2}}</span><span>{{teams[1].name4}}</span></div>
+                <!--//获取第四个子节点-->
+                <div style="margin-top:-25px;margin-left: 30px"  class="tab-pane fade" id="select9"><span>{{teams[2].quality}}</span><span>{{teams[2].ranks1}}</span><span>{{teams[2].name1}}</span></div>
+                <!--//获取第四个子节点-->
+                <div style="margin-top:-25px;margin-left: 30px"  class="tab-pane fade" id="select10"><span>{{teams[2].quality}}</span><span>{{teams[2].ranks1}}</span><span>{{teams[2].name2}}</span></div>
+                <!--//获取第四个子节点-->
+                <div style="margin-top:-25px;margin-left: 30px"  class="tab-pane fade" id="select11"><span>{{teams[2].quality}}</span><span>{{teams[2].ranks2}}</span><span>{{teams[2].name3}}</span></div>
+                <!--//获取第四个子节点-->
+                <div style="margin-top:-25px;margin-left: 30px"  class="tab-pane fade" id="select12"><span>{{teams[2].quality}}</span><span>{{teams[2].ranks2}}</span><span>{{teams[2].name4}}</span></div>
+            </div>
+            <div class="col-md-12">
+                <div class="col-md-3">评分标准：</div>
+            </div>
+            <div class="col-md-12" style="text-align: center;margin: 40px">
+                <table border="1">
+                    <tr>
+                        <td width="130">成员</td>
+                        <td width="200">标准</td>
+                    </tr>
+                    <tr>
+                        <td>张三</td>
+                        <td><label><select style="width: 150px"><option>园林日检评分标准</option></select></label></td>
+                    </tr>
+                    <tr>
+                        <td>李四</td>
+                        <td><label><select style="width: 150px"><option>园林日检评分标准二</option></select></label></td>
+                    </tr>
+                </table>
+            </div>
+            <div class="col-md-12">
+                <div class="col-md-4">检查时间： <label><input type="date" class="form-control input-sm"></label></div>
+                <div class="col-md-3">预计完成时间：  <label><input type="date" class="form-control input-sm"></label></div>
+            </div>
+            <div class="col-md-12">
+                <div class="col-md-1">执行频率：</div>
+            </div>
+            <div class="col-md-12" style="white-space: nowrap;margin-left: 20px">
+                <div class="col-md-2" style="border: 1px solid;height:150px;text-align: center;padding: 50px">
+                    <p>日历</p>
+                </div>
+                <div class="col-md-1" style="margin-top:45px;margin-left:10px;">
+                    <h1 class="btn" aria-hidden="true">》》</h1>
+                </div>
+                <!--选中tree-->
+                <div class="col-md-3" style="border: 1px solid;height:150px;text-align: center">
+                </div>
+            </div>
+            <div class="col-md-12">
+                <div class="col-md-6">负责人：
+                    <label><select><option>谢XX</option></select></label>
+                </div>
+            </div>
+            <div class="col-md-12">
+                <div  style="margin-left: 200px;margin-top: 30px">
+                    <button style="width: 80px">提交</button>
+                </div>
+                <div style="margin-left: 100px;margin-top: -30px">
+                    <button style="width: 80px;">取消</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+</body>
+</html>

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.flf.mapper.ClaimToCustomerRethodsMapper" >
+  <resultMap id="BaseResultMap" type="ClaimToCustomerRethods" >
+    <id column="record_id" property="recordId" jdbcType="VARCHAR" />
+    <result column="order_id" property="orderId" jdbcType="VARCHAR" />
+    <result column="claim_money" property="claimMoney" jdbcType="DOUBLE" />
+    <result column="claim_state" property="claimState" jdbcType="TINYINT" />
+    <result column="claim_cycle" property="claimCycle" jdbcType="TINYINT" />
+    <result column="start_time" property="startTime" jdbcType="TIMESTAMP" />
+    <result column="end_time" property="endTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  
+  <select id="getClaimToCustomerRethodsbyOrderId" parameterType="String" resultMap="BaseResultMap">
+  	select * from ts_claim_to_customer_methods where order_id=#{0}
+  </select>
+  
+  <insert id="insertClaimToCustomerRethods" parameterType="ClaimToCustomerRethods" >      
+      insert into ts_claim_to_customer_methods(record_id,order_id,claim_money,claim_state,claim_cycle,start_time,end_time)
+    values (UUID(),#{orderId,jdbcType=VARCHAR},#{claimMoney,jdbcType=DOUBLE},#{claimState,jdbcType=TINYINT},
+    #{claimCycle,jdbcType=TINYINT},#{startTime,jdbcType=TIMESTAMP},#{endTime,jdbcType=TIMESTAMP})
+  </insert>
+</mapper>

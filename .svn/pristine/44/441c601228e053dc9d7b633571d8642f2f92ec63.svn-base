@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>物品领取</title>
+    <style>
+        .tab td{width: 80px;}
+    </style>
+</head>
+<body ng-controller="goodsReceiptCtrl">
+<div class="container" style="padding: 10px 10px 10px;width: 97%;">
+    <div class="row" style="border-bottom: 1px solid">
+        <div class="col-md-4" style="margin-top: 10px">
+            <table class="tab">
+                <tr>
+                    <td style="text-align: right">房屋地址：</td>
+                    <td style="width: 160px">桃源居3期7区2栋1单元702室</td>
+                </tr>
+                <tr>
+                    <td style="text-align: right">房屋编码：</td>
+                    <td style="width: 160px">00876</td>
+                </tr>
+            </table>
+        </div>
+        <div class="col-md-8" style="background-color: seashell">
+            <table class="tab">
+                <tr>
+                    <td style="text-align: right">房屋钥匙：</td>
+                    <td style="width: 160px">
+                        <form class="form-inline">
+                            <div class="form-group"><input type="checkbox">以领取</div>
+                            <div class="form-group"><input type="checkbox">未领取</div>
+                        </form>
+                    </td>
+                    <td style="text-align: right">礼品：</td>
+                    <td style="width: 160px">
+                        <form class="form-inline">
+                            <div class="form-group"><input type="checkbox">以领取</div>
+                            <div class="form-group"><input type="checkbox">未领取</div>
+                        </form>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="text-align: right">水卡：</td>
+                    <td style="width: 160px">
+                        <form class="form-inline">
+                            <div class="form-group"><input type="checkbox">以领取</div>
+                            <div class="form-group"><input type="checkbox">未领取</div>
+                        </form>
+                    </td>
+                    <td style="text-align: right">燃气卡：</td>
+                    <td style="width: 160px">
+                        <form class="form-inline">
+                            <div class="form-group"><input type="checkbox">以领取</div>
+                            <div class="form-group"><input type="checkbox">未领取</div>
+                        </form>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="text-align: right">电卡：</td>
+                    <td style="width: 160px">
+                        <form class="form-inline">
+                            <div class="form-group"><input type="checkbox">以领取</div>
+                            <div class="form-group"><input type="checkbox">未领取</div>
+                        </form>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
+    <div class="row" style="border-bottom: 1px solid">
+        <div class="col-md-4" style="margin-top: 10px">
+            <table class="tab">
+                <tr>
+                    <td style="text-align: right">房屋地址：</td>
+                    <td style="width: 160px">桃源居3期7区2栋1单元702室</td>
+                </tr>
+                <tr>
+                    <td style="text-align: right">房屋编码：</td>
+                    <td style="width: 160px">00876</td>
+                </tr>
+            </table>
+        </div>
+        <div class="col-md-8" style="background-color: seashell">
+            <table class="tab">
+                <tr>
+                    <td style="text-align: right">房屋钥匙：</td>
+                    <td style="width: 160px">
+                        <form class="form-inline">
+                            <div class="form-group"><input type="checkbox">以领取</div>
+                            <div class="form-group"><input type="checkbox">未领取</div>
+                        </form>
+                    </td>
+                    <td style="text-align: right">礼品：</td>
+                    <td style="width: 160px">
+                        <form class="form-inline">
+                            <div class="form-group"><input type="checkbox">以领取</div>
+                            <div class="form-group"><input type="checkbox">未领取</div>
+                        </form>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="text-align: right">水卡：</td>
+                    <td style="width: 160px">
+                        <form class="form-inline">
+                            <div class="form-group"><input type="checkbox">以领取</div>
+                            <div class="form-group"><input type="checkbox">未领取</div>
+                        </form>
+                    </td>
+                    <td style="text-align: right">燃气卡：</td>
+                    <td style="width: 160px">
+                        <form class="form-inline">
+                            <div class="form-group"><input type="checkbox">以领取</div>
+                            <div class="form-group"><input type="checkbox">未领取</div>
+                        </form>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="text-align: right">电卡：</td>
+                    <td style="width: 160px">
+                        <form class="form-inline">
+                            <div class="form-group"><input type="checkbox">以领取</div>
+                            <div class="form-group"><input type="checkbox">未领取</div>
+                        </form>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
+    <div class="row" style="text-align: center;margin-top: 20px">
+        <button class="btn btn-sm btn-info" style="width: 80px">保存</button>
+    </div>
+</div>
+</body>
+</html>

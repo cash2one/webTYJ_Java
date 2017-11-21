@@ -1,0 +1,379 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:jaxws="http://cxf.apache.org/jaxws"
+	xmlns:jaxrs="http://cxf.apache.org/jaxrs"
+	xsi:schemaLocation="
+    http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+    http://cxf.apache.org/jaxws http://cxf.apache.org/schemas/jaxws.xsd
+    http://cxf.apache.org/jaxrs
+    http://cxf.apache.org/schemas/jaxrs.xsd">
+
+	<import resource="classpath:META-INF/cxf/cxf.xml" />
+	<import resource="classpath:META-INF/cxf/cxf-extension-soap.xml" />
+	<import resource="classpath:META-INF/cxf/cxf-servlet.xml" />
+
+	<jaxrs:server id="restServiceContainer" address="/rest">
+		<jaxrs:serviceBeans>
+			<ref bean="unionpayCollectionDetailService" />
+			<ref bean="unionpayCollectionTotallService" />
+			<ref bean="userService" />
+			<ref bean="menuService" />
+			<ref bean="roleService" />
+						
+			<ref bean="waterMeterProjectService" />
+			<ref bean="waterMeterRecordsService" />
+			<ref bean="waterMeterOrderRecordsService" />
+			<ref bean="waterMeterService" />
+			<ref bean="waterMeterTypesService" />
+			<ref bean="meterReadingDataService" />
+			<ref bean="meterReadingProgramService" />
+			<ref bean="meterReadingComplaintsService" />
+			<ref bean="meterReadingResultsService" />
+			<ref bean="correctedReadingService" />
+			
+			<ref bean="electricityMeterProjectService" />
+			<ref bean="electricityMeterRecordsService" />
+			<ref bean="electricityMeterService" />
+			<ref bean="electricityMeterTypesService" />
+			<ref bean="electricityMeterReadingDataService" />
+			<ref bean="electricityMeterReadingProgramService" />
+			<ref bean="electricityMeterReadingComplaintsService" />
+
+
+			<ref bean="architectureNewService"/>
+			<ref bean="areaTypeNewService"/>
+			<ref bean="areaNewService"/>
+			<ref bean="buildingNewService"/>
+			<ref bean="buildingStructureNewService" />
+			<ref bean="houseNewService" />
+			<ref bean="enterpriseCustNewService" />
+			<ref bean="regionNewService" />
+			<ref bean="personBuildingNewService"/>
+			<ref bean="pooledNewService"/>
+			<ref bean="personEmphasisService"/>
+			<ref bean="personVipService"/>
+			<ref bean="personCustNewService" />
+			<ref bean="storeNewService"/>
+			<ref bean="stallNewService"/>
+			<ref bean="gateAccountService"/> 
+			<ref bean="buildingComponentService"/>
+			<ref bean="scanPayService"/>
+			
+			<ref bean="logTypeService"/> 
+			<ref bean="logService"/> 
+			<ref bean="staffService"/> 
+			<ref bean="teamworkstaffService"/> 
+			<ref bean="teamworkService"/> 
+  
+			<ref bean="componentPropertyService"/>
+			<ref bean="componentStructureService"/>
+			
+			<ref bean="specialtyInfoService"/>
+			<ref bean="projectService"/>
+			<ref bean="prepareService"/>
+			<ref bean="postService"/>
+			<ref bean="parcelService"/>
+
+			<!-- 内部专业线 -->
+			<ref bean="faqService"/>
+			<ref bean="vacationService"/>
+			<ref bean="producepriceService"/>
+			<ref bean="afterSaleService"/>
+
+			<ref bean="divisionService"/>
+			<ref bean="classesTypeService"/>
+			<ref bean="classesService"/>
+			<ref bean="schedulingService"/>
+            <!-- 肖聪 物业服务 -->
+			<ref bean="rulesService"/>
+			<ref bean="informService"/>
+			<ref bean="communtitnoticeService"/>
+			<ref bean="corporatenewsService"/>
+			<ref bean="itemsService"/>
+			<ref bean="newsService"/>
+			<ref bean="intakeService"/>
+			<ref bean="changeTitleService" />
+			<ref bean="entranceService" />
+			<ref bean="articleReleaseService"/>
+			<ref bean="newLeaseService" />	
+			<ref bean="authorizationService" />
+			<ref bean="caraccesscardService" />
+			<ref bean="carInfoService" />
+			<ref bean="petRegistrationService" />
+			<ref bean="tenementPactService" />
+			
+			<!-- 服务请求 -->
+			<ref bean="classesService"/>
+			<ref bean="divisionService"/>
+			<ref bean="hillockService"/>
+			<ref bean="postService"/>
+			<ref bean="postTypeService"/>
+			<ref bean="schedulingService"/>
+			<ref bean="schedulingLogService"/>
+			<ref bean="staffService"/>
+			<ref bean="teamworkService"/>
+			<ref bean="serviceRequestService"/>
+			<ref bean="serviceRequestJournalService"/>
+			<ref bean="tasksService"/>
+			<ref bean="serviceObjectRecordsService"/>
+			<ref bean="tasksJournalService"/>
+			<ref bean="quoteOrdersService"/>
+			<ref bean="disposeOrderService"/>
+
+			<ref bean="functionalService"/>
+
+			<ref bean="acceptanceOrdersService"/>
+			<ref bean="compensateOwnerService"/>
+			<ref bean="checkOrdersService"/>
+			<ref bean="tasksMergeService"/>
+			<ref bean="quoteItemRecordsService"/>
+			<ref bean="disposeInformationRecordsService"/>
+			<ref bean="checkItemRecordsService"/>
+			<ref bean="settleAccountsOrdersService"/>
+			<ref bean="scoreCriteriaService"/>
+			<ref bean="centralizedTreatmentProjectsService"/>
+			<ref bean="giftService"/>
+			<ref bean="giftArticleService"/>
+ 			<ref bean="intakeActivityRelationService"/>
+			<ref bean="intakeGiftRelationService"/>
+			<ref bean="intakeActivityService"/>
+			
+			<ref bean="specialRepairProjectService"/> 
+			<ref bean="organizationStructureService"/> 
+			<ref bean="departmentOrdersService"/>
+			<ref bean="inspectorOrderService"/>
+			<ref bean="tenementInsuranceService"/>
+			<ref bean="returnVisitOrdersService"/>
+			<ref bean="appealOrdersService"/> 
+			<ref bean="waterMeterOrdersService"/>
+			<ref bean="meterReadingOrdersService"/>
+			<ref bean="claimToCustomerOrdersService"/>
+			<ref bean="importantEventTypeService"/>
+			<!-- 服务请求 -->
+
+
+			<ref bean="cassetRepositoryService"/>
+
+			<ref bean="propertyService" />
+			<ref bean="propertyTypeService" />
+			<ref bean="contractService" />
+			<ref bean="corePositionService" />
+			<!--<ref bean="workOrderService" />-->
+			
+            <!-- 验房管理 -->
+            <ref bean="acceptanceHouseService" />
+			<ref bean="acceptanceHouseRelationService" />
+
+			<ref bean="teamPermissionsService" />
+			
+			<ref bean="corePositionService" />
+			<ref bean="teamPermissionsService" />
+			<!-- 投诉工单 -->
+			<ref bean="complaintOrdersService" />
+			<!-- 咨询工单 -->
+			<ref bean="ConsultationOrdersService" />
+			<!-- 固定车位工单 -->
+			<ref bean="FixedParkingOrdersService" />
+			<ref bean="RenovationCheckOrdersService" />
+			<ref bean="RenovationInspectionOrdersService" />
+			<ref bean="RenovationAcceptanceOrdersService" />
+             <!-- 失效工单 -->
+			<ref bean="closedOrdersService" />
+			<!-- 业主装修申请 -->
+			<ref bean="ownerRenovationApplyService" />
+			<!-- 表扬表 -->
+			<ref bean="PraiseOrdersService"/>
+			<!-- 延时 -->
+			<ref bean="ApplicationDelayRecordsService"/>
+			<!-- VIP客户项目专员关联 -->
+			<ref bean="VipProjectStaffService"/>
+			<!-- 业主装修备案证 -->
+			<ref bean="constructionRecordCardService" />
+			<!-- 催促记录表-->
+			<ref bean="urgeTaskRecordsService" />
+			
+
+			<!-- 施工核查-->
+			<ref bean="constructionCheckOrdersService" />
+			<!-- 施工巡检-->
+			<ref bean="constructionInspectionOrdersService" />
+			<!-- 施工验收-->
+			<ref bean="constructionAcceptanceOrdersService" />	
+	        <!-- 施工申请 -->
+		    <ref bean="ownerConstructionApplyService" />
+		    <!-- 合同建筑资产管理 --> 
+		    <ref bean="contractPropertyStructureService" />
+
+			<!--项目计费  -->
+		    <ref bean="projectBillingService" />
+		    
+			<!--收费类型项目计费  -->
+			<ref bean="chargeTypeProjectBillingService" />
+			
+			<!--收费类型建筑计费  -->
+			<ref bean="chargeTypeBuildingBillingService" />
+			
+			<!--收费类型详情建筑计费  -->
+			<ref bean="chargeTypeDetailsBuildingBillingService" />
+			
+			<!--计费记录   -->
+			<ref bean="billingRecordService" />
+		    
+		    <!-- 计费收费  常量 -->
+		    <ref bean="constantService" />
+		    
+		    <!-- 计费收费  条件 -->
+		    <ref bean="conditionService" />
+		    
+		    <!-- 计费收费  公式 -->
+		    <ref bean="formulaService" />
+		    
+		    <!-- 计费收费  方案收费项目关联 -->
+		    <ref bean="schemeRelationService" />
+		    
+		    <!-- 计费收费  方案公式收费项目关联 -->
+		    <ref bean="schemeDatailsService" />
+		    
+		    <!-- 计费方案 -->
+		    <ref bean="schemeService" />
+			<!-- 计费方案下收费项目 -->
+		    <ref bean="chargeItemNewService" />
+		    <!-- 收费项目详情 -->
+		    <ref bean="chargeItemNewDetailsService" />
+		    <!-- 收费项目建筑关系 -->
+		    <ref bean="chargeItemNewBuildingService" />
+		    <!-- 收费类型-->
+		    <ref bean="chargeTypeService" />
+		    <!-- 收费类型详情-->
+		    <ref bean="chargeTypeDetailsService" />
+
+		     <ref bean="collectionManageService" />
+		     <!-- 个人账户管理 -->
+		     <ref bean="accountService"/>
+		     <!-- 电子账单 -->
+		     <ref bean="electronicBillingService"/>
+		     <!-- 应收款表 -->
+		     <ref bean="billService"/>
+		     <!-- 资产账号 -->
+		     <ref bean="assetAccountService"/>
+ 			<ref bean="financialGroupTotalService" />
+ 			<!--交账记录表  -->
+ 			 <ref bean="accountRecordService" />
+ 			 <!--银行存单表  -->
+ 			<ref bean="bankDepositService" />
+ 			<!--财务人员表 -->
+ 			<ref bean="financialStaffService" />
+ 			<!--收款纪录表 -->
+ 			<ref bean="paymentRecordsService" />
+            <!-- 收支明细表 -->
+ 			<ref bean="paymentDetailsService"/>
+ 			<!-- 预支付明细 -->
+ 			<ref bean="advancePaymentsDetailsService"/>
+ 			<!-- 金融联明细表 -->
+ 			<ref bean="financialGroupDetailService"/>
+ 			<!-- 金融联回盘总结表 -->
+ 			<ref bean="financialCounterofferTotalService"/>
+ 			<!-- 金融联回盘明细表 -->
+ 			<ref bean="financialCounterofferDetailService"/>
+ 			<!-- 金融联银行行别表 -->
+ 			<ref bean="financialBankNumService"/>
+ 			<!-- 费用类型表 -->
+ 			<ref bean="chargeTypeService"/>
+ 			<!-- 资产账户表 	 -->		
+            <ref bean="assetAccountDetailService"/>
+             <!-- 银行托收 -->
+             <ref bean="unionpayCounterofferTotalService"/> 
+             <!-- 产品表 -->
+             <ref bean="productService" />
+             <!-- 产品表 -->
+             <ref bean="unionpayCounterofferDetaiService" />
+             
+             <!-- 系统设置属性设置 -->
+             <ref bean="dataDictionaryService"/>
+             
+             <!-- 系统设置管理员设置 -->
+             <ref bean="adminService"/>
+
+             <!-- 子公司 -->
+             <ref bean="subCompanyService"/>
+             
+             <ref bean="handleMechanismService"/>
+             
+             <!-- 服务请求FAQ -->
+             <ref bean="faqsService"/>
+             
+             <!-- 服务请求FAQ类型 -->
+             <ref bean="faqTypesService"/>
+
+             <!--巡检方案 -->
+             <ref bean="inspectionPlanService"/>
+
+             <!-- 装修巡检方案 -->
+             <ref bean="decorationInspectionPlansService"/>
+             
+             <!-- 维修单 -->
+             <ref bean="repairOrdersService"/>
+             <!-- 巡检目标巡检项表 -->
+ 			<ref bean="inspectionPropertyCheckItemService"/>
+ 			<!-- 审核代办 -->
+			<ref bean="pendingApprovalService"/>
+			<ref bean="authorizationProjectTypeService"/>
+			<ref bean="authorizationProjectService"/>
+			<!-- 数据字典表从表 -->
+			<ref bean="dataDictionarySlaveService"/>
+			<!-- 公司表 -->
+			<ref bean="companyService"/>
+			<!-- 岗位权限 -->
+			<ref bean="postAuthorityService"/>
+			<!-- 物品遗失 -->
+			<ref bean="lostService"/>
+			<!-- 遗失物品 -->
+			<ref bean="tcArticleService"/>
+			<!-- 遗失物品 关联表-->
+			<ref bean="tcArticleStateService"/>
+			<!-- 遗失 领取物品表-->
+			<ref bean="tcArticleGetService"/>
+			<!-- 登录 -->
+			<ref bean="loginService"/>
+			<!-- 租赁（合同）管理 -->
+			<ref bean="leaseContractService"/>
+			<!-- 建筑产品 -->
+			<ref bean="productBsService"/>
+			<!-- 用户 -->
+			<ref bean="userServiceNew"/>
+			<ref bean="importantEventTypeJournalService"/>
+			<!--  重大事项类型日志记录表-->
+			
+			<!-- 项目入伙前置任务完成情况 -->
+			<ref bean="projectCompletionService" />
+			
+			<!-- 支付系统提供接口 -->
+			<ref bean = "paymsService" />
+			<!-- 物业app提供接口 -->
+			<ref bean ="propertyAppService"/>
+			<!-- 普通服务接口 -->
+			<ref bean="productCommonserviceService"/>
+			<!-- 固定车位 -->
+			<ref bean="productFixedparkingspaceService"/>
+			<ref bean="workFlowService"/>
+			
+			<!-- 保险公司服务接口 -->
+			<ref bean="insuranceService"/>
+			<!-- 巡检详情 -->
+			<ref bean="inspectionRecordsService"/>
+			<!-- 巡检单 -->
+			<ref bean="inspectionOrderService"/>
+			
+			<ref bean="appUserAuditService"/>
+		</jaxrs:serviceBeans>
+
+		<jaxrs:extensionMappings>
+			<entry key="json" value="application/json" />
+			<entry key="xml" value="application/xml" />
+			<entry key="plain" value="text/plain" />
+		</jaxrs:extensionMappings>
+		<jaxrs:languageMappings>
+			<entry key="en" value="en-gb" />
+		</jaxrs:languageMappings>
+	</jaxrs:server>
+</beans>

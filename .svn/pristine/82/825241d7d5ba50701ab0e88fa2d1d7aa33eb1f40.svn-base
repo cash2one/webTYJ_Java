@@ -1,0 +1,129 @@
+/**
+ * @Title: PersonBuildingNewMapper.java
+ * @Package com.flf.mapper
+ * @Description: TODO
+ * Copyright: Copyright (c) 2011 
+ * Company:武汉闻风多奇软件开发有限公司
+ * 
+ * @author wangtao
+ * @date 2015-5-25 下午1:13:29
+ * @version V1.0
+ */
+
+package com.flf.mapper;
+
+import java.util.List;
+
+import com.flf.entity.HouseNew;
+import com.flf.entity.PersonBuildingNew;
+import com.flf.entity.Sipmanage;
+
+/**
+ * @ClassName: PersonBuildingNewMapper
+ * @Description: TODO
+ * @author wangyong
+ * @date 2015-5-25 下午1:13:29
+ *
+ */
+
+public interface PersonBuildingNewMapper {
+	
+	/*
+	 *  客户房屋关系表
+	 */
+    List<PersonBuildingNew> listPagePersonBuildingNew(PersonBuildingNew personBuildingNew);//分页查询显示客户房屋关系信息
+    List<PersonBuildingNew> listAllPersonBuildingNew(); //查询客户房屋关系信息
+    PersonBuildingNew getPersonBuildingNewById(String personBuildingId);//根据id查询客户房屋关系信息
+    int insertPersonBuildingNew(PersonBuildingNew personBuildingNew); //添加客户房屋关系信息
+    int updatePersonBuildingNew(PersonBuildingNew personBuildingNew); //修改客户房屋关系信息
+    int deletePersonBuildingNew(String personBuildingId); //删除客户房屋关系信息、  
+    void deletePersonBuilding(String personBuildingId); //删除客户房屋关系信息、
+    List<PersonBuildingNew> listAllPersonAndHouseByHouseId(String houseId);//根据房屋id查询人员建筑关系
+    List<PersonBuildingNew> listAllPersonAndHouseByStoreId(String storeId);//根据商铺id查询人员建筑关系
+    List<PersonBuildingNew> listAllPersonAndHouseByStallId(String stallId);//根据车位id查询人员建筑关系
+   	List<PersonBuildingNew> listAll();//查询所有的
+    int updatePersonBuildingNewByState(String buildingStructureId); //修改建筑结构id为此的客户房屋关系状态
+    List<PersonBuildingNew> listAllPersonBuildingNewone(PersonBuildingNew personBuildingNew); //查询客户房屋关系信息
+    
+    List<PersonBuildingNew> listPersonBuildingNewByBuildingStructureId(String buildingStructureId);//根据建筑结构id查询人员建筑关系
+    List<PersonBuildingNew> listPersonBuildingNewByBuildingStructureIdone(String buildingStructureId);//根据建筑结构id查询人员建筑关系并获得人员信息
+    List<PersonBuildingNew> listPersonBuildingNewByCustType(String custType);//根据客户类型查询人员建筑关系
+    
+    List<PersonBuildingNew> listPagePersonBuilding(PersonBuildingNew personBuildingNew);//分页查询显示客户房屋关系信息
+    
+    PersonBuildingNew getPersonBuildingNewByCustIdAndBsId(String custId,String buildingStructureId);//根据客户id和建筑id查询客户房屋关系信息
+    
+    PersonBuildingNew getPersonBuildingNewByEnterpriseIdAndBsId(String enterpriseId,String buildingStructureId);//根据企业客户id和建筑id查询客户房屋关系信息
+    
+    PersonBuildingNew selectHouseNew(String buildingStructureid);
+    
+	List<PersonBuildingNew> getRelationOfemplers(PersonBuildingNew personBuildingNew);//根据人屋关系查询员工与企业房屋的关系链
+	List<PersonBuildingNew> getRelationOfemplersByStructs(PersonBuildingNew personBuildingNew);//根据人屋关系查询员工与企业房屋的关系链
+	List<PersonBuildingNew> selectPersonBuildingNewByCustId(
+			PersonBuildingNew personBuildingNew);
+	List<PersonBuildingNew> listPersonBuildingByHouseId(String houseId);
+    
+    List<PersonBuildingNew> listPersonBuildingNewByCustId(String custId);//根据客户id查询客户房屋关系
+    
+    PersonBuildingNew selectHouseNewByCustType(PersonBuildingNew personBuildingNew);//根据关系id和客户类型查询关系
+    
+    int updataPersonBuildingById(PersonBuildingNew personBuildingNew);// 根据关系id修改，删除（关系启用/停止）关系链信息
+    
+    List<PersonBuildingNew> getPersonBuildingNewByCustIdAndBsId_one(String custId,String buildingStructureId);//根据客户id和建筑id查询客户房屋关系信息
+	
+    List<PersonBuildingNew> getRelationBycustId(String custId);
+	List<PersonBuildingNew> listPageHouseByenterpriseId(PersonBuildingNew personBuildingNew);//根据企业客户id查询所有其相关建筑信息
+	
+	List<PersonBuildingNew> getAllPersonBuildings(String buildingStructureId);//根据企业客户id查询所有其相关建筑信息
+	
+	List<PersonBuildingNew> getPersonBuildingNewsByCompany(String company);//根据公司id获取其项目相关建筑信息
+    
+	List<PersonBuildingNew> getPersonBuildingByProjectId(String projectId);//根据项目id获取项目下的客户建筑关联关系  王洲  2016.2.1
+	List<PersonBuildingNew> getPersonBuildingByCustId(String custId);//根据客户id获取客户建筑关联关系
+	
+	
+	List<String> gteBuildingByPersonId(String personId);
+	HouseNew getHouseNewByHouseId(String houseId);//根据房屋id获取房屋信息
+	Sipmanage getSipByStuctureId(String buildingStructureId);//根据建筑结构id获取sip
+	List<String> getPersonIdByBuildingStruId(String buildingStruId);//根据建筑结构id获取客户id
+	List<String> getPersonIdById(String custId);//根据客户id获取建筑结构id
+	//批量插入资产绑定记录
+	int insertList(List<PersonBuildingNew> insertList);
+	
+	List<PersonBuildingNew> getPersonBuildingHasMoreByProjectId(String projectId);
+	
+	int deletePersonBuildingByCustId(String custId,String buildingStructureId);//根据租客id删除租客关系
+	
+	/**
+	 * 支付系统对接接口
+	 * 根据个人客户id查询关联的所有建筑，包括为业主和为租客
+	 * 王洲
+	 * 2016.04.26
+	 * @param custId
+	 * @return
+	 */
+	List<PersonBuildingNew> listBuildingByCustId(String custId);
+	
+	/**
+	 * 支付系统对接接口
+	 * @param cardNum
+	 * @return
+	 */
+	List<PersonBuildingNew> listBuildingByCardNum(String cardNum);
+	
+	/**
+	 * 获取室内机sip
+	 * @param buildingStructureId
+	 * @return
+	 */
+	Sipmanage getIndoorSipByStuctureId(String buildingStructureId);
+	
+	/**
+	 * 根据客户id集合获取客户建筑关联关系
+	 * @param custIdList
+	 * @return
+	 */
+	List<PersonBuildingNew> getPersonBuildingByCustIdList(List<String> custIdList);
+	
+	List<String> gteBuildingByPersonIdList(List<String> custIdList);
+}

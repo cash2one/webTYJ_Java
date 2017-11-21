@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>租赁</title>
+    <link rel="stylesheet" href="css/staffHome/lease.css">
+    <style>
+        .table5 tr td{
+            height:60px;width:340px;
+        }
+    </style>
+</head>
+<body>
+<div class="complaint_user_list" style="padding:15px 1px">
+    <div class="container-fluid body1">
+        <div class="panel-collapse collapse " ng-class="{in: !vm.collapsed}" >
+            <div class="row">
+
+                <div class="col-lg-4 col-md-4 col-sm-6">
+                    <div class="panel">
+                        <div class="panel_title">
+                            <span class="panel_title_left">车辆信息： </span><span class="panel_title_right"><span class="zoom_button"></span><span class="close_button"></span></span>
+                        </div>
+                        <div class="panel_info" style="margin-top: -20px">
+                            <div class=" panel_info clear" >
+                                <div class="btn-group col-md-offset-11">
+                                </div>
+                            </div>
+                            <div class="pull-left img1" ><img class="img3" src="images/staffHome/u600.jpg" style="width:130px;height:120px;"></div>
+                            <div class="pull-left">
+                                <div>
+                                    <table class="table3">
+                                        <tr>
+                                            <td class="text-right">房屋编号：</td>
+                                            <td>123</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="text-right">出租开始日期：</td>
+                                            <td>2015/5/5</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="text-right">出租结束日期：</td>
+                                            <td>2016/5/5</td>
+                                        </tr>
+
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+                <div class="col-lg-4 col-md-4 col-sm-6">
+                    <div class="panel">
+                        <div class="panel_title">
+                            <span class="panel_title_left">新建信息： </span><span class="panel_title_right"><span class="zoom_button"></span><span class="close_button"></span></span>
+                        </div>
+                        <div class="panel_info" style="margin-top: -20px">
+                            <div class=" panel_info clear" >
+                                <div class="btn-group col-md-offset-11">
+
+                                </div>
+                            </div>
+                            <div class=" img1" align="center" ><a data-toggle="modal" data-parent="#accordion"  href="#myModal3"><img class="img3 " src="images/staffHome/cmm1_u155.png" style="width:120px;height:120px;align-content: center"></a></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal fade" id="myModal3" tabindex="-1" role="dialog">
+                <div class="modal-dialog"  style="height:400px;width:760px;">
+                    <div class="modal-content" >
+                        <div class="panel_title">
+                            <span class="panel_title_left">新建信息：</span>
+                            <span class="panel_title_right"><span class="zoom_button"></span><span class="close_button" data-dismiss="modal" aria-hidden="true"></span></span>
+                        </div>
+                        <div class="panel_info" style="padding-top: 20px;" >
+                            <div class=" panel_info clear"  style="height:350px;">
+                                <table  class="table5">
+                                    <tr >
+                                        <td><div class="input-group "><label class="col-md-6 " for="no">房屋编号：</label><div class="col-md-6"><input type="text" class="form-control" id="no" ></div></div></td>
+                                        <td ><div class="input-group"><label class="col-md-6" for="time1">出租开始日期：</label><div class="col-md-6"><input type="datetime" class="form-control" id="time1"></div></div></td>
+                                        <td ><div class="input-group" ><label class="col-md-6" for="time2">出租结束日期：</label><div class="col-md-6"><input type="datetime" class="form-control" id="time2"></div></div></td>
+                                    </tr>
+                                    <tr >
+                                        <td > <div class="input-group"><label  class="col-md-6" for="name">租客姓名：</label><div class="col-md-6"><input type="text" class="form-control" id="name"></div></div></td>
+                                        <td><div class="input-group"><label class="col-md-6" for="tel">联系电话：</label><div class="col-md-6"><input type="tel" class="form-control" id="tel"></div></div></td>
+                                        <td> <div class="input-group"><label class="col-md-6" for="address">联系地址：</label><div class="col-md-6"><input type="text" class="form-control" id="address"></div></div></td>
+                                    </tr>
+                                    <tr >
+                                        <td><div class="input-group"><label class="col-md-6"  for="dell">合同号：</label><div class="col-md-6"><input type="text" class="form-control"id="dell"></div></div></td>
+                                        <td><div class="input-group"><label class="col-md-6" for="price">出租价格：</label><div class="col-md-6"><input type="text" class="form-control"id="price"></div></div></td>
+                                        <td><div class="input-group"><label class="col-md-6" for="more">是否递增：</label><div class="col-md-6"><input type="text" class="form-control"id="more" ></div></div></td>
+                                    </tr>
+                                    <tr  >
+                                        <td> <div class="input-group"><label class="col-md-6" for="type">递增类型：</label><div class="col-md-6"><input type="text" class="form-control" id="type"></div></div></td>
+                                        <td><div class="input-group"><label class="col-md-6" for="date3">计费日期：</label><div class="col-md-6"><input type="text" class="form-control" id="date3"></div></div></td>
+                                        <td><div class="input-group"><label class="col-md-6" for="date4">交费截止日期：</label><div class="col-md-6"><input type="text" class="form-control" id="date4"></div></div></td>
+                                    </tr>
+                                    <tr>
+                                        <td><div class="input-group"><label class="col-md-6" for="num">收款帐号：   </label><div class="col-md-6"><input type="text" class="form-control" id="num"></div></div></td>
+                                        <td><div class="input-group"><label class="col-md-6" for="date5">免租开始时间：</label><div class="col-md-6"><input type="text" class="form-control" id="date5"></div></div></td>
+                                        <td> <div class="input-group"><label class="col-md-6" for="date6">免租结束时间：</label><div class="col-md-6"><input type="text" class="form-control" id="date6"></div></div></td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+
+
+
+                        <div style="padding:20px;" align="right">
+                            <button  type="button" class="btn btn-primary" data-dismiss="modal">提交</button>
+                            <button type="button" class="btn btn-primary">取消</button>
+                            <button type="button" class="btn btn-primary">打印</button>
+                        </div>
+                    </div><!-- /.modal-content -->
+                </div><!-- /.modal -->
+            </div>
+        </div>
+    </div>
+    <!-- 搜索结果end -->
+</div>
+</body>
+</html>

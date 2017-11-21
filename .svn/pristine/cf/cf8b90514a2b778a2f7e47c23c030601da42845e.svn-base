@@ -1,0 +1,64 @@
+package com.flf.mapper;
+
+import java.util.List;
+import com.flf.entity.PageRestful;
+import com.flf.entity.UnionpayCollectionDetail;
+
+
+public interface UnionpayCollectionDetailMapper {
+   
+	//通过总表ID查询明细所有字段
+    List<UnionpayCollectionDetail> getUnionpayCollectionDetailById (String projectId);
+    
+    /**
+     * 根据总结文件id查询明细
+     * @author xiaocong
+     * @date 下午3:16:18
+     * @Description:TODO
+     * @param unionpayCollectionTotallId
+     * @return
+     * @updateby
+     */
+    List<UnionpayCollectionDetail> getUnionpayCollectionDetails(String unionpayCollectionTotallId);
+    
+	/**
+  	 * 通过id查询，进行分页
+  	 * @author chenqiuxu
+  	 * @param unionpayCollectionDetail
+  	 * @return 
+  	 */
+    List<UnionpayCollectionDetail> listPageUnionpayCollectionDetailById(UnionpayCollectionDetail unionpayCollectionDetail);
+    
+    /**
+     * 插入银联托收明细表
+     * @author zhoumingsheng
+     * @param unionpayCollectionDetail
+     * @return
+     */
+    int insertUnionpayCollectionDetail(UnionpayCollectionDetail unionpayCollectionDetail);
+    
+    /**
+     * 银联取消托收删除明细
+     * @param unionpayCollectionTotallId
+     */
+    void deleteDetailById(String unionpayCollectionTotallId);
+    
+    /**
+     * 修改托收状态为已托收
+     */
+    void updateCollectionState(String unionpayCollectionTotallId);
+    
+    /**
+     * 根据订单号查询托收明细表
+     * 2016-07-29  zhoumingsheng
+     * @param unionpayCollectionDetail
+     * @return
+     */
+    List<UnionpayCollectionDetail> listAllDetailByOrderNum(UnionpayCollectionDetail unionpayCollectionDetail);
+    
+    /**
+     * 通过托收明细ID将回盘状态改为2-已回盘
+     * @param unionpayCollectionDetail
+     */
+    void updateCollectionStateToTwo(UnionpayCollectionDetail unionpayCollectionDetail);
+}

@@ -1,0 +1,614 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.flf.mapper.BillMapper">
+	<resultMap id="BaseResultMap" type="com.flf.entity.Bill">
+		<id column="bill_id" property="billId" jdbcType="VARCHAR" />
+		<result column="asset_type" property="assetType" jdbcType="TINYINT" />
+		<result column="bill_num" property="billNum" jdbcType="VARCHAR" />
+		<result column="building_billing_id" property="buildingBillingId"
+			jdbcType="VARCHAR" />
+		<result column="billing_sum" property="billingSum" jdbcType="DOUBLE" />
+		<result column="bill_date" property="billDate" />
+		<result column="bill_state" property="billState" jdbcType="TINYINT" />
+		<result column="project_id" property="projectId" jdbcType="VARCHAR" />
+		<result column="product_id" property="productId" jdbcType="VARCHAR" />
+		<result column="building_id" property="buildingId" jdbcType="VARCHAR" />
+		<result column="full_name" property="fullName" jdbcType="VARCHAR" />
+		<result column="project_name" property="projectName" jdbcType="VARCHAR" />
+		<result column="collect_sum" property="collectSum" jdbcType="DOUBLE" />
+		<result column="no_collect_sum" property="noCollectSum"
+			jdbcType="DOUBLE" />
+		<result column="overdue" property="overdue" jdbcType="DOUBLE" />
+		<result column="electronic_billing_id" property="electronicBillingId"
+			jdbcType="VARCHAR" />
+		<!-- 以下为新增字段 2015/12/29 -->
+		<result column="current_sum" property="currentSum" jdbcType="DOUBLE" />
+		<result column="last_sum" property="lastSum" jdbcType="DOUBLE" />
+		<result column="current_owe_sum" property="currentOweSum" jdbcType="DOUBLE" />
+		<result column="last_owe_sum" property="lastOweSum" jdbcType="DOUBLE" />
+		<result column="charge_type_details_id" property="chargeTypeDetailsId" jdbcType="VARCHAR" />
+		<result column="endDate" property="endDate" />
+		<result column="type" property="type" jdbcType="VARCHAR" />
+		<result column="confirm_bill_date"  property="confirmBillDate" jdbcType="VARCHAR"/>
+		<!-- 新增字段  hulili 2016.7.8 -->
+		<!-- 附加字段 -->
+		<result column="ci_name" property="chargeItemName" jdbcType="VARCHAR" />
+		<result column="charge_type_name" property="chargeTypeName" jdbcType="VARCHAR" />
+		<result column="charge_type_details_name" property="chargeTypeDetailsName" jdbcType="VARCHAR" />
+		<result column="charge_type_id" property="chargeTypeId" jdbcType="VARCHAR" />
+		<result column="general_balance" property="generalBalance" jdbcType="DOUBLE" />
+		<result column="disposable_balance" property="disposableBalance" jdbcType="DOUBLE" />
+		<result column="charge_type_priority"	property="chargeTypePriority" jdbcType="VARCHAR"/>
+		<result column="custName"	property="custName" jdbcType="VARCHAR"/>
+		<result column="cardNum"	property="cardNum" jdbcType="VARCHAR"/>
+		<result column="bill_num_month"	property="billNumMonth" jdbcType="VARCHAR"/>
+		<result column="asset_account_id"  property="assetAccountId" jdbcType="VARCHAR"/>
+		<result column="asset_account_num"  property="assetAccountNum" jdbcType="VARCHAR"/>
+	</resultMap>
+
+	<resultMap type="Bill" id="resultBillMap" extends="BaseResultMap">
+		<collection property="project" column="project_id" ofType="Project"
+			select="com.flf.mapper.ProjectMapper.getProject"></collection>
+	</resultMap>
+
+	<select id="getBillLsitByElectronicBillingId" resultMap="BaseResultMap"
+		parameterType="java.lang.String">
+		SELECT * FROM tc_bill WHERE electronic_billing_id = #{0}
+	</select>
+
+	<select id="listPageBill" resultMap="BaseResultMap"
+		parameterType="Bill">
+		select a.* from tc_bill a
+		left join tc_bill_advance_payments_details_relation b on
+		a.bill_id=b.bill_id
+		left join tc_advance_payments_details c on
+		c.advance_payments_details_id=b.advance_payments_details_id
+		where 1=1
+		<if test="billNum!='' and billNum!=null">
+			and a.bill_num like CONCAT('%',#{billNum},'%')
+		</if>
+		<if test="billId!=''and billId!=null">
+			and a.bill_id like CONCAT('%',#{billId},'%')
+		</if>
+		<if test="projectName!=''and projectName!=null">
+			and a.project_name like CONCAT('%',#{projectName},'%')
+		</if>
+		order by bill_date desc
+
+	</select>
+	<!--退款 将状态改为 已取消 -->
+	<update id="updateRefund" parameterType="com.flf.entity.Bill">
+		update tc_bill set bill_state=2 where bill_id=#{billId,jdbcType=VARCHAR}
+	</update>
+	<!-- 冲正 -->
+	<update id="updateImpact" parameterType="com.flf.entity.Bill">
+		update tc_bill set collect_sum=0 where bill_id=#{billId,jdbcType=VARCHAR}
+
+	</update>
+	<select id="getBillByBuildingId" parameterType="String"
+		resultMap="BaseResultMap">
+		select a.*,b.full_name from tc_bill a
+		left join tc_building_structure b on a.building_id=b.id
+		where a.building_id=#{0}
+		order by a.bill_date desc
+	</select>
+
+	<select id="getAllBuildingIdOfCust" parameterType="String"
+		resultType="String">
+		select a.building_id from tc_asset_account a
+		left join tc_account_relation b on a.asset_account_id = b.asset_account
+		left join tc_account c on b.account_id = c.account_id
+		where c.cust_id = #{0}
+	</select>
+
+	<select id="getNoCollectSumByElectronicBillIdAndBuildingId"
+		parameterType="String" resultType="java.lang.Double">
+		select sum(no_collect_sum) from tc_bill
+		where electronic_billing_id=#{0} and building_id=#{1}
+	</select>
+	<select id="getOverdueByElectronicBillIdAndBuildingId"
+		parameterType="String" resultType="java.lang.Double">
+		select sum(overdue) from tc_bill
+		where electronic_billing_id=#{0} and building_id=#{1}
+	</select>
+
+	<select id="getBillsByelectronicBillingIdThisMonth"
+		parameterType="String" resultMap="BaseResultMap">
+		select a.*,b.charge_type_name from tc_bill a
+		left join tc_charge_type b on a.charge_type_id=b.charge_type_id
+		where a.electronic_billing_id=#{0} and year(a.bill_date)=year(#{1}) and
+		month(a.bill_date)=month(#{1})
+	</select>
+
+	<!-- 当月分页 -->
+	<select id="listPageBillsByelectronicBillingIdThisMonth"
+		parameterType="com.flf.entity.Bill" resultMap="BaseResultMap">
+		select a.*,b.charge_type_name from tc_bill a
+		left join tc_charge_type b on a.charge_type_id=b.charge_type_id
+		where year(a.bill_date)=year(#{billDate}) and
+		month(a.bill_date)=month(#{billDate}) and electronic_billing_id =
+		#{electronicBillingId}
+	</select>
+
+	<select id="getBillsByelectronicBillingIdLastMonth"
+		parameterType="String" resultMap="BaseResultMap">
+		select a.*,b.charge_type_name from tc_bill a
+		left join tc_charge_type b on a.charge_type_id=b.charge_type_id
+		where a.electronic_billing_id=#{0} and year(a.bill_date)=year(#{1}) and
+		month(a.bill_date) &lt; month(#{1})
+	</select>
+
+	 <!-- 根据电子账单id查询降序账单 zhuqi -->
+	<!--<select id="listBillByElectronicBillingId" parameterType="String"
+		resultMap="BaseResultMap">
+		SELECT a.*,b.charge_type_name FROM tc_bill a
+		LEFT JOIN tc_charge_type b on a.charge_type_id=b.charge_type_id
+		WHERE electronic_billing_id = #{0}
+		order by bill_date Desc
+	</select> -->
+
+	<!-- 历史分页 -->
+	<select id="listPageBillsByelectronicBillingIdLastMonth"
+		parameterType="com.flf.entity.Bill" resultMap="BaseResultMap">
+		select * from tc_bill where DATE_FORMAT(bill_date, '%Y-%m') &lt; 
+		DATE_FORMAT(#{billDate}, '%Y-%m') and electronic_billing_id = #{electronicBillingId}
+	</select>
+
+	<select id="getNoCollectSumOfLastMonth" parameterType="com.flf.entity.Bill"
+		resultType="java.lang.Double">
+		select no_collect_sum from tc_bill
+		where charge_type_id = #{chargeTypeId} and building_id = #{buildingId}
+		and year(#{billDate})=year(bill_date) and
+		month(#{billDate})-month(bill_date)=1
+	</select>
+
+	<select id="getBillById" parameterType="String" resultMap="BaseResultMap">
+		select * from tc_bill where bill_id=#{0}
+	</select>
+
+	<select id="getBillByChargeItemId" parameterType="String"
+		resultMap="BaseResultMap">
+		select * from tc_bill where charge_type_id=#{0}
+	</select>
+
+	<insert id="insertBill" parameterType="com.flf.entity.Bill">
+		insert into tc_bill (bill_id, asset_type, bill_num,
+		building_billing_id, billing_sum, bill_date,
+		bill_state,charge_type_id,project_id,product_id,building_id,
+		collect_sum,no_collect_sum,overdue,current_sum,last_sum,
+		current_owe_sum,last_owe_sum,charge_type_details_id,bill_num_month,confirm_bill_date)
+		values (#{billId,jdbcType=VARCHAR},#{assetType,jdbcType=TINYINT},
+		#{billNum,jdbcType=VARCHAR},#{buildingBillingId,jdbcType=VARCHAR}, 
+		#{billingSum,jdbcType=DOUBLE}, #{billDate,jdbcType=DATE},
+		#{billState,jdbcType=TINYINT},#{chargeTypeId,jdbcType=VARCHAR},
+		#{projectId,jdbcType=VARCHAR},#{productId,jdbcType=VARCHAR},#{buildingId,jdbcType=VARCHAR},
+		#{collectSum,jdbcType=DOUBLE},#{noCollectSum,jdbcType=DOUBLE},
+		#{overdue,jdbcType=DOUBLE},#{currentSum,jdbcType=DOUBLE},
+		#{lastSum,jdbcType=DOUBLE},#{currentOweSum,jdbcType=DOUBLE},
+		#{lastOweSum,jdbcType=DOUBLE},#{chargeTypeDetailsId,jdbcType=VARCHAR},#{billNumMonth},#{confirmBillDate})
+	</insert>
+
+	<update id="updateBillList" parameterType="java.util.List">
+		<foreach collection="list" item="item" index="index" open="" close="" separator=";">
+			update tc_bill  set
+				<if test="item.assetType != null and item.assetType != ''">
+					asset_type = #{item.assetType,jdbcType=TINYINT},
+				</if>
+				<if test="item.billNum != null and item.billNum != ''">
+					bill_num = #{item.billNum,jdbcType=VARCHAR},
+				</if>
+				<if test="item.buildingBillingId != null and item.buildingBillingId !=''">
+					building_billing_id = #{item.buildingBillingId,jdbcType=VARCHAR},
+				</if>
+				<if test="item.billingSum != null and item.billingSum != ''">
+					billing_sum = #{item.billingSum,jdbcType=DOUBLE},
+				</if>
+				<if test="item.billDate != null and item.billDate != ''">
+					bill_date = #{item.billDate,jdbcType=DATE},
+				</if>
+				<if test="item.billState != null and item.billState != ''">
+					bill_state = #{item.billState,jdbcType=TINYINT},
+				</if>
+				<if test="item.chargeTypeId != null and item.chargeTypeId != ''" >
+					charge_type_id= #{item.chargeTypeId,jdbcType=VARCHAR},
+				</if>
+				<if test="item.buildingId != null and item.buildingId != ''">
+					building_id = #{item.buildingId,jdbcType=VARCHAR},
+				</if>
+				<if test="item.collectSum != null and item.collectSum != ''">
+					collect_sum = #{item.collectSum,jdbcType=DOUBLE},
+				</if>
+				<if test="item.noCollectSum != null and item.noCollectSum != ''">
+					no_collect_sum= #{item.noCollectSum,jdbcType=DOUBLE},
+				</if>
+				<if test="item.overdue != null and item.overdue != ''">
+					overdue=#{item.overdue,jdbcType=DOUBLE},
+				</if>
+				<if test="item.currentSum != null and item.currentSum != ''">
+					current_sum=#{item.currentSum,jdbcType=DOUBLE},
+				</if>
+				<if test="item.lastSum != null and item.lastSum != ''">
+					last_sum=#{item.lastSum,jdbcType=DOUBLE},
+				</if>
+				<if test="item.currentOweSum != null and item.currentOweSum != ''">
+					current_owe_sum=#{item.currentOweSum,jdbcType=DOUBLE},
+				</if>
+				<if test="item.lastOweSum != null and item.lastOweSum != ''">
+					last_owe_sum=#{item.lastOweSum,jdbcType=DOUBLE}  
+				</if>
+			where bill_id = #{item.billId,jdbcType=VARCHAR}
+		</foreach>
+	</update>
+
+	<update id="updateBill" parameterType="com.flf.entity.Bill">
+		update tc_bill 
+		<set>
+			<if test="assetType != null and assetType != '' or assetType == 0">
+				asset_type = #{assetType,jdbcType=TINYINT},
+			</if>
+			<if test="billNum != null">
+				bill_num = #{billNum,jdbcType=VARCHAR},
+			</if>
+			<if test="buildingBillingId != null">
+				building_billing_id = #{buildingBillingId,jdbcType=VARCHAR},
+			</if>
+			<if test="billingSum != null">
+				billing_sum = #{billingSum,jdbcType=DOUBLE},
+			</if>
+			<if test="billDate != null">
+				bill_date = #{billDate,jdbcType=DATE},
+			</if>
+			<if test="billState != null and billState != '' or billState == 0">
+				bill_state = #{billState,jdbcType=TINYINT},
+			</if>
+			<if test="chargeTypeId !=null">
+				charge_type_id= #{chargeTypeId,jdbcType=VARCHAR},
+			</if>
+			<if test="projectId != null">
+				project_id = #{projectId,jdbcType=VARCHAR},
+			</if>
+			<if test="buildingId != null">
+				building_id = #{buildingId,jdbcType=VARCHAR},
+			</if>
+			<if test="collectSum != null">
+				collect_sum = #{collectSum,jdbcType=DOUBLE},
+			</if>
+			<if test="noCollectSum !=null">
+				no_collect_sum= #{noCollectSum,jdbcType=DOUBLE},
+			</if>
+			<if test="overdue !=null">
+				overdue=#{overdue,jdbcType=DOUBLE},
+			</if>
+			<if test="currentSum !=null">
+				current_sum=#{currentSum,jdbcType=DOUBLE},
+			</if>
+			<if test="lastSum !=null">
+				last_sum=#{lastSum,jdbcType=DOUBLE},
+			</if>
+			<if test="currentOweSum !=null">
+				current_owe_sum=#{currentOweSum,jdbcType=DOUBLE},
+			</if>
+			<if test="lastOweSum !=null">
+				last_owe_sum=#{lastOweSum,jdbcType=DOUBLE} 
+			</if>
+		</set>
+		where bill_id = #{billId,jdbcType=VARCHAR}
+	</update>
+	<!-- 系统报表条件查询 -->
+	<select id="search" parameterType="String" resultMap="BaseResultMap">
+		select project_id,project_name,collect_sum,no_collect_sum,billing_sum,bill_date,bill_id
+		from tc_bill where 1=1 
+		<if test="projectId ! ='' and projectId!=null">
+			and project_id = #{projectId,jdbcType=VARCHAR}
+		</if>
+		<if test="billDate !='' and billDate !=null">
+	   	<![CDATA[
+			  AND DATE_FORMAT(bill_date, '%Y-%m') =  DATE_FORMAT(#{startTime}, '%Y-%m')
+			]]>
+		</if>
+	</select>
+
+	<!-- 根据建筑结构id和收费子项目查询上个月的应收款记录 -->
+	<select id="getBillBySearchMap" parameterType="java.util.Map"
+		resultMap="BaseResultMap">
+		select no_collect_sum from tc_bill where building_id=#{buildingStructureId,jdbcType=VARCHAR}
+		and charge_type_id= #{chargeTypeId,jdbcType=VARCHAR} order by bill_date desc
+	</select>
+
+	<!-- 获取上期金额 -->
+	<select id="getLastBill" parameterType="com.flf.entity.Bill"
+		resultMap="BaseResultMap">
+		SELECT * FROM tc_bill WHERE 1 = 1
+		<if test="chargeTypeId !='' and chargeTypeId !=null">
+			and charge_type_id = #{chargeTypeId,jdbcType=VARCHAR}
+		</if>
+		<if test="chargeTypeDetailsId !='' and chargeTypeDetailsId !=null">
+			and charge_type_details_id = #{chargeTypeDetailsId,jdbcType=VARCHAR}
+		</if>
+		<if test="buildingId !='' and buildingId !=null">
+			AND building_id = #{buildingId,jdbcType=VARCHAR}
+		</if>
+		<if test="billDate !='' and billDate !=null">
+			AND bill_date &lt; #{billDate}
+		</if>
+		ORDER BY bill_date DESC LIMIT 0,1
+	</select>
+	<!-- 获取最大编号 -->
+	<select id="getMaxBillNum" resultType="String">
+		SELECT MAX(bill_num) FROM tc_bill
+	</select>
+
+	<!-- 根据项目Id查询所有未核销 的账单 maogaofei -->
+	<select id="listBillByProjectId" parameterType="String"
+		resultMap="BaseResultMap">
+		select * from tc_bill where project_id=#{0} AND 
+		bill_state = 2
+	</select>
+	
+	<select id="listMergeBillByProjectId" parameterType="String"
+		resultMap="BaseResultMap">
+		select sum(no_collect_sum) AS no_collect_sum,charge_type_id,building_id  from tc_bill  where project_id=#{0} AND 
+		bill_state = 2  GROUP BY building_id
+	</select>
+	
+	<select id="listUNMergeBillByProjectId" parameterType="String"
+		resultMap="BaseResultMap">
+		select sum(no_collect_sum) AS no_collect_sum,charge_type_id,building_id,bill_num,bill_id 
+		from tc_bill  where project_id=#{0} AND 
+		bill_state = 2  GROUP BY building_id
+	</select>
+
+	<update id="updateBillState" parameterType="java.lang.String">
+		UPDATE tc_bill SET bill_state=0 WHERE bill_id=#{0}
+	</update>
+	
+	<!-- 获取收费明细 -->
+	<select id="queryByCtiAndAat" parameterType="com.flf.entity.Bill" resultMap="BaseResultMap">
+		SELECT tb.* FROM tc_bill tb
+		LEFT JOIN tc_charge_type tct ON tb.charge_type_id = tct.charge_type_id
+		WHERE tb.bill_state='2' 
+		<if test="chargeTypeId !='' and chargeTypeId !=null">
+			and tb.charge_type_id = #{chargeTypeId,jdbcType=VARCHAR}
+		</if>
+		<if test="assetType !='' and assetType != null">
+			and tb.asset_type = #{assetType,jdbcType=TINYINT} 
+		</if>
+		<if test="buildingId !='' and buildingId !=null">
+			and tb.building_id = #{buildingId,jdbcType=VARCHAR}
+		</if>
+		ORDER BY tb.building_id,tct.charge_type_priority
+	</select>
+	
+	<select id="listPageFindChargeBybuildingIdThisMonth" parameterType="com.flf.entity.Bill" resultMap="BaseResultMap">
+		SELECT a.bill_id,a.asset_type,a.bill_num,a.building_billing_id,a.billing_sum,a.bill_date,a.bill_state,a.charge_type_id,
+		a.project_id,a.building_id,a.full_name,a.collect_sum,a.overdue,a.last_sum,a.current_owe_sum,a.last_owe_sum,
+		a.charge_type_details_id,a.bill_num_month,a.product_id,STR_TO_DATE(a.confirm_bill_date,'%Y-%m-%d')as confirm_bill_date,sum(a.current_sum) totalCurrentSum,
+		sum(overdue) totalOverdue,sum(a.current_owe_sum) totalCurrentOweSum,
+		sum(a.last_owe_sum) totalLastOweSum,b.charge_type_name,b.charge_type_priority from tc_bill a
+		LEFT JOIN tc_charge_type b on a.charge_type_id=b.charge_type_id
+		where a.building_id=#{buildingId} 
+		and year(#{billDate})=year(a.bill_date)
+		and month(#{billDate})=month(a.bill_date) 
+		GROUP BY a.charge_type_id
+	</select>
+		
+	<!-- 当月收费项目的详情 -->
+	 <select id="findChargeDetailsBychargeTypeIdThisMonth" parameterType="com.flf.entity.Bill"
+		resultMap="BaseResultMap">
+		SELECT a.* ,b.charge_type_details_name from  tc_bill a
+		join tc_charge_type_details b on a.charge_type_details_id=b.charge_type_details_id
+		where a.building_id=#{buildingId} 
+		and a.charge_type_id=#{chargeTypeId} 
+		and year(#{billDate})=year(a.bill_date) and
+		month(#{billDate})=month(a.bill_date)
+	</select>
+		
+	<!-- 查询历史账单 -->
+	 <select id="listPageBillsBybuildingIdLastMonth" parameterType="com.flf.entity.Bill" resultMap="BaseResultMap">
+		SELECT  a.bill_id,a.asset_type,a.bill_num,a.building_billing_id,a.billing_sum,a.bill_date,a.bill_state,a.charge_type_id,
+		a.project_id,a.building_id,a.full_name,a.collect_sum,a.overdue,a.last_sum,a.current_owe_sum,a.last_owe_sum,
+		a.charge_type_details_id,a.bill_num_month,a.product_id,STR_TO_DATE(a.confirm_bill_date,'%Y-%m-%d')as confirm_bill_date ,sum(a.current_sum) totalCurrentSum,
+		sum(overdue) totalOverdue,sum(a.current_owe_sum) totalCurrentOweSum,
+		sum(a.last_owe_sum) totalLastOweSum,b.charge_type_name from tc_bill a
+		LEFT JOIN tc_charge_type b on a.charge_type_id=b.charge_type_id
+		where a.building_id=#{buildingId}
+		and a.bill_date &lt; #{billDate}
+		GROUP BY a.charge_type_id,DATE_FORMAT(a.bill_date,"%Y-%m")
+		ORDER BY a.bill_date desc
+	</select>
+	<!-- 历史明细中的收费项目详情 -->
+	 <select id="findChargeDetailsBychargeTypeIdLastMonth" parameterType="com.flf.entity.Bill"
+		resultMap="BaseResultMap">
+		SELECT a.* ,b.charge_type_details_name from  tc_bill a
+		join tc_charge_type_details b on a.charge_type_details_id=b.charge_type_details_id
+		where a.building_id=#{buildingId} 
+		and a.charge_type_id=#{chargeTypeId} 
+		and year(#{billDate})=year(a.bill_date) and
+		month(#{billDate})=month(a.bill_date)
+	</select>
+	
+	
+			<select id="listPageFindBillsByPersonMessage" parameterType="com.flf.entity.Bill" resultMap="BaseResultMap">
+	SELECT * FROM(SELECT c.* from
+	(SELECT
+	a.*,a.name as 'custName',b.bill_id,
+	b.bill_num,
+	b.bill_num_month,
+	b.bill_state,
+	b.bill_date,
+	b.asset_type,
+	b.building_id,
+	b.charge_type_id,
+	totalCurrentSum,
+	b.confirm_bill_date,
+	totalCurrentOweSum,
+	totalLastOweSum,
+	totalOverdue
+	FROM
+			(
+			SELECT a.*,bs.project_id,bs.full_name from
+			(SELECT
+			building_structure_id,
+			pc. *
+			FROM
+			tc_person_building pb
+			LEFT JOIN (
+			SELECT
+			cust_id,
+			card_num,
+			NAME
+			FROM
+			tc_person_cust
+			) pc ON pc.cust_id = pb.cust_id
+			WHERE
+			pb.cust_type = 0 ) a
+			INNER JOIN tc_building_structure bs on a.building_structure_id =bs.id where
+			bs.is_binding_assets=1
+			and bs.project_id=#{projectId}
+	
+			<if test="cardNum !='' and cardNum !=null">
+				and a.card_num=#{cardNum,jdbcType=VARCHAR}
+			</if>
+			<if test="custName !='' and custName!=null">
+				and a.name LIKE "%"#{custName,jdbcType=VARCHAR}"%"
+			</if> 
+
+			<if test="fullName!='' and fullName!=null">
+					  and bs.full_name LIKE "%"#{fullName,jdbcType=VARCHAR}"%"
+			 </if>
+			) a
+			JOIN (
+			SELECT
+			bill_id,
+			bill_num,
+			bill_num_month,
+			bill_state,
+			bill_date,
+			asset_type,
+			project_id,
+			building_id,
+			charge_type_id,
+			STR_TO_DATE(
+			confirm_bill_date,
+			'%Y-%m-%d'
+			) AS confirm_bill_date,
+			sum(current_sum) totalCurrentSum,
+			sum(current_owe_sum) totalCurrentOweSum,
+			sum(last_owe_sum) totalLastOweSum,
+			sum(overdue) totalOverdue
+			FROM
+			tc_bill
+			WHERE
+			project_id = #{projectId}
+			<if test="billNumMonth !='' and billNumMonth !=null">
+				and bill_num_month = #{billNumMonth,jdbcType=VARCHAR}
+			</if>
+			GROUP BY
+			building_id,
+			bill_date
+			) b ON a.building_structure_id = b.building_id) c
+			ORDER BY c.bill_date DESC)s WHERE 1=1 GROUP BY s.building_id
+		
+		<!-- SELECT
+		 a.*,b.bill_id,b.bill_num,b.bill_num_month,b.bill_state,b.bill_date,b.asset_type,b.charge_type_details_id,b.charge_type_id,b.project_id,
+		 sum(b.current_sum)totalCurrentSum,sum(b.current_owe_sum)totalCurrentOweSum,sum(b.last_owe_sum)
+		totalLastOweSum,sum(b.overdue) totalOverdue from (SELECT
+		a.building_id,tbs.full_name FROM tc_asset_account a
+		LEFT JOIN tc_account_relation b ON a.asset_account_id = b.asset_account
+		LEFT JOIN tc_account c ON c.account_id = b.account_id
+		LEFT JOIN tc_person_cust m ON m.cust_id = c.cust_id
+		LEFT JOIN tc_building_structure tbs ON tbs.id = a.building_id
+		where 1=1
+		<if test="cardNum !='' and cardNum !=null">
+		and m.card_num  = #{cardNum,jdbcType=VARCHAR}
+	    </if> 
+	    <if test="custName !='' and custName!=null">
+		and m.name  = #{custName,jdbcType=VARCHAR}
+	    </if> 
+		) a
+		join tc_bill b on a.building_id=b.building_id
+		 where b.bill_state ='2'
+		<if test="billDate !='' and billDate !=null">
+		<![CDATA[
+	  		and DATE_FORMAT(b.bill_date, '%Y-%m') =  DATE_FORMAT(#{billDate}, '%Y-%m')
+	  	]]>
+	</if>
+	    <if test="billNumMonth !='' and billNumMonth !=null">
+		and b.bill_num_month = #{billNumMonth,jdbcType=VARCHAR}
+	    </if>  -->
+	</select>
+	
+	<!-- 查询所有的状态为未核销的数据用于计算滞纳金 -->
+	<select id="queryByBillState" parameterType="com.flf.entity.Bill" resultMap="BaseResultMap">
+		SELECT * from tc_bill where bill_state = '2' 
+		<!-- <if test='type == "1"'>
+			and TIMESTAMPDIFF(DAY, bill_date, #{endDate})>20
+		</if> 
+		<if test='type == "2"'>
+			and building_id is not null GROUP BY building_id
+		</if>
+		<if test='type == "3"'>
+			and building_id=#{buildingId,jdbcType=VARCHAR} and charge_type_id = #{chargeTypeId,jdbcType=VARCHAR}
+		</if> -->
+	</select>
+	
+	
+	<!-- 根据条件查询所有的账单 -->
+	<select id="listAllBill" parameterType="com.flf.entity.Bill" resultMap="BaseResultMap">
+		SELECT * from tc_bill where 1 = 1
+		<if test="buildingId !='' and buildingId !=null">
+			and building_id = #{buildingId,jdbcType=VARCHAR}
+		</if>
+		<if test="chargeTypeId !='' and chargeTypeId !=null">
+			and charge_type_id = #{chargeTypeId,jdbcType=VARCHAR}
+		</if>
+		<if test="billState != null and billState != '' or billState == 0">
+			and bill_state = #{billState}
+		</if>
+		<if test="billDate !='' and billDate !=null">
+			<![CDATA[
+		  		and DATE_FORMAT(bill_date, '%Y-%m') =  DATE_FORMAT(#{billDate}, '%Y-%m')
+		  	]]>
+		</if>
+	</select>
+		<!-- <select id="ListBillsByHouseId" parameterType="String" resultMap="BaseResultMap">
+		SELECT a.bill_id,a.asset_type,a.bill_num,a.building_billing_id,a.billing_sum,a.bill_date,a.bill_state,a.charge_type_id,
+		a.project_id,a.building_id,a.full_name,a.collect_sum,a.overdue,a.last_sum,a.current_owe_sum,a.last_owe_sum,
+		a.charge_type_details_id,a.bill_num_month,a.product_id,STR_TO_DATE(a.confirm_bill_date,'%Y-%m-%d')as confirm_bill_date,sum(a.current_sum) totalCurrentSum,
+		sum(overdue) totalOverdue,sum(a.current_owe_sum) totalCurrentOweSum,
+		sum(a.last_owe_sum) totalLastOweSum,b.charge_type_name,b.charge_type_priority from tc_bill a
+		LEFT JOIN tc_charge_type b on a.charge_type_id=b.charge_type_id
+		where a.building_id=#{houseId} 
+		and year("2016-07-01")=year(a.bill_date)
+		and month("2016-07-01")=month(a.bill_date) 
+		GROUP BY a.charge_type_id
+	</select> -->
+	<!-- 微信第三方调用的方法 -->
+	 <select id="listBillByElectronicBillingId" parameterType="com.flf.entity.Bill" resultMap="BaseResultMap">
+		SELECT  a.bill_id,a.asset_type,a.bill_num,a.building_billing_id,a.billing_sum,a.bill_date,a.bill_state,a.charge_type_id,
+		a.project_id,a.building_id,a.full_name,a.collect_sum,a.overdue,a.last_sum,a.current_owe_sum,a.last_owe_sum,
+		a.charge_type_details_id,a.bill_num_month,a.product_id,STR_TO_DATE(a.confirm_bill_date,'%Y-%m-%d')as confirm_bill_date ,sum(a.current_sum) totalCurrentSum,
+		sum(overdue) totalOverdue,sum(a.current_owe_sum) totalCurrentOweSum,
+		sum(a.last_owe_sum) totalLastOweSum,b.charge_type_name from tc_bill a
+		LEFT JOIN tc_charge_type b on a.charge_type_id=b.charge_type_id
+		where a.building_id=#{buildingId}
+		and a.charge_type_id= #{chargeTypeId}
+		GROUP BY DATE_FORMAT(a.bill_date,"%Y-%m")
+		ORDER BY a.bill_date desc
+	</select>
+	<!-- 查询所有的账单 -->
+	<select id="selectAllBill"  resultMap="BaseResultMap">
+		SELECT * from tc_bill
+	</select>
+	<select id="listPageFindChargeBybuildingId" parameterType="com.flf.entity.Bill" resultMap="BaseResultMap">
+		SELECT a.bill_id,a.asset_type,a.bill_num,a.building_billing_id,a.billing_sum,a.bill_date,a.bill_state,a.charge_type_id,
+		a.project_id,a.building_id,a.full_name,a.collect_sum,a.overdue,a.last_sum,a.current_owe_sum,a.last_owe_sum,
+		a.charge_type_details_id,a.bill_num_month,a.product_id,STR_TO_DATE(a.confirm_bill_date,'%Y-%m-%d')as confirm_bill_date,sum(a.current_sum) totalCurrentSum,
+		sum(overdue) totalOverdue,sum(a.current_owe_sum) totalCurrentOweSum,
+		sum(a.last_owe_sum) totalLastOweSum,b.charge_type_name,b.charge_type_priority from tc_bill a
+		LEFT JOIN tc_charge_type b on a.charge_type_id=b.charge_type_id
+		where a.building_id=#{buildingId}
+		GROUP BY a.charge_type_id,a.bill_date ORDER BY a.bill_date DESC
+	</select>  
+	
+</mapper>

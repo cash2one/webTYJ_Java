@@ -1,0 +1,91 @@
+package com.flf.service.impl;
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.List;
+import java.util.UUID;
+
+import com.flf.entity.DecorationInspectionPlans;
+import com.flf.entity.ExecutionTimeRecords;
+import com.flf.entity.FrequencyRecord;
+import com.flf.entity.PageRestful;
+import com.flf.entity.Tasks;
+import com.flf.mapper.DecorationInspectionPlansMapper;
+import com.flf.mapper.ExecutionTimeRecordsMapper;
+import com.flf.mapper.FrequencyRecordMapper;
+import com.flf.service.DecorationInspectionPlansService;
+
+public class DecorationInspectionPlansServiceImpl implements DecorationInspectionPlansService {
+    private DecorationInspectionPlansMapper decorationInspectionPlansMapper;//装修巡检方案
+    private FrequencyRecordMapper frequencyRecordMapper;//执行频率表
+    private ExecutionTimeRecordsMapper executionTimeRecordsMapper;//执行频率和时间表
+    
+    
+	public FrequencyRecordMapper getFrequencyRecordMapper() {
+		return frequencyRecordMapper;
+	}
+
+	public void setFrequencyRecordMapper(FrequencyRecordMapper frequencyRecordMapper) {
+		this.frequencyRecordMapper = frequencyRecordMapper;
+	}
+
+	public ExecutionTimeRecordsMapper getExecutionTimeRecordsMapper() {
+		return executionTimeRecordsMapper;
+	}
+
+	public void setExecutionTimeRecordsMapper(
+			ExecutionTimeRecordsMapper executionTimeRecordsMapper) {
+		this.executionTimeRecordsMapper = executionTimeRecordsMapper;
+	}
+
+	public DecorationInspectionPlansMapper getDecorationInspectionPlansMapper() {
+		return decorationInspectionPlansMapper;
+	}
+
+	public void setDecorationInspectionPlansMapper(
+			DecorationInspectionPlansMapper decorationInspectionPlansMapper) {
+		this.decorationInspectionPlansMapper = decorationInspectionPlansMapper;
+	}
+
+	@Override
+	public void AddDecorationInspectionPlans(
+			DecorationInspectionPlans decorationInspectionPlans) {
+		// TODO Auto-generated method stub
+		String uuid = UUID.randomUUID().toString();
+		String Frid = UUID.randomUUID().toString();
+		Date date = new Date();
+		if(decorationInspectionPlans !=null && decorationInspectionPlans.getFrequencyRecord() !=null 
+		&& decorationInspectionPlans.getExecutionTimeRecords() !=null){
+			FrequencyRecord frequencyRecord = decorationInspectionPlans.getFrequencyRecord();
+			ExecutionTimeRecords executionTimeRecords =decorationInspectionPlans.getExecutionTimeRecords();
+			decorationInspectionPlans.setDecorationInspectionPlanId(uuid);
+			decorationInspectionPlans.setCreTme(date);
+			frequencyRecord.setRelationId(uuid);
+			frequencyRecord.setrecordId(Frid);
+			executionTimeRecords.setExecutionFrequencyId(Frid);
+			decorationInspectionPlansMapper.AddDecorationInspectionPlans(decorationInspectionPlans);
+			frequencyRecordMapper.insertFrequencyRecord(frequencyRecord);
+			executionTimeRecordsMapper.insert(executionTimeRecords);
+		}
+	}
+
+	@Override
+	public PageRestful listPageDecorationInspectionPlans(
+			DecorationInspectionPlans decorationInspectionPlans) {
+		// TODO Auto-generated method stub
+		PageRestful pageRestful = new PageRestful();
+		List<DecorationInspectionPlans> decorationInspectionPlan = decorationInspectionPlansMapper.listPageDecorationInspectionPlans(decorationInspectionPlans);
+		decorationInspectionPlan.add(0, decorationInspectionPlans);
+		pageRestful.setDecorationInspectionPlan(decorationInspectionPlan);
+		pageRestful.setPage(decorationInspectionPlans.getPage());
+		return pageRestful;
+	}
+
+	@Override
+	public DecorationInspectionPlans getDecorationInspectionPlansbyId(
+			String decorationInspectionPlanId) {
+		// TODO Auto-generated method stub
+		return decorationInspectionPlansMapper.selectByPrimaryKey(decorationInspectionPlanId);
+	}
+
+}

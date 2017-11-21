@@ -1,0 +1,768 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/html">
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>房屋信息主页</title>
+</head>
+<body ng-controller="homePageCtrl">
+<div class="complaint_user_list" style="padding:15px 1px;height: 550px">
+
+    <div class="col-lg-4 col-md-4 col-sm-6">
+        <div class="panel" >
+            <div class="panel_title">
+                <span class="panel_title_left">验房</span>
+                <span class="panel_title_right">
+                    <li class="dropdown pull-right">
+                        <a href="#" class="dropdown-toggle btn-lg" data-toggle="dropdown" role="button" aria-expanded="false"><span class="glyphicon glyphicon-menu-down"></span></a>
+                        <ul class="dropdown-menu" role="menu">
+                            <li><a href="#" data-toggle="modal" data-target="#lingQu">查看领取单</a></li>
+                            <li><a href="#" data-toggle="modal" data-target="#yanShou">查看验收表</a></li>
+                            <li><a href="#" data-toggle="modal" data-target="#jiaoFei">缴费并打印</a></li>
+                            <li><a href="#" data-toggle="modal" data-target="#yanFang">验房完成</a></li>
+                        </ul>
+                    </li>
+                </span>
+            </div>
+            <div class="panel_info" >
+                <div class="dot"></div>
+                <div class="panel_info clear">
+                    <table>
+
+                        <tbody style="text-align: center">
+                        <tr>
+                            <td>钥匙领取&nbsp;&nbsp;&nbsp;<input type="checkbox"></td>
+                            <td>&nbsp;&nbsp;</td>
+                            <td>领取数量：3</td>
+                        </tr>
+                        <tr >
+                            <td>&nbsp;&nbsp;&nbsp;&nbsp;领取时间：</td>
+                            <td>2015-5-5</td>
+                            <td>领取人：</td>
+                            <td>周云发</td>
+
+                        </tr>
+
+                        <tr>
+                            <td>水电卡领取&nbsp;<input type="checkbox"></td>
+                            <!--<td>&nbsp;&nbsp;</td>-->
+                            <!--<td>领取数量：3</td>-->
+                        </tr>
+                        <tr >
+                            <td>&nbsp;&nbsp;&nbsp;领取时间：</td>
+                            <td>2015-5-5</td>
+                            <td>领取人：</td>
+                            <td>周云发</td>
+                        </tr>
+
+                        <tr>
+                            <td>礼品领取&nbsp;&nbsp;&nbsp;&nbsp;<input type="checkbox"></td>
+                            <!--<td>&nbsp;&nbsp;</td>-->
+                            <!--<td>领取数量：3</td>-->
+                        </tr>
+                        <tr >
+                            <td>&nbsp;&nbsp;&nbsp;&nbsp;领取时间：</td>
+                            <td>2015-5-5</td>
+                            <td>领取人：</td>
+                            <td>周云发</td>
+                        </tr>
+
+                        <tr>
+                            <td>预收管理费&nbsp;&nbsp;<input type="checkbox"></td>
+
+                            <td>&nbsp;&nbsp;&nbsp;&nbsp;收款人：</td>
+                            <td>范冰冰</td>
+
+                        </tr>
+
+
+
+
+                        </tbody>
+                    </table>
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <div class="col-lg-4 col-md-4 col-sm-6">
+        <div class="panel">
+            <div class="panel_title">
+                <span class="panel_title_left">入伙</span>
+                <span class="panel_title_right">
+                    <li class="dropdown pull-right">
+                        <a href="#" class="dropdown-toggle btn-lg" data-toggle="dropdown" role="button" aria-expanded="false"><span class="glyphicon glyphicon-menu-down"></span></a>
+                        <ul class="dropdown-menu" role="menu">
+                            <li><a href="#" data-toggle="modal" data-target="#lingQu">查看领取单</a></li>
+                            <li><a href="#" data-toggle="modal" data-target="#yanShou">查看验收表</a></li>
+                            <li><a href="#" data-toggle="modal" data-target="#jiaoFei">缴费并打印</a></li>
+                            <li><a href="#" data-toggle="modal" data-target="#finishYanshou">验收完成</a></li>
+                            <li><a href="#" data-toggle="modal" data-target="#upLoad">上传过户确认书</a></li>
+                            <li><a href="#" data-toggle="modal" data-target="#sureChange">确认变更</a></li>
+
+                        </ul>
+                    </li>
+                </span>
+            </div>
+            <div class="panel_info">
+                <div class="dot"></div>
+                <div class="panel_info " style="text-align: center;margin: 0px;padding: 0px">
+
+
+                    <div class="col-xs-12 "></div>
+                    <div class="col-xs-3 "><p style="background-color: #00FF66;width:42px;height: 42px;">验房准备</p></div>
+                    <div class="col-xs-3 "><p style="background-color: #ffff00;width:42px;height: 42px;">问题处理</p></div>
+                    <div class="col-xs-3 "><p style="background-color: #FFF7B2;width:42px;height: 42px;">预收费用</p></div>
+                    <div class="col-xs-3 "><p style="background-color: #FFFFFF;width:42px;height: 42px;border:1px solid #CACACA">确认签字</p></div>
+                    <div class="col-xs-12" style="margin-top: -10px">____________________________________________</div>
+
+                    <div class="col-xs-3 col-xs-offset-3"><p style="background-color: #FFF7B2;width:42px;height: 42px;">电费</p></div>
+                    <div class="col-xs-3 "><p style="background-color: #FFFFFF;width:42px;height: 42px;border:1px solid #CACACA">停车费</p></div>
+
+
+
+                    <div class="col-xs-12"style="margin-top: -8px">过户费用确认书：</div>
+
+                    <div class="col-xs-12"style="margin-top: -4px"><input type="text"> <input type="button" class="btn btn-sm btn-default" value="打印"><input type="button" class="btn btn-sm btn-default" value="查看"></div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="col-lg-4 col-md-4 col-sm-6">
+        <div class="panel">
+            <div class="panel_title">
+                <span class="panel_title_left">租赁</span>
+                <span class="panel_title_right">
+                    <li class="dropdown pull-right">
+                        <a href="#" class="dropdown-toggle btn-lg" data-toggle="dropdown" role="button" aria-expanded="false"><span class="glyphicon glyphicon-menu-down"></span></a>
+                        <ul class="dropdown-menu" role="menu">
+                            <li><a href="#" data-toggle="modal" data-target="#addLease">新增租赁</a></li>
+                            <li><a href="#" data-toggle="modal" data-target="#modifyLease">编辑租赁</a></li>
+                            <li><a href="#" data-toggle="modal" data-target="#queryLease">查看合同</a></li>
+
+                        </ul>
+                    </li>
+                </span>
+            </div>
+            <div class="panel_info">
+                <div class="dot"></div>
+                <div class="panel_info ">
+                    <a class="col-xs-6">出租开始日期：</a><a class="col-xs-6">租客姓名：</a>
+                    <a class="col-xs-6">联系电话：<span></span></a><a class="col-xs-6">出租结束日期：<span></span></a>
+                    <a class="col-xs-6">合同号：<span></span></a><a class="col-xs-6">联系地址：<span></span></a>
+                    <a class="col-xs-6">出租价格：<span></span></a><a class="col-xs-6">。。<span></span></a>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="col-lg-4 col-md-4 col-sm-6">
+        <div class="panel">
+            <div class="panel_title">
+                <span class="panel_title_left">装修</span>
+                <span class="panel_title_right">
+                    <li class="dropdown pull-right">
+                        <a href="#" class="dropdown-toggle btn-lg" data-toggle="dropdown" role="button" aria-expanded="false"><span class="glyphicon glyphicon-menu-down"></span></a>
+                        <ul class="dropdown-menu" role="menu">
+                            <li><a href="#" data-toggle="modal" data-target="#decorateApply">装修申请</a></li>
+                            <li><a href="#" data-toggle="modal" data-target="#queryWeiyue">查看违约</a></li>
+                            <li><a href="#" data-toggle="modal" data-target="#queryLogo">查看整改通知</a></li>
+                            <li><a href="#" data-toggle="modal" data-target="#yanshouApply">验收申请</a></li>
+                            <li><a href="#" data-toggle="modal" data-target="#costClear">费用结算</a></li>
+                            <li><a href="#" data-toggle="modal" data-target="#queryBeian">查看备案表</a></li>
+
+                        </ul>
+                    </li>
+                </span>
+            </div>
+            <div class="panel_info" style="text-align: center">
+                <div class="dot"></div>
+                <div class="panel_info ">
+                    <div class="col-xs-2 "><p style="background-color: #00FF66;width:43px;height: 43px;border:1px solid #CACACA">填写资料</p></div>
+                    <div class="col-xs-2 col-xs-offset-2 "><p style="background-color: #ffff00;width:42px;height: 43px;">现场勘查</p></div>
+                    <div class="col-xs-2 col-xs-offset-2"><p style="background-color: #FFFFFF;width:42px;height: 43px;border:1px solid #CACACA">缴费发证</p></div>
+                    <div class="col-xs-12" style="margin-top: -4px">____________________________________________</div>
+                    <div class="col-xs-12">是否有整改通知：<input type="checkbox"> &nbsp; &nbsp;&nbsp;是否有违约金：<input type="checkbox"></div>
+                    <div class="col-xs-12" style="margin-top: -4px">____________________________________________</div>
+                    <div class="col-xs-3 "><p style="background-color: #00FF66;width:42px;height: 43px;border:1px solid #CACACA">验收申请</p></div>
+                    <div class="col-xs-3 "><p style="background-color: #ffff00;width:42px;height: 43px;">现场勘查</p></div>
+                    <div class="col-xs-3 "><p style="background-color: #FFF7B2;width:42px;height: 43px;">验收确认</p></div>
+                    <div class="col-xs-3 "><p style="background-color: #BDBDBD;width:42px;height: 43px;">费用结算</p></div>
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+    <div class="col-lg-4 col-md-4 col-sm-6">
+        <div class="panel">
+            <div class="panel_title">
+                <span class="panel_title_left">产权变更</span>
+                <span class="panel_title_right">
+                                    <span class="zoom_button"></span>
+                                    <span class="close_button"></span>
+                                </span>
+            </div>
+            <div class="panel_info">
+                <div class="dot"></div>
+                <div class="panel_info " style="text-align: center;">
+                    <!--<a class="col-xs-12">钥匙领取：</a>-->
+                    <div class="col-xs-4 " style="background-color: #BDBDBD;border-radius: 5px">交易信息</div>
+                    <div class="col-xs-12">房屋编号：XX &nbsp; &nbsp;&nbsp;认购日期：2015-5-5</div>
+                    <div class="col-xs-12">合同编号：XX &nbsp; &nbsp;&nbsp;签约日期：2015-5-5</div>
+                    <div class="col-xs-12">交易类型：二手房 &nbsp; &nbsp;&nbsp;产权类型：个人产权</div>
+                    ——————————————————————————
+                    <div class="col-xs-3 "><p style="background-color: #00FF66;width:42px;height: 42px;">物业费</p></div>
+                    <div class="col-xs-3 "><p style="background-color: #ffff00;width:42px;height: 42px;">水费</p></div>
+                    <div class="col-xs-3 "><p style="background-color: #FFF7B2;width:42px;height: 42px;">电费</p></div>
+                    <div class="col-xs-3 "><p style="background-color: #FFFFFF;width:42px;height: 42px;border:1px solid #CACACA">停车费</p></div>
+
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-lg-4 col-md-4 col-sm-6">
+        <div class="panel">
+            <div class="panel_title">
+                <span class="panel_title_left">我的收费信息</span>
+                <span class="panel_title_right">
+                                    <span class="zoom_button"></span>
+                                    <span class="close_button"></span>
+                                </span>
+            </div>
+            <div class="panel_info">
+                <div class="dot"></div>
+                <div class="panel_info ">
+                    <a class="col-xs-12">收费编号：</a>
+                    <a class="col-xs-6">收费项目：<span></span></a><a class="col-xs-6">收费单价：<span></span></a>
+                    <a class="col-xs-6">计量单位：<span></span></a><a class="col-xs-6">收费金额：<span></span></a>
+                    <a class="col-xs-6">收款方式：<span></span></a><a class="col-xs-6">经办人：<span></span></a>
+                    <a class="col-xs-6">经办日期：<span></span></a><a class="col-xs-6">业务状态：<span></span></a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!--查看领取单-->
+    <div class="modal fade" id="lingQu" role="dialog" aria-label="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header" style="background-color: #02a0e7;height: 50px">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+
+                <div class="modal-body">
+                    <div class="media-left" style="height:auto;width: 300px;">
+
+
+
+
+                        <h4>查看领取单！！</h4>
+
+
+
+
+
+
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn bg-primary" data-dismiss="modal" aria-label="Close">关闭</button>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!--查看验收表-->
+    <div class="modal fade" id="yanShou" role="dialog" aria-label="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header" style="background-color: #02a0e7;height: 50px">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+
+                <div class="modal-body">
+
+
+
+
+
+
+                    <h4>查看验收表！！</h4>
+
+
+
+
+
+
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <!--。。-->
+
+    <!--缴费并打印-->
+    <div class="modal fade" id="jiaoFei" role="dialog" aria-label="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header" style="background-color: #02a0e7;height: 50px">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+
+                <div class="modal-body">
+                    <h4>缴费并打印！！</h4>
+
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <!--。。。-->
+    <!--验房完成-->
+    <div class="modal fade" id="yanFang" role="dialog" aria-label="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header" style="background-color: #02a0e7;height: 50px">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+
+                <div class="modal-body">
+
+
+
+
+
+
+                    <h4>验房完成！！</h4>
+
+
+
+
+
+
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <!--。。。-->
+    <!--验收完成-->
+    <div class="modal fade" id="finishYanshou" role="dialog" aria-label="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header" style="background-color: #02a0e7;height: 50px">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+
+                <div class="modal-body">
+
+
+
+
+
+
+                    <h4>验收完成！！</h4>
+
+
+
+
+
+
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <!--。。。-->
+
+    <!--上传过户确认书-->
+    <div class="modal fade" id="upLoad" role="dialog" aria-label="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header" style="background-color: #02a0e7;height: 50px">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+
+                <div class="modal-body">
+
+
+
+
+
+
+                    <h4>上传过户确认书！！</h4>
+
+
+
+
+
+
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <!--。。。-->
+
+    <!--确认变更-->
+    <div class="modal fade" id="sureChange" role="dialog" aria-label="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header" style="background-color: #02a0e7;height: 50px">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+
+                <div class="modal-body">
+
+
+
+
+
+
+                    <h4>确认变更！！</h4>
+
+
+
+
+
+
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <!--。。。-->
+
+    <!--新增租赁-->
+    <div class="modal fade" id="addLease" role="dialog" aria-label="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header" style="background-color: #02a0e7;height: 50px">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+
+                <div class="modal-body">
+
+
+
+
+
+
+                    <h4>新增租赁！！</h4>
+
+
+
+
+
+
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <!--。。。-->
+
+    <!--更改租赁-->
+    <div class="modal fade" id="modifyLease" role="dialog" aria-label="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header" style="background-color: #02a0e7;height: 50px">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+
+                <div class="modal-body">
+
+
+
+
+
+
+                    <h4>更改租赁！！</h4>
+
+
+
+
+
+
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <!--。。。-->
+
+    <!--查看合同-->
+    <div class="modal fade" id="queryLease" role="dialog" aria-label="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header" style="background-color: #02a0e7;height: 50px">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+
+                <div class="modal-body">
+
+
+
+
+
+
+                    <h4>查看合同！！</h4>
+
+
+
+
+
+
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <!--。。。-->
+
+    <!--装修申请-->
+    <div class="modal fade" id="decorateApply" role="dialog" aria-label="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header" style="background-color: #02a0e7;height: 50px">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+
+                <div class="modal-body">
+
+
+
+
+
+
+                    <h4>装修申请！！</h4>
+
+
+
+
+
+
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <!--。。。-->
+
+    <!--查看违约-->
+    <div class="modal fade" id="queryWeiyue" role="dialog" aria-label="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header" style="background-color: #02a0e7;height: 50px">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+
+                <div class="modal-body">
+
+
+
+
+
+
+                    <h4>查看违约！！</h4>
+
+
+
+
+
+
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <!--。。。-->
+
+    <!--查看整改通知-->
+    <div class="modal fade" id="queryLogo" role="dialog" aria-label="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header" style="background-color: #02a0e7;height: 50px">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+
+                <div class="modal-body">
+
+
+
+
+
+
+                    <h4>查看整改通知！！</h4>
+
+
+
+
+
+
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <!--。。。-->
+
+    <!--验收申请-->
+    <div class="modal fade" id="yanshouApply" role="dialog" aria-label="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header" style="background-color: #02a0e7;height: 50px">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+
+                <div class="modal-body">
+
+
+
+
+
+
+                    <h4>验收申请！！</h4>
+
+
+
+
+
+
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <!--。。。-->
+
+    <!--费用结算-->
+    <div class="modal fade" id="costClear" role="dialog" aria-label="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header" style="background-color: #02a0e7;height: 50px">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+
+                <div class="modal-body">
+
+
+
+
+
+
+                    <h4>费用结算！！</h4>
+
+
+
+
+
+
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <!--。。。-->
+
+    <!--查看备案表-->
+    <div class="modal fade" id="queryBeian" role="dialog" aria-label="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header" style="background-color: #02a0e7;height: 50px">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+
+                <div class="modal-body">
+
+
+
+
+
+
+                    <h4>查看备案表！！</h4>
+
+
+
+
+
+
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <!--。。。-->
+
+
+
+
+
+
+
+
+
+</div>
+</body>
+</html>

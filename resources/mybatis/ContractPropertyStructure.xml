@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.flf.mapper.ContractPropertyStructureMapper" >
+  <resultMap id="BaseResultMap" type="ContractPropertyStructure" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="contract_id" property="contractId" jdbcType="VARCHAR" />
+    <result column="property_id" property="propertyId" jdbcType="VARCHAR" />
+    <result column="building_structure_id" property="buildingStructureId" jdbcType="VARCHAR" />
+	<result column="functional_id" property="functionalId" jdbcType="VARCHAR" />
+	<result column="start_time" property="startTime" jdbcType="DATE" />
+  </resultMap>
+  
+  
+  <resultMap type="ContractPropertyStructure" id="ContractPropertyStructureResultMap" extends="BaseResultMap">
+  		<association property="property" column="property_id" select="com.flf.mapper.PropertyMapper.selectByPrimaryKey"></association>
+  		<association property="functional" column="functional_id" select="com.flf.mapper.FunctionalMapper.selectFunctionalById"></association>
+  		<association property="buildingStructureNew" column="building_structure_id" select="com.flf.mapper.BuildingStructureNewMapper.getBuildingStructureNewbyId"></association>
+  </resultMap>
+  
+   <select id="listAllContractPropertyStructureByContractId" resultMap="ContractPropertyStructureResultMap" parameterType="String" >
+    select * from t_contract_property_structure  where contract_id=#{0} group by property_id
+  </select>
+  
+  <select id="listPageContractPropertyStructure" resultMap="BaseResultMap" parameterType="ContractPropertyStructure" >
+    select * from t_contract_property_structure
+  </select>
+  
+  <delete id="deleteContractPropertyStructure" parameterType="java.lang.String" >
+    delete from t_contract_property_structure
+    where id = #{0,jdbcType=VARCHAR}
+  </delete>
+ 
+  <insert id="insertContractPropertyStructure" parameterType="ContractPropertyStructure" >
+    insert into t_contract_property_structure (id, contract_id, property_id, 
+      building_structure_id,functional_id,start_time)
+    values (UUID(), #{contractId,jdbcType=VARCHAR}, #{propertyId,jdbcType=VARCHAR}, 
+      #{buildingStructureId,jdbcType=VARCHAR},#{functionalId,jdbcType=VARCHAR},#{startTime,jdbcType=DATE})
+  </insert>
+ 
+  <select id="listAllContractPropertyStructure" resultMap="BaseResultMap" >
+    select * from t_contract_property_structure
+  </select>
+  
+  <update id="updateContractPropertyStructure" parameterType="ContractPropertyStructure" >
+	update t_contract_property_structure
+	set contract_id = #{contractId,jdbcType=VARCHAR},
+	property_id = #{propertyId,jdbcType=VARCHAR},
+	building_structure_id = #{buildingStructureId,jdbcType=VARCHAR},
+	functional_id = #{functionalId,jdbcType=VARCHAR},
+	start_time = #{startTime,jdbcType=VARCHAR}
+	where id = #{id,jdbcType=VARCHAR}
+  </update>
+  
+    
+  <resultMap type="ContractPropertyStructure" id="ContractPropertyStructureMap" extends="BaseResultMap">
+  		<association property="buildingStructureNew" column="building_structure_id" select="com.flf.mapper.BuildingStructureNewMapper.getBuildingStructureNewbyId"></association>
+  </resultMap>
+  
+  <select id="selectBuildingById" parameterType="ContractPropertyStructure" resultMap="ContractPropertyStructureMap">
+  	SELECT a.building_structure_id FROM t_contract_property_structure a
+  	WHERE a.contract_id=#{contractId,jdbcType=VARCHAR}
+  	AND a.property_id= #{propertyId,jdbcType=VARCHAR}
+  	group by a.building_structure_id
+  </select>
+</mapper>

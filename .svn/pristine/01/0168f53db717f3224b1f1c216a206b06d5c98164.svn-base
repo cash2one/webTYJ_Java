@@ -1,0 +1,129 @@
+package com.flf.service.impl;
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.List;
+import java.util.UUID;
+
+import com.flf.entity.Annex;
+import com.flf.entity.MeterReadingOrders;
+import com.flf.entity.MeterReadingRecords;
+import com.flf.entity.TasksJournal;
+import com.flf.mapper.AnnexMapper;
+import com.flf.mapper.MeterReadingOrdersMapper;
+import com.flf.mapper.MeterReadingRecordsMapper;
+import com.flf.mapper.TasksJournalMapper;
+import com.flf.request.Info;
+import com.flf.service.MeterReadingOrdersService;
+import com.flf.util.Tools;
+
+public class MeterReadingOrdersServiceImpl implements MeterReadingOrdersService{
+
+	private MeterReadingOrdersMapper meterReadingOrdersMapper;
+	private MeterReadingRecordsMapper meterReadingRecordsMapper;
+	private AnnexMapper annexMapper;
+	private TasksJournalMapper tasksJournalMapper;
+	
+	public AnnexMapper getAnnexMapper() {
+		return annexMapper;
+	}
+
+	public void setAnnexMapper(AnnexMapper annexMapper) {
+		this.annexMapper = annexMapper;
+	}
+
+	public TasksJournalMapper getTasksJournalMapper() {
+		return tasksJournalMapper;
+	}
+
+	public void setTasksJournalMapper(TasksJournalMapper tasksJournalMapper) {
+		this.tasksJournalMapper = tasksJournalMapper;
+	}
+
+	public MeterReadingRecordsMapper getMeterReadingRecordsMapper() {
+		return meterReadingRecordsMapper;
+	}
+
+	public void setMeterReadingRecordsMapper(
+			MeterReadingRecordsMapper meterReadingRecordsMapper) {
+		this.meterReadingRecordsMapper = meterReadingRecordsMapper;
+	}
+
+	public MeterReadingOrdersMapper getMeterReadingOrdersMapper() {
+		return meterReadingOrdersMapper;
+	}
+
+	public void setMeterReadingOrdersMapper(
+			MeterReadingOrdersMapper meterReadingOrdersMapper) {
+		this.meterReadingOrdersMapper = meterReadingOrdersMapper;
+	}
+
+	@Override
+	public Info closeMeterReadingOrders(MeterReadingOrders meterReadingOrders) {
+		if(meterReadingOrders != null){
+			Integer orderState = meterReadingOrders.getOrderState();
+			String closePersonId = meterReadingOrders.getClosePersonId();
+			if(Tools.notEmpty(closePersonId) && orderState!=null){
+				meterReadingOrders.setOrderState(0);
+				meterReadingOrders.setCloseTime(new Date());
+				meterReadingOrdersMapper.updateMeterReadingOrders(meterReadingOrders);
+				return Tools.msg("关闭操作成功!", true);
+			}
+		}
+		return Tools.msg("关闭操作失败!", false);
+	}
+
+	@Override
+	public MeterReadingOrders getMeterReadingOrdersbyId(String orderId) {
+		if(Tools.notEmpty(orderId)){
+			return meterReadingOrdersMapper.getMeterReadingOrdersbyId(orderId);
+		}
+		return null;
+	}
+
+	@Override
+	public Info insertMeterReadingOrders(MeterReadingOrders meterReadingOrders) {
+		String uuid = UUID.randomUUID().toString();
+		String date = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date());
+		
+		if(meterReadingOrders != null){
+			MeterReadingRecords records = meterReadingOrders.getMeterReadingRecords();
+			List<Annex> annexList = meterReadingOrders.getAnnexs();
+			
+			meterReadingOrders.setOrderId(uuid);
+			meterReadingOrders.setFinishTime(new Date());
+			Integer result = meterReadingOrdersMapper.insertMeterReadingOrdersUUID(meterReadingOrders);
+			if(result>0 && records!=null){
+				records.setOrderId(uuid);
+				meterReadingRecordsMapper.insertMeterReadingRecords(records);
+				
+				//附件信息保存
+				if(annexList!=null && annexList.size()>0){
+					for(Annex annex :annexList){
+						annex.setRelationId(uuid);
+						annex.setAnnexTime(date);
+						annexMapper.insertAnnex(annex);
+					}
+				}
+				
+				TasksJournal journal = new TasksJournal();
+				journal.setTaskId(meterReadingOrders.getTaskId());
+				journal.setCreOrderId(uuid);
+				journal.setCreOrderType(meterReadingOrders.getOrderType());
+				journal.setChangeOrderState(meterReadingOrders.getOrderState());
+				journal.setOperatorId(meterReadingOrders.getOperatorId());
+				journal.setRemarks(meterReadingOrders.getRemarks());
+				journal.setOperationTime(date);
+				tasksJournalMapper.insertTasksJournal(journal);
+				return Tools.msg("创建成功!", true);
+			}
+			return Tools.msg("添加数据失败或记录信息为空!", false);
+		}
+		return Tools.msg("创建失败!", false);
+	}
+
+	@Override
+	public void updateMeterReadingOrders(MeterReadingOrders meterReadingOrders) {
+		meterReadingOrdersMapper.updateMeterReadingOrders(meterReadingOrders);
+	}
+}

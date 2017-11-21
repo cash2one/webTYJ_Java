@@ -1,0 +1,123 @@
+package com.flf.entity;
+
+import java.math.BigDecimal;
+
+import javax.xml.bind.annotation.XmlRootElement;
+
+/**
+ * 计费记录表
+ * @author maogaofei
+ * @date 2016年7月12日 下午4:25:49
+ */
+@XmlRootElement(name = "BillingRecord")
+public class BillingRecord {
+    private String billingRecordId;//计费记录ID
+
+    private String projectId;//项目ID
+
+    private String buildingId;//建筑ID
+
+    private String chargeTypeDetailsId;//收费类型详情ID
+
+    private String chargeTypeDetailsBuildingBillingId;//收费类型详情建筑计费ID
+
+    private String billingTime;//计费时间
+
+    private BigDecimal amount;//金额
+
+    private String createUser;//创建人
+
+    private String createTime;//创建时间
+
+    private String updateUser;//修改人
+
+    private String updateTime;//修改时间
+
+    public String getBillingRecordId() {
+        return billingRecordId;
+    }
+
+    public void setBillingRecordId(String billingRecordId) {
+        this.billingRecordId = billingRecordId == null ? null : billingRecordId.trim();
+    }
+
+    public String getProjectId() {
+        return projectId;
+    }
+
+    public void setProjectId(String projectId) {
+        this.projectId = projectId == null ? null : projectId.trim();
+    }
+
+    public String getBuildingId() {
+        return buildingId;
+    }
+
+    public void setBuildingId(String buildingId) {
+        this.buildingId = buildingId == null ? null : buildingId.trim();
+    }
+
+    public String getChargeTypeDetailsId() {
+        return chargeTypeDetailsId;
+    }
+
+    public void setChargeTypeDetailsId(String chargeTypeDetailsId) {
+        this.chargeTypeDetailsId = chargeTypeDetailsId == null ? null : chargeTypeDetailsId.trim();
+    }
+
+    public String getChargeTypeDetailsBuildingBillingId() {
+        return chargeTypeDetailsBuildingBillingId;
+    }
+
+    public void setChargeTypeDetailsBuildingBillingId(String chargeTypeDetailsBuildingBillingId) {
+        this.chargeTypeDetailsBuildingBillingId = chargeTypeDetailsBuildingBillingId == null ? null : chargeTypeDetailsBuildingBillingId.trim();
+    }
+
+    public String getBillingTime() {
+        return billingTime;
+    }
+
+    public void setBillingTime(String billingTime) {
+        this.billingTime = billingTime == null ? null : billingTime.trim();
+    }
+
+    public BigDecimal getAmount() {
+        return amount;
+    }
+
+    public void setAmount(BigDecimal amount) {
+        this.amount = amount;
+    }
+
+    public String getCreateUser() {
+        return createUser;
+    }
+
+    public void setCreateUser(String createUser) {
+        this.createUser = createUser == null ? null : createUser.trim();
+    }
+
+    public String getCreateTime() {
+        return createTime;
+    }
+
+    public void setCreateTime(String createTime) {
+        this.createTime = createTime == null ? null : createTime.trim();
+    }
+
+    public String getUpdateUser() {
+        return updateUser;
+    }
+
+    public void setUpdateUser(String updateUser) {
+        this.updateUser = updateUser == null ? null : updateUser.trim();
+    }
+
+    public String getUpdateTime() {
+        return updateTime;
+    }
+
+    public void setUpdateTime(String updateTime) {
+        this.updateTime = updateTime == null ? null : updateTime.trim();
+    }
+}

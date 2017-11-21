@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+    <style>
+        a,a:visited {color:#333;text-decoration:none;}
+        a:hover {color:#f60;}
+        .TreeWrap td {font:13px "Geneva","宋体", "Arial", "Helvetica",sans-serif;}
+        ul,li {margin:0;padding:0;list-style:none;}
+        h1,h2,h3,h4,h5,h6 {margin:0;padding:0;}
+        h1 {padding:5px;color:#900;font-size:16px;}
+        h1 small {font-size:11px;font-weight:normal;color:#660;}
+        .TreeWrap {border: 1px solid lightgray;padding:10px;}
+        .MenuBox2{margin-top: 8px;}
+        .MenuBox .titBox a,
+        .MenuBox .titBox a:visited,
+        .MenuBox2 .titBox a,
+        .MenuBox2 .titBox a:visited {margin-left:5px;color:#003;font-size:12px;display:block;}
+        .MenuBox2 .txtBox {display:none;}
+        .MenuBox .txtBox ul li {padding-left:35px;line-height:20px;}
+        .MenuBox .txtBox .num {color:#e00;}
+        .assertInfo p{line-height: 40px;}
+
+        .col-md-2 p{border: 1px solid #797979;margin: 5px;width:210px;padding: 5px 35px}
+        .ed{height: 336px;width:250px;border: 1px solid #797979;margin: 10px;background-color: #ffffff}
+        .ef{height: 336px;width:450px;border: 1px solid #797979;margin-left: 10px;background-color: #ffffff}
+        .em{height: 336px;width:50px;margin-left: 10px}
+
+        .ff{margin-left: 30px}
+        .fe{height: 450px;border: 1px solid #797979;background-color: #ffffff}
+        #qp{border: 1px solid #797979;margin: 5px 60px;width:90px;padding: 5px 20px;background-color: #ffffff}
+        #qpp{border: 1px solid #797979;margin: 5px 60px;width:90px;padding: 5px 20px;background-color: #ffffff}
+        #qppp{border: 1px solid #797979;margin: 5px 60px;width:90px;padding: 5px 20px;background-color: #ffffff}
+    </style>
+
+    <script type="text/javascript">
+        <!--
+        function ExChgClsName(Obj,NameA,NameB){
+            var Obj=document.getElementById(Obj)?document.getElementById(Obj):Obj;
+            Obj.className=Obj.className==NameA?NameB:NameA;
+        }
+        function showMenu(iNo){
+            ExChgClsName("Menu_"+iNo,"MenuBox","MenuBox2");
+        }
+        -->
+    </script>
+</head>
+<body>
+<div style="margin: 50px 30px">
+    <div class="col-md-10">
+        <div class="col-md-4 ff"><h4><strong>选择任务项</strong></h4></div>
+        <div class="col-md-4" style="margin-left: 150px"><h4><strong>选定任务项</strong></h4></div>
+    </div>
+
+    <div  class="col-md-2 ed">
+        <ul class="list-inline">
+            <li><input type="text" style="margin-left: 10px;margin-top: 20px;width: 165px"></li>
+            <li><span class="glyphicon glyphicon-search"></span></li>
+        </ul>
+
+        <div class="col-md-2 " style="width: 220px;margin-top: 10px">
+
+            <div class="TreeWrap">
+                <div class="MenuBox" id="Menu_0">
+                    <div class="titBox">
+                        <h3 class="Fst">
+                            <a href="javascript:showMenu(0);">
+                                <span class="glyphicon glyphicon-play" aria-hidden="true" style="margin-right:2px;"></span>
+                                质检计划</a></h3>
+                    </div>
+                    <div class="txtBox">
+                        <ul>
+                            <li>
+                                <div class="MenuBox" id="Menu_1">
+                                    <div class="titBox">
+                                        <h3 class="Fst">
+                                            <a href="javascript:showMenu(1);">
+                                                <span class="glyphicon glyphicon-play" aria-hidden="true" style="margin-right:2px;"></span>
+                                                日检计划</a></h3>
+                                    </div>
+
+                                    <div class="txtBox">
+                                        <ul>
+                                            <li><a href="#xiancai" data-toggle="tab">A计划</a></li>
+                                            <li><a href="#xiancai" data-toggle="tab">B计划</a></li>
+                                            <li class="Lst"><a href="#xiancai" data-toggle="tab">C计划</a></li>
+                                        </ul>
+                                    </div>
+                                 </div>
+                            </li>
+                            <li><a href="#xiancai" data-toggle="tab">周检计划</a></li>
+                            <li><a href="#xiancai" data-toggle="tab">月检计划</a></li>
+                        </ul>
+                    </div>
+                </div><!--MenuBox-->
+
+
+            </div>
+            <!--新增资产【选择专业】-->
+        </div>
+    </div>
+
+    </div>
+
+    <div  class="col-md-2 em">
+        <span class="glyphicon glyphicon-menu-right" style="font-size: 40px;margin-top: 140px"></span>
+    </div>
+
+    <div  class="col-md-2 ef">
+        <p style="width: 400px">日检计划-A计划<strong style="margin-left: 180px">X</strong></p>
+        <p style="width: 400px">日检计划-B计划<strong style="margin-left: 180px">X</strong></p>
+        <p style="width: 400px">日检计划-C计划<strong style="margin-left: 180px">X</strong></p>
+    </div>
+
+<div  class="col-md-4 " style="margin-top: 10px">
+    <ul class="list-inline">
+        <li> <a class="btn" ui-sref="index.externalProfession.departmentCheck.task.chooseTask">上一步</a></li>
+        <li><a class="btn" ui-sref="index.externalProfession.departmentCheck.task.chooseTeam">下一步</a></li>
+    </ul>
+</div>
+
+</div>
+</body>
+</html>

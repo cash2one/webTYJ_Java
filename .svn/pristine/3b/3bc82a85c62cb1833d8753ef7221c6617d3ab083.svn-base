@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.flf.mapper.PersonVipProjectMapper" >
+  <resultMap id="BaseResultMap" type="com.flf.entity.PersonVipProject" >
+    <id column="tc_person_vip_project_id" property="tcPersonVipProjectId" jdbcType="VARCHAR" />
+    <result column="vip_id" property="vipId" jdbcType="VARCHAR" />
+    <result column="project_id" property="projectId" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    tc_person_vip_project_id, vip_id, project_id
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from tc_person_vip_project
+    where tc_person_vip_project_id = #{tcPersonVipProjectId,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from tc_person_vip_project
+    where tc_person_vip_project_id = #{tcPersonVipProjectId,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.flf.entity.PersonVipProject" >
+    insert into tc_person_vip_project (tc_person_vip_project_id, vip_id, project_id
+      )
+    values (#{tcPersonVipProjectId,jdbcType=VARCHAR}, #{vipId,jdbcType=VARCHAR}, #{projectId,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.flf.entity.PersonVipProject" >
+    insert into tc_person_vip_project
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="tcPersonVipProjectId != null" >
+        tc_person_vip_project_id,
+      </if>
+      <if test="vipId != null" >
+        vip_id,
+      </if>
+      <if test="projectId != null" >
+        project_id,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="tcPersonVipProjectId != null" >
+        #{tcPersonVipProjectId,jdbcType=VARCHAR},
+      </if>
+      <if test="vipId != null" >
+        #{vipId,jdbcType=VARCHAR},
+      </if>
+      <if test="projectId != null" >
+        #{projectId,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.flf.entity.PersonVipProject" >
+    update tc_person_vip_project
+    <set >
+      <if test="vipId != null" >
+        vip_id = #{vipId,jdbcType=VARCHAR},
+      </if>
+      <if test="projectId != null" >
+        project_id = #{projectId,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where tc_person_vip_project_id = #{tcPersonVipProjectId,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.flf.entity.PersonVipProject" >
+    update tc_person_vip_project
+    set vip_id = #{vipId,jdbcType=VARCHAR},
+      project_id = #{projectId,jdbcType=VARCHAR}
+    where tc_person_vip_project_id = #{tcPersonVipProjectId,jdbcType=VARCHAR}
+  </update>
+</mapper>

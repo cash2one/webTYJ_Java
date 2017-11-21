@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.flf.mapper.FaqTypesMapper" >
+  <resultMap id="BaseResultMap" type="com.flf.entity.FaqTypes" >
+    <id column="faq_type_id" property="faqTypeId" jdbcType="VARCHAR" />
+    <result column="faq_type_name" property="faqTypeName" jdbcType="VARCHAR" />
+    <result column="cre_time" property="creTime" jdbcType="TIMESTAMP" />
+    <result column="cre_person_id" property="crePersonId" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    faq_type_id, faq_type_name, cre_time, cre_person_id
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from ts_faq_types
+    where faq_type_id = #{faqTypeId,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from ts_faq_types
+    where faq_type_id = #{faqTypeId,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.flf.entity.FaqTypes" >
+    insert into ts_faq_types (faq_type_id, faq_type_name, cre_time, 
+      cre_person_id)
+    values (#{faqTypeId,jdbcType=VARCHAR}, #{faqTypeName,jdbcType=VARCHAR}, #{creTime,jdbcType=TIMESTAMP}, 
+      #{crePersonId,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.flf.entity.FaqTypes" >
+    insert into ts_faq_types
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="faqTypeId != null" >
+        faq_type_id,
+      </if>
+      <if test="faqTypeName != null" >
+        faq_type_name,
+      </if>
+      <if test="creTime != null" >
+        cre_time,
+      </if>
+      <if test="crePersonId != null" >
+        cre_person_id,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="faqTypeId != null" >
+        #{faqTypeId,jdbcType=VARCHAR},
+      </if>
+      <if test="faqTypeName != null" >
+        #{faqTypeName,jdbcType=VARCHAR},
+      </if>
+      <if test="creTime != null" >
+        #{creTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="crePersonId != null" >
+        #{crePersonId,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.flf.entity.FaqTypes" >
+    update ts_faq_types
+    <set >
+      <if test="faqTypeName != null" >
+        faq_type_name = #{faqTypeName,jdbcType=VARCHAR},
+      </if>
+      <if test="creTime != null" >
+        cre_time = #{creTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="crePersonId != null" >
+        cre_person_id = #{crePersonId,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where faq_type_id = #{faqTypeId,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.flf.entity.FaqTypes" >
+    update ts_faq_types
+    set faq_type_name = #{faqTypeName,jdbcType=VARCHAR},
+      cre_time = #{creTime,jdbcType=TIMESTAMP},
+      cre_person_id = #{crePersonId,jdbcType=VARCHAR}
+    where faq_type_id = #{faqTypeId,jdbcType=VARCHAR}
+  </update>
+  
+  <!-- 查询所有问题类型 -->
+  <select id="listFaqTypes" parameterType="FaqTypes" resultMap="BaseResultMap">
+  	select <include refid="Base_Column_List" /> from ts_faq_types
+  </select>
+  
+  <!-- 根据问题类型名称查询问题类型 -->
+  <select id="getFaqTypesByfaqTypeName" parameterType="String" resultMap="BaseResultMap">
+  	select <include refid="Base_Column_List" /> from ts_faq_types where faq_type_name like CONCAT(CONCAT('%',#{faqTypeName,jdbcType=VARCHAR}),'%')
+  </select>
+  
+  <!-- 根据问题类型名称查询是否存在，全匹配 -->
+  <select id="getFaqTypesByName" parameterType="String" resultType="int">
+  	select count(*) from ts_faq_types where faq_type_name = #{faqTypeName,jdbcType=VARCHAR}
+  </select>
+</mapper>

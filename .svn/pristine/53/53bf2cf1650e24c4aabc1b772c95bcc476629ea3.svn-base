@@ -1,0 +1,34 @@
+package com.flf.service.impl;
+
+
+import java.util.List;
+
+import com.flf.entity.FinancialCounterofferTotal;
+import com.flf.entity.PageRestful;
+import com.flf.mapper.FinancialCounterofferTotalMapper;
+import com.flf.service.FinancialCounterofferTotalService;
+
+public class FinancialCounterofferTotalServiceImpl implements FinancialCounterofferTotalService{
+	private FinancialCounterofferTotalMapper financialCounterofferTotalMapper;//回盘总结文件
+
+	public FinancialCounterofferTotalMapper getFinancialCounterofferTotalMapper() {
+		return financialCounterofferTotalMapper;
+	}
+
+	public void setFinancialCounterofferTotalMapper(
+			FinancialCounterofferTotalMapper financialCounterofferTotalMapper) {
+		this.financialCounterofferTotalMapper = financialCounterofferTotalMapper;
+	}
+
+	@Override
+	public PageRestful listPageFinancialCounterofferTotal(
+			FinancialCounterofferTotal financialCounterofferTotal) {
+		PageRestful pageRestful=new PageRestful();
+		List<FinancialCounterofferTotal> financialCounterofferTotals=financialCounterofferTotalMapper.listPageFinancialCounterofferTotal(financialCounterofferTotal);
+		financialCounterofferTotals.add(0,null);
+		pageRestful.setFinancialCounterofferTotals(financialCounterofferTotals);
+		pageRestful.setPage(financialCounterofferTotal.getPage());
+		return pageRestful;
+	}
+
+}

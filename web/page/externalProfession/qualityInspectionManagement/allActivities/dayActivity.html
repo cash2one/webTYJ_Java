@@ -1,0 +1,44 @@
+<!--创建人：李斌    日期：2015/5/21
+  页面名称：日检活动
+   日期：2015/5/29
+ js动态传送数据
+ 修改人：陶勇超
+ Js路径：'controllers/externalProfession/qualityInspectionManagement/allActivities/dayActivity',
+-->
+
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>日检活动</title>
+</head>
+<body>
+<div class="form-group">
+    <div class="col-lg-4 col-md-4 col-sm-6" style="width: 260px" >
+        <div class="program_panel">
+            <div class="program_panel_info">
+                <img src="images/staffHome/addCar.png" style="width: 100px;height: 100px;margin-left: 60px;margin-top: 10px" >
+            </div>
+        </div>
+    </div>
+    <!--循环获取数据-->
+    <div ng-repeat="item in items" class="col-lg-4 col-md-4 col-sm-6" style="width: 260px" >
+        <div class="program_panel">
+            <div class="program_panel_info">
+                <div class="col-md-3" style="margin-left: -10px">
+                <div style="width: 50px;height: 50px;background-color: #ffffff;margin-top: 10px;padding: 5px">
+                    <h4>活动</h4>
+                </div>
+                </div>
+                <div class="col-md-8">
+                    <p>质检时间：{{item.date}}</p>
+                    <p>活动名称：{{item.name}}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+</body>
+</html>

@@ -1,0 +1,29 @@
+<!--
+    作者:彭婷婷
+    页面名称:房型初始化
+    js路径:js/controllers/internalProfession/initialization
+-->
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>房型初始化</title>
+</head>
+<body ng-controller="initializationCtrl">
+<div class="row">
+    <div class="complaint_user">
+       <div class="complaint_user_info">
+            <div class="complaint_user_info_navigation">
+                <a class="btn" ui-sref="index.internalProfession.initialization.houseAdd">新增户型</a>
+                <a class="btn" ui-sref="index.internalProfession.initialization.houseSelect">查询户型</a>
+                <a class="btn" ui-sref="index.internalProfession.initialization.areaMaintain">功能区域维护</a>
+            </div>
+        </div>
+        <div class="clear"></div>
+    </div>
+</div>
+<div class="row">
+    <div ui-view></div>
+</div>
+</body>
+</html>

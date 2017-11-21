@@ -1,0 +1,407 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.flf.mapper.CarInfoMapper" >
+  <resultMap id="BaseResultMap" type="CarInfo" >
+    <id column="car_id" property="carId" jdbcType="VARCHAR" />
+    <result column="person_id" property="personId" jdbcType="VARCHAR" />
+    <result column="car_num" property="carNum" jdbcType="VARCHAR" />
+    <result column="car_brand" property="carBrand" jdbcType="VARCHAR" />
+    <result column="car_type" property="carType"  />
+    <result column="car_style" property="carStyle"  />
+    <result column="engine_num" property="engineNum" jdbcType="VARCHAR" />
+    <result column="discriminate_code" property="discriminateCode" jdbcType="VARCHAR" />
+    <result column="passengers" property="passengers" jdbcType="INTEGER" />
+    <result column="car_color" property="carColor" jdbcType="VARCHAR" />
+    <result column="regedit_date" property="regeditDate" jdbcType="TIMESTAMP"/>
+    <result column="certification_date" property="certificationDate" jdbcType="DATE" />
+    <result column="business_style" property="businessStyle"  />
+    <result column="owner" property="owner"/>
+     <result column="driving_license" property="drivingLicense"/>
+    <result column="commissionagent" property="commissionAgent"/>
+     <result column="transactor" property="transactor"/>
+     <result column="record_date" property="recordDate"/>
+      <result column="address" property="address"/>
+    <result column="owner" property="owner"  />
+    <result column="driving_license" property="drivingLicense"  />
+    <result column="delete_car" property="deleteCar"  />
+    <result column="registrant" property="registrant"  />
+     <result column="operate_date" property="operateDate"  />
+     <association property="personCustNew" column="owner" select="com.flf.mapper.PersonCustNewMapper.getPersonCustNewById"></association>
+     <collection property="annexs" column="car_id" ofType="Annex" select="com.flf.mapper.AnnexMapper.getAnnexbyRelationId"></collection>
+  </resultMap>
+  
+  <resultMap id="PersonCustNewResultMap" type="PersonCustNew" >
+    <result column="cust_id" property="custId" jdbcType="VARCHAR" />
+    <result column="cust_code" property="custCode" jdbcType="VARCHAR" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="sex" property="sex" jdbcType="VARCHAR" />
+    <result column="native_place" property="nativePlace" jdbcType="VARCHAR" />
+    <result column="census" property="census" jdbcType="VARCHAR" />
+    <result column="birthday" property="birthday" jdbcType="DATE" />
+    <result column="card_type" property="cardType" jdbcType="TINYINT" />
+    <result column="card_num" property="cardNum" jdbcType="VARCHAR" />
+    <result column="jiajia_num" property="jiajiaNum" jdbcType="VARCHAR" />
+    <result column="weixin_num" property="weixinNum" jdbcType="VARCHAR" />
+    <result column="work_units" property="workUnits" jdbcType="VARCHAR" />
+    <result column="position" property="position" jdbcType="VARCHAR" />
+    <result column="marrie_state" property="marrieState" jdbcType="TINYINT" />
+    <result column="edu_level" property="eduLevel" jdbcType="TINYINT" />
+    <result column="social" property="social" jdbcType="VARCHAR" />
+    <result column="landscape" property="landscape" jdbcType="TINYINT" />
+    <result column="hobby" property="hobby" jdbcType="VARCHAR" />
+    <result column="cust_level" property="custLevel" jdbcType="VARCHAR" />
+    <result column="is_enterprise" property="isEnterprise" jdbcType="TINYINT" />
+    <result column="urgent_contact_person" property="urgentContactPerson" jdbcType="VARCHAR" />
+    <result column="urgent_contact_phone" property="urgentContactPhone" jdbcType="VARCHAR" />
+    <result column="upload_image" property="uploadImage" jdbcType="VARCHAR" />
+    <result column="phone_num" property="phoneNum" jdbcType="VARCHAR" />
+  </resultMap>
+
+    <resultMap id="ResultCaraccesscard" type="Caraccesscard" >
+    <id column="card_id" property="cardId"/>
+    <result column="card_state" property="cardState"/>
+  </resultMap>
+
+  <resultMap id="CarInfoResultMap" type="CarInfo" >
+   <id column="car_id" property="carId" jdbcType="VARCHAR" />
+    
+    <result column="car_num" property="carNum" jdbcType="VARCHAR" />
+    <result column="car_brand" property="carBrand" jdbcType="VARCHAR" />
+    <result column="car_type" property="carType"  />
+    <result column="car_style" property="carStyle"  />
+    <result column="engine_num" property="engineNum" jdbcType="VARCHAR" />
+    <result column="discriminate_code" property="discriminateCode" jdbcType="VARCHAR" />
+    <result column="passengers" property="passengers" jdbcType="INTEGER" />
+    <result column="car_color" property="carColor" jdbcType="VARCHAR" />
+    <result column="regedit_date" property="regeditDate" jdbcType="TIMESTAMP" />
+    <result column="certification_date" property="certificationDate" jdbcType="DATE" />
+    <result column="business_style" property="businessStyle"  />
+    <result column="owner" property="owner"/>
+     <result column="driving_license" property="drivingLicense"/>
+    <result column="commissionagent" property="commissionAgent"/>
+     <result column="transactor" property="transactor"/>
+     <result column="record_date" property="recordDate"/>
+     <result column="address" property="address"/>
+    <result column="owner" property="owner"  />
+    <result column="driving_license" property="drivingLicense"  />
+    <result column="delete_car" property="deleteCar"  />
+    <result column="registrant" property="registrant"  />
+     <result column="operate_date" property="operateDate"  />
+    <association property="personCustNew" select="selectPersonCustNew" column="owner" javaType="PersonCustNew">
+    <result column="cust_id" property="custId" jdbcType="VARCHAR" />
+    <result column="cust_code" property="custCode" jdbcType="VARCHAR" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="sex" property="sex" jdbcType="VARCHAR" />
+    <result column="native_place" property="nativePlace" jdbcType="VARCHAR" />
+    <result column="census" property="census" jdbcType="VARCHAR" />
+    <result column="birthday" property="birthday" jdbcType="DATE" />
+    <result column="card_type" property="cardType" jdbcType="TINYINT" />
+    <result column="card_num" property="cardNum" jdbcType="VARCHAR" />
+    <result column="jiajia_num" property="jiajiaNum" jdbcType="VARCHAR" />
+    <result column="weixin_num" property="weixinNum" jdbcType="VARCHAR" />
+    <result column="work_units" property="workUnits" jdbcType="VARCHAR" />
+    <result column="position" property="position" jdbcType="VARCHAR" />
+    <result column="marrie_state" property="marrieState" jdbcType="TINYINT" />
+    <result column="edu_level" property="eduLevel" jdbcType="TINYINT" />
+    <result column="social" property="social" jdbcType="VARCHAR" />
+    <result column="landscape" property="landscape" jdbcType="TINYINT" />
+    <result column="hobby" property="hobby" jdbcType="VARCHAR" />
+    <result column="cust_level" property="custLevel" jdbcType="VARCHAR" />
+    <result column="is_enterprise" property="isEnterprise" jdbcType="TINYINT" />
+    <result column="urgent_contact_person" property="urgentContactPerson" jdbcType="VARCHAR" />
+    <result column="urgent_contact_phone" property="urgentContactPhone" jdbcType="VARCHAR" />
+    <result column="upload_image" property="uploadImage" jdbcType="VARCHAR" />
+    <result column="phone_num" property="phoneNum" jdbcType="VARCHAR" />
+    </association>
+      <association property="person" select="selectPersonCustNew" column="transactor" javaType="PersonCustNew">
+    <result column="cust_id" property="custId" jdbcType="VARCHAR" />
+    <result column="cust_code" property="custCode" jdbcType="VARCHAR" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="sex" property="sex" jdbcType="VARCHAR" />
+    <result column="native_place" property="nativePlace" jdbcType="VARCHAR" />
+    <result column="census" property="census" jdbcType="VARCHAR" />
+    <result column="birthday" property="birthday" jdbcType="DATE" />
+    <result column="card_type" property="cardType" jdbcType="TINYINT" />
+    <result column="card_num" property="cardNum" jdbcType="VARCHAR" />
+    <result column="jiajia_num" property="jiajiaNum" jdbcType="VARCHAR" />
+    <result column="weixin_num" property="weixinNum" jdbcType="VARCHAR" />
+    <result column="work_units" property="workUnits" jdbcType="VARCHAR" />
+    <result column="position" property="position" jdbcType="VARCHAR" />
+    <result column="marrie_state" property="marrieState" jdbcType="TINYINT" />
+    <result column="edu_level" property="eduLevel" jdbcType="TINYINT" />
+    <result column="social" property="social" jdbcType="VARCHAR" />
+    <result column="landscape" property="landscape" jdbcType="TINYINT" />
+    <result column="hobby" property="hobby" jdbcType="VARCHAR" />
+    <result column="cust_level" property="custLevel" jdbcType="VARCHAR" />
+    <result column="is_enterprise" property="isEnterprise" jdbcType="TINYINT" />
+    <result column="urgent_contact_person" property="urgentContactPerson" jdbcType="VARCHAR" />
+    <result column="urgent_contact_phone" property="urgentContactPhone" jdbcType="VARCHAR" />
+    <result column="upload_image" property="uploadImage" jdbcType="VARCHAR" />
+    <result column="phone_num" property="phoneNum" jdbcType="VARCHAR" />
+    </association>
+
+    <association property="caraccesscard" select="selectCaraccesscard" column="card_id" javaType="Caraccesscard">
+    	 <id column="card_id" property="cardId"/>
+            <result column="card_state" property="cardState"/>
+    </association>
+  </resultMap>
+  
+  <select id="listSearchCarInfo" parameterType="Search" resultMap="CarInfoResultMap">
+  	SELECT a.* FROM t_car_info a 
+  	LEFT JOIN tc_person_cust b ON a.owner=b.cust_id
+  	WHERE  a.delete_car=1 
+  	<if test="staffName!='' and staffName!=null">
+  			and b.name like CONCAT('%',#{staffName},'%')
+  		</if>
+  		<if test="idNum!='' and idNum!=null">
+  			and b.card_num like CONCAT('%',#{idNum},'%')
+  		</if>
+  		<if test="phone!='' and phone!=null">
+  			and b.register_phone like CONCAT('%',#{phone},'%')
+  		</if> 
+  		<if test="carNum!='' and carNum!=null">
+  			and a.car_num like CONCAT('%',#{carNum},'%')
+  		</if>
+  		<if test="discriminateCode!='' and discriminateCode!=null">
+  			and a.discriminate_code like CONCAT('%',#{discriminateCode},'%')
+  		</if>
+  		<if test="custId!='' and custId!=null">
+  			and a.owner = #{custId}
+  		</if>
+  		
+  </select>
+  
+   <!--    
+                        根据条件查询授权人和办理人的车辆信息                 
+                        根据搜索条件查询办理人停车卡和授权人停车卡信息信息 
+                  
+         -->
+    <select id="listSearchCarInfoAu" parameterType="Search" resultMap="CarInfoResultMap">
+  	SELECT a.* FROM 
+  	(
+  	select * from t_car_info aa 
+  	where aa.delete_car=1
+  		<if test="carNum!='' and carNum!=null">
+  			and aa.car_num like CONCAT('%',#{carNum},'%')
+  		</if>
+  		<if test="discriminateCode!='' and discriminateCode!=null">
+  			and aa.discriminate_code like CONCAT('%',#{discriminateCode},'%')
+  		</if>
+  	) as a 
+  	LEFT JOIN 
+  	(
+  		select * from tc_person_cust as bb where bb.cust_id in
+  		(
+			SELECT
+				au.authorizer_personId
+			FROM
+				t_authorization_project AS ap,
+				t_authorization au
+			WHERE
+			    au.status = '1'
+			AND	ap.authorization_id = au.authorization_id
+			AND ap.authorization_project_type_id =#{projectType}
+			AND au.authorized_personId =#{custId}
+			AND au.sta_date &lt;= CURDATE() 
+			AND au.end_date &gt;= CURDATE()
+		)
+  			 <if test="staffName!='' and staffName!=null">
+  				and bb.name like CONCAT('%',#{staffName},'%')
+	  		</if>
+	  		<if test="idNum!='' and idNum!=null">
+	  			and bb.card_num like CONCAT('%',#{idNum},'%')
+	  		</if>
+	  		<if test="phone!='' and phone!=null">
+	  			and bb.phone_num like CONCAT('%',#{phone},'%')
+	  		</if> 
+  	) as b ON a.owner=b.cust_id
+  </select>
+  
+  <select id="selectPersonCustNew" resultMap="PersonCustNewResultMap" parameterType="String">
+  		select * from tc_person_cust where cust_id=#{0} 
+  </select> 
+  
+  <select id="selectCaraccesscard" resultMap="ResultCaraccesscard" parameterType="String">
+  		select * from t_car_access_card where card_id=#{0}
+  </select>
+
+  <select id="getCarInfo" resultMap="BaseResultMap" parameterType="String">
+  		select * from t_car_info where owner=#{owner}  and delete_car=1 
+  </select>
+
+<!-- 修改返回值，增加为判断 zhuqi 2016.04.26 -->
+  <select id="listPageCarInfo" resultMap="BaseResultMap" parameterType="CarInfo">
+  		SELECT c.* FROM t_car_info c
+		LEFT JOIN tc_person_cust pc ON c.owner = pc.cust_id
+		WHERE delete_car=1
+  		<if test="carNum!='' and carNum!=null">
+  			and c.car_num like CONCAT('%',#{carNum},'%')
+  		</if>
+  		<if test="carColor!='' and carColor!=null">
+  			and c.car_color like CONCAT('%',#{carColor},'%')
+  		</if>
+  		<if test="drivingLicense!='' and drivingLicense!=null">
+  			and c.driving_license like CONCAT('%',#{drivingLicense},'%')
+  		</if>
+  		<if test="owner!='' and owner!=null">
+  			and c.owner like CONCAT('%',#{owner},'%')
+  		</if>
+  		<if test="ownerName!='' and ownerName!=null">
+  			and pc.name like CONCAT('%',#{ownerName},'%')
+  		</if>
+  		<if test="carStyle!='' and carStyle!=null">
+  			and c.car_style like CONCAT('%',#{carStyle},'%')
+  		</if>
+  		ORDER BY c.operate_date DESC
+  </select>
+
+
+  <!-- <select id="listAllCarInfo" resultMap="CarInfoResultMap">
+  		select * from t_car_info  c, t_car_access_card cd  where c.car_id=cd.card_id;
+  </select> -->
+
+  <!--  创建 by 肖聪 2015/6/1
+   查询所有车辆的信息 -->
+  <select id="listAllCarInfo" resultMap="BaseResultMap">
+  		select * from t_car_info where delete_car=1
+  </select>
+  
+  <select id="getCarInfoById" resultMap="BaseResultMap" parameterType="String">
+  		select * from t_car_info where car_id=#{0} and delete_car=1 
+  </select>
+<!-- 增加车辆信息 肖聪  2015/6/17 -->
+  <insert id="insertCarInfo" parameterType="CarInfo">
+  		insert into t_car_info(car_id,person_id,car_num,car_brand,car_type,car_style,engine_num,discriminate_code,passengers,car_color,regedit_date,certification_date,business_style,commissionagent,transactor,driving_license,record_date,address,registrant,owner,operate_date)
+  		values(#{carId},#{personId},#{carNum},#{carBrand},#{carType},#{carStyle},#{engineNum},#{discriminateCode},#{passengers},#{carColor},#{regeditDate},#{certificationDate},#{businessStyle},#{commissionAgent},#{transactor},#{drivingLicense},#{recordDate},#{address},#{registrant},#{owner},now())
+  </insert>
+  <!-- 修改车辆信息 肖聪 2015/6/17 -->
+  <update id="updateCarInfo" parameterType="CarInfo">
+  		update t_car_info
+  		set person_id=#{personId}
+  		,car_num=#{carNum}
+  		,car_brand=#{carBrand}
+  		,car_type=#{carType}
+  		,car_style=#{carStyle}
+  		,engine_num=#{engineNum}
+  		,discriminate_code=#{discriminateCode}
+  		,passengers=#{passengers}
+  		,car_color=#{carColor}
+  		,regedit_date=#{regeditDate}
+  		,certification_date=#{certificationDate}
+  		,business_style=#{businessStyle}
+  		,commissionagent=#{commissionAgent}
+  		,transactor=#{transactor}
+  		,driving_license=#{drivingLicense}
+  		,record_date=#{recordDate}
+  		,address=#{address}
+  		,registrant=#{registrant}
+  		,owner=#{owner}
+  		,operate_date=now()
+  		where car_id=#{carId}
+  </update>
+  
+  <!-- 删除车辆信息  肖聪  2015/6/17 -->
+  <update id="deleteCarInfo" parameterType="String">
+  		update  t_car_info
+  		set
+  		delete_car=0
+  		,operate_date=now()
+  		where car_id=#{0}
+  </update>
+  
+   <!--   创建 by 肖聪  2015/6/23 -->
+   
+   <select id="getCarInfoByPerson" resultMap="BaseResultMap" parameterType="SearchCar">
+  		SELECT a.* FROM t_car_info a 
+		 	 INNER JOIN tc_person_cust b ON a.person_id = b.cust_id
+		 	INNER JOIN t_staff c ON a.registrant = c.staff_id 
+		 	where 1=1
+  		<if test="staffName!='' and staffName!=null">
+  			and c.staff_name like CONCAT('%',#{staffName},'%')
+  		</if>
+  		<if test="carNum!='' and carNum!=null">
+  			and a.car_num like CONCAT('%',#{carNum},'%')
+  		</if>
+  		<if test="discriminateCode!='' and discriminateCode!=null">
+  			and a.staff_name like CONCAT('%',#{discriminateCode},'%')
+  		</if>
+  		<if test="engineNum!='' and engineNum!=null">
+  			and a.staff_name like CONCAT('%',#{engineNum},'%')
+  		</if>
+  		<if test="carBrand!='' and carBrand!=null">
+  			and a.car_brand like CONCAT('%',#{carBrand},'%')
+  		</if>
+  </select>
+    <select id="listPageCarInfoByDelete" resultMap="BaseResultMap" parameterType="CarInfo">
+  		select * from t_car_info where owner = #{owner} and delete_car=0 
+  </select>
+    <select id="listPageCarInfoByTransactor" resultMap="BaseResultMap" parameterType="CarInfo">
+  		select * from t_car_info where owner = #{owner} and delete_car=1 
+  </select>
+  
+  <resultMap type="CarInfo" id="ResultMapWithCarInfo" extends="BaseResultMap">
+		<association property="personCustNew" column="custId" javaType="PersonCustNew" select="com.flf.mapper.PersonCustNewMapper.getPersonCustNewById" />
+    </resultMap>
+  
+  <!-- 根据条件查询车辆信息 2015/12/15 -->
+  <select id="listPageCarInfoByContion" resultMap="ResultMapWithCarInfo" parameterType="CarInfo">
+  		select * from t_car_info a
+  		INNER JOIN tc_person_cust b ON a.owner = b.cust_id 
+  		<!-- where delete_car=1  -->
+  		where 1=1
+  		<if test="carNum!='' and carNum!=null">
+  			and a.car_num like CONCAT('%',#{carNum},'%')
+  		</if>
+  		<if test="name!='' and name!=null">
+  			and b.name like CONCAT('%',#{name},'%')
+  		</if>
+  		<if test="phone!='' and phone!=null">
+  			and b.phone_num like CONCAT('%',#{phone},'%')
+  		</if>
+  </select>
+  
+  <!-- 分页查询  ylq  2016/7/13 -->
+  <select id="listPageCarInfoBySearchItems" resultMap="CarInfoResultMap" parameterType="Search" >
+		Select a.* From t_car_info a 
+		Left Join tc_person_cust b ON a.owner=b.cust_id
+		Where  a.delete_car = 1
+		<if test="staffName!='' and staffName!=null">
+  			and b.name like CONCAT('%',#{staffName},'%')
+  		</if>
+  		<if test="idNum!='' and idNum!=null">
+  			and b.card_num like CONCAT('%',#{idNum},'%')
+  		</if>
+  		<if test="phone!='' and phone!=null">
+  			and b.register_phone like CONCAT('%',#{phone},'%')
+  		</if> 
+  		<if test="carNum!='' and carNum!=null">
+  			and a.car_num like CONCAT('%',#{carNum},'%')
+  		</if>
+  		<if test="discriminateCode!='' and discriminateCode!=null">
+  			and a.discriminate_code like CONCAT('%',#{discriminateCode},'%')
+  		</if>
+  		<if test="custId!='' and custId!=null">
+  			and a.owner = #{custId}
+  		</if>
+  		<if test="houseNum!='' and houseNum!=null">
+  			And Exists(
+				Select tp.cust_id From tc_person_building tp 
+				Left Join tc_house th On th.building_structure_id = tp.building_structure_id
+				Where tp.state = 0 
+					And tp.cust_id = b.cust_id
+					And th.house_num Like CONCAT('%',#{houseNum},'%') 
+				Limit 0,1
+			)
+  		</if>
+  </select>
+  
+    <!-- 更改delete_car状态  ylq  2016/7/13 -->
+  <update id="updateCarInfoDeleteCarByCarId" parameterType="CarInfo">
+  		Update t_car_info
+  		Set 
+  		delete_car=0
+  		,operate_date=now()
+  		Where car_id = #{carId}
+  </update>
+  
+</mapper>

@@ -1,0 +1,770 @@
+package com.flf.service.impl;
+
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.UUID;
+
+import org.springframework.beans.factory.annotation.Autowired;
+
+import com.flf.entity.Annex;
+import com.flf.entity.AreaDivision;
+import com.flf.entity.BuildingStructureNew;
+import com.flf.entity.PageRestful;
+import com.flf.entity.Product;
+import com.flf.entity.ProductBs;
+import com.flf.entity.ServiceProject;
+import com.flf.entity.StallNew;
+import com.flf.entity.ProductCommonservice;
+import com.flf.mapper.AnnexMapper;
+import com.flf.mapper.AreaDivisionMapper;
+import com.flf.mapper.BuildingStructureNewMapper;
+import com.flf.mapper.ProductBsMapper;
+import com.flf.mapper.ProductCommonserviceMapper;
+import com.flf.mapper.ProductMapper;
+import com.flf.mapper.ServiceProjectMapper;
+import com.flf.mapper.StallNewMapper;
+import com.flf.request.FixedParkingSpace;
+import com.flf.request.Info;
+import com.flf.service.ProductService;
+import com.flf.util.Tools;
+
+/**
+ * 产品模块后台接口实现类
+ * 
+ * @author lenovo
+ * 
+ */
+public class ProductServiceImpl implements ProductService {
+
+	// 产品mapper
+	private ProductMapper productMapper;
+
+	// 面积划分mapper
+	private AreaDivisionMapper areaDivisionMapper;
+
+	// 附件mapper
+	private AnnexMapper annexMapper;
+	
+	//建筑结构表mapper
+	private BuildingStructureNewMapper buildingStructureNewMapper;
+
+	// 装修服务mapper
+	private ServiceProjectMapper serviceProjectMapper;
+
+	// 车位信息mapper
+	private StallNewMapper stallNewMapper;
+	
+	// 建筑与铲平关系mapper
+	private ProductBsMapper productBsMapper; 
+	
+	@Autowired
+	private ProductCommonserviceMapper productCommonserviceMapper;
+   
+	
+
+	public ProductBsMapper getProductBsMapper() {
+		return productBsMapper;
+	}
+
+	public void setProductBsMapper(ProductBsMapper productBsMapper) {
+		this.productBsMapper = productBsMapper;
+	}
+
+	public ServiceProjectMapper getServiceProjectMapper() {
+		return serviceProjectMapper;
+	}
+
+	public void setServiceProjectMapper(
+			ServiceProjectMapper serviceProjectMapper) {
+		this.serviceProjectMapper = serviceProjectMapper;
+	}
+
+	public ProductMapper getProductMapper() {
+		return productMapper;
+	}
+
+	public void setProductMapper(ProductMapper productMapper) {
+		this.productMapper = productMapper;
+	}
+
+	public AreaDivisionMapper getAreaDivisionMapper() {
+		return areaDivisionMapper;
+	}
+
+	public void setAreaDivisionMapper(AreaDivisionMapper areaDivisionMapper) {
+		this.areaDivisionMapper = areaDivisionMapper;
+	}
+
+	public AnnexMapper getAnnexMapper() {
+		return annexMapper;
+	}
+
+	public void setAnnexMapper(AnnexMapper annexMapper) {
+		this.annexMapper = annexMapper;
+	}
+
+	public StallNewMapper getStallNewMapper() {
+		return stallNewMapper;
+	}
+
+	public void setStallNewMapper(StallNewMapper stallNewMapper) {
+		this.stallNewMapper = stallNewMapper;
+	}
+
+	public BuildingStructureNewMapper getBuildingStructureNewMapper() {
+		return buildingStructureNewMapper;
+	}
+
+	public void setBuildingStructureNewMapper(
+			BuildingStructureNewMapper buildingStructureNewMapper) {
+		this.buildingStructureNewMapper = buildingStructureNewMapper;
+	}
+
+	/**
+	 * 新增产品
+	 * @author xiaocong
+	 * @date 下午5:00:05
+	 * @Description:TODO
+	 * @param product
+	 * @updateby xiaocong
+	 */
+	@Override
+	public void addProduct(Product product) {
+
+		// uuid生成id
+		String productid = UUID.randomUUID().toString();
+
+		// 时间格式化
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+
+		// 设置产品id
+		product.setProductId(productid);
+		
+		// 判断产品类型
+		if("2".equals(product.getProductType())){
+		}
+
+		// 判断产品类型
+		if ("3".equals(product.getProductType())) {
+
+			// 判断是否有关联装修表数据
+			if (product.getServiceprojectlist() != null
+					&& product.getServiceprojectlist().size() > 0) {
+				for (ServiceProject sp : product.getServiceprojectlist()) {
+					sp.setServiceProjectId(UUID.randomUUID().toString());
+					sp.setProductId(productid);
+					serviceProjectMapper.insert(sp);
+
+				}
+
+			}
+
+		}
+
+
+
+		// 判断产品类型，根据产品类型执行各类操作
+		if ("0".equals(product.getProductType())) {
+
+			// 判断是否有关联面积划分表数据，如果有，则先新增面积划分表数据
+			if (product.getAreadivisionlist() != null
+					&& product.getAreadivisionlist().size() > 0) {
+				for (AreaDivision ad : product.getAreadivisionlist()) {
+					ad.setAreaDivisionId(UUID.randomUUID().toString());
+					ad.setProductId(productid);
+					areaDivisionMapper.insert(ad);
+				}
+			}
+
+			// 判断是否有附件，有附件时新增附件
+			if (product.getAnnexs() != null && product.getAnnexs().size() > 0) {
+				for (Annex annex : product.getAnnexs()) {
+					annex.setRelationId(product.getProductId());
+					annex.setAnnexTime(sdf.format(new Date()));
+					annexMapper.insertAnnex(annex);
+				}
+			}
+			
+			//判断是否有建筑关联数据，有数据则像关联表中添加数据    王洲   2015.12.25
+			if(product.getBuildingstructruenewlist() != null && product.getBuildingstructruenewlist().size() > 0){
+				for(BuildingStructureNew bsn : product.getBuildingstructruenewlist()){
+					ProductBs pb = new ProductBs();
+					pb.setProductBsId(UUID.randomUUID().toString());
+					pb.setProductId(product.getProductId());
+					pb.setBuildingStructureId(bsn.getId());
+					pb.setState(0);
+					productBsMapper.insert(pb);
+				}
+			}
+			
+		} else if ("4".equals(product.getProductType())) {
+			StallNew stallNew = new StallNew();
+			stallNew.setStallId(product.getStallId());
+			stallNew.setStallType("固定");
+			stallNewMapper.updateStallNewType(stallNew);
+		}
+		
+		//判断产品类型，是否为停车月卡
+		if("1".equals(product.getProductType())){
+			//进行车库绑定操作
+			if(product.getBuildingstructruenewlist() != null && product.getBuildingstructruenewlist().size() > 0){
+				for(BuildingStructureNew bsn : product.getBuildingstructruenewlist()){
+					ProductBs productBs = new ProductBs();
+					productBs.setProductBsId(UUID.randomUUID().toString());
+					productBs.setProductId(productid);
+					productBs.setBuildingStructureId(bsn.getId());
+					productBs.setState(0);
+					productBsMapper.insert(productBs);
+				}
+			}
+		}
+		
+		//判断产品类型，是否为广告租赁
+		if("5".equals(product.getProductType())){
+			
+			//判断是否有关联面积划分表数据，如果有，则先新增面积划分表数据
+			if(product.getAreadivisionlist()!= null && product.getAreadivisionlist().size() > 0){
+				for(AreaDivision ad : product.getAreadivisionlist()){
+					ad.setAreaDivisionId(UUID.randomUUID().toString());
+					ad.setProductId(productid);
+					areaDivisionMapper.insert(ad);
+				}
+			}
+			
+			//判断是否有附件，有附件时新增附件
+			if(product.getAnnexs() != null && product.getAnnexs().size() > 0){
+				for(Annex annex : product.getAnnexs()){
+					annex.setRelationId(product.getProductId());
+					annex.setAnnexTime(sdf.format(new Date()));
+					annexMapper.insertAnnex(annex);
+				}
+			}
+			
+			//判断是否有建筑关联数据，有数据则像关联表中添加数据    王洲   2015.12.26
+			if(product.getBuildingstructruenewlist() != null && product.getBuildingstructruenewlist().size() > 0){
+				for(BuildingStructureNew bsn : product.getBuildingstructruenewlist()){
+					ProductBs pb = new ProductBs();
+					pb.setProductBsId(UUID.randomUUID().toString());
+					pb.setProductId(product.getProductId());
+					pb.setBuildingStructureId(bsn.getId());
+					pb.setState(0);
+					productBsMapper.insert(pb);
+				}
+			}
+		}
+		product.setState("0");
+		product.setModifyTime(new Date());
+		productMapper.insertProduct(product);
+	}
+
+	/**
+	 * 根据车位ID删除并修改车位信息表的车位状态
+	 * @param stallId 车位ID
+	 * @param stallType 车位状态
+	 * @return
+	 */
+	@Override
+	public void updateProduct(Product product) {
+		
+		// 时间格式化
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		
+		
+		if("2".equals(product.getProductType())){
+		}
+		
+		if("3".equals(product.getProductType())){
+			List<ServiceProject> listes =serviceProjectMapper.listServiceProjectByProductId(product.getProductId());
+			if(listes !=null && listes.size()>0){
+				serviceProjectMapper.deleteByProductId(product.getProductId());
+			}
+			if(product.getServiceprojectlist()!=null && product.getServiceprojectlist().size()>0){
+				for (ServiceProject sp : product.getServiceprojectlist()) {
+					sp.setServiceProjectId(UUID.randomUUID().toString());
+					sp.setProductId(product.getProductId());
+					serviceProjectMapper.insert(sp);
+				
+				}
+			}
+		}
+
+
+		// 判断产品是否为建筑租赁
+		if ("0".equals(product.getProductType())) {
+
+			// 判断areadivision中是否有关联数据，如果有，先删除，如果没有，直接添加
+			List<AreaDivision> list = areaDivisionMapper
+					.listAreaDivisionByProductId(product.getProductId());
+			if (list != null && list.size() > 0) {
+				areaDivisionMapper.deleteByProductId(product.getProductId());
+			}
+
+			// 判断关联面积划分数据是否为空，不为空时新增数据
+			if (product.getAreadivisionlist() != null
+					&& product.getAreadivisionlist().size() > 0) {
+				for (AreaDivision ad : product.getAreadivisionlist()) {
+					ad.setAreaDivisionId(UUID.randomUUID().toString());
+					ad.setProductId(product.getProductId());
+					areaDivisionMapper.insert(ad);
+
+				}
+			}
+			// 判断annex中是否有关联数据，如果有，先删除，如果没有，直接添加
+			List<Annex> lists = annexMapper.getAnnexbyRelationId(product
+					.getProductId());
+			if (lists != null && lists.size() > 0) {
+				annexMapper.deleteAnnexByRelationId(product.getProductId());
+			}
+
+			// 判断关联附件是否为空，如果不为空是判断是否为新增还是修改
+			if (product.getAnnexs() != null && product.getAnnexs().size() > 0) {
+				for (Annex annex : product.getAnnexs()) {
+					annex.setRelationId(product.getProductId());
+					annex.setAnnexTime(sdf.format(new Date()));
+					annexMapper.insertAnnex(annex);
+				}
+			}
+			
+			//判断产品是否关联建筑结构，关联建筑结构时修改关联数据，将本次删除掉的数据置为失效，添加新增的数据      王洲   2015.12.26
+			//1、判断数据库中是否已有关联数据
+			List<ProductBs> oldDataList = productBsMapper.listAllProductBsByProductId(product.getProductId());
+			//2、判断传入数据的关联数据是否有值，如果传入的有值进行判断，如果传入的为空则将已有的数据全部置为失效
+			if(product.getBuildingstructruenewlist() != null && product.getBuildingstructruenewlist().size() > 0){
+				//初始化两个集合，分别存放对应需要操作的数据
+				List<ProductBs> toDelList = new ArrayList<ProductBs>(); 	//需要失效的数据(已有中有，现有中无的数据)
+				List<ProductBs> toAddList = new ArrayList<ProductBs>();		//需要新增的数据(已有中无，现有中有的数据)
+				//判断数据库中是有已有数据，如果有则进行判断，如果没有则传入数据全部进行新增操作
+				if(oldDataList != null && oldDataList.size() > 0){
+					//分别向toDelList和toAddList中添加数据
+					for(ProductBs toDel : oldDataList){
+						int i = 0;
+						for(BuildingStructureNew bsn : product.getBuildingstructruenewlist()){
+							if(toDel.getBuildingStructureId().equals(bsn.getId())){
+								i++;
+							}
+						}
+						if(i == 0){
+							toDelList.add(toDel);
+						}
+					}
+					for(BuildingStructureNew bsn : product.getBuildingstructruenewlist()){
+						int j = 0;
+						ProductBs pbs = null;
+						for(ProductBs pb : oldDataList){
+							if(bsn.getId().equals(pb.getBuildingStructureId())){
+								j++;
+							}
+						}
+						if(j == 0){
+							pbs = new ProductBs();
+							pbs.setProductBsId(UUID.randomUUID().toString());
+							pbs.setProductId(product.getProductId());
+							pbs.setBuildingStructureId(bsn.getId());
+							pbs.setState(0);
+							toAddList.add(pbs);
+						}
+					}
+					//当两个集合有数据时，分别将两个集合的值存入数据库
+					if(toDelList != null && toDelList.size() > 0){
+						for(ProductBs pb1 : toDelList){
+							productBsMapper.changeStateByProductBsId(pb1.getProductBsId());
+						}
+					}
+					if(toAddList != null && toAddList.size() > 0){
+						for(ProductBs pb2 : toAddList){
+							productBsMapper.insert(pb2);
+						}
+					}
+				}else{
+					ProductBs pb  = null;
+					for(BuildingStructureNew bsn : product.getBuildingstructruenewlist()){
+						pb = new ProductBs();
+						pb.setProductBsId(UUID.randomUUID().toString());
+						pb.setProductId(product.getProductId());
+						pb.setBuildingStructureId(bsn.getId());
+						pb.setState(0);
+						productBsMapper.insert(pb);
+					}
+				}
+			}else{
+				//如果数据库中已有关联数据，全部置为失效
+				if(oldDataList != null && oldDataList.size() > 0){
+					for(ProductBs pb : oldDataList){
+						productBsMapper.changeStateByProductBsId(pb.getProductBsId());
+					}
+				}
+			}
+		}
+		
+		//判断产品类型是否为停车月卡
+		if("1".equals(product.getProductType())){
+			//绑定车库操作
+			List<BuildingStructureNew> buildlist = buildingStructureNewMapper.listBuildingStructureNewByProductId(product.getProductId());
+			//删除现有数据
+			if(buildlist != null && buildlist.size() > 0){
+				for(BuildingStructureNew bsn : buildlist){
+					buildingStructureNewMapper.updateBuildingStructureNewBytId(bsn.getId());
+				}
+			}
+			//绑定数据
+			if(product.getBuildingstructruenewlist() != null && product.getBuildingstructruenewlist().size() > 0){
+				for(BuildingStructureNew bsns : product.getBuildingstructruenewlist()){
+					bsns.setProductId(product.getProductId());
+					buildingStructureNewMapper.updateBuildingStructureNewProductId(bsns);
+				}
+			}
+			
+			productBsMapper.changeStateByProductId(product.getProductId());
+			
+			//进行车库绑定操作
+			if(product.getBuildingstructruenewlist() != null && product.getBuildingstructruenewlist().size() > 0){
+				for(BuildingStructureNew bsn : product.getBuildingstructruenewlist()){
+					ProductBs productBs = new ProductBs();
+					productBs.setProductBsId(UUID.randomUUID().toString());
+					productBs.setProductId(product.getProductId());
+					productBs.setBuildingStructureId(bsn.getId());
+					productBs.setState(0);
+					productBsMapper.insert(productBs);
+				}
+			}
+		}
+		
+		//判断产品是否为广告租赁
+		if("5".equals(product.getProductType())){
+			
+			//判断areadivision中是否有关联数据，如果有，先删除，如果没有，直接添加
+			List<AreaDivision> list =  areaDivisionMapper.listAreaDivisionByProductId(product.getProductId());
+			if(list != null && list.size() > 0){
+				areaDivisionMapper.deleteByProductId(product.getProductId());
+			}
+			
+			//判断关联面积划分数据是否为空，不为空时新增数据
+			if(product.getAreadivisionlist() !=  null && product.getAreadivisionlist().size() > 0){
+				for(AreaDivision ad : product.getAreadivisionlist()){
+						ad.setAreaDivisionId(UUID.randomUUID().toString());
+						ad.setProductId(product.getProductId());
+						areaDivisionMapper.insert(ad);
+
+				}
+			}
+			//判断annex中是否有关联数据，如果有，先删除，如果没有，直接添加
+			List<Annex> lists =  annexMapper.getAnnexbyRelationId(product.getProductId());
+			if(lists != null && lists.size() > 0){
+				annexMapper.deleteAnnexByRelationId(product.getProductId());
+			}
+			
+			//判断关联附件是否为空，如果不为空是判断是否为新增还是修改
+			if(product.getAnnexs() != null && product.getAnnexs().size() > 0){
+				for(Annex annex : product.getAnnexs()){
+						annex.setRelationId(product.getProductId());
+						annex.setAnnexTime(sdf.format(new Date()));
+						annexMapper.insertAnnex(annex);
+				}
+			}
+			
+			//判断产品是否关联建筑结构，关联建筑结构时修改关联数据，将本次删除掉的数据置为失效，添加新增的数据      王洲   2015.12.26
+			//1、判断数据库中是否已有关联数据
+			List<ProductBs> oldDataList = productBsMapper.listAllProductBsByProductId(product.getProductId());
+			//2、判断传入数据的关联数据是否有值，如果传入的有值进行判断，如果传入的为空则将已有的数据全部置为失效
+			if(product.getBuildingstructruenewlist() != null && product.getBuildingstructruenewlist().size() > 0){
+				//初始化两个集合，分别存放对应需要操作的数据
+				List<ProductBs> toDelList = new ArrayList<ProductBs>(); 	//需要失效的数据(已有中有，现有中无的数据)
+				List<ProductBs> toAddList = new ArrayList<ProductBs>();		//需要新增的数据(已有中无，现有中有的数据)
+				//判断数据库中是有已有数据，如果有则进行判断，如果没有则传入数据全部进行新增操作
+				if(oldDataList != null && oldDataList.size() > 0){
+					//分别向toDelList和toAddList中添加数据
+					for(ProductBs toDel : oldDataList){
+						int i = 0;
+						for(BuildingStructureNew bsn : product.getBuildingstructruenewlist()){
+							if(toDel.getBuildingStructureId().equals(bsn.getId())){
+								i++;
+							}
+						}
+						if(i == 0){
+							toDelList.add(toDel);
+						}
+					}
+					for(BuildingStructureNew bsn : product.getBuildingstructruenewlist()){
+						int j = 0;
+						ProductBs pbs = null;
+						for(ProductBs pb : oldDataList){
+							if(bsn.getId().equals(pb.getBuildingStructureId())){
+								j++;
+							}
+						}
+						if(j == 0){
+							pbs = new ProductBs();
+							pbs.setProductBsId(UUID.randomUUID().toString());
+							pbs.setProductId(product.getProductId());
+							pbs.setBuildingStructureId(bsn.getId());
+							pbs.setState(0);
+							toAddList.add(pbs);
+						}
+					}
+					//当两个集合有数据时，分别将两个集合的值存入数据库
+					if(toDelList != null && toDelList.size() > 0){
+						for(ProductBs pb1 : toDelList){
+							productBsMapper.changeStateByProductBsId(pb1.getProductBsId());
+						}
+					}
+					if(toAddList != null && toAddList.size() > 0){
+						for(ProductBs pb2 : toAddList){
+							productBsMapper.insert(pb2);
+						}
+					}
+				}else{
+					ProductBs pb  = null;
+					for(BuildingStructureNew bsn : product.getBuildingstructruenewlist()){
+						pb = new ProductBs();
+						pb.setProductBsId(UUID.randomUUID().toString());
+						pb.setProductId(product.getProductId());
+						pb.setBuildingStructureId(bsn.getId());
+						pb.setState(0);
+						productBsMapper.insert(pb);
+					}
+				}
+			}else{
+				//如果数据库中已有关联数据，全部置为失效
+				if(oldDataList != null && oldDataList.size() > 0){
+					for(ProductBs pb : oldDataList){
+						productBsMapper.changeStateByProductBsId(pb.getProductBsId());
+					}
+				}
+			}
+		}
+		
+		if(product.getStallId()!=null &&"4".equals(product.getProductType())){
+			if(product.getProductId()!=null){
+				
+			}else{
+				Product product_check=productMapper.getProductByStallId(product.getStallId());
+                if(product_check!=null){
+                	product.setProductId(product_check.getProductId());
+				}else{
+					Product product_add=new Product();
+					String productid = UUID.randomUUID().toString();
+					product.setProductId(productid);
+//					product_add.setStallId(product.getStallId());
+//					product_add.setProductType("4");
+					product.setState("0");
+					productMapper.insertProduct(product);
+				}
+				
+			}
+		}
+		product.setModifyTime(new Date());
+		productMapper.updateProduct(product);
+	}
+
+	
+	public void updateOrInsertProduct(Product product){
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		for(int i=1;i<product.getProducts().size();i++){
+			Product p=product.getProducts().get(i);
+			if(p.getStallType()!=null&& !p.getStallType().equals("")){
+				String productid = UUID.randomUUID().toString();
+				p.setProductId(productid);
+				//车位类型修改
+				StallNew stallNew = new StallNew();
+				stallNew.setStallId(p.getStallId());
+				stallNew.setStallType(p.getStallType());
+				stallNewMapper.updateStallNewType(stallNew);
+				Product product_check=productMapper.getProductByStallId(p.getStallId());
+				if(product_check==null){
+					product_check=new Product();
+					product_check.setPrice(p.getPrice());
+					product_check.setProductType("4");
+					product_check.setStallId(p.getStallId());
+					product_check.setProductId(UUID.randomUUID().toString());
+					productMapper.insertProduct(product_check);
+				}else{
+				//product_check.setModifyTime(new Date());
+				product_check.setPrice(p.getPrice());
+				productMapper.updateProduct(product_check);
+				}
+				
+				
+			}
+		}
+	}
+	/**
+	 * 根据车位ID删除并修改车位信息表的车位状态
+	 * @param stallId 车位ID
+	 * @param stallType 车位状态
+	 * @return
+	 */
+	@Override
+	public void deleteProduct(String productId) {
+		productMapper.deleteProductById(productId);
+	}
+
+	/**
+	 * 根据车位ID删除并修改车位信息表的车位状态
+	 */
+	@Override
+	public void deleteProductByStallId(String stallId, String stallType) {
+		productMapper.deleteProductByStallId(stallId);
+		StallNew stallNew = new StallNew();
+		stallNew.setStallId(stallId);
+		stallNew.setStallType(stallType);
+		stallNewMapper.updateStallNewType(stallNew);
+	}
+
+	/**
+	 * 分页查询
+	 */
+	@Override
+	public PageRestful listPageProduct(Product product) {
+		PageRestful pagerestful = new PageRestful();
+		List<Product> products = productMapper.listPageProduct(product);
+		if(products != null && products.size() > 0){
+			for(Product pro : products){
+				if(pro.getProductType().equals("0") || pro.getProductType().equals("5")){
+					if(pro.getAreadivisionlist() != null && pro.getAreadivisionlist().size() > 0){
+						float num = 0;
+						for(int i = 0; i < pro.getAreadivisionlist().size(); i ++){
+							num = num + Float.parseFloat(pro.getAreadivisionlist().get(i).getAreas());
+						}
+						pro.setTotalArea(String.valueOf(num));
+					}else{
+						pro.setTotalArea("0");
+					}
+				}else{
+					pro.setTotalArea("/");
+				}
+			}
+		}
+		products.add(0, null);
+		pagerestful.setProducts(products);
+		pagerestful.setPage(product.getPage());
+		return pagerestful;
+	}
+
+	/**
+	 * 根据产品id查询对象及关联对象
+	 * creat by xiaocong 
+	 * time 2015/12/24
+	 */
+	@Override
+	public Product getProductByProductId(String productId) {
+		Product product = productMapper.getProductByProductId(productId);
+		
+		//判断当查询的产品为房屋租赁或广告租赁时，查询productBs表中的buildingStructureId并查询出相应的buildingStructure数据放入buildingstructruenewlist中
+		//王洲
+		//2015.12.25
+		if(product != null){
+			if(product.getProductType().equals("0")){
+				//查询关联的有效产品建筑关联数据
+				List<ProductBs> productBsList = productBsMapper.listAllProductBsByProductId(product.getProductId());
+				//如果产品建筑关联数据有值时，循环查询出建筑结果信息并放入集合中
+				List<BuildingStructureNew> bsnList = new ArrayList<BuildingStructureNew>();
+				if(productBsList != null && productBsList.size() > 0){
+					BuildingStructureNew bsn = null;
+					for(ProductBs pb : productBsList){
+						bsn = buildingStructureNewMapper.getBuildingStructureNewbyId(pb.getBuildingStructureId());
+						bsnList.add(bsn);
+					}
+					product.setBuildingstructruenewlist(bsnList);
+				}
+			}
+			if(product.getProductType().equals("5")){
+				//查询关联的有效产品建筑关联数据
+				List<ProductBs> productBsList = productBsMapper.listAllProductBsByProductId(product.getProductId());
+				//如果产品建筑关联数据有值时，循环查询出建筑结果信息并放入集合中
+				List<BuildingStructureNew> bsnList = new ArrayList<BuildingStructureNew>();
+				if(productBsList != null && productBsList.size() > 0){
+					BuildingStructureNew bsn = null;
+					for(ProductBs pb : productBsList){
+						bsn = buildingStructureNewMapper.getBuildingStructureNewbyId(pb.getBuildingStructureId());
+						bsnList.add(bsn);
+					}
+					product.setBuildingstructruenewlist(bsnList);
+				}
+			}
+			//当查询产品为停车月卡时，查询出关联的建筑结构
+			if(product.getProductType().equals("1")){
+				//查询关联的有效产品建筑关联数据
+				List<ProductBs> productBsList = productBsMapper.listAllProductBsByProductId(product.getProductId());
+				//如果产品建筑关联数据有值时，循环查询出建筑结果信息并放入集合中
+				List<BuildingStructureNew> bsnList = new ArrayList<BuildingStructureNew>();
+				if(productBsList != null && productBsList.size() > 0){
+					BuildingStructureNew bsn = null;
+					for(ProductBs pb : productBsList){
+						bsn = buildingStructureNewMapper.getBuildingStructureNewbyId(pb.getBuildingStructureId());
+						bsnList.add(bsn);
+					}
+					product.setBuildingstructruenewlist(bsnList);
+				}
+			}
+		}
+		return product;
+	}
+
+	@Override
+	public PageRestful listPageStallP(StallNew stallNew) {
+		PageRestful pagerestful = new PageRestful();
+		List<FixedParkingSpace> fixedParkingSpaces = productMapper
+				.listPageStallP(stallNew);
+		for (FixedParkingSpace fixedParkingSpace : fixedParkingSpaces) {
+			if ("固定".equals(fixedParkingSpace.getStallType())) {
+				fixedParkingSpace.setFixed("true");
+			} else {
+				fixedParkingSpace.setFixed("false");
+			}
+		}
+		fixedParkingSpaces.add(0, null);
+		pagerestful.setFixedParkingSpaces(fixedParkingSpaces);
+		pagerestful.setPage(stallNew.getPage());
+		return pagerestful;
+	}
+	
+	@Override
+	public void changeState(String productids){
+		ProductCommonservice protc=new ProductCommonservice();
+		protc.setCommonserviceId(productids);
+		protc.setProductEndDate("2016-07-01 00:00:00");
+		protc.setProductBeginDate("2016-07-01 00:00:00");
+		productCommonserviceMapper.updateByPrimaryKeySelective(protc);
+		String[] productIdList = productids.split(",");
+		for(int i = 0; i < productIdList.length; i ++){
+			productMapper.changeState(productIdList[i]);			
+		}
+	}
+	
+	@Override
+	public Product getProductByType(String productType){
+		return productMapper.getProductByType(productType);
+	}
+	
+	@Override
+	public Info checkProductName(Product product){
+		Info info = new Info();
+		List<Product> list = new ArrayList<Product>();
+		list = productMapper.getProductByproductName(product.getProductName());
+		if(product.getProductId().toString().equals("")){
+			if(list != null && list.size() > 0){
+				return Tools.msg("failed", false);
+			}else{
+				return Tools.msg("success", true);
+			}
+		}else{
+			if(list != null && list.size() > 0){
+				int num = 0;
+				for(Product products : list){
+					if(!products.getProductId().toString().equals(product.getProductId())){
+						num ++;
+					}
+				}
+				if(num == 0){
+					return Tools.msg("success", true);
+				}else{
+					return Tools.msg("failed", false);
+				}
+			}else{
+				return Tools.msg("success", true);
+			}
+		}
+	}
+}

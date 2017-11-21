@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>小区公告</title>
+</head>
+<body >
+<!--公告信息-->
+<div class="row">
+
+    <div class="table_list">
+        <h4 style="text-align: center"><strong>小区公告</strong></h4>
+        <div class="col-md-12" style="height: 58px">
+            <div class="button_group">
+                <a href="#">增加</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="table_list">
+    <table width="100%" border="0" cellpadding="0" cellspacing="0" style="line-height: 35px;">
+        <tr ng-repeat="item in searchPaginator.object.communtitnotices" ng-show="item.id!=null">
+            <td align="center" valign="middle">{{item.title}}</td>
+            <td align="center" valign="middle"> <a href="#">{{item.briefContent}}</a> </td>
+             <td align="center" valign="middle" >{{item.creationTime | date:"yyyy-MM-dd"}}</td>
+             <td width="50" align="center" valign="middle"><a href="#shouhoufuwumodal1" data-toggle="modal">增加</a></td>
+             <td width="50" align="center" valign="middle"><a href="#shouhoufuwumodal2" data-toggle="modal" ng-click="view(item.id)">修改</a></td>
+        </tr>
+        </table>
+        <!--分页-->
+    <div class="pagination">
+        <a href="#" ng-show="searchPaginator.hasPrevious()" ng-click="searchPaginator.previous()">上一页</a>
+        <a href="#" ng-repeat="i in searchPaginator.pages"  ng-click="searchPaginator.go(i)" class="number">{{i}}</a>
+        <a href="#" ng-show="searchPaginator.hasNext()" ng-click="searchPaginator.next()">下一页</a>
+    </div>
+        <!--分页 end-->
+    </div>
+
+    </div>
+<!--公告信息 end-->
+    
+<!-- 模态框（Modal）增加信息 -->
+<div class="modal fade" id="shouhoufuwumodal1" tabindex="-1" role="dialog"
+     aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog" style="width: 60%">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close"
+                        data-dismiss="modal" aria-hidden="true">
+                    &times;
+                </button>
+                <h4 class="modal-title" id="myModalLabel">       
+                    增加信息
+                </h4>
+                </div>
+                  <div class="modal-body">
+
+                <table>
+                    <tbody> <tr style="height: 40px">
+                        <td class="text-right">标题：</td>
+                        <td><input type="text" class="input-sm form-control" ng-model="addCommuntitnotice.title"></td>
+                        <td class="text-right">&nbsp;&nbsp;公告内容：</td>
+                        <td><input type="text" class="input-sm form-control" ng-model="addCommuntitnotice.briefContent"></td>
+                        <td class="text-right">&nbsp;&nbsp;发布时间：</td>
+                        <td><input type="date" class="input-sm form-control" ng-model="addCommuntitnotice.creationTime"></td>
+                    </tr>
+                    </tbody></table>
+                </div>
+                <div class="modal-footer">
+                <button type="button" class="btn btn-default"
+                        data-dismiss="modal">关闭
+                </button>
+                <button type="button" ng-click="insert()" data-dismiss="modal" class="btn btn-primary">
+                    确认增加
+                </button>
+                </div>
+                </div>
+                </div>
+                </div>
+<!-- 模态框（Modal）增加信息 end-->
+
+<!-- 模态对话框   修改信息 -->
+<div class="modal fade" id="shouhoufuwumodal2" tabindex="-1" role="dialog"
+     aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog" style="width: 60%">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close"
+                        data-dismiss="modal" aria-hidden="true">
+                    &times;
+                </button>
+                <h4 class="modal-title" >
+                    修改信息
+                    
+                </h4>
+            </div>
+               <div class="modal-body">
+
+                <table>
+                    <tbody> <tr style="height: 40px">
+                        <td class="text-right">标题：</td>
+                        <td><input type="text" class="input-sm form-control" ng-model="communtitnotice.title"></td>
+                        <td class="text-right">&nbsp;&nbsp;公告内容：</td>
+                        <td><input type="text" class="input-sm form-control" ng-model="communtitnotice.briefContent"></td>
+                        <td class="text-right">&nbsp;&nbsp;发布时间：</td>
+                        <td><input type="date" class="input-sm form-control" ng-model="communtitnotice.creationTime"></td>
+                    </tr>
+                    </tbody></table>
+                </div>
+                <div class="modal-footer">
+                <button type="button" class="btn btn-default"
+                        data-dismiss="modal">关闭
+                </button>
+                <button type="button" ng-click="update()" data-dismiss="modal" class="btn btn-primary">
+                    确认修改
+                </button>
+            </div>
+            
+            </div>
+            </div>
+            </div>
+<!-- 模态对话框   修改信息 end -->
+
+</body>
+</html>

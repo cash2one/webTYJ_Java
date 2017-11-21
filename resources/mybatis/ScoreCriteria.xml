@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.flf.mapper.ScoreCriteriaMapper" >
+  <resultMap id="BaseResultMap" type="ScoreCriteria" >
+    <id column="scoring_criteria_id" property="criteriaId" jdbcType="VARCHAR" />
+    <result column="scoring_criteria_name" property="criteriaName" jdbcType="VARCHAR" />
+    <result column="cycle" property="cycle" jdbcType="TINYINT" />
+    <result column="scoring_criteria_type" property="criteriaType" jdbcType="TINYINT" />
+    <result column="scoring_criteria_state" property="criteriaState" jdbcType="TINYINT" />
+    <result column="relation_post" property="post" jdbcType="TINYINT" />
+    <result column="department" property="department" jdbcType="TINYINT" />
+    <result column="remarks" property="remarks" jdbcType="VARCHAR" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="create_person_id" property="createPerson" jdbcType="VARCHAR" />
+    <result column="close_time" property="closeTime" jdbcType="TIMESTAMP" />
+    <result column="close_person_id" property="closePerson" jdbcType="VARCHAR" />
+    <result column="close_remarks" property="closeRemarks" jdbcType="VARCHAR" />
+  </resultMap>
+  
+  <resultMap type="ScoreCriteria" id="resultScoreCriteriaMap" extends="BaseResultMap">
+  	<collection property="scoreCriteriaItemsList" column="scoring_criteria_id" ofType="ScoreCriteriaItems" select="com.flf.mapper.ScoreCriteriaItemsMapper.getScoreCriteriaItemsbyCriteriaId"></collection>
+  </resultMap>
+  
+  <select id="getScoreCriteriabyId" parameterType="String" resultMap="resultScoreCriteriaMap">
+  select * from ts_score_criteria where scoring_criteria_id=#{0} order by create_time desc
+  </select>
+  
+  <select id="getScoreCriteriabyType" parameterType="String" resultMap="BaseResultMap">
+  	select * from ts_score_criteria where scoring_criteria_type = #{0}
+  </select>
+  
+  <insert id="insertScoreCriteria" parameterType="ScoreCriteria" >      
+      insert into ts_score_criteria (scoring_criteria_id,scoring_criteria_name,cycle,scoring_criteria_type,scoring_criteria_state,relation_post,department,remarks,
+      create_time,create_person_id,close_time,close_person_id,close_remarks)
+    values (UUID(), #{criteriaName,jdbcType=VARCHAR},#{cycle,jdbcType=TINYINT}, #{criteriaType,jdbcType=TINYINT}, 
+      #{criteriaState,jdbcType=TINYINT}, #{post,jdbcType=TINYINT}, #{department,jdbcType=TINYINT},#{remarks,jdbcType=VARCHAR},
+      #{createTime,jdbcType=VARCHAR},#{createPerson,jdbcType=VARCHAR},#{closeTime,jdbcType=VARCHAR},#{closePerson,jdbcType=VARCHAR},#{closeRemarks,jdbcType=VARCHAR})
+  </insert>
+  
+   <insert id="insertScoreCriteriaUUID" parameterType="ScoreCriteria" >      
+      insert into ts_score_criteria (scoring_criteria_id,scoring_criteria_name,cycle,scoring_criteria_type,scoring_criteria_state,relation_post,department,remarks,
+      create_time,create_person_id,close_time,close_person_id,close_remarks)
+    values (#{criteriaId,jdbcType=VARCHAR}, #{criteriaName,jdbcType=VARCHAR},#{cycle,jdbcType=TINYINT}, #{criteriaType,jdbcType=TINYINT}, 
+      #{criteriaState,jdbcType=TINYINT}, #{post,jdbcType=TINYINT}, #{department,jdbcType=TINYINT},#{remarks,jdbcType=VARCHAR},
+      #{createTime,jdbcType=VARCHAR},#{createPerson,jdbcType=VARCHAR},#{closeTime,jdbcType=VARCHAR},#{closePerson,jdbcType=VARCHAR},#{closeRemarks,jdbcType=VARCHAR})
+  </insert>
+  
+  <update id="updateScoreCriteria" parameterType="ScoreCriteria" >
+    update ts_score_criteria
+    set 
+    scoring_criteria_name = #{criteriaName,jdbcType=VARCHAR},
+    cycle = #{cycle,jdbcType=TINYINT},
+    scoring_criteria_type = #{criteriaType,jdbcType=TINYINT},
+    scoring_criteria_state = #{criteriaState,jdbcType=TINYINT},
+    relation_post = #{post,jdbcType=TINYINT},
+    department = #{department,jdbcType=TINYINT},
+    remarks = #{remarks,jdbcType=VARCHAR},
+    create_time = #{createTime,jdbcType=VARCHAR},
+    create_person_id = #{createPerson,jdbcType=VARCHAR},
+    close_time = #{closeTime,jdbcType=VARCHAR},
+    close_person_id = #{closePerson,jdbcType=VARCHAR},
+    close_remarks = #{closeRemarks,jdbcType=VARCHAR}
+    where scoring_criteria_id = #{criteriaId,jdbcType=VARCHAR}
+  </update>
+</mapper>

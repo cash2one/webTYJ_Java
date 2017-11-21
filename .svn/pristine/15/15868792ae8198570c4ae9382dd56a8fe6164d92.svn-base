@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>商业智能</title>
+</head>
+<body>
+<!--员工行为分析开始-->
+<div class="col-lg-4 col-md-4 col-sm-6">
+    <div class="panel">
+        <div class="panel_title">
+            <span class="panel_title_left">员工行为分析</span>
+                                <span class="panel_title_right">
+                                    <span class="zoom_button"></span>
+                                    <span class="close_button"></span>
+                                </span>
+        </div>
+        <div class="panel_info">
+            <div class="dot"></div>
+            <div class="panel_info clear panel_info_img">
+                <img src="images/business/1.png" width="234" height="140">
+            </div>
+        </div>
+    </div>
+</div>
+<!--员工行为分析结束-->
+<!--业务行为分析开始-->
+<div class="col-lg-4 col-md-4 col-sm-6">
+    <div class="panel">
+        <div class="panel_title">
+            <span class="panel_title_left">业务行为分析</span>
+                                <span class="panel_title_right">
+                                    <span class="zoom_button"></span>
+                                    <span class="close_button"></span>
+                                </span>
+        </div>
+        <div class="panel_info">
+            <div class="dot"></div>
+            <div class="panel_info clear panel_info_img">
+                <img src="images/business/2.png" width="234" height="140">
+            </div>
+        </div>
+    </div>
+</div>
+<!--业务行为分析结束-->
+<!--客户分析开始-->
+<div class="col-lg-4 col-md-4 col-sm-6">
+    <div class="panel">
+        <div class="panel_title">
+            <span class="panel_title_left">客户分析</span>
+                                <span class="panel_title_right">
+                                    <span class="zoom_button"></span>
+                                    <span class="close_button"></span>
+                                </span>
+        </div>
+        <div class="panel_info">
+            <div class="dot"></div>
+            <div class="panel_info clear panel_info_img">
+                <img src="images/business/3.png" width="234" height="140">
+            </div>
+        </div>
+    </div>
+</div>
+<!--客户分析结束-->
+<!--经济业务分析开始-->
+<div class="col-lg-4 col-md-4 col-sm-6">
+    <div class="panel">
+        <div class="panel_title">
+            <span class="panel_title_left">经济业务分析</span>
+                                <span class="panel_title_right">
+                                    <span class="zoom_button"></span>
+                                    <span class="close_button"></span>
+                                </span>
+        </div>
+        <div class="panel_info">
+            <div class="dot"></div>
+            <div class="panel_info clear panel_info_img">
+                <img src="images/business/4.png" width="234" height="140">
+            </div>
+        </div>
+    </div>
+</div>
+<!--经济业务分析结束-->
+<!--战略地图开始-->
+<div class="col-lg-4 col-md-4 col-sm-6">
+    <div class="panel">
+        <div class="panel_title">
+            <span class="panel_title_left">战略地图</span>
+                                <span class="panel_title_right">
+                                    <span class="zoom_button"></span>
+                                    <span class="close_button"></span>
+                                </span>
+        </div>
+        <div class="panel_info">
+            <div class="dot"></div>
+            <div class="panel_info clear panel_info_img">
+                <img src="images/business/5.png" width="234" height="140">
+            </div>
+        </div>
+    </div>
+</div>
+<!--右侧面板3结束-->
+<!--绩效分析开始-->
+<div class="col-lg-4 col-md-4 col-sm-6">
+    <div class="panel">
+        <div class="panel_title">
+            <span class="panel_title_left">绩效分析</span>
+                                <span class="panel_title_right">
+                                    <span class="zoom_button"></span>
+                                    <span class="close_button"></span>
+                                </span>
+        </div>
+        <div class="panel_info">
+            <div class="dot"></div>
+            <div class="panel_info clear panel_info_img">
+                <img src="images/business/6.png" width="234" height="140">
+            </div>
+        </div>
+    </div>
+</div>
+<!--绩效分析结束-->
+</body>
+</html>

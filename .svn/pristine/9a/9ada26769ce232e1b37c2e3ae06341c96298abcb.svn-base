@@ -1,0 +1,17 @@
+package com.flf.service;
+
+
+import javax.jws.WebService;
+import javax.ws.rs.Path;
+
+
+/**
+ * 计费记录service
+ * @author maogaofei
+ * @date 2016年7月12日 下午4:43:33
+ */
+@WebService
+@Path("/BillingRecord")
+public interface BillingRecordService {
+	
+}

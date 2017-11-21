@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.flf.mapper.ConstructionComponentRecordsMapper" >
+  <resultMap id="BaseResultMap" type="ConstructionComponentRecords" >
+    <id column="record_id" property="recordId" jdbcType="VARCHAR" />
+    <result column="apply_id" property="applyId" jdbcType="VARCHAR" />
+    <result column="component_id" property="componentId" jdbcType="VARCHAR" />
+	<result column="component_name" property="componentName" jdbcType="VARCHAR" />
+  </resultMap>
+  
+ <delete id="deleteConstructionComponentRecords" parameterType="String">
+  delete from ts_construction_component_records where record_id=#{0}
+  </delete>
+  
+  <select id="listAllConstructionComponentRecords"  resultMap="BaseResultMap" >
+ 	 select * from ts_construction_component_records 
+  </select>
+  
+  <select id="getConstructionComponentRecordsbyId" parameterType="String" resultMap="BaseResultMap">
+  	select * from ts_construction_component_records where record_id=#{0}
+  </select>
+  
+  <select id="getConstructionComponentRecordsbyApplyId" parameterType="String" resultMap="BaseResultMap">
+  	select * from ts_construction_component_records where apply_id=#{0}
+  </select>
+  
+  <insert id="insertConstructionComponentRecords" parameterType="ConstructionComponentRecords" >      
+      insert into ts_construction_component_records (record_id, apply_id,component_id,component_name)
+    values (UUID(), #{applyId,jdbcType=VARCHAR}, #{componentId,jdbcType=VARCHAR},#{componentName,jdbcType=VARCHAR})
+  </insert>
+ 
+  <update id="updateConstructionComponentRecords" parameterType="ConstructionComponentRecords" >
+    update ts_construction_component_records
+    set apply_id = #{applyId,jdbcType=VARCHAR},
+      component_id = #{componentId,jdbcType=VARCHAR},
+      component_name = #{componentName,jdbcType=VARCHAR}
+    where record_id = #{recordId,jdbcType=VARCHAR}
+  </update>
+</mapper>

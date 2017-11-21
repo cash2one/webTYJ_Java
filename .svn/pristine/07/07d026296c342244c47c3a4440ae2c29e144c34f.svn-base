@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.flf.mapper.ConstantMapper" >
+  <resultMap id="BaseResultMap" type="com.flf.entity.Constant" >
+    <id column="constant_id" property="constantId" jdbcType="VARCHAR" />
+    <result column="constant_name" property="constantName" jdbcType="VARCHAR" />
+    <result column="charge_type_id" property="chargeTypeId" jdbcType="VARCHAR" />
+    <result column="value" property="value" jdbcType="DECIMAL" />
+    <result column="constant_num" property="constantNum" jdbcType="VARCHAR" />
+    <result column="common_value" property="commonValue" jdbcType="VARCHAR" />
+    <result column="parents_id" property="parentsId" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    constant_id, constant_name, charge_type_id, value, constant_num, common_value, parents_id
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from tc_constant
+    where constant_id = #{constantId,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from tc_constant
+    where constant_id = #{constantId,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.flf.entity.Constant" >
+    insert into tc_constant (constant_id, constant_name, charge_type_id, 
+      value, constant_num, common_value, 
+      parents_id)
+    values (#{constantId,jdbcType=VARCHAR}, #{constantName,jdbcType=VARCHAR}, #{chargeTypeId,jdbcType=VARCHAR}, 
+      #{value,jdbcType=DECIMAL}, #{constantNum,jdbcType=VARCHAR}, #{commonValue,jdbcType=VARCHAR}, 
+      #{parentsId,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.flf.entity.Constant" >
+    insert into tc_constant
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="constantId != null" >
+        constant_id,
+      </if>
+      <if test="constantName != null" >
+        constant_name,
+      </if>
+      <if test="chargeTypeId != null" >
+        charge_type_id,
+      </if>
+      <if test="value != null" >
+        value,
+      </if>
+      <if test="constantNum != null" >
+        constant_num,
+      </if>
+      <if test="commonValue != null" >
+        common_value,
+      </if>
+      <if test="parentsId != null" >
+        parents_id,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="constantId != null" >
+        #{constantId,jdbcType=VARCHAR},
+      </if>
+      <if test="constantName != null" >
+        #{constantName,jdbcType=VARCHAR},
+      </if>
+      <if test="chargeTypeId != null" >
+        #{chargeTypeId,jdbcType=VARCHAR},
+      </if>
+      <if test="value != null" >
+        #{value,jdbcType=DECIMAL},
+      </if>
+      <if test="constantNum != null" >
+        #{constantNum,jdbcType=VARCHAR},
+      </if>
+      <if test="commonValue != null" >
+        #{commonValue,jdbcType=VARCHAR},
+      </if>
+      <if test="parentsId != null" >
+        #{parentsId,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.flf.entity.Constant" >
+    update tc_constant
+    <set >
+      <if test="constantName != null" >
+        constant_name = #{constantName,jdbcType=VARCHAR},
+      </if>
+      <if test="chargeTypeId != null" >
+        charge_type_id = #{chargeTypeId,jdbcType=VARCHAR},
+      </if>
+      <if test="value != null" >
+        value = #{value,jdbcType=DECIMAL},
+      </if>
+      <if test="constantNum != null" >
+        constant_num = #{constantNum,jdbcType=VARCHAR},
+      </if>
+      <if test="commonValue != null" >
+        common_value = #{commonValue,jdbcType=VARCHAR},
+      </if>
+      <if test="parentsId != null" >
+        parents_id = #{parentsId,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where constant_id = #{constantId,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.flf.entity.Constant" >
+    update tc_constant
+    set constant_name = #{constantName,jdbcType=VARCHAR},
+      charge_type_id = #{chargeTypeId,jdbcType=VARCHAR},
+      value = #{value,jdbcType=DECIMAL},
+      constant_num = #{constantNum,jdbcType=VARCHAR},
+      common_value = #{commonValue,jdbcType=VARCHAR},
+      parents_id = #{parentsId,jdbcType=VARCHAR}
+    where constant_id = #{constantId,jdbcType=VARCHAR}
+  </update>
+  <!-- 根据收费类型ID查询所有的常量 -->
+  <select  id="getConstantListByChargeTypeId" resultMap="BaseResultMap" parameterType="java.lang.String">
+  		select * from tc_constant where charge_type_id = #{0};
+  </select>
+  <!-- 查询常量表中父级元素 -->
+  <select  id="getParentConstantList" resultMap="BaseResultMap" parameterType="java.lang.String">
+  		select * from tc_constant where parents_id is null;
+  </select>
+</mapper>

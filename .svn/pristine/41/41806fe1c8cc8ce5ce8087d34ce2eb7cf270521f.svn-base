@@ -1,0 +1,33 @@
+<!--
+    作者：彭婷婷
+    页面名称：外部专业线---服务请求详情--投诉
+    js路径：js/controllers/externalProfession/serviceRequestDatil/cleanQuery
+    创建时间：2015/4/30
+-->
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>清洁查询</title>
+</head>
+<body>
+<div class="order">
+    <div class="row">
+         <div style="width:96%; margin:15px 30px;background:#f0f0f0; -moz-border-radius:7px; -webkit-border-radius:7px; border-radius:7px; border:1px solid #bbb; padding-bottom:15px; height:auto;">
+            <div class="complaint_user_info_navigation" style="margin-top: 20px">
+                <a class="btn" style="margin-left: 200px" ui-sref="index.externalProfession.serviceRequestDatil.cleanQuery.taskDetails">任务详情</a>
+                <a class="btn" ui-sref="index.externalProfession.serviceRequestDatil.cleanQuery.quotationDetails">报价单详情</a>
+                <a class="btn" ui-sref="index.externalProfession.serviceRequestDatil.cleanQuery.handlingDetails">处理工单详情</a>
+                <a class="btn" ui-sref="index.externalProfession.serviceRequestDatil.cleanQuery.acceptanceDetails">验收工单详情</a>
+                <a class="btn" ui-sref="index.externalProfession.serviceRequestDatil.cleanQuery.settlementDetails">结算工单详情</a>
+                <a class="btn" ui-sref="index.externalProfession.serviceRequestDatil.cleanQuery.logDetails">日志</a>
+            </div>
+            <div class="clear"></div>
+            <div class="row">
+                <div ui-view></div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

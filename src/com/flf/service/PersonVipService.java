@@ -1,0 +1,156 @@
+/**
+ * @Title: PersonVipService.java
+ * @Package com.flf.service
+ * @Description: TODO
+ * Copyright: Copyright (c) 2011 
+ * Company:武汉闻风多奇软件开发有限公司
+ * 
+ * @author wangtao
+ * @date 2015-6-17 下午3:12:20
+ * @version V1.0
+ */
+
+package com.flf.service;
+
+import java.util.List;
+
+import javax.jws.WebService;
+import javax.ws.rs.Consumes;
+import javax.ws.rs.DELETE;
+import javax.ws.rs.GET;
+import javax.ws.rs.POST;
+import javax.ws.rs.PUT;
+import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
+import javax.ws.rs.Produces;
+import javax.ws.rs.core.MediaType;
+
+import com.flf.entity.PageRestful;
+import com.flf.entity.PersonVip;
+
+/**
+ * @ClassName: PersonVipService
+ * @Description: TODO
+ * @author wangyong
+ * @date 2015-6-17 下午3:12:20
+ *
+ */
+@Path(value = "/PersonVip")
+@WebService
+public interface PersonVipService {
+	
+	/**
+	 * 分页显示所有vip客户信息
+	 * @return
+	 */
+  	@POST
+   	@Path("/listPagePersonVipRestful")
+   	@Produces(MediaType.APPLICATION_JSON)
+    PageRestful listPagePersonVipRestful(PersonVip personVip);  
+  	
+	/**
+	 * 查询所有vip客户信息
+	 * @return
+	 */
+	@GET
+	@Path("/listAllPersonVip")
+	@Produces(MediaType.APPLICATION_JSON)
+	List<PersonVip> listAllPersonVip();
+	
+	
+	/**
+	 * 根据审核状态	查询vip客户信息
+	 * @param PersonVipId
+	 * @return
+	 */
+	
+	@GET
+	@Path("/selectPersonVipbyState/{reviewState}")
+	@Produces(MediaType.APPLICATION_JSON)
+	List<PersonVip> selectPersonVipbyState(@PathParam("reviewState") Byte reviewState);
+	
+	/**
+	 * 根据id查询vip客户信息
+	 * @param PersonVipId
+	 * @return
+	 */
+	@GET
+	@Path("/getPersonVipByIdRest/{personVipId}")
+	@Produces(MediaType.APPLICATION_JSON)
+	PersonVip getPersonVipByIdRest(@PathParam("personVipId") String personVipId);
+	
+	/**
+	 * 添加vip客户信息
+	 * @param PersonVip
+	 * @return
+	 */
+	@POST
+	@Path("/AddPersonVip")
+	@Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+	void AddPersonVip(PersonVip personVip);
+	
+	
+	/**
+	 *修改vip客户信息
+	 * @param PersonVip
+	 * @return
+	 */
+	@PUT
+	@Path("/UpdatePersonVip")
+	@Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+	void UpdatePersonVip(PersonVip personVip);
+	
+	/**
+	 * 删除vip客户信息
+	 * @param PersonVipId
+	 * @return
+	 */
+	@DELETE
+	@Path("/DeletePersonVip/{personVip}")
+	void DeletePersonVip(@PathParam("personVip") String personVip);
+	
+	
+	
+	/**
+	 *vip客户审核
+	 * @param PersonVip
+	 * @return
+	 */
+	@PUT
+	@Path("/UpdatePersonVipReview")
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+	void UpdatePersonVipReview(PersonVip personVip);
+	
+	@GET
+	@Path("/getPersonVipData/{custId}")
+	@Produces(MediaType.APPLICATION_JSON)
+	PersonVip getPersonVipData(@PathParam("custId") String custId);
+	
+	
+	@GET
+	@Path("/getPersonVipDataById/{custId}")
+	@Produces(MediaType.APPLICATION_JSON)
+	PersonVip getPersonVipDataById(@PathParam("custId") String custId);
+	
+	
+	@GET
+	@Path("/getPersonVipState/{custId}")
+	@Produces(MediaType.APPLICATION_JSON)
+	PersonVip getPersonVipState(@PathParam("custId") String custId);
+	
+	
+	//查询重点客户申请数量
+	@GET
+	@Path("/getPersonVipSum/{theme}")
+	@Produces(MediaType.APPLICATION_JSON)
+	String getPersonVipSum(@PathParam("theme") String theme);
+	
+	//查询重点客户失效申请数量
+	@GET
+	@Path("/getFailPersonVipSum/{theme}")
+	@Produces(MediaType.APPLICATION_JSON)
+	String getFailPersonVipSum(@PathParam("theme") String theme);
+	
+
+}

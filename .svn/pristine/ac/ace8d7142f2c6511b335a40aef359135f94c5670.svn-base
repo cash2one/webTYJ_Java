@@ -1,0 +1,53 @@
+<!--
+    作者:彭婷婷
+    页面名称:房型初始化---查询户型
+    js路径:js/controllers/internalProfession/initialization/houseSelect
+    修改人：王志刚
+    最后修改时间：2015/6/2
+-->
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body ng-controller="houseSelectCtrl">
+<div class="order">
+    <div class="row">
+        <div style="width:97%; margin:0 auto; background:#f0f0f0; -moz-border-radius:7px; -webkit-border-radius:7px; border-radius:7px; border:1px solid #bbb; padding-bottom:15px; height:350px; ">
+            <form class="form-inline"  style="margin: 20px 200px">
+                <div class="form-group">
+                    <label>选择项目：</label>
+                    <div class="input-group">
+                        <input type="text" class="form-control"  style="width: 500px"  ng-model="n" >
+                    </div>
+                    <button ng-click="change()">搜索</button>
+                </div>
+            </form>
+                <table style="text-align: center;width: 70%;margin: 20px auto;"class="table-bordered" >
+                    <tr bgcolor="#adff2f">
+                        <td>所属项目</td>
+                        <td>户型名称</td>
+                        <td>户型编号</td>
+                        <td>创建人</td>
+                        <td>创建时间</td>
+                        <td>修改人</td>
+                        <td>修改时间</td>
+                    </tr>
+
+                    <tr ng-repeat="item in itemsone" ng-show="item.projectName!=null" >
+                    <td>{{item.projectName}}</td>
+                    <td>{{item.houseType}}</td>
+                    <td>{{item.houseNumber}}</td>
+                    <td>{{item.createName}}</td>
+                    <td>{{item.createTime}}</td>
+                    <td>{{item.updateName}}</td>
+                    <td>{{item.updateTime}}</td>
+                </tr>
+                </table>
+        </div>
+        <div class="clear"></div>
+    </div>
+</div>
+</body>
+</html>

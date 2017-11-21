@@ -1,0 +1,390 @@
+/**
+ * @Title: PersonCustNewNewService.java
+ * @Package com.flf.service
+ * @Description: TODO
+ * Copyright: Copyright (c) 2011 
+ * Company:武汉闻风多奇软件开发有限公司
+ * 
+ * @author wangtao
+ * @date 2015-5-26 下午12:58:53
+ * @version V1.0
+ */
+
+package com.flf.service;
+
+import java.io.InputStream;
+import java.util.List;
+
+import javax.jws.WebService;
+import javax.ws.rs.Consumes;
+import javax.ws.rs.DELETE;
+import javax.ws.rs.GET;
+import javax.ws.rs.POST;
+import javax.ws.rs.PUT;
+import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
+import javax.ws.rs.Produces;
+import javax.ws.rs.core.MediaType;
+
+import com.flf.entity.Annex;
+import com.flf.entity.HomeUser;
+import com.flf.entity.PageRestful;
+import com.flf.entity.PersonBuildingNew;
+import com.flf.entity.PersonCustNew;
+import com.flf.entity.Search;
+import com.flf.request.Info;
+import com.flf.request.propertyService;
+
+/**
+ * @ClassName: PersonCustNewService
+ * @Description: TODO
+ * @author wangyong
+ * @date 2015-5-26 下午12:58:53
+ *
+ */
+
+@WebService
+@Path("/PersonCustNew")//客户基本信息表
+public interface PersonCustNewService {
+	
+	/**
+	 * 
+	  * App接口
+	 */
+	/**
+	 * 
+	  * @Title: 根据房屋id查询与房屋关联所有客户信息
+	  * @Description: TODO
+	  * @param @param houseid
+	  * @return String 
+	  * @throws
+	 */
+	String findPersonCustNewByhouseId(String houseid );
+    
+    @GET
+	@Path("/listAllPersonCustNewRestful")
+	@Produces({MediaType.APPLICATION_JSON})
+    List<PersonCustNew> listAllPersonCustNewRestful();  //查询所有客户信息
+    
+    /**
+     * 根据id查询客户基本信息
+     * @param id
+     * @return
+     */
+    @GET
+	@Path("/getPersonCustNewByIdRestful/{custId}")
+	@Produces({MediaType.APPLICATION_JSON,MediaType.APPLICATION_XML})
+    PersonCustNew getPersonCustNewByIdRestful(@PathParam("custId") String custId);
+    
+    /**
+     * 根据多个id查询客户基本信息
+     * @param id
+     * @return
+     */
+    @POST
+	@Path("/getPersonCustNewsByIds")
+	@Produces({MediaType.APPLICATION_JSON,MediaType.APPLICATION_XML})
+    String getPersonCustNewsByIds(String custId);
+    
+    /**
+     * 添加客户基本信息
+     * @param PersonCustNew
+     */
+    @POST
+	@Path("/insertPersonCustNewRestful1/{ids}")
+    @Consumes({MediaType.APPLICATION_JSON,MediaType.APPLICATION_XML})
+    void insertPersonCustNewRestful1(@PathParam("ids") String ids,PersonCustNew PersonCustNew);
+    
+    /**
+     * 修改客户基本信息
+     * @param PersonCustNew
+     */
+    @PUT
+	@Path("/updatePersonCustNewRestful")
+	@Consumes( {MediaType.APPLICATION_JSON,MediaType.APPLICATION_XML})
+    Info updatePersonCustNewRestful(PersonCustNew PersonCustNew);
+    
+    
+    
+    /**
+     * 添加客户基本信息不关联建筑信息
+     * @param PersonCustNew
+     */
+    @POST
+	@Path("/insertPersonCustNewRestful")
+    @Consumes({MediaType.APPLICATION_JSON,MediaType.APPLICATION_XML})
+    Info insertPersonCustNewRestful(PersonCustNew PersonCustNew );
+    
+    /**
+     * 把logo图片添加到附件表中
+     */
+    @POST
+   	@Path("/insertLogoNewRestful")
+       @Consumes({MediaType.APPLICATION_JSON,MediaType.APPLICATION_XML})
+       Info insertLogoNewRestful(PersonCustNew PersonCustNew );
+//
+   /**
+    * 根据id查询附件，在前台可以取出图片
+    * @param companyId
+    * @return
+    */
+    @GET
+	@Path("/getLogoByIdRestful/{companyId}")
+	@Produces({MediaType.APPLICATION_JSON,MediaType.APPLICATION_XML})
+    List<Annex> getLogoByIdRestful(@PathParam("companyId") String companyId);
+    //
+    
+    /**
+     * 根据id删除客户基本信息
+     * @param id
+     */
+    @DELETE
+	@Path("/deletePersonCustNewRestful/{id}")
+    void deletePersonCustNewRestful(@PathParam("id") String id);
+    
+    /**
+     * 添加客户基本信息和客户与房屋关系信息
+     * @param PersonCustNew
+     */
+    @POST
+	@Path("/insertPersonCustNewAndRelationRestful")
+    @Consumes({MediaType.APPLICATION_JSON,MediaType.APPLICATION_XML})
+    void insertPersonCustNewAndRelationRestful(PersonCustNew PersonCustNew ,List<PersonBuildingNew> personBuildingNew);
+	
+    
+    @POST
+   	@Path("/listPagePersonCustRestful")
+   	@Produces(MediaType.APPLICATION_JSON)
+    PageRestful listPagePersonCustRestful(PersonCustNew PersonCustNew);  //分页显示所有个人客户信息
+    
+    @GET
+   	@Path("/listAllHomeUserBypersonId/{personId}")
+   	@Produces({MediaType.APPLICATION_JSON,MediaType.APPLICATION_XML})
+    List<HomeUser> listAllHomeUserBypersonId(@PathParam("personId")String personId);
+    
+    @GET
+   	@Path("/updatePersonId/{personId}/{userId}")
+   	@Produces({MediaType.APPLICATION_JSON,MediaType.APPLICATION_XML})
+    Info updatePersonId(@PathParam("personId")String personId,@PathParam("userId")String userId);
+    
+    @POST
+   	@Path("/listPageSearchPersonCust")
+    @Consumes({MediaType.APPLICATION_JSON,MediaType.APPLICATION_XML})
+   	@Produces({MediaType.APPLICATION_JSON,MediaType.APPLICATION_XML})
+    PageRestful listPageSearchPersonCust(Search search);
+    
+    /**
+     * 通过姓名，客户编号，客户身份证号等条件查询业主的信息
+     * @param personCust
+     */
+    @POST
+   	@Path("/propertyServiceSearch")
+    @Consumes({MediaType.APPLICATION_JSON,MediaType.APPLICATION_XML})
+   	@Produces(MediaType.APPLICATION_JSON)
+    propertyService propertyServiceSearch(Search search);
+
+    /**
+     * 通过身份证 ，姓名等条件查询业主的信息
+     * @param personCust
+     */
+    @POST
+	@Path("/findPersonCustNewRestful")
+    @Consumes({MediaType.APPLICATION_JSON,MediaType.APPLICATION_XML})
+    List<PersonCustNew>  findPersonCustNewRestful(PersonCustNew personCustNew);
+    
+    
+    /**
+     * 通过企业id查询所有企业下的员工信息
+     */
+    @GET
+   	@Path("/findEnterpriseCustByIdRestful/{EnterpriseCustId}")
+   	@Produces({MediaType.APPLICATION_JSON,MediaType.APPLICATION_XML})
+    List<PersonCustNew>  findEnterpriseCustByIdRestful(@PathParam("EnterpriseCustId")String  EnterpriseCustId);
+
+    /**
+     * 根据条件查询出车位，车辆，房屋，租赁等相关信息
+     * @param search
+     * @return
+     */
+    @POST
+   	@Path("/propertyServiceSearchCommon")
+    @Consumes({MediaType.APPLICATION_JSON,MediaType.APPLICATION_XML})
+   	@Produces(MediaType.APPLICATION_JSON)
+    propertyService propertyServiceSearchCommon(Search search);
+    
+    /**
+     * 根据条件查询出办理人及授权人车位，车辆，房屋
+     * @param search
+     * @return
+     */
+    @POST
+   	@Path("/propertyServiceAuSearch")
+    @Consumes({MediaType.APPLICATION_JSON,MediaType.APPLICATION_XML})
+   	@Produces(MediaType.APPLICATION_JSON)
+    propertyService propertyServiceAuSearch(Search search);
+    
+    /**
+     * 根据条件查询出人员信息    
+     */
+    
+    @POST
+   	@Path("listAllPersonBySearch")
+    @Consumes({MediaType.APPLICATION_JSON,MediaType.APPLICATION_XML})
+   	@Produces(MediaType.APPLICATION_JSON)
+    List<PersonCustNew>   listAllPersonBySearch(Search search);
+    
+    /**
+     * 通过身份证 ，姓名等条件查询业主的信息
+     * @param personCust
+     */
+ 
+//  @POST
+//	@Path("/listPersonCustByCondition")
+//  @Consumes({MediaType.APPLICATION_JSON,MediaType.APPLICATION_XML})
+//  List<PersonCustNew>  listPersonCustByCondition(PersonCustNew personCustNew);
+    
+  	@POST
+  	@Path("/listPagePersonCustByCondition")
+  	@Produces(MediaType.APPLICATION_JSON)
+  	PageRestful listPagePersonCustByCondition(PersonCustNew personCustNew);
+  	
+  	/**
+  	 * 导入Excel数据文档
+  	 * @param annex
+  	 * @return
+  	 */
+  	@POST
+  	@Path("/importExcelFile")
+  	@Produces(MediaType.APPLICATION_JSON)
+  	@Consumes({MediaType.APPLICATION_JSON,MediaType.APPLICATION_XML})
+  	Info importExcelFile(Annex annex);
+  	
+  	/**
+  	 * 根据条件分页查询客户信息
+  	 */
+  	@POST
+   	@Path("/listPagelistSearchPersonCust")
+    @Consumes({MediaType.APPLICATION_JSON,MediaType.APPLICATION_XML})
+   	@Produces(MediaType.APPLICATION_JSON)
+  	PageRestful listPagelistSearchPersonCust(PersonCustNew personCustNew);
+  	
+  	/**
+	 * 根据建筑id查询该房屋关系的所有人
+	 * @param custId
+	 * @return
+	 */
+	@GET
+	@Path("/listPersonCustNewByBuildingStructureId/{buildingStructureId}")
+	@Produces( {MediaType.APPLICATION_JSON,MediaType.APPLICATION_XML})
+	List<PersonCustNew> listPersonCustNewByBuildingStructureId(@PathParam("buildingStructureId")String buildingStructureId);
+	
+	/**
+	 * 根据建筑结构id获取客户信息
+	 * @param buildingStructureid
+	 * @return
+	 */
+	@GET
+	@Path("/getSelectPersonNew/{buildingStructureid}")
+	@Produces(MediaType.APPLICATION_JSON)
+	List<PersonCustNew> getSelectPersonNew(@PathParam("buildingStructureid")String buildingStructureid);
+	
+  	/**
+  	 * 根据条件分页查询客户信息
+  	 */
+  	@POST
+   	@Path("/listPagePersonCustNewBySearch")
+    @Consumes({MediaType.APPLICATION_JSON,MediaType.APPLICATION_XML})
+   	@Produces(MediaType.APPLICATION_JSON)
+  	PageRestful listPagePersonCustNewBySearch(PersonCustNew personCustNew);
+  	/**
+  	 * 根据身份证等 查询
+  	 */
+	@POST
+   	@Path("/listPagePersonCustNewByAllSearch")
+    @Consumes({MediaType.APPLICATION_JSON,MediaType.APPLICATION_XML})
+   	@Produces(MediaType.APPLICATION_JSON)
+  	PageRestful listPagePersonCustNewByAllSearch(PersonCustNew personCustNew);
+	
+	/**
+	 * 根据选中的房屋获取与房屋相关联的人员
+	 * @param search
+	 * @return
+	 */
+	@POST
+   	@Path("/getPersonCustNew")
+    @Consumes({MediaType.APPLICATION_JSON,MediaType.APPLICATION_XML})
+   	@Produces(MediaType.APPLICATION_JSON)
+	List<PersonCustNew> getPersonCustNew(Search search);
+	
+
+	 /**
+    * 将需要进行EXCEL导入的数据先写入模板并导出到本地
+    */
+   InputStream exportPersonCustNewFile(PersonCustNew personCustNew);
+   
+   /**
+    *导入模板
+    */
+   InputStream importExcelTemplet();
+   
+    @POST
+	@Path("/getCountByNoOrPhone")
+	@Produces(MediaType.APPLICATION_JSON)
+	int getCountByNoOrPhone(PersonCustNew personCustNew);
+  	
+    /**
+     * 根据传入的参数获取个人客户信息
+     * @param name  姓名
+     * @param cardNum  证件号
+     * @param phoneNum  手机号
+     * @return  客户id
+     */
+    String getPersonCustByPerson(String name,String cardNum,String phoneNum);
+    
+    /**
+     * by 吴颖
+     * 根据id查询客户信息
+     * @param custId
+     * @return
+     */
+    String getPersonCustById(String custId);
+    
+    /**
+     * 根据公司id查询cust信息
+     * @param companyId
+     * @return
+     */
+    String getCustByCompanyId(String companyId);
+    
+    /**
+     * 根据客户id的集合查询个人客户信息以及房屋地址、授权房屋信息
+     * @param custIdList 客户id集合
+     * @param authorizationName 授权条件
+     * @return
+     */
+	String getCustAndAddressByCustIdList(List<String> custIdList, String authorizationName);
+	
+	/**
+     * 根据客户id的集合查询企业客户信息以及房屋地址
+     * @param custIdList
+     * @return
+     */
+	String getEnterpriseCustAndAddressByCustIdList(List<String> custIdList);
+	
+	
+	List<PersonBuildingNew> listBuildingByCustId(String custId);
+	
+	/**
+	 * 家家客户端使用 注册个人客户信息
+	 * @param jsonStr
+	 * @return
+	 */
+	String registPersonCust(String jsonStr);
+	
+	/**
+	 * 根据客户id的集合查询客户信息
+	 * @param custIdList
+	 * @return
+	 */
+	String getPersonCustListByCustIdList(List<String> custIdList);
+}

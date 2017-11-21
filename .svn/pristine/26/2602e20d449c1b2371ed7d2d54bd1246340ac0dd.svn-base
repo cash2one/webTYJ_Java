@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.flf.mapper.RulesMapper" >
+  <resultMap id="RulesResultMap" type="Rules" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="title" property="title" jdbcType="VARCHAR" />
+    <result column="brief_content" property="briefContent" jdbcType="VARCHAR" />
+    <result column="detail_info" property="detailInfo" jdbcType="VARCHAR" />
+    <result column="record_creater" property="recordCreater" jdbcType="VARCHAR" />
+    <result column="create_time" property="createTime" jdbcType="DATE" />
+    <result column="last_modifier" property="lastModifier" jdbcType="VARCHAR" />
+    <result column="last_mod_time" property="lastModtime" jdbcType="DATE" />
+  </resultMap>
+  
+  <select id="listAllRules" parameterType="Rules" resultMap="RulesResultMap">
+         select * from t_rules ORDER BY last_mod_time DESC LIMIT 5
+  </select>
+  
+  <select id="listPageRules" parameterType="Rules" resultMap="RulesResultMap">
+        select * from t_rules ORDER BY last_mod_time DESC
+  </select>
+  
+   <select id="listAllsRules" parameterType="Rules" resultMap="RulesResultMap">
+        select * from t_rules ORDER BY last_mod_time DESC
+  </select>
+  
+  <select id="getRulesById" resultMap="RulesResultMap" parameterType="Integer" >
+    select * from t_rules
+    where id = #{0}
+  </select>
+  
+  <insert id="AddRules">
+    insert into t_rules (id,title, 
+      brief_content, detail_info, record_creater, 
+      create_time, last_modifier, last_mod_time)
+    values (#{id},#{title}, 
+      #{briefContent}, #{detailInfo}, #{recordCreater}, 
+      #{createTime}, #{lastModifier}, #{lastModtime})
+  </insert>
+   
+  <update id="UpdateRules"  >
+    update t_rules
+    set title = #{title},
+      brief_content = #{briefContent},
+      detail_info = #{detailInfo},
+      record_creater = #{recordCreater},
+      create_time = #{createTime},
+      last_modifier = #{lastModifier},
+      last_mod_time = #{lastModtime}
+    where id = #{id}
+  </update>
+  
+  <delete id="DeleteRulesById" parameterType="Integer" >
+    delete from t_rules
+    where id = #{0}
+  </delete>
+</mapper>

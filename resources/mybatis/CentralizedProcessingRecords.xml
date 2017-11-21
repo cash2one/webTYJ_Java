@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.flf.mapper.CentralizedProcessingRecordsMapper" >
+  <resultMap id="BaseResultMap" type="CentralizedProcessingRecords" >
+    <id column="record_id" property="recordId" jdbcType="VARCHAR" />
+    <result column="task_id" property="taskId" jdbcType="VARCHAR" />
+    <result column="centralized_treatment_project_id" property="projectId" jdbcType="VARCHAR" />
+  </resultMap>
+  
+  <select id="getCentralizedProcessingRecordsbyId" parameterType="String" resultMap="BaseResultMap">
+  	select * from t_centralized_treatment_relation_records where record_id=#{0}
+  </select>
+  
+  <select id="getCentralizedProcessingRecordsbyProjectId" parameterType="String" resultMap="BaseResultMap">
+  	select * from t_centralized_treatment_relation_records where centralized_treatment_project_id = #{0}
+  </select>
+  
+  
+  <insert id="insertCentralizedProcessingRecords" parameterType="CentralizedProcessingRecords" >      
+      insert into t_centralized_treatment_relation_records (record_id,task_id, centralized_treatment_project_id)
+    values (UUID(), #{taskId,jdbcType=VARCHAR}, #{projectId,jdbcType=VARCHAR})
+  </insert>
+</mapper>

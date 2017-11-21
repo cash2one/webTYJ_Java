@@ -1,0 +1,80 @@
+<!--auhor:王志刚-->
+<!--页面名称：装修办理流程中的缴纳押金-->
+<!--js: 'controllers/propertyService/staffHome/decorate/payDeposit'-->
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>缴纳押金</title>
+</head>
+<body ng-controller="payDepositCtrl">
+<div style="padding:20px 30px 0">
+
+</div>
+<div style="padding:20px 30px 0">
+    <table class="table table-hover text-center">
+        <tr>
+            <td class="col-md-4"><strong>收费编码</strong></td>
+            <td class="col-md-4"><strong>收费名称</strong></td>
+            <td class="col-md-4"><strong>收费金额</strong></td>
+        </tr>
+<!-- author: 耿小江 -->
+<!-- modifytime :2015-06-01 -->
+<!--页面名称：装修办理流程中的缴纳押金-->
+       <tr ng-repeat="items in Charge">
+            <td class="col-md-4">{{items.chargeCode}}</td>
+            <td class="col-md-4">{{items.chargeName}}</td>
+            <td class="col-md-4">{{items.chargeamount}}</td>
+        </tr>
+        <!--  
+
+        <tr>
+            <td class="col-md-4">sz002</td>
+            <td class="col-md-4">临时水表押金</td>
+            <td class="col-md-4">200元</td>
+        </tr>
+
+        <tr>
+            <td class="col-md-4">sz003</td>
+            <td class="col-md-4">业户押金</td>
+            <td class="col-md-4">1000元</td>
+        </tr>
+
+        <tr>
+            <td class="col-md-4">sz004</td>
+            <td class="col-md-4">装修单位押金</td>
+            <td class="col-md-4">2000元</td>
+        </tr>
+
+        <tr>
+            <td class="col-md-4">sz005</td>
+            <td class="col-md-4">出入证工本费</td>
+            <td class="col-md-4">100元</td>
+        </tr>
+
+        <tr>
+            <td class="col-md-4">sz006</td>
+            <td class="col-md-4">拆墙清运费</td>
+            <td class="col-md-4">300元</td>
+        </tr>
+
+        <tr>
+            <td class="col-md-4">sz007</td>
+            <td class="col-md-4">垃圾清运费</td>
+            <td class="col-md-4">300元</td>
+        </tr>
+
+        <tr>
+            <td class="col-md-4">sz008</td>
+            <td class="col-md-4">装修单位押金</td>
+            <td class="col-md-4">500元</td>
+        </tr>
+        -->
+    </table>
+
+    <div class="col-md-12 text-center"><span class="col-md-5">收费人：范冰冰 </span><span class="col-md-5">收费时间：2015年4月8日</span></div>
+
+    <div class="col-md-offset-10"><button type="submit" class="btn btn-default">确认收费并打印</button></div>
+</div>
+</body>
+</html>

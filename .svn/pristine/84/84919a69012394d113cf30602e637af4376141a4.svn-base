@@ -1,0 +1,797 @@
+/**
+ * @Title: PersonBuildingNewServiceImpl.java
+ * @Package com.flf.service.impl
+ * @Description: TODO
+ * Copyright: Copyright (c) 2011 
+ * Company:武汉闻风多奇软件开发有限公司
+ * 
+ * @author wangtao
+ * @date 2015-6-12 上午10:47:36
+ * @version V1.0
+ */
+
+package com.flf.service.impl;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.UUID;
+
+import net.sf.json.JSONArray;
+import net.sf.json.JSONObject;
+
+import com.flf.entity.Account;
+import com.flf.entity.AccountRelation;
+import com.flf.entity.Annex;
+import com.flf.entity.AssetAccount;
+import com.flf.entity.BuildingStructureNew;
+import com.flf.entity.EnterpriseCustNew;
+import com.flf.entity.HouseNew;
+import com.flf.entity.PageRestful;
+import com.flf.entity.PersonBuildingNew;
+import com.flf.entity.PersonCustNew;
+import com.flf.entity.Sipmanage;
+import com.flf.mapper.AccountMapper;
+import com.flf.mapper.AccountRelationMapper;
+import com.flf.mapper.AssetAccountMapper;
+import com.flf.mapper.BuildingStructureNewMapper;
+import com.flf.mapper.EnterpriseCustNewMapper;
+import com.flf.mapper.PersonBuildingNewMapper;
+import com.flf.mapper.PersonCustNewMapper;
+import com.flf.request.Info;
+import com.flf.service.PersonBuildingNewService;
+import com.flf.util.ExcelUtils;
+import com.flf.util.JsonUtil;
+import com.flf.util.Tools;
+
+import cn.jpush.api.utils.StringUtils;
+
+/**
+ * @ClassName: PersonBuildingNewServiceImpl
+ * @Description: TODO
+ * @author wangyong
+ * @date 2015-6-12 上午10:47:36
+ *
+ */
+
+public class PersonBuildingNewServiceImpl implements PersonBuildingNewService {
+
+	
+	
+	private PersonBuildingNewMapper personBuildingNewMapper;  
+	
+	private PersonCustNewMapper personCustNewMapper;
+	
+	private EnterpriseCustNewMapper enterpriseCustNewMapper; 
+	
+	private BuildingStructureNewMapper buildingStructureNewMapper;
+	
+	private AccountMapper accountMapper;//个人账户mapper 王洲  2016.04.19
+	
+	private AssetAccountMapper assetAccountMapper;//资产账户mapper  王洲 2016.04.19
+	
+	private AccountRelationMapper accountRelationMapper;//资产账户绑定mapper  王洲 2016.04.19
+	
+	/*
+	 * <p>Title: addPersonBuildingNewRestful</p>
+	 * <p>Description: </p>
+	 * @param personBuildingNew
+	 * @see com.flf.service.PersonBuildingNewService#addPersonBuildingNewRestful(com.flf.entity.PersonBuildingNew)
+	 */
+
+	public BuildingStructureNewMapper getBuildingStructureNewMapper() {
+		return buildingStructureNewMapper;
+	}
+
+	public void setBuildingStructureNewMapper(
+			BuildingStructureNewMapper buildingStructureNewMapper) {
+		this.buildingStructureNewMapper = buildingStructureNewMapper;
+	}
+
+	public EnterpriseCustNewMapper getEnterpriseCustNewMapper() {
+		return enterpriseCustNewMapper;
+	}
+
+	public void setEnterpriseCustNewMapper(
+			EnterpriseCustNewMapper enterpriseCustNewMapper) {
+		this.enterpriseCustNewMapper = enterpriseCustNewMapper;
+	}
+
+
+
+	public PersonCustNewMapper getPersonCustNewMapper() {
+		return personCustNewMapper;
+	}
+
+	public void setPersonCustNewMapper(PersonCustNewMapper personCustNewMapper) {
+		this.personCustNewMapper = personCustNewMapper;
+	}
+
+	public PersonBuildingNewMapper getPersonBuildingNewMapper() {
+		return personBuildingNewMapper;
+	}
+
+	public void setPersonBuildingNewMapper(
+			PersonBuildingNewMapper personBuildingNewMapper) {
+		this.personBuildingNewMapper = personBuildingNewMapper;
+	}
+
+
+	/*
+	  * <p>Title: addEnterpriseCustHouseRestful</p>
+	  * <p>Description: </p>
+	  * @param personBuildingNew
+	  * @see com.flf.service.PersonBuildingNewService#addEnterpriseCustHouseRestful(com.flf.entity.PersonBuildingNew)
+	  */
+	
+	
+	public AccountMapper getAccountMapper() {
+		return accountMapper;
+	}
+
+	public void setAccountMapper(AccountMapper accountMapper) {
+		this.accountMapper = accountMapper;
+	}
+
+	public AssetAccountMapper getAssetAccountMapper() {
+		return assetAccountMapper;
+	}
+
+	public void setAssetAccountMapper(AssetAccountMapper assetAccountMapper) {
+		this.assetAccountMapper = assetAccountMapper;
+	}
+
+	public AccountRelationMapper getAccountRelationMapper() {
+		return accountRelationMapper;
+	}
+
+	public void setAccountRelationMapper(AccountRelationMapper accountRelationMapper) {
+		this.accountRelationMapper = accountRelationMapper;
+	}
+
+	@Override
+	public void addEnterpriseCustHouseRestful(
+			PersonBuildingNew personBuildingNew) {
+		// TODO Auto-generated method stub
+		if (personBuildingNew.getEnterpriseId()!=null&&personBuildingNew.getEnterpriseId().equals("")) {  //企业客户不存在时
+			EnterpriseCustNew enterpriseCustNew =personBuildingNew.getEnterpriseCustNew();  //获取企业客户信息对象
+			String uuid= UUID.randomUUID().toString();  //生成主键id
+			enterpriseCustNew.setEnterpriseId(uuid);  //设置企业客户信息主键
+			enterpriseCustNewMapper.insertEnterpriseCustNewUUID(enterpriseCustNew);  //添加企业客户信息
+			
+			personBuildingNew.setEnterpriseId(uuid);//添加企业客户信息与资产关联外键
+			personBuildingNewMapper.insertPersonBuildingNew(personBuildingNew); //添加企业客户信息与资产关系
+		}else{
+			//客户存在时
+			personBuildingNewMapper.insertPersonBuildingNew(personBuildingNew); //添加企业客户信息与资产关系
+		}
+		
+	}
+	
+	/**
+	 * 创建 by 肖聪  2015/6/23
+	 * 通过房屋id查询该房屋相关的所有人关系
+	 * 
+	 */
+
+	@Override
+	public List<PersonBuildingNew> listAllPersonAndHouseByHouseId(String houseId) {
+		// TODO Auto-generated method stub
+		return personBuildingNewMapper.listAllPersonAndHouseByHouseId(houseId);
+	}
+	/**
+	 * 创建 by 肖聪  2015/6/23
+	 * 查询所有的人物建筑关系
+	 * 
+	 */
+	@Override
+	public List<PersonBuildingNew> listAll() {
+		// TODO Auto-generated method stub
+		return personBuildingNewMapper.listAll();
+	}
+	/**
+	 * 创建 by 肖聪  2015/6/23
+	 * 按条件查询所有的人物建筑关系
+	 * 
+	 */
+	@Override
+	public List<PersonBuildingNew> listAllPersonBuildingNewone(PersonBuildingNew personBuildingNew) {
+		// TODO Auto-generated method stub
+		return personBuildingNewMapper.listAllPersonBuildingNewone(personBuildingNew);
+	}
+	
+	/*
+	  * <p>Title: addPersonEnterpriseCustRestful</p>
+	  * <p>Description: </p>
+	  * @param personBuildingNew 增加建筑关系
+	  * @see com.flf.service.PersonBuildingNewService#addPersonEnterpriseCustRestful(com.flf.entity.PersonBuildingNew)
+	  */
+	
+	
+	@Override
+	public void addPersonEnterpriseCustRestful(
+			PersonBuildingNew personBuildingNew) {
+		// TODO Auto-generated method stub
+		personBuildingNewMapper.insertPersonBuildingNew(personBuildingNew);
+		
+	}
+
+	@Override
+	public List<PersonBuildingNew> listPersonBuildingNewByBuildingStructureIdone(String buildingStructureId) {
+		// TODO Auto-generated method stub
+		return personBuildingNewMapper.listPersonBuildingNewByBuildingStructureIdone(buildingStructureId);
+	}
+
+	@Override
+	public PageRestful listPagePersonBuildingNew(
+			PersonBuildingNew personBuildingNew) {
+		// TODO Auto-generated method stub
+		PageRestful pageRestful=new PageRestful();
+		List<PersonBuildingNew> a = new ArrayList<PersonBuildingNew>();
+		if(personBuildingNew.getBuildingStructureIds()!=null){
+			for (String s : personBuildingNew.getBuildingStructureIds()) {
+				PersonBuildingNew personBuildingNew1=new PersonBuildingNew();
+				personBuildingNew1.setBuildingStructureId(s);
+				List<PersonBuildingNew> personBuildingNews = personBuildingNewMapper.listPagePersonBuilding(personBuildingNew1);				
+				a.addAll(personBuildingNews);
+			}
+					}else{	
+					a = personBuildingNewMapper.listPagePersonBuildingNew(personBuildingNew);
+					}
+		a.add(0,null);
+		pageRestful.setPersonBuildingNew(a);
+		pageRestful.setPage(personBuildingNew.getPage());
+		return pageRestful;
+	}
+
+	@Override
+	public String addPersonBuildingEnterpriseNewRestful(
+			PersonBuildingNew personBuildingNew) {
+		// TODO Auto-generated method stub
+		PersonBuildingNew personBuildingNews=personBuildingNewMapper.getPersonBuildingNewByEnterpriseIdAndBsId(personBuildingNew.getEnterpriseId(), personBuildingNew.getBuildingStructureId());
+	    if (personBuildingNews!=null&&!personBuildingNews.equals("")) {  //客户与建筑已绑定
+	    	return "";
+		}else{
+			//客户与建筑没有绑定时	
+			personBuildingNewMapper.insertPersonBuildingNew(personBuildingNew); //添加客户信息与资产关系
+			BuildingStructureNew buildingStructure_check=buildingStructureNewMapper.getBuildingStructureNewbyId(personBuildingNew.getBuildingStructureId());
+			if(buildingStructure_check.getIsBindingAssets()==0){
+				buildingStructureNewMapper.updateBuildingStructureById(personBuildingNew.getBuildingStructureId());
+			}
+			return "true";
+		}
+	}
+	
+	@Override
+	public String addPersonBuildingNewRestful(PersonBuildingNew personBuildingNew) {
+		// TODO Auto-generated method stub
+		List<PersonBuildingNew> personBuildingNewss=personBuildingNewMapper.getPersonBuildingNewByCustIdAndBsId_one(personBuildingNew.getCustId(), personBuildingNew.getBuildingStructureId());
+		for(PersonBuildingNew personBuildingNews:personBuildingNewss){
+			if (personBuildingNews!=null&&!personBuildingNews.equals("")) {  //客户与建筑已绑定
+				return "";
+			}
+		}    
+		//客户与建筑没有绑定时	
+		//修改建筑结构表信息，将绑定状态改为已绑定，如果已经绑定了，则不需要改变
+		personBuildingNewMapper.insertPersonBuildingNew(personBuildingNew); //添加客户信息与资产关系
+		BuildingStructureNew buildingStructureNew_check=buildingStructureNewMapper.getBuildingStructureNewbyId(personBuildingNew.getBuildingStructureId());
+		if(buildingStructureNew_check.getIsBindingAssets() == null){
+			buildingStructureNew_check.setIsBindingAssets((byte)0);
+		}
+		if(buildingStructureNew_check.getIsBindingAssets() == 0){
+			buildingStructureNewMapper.updateBuildingStructureById(personBuildingNew.getBuildingStructureId());
+		}
+		return "true";
+				
+				
+	}
+ /**
+  * 查询个人详细关系信息
+  */
+	@Override
+	public  List<PersonBuildingNew> getRelationOfemplersByStructs(PersonBuildingNew personBuildingNew) {
+		return personBuildingNewMapper.getRelationOfemplersByStructs(personBuildingNew);
+	}
+	
+	/**
+	 * 通过建筑结构id集合查询关系集
+	 */
+	@Override
+	public  List<PersonBuildingNew> getRelationOfemplersByStructss(PersonBuildingNew personBuildingNew) {
+		PageRestful pagerestful=new PageRestful();
+		List<PersonBuildingNew> personBuildingNewone = new ArrayList<PersonBuildingNew>();
+		List<String> crList = personBuildingNew.getBuildingStructureIds() ;
+		if(crList != null && crList.size() > 0){
+			for(String cr:personBuildingNew.getBuildingStructureIds()){
+				personBuildingNew.setBuildingStructureId(cr);
+				List<PersonBuildingNew> personBuildingNews =personBuildingNewMapper.getRelationOfemplersByStructs(personBuildingNew);
+				if(personBuildingNews != null && personBuildingNews.size() > 0){
+					for(PersonBuildingNew personBuilding:personBuildingNews){
+						personBuildingNewone.add(personBuilding);
+					}
+				}
+			}
+		}
+		
+		return personBuildingNewone;
+
+	}
+	
+	@Override
+	public List<PersonBuildingNew> listPersonBuildingNewByCustId(String custId) {
+		List<PersonBuildingNew>  hnList = new ArrayList<PersonBuildingNew>();
+		hnList = personBuildingNewMapper.listPersonBuildingNewByCustId(custId);
+		return  hnList;
+	}
+	@Override
+	public List<PersonBuildingNew> selectPersonBuildingNewByCustId(PersonBuildingNew personBuildingNew){
+		List<PersonBuildingNew> list=personBuildingNewMapper.selectPersonBuildingNewByCustId(personBuildingNew);
+		return list;
+	}
+
+	@Override
+	public List<PersonBuildingNew> listPersonBuildingByHouseId(String houseId){
+		return personBuildingNewMapper.listPersonBuildingByHouseId(houseId);
+	}
+
+	@Override
+	public PersonBuildingNew selectHouseNew(String buildingStructureid) {
+		// TODO Auto-generated method stub
+		return personBuildingNewMapper.selectHouseNew(buildingStructureid);
+	}
+
+	/**
+	 * 根据企业id合集查询信息
+	 */
+		@Override
+		public List<PersonBuildingNew> getRelationOfemplers(PersonBuildingNew personBuildingNew) {
+			List<PersonBuildingNew> personBuildingNewone = new ArrayList<PersonBuildingNew>();
+			List<String> crList = personBuildingNew.getEnterpriseIds() ;
+			if(crList != null && crList.size() > 0){
+				for(String cr:personBuildingNew.getEnterpriseIds()){
+					personBuildingNew.setEnterpriseId(cr);
+					List<PersonBuildingNew> personBuildingNews =personBuildingNewMapper.getRelationOfemplers (personBuildingNew);
+					if(personBuildingNews != null && personBuildingNews.size() > 0){
+						for(PersonBuildingNew personBuilding:personBuildingNews){
+							personBuildingNewone.add(personBuilding);
+						}
+					}
+				}
+			}
+			
+			return personBuildingNewone;
+		}
+		
+	/**
+	 * 查询个人关系集
+	 */
+		@Override
+		public List<PersonBuildingNew> getRelationOfemplersByCustId(String custId) {
+			// TODO Auto-generated method stub
+			PersonBuildingNew personBuildingNew=new PersonBuildingNew();
+			personBuildingNew.setCustId(custId);
+			List<PersonBuildingNew> personBuildingNewAll=new ArrayList<PersonBuildingNew>();
+			List<PersonBuildingNew> personBuildingNews=personBuildingNewMapper.listAllPersonBuildingNewone(personBuildingNew);
+			for(PersonBuildingNew personBuilding : personBuildingNews){
+				String buildingStructureId = personBuilding.getBuildingStructureId();
+				String custType = personBuilding.getCustType();
+				if(buildingStructureId!=null&&custType!=null){
+					if(custType.equals("业主")==true){
+						PersonBuildingNew personBuildingNewone=new PersonBuildingNew();
+						personBuildingNewone.setBuildingStructureId(buildingStructureId);
+						List<PersonBuildingNew> personBuildingNewsone=personBuildingNewMapper.getRelationOfemplersByStructs(personBuildingNewone);
+						for(PersonBuildingNew personBuildingone:personBuildingNewsone){
+							if(personBuildingone.getCustType().equals("业主")==false&&personBuildingone.getCustType().equals("员工")==false){
+								personBuildingNewAll.add(personBuildingone);
+							}
+						}	
+					}
+					else if(custType.equals("员工")==true){
+						List<PersonBuildingNew> personBuildingNewsone=personBuildingNewMapper.getRelationOfemplersByStructs(personBuilding);	
+						for(PersonBuildingNew personBuildingone:personBuildingNewsone){
+							if(personBuildingone.getCustType().equals("员工")==true){
+								personBuildingNewAll.add(personBuildingone);
+							}
+						}	
+					}
+					else{
+						PersonBuildingNew personBuildingNewone=new PersonBuildingNew();
+						personBuildingNewone.setPersonBuildingId(personBuilding.getPersonBuildingId());
+						List<PersonBuildingNew> personBuildingNewsone=personBuildingNewMapper.getRelationOfemplersByStructs(personBuildingNewone);
+						personBuildingNewone.setCustType("业主");
+						personBuildingNewone.setBuildingStructureId(buildingStructureId);
+						personBuildingNewone.setPersonBuildingId("");
+						List<PersonBuildingNew> ownerName=personBuildingNewMapper.getRelationOfemplersByStructs(personBuildingNewone);
+						for(PersonBuildingNew personBuildingone:personBuildingNewsone){
+							for(PersonBuildingNew personBuildingtwo:ownerName){
+//								PersonBuildingNew a=new PersonBuildingNew();
+								PersonBuildingNew person_building= (PersonBuildingNew)personBuildingone.clone();
+								System.out.print(person_building==personBuildingone);
+								person_building.setName(personBuildingtwo.getName());
+								person_building.setPersonId(personBuildingtwo.getPersonId());
+								personBuildingNewAll.add(person_building);
+							}
+						}
+					}
+				}
+			}
+			return personBuildingNewAll;
+		}
+   
+		/**
+		 * 根据关系id修改，删除（关系启用/停止）关系链信息
+		 * 肖聪
+		 */	
+		@Override
+		public void updataPersonBuildingById(PersonBuildingNew personBuildingNew) {
+			// TODO Auto-generated method stub
+			personBuildingNewMapper.updataPersonBuildingById(personBuildingNew);
+		}
+		
+		@Override
+		public void deletePersonBuildingById(PersonBuildingNew personBuildingNew) {
+			// TODO Auto-generated method stub
+			List<PersonBuildingNew> personBuildingNews=personBuildingNew.getPersonBuildingNews();
+			for(PersonBuildingNew personBuildingNew_one:personBuildingNews){
+				personBuildingNewMapper.updataPersonBuildingById(personBuildingNew_one);
+			}
+		}
+
+		@Override
+		public List<PersonBuildingNew> getRelationBycustId(String custId) {
+			// TODO Auto-generated method stub
+			return personBuildingNewMapper.getRelationBycustId(custId);
+		}
+		
+		@Override
+		public PageRestful listPageHouseByenterpriseId(PersonBuildingNew personBuildingNew) {
+			// TODO Auto-generated method stub
+			
+			PageRestful pagerestful=new PageRestful();
+			List<PersonBuildingNew> personBuildingNews =personBuildingNewMapper.listPageHouseByenterpriseId(personBuildingNew);
+			personBuildingNews.add(0,null);
+			pagerestful.setPersonBuildingNew(personBuildingNews);
+			pagerestful.setPage(personBuildingNew.getPage());
+			return pagerestful;
+			
+//			List<PersonBuildingNew> houseNews=personBuildingNewMapper.listHouseByenterpriseId(enterpriseId);
+//			List<PersonBuildingNew> houseNews_one=new ArrayList<PersonBuildingNew>();
+//			for(PersonBuildingNew house:houseNews){
+//				if(house!=null){
+//					houseNews_one.add(house);
+//				}
+//			}
+		}
+
+		@Override
+		public String deletePersonBuilding(PersonBuildingNew personBuildingNew) {
+			if(personBuildingNew.getPersonBuildingIds()!=null){
+				
+				PersonBuildingNew pbn = null;
+				List<String> relationIdList = new ArrayList<String>();
+				
+				for(String personBuildingId:personBuildingNew.getPersonBuildingIds()){
+					
+					pbn = new PersonBuildingNew();
+					pbn = personBuildingNewMapper.getPersonBuildingNewById(personBuildingId);
+					
+					personBuildingNewMapper.deletePersonBuilding(personBuildingId);
+					
+					if(pbn != null){
+						Account account = new Account();
+						account = accountMapper.getAccountByCustId(pbn.getCustId());
+						AssetAccount assetAccount = new AssetAccount();
+						assetAccount = assetAccountMapper.getAssetAccountByBuildingId(pbn.getBuildingStructureId());
+						if(account != null && assetAccount != null){
+							AccountRelation ar = new AccountRelation();
+							ar = accountRelationMapper.getAssetRelationByParams(account.getAccountId(), assetAccount.getAssetAccountId());
+							if(ar != null){
+								relationIdList.add(ar.getAccountRelationId());
+							}
+						}
+					}
+				}
+				if(relationIdList.size() > 0){
+					for(String s : relationIdList){
+						accountRelationMapper.deleteAccountRelation(s);
+					}
+				}
+				return "200";
+			}else{
+				return "3001";
+			}
+		}
+
+		@Override
+		public Info importFile(Annex annex) {
+			String filePath = annex.getAnnexAddress();
+			int insertNum = 0;
+			int repeatNum = 0;
+			if(Tools.notEmpty(filePath)){
+				try {
+					//测试 0表示之间id 1表示客户类型  2表示证件号   3表示姓名
+					List<Map<Short, String>> dataList = new ExcelUtils().readExcel(filePath);
+					Map<String,String> personBuildingMap = new HashMap<String,String>();//客户资产绑定Map，用于去重
+					Map<String,String> custMap = new HashMap<String,String>();//个人客户与企业客户Map，用于判断是否存在该记录
+					
+					List<PersonBuildingNew> oldPersonBuildingList = personBuildingNewMapper.getPersonBuildingHasMoreByProjectId(annex.getProjectId());
+					List<PersonCustNew> oldPersonCustList = personCustNewMapper.listAllPersonCustNew();
+					List<EnterpriseCustNew> oldEnterpriseCustList = enterpriseCustNewMapper.listAllEnterpriseCustNew();
+					//获取数据库中的客户建筑关联信息和客户的信息，设置key、value并保存到map中
+					for (PersonBuildingNew personBuildingNew : oldPersonBuildingList) {
+						PersonCustNew personCustNew = personBuildingNew.getPersonCustNew();
+						EnterpriseCustNew enterpriseCustNew = personBuildingNew.getEnterpriseCustNew();
+						String custKey = "";
+						String pbKey = "";
+						//String custId="";
+						if(StringUtils.isEmpty(personBuildingNew.getCustId())){
+							custKey = "企业客户"+enterpriseCustNew.getTradingNumber();
+						//	custId = enterpriseCustNew.getEnterpriseId();
+						}else{
+							custKey = "个人客户"+personCustNew.getCardNum();
+						//	custId = personCustNew.getCustId();
+						}
+						pbKey = personBuildingNew.getBuildingStructureId()+custKey;
+						personBuildingMap.put(pbKey, personBuildingNew.getBuildingStructureId());
+						//custMap.put(custKey,custId);
+					}
+					
+					for (PersonCustNew personCustNew : oldPersonCustList) {
+						String pcKey = "个人客户"+personCustNew.getCardNum();
+						custMap.put(pcKey, personCustNew.getCustId());
+					}
+					for (EnterpriseCustNew enterpriseCustNew : oldEnterpriseCustList) {
+						if(StringUtils.isNotEmpty(enterpriseCustNew.getTradingNumber())){
+							String pcKey = "企业客户"+enterpriseCustNew.getTradingNumber();
+							custMap.put(pcKey, enterpriseCustNew.getEnterpriseId());
+						}
+					}
+					List<PersonBuildingNew> insertList = new ArrayList<PersonBuildingNew>();
+					List<AccountRelation> accountRelationList = new ArrayList<AccountRelation>();
+					if(dataList!=null && dataList.size()>0){
+						for (Map<Short, String> t : dataList) {
+							Map<String,String> singleMap = new HashMap<String,String>();
+							//获取excel列的基本信息
+							String buildingStructureId = t.get((short)0);//建筑结构编号
+							String custType = t.get((short)8);//户主类型
+							String cardNum = t.get((short)9).length() == 18?t.get((short)9)+"S":t.get((short)9);//户主证件号码或者公司营业执照号
+							
+							String appendCustType = t.get((short)10);//追加客户类型
+							String appendCardNum = t.get((short)11);//追加客户证件号码
+							//判断excel里面的数据是否重复
+							if(StringUtils.isNotEmpty(appendCustType) && StringUtils.isNotEmpty(appendCardNum)){
+								String[] appendCustTypeArr = appendCustType.split(",");
+								String[] appendCardNumArr = appendCardNum.split(",");
+								//判断追加的客户信息和户主的是否有冲突
+								for (int i = 0; i < appendCardNumArr.length; i++) {
+									String custypeArrStr = appendCustTypeArr[i];
+									String cardNumArrStr = appendCardNumArr[i].length() == 18?appendCardNumArr[i]+"S":appendCardNumArr[i];
+									if(custType.equals(custypeArrStr) && cardNum.equals(cardNumArrStr)){
+										continue;
+									}else{
+										//判断后面的追加客户信息是否有重复，只取一条
+										String sKey = custypeArrStr+"-"+cardNumArrStr;
+										if(!singleMap.containsKey(sKey)){
+											singleMap.put(sKey,cardNumArrStr);
+										}
+									}
+								}
+							}
+							
+							if(singleMap.size() > 0){
+								for (String sKey : singleMap.keySet()) {
+									String[] sKeyArr = sKey.split("-");
+									String custKey = sKeyArr[0]+sKeyArr[1];
+									String existKey = buildingStructureId+custKey;
+									if(!personBuildingMap.containsKey(existKey) && custMap.containsKey(custKey)){
+										PersonBuildingNew personBuildingNew = new PersonBuildingNew();
+										String insertCardNum = singleMap.get(sKey);
+										String custId = custMap.get(custKey);
+										String personBuildingId = UUID.randomUUID().toString();
+										
+										personBuildingNew.setPersonBuildingId(personBuildingId);
+										personBuildingNew.setBuildingStructureId(buildingStructureId);
+										personBuildingNew.setCustType("业主");
+										if("个人客户".equals(sKeyArr[0])){
+											personBuildingNew.setCustId(custId);
+											
+											//判断是否有个人账户和对应的房屋、车位资产账户
+											Account account = new Account();
+											account = accountMapper.getAccountByCustId(personBuildingNew.getCustId());
+											AssetAccount assetAccount = new AssetAccount();
+											assetAccount = assetAccountMapper.getAssetAccountByBuildingId(buildingStructureId);
+											//如果个人账户和资产账户都不为null时，生成对应的关联数据
+											if(account != null && assetAccount != null){
+												AccountRelation accountRelation = new AccountRelation();
+												accountRelation.setAccountRelationId(UUID.randomUUID().toString());
+												accountRelation.setAccountId(account.getAccountId());
+												accountRelation.setAssetAccount(assetAccount.getAssetAccountId());
+												accountRelationList.add(accountRelation);
+											}
+											
+										}else{
+											personBuildingNew.setEnterpriseId(custId);
+										}
+										insertList.add(personBuildingNew);
+									}else{
+										repeatNum++;
+									}
+								}
+							}
+							/*if(t.get((short)8)!=""||t.get((short)8)!=null){
+								PersonBuildingNew personBuildingNew = new PersonBuildingNew();
+								if("个人客户".equals(t.get((short)8))){
+									if(t.get((short)9)!=null && t.get((short)10)!=null){
+										String cardNum = "";
+										if(t.get((short)9).length() == 18){
+											cardNum = t.get((short)9) + "S";
+										}else{
+											cardNum = t.get((short)9);
+										}
+										String custId=personCustNewMapper.getCustId(cardNum,t.get((short)10));
+										if(custId!=null){
+											personBuildingNew.setCustId(custId);
+										}	
+									}	
+								}else{
+									String enterpriseId=enterpriseCustNewMapper.getEnterpriseId(t.get((short)9),t.get((short)10));
+									if(enterpriseId!=null){
+										personBuildingNew.setEnterpriseId(enterpriseId);
+									}
+								}
+								if(personBuildingNew.getCustId()!=null || personBuildingNew.getEnterpriseId()!=null){
+									String uuid = UUID.randomUUID().toString();
+									personBuildingNew.setPersonBuildingId(uuid);//设置id				
+									personBuildingNew.setCustType("业主");//设置客户类型
+									personBuildingNew.setBuildingStructureId(t.get((short)0));//设置建筑结构id
+									personBuildingNewMapper.insertPersonBuildingNew(personBuildingNew);
+								}
+							}*/
+							
+						}
+					}
+					if(insertList.size() > 0){
+						insertNum = personBuildingNewMapper.insertList(insertList);
+					}
+					if(accountRelationList.size() > 0){
+						accountRelationMapper.insertRelationList(accountRelationList);
+					}
+					return Tools.msg("成功导入" +insertNum + "条记录，不合法记录"+repeatNum+"条", true);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+			return Tools.msg("数据导入失败!", false);
+		}
+
+		@Override
+		public String getCustIdByCompanyId(String companyId) {
+			if(Tools.notEmpty(companyId)){
+				List<String> ids = new ArrayList<String>();
+				List<PersonBuildingNew> pbList = personBuildingNewMapper.getPersonBuildingNewsByCompany(companyId);
+				if(pbList!=null && pbList.size()>0){
+					for(PersonBuildingNew p : pbList){
+						if(Tools.notEmpty(p.getCustId())){
+							ids.add(p.getCustId());
+						}
+						if(Tools.notEmpty(p.getEnterpriseId())){
+							ids.add(p.getEnterpriseId());
+						}
+					}
+					JSONArray json = JSONArray.fromObject(ids);
+					return json.toString();
+				}
+			}
+			return JsonUtil.failure("获取数据失败！", true);
+		}
+
+		@Override
+		public String getPersonBuildingByCustId(String custId) {
+			if(Tools.notEmpty(custId)){
+				List<Map<String,String>> list = new ArrayList<Map<String,String>>();
+				List<PersonBuildingNew> pbList = personBuildingNewMapper.getPersonBuildingByCustId(custId);
+				if(pbList!=null && pbList.size()>0){
+					for(PersonBuildingNew p:pbList){
+						Map<String,String> map = new HashMap<String,String>();
+						map.put("address", p.getBuildingStructureNew().getFullName());
+						map.put("buildingStructureId", p.getBuildingStructureId());
+						map.put("custType", p.getCustType());
+						map.put("houseId", p.getHouseNew().getId());
+						list.add(map);
+					}
+					
+					JSONArray json = JSONArray.fromObject(list);
+					return json.toString();
+				}
+			}
+			return null;
+		}
+
+		@Override
+		public String gteBuildingByPersonId(String personId) {
+			// TODO Auto-generated method stub
+			List<String> strs=personBuildingNewMapper.gteBuildingByPersonId(personId);
+			JSONArray json=JSONArray.fromObject(strs);
+			return json.toString();
+		}
+
+		@Override
+		public String getHouseNewByHouseId(String houseId) {
+			HouseNew house = personBuildingNewMapper.getHouseNewByHouseId(houseId);
+			JSONArray json=JSONArray.fromObject(house);
+			return json.toString();
+		}
+
+		@Override
+		public String getSipByStuctureId(String buildingStructureId) {
+			Sipmanage sipmanage = personBuildingNewMapper.getSipByStuctureId(buildingStructureId);
+			JSONArray json=JSONArray.fromObject(sipmanage);
+			return json.toString();
+		}
+
+		@Override
+		public String getPersonIdByBuildingStru(String buildingStruId) {
+			List<String > custStr = personBuildingNewMapper.getPersonIdByBuildingStruId(buildingStruId);
+			JSONArray json=JSONArray.fromObject(custStr);
+			return json.toString();
+		}
+
+		/**
+		 * by 吴颖
+		 * 根据客户id获取绑定资产数量
+		 */
+		@Override
+		public int getPersonBuildingCountByCustId(String custId) {
+			List<PersonBuildingNew> pbList = personBuildingNewMapper.getPersonBuildingByCustId(custId);
+			return pbList.size();
+		}
+
+		@Override
+		public String getSipsByStuctureId(String buildingStructureId) {
+			Sipmanage sipmanage = personBuildingNewMapper.getSipByStuctureId(buildingStructureId);
+			Sipmanage indoorSipmanage = personBuildingNewMapper.getIndoorSipByStuctureId(buildingStructureId);
+			Map<String, Object> map = new HashMap<String, Object>();
+			map.put("sipmanage", sipmanage);
+			map.put("indoorSipmanage", indoorSipmanage);
+			JSONObject json = JSONObject.fromObject(map);
+			return json.toString();
+		}
+
+		@Override
+		public String getPersonBuildingByCustIdList(List<String> custIdList) {
+//			if(Tools.notEmpty(custId)){
+				List<Map<String,String>> list = new ArrayList<Map<String,String>>();
+//				List<PersonBuildingNew> pbList = personBuildingNewMapper.getPersonBuildingByCustId(custId);
+				List<PersonBuildingNew> pbList = personBuildingNewMapper.getPersonBuildingByCustIdList(custIdList);
+				if(pbList!=null && pbList.size()>0){
+					for(PersonBuildingNew p:pbList){
+						Map<String,String> map = new HashMap<String,String>();
+						map.put("address", p.getBuildingStructureNew().getFullName());
+						map.put("buildingStructureId", p.getBuildingStructureId());
+						map.put("custType", p.getCustType());
+						map.put("houseId", p.getHouseNew().getId());
+						list.add(map);
+					}
+					
+					JSONArray json = JSONArray.fromObject(list);
+					return json.toString();
+				}
+//			}
+			return null;
+		}
+
+		@Override
+		public String gteBuildingByPersonIdList(List<String> custIdList) {
+			List<String> strs=personBuildingNewMapper.gteBuildingByPersonIdList(custIdList);
+			JSONArray json=JSONArray.fromObject(strs);
+			return json.toString();
+		}
+
+		@Override
+		public int getPersonBuildingCountByCustIdList(List<String> custIdList) {
+			List<PersonBuildingNew> pbList = personBuildingNewMapper.getPersonBuildingByCustIdList(custIdList);
+			return pbList.size();
+		}
+		
+}

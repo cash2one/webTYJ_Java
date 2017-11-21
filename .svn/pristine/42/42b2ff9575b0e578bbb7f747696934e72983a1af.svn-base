@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.flf.mapper.InspectionRecordsMapper" >
+  <resultMap id="BaseResultMap" type="com.flf.entity.InspectionRecords" >
+    <id column="record_id" property="recordId" jdbcType="VARCHAR" />
+    <result column="order_id" property="orderId" jdbcType="VARCHAR" />
+    <result column="inspection_property_id" property="inspectionPropertyId" jdbcType="VARCHAR" />
+    <result column="check_item_name" property="checkItemName" jdbcType="VARCHAR" />
+    <result column="check_item_unit" property="checkItemUnit" jdbcType="VARCHAR" />
+    <result column="inspection_result" property="inspectionResult" jdbcType="VARCHAR" />
+    <result column="inspection_plan_id" property="inspectionPlanId" jdbcType="VARCHAR" />
+  </resultMap>
+  
+  <insert id="inserInspectionRecords" parameterType="com.flf.entity.InspectionRecords" >      
+      insert into ts_inspection_records (record_id, order_id, inspection_property_id, 
+      inspection_plan_id)
+    values (#{recordId,jdbcType=VARCHAR},#{orderId,jdbcType=VARCHAR},#{inspectionPropertyId,jdbcType=VARCHAR},  
+      #{inspectionPlanId,jdbcType=VARCHAR})
+  </insert>
+    <update id="updateInspectionRecords" parameterType="com.flf.entity.InspectionRecords" >
+    update ts_inspection_records
+    <set >
+      <if test="orderId != null" >
+        order_id = #{orderId,jdbcType=VARCHAR},
+      </if>
+      <if test="inspectionPropertyId != null" >
+        inspection_property_id = #{inspectionPropertyId,jdbcType=VARCHAR},
+      </if>
+      <if test="checkItemName != null" >
+        check_item_name = #{checkItemName,jdbcType=VARCHAR},
+      </if>
+      <if test="checkItemUnit != null" >
+        check_item_unit = #{checkItemUnit,jdbcType=VARCHAR},
+      </if>
+      <if test="inspectionResult != null" >
+        inspection_result = #{inspectionResult,jdbcType=VARCHAR},
+      </if>
+      <if test="inspectionPlanId != null" >
+        inspection_plan_id = #{inspectionPlanId,jdbcType=VARCHAR},
+      </if>
+      </set>
+      where record_id = #{recordId,jdbcType=VARCHAR}
+  </update>
+  
+  
+  </mapper>

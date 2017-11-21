@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.flf.mapper.ProductFixedparkingspaceMapper" >
+  <resultMap id="BaseResultMap" type="com.flf.entity.ProductFixedparkingspace" >
+    <id column="fixedparkingspace_id" property="fixedparkingspaceId" jdbcType="VARCHAR" />
+    <result column="begin_date" property="beginDate" jdbcType="VARCHAR" />
+    <result column="end_date" property="endDate" jdbcType="VARCHAR" />
+    <result column="product_price" property="productPrice" jdbcType="DECIMAL" />
+    <result column="product_code" property="productCode" jdbcType="VARCHAR" />
+    <result column="create_user" property="createUser" jdbcType="VARCHAR" />
+    <result column="update_user" property="updateUser" jdbcType="VARCHAR" />
+    <result column="create_date" property="createDate" jdbcType="VARCHAR" />
+    <result column="update_date" property="updateDate" jdbcType="TIMESTAMP" />
+    <result column="state" property="state" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    fixedparkingspace_id, begin_date, end_date, product_price, product_code, create_user, 
+    update_user, create_date, update_date
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+  	select a.*,
+	case  when NOW() &gt;=begin_date and NOW() &lt;
+			IFNULL(end_date,'2099-12-31') then '租用中'
+			when NOW() &lt; begin_date then '未租用'
+			when NOW() &gt;end_date then '失效' end as 'state'
+	from(select * from tc_product_fixedparkingspace 
+	where fixedparkingspace_id=#{fixedparkingspaceId,jdbcType=VARCHAR}) as a    
+  </select>
+  <select id="listPageLpf" parameterType="com.flf.entity.ProductFixedparkingspace" resultMap="BaseResultMap">
+		select *,
+		case  when NOW() &gt;=begin_date and NOW() &lt;
+		IFNULL(end_date,'2099-12-31') then '已启用'
+		when NOW() &lt; begin_date then '未启用'
+		when NOW() &gt;end_date then '失效' end as 'state'
+		from tc_product_fixedparkingspace
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from tc_product_fixedparkingspace
+    where fixedparkingspace_id = #{fixedparkingspaceId,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.flf.entity.ProductFixedparkingspace" >
+    insert into tc_product_fixedparkingspace (fixedparkingspace_id, begin_date, end_date, 
+      product_price, product_code, create_user, 
+      update_user, create_date, update_date
+      )
+    values (#{fixedparkingspaceId,jdbcType=VARCHAR}, #{beginDate,jdbcType=VARCHAR}, #{endDate,jdbcType=VARCHAR}, 
+      #{productPrice,jdbcType=DECIMAL}, #{productCode,jdbcType=VARCHAR}, #{createUser,jdbcType=VARCHAR}, 
+      #{updateUser,jdbcType=VARCHAR}, #{createDate,jdbcType=VARCHAR}, #{updateDate,jdbcType=TIMESTAMP}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.flf.entity.ProductFixedparkingspace" >
+    insert into tc_product_fixedparkingspace
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="fixedparkingspaceId != null" >
+        fixedparkingspace_id,
+      </if>
+      <if test="beginDate != null" >
+        begin_date,
+      </if>
+      <if test="endDate != null" >
+        end_date,
+      </if>
+      <if test="productPrice != null" >
+        product_price,
+      </if>
+      <if test="productCode != null" >
+        product_code,
+      </if>
+      <if test="createUser != null" >
+        create_user,
+      </if>
+      <if test="updateUser != null" >
+        update_user,
+      </if>
+      <if test="createDate != null" >
+        create_date,
+      </if>
+      <if test="updateDate != null" >
+        update_date,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="fixedparkingspaceId != null" >
+        #{fixedparkingspaceId,jdbcType=VARCHAR},
+      </if>
+      <if test="beginDate != null" >
+        #{beginDate,jdbcType=VARCHAR},
+      </if>
+      <if test="endDate != null" >
+        #{endDate,jdbcType=VARCHAR},
+      </if>
+      <if test="productPrice != null" >
+        #{productPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="productCode != null" >
+        #{productCode,jdbcType=VARCHAR},
+      </if>
+      <if test="createUser != null" >
+        #{createUser,jdbcType=VARCHAR},
+      </if>
+      <if test="updateUser != null" >
+        #{updateUser,jdbcType=VARCHAR},
+      </if>
+      <if test="createDate != null" >
+        #{createDate,jdbcType=VARCHAR},
+      </if>
+      <if test="updateDate != null" >
+        #{updateDate,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.flf.entity.ProductFixedparkingspace" >
+    update tc_product_fixedparkingspace
+    <set >
+      <if test="beginDate != null" >
+        begin_date = #{beginDate,jdbcType=VARCHAR},
+      </if>
+      <if test="endDate != null" >
+        end_date = #{endDate,jdbcType=VARCHAR},
+      </if>
+      <if test="productPrice != null" >
+        product_price = #{productPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="productCode != null" >
+        product_code = #{productCode,jdbcType=VARCHAR},
+      </if>
+      <if test="createUser != null" >
+        create_user = #{createUser,jdbcType=VARCHAR},
+      </if>
+      <if test="updateUser != null" >
+        update_user = #{updateUser,jdbcType=VARCHAR},
+      </if>
+      <if test="createDate != null" >
+        create_date = #{createDate,jdbcType=VARCHAR},
+      </if>
+      <if test="updateDate != null" >
+        update_date = #{updateDate,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where fixedparkingspace_id = #{fixedparkingspaceId,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.flf.entity.ProductFixedparkingspace" >
+    update tc_product_fixedparkingspace
+    set begin_date = #{beginDate,jdbcType=VARCHAR},
+      end_date = #{endDate,jdbcType=VARCHAR},
+      product_price = #{productPrice,jdbcType=DECIMAL},
+      product_code = #{productCode,jdbcType=VARCHAR},
+      create_user = #{createUser,jdbcType=VARCHAR},
+      update_user = #{updateUser,jdbcType=VARCHAR},
+      create_date = #{createDate,jdbcType=VARCHAR},
+      update_date = #{updateDate,jdbcType=TIMESTAMP}
+    where fixedparkingspace_id = #{fixedparkingspaceId,jdbcType=VARCHAR}
+  </update>
+  <update id="updateEndDate" parameterType="java.lang.String" >
+  	UPDATE tc_product_fixedparkingspace SET end_date=#{0}
+  </update>
+  <select id="getEndDate" parameterType="java.lang.String" >
+  	select end_date from tc_product_fixedparkingspace GROUP BY end_date
+  </select>
+</mapper>

@@ -1,0 +1,108 @@
+package com.flf.service.impl;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import com.flf.entity.ElectricityMeterRecords;
+import com.flf.entity.PageRestful;
+import com.flf.entity.SearchMeter;
+import com.flf.entity.WaterMeterRecords;
+import com.flf.mapper.ElectricityMeterRecordsMapper;
+import com.flf.service.ElectricityMeterRecordsService;
+import com.flf.util.Tools;
+
+public class ElectricityMeterRecordsServiceImpl implements
+		ElectricityMeterRecordsService {
+	private ElectricityMeterRecordsMapper electricityMeterRecordsMapper;
+	
+
+	public ElectricityMeterRecordsMapper getElectricityMeterRecordsMapper() {
+		return electricityMeterRecordsMapper;
+	}
+
+	public void setElectricityMeterRecordsMapper(
+			ElectricityMeterRecordsMapper electricityMeterRecordsMapper) {
+		this.electricityMeterRecordsMapper = electricityMeterRecordsMapper;
+	}
+
+	@Override
+	public PageRestful listElectricityMeterRecords(SearchMeter searchMeter) {
+		// TODO Auto-generated method stub
+		PageRestful pageRestful = new PageRestful();
+		List<ElectricityMeterRecords> electricityMeterRecordss=electricityMeterRecordsMapper.listPageElectricityMeterRecords(searchMeter);
+		electricityMeterRecordss.add(0,null);
+		pageRestful.setElectricityMeterRecords(electricityMeterRecordss);
+		pageRestful.setPage(searchMeter.getPage());
+		return pageRestful;
+	}
+
+	@Override
+	public List<ElectricityMeterRecords> listAllElectricityMeterRecords() {
+		// TODO Auto-generated method stub
+		return electricityMeterRecordsMapper.listAllElectricityMeterRecords();
+	}
+
+	@Override
+	public ElectricityMeterRecords getUserByIdRest(
+			String electricityMeterRecordsId) {
+		// TODO Auto-generated method stub
+		return electricityMeterRecordsMapper.getElectricityMeterRecordsbyId(electricityMeterRecordsId);
+	}
+
+	@Override
+	public List<ElectricityMeterRecords> listElectricityMeterRecordsbyWaterId(
+			String waterMeterNum) {
+		// TODO Auto-generated method stub
+		List<ElectricityMeterRecords> aa= electricityMeterRecordsMapper.listElectricityMeterRecordsbyWaterId(waterMeterNum);
+		return aa;
+	}
+
+	@Override
+	public void insertElectricityMeterRecordsrest(
+			ElectricityMeterRecords electricityMeterRecords) {
+		// TODO Auto-generated method stub
+		electricityMeterRecordsMapper.insertElectricityMeterRecords(electricityMeterRecords);
+	}
+
+	@Override
+	public void updateElectricityMeterRecordsrest(
+			ElectricityMeterRecords electricityMeterRecords) {
+		// TODO Auto-generated method stub
+		electricityMeterRecordsMapper.updateElectricityMeterRecords(electricityMeterRecords);
+	}
+
+	@Override
+	public void updateElectricityMeterRecordsrestbyNum(
+			ElectricityMeterRecords electricityMeterRecords) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void deleteElectricityMeterRecordsrest(
+			String electricityMeterRecordsId) {
+		// TODO Auto-generated method stub
+		electricityMeterRecordsMapper.deleteElectricityMeterRecords(electricityMeterRecordsId);
+	}
+
+	@Override
+	public List<ElectricityMeterRecords> listElectricityMeterRecordsbybuildigIds(
+			List<String> ids) {
+		// TODO Auto-generated method stub
+		List<ElectricityMeterRecords> electricityMeterRecords=new ArrayList<ElectricityMeterRecords>();
+		for(int i=0; i<ids.size();i++){
+			ElectricityMeterRecords electricityMeterRecord=electricityMeterRecordsMapper.listElectricityMeterRecordsbybuildigIds(ids.get(i));
+			electricityMeterRecords.add(electricityMeterRecord);
+		}
+		return electricityMeterRecords;
+	}
+
+	@Override
+	public ElectricityMeterRecords electricityMeterRecordsbybuildigId(
+			String buildingId) {
+		if(Tools.notEmpty(buildingId)){
+			return electricityMeterRecordsMapper.listElectricityMeterRecordsbybuildigIds(buildingId);
+		}
+		return null;
+	}
+}

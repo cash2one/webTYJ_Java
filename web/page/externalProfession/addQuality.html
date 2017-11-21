@@ -1,0 +1,136 @@
+<!--
+    作者:彭婷婷
+    页面名称:添加质检标准
+    js路径:js/controllers/externalProfession/addQuality
+-->
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+<div class="order">
+    <div class="row">
+        <div style="width:97%; margin:0 auto; background:#f0f0f0; -moz-border-radius:7px; -webkit-border-radius:7px; border-radius:7px; border:1px solid #bbb;padding-bottom:15px; height:780px; ">
+           <div style="border: 1px solid #000000;width: 97%;height: 210px;margin: 10px">
+               <div class="col-md-2" style="margin-top: 20px">
+                   <div style="border: 1px solid #000000;width: 150px;height: 150px;">
+                       <img src="images/personnel/cmm1_u1138.png" width="150px" height="150px">
+                   </div>
+               </div>
+               <div class="col-lg-4 col-md-4 col-sm-6">
+                   <div class="program_panel">
+                       <div class="program_panel_people_title">
+                    <span class="panel_title_right">
+                    <span class="program_panel_info_navigation">
+                        <ul>
+                            <li><a href="#" class="dropdown-toggle btn-lg" data-toggle="dropdown" role="button" aria-expanded="false"><span class="glyphicon glyphicon-menu-down" aria-hidden="true"></span></a>
+                                <ul>
+                                    <li class="program_panel_info_navigation_top">新建
+                                    </li>
+                                    <li>编辑</li>
+                                    <li>拷贝</li>
+                                    <li>重启</li>
+                                    <li>关闭</li>
+                                    <li>合并</li>
+                                    <li>打印</li>
+                                    <li>传阅</li>
+                                    <li>催单</li>
+                                    <li>日志</li>
+                                    <li>查看</li>
+                                    <li class="program_panel_info_navigation_bottom">回访
+                                    </li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </span>
+                    </span>
+                       </div>
+
+                       <div style="height:auto; width:98%;">
+                           <div>
+                               <table style="width: 98%;margin:10px">
+                                   <tr>
+                                       <td>质检标准：1-142692951</td>
+                                   </tr>
+                                   <tr>
+                                       <td>名称：乔木养护标准</td>
+                                   </tr>
+                                   <tr>
+                                       <td>类型：绿化养护</td>
+                                   </tr>
+                                   <tr>
+                                       <td>质检对象：乔木</td>
+                                   </tr>
+                                   <tr>
+                                       <td>检查描述：依据评判标准打分</td>
+                                   </tr>
+                               </table>
+                           </div>
+                       </div>
+                   </div>
+               </div>
+           </div>
+            <!--1-->
+            <div style="border: 1px solid #000000;width: 97%;height: 500px;margin: 10px">
+                <div style="border: 1px solid #000000;width: 97%;height:160px;margin: 10px">
+                    <table style="width: 90% ;margin:20px auto;">
+                        <tr>
+                            <td>名称:</td>
+                            <td><input type="text"></td>
+                            <td>类型:</td>
+                            <td>
+                                <select style="width: 100px">
+                                    <option>绿化养护</option>
+                                 </select>
+                            </td>
+
+                            <td>检查对象:</td>
+                            <td>
+                                <select style="width: 100px">
+                                    <option>乔木</option>
+                                </select>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td>检查内容：</td>
+                            <td>
+                                <textarea class="form-control" rows="3">受外力影响歪倒乔木在外力结束7天内扶正或加固
+                                 </textarea>
+                            </td>
+                            <td>评分标准：</td>
+                            <td>
+                                <textarea class="form-control" rows="3">每发现一处不合格扣1分
+                                </textarea>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td colspan="6">
+                                <a  ui-sref="index.externalProfession.addQuality.newQuality">
+                                    <img src="images/personnel/cmm1_u1138.png" width="30px" height="30px">
+                                </a>
+                            </td>
+                        </tr>
+                    </table>
+
+                    <div class="row">
+                        <div ui-view></div>
+                    </div>
+                </div>
+
+                <div style="width: 97%;height: 50px;margin-top: 230px;margin-left: 10px">
+                   <button class="btn btn-default" style="margin-left: 400px">提交</button>
+                   <button class="btn btn-default" style="margin-left:30px">取消</button>
+
+                </div>
+            </div>
+            <!--2-->
+        </div>
+    </div>
+</div>
+<div class="clear"></div>
+</body>
+</html>

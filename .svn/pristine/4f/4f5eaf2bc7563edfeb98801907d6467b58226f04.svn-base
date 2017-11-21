@@ -1,0 +1,136 @@
+package com.flf.service.impl;
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.List;
+import java.util.UUID;
+
+import com.flf.entity.Annex;
+import com.flf.entity.TasksJournal;
+import com.flf.entity.WaterMeterOrderRecords;
+import com.flf.entity.WaterMeterOrders;
+import com.flf.mapper.AnnexMapper;
+import com.flf.mapper.TasksJournalMapper;
+import com.flf.mapper.WaterMeterOrderRecordsMapper;
+import com.flf.mapper.WaterMeterOrdersMapper;
+import com.flf.request.Info;
+import com.flf.service.WaterMeterOrdersService;
+import com.flf.util.Tools;
+
+public class WaterMeterOrdersServiceImpl implements WaterMeterOrdersService{
+	
+	private WaterMeterOrdersMapper waterMeterOrdersMapper;
+	private WaterMeterOrderRecordsMapper waterMeterOrderRecordsMapper;
+	private AnnexMapper annexMapper;
+	private TasksJournalMapper tasksJournalMapper;
+
+	public TasksJournalMapper getTasksJournalMapper() {
+		return tasksJournalMapper;
+	}
+
+	public void setTasksJournalMapper(TasksJournalMapper tasksJournalMapper) {
+		this.tasksJournalMapper = tasksJournalMapper;
+	}
+
+	public AnnexMapper getAnnexMapper() {
+		return annexMapper;
+	}
+
+	public void setAnnexMapper(AnnexMapper annexMapper) {
+		this.annexMapper = annexMapper;
+	}
+
+	public WaterMeterOrderRecordsMapper getWaterMeterOrderRecordsMapper() {
+		return waterMeterOrderRecordsMapper;
+	}
+
+	public void setWaterMeterOrderRecordsMapper(
+			WaterMeterOrderRecordsMapper waterMeterOrderRecordsMapper) {
+		this.waterMeterOrderRecordsMapper = waterMeterOrderRecordsMapper;
+	}
+
+	public WaterMeterOrdersMapper getWaterMeterOrdersMapper() {
+		return waterMeterOrdersMapper;
+	}
+
+	public void setWaterMeterOrdersMapper(
+			WaterMeterOrdersMapper waterMeterOrdersMapper) {
+		this.waterMeterOrdersMapper = waterMeterOrdersMapper;
+	}
+
+	@Override
+	public void closeWaterMeterOrders(WaterMeterOrders waterMeterOrders) {
+		
+		if(waterMeterOrders != null){
+			Integer orderState = waterMeterOrders.getOrderState();
+			String closePersonId = waterMeterOrders.getClosePersonId();
+			if(Tools.notEmpty(closePersonId) && orderState!=null){
+				waterMeterOrders.setOrderState(0);
+				waterMeterOrders.setCloseTime(new Date());
+				waterMeterOrdersMapper.updateWaterMeterOrders(waterMeterOrders);
+			}
+		}
+	}
+
+	@Override
+	public WaterMeterOrders getWaterMeterOrdersbyId(String orderId) {
+		if(Tools.notEmpty(orderId)){
+			return waterMeterOrdersMapper.getWaterMeterOrdersbyId(orderId);
+		}
+		return null;
+	}
+
+	@Override
+	public Info insertWaterMeterOrders(WaterMeterOrders waterMeterOrders) {
+		
+		String uuid = UUID.randomUUID().toString();
+		String date = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date());
+		
+		if(waterMeterOrders != null){
+			WaterMeterOrderRecords records = waterMeterOrders.getWaterMeterOrderRecords();
+			List<Annex> annexList = waterMeterOrders.getAnnexs();
+			
+			waterMeterOrders.setOrderId(uuid);
+			waterMeterOrders.setFinishTime(new Date());
+			Integer result = waterMeterOrdersMapper.insertWaterMeterOrdersUUID(waterMeterOrders);
+			if(result>0 && records!=null){
+				records.setOrderId(uuid);
+				waterMeterOrderRecordsMapper.insertWaterMeterOrderRecords(records);
+				
+				//附件信息保存
+				if(annexList!=null && annexList.size()>0){
+					for(Annex annex :annexList){
+						annex.setRelationId(uuid);
+						annex.setAnnexTime(date);
+						annexMapper.insertAnnex(annex);
+					}
+				}
+				
+				TasksJournal journal = new TasksJournal();
+				journal.setTaskId(waterMeterOrders.getTaskId());
+				journal.setCreOrderId(uuid);
+				journal.setCreOrderType(waterMeterOrders.getOrderType());
+				journal.setChangeOrderState(waterMeterOrders.getOrderState());
+				journal.setOperatorId(waterMeterOrders.getOperatorId());
+				journal.setRemarks(waterMeterOrders.getRemarks());
+				journal.setOperationTime(date);
+				tasksJournalMapper.insertTasksJournal(journal);
+				return Tools.msg("创建成功!", true);
+			}
+			return Tools.msg("添加数据失败或记录信息为空!", false);
+		}
+		return Tools.msg("创建失败!", false);
+	}
+
+	@Override
+	public void updateWaterMeterOrders(WaterMeterOrders waterMeterOrders) {
+		if(waterMeterOrders!=null){
+			waterMeterOrdersMapper.updateWaterMeterOrders(waterMeterOrders);
+		}
+	}
+
+	@Override
+	public void submitWaterMeterOrders(String orderId) {
+		waterMeterOrdersMapper.submitWaterMeterOrders(orderId);
+	}
+}

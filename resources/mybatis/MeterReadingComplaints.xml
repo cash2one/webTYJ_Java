@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.flf.mapper.MeterReadingComplaintsMapper" >
+  <resultMap id="BaseResultMap" type="com.flf.entity.MeterReadingComplaints" >
+    <id column="meter_reading_complaints_id" property="meterReadingComplaintsId" jdbcType="VARCHAR" />
+    <result column="complainant_people" property="complainantPeople" jdbcType="VARCHAR" />
+    <result column="complaint_description" property="complaintDescription" jdbcType="VARCHAR" />
+    <result column="meter_reading_data_id" property="meterReadingDataId" jdbcType="VARCHAR" />
+    <result column="project_id" property="projectId" jdbcType="VARCHAR" />
+    <result column="meter_reading_people" property="meterReadingPeople" jdbcType="VARCHAR" />
+    <result column="meter_reading_date" property="meterReadingDate" jdbcType="VARCHAR" />
+    <result column="full_name" property="fullName" jdbcType="VARCHAR" />
+    <result column="project_name" property="projectName" jdbcType="VARCHAR" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="phone_num" property="phoneNum" jdbcType="VARCHAR" />
+  </resultMap>
+ 
+  
+   <!--  分页查询抄表投诉信息 -->
+  <select id="listPageMeterReadingComplaints" parameterType="MeterReadingComplaints" resultMap="BaseResultMap">
+      select c.*,d.meter_reading_people,d.meter_reading_date,s.full_name,p.project_name,n.name,n.phone_num from t_meter_reading_complaints  c
+      left join t_meter_reading_data d on c.meter_reading_data_id=d.meter_reading_data_id
+      left join t_water_meter_records r on d.water_meter_record_id = r.water_meter_records_id
+      left join tc_building_structure s on s.id =r.building_structure_id
+      left join t_project p on p.project_id = c.project_id
+      left join tc_person_building b on b.building_structure_id= s.id
+      left join tc_person_cust n on n.cust_id=b.cust_id
+      where 1=1
+      <if test="projectName">
+         and p.project_name =#{projectName}
+      </if>
+  </select>
+  
+  
+ <!--  查询所有抄表投诉信息 -->
+  <select id="listAllMeterReadingComplaints" resultMap="BaseResultMap">
+      select * from t_meter_reading_complaints
+  </select>
+  
+  
+<!--   根据id查询抄表投诉信息 -->
+  <select id="getMeterReadingComplaintsbyId" parameterType="String" resultMap="BaseResultMap">
+      select * from t_meter_reading_complaints  where meter_reading_complaints_id=#{0}
+  </select>
+  
+  
+<!-- 删除抄表投诉信息 -->
+  <delete id="deleteMeterReadingComplaints" parameterType="String" >
+      delete from t_meter_reading_complaints where meter_reading_complaints_id=#{0}
+  </delete>
+  
+  
+<!--   新增抄表投诉信息 -->
+  <insert id="insertMeterReadingComplaints" parameterType="com.flf.entity.MeterReadingComplaints" >
+    insert into t_meter_reading_complaints (meter_reading_complaints_id, complainant_people, 
+      complaint_description, meter_reading_data_id
+      )
+    values (UUID(), #{complainantPeople,jdbcType=VARCHAR}, 
+      #{complaintDescription,jdbcType=VARCHAR}, #{meterReadingDataId,jdbcType=VARCHAR}
+      )
+  </insert>
+  
+  
+<!--  修改抄表投诉信息 -->
+  <update id="updateMeterReadingComplaints" parameterType="com.flf.entity.MeterReadingComplaints" >
+    update t_meter_reading_complaints
+    <set >
+      <if test="complainantPeople != null" >
+        complainant_people = #{complainantPeople,jdbcType=VARCHAR},
+      </if>
+      <if test="complaintDescription != null" >
+        complaint_description = #{complaintDescription,jdbcType=VARCHAR},
+      </if>
+      <if test="meterReadingDataId != null" >
+        meter_reading_data_id = #{meterReadingDataId,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where meter_reading_complaints_id = #{meterReadingComplaintsId,jdbcType=VARCHAR}
+  </update>
+ 
+</mapper>

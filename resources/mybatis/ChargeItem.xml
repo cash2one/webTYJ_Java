@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.flf.mapper.ChargeItemMapper" >
+  <resultMap id="BaseResultMap" type="ChargeItem" >
+    <id column="charge_item_id" property="chargeItemId" jdbcType="VARCHAR" />
+    <result column="charge_item_type" property="chargeItemType" jdbcType="VARCHAR" />
+    <result column="charge_item_area" property="chargeItemArea" jdbcType="DOUBLE" />
+    <result column="unit_price" property="unitPrice" jdbcType="DOUBLE" />
+    <result column="money" property="money" jdbcType="DOUBLE" />
+    <result column="charge_unit" property="chargeUnit" jdbcType="VARCHAR" />
+    <result column="pact_id" property="pactId" jdbcType="VARCHAR" />
+  </resultMap>
+  <insert id="insertListChargeItem" >
+    insert into tc_charge_item (charge_item_id, charge_item_type, charge_item_area, 
+      unit_price, money, charge_unit,pact_id
+      )
+    values 
+    	<foreach collection="list"  separator="," item="items">
+    		( UUID(), #{items.chargeItemType,jdbcType=VARCHAR}, #{items.chargeItemArea,jdbcType=DOUBLE}, 
+      #{items.unitPrice,jdbcType=DOUBLE}, #{items.money,jdbcType=DOUBLE}, #{items.chargeUnit,jdbcType=VARCHAR},#{pactId,jdbcType=VARCHAR})
+    	</foreach>      
+  </insert>
+  
+  <delete id="deleteChargeItem" parameterType="String">
+      delete from tc_charge_item where pact_id=#{0}
+  </delete>
+ 
+  
+</mapper>

@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+
+<mapper namespace="com.flf.mapper.UnionpayCounterofferDetaiMapper">
+
+	<resultMap id="BaseResultMap" type="UnionpayCounterofferDetai">
+		<result column="unionpay_counteroffer_detai_id" property="unionpayCounterofferDetaiId"
+			jdbcType="VARCHAR" />
+<!-- 		<result column="cp_date" property="cpDate" jdbcType="DATE" />
+		<result column="cp_running" property="cpRunning" jdbcType="VARCHAR" />
+		<result column="cust_num" property="custNum" jdbcType="VARCHAR" />
+		<result column="cust_name" property="custName" jdbcType="VARCHAR" />
+		<result column="card_host" property="cardHost" jdbcType="VARCHAR" />
+		<result column="card_type" property="cardType" jdbcType="TINYINT" />
+
+		<result column="card_num" property="cardNum" jdbcType="VARCHAR" /> -->
+		<result column="account_type" property="accountType" jdbcType="TINYINT" />
+		<result column="account_num" property="accountNum" jdbcType="VARCHAR" />
+		<result column="bank_num" property="bankNum" jdbcType="VARCHAR" />
+		<result column="transaction_date" property="transactionDate"
+			jdbcType="DATE" />
+		<result column="transaction_type" property="transactionType"
+			jdbcType="VARCHAR" />
+		<result column="response_code" property="responseCode"
+			jdbcType="VARCHAR" />
+		<result column="sum" property="sum" jdbcType="BIGINT" />
+		<result column="private_domain" property="privateDomain"
+			jdbcType="VARCHAR" />
+		<result column="purpose" property="purpose" jdbcType="VARCHAR" />
+		<result column="order_num" property="orderNum" jdbcType="VARCHAR" />
+		<result column="batch_num" property="batchNum" jdbcType="VARCHAR" />
+		<result column="offer_state" property="offerState" jdbcType="TINYINT" />
+		<result column="unionpay_counteroffer_total_id" property="unionpayCounterofferTotalId"
+			jdbcType="VARCHAR" />
+	</resultMap>
+
+ 	<delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+	    delete from tc_unionpay_counteroffer_detai
+	    where unionpay_counteroffer_detai_id = #{0}
+	 </delete>
+
+	<select id="getUnionpayCounterofferDetaiById" parameterType="String"
+		resultMap="BaseResultMap">
+		select * from tc_unionpay_counteroffer_detai
+		where
+		unionpay_counteroffer_detai_id=#{0}
+	</select>
+
+	<select id="listPagegetUnionpayCounterofferDetai" parameterType="UnionpayCounterofferDetai"
+		resultMap="BaseResultMap">
+		select * from tc_unionpay_counteroffer_detai
+		where 1=1
+		<if test="unionpayCounterofferDetaiId != null and unionpayCounterofferDetaiId!=''">
+			AND unionpay_counteroffer_total_id=#{unionpayCounterofferTotalId}
+		</if>
+		<if test="batchNum!=null and batchNum!=''">
+			AND batch_num=#{batchNum}
+		</if>
+		<if test="unionpayCounterofferTotalId != null and unionpayCounterofferTotalId !=''">
+			AND unionpay_counteroffer_total_id=#{unionpayCounterofferTotalId}
+		</if>
+	</select>
+	
+	<select id="listAllgetUnionpayCounterofferDetai" parameterType="UnionpayCounterofferDetai"
+		resultMap="BaseResultMap">
+		select * from tc_unionpay_counteroffer_detai
+		where 1=1
+		<if test="unionpayCounterofferDetaiId != null and unionpayCounterofferDetaiId!=''">
+			AND unionpay_counteroffer_total_id=#{unionpayCounterofferTotalId}
+		</if>
+		<if test="batchNum!=null and batchNum!=''">
+			AND batch_num=#{batchNum}
+		</if>
+		<if test="unionpayCounterofferTotalId != null and unionpayCounterofferTotalId !=''">
+			AND unionpay_counteroffer_total_id=#{unionpayCounterofferTotalId}
+		</if>
+	</select>
+	
+	<select id="getUnionpayCounterofferDetaiByUTId" parameterType="String"
+		resultMap="BaseResultMap">
+		select * from tc_unionpay_counteroffer_detai
+		where
+		unionpay_counteroffer_total_id=#{0}
+	</select>
+
+	<update id="updateOfferState" parameterType="UnionpayCounterofferDetai">
+		update tc_unionpay_counteroffer_detai
+		<set>
+			<if test="offerState != null and offerState != '' or offerState == 0">
+				offer_state = #{offerState}
+			</if>
+		</set>
+		where unionpay_counteroffer_total_id=#{unionpayCounterofferTotalId}
+	</update>
+
+	<insert id="insertUnionpayCounterofferDetai" parameterType="UnionpayCounterofferDetai">
+
+		insert into
+		tc_unionpay_counteroffer_detai(
+		unionpay_counteroffer_detai_id,
+		account_type,
+		account_num,
+		bank_num,
+		transaction_date,
+		transaction_type,
+		response_code,
+		sum,
+		private_domain,
+		purpose,
+		order_num,
+		unionpay_counteroffer_total_id,
+		batch_num,
+		offer_state
+		)
+		values(
+		#{unionpayCounterofferDetaiId},
+		#{accountType},
+		#{accountNum},
+		#{bankNum},
+		#{transactionDate},
+		#{transactionType},
+		#{responseCode},
+		#{sum},
+		#{privateDomain},
+		#{purpose},
+		#{orderNum},
+		#{unionpayCounterofferTotalId},
+		#{batchNum},
+		#{offerState}
+		)
+	</insert>
+</mapper>

@@ -1,0 +1,341 @@
+package com.flf.service.impl;
+
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.UUID;
+
+import net.sf.json.JSONObject;
+
+import com.flf.entity.Annex;
+import com.flf.entity.CarInfo;
+import com.flf.entity.Caraccesscard;
+/*import com.flf.entity.Carclaiminfo;
+import com.flf.entity.CollectFees;
+import com.flf.entity.Developer;*/
+import com.flf.entity.Entrance;
+import com.flf.entity.HouseNew;
+import com.flf.entity.PageRestful;
+import com.flf.entity.PersonCustNew;
+import com.flf.entity.Search;
+import com.flf.entity.SearchCar;
+import com.flf.mapper.AnnexMapper;
+/*import com.flf.entity.Staffappprem;*/
+import com.flf.mapper.CarInfoMapper;
+import com.flf.mapper.CaraccesscardMapper;
+/*import com.flf.mapper.CarclaiminfoMapper;*/
+import com.flf.mapper.PersonCustNewMapper;
+import com.flf.mapper.StaffMapper;
+/*import com.flf.mapper.StaffapppremMapper;*/
+import com.flf.service.CarInfoService;
+import com.flf.util.JsonUtil;
+
+public class CarInfoServiceImpl implements CarInfoService {
+
+	private CarInfoMapper carInfoMapper;
+	
+	private CaraccesscardMapper caraccesscardMapper;
+	
+	/*private CarclaiminfoMapper carclaiminfoMapper;
+	
+	private StaffapppremMapper staffapppremMapper;*/
+	
+	private PersonCustNewMapper personCustNewMapper;
+	
+	private StaffMapper staffMapper;
+	
+	private AnnexMapper annexMapper;
+	
+	
+	public AnnexMapper getAnnexMapper() {
+		return annexMapper;
+	}
+
+	public void setAnnexMapper(AnnexMapper annexMapper) {
+		this.annexMapper = annexMapper;
+	}
+
+	public StaffMapper getStaffMapper() {
+		return staffMapper;
+	}
+
+	public void setStaffMapper(StaffMapper staffMapper) {
+		this.staffMapper = staffMapper;
+	}
+	
+	
+	
+	public PersonCustNewMapper getPersonCustNewMapper() {
+		return personCustNewMapper;
+	}
+
+	public void setPersonCustNewMapper(PersonCustNewMapper personCustNewMapper) {
+		this.personCustNewMapper = personCustNewMapper;
+	}
+
+	/*public StaffapppremMapper getStaffapppremMapper() {
+		return staffapppremMapper;
+	}
+
+	public void setStaffapppremMapper(StaffapppremMapper staffapppremMapper) {
+		this.staffapppremMapper = staffapppremMapper;
+	}*/
+
+	public CaraccesscardMapper getCaraccesscardMapper() {
+		return caraccesscardMapper;
+	}
+
+	public void setCaraccesscardMapper(CaraccesscardMapper caraccesscardMapper) {
+		this.caraccesscardMapper = caraccesscardMapper;
+	}
+
+	/*public CarclaiminfoMapper getCarclaiminfoMapper() {
+		return carclaiminfoMapper;
+	}
+
+	public void setCarclaiminfoMapper(CarclaiminfoMapper carclaiminfoMapper) {
+		this.carclaiminfoMapper = carclaiminfoMapper;
+	}*/
+
+	public CarInfoMapper getCarInfoMapper() {
+		return carInfoMapper;
+	}
+
+	public void setCarInfoMapper(CarInfoMapper carInfoMapper) {
+		this.carInfoMapper = carInfoMapper;
+	}
+
+	@Override
+	public List<CarInfo> listPageCarInfo(CarInfo carInfo) {
+		// TODO Auto-generated method stub
+		return carInfoMapper.listPageCarInfo(carInfo);
+	}
+
+	@Override
+	public List<CarInfo> listAllCarInfo() {
+		// TODO Auto-generated method stub
+		return carInfoMapper.listAllCarInfo();
+	}
+	
+	@Override
+	public CarInfo getCarInfoById(String id) {
+		// TODO Auto-generated method stub
+		return carInfoMapper.getCarInfoById(id);
+	}
+
+	@Override
+	public void insertCarInfo(CarInfo carInfo) {
+		// TODO Auto-generated method stub
+
+		String uuid = UUID.randomUUID().toString();
+		String date = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()).toString();
+		
+		if(carInfo!=null){
+			List<Annex> annexList =carInfo.getAnnexs();
+			carInfo.setCarId(uuid);
+			int result =carInfoMapper.insertCarInfo(carInfo);
+			if(result>0){
+				//附件信息保存
+				if(annexList!=null && annexList.size()>0){
+					for(Annex annex :annexList){
+						annex.setRelationId(uuid);
+						annex.setAnnexTime(date);
+						annexMapper.insertAnnex(annex);
+					}
+				}
+			}
+			}
+	
+	}
+
+	@Override
+	public void updateCarInfoById(CarInfo carInfo) {
+		String carId = carInfo.getCarId();
+		int result = carInfoMapper.updateCarInfo(carInfo);
+		if(result>0){
+			String date = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date());
+			List<Annex> old_annexs = annexMapper.getAnnexbyRelationId(carId);//根据关系id查询附件表是否存在文件信息
+			List<Annex> new_annexs = carInfo.getAnnexs();
+			if(old_annexs!=null && old_annexs.size()>0){
+				for(int i=0;i<old_annexs.size();i++){
+					annexMapper.deleteAnnexByRelationId(carId);
+				}
+				if(new_annexs != null && new_annexs.size()>0){
+					for(Annex annex : new_annexs){
+						if(annex!=null){
+							annex.setRelationId(carId);
+							annex.setAnnexTime(date);
+							annexMapper.insertAnnex(annex);
+						}
+					}
+				}
+			}else{
+				if(new_annexs != null && new_annexs.size()>0){
+					for(Annex annex : new_annexs){
+						annex.setRelationId(carId);
+						annex.setAnnexTime(date);
+						annexMapper.insertAnnex(annex);
+					}
+				}
+			}
+		}
+	}
+
+	@Override
+	public void deleteCarInfo(CarInfo carInfo) {
+		List<CarInfo> list = carInfo.getCarInfos();
+		for (int i = 0; i < list.size(); i++) {
+			carInfoMapper.deleteCarInfo(list.get(i).getCarId());
+		}
+	}
+
+	@Override
+	public int addCarInfo(CarInfo carInfo) {
+		
+		// TODO Auto-generated method stub
+		String uuid = UUID.randomUUID().toString();
+		carInfo.setCarId(uuid);
+		return carInfoMapper.insertCarInfo(carInfo);
+	
+	}
+
+	@Override
+	public int updateCarInfo(CarInfo carInfo) {
+		// TODO Auto-generated method stub
+		return carInfoMapper.updateCarInfo(carInfo);
+	}
+
+	@Override
+	public int deleteCarInfoById(String id) {
+		// TODO Auto-generated method stub
+		return carInfoMapper.deleteCarInfo(id);
+	}
+	
+/*	@Override
+	public CollectFees getChargeBycardIdRest(String cardId) {
+		// TODO Auto-generated method stub
+		CollectFees charge=new CollectFees();
+		List<Caraccesscard> caraccesscards = caraccesscardMapper.getCaraccesscardByCardIdRest(cardId);
+		List<Carclaiminfo> carclaiminfos = carclaiminfoMapper.listCarclaiminfoBycarIdRestful(cardId);
+		List<Staffappprem> staffappprems = staffapppremMapper.listStaffapppremByIdRest(1, 1);
+		CarInfo carInfo = carInfoMapper.getCarInfoById(cardId);
+		charge.setCarInfo(carInfo);		
+		charge.setCaraccesscards(caraccesscards);
+		charge.setCarclaiminfos(carclaiminfos);
+		charge.setStaffappprems(staffappprems);
+		return charge;
+	}*/
+
+	@Override
+	public  PageRestful listPageCarInfoRestful(CarInfo carInfo) {
+		// TODO Auto-generated method stub
+		PageRestful pagerestful=new PageRestful();
+		List<CarInfo> carInfos =carInfoMapper.listPageCarInfo (carInfo);
+		carInfos.add(0,null);
+		pagerestful.setCarInfos(carInfos);
+		pagerestful.setPage(carInfo.getPage());
+		return pagerestful;
+	}
+
+	@Override
+	public List<CarInfo> getCarInfo(String personId) {
+		// TODO Auto-generated method stub
+		return carInfoMapper.getCarInfo(personId);
+	}
+/**
+ * 创建 by 肖聪     2015/6/23
+ * 根据条件查询车辆的相关信息，包括所有人，办理人与操作人信息
+ */
+	@Override
+	public List<SearchCar> getCarInfoByPerson(SearchCar searchCar) {
+		List<SearchCar> searchCars = new ArrayList<SearchCar>();	 
+		List<CarInfo> carInfos =carInfoMapper.getCarInfoByPerson(searchCar);
+		for(CarInfo carInfo:carInfos){
+			SearchCar searchCarone=new SearchCar();
+			searchCarone.setCarInfo(carInfo);
+			searchCarone.setStaff(staffMapper.selectByid(carInfo.getRegistrant()));
+			searchCarone.setOwn(personCustNewMapper.getPersonCustNewById(carInfo.getOwner()));
+			searchCarone.setTransaction(personCustNewMapper.getPersonCustNewById(carInfo.getTransactor()));
+			searchCars.add(searchCarone);
+		}
+		return searchCars;
+	}
+	
+	@Override
+	public List<CarInfo> listSearchCarInfo(Search search) {
+		// TODO Auto-generated method stub
+		return carInfoMapper.listSearchCarInfo(search);
+	}
+
+	 /**
+	  * 创建by肖聪  2015/7/10
+	  * 通过条件查询办理人和授权人的门禁卡信息
+	  */
+	@Override
+	public List<CarInfo> listSearchCarInfoAu(Search search) {
+		// TODO Auto-generated method stub
+		List<CarInfo> entrances=carInfoMapper.listSearchCarInfo(search);
+		List<CarInfo> entranceone=carInfoMapper.listSearchCarInfoAu(search);
+		
+		entrances.addAll(entranceone);
+		
+		return entrances;
+	}
+
+	@Override
+	public PageRestful listPageCarInfoByDelete(CarInfo carInfo) {
+		// TODO Auto-generated method stub
+		PageRestful pagerestful=new PageRestful();
+		List<CarInfo> carInfos =carInfoMapper.listPageCarInfoByDelete(carInfo);
+		carInfos.add(0,null);
+		pagerestful.setCarInfos(carInfos);
+		pagerestful.setPage(carInfo.getPage());
+		return pagerestful;
+	}
+
+	@Override
+	public PageRestful listPageCarInfoByTransactor(CarInfo carInfo) {
+		// TODO Auto-generated method stub
+		PageRestful pagerestful=new PageRestful();
+		List<CarInfo> carInfos =carInfoMapper.listPageCarInfo(carInfo);
+		for (CarInfo carInfo2 : carInfos) {
+			if(carInfo2.getAnnexs()!=null){
+				carInfo2.getAnnexs().add(0, null);
+			}
+		}
+		carInfos.add(0,null);
+		pagerestful.setCarInfos(carInfos);
+		pagerestful.setPage(carInfo.getPage());
+		return pagerestful;
+	}
+
+	@Override
+	public PageRestful listPageCarInfoByContion(CarInfo carInfo) {
+		// TODO Auto-generated method stub
+		PageRestful pagerestful=new PageRestful();
+		List<CarInfo> carInfos =carInfoMapper.listPageCarInfoByContion (carInfo);
+		carInfos.add(0,null);
+		pagerestful.setCarInfos(carInfos);
+		pagerestful.setPage(carInfo.getPage());
+		return pagerestful;
+	}
+
+	@Override
+	public PageRestful listPageCarInfoBySearchItems(Search search) {
+		// TODO Auto-generated method stub
+		PageRestful pagerestful=new PageRestful();
+		List<CarInfo> carInfos = carInfoMapper.listPageCarInfoBySearchItems(search);
+		carInfos.add(0,null);
+		pagerestful.setCarInfos(carInfos);
+		pagerestful.setPage(search.getPage());
+		return pagerestful;
+	}
+
+	@Override
+	public void updateCarInfoDeleteCarByCarId(CarInfo carInfo) {
+		// TODO Auto-generated method stub
+		carInfoMapper.updateCarInfoDeleteCarByCarId(carInfo);
+	}
+
+}

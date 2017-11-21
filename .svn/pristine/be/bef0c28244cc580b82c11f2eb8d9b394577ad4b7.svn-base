@@ -1,0 +1,266 @@
+package com.flf.service.impl;
+
+import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import com.flf.entity.Annex;
+import com.flf.entity.ElectricityMeter;
+import com.flf.entity.PageRestful;
+import com.flf.entity.Property;
+import com.flf.entity.WaterMeter;
+import com.flf.mapper.ElectricityMeterMapper;
+import com.flf.mapper.PropertyMapper;
+import com.flf.request.ExcelInfo;
+import com.flf.request.Info;
+import com.flf.service.ElectricityMeterRecordsService;
+import com.flf.service.ElectricityMeterService;
+import com.flf.util.Excel;
+import com.flf.util.ExcelUtils;
+import com.flf.util.JsonUtil;
+import com.flf.util.Tools;
+
+public class ElectricityMeterServiceImpl implements ElectricityMeterService {
+	
+	private ElectricityMeterMapper electricityMeterMapper;
+	private ElectricityMeterRecordsService electricityMeterRecordsService;
+	private PropertyMapper propertyMapper;
+	
+	public PropertyMapper getPropertyMapper() {
+		return propertyMapper;
+	}
+
+
+	public void setPropertyMapper(PropertyMapper propertyMapper) {
+		this.propertyMapper = propertyMapper;
+	}
+
+
+	public ElectricityMeterRecordsService getElectricityMeterRecordsService() {
+		return electricityMeterRecordsService;
+	}
+
+	public void setElectricityMeterRecordsService(
+			ElectricityMeterRecordsService electricityMeterRecordsService) {
+		this.electricityMeterRecordsService = electricityMeterRecordsService;
+	}
+
+	public ElectricityMeterMapper getElectricityMeterMapper() {
+		return electricityMeterMapper;
+	}
+
+	public void setElectricityMeterMapper(
+			ElectricityMeterMapper electricityMeterMapper) {
+		this.electricityMeterMapper = electricityMeterMapper;
+	}
+
+	@Override
+	public List<ElectricityMeter> listAllElectricityMeter() {
+		// TODO Auto-generated method stub
+		return electricityMeterMapper.listAllElectricityMeter();
+	}
+
+	@Override
+	public ElectricityMeter getElectricityMeterbyId(String electricityMeterId) {
+		// TODO Auto-generated method stub
+		return electricityMeterMapper.getElectricityMeterbyId(electricityMeterId);
+	}
+
+	@Override
+	public ElectricityMeter getElectricityMeterbyElectricityMeterId(String electricityMeterId) {
+		// TODO Auto-generated method stub
+		return electricityMeterMapper.getElectricityMeterbyElectricityMeterId(electricityMeterId);
+	}
+	
+	/*@Override
+	public ElectricityMeter getElectricityMeterbyElectricityMeterId(String electricityMeterId) {
+		// TODO Auto-generated method stub
+		return electricityMeterMapper.getElectricityMeterbyElectricityMeterId(electricityMeterId);
+	}*/
+	
+	@Override
+	public ElectricityMeter getElectricityMeterbyElectricityMeterRecordsId(
+			String electricityMeterRecordsId) {
+		// TODO Auto-generated method stub
+		return electricityMeterMapper.getElectricityMeterbyElectricityMeterRecordsId(electricityMeterRecordsId);
+	}
+
+	@Override
+	public List<ElectricityMeter> listElectricityMeterbyParent(String parentId) {
+		// TODO Auto-generated method stub
+		return electricityMeterMapper.listElectricityMeterbyParent(parentId);
+	}
+	
+	//新增电表信息
+	@Override
+	public void insertElectricityMeterrest(ElectricityMeter electricityMeter) {
+		// TODO Auto-generated method stub
+		String UUID1=java.util.UUID.randomUUID().toString();
+		String UUID2=java.util.UUID.randomUUID().toString();
+		electricityMeter.setElectricityMeterId(UUID1);
+		electricityMeter.setAssetsId(UUID2);
+		electricityMeter.setState(1);
+		Property property=electricityMeter.getProperty();
+		property.setPropertyId(UUID2);
+		System.out.println("1111");
+		electricityMeterMapper.insertElectricityMeter(electricityMeter);
+		propertyMapper.insert(property);
+	}
+
+	@Override
+	public void updateElectricityMeter(ElectricityMeter electricityMeter) {
+		// TODO Auto-generated method stub
+		electricityMeterMapper.updateElectricityMeter(electricityMeter);
+		propertyMapper.updateByPrimaryKey(electricityMeter.getProperty());
+		//electricityMeterRecordsService.updateElectricityMeterRecordsrest(electricityMeter.getElectricityMeterRecords());
+	}
+
+	@Override
+	public void deleteElectricityMeterrest(String electricityMeterId) {
+		// TODO Auto-generated method stub
+		electricityMeterMapper.deleteElectricityMeter(electricityMeterId);
+		
+	}
+
+	@Override
+	public PageRestful listPageElectricityMeter(ElectricityMeter electricityMeter) {
+		// TODO Auto-generated method stub
+		PageRestful pageRestful=new PageRestful();
+		List<ElectricityMeter> electricityMeters = electricityMeterMapper.listPageElectricityMeter(electricityMeter);
+		electricityMeters.add(0,null);
+		pageRestful.setElectricityMeter(electricityMeters);
+		pageRestful.setPage(electricityMeter.getPage());
+		return pageRestful;
+	}
+	@Override
+	public Info importExcelFileElectricityMeter(Annex annex) {
+		// TODO Auto-generated method stub
+		String filePath = annex.getAnnexAddress();
+		String UUID1=java.util.UUID.randomUUID().toString();
+		String UUID2=java.util.UUID.randomUUID().toString();
+		ElectricityMeter electricityMeter = null;
+		Property property =null;
+		if (Tools.notEmpty(filePath)) {
+			try {
+				List<Map<Short, String>> dataList = new ExcelUtils().readExcel(filePath);
+				if (dataList != null && dataList.size() > 0) {
+					for (Map<Short, String> t : dataList) {
+						property = new Property();
+						property.setPropertyId(UUID2);  //资产id
+						property.setPropertyNumber(t.get((short) 0));  //资产编号
+						property.setPropertyName(t.get((short) 1));  //资产名称
+						property.setPropertySpecification(t.get((short) 2));  //资产规格/型号
+						//property.setOperator(t.get((short) 3));  //操作人
+						if (t.get((short) 3)==null||t.get((short) 3)=="") {
+							property.setExpirationDate(0.0);  //保质期
+						}else{
+							property.setExpirationDate(Double.parseDouble(t.get((short) 3)));  //保质期
+						}
+						property.setBrand(t.get((short) 4));  //品牌
+						property.setProducingArea(t.get((short) 5));  //产地
+						property.setManufacturer(t.get((short) 6));  //厂商
+						property.setManufacturerPhone(t.get((short) 7));  //厂商电话
+						electricityMeter =new ElectricityMeter();
+						electricityMeter.setElectricityMeterId(UUID1);
+						electricityMeter.setAssetsId(UUID2);
+						if("是".equals(t.get((short)8))){
+							electricityMeter.setWhetherRepeatedUse(0);
+						}else if("否".equals(t.get((short)8))){
+							electricityMeter.setWhetherRepeatedUse(1);
+						}else{
+							electricityMeter.setWhetherRepeatedUse(1);
+						}
+						electricityMeter.setElectricityMeterNum(t.get((short) 9));
+						if("新建".equals(t.get((short)10))){
+							electricityMeter.setState(1);
+						}else if("使用中".equals(t.get((short)10))){
+							electricityMeter.setState(2);
+						}else{
+							electricityMeter.setState(4);
+						}
+						electricityMeter.setMax(Double.parseDouble(t.get((short)11)));
+						electricityMeter.setMin(Double.parseDouble(t.get((short)12)));
+						//electricityMeter.setOperator(t.get((short) 3));
+						electricityMeter.setRatio(Double.parseDouble(t.get((short)13)));
+						electricityMeterMapper.insertElectricityMeter(electricityMeter);
+						propertyMapper.insert(property);
+					}
+					return Tools.msg("数据导入成功!",true);
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+		return Tools.msg("数据导入失败!", false);
+	}
+
+
+	@Override
+	public InputStream exportElectricityMeterFile() {
+		// TODO Auto-generated method stub
+		 List<ElectricityMeter> water=new ArrayList<ElectricityMeter>();
+		 water.add(null);
+		Excel ex=new Excel();
+	    List<ExcelInfo> list=new ArrayList<ExcelInfo>();
+		String[] headers = { "资产编号（必填）","资产名称","产品规格", "保质期", "品牌", "产地","厂商","厂商电话","循环使用（必填：是或否）","表编号（必填）","使用状态","最大数值（必填）","最小数值（必填）","倍率（必填）"};
+		String[] fields = {"propertyNumber","propertyName","propertySpecification","expirationDate","brand","producingArea","manufacturer","manufacturerPhone","whetherRepeatedUse","waterMeterNum","state","max","min","ratio"};
+        List<ElectricityMeter> dataset = new ArrayList<ElectricityMeter>();
+
+
+        	ExcelInfo exl=new ExcelInfo();
+			exl.setFields(fields);
+			exl.setTitles(headers);
+			exl.setSheetName("电表导入模版");
+			exl.setList(dataset);
+			list.add(exl);
+     
+		try {
+		    return ex.createExcelInputStream(list);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
+
+
+	@Override
+	public ElectricityMeter getElectricityMeterByBuildingStructureId(ElectricityMeter electricityMeter) {
+		List<ElectricityMeter> electricityMeters = new ArrayList<>();
+		if(electricityMeter!=null && electricityMeter.getBuildingStructureId()!=null && !electricityMeter.getBuildingStructureId().equals("")){
+			electricityMeters = electricityMeterMapper.getElectricityMeterByBuildingStructureId(electricityMeter);
+			
+		}
+		if(electricityMeters.size() != 0){
+			return electricityMeters.get(0);
+		}else{
+			return null;
+		}
+	}
+	
+	@Override
+	public String getWaterMeterAndFullNameByParentId(String parentId) {
+		List<ElectricityMeter> electricityMeter = electricityMeterMapper.getWaterMeterAndFullNameByParentId(parentId);
+		List<Map<String, Object>> list = new ArrayList<Map<String, Object>>();
+		if(electricityMeter != null && electricityMeter.size()>0){
+			for (ElectricityMeter item : electricityMeter) {
+				Map<String, Object> map = new HashMap<String, Object>();
+				map.put("electricityMeterRecordsId", item.getElectricityMeterRecordsId());
+				map.put("electricityMeterNum", item.getElectricityMeterNum());
+				map.put("fullName", item.getFullName());
+				map.put("id", item.getId());
+				list.add(map);
+			}
+			return JsonUtil.success(list, true);
+		}
+		return JsonUtil.failure("未查询到数据！", false);
+	}
+
+
+	@Override
+	public ElectricityMeter getElectricityMeterbyMeterRecordId(String electricityMeterRecordId) {
+		return electricityMeterMapper.getElectricityMeterbyMeterRecordId(electricityMeterRecordId);
+	}
+
+}

@@ -1,0 +1,208 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.flf.mapper.AccountRecordMapper" >
+  <resultMap id="BaseResultMap" type="com.flf.entity.AccountRecord" >
+    <id column="account_record_id" property="accountRecordId" jdbcType="VARCHAR" />
+    <result column="account_total_num" property="accountTotalNum" jdbcType="INTEGER" />
+    <result column="cash_sum" property="cashSum" jdbcType="DOUBLE" />
+     <result column="credit_card_sum" property="creditCardSum" jdbcType="DOUBLE" />
+    <result column="wechat_sum" property="wechatSum" jdbcType="DOUBLE" />
+     <result column="refund_sum" property="refundSum" jdbcType="DOUBLE" />
+    <result column="financial_staff_id" property="financialStaffId" jdbcType="VARCHAR" />
+     <result column="account_time" property="accountTime" jdbcType="TIMESTAMP" />
+    <result column="account_state" property="accountState" jdbcType="TINYINT" />
+     <result column="total_sum" property="totalSum" jdbcType="DOUBLE" />
+    <result column="staff_id" property="staffId" jdbcType="VARCHAR" />
+   <result column="financial_staff_name" property="financialStaffName" jdbcType="VARCHAR"/>
+    <result column="batch_num" property="batchNum" jdbcType="VARCHAR" />    
+    <result column="account_type" property="accountType" jdbcType="TINYINT" />
+    <result column="parent_id" property="parentId" jdbcType="VARCHAR" />  
+    <result column="post_id" property="postId" jdbcType="VARCHAR" />
+    <result column="staff_name" property="staffName" jdbcType="VARCHAR"/>
+  </resultMap>
+  
+  <!--查询应收账列表  用于 收款台出纳等查看收账的列表 根据收账人id进行查询-->	
+  <select id="listPageAccountRecord" parameterType="com.flf.entity.AccountRecord" resultMap="BaseResultMap">
+  	select  a.*,b.financial_staff_name from  tc_account_record a, tc_financial_staff  b   
+  	where
+  	a.financial_staff_id=b.financial_staff_id 
+  	and account_state !=1
+  	<if test="staffId!=null and staffId!=''">
+  		and  a.staff_id=#{staffId,jdbcType=VARCHAR}
+  	</if>
+  	<if test="postId!=null and postId!=''">
+  		and  b.post_id=#{postId,jdbcType=VARCHAR}
+  	</if>
+  	<if test="accountState!=null and accountState!=''">
+  		and  a.account_state = #{accountState,jdbcType=INTEGER}
+  	</if>
+  	<if test="financialStaffName!=null and financialStaffName!=''">
+  		and b.financial_staff_name like CONCAT('%',#{financialStaffName},'%')
+  	</if>
+  	order by account_time desc
+  </select>	
+  
+ <select id="getAccountRecordById" parameterType="String" resultMap="BaseResultMap">
+ select * from tc_account_record where  account_record_id=#{0}
+ 
+ </select>
+ 
+  <select id="getAccountRecordByBatchNum" parameterType="String" resultMap="BaseResultMap">
+ select * from tc_account_record where  batch_num=#{0}
+ 
+ </select>
+ 
+  <!--新增 （交账） -->
+  <insert id="insertAccountRecord" parameterType="AccountRecord">      
+      insert into tc_account_record (account_record_id,account_total_num,cash_sum,credit_card_sum,wechat_sum, 
+      refund_sum,financial_staff_id,account_time,account_state,total_sum,staff_id,batch_num,account_type,parent_id)
+      values (#{accountRecordId,jdbcType=VARCHAR},#{accountTotalNum,jdbcType=INTEGER},#{cashSum,jdbcType=DOUBLE},
+      #{creditCardSum,jdbcType=DOUBLE},#{wechatSum,jdbcType=DOUBLE},#{refundSum,jdbcType=DOUBLE},
+      #{financialStaffId,jdbcType=VARCHAR}, #{accountTime,jdbcType=TIMESTAMP}, #{accountState,jdbcType=TINYINT},
+      #{totalSum,jdbcType=DOUBLE}, #{staffId,jdbcType=VARCHAR}, #{batchNum,jdbcType=VARCHAR}, 
+      #{accountType,jdbcType=TINYINT},#{parentId,jdbcType=VARCHAR}
+    )
+  </insert>
+	
+   <!--确认收账    用于收款台 出纳 收银组长 会计收账-->
+   <update id="updateAccountState" parameterType="com.flf.entity.AccountRecord" >
+    update tc_account_record set account_state = #{accountState,jdbcType=TINYINT}  
+    <if test="staffId != null" >
+        , staff_id = #{staffId,jdbcType=VARCHAR}
+      </if> 
+    where account_record_id = #{accountRecordId,jdbcType=VARCHAR}
+    
+  </update>
+	
+	<!--退回 -->
+   <update id="updateAccountState1" parameterType="com.flf.entity.AccountRecord" >
+	    update tc_account_record set account_state=2   
+	    where account_record_id = #{accountRecordId,jdbcType=VARCHAR}
+  </update>
+  
+  <!--根据交账人id查询交账中的列表  -->
+  <select id="getAccountRecordListById" parameterType="String" resultMap="BaseResultMap">
+ 		select * from tc_account_record where account_state=1 and financial_staff_id=#{0} 
+ </select>
+ 
+ <!-- 修改 -->
+   <update id="update" parameterType="com.flf.entity.AccountRecord" >
+    update tc_account_record
+    <set >
+      <if test="accountTotalNum != null" >
+        account_total_num = #{accountTotalNum,jdbcType=INTEGER},
+      </if>
+      <if test="cashSum != null" >
+        cash_sum = #{cashSum,jdbcType=DOUBLE},
+      </if>
+      <if test="creditCardSum != null" >
+        credit_card_sum = #{creditCardSum,jdbcType=DOUBLE},
+      </if>
+      <if test="wechatSum != null" >
+        wechat_sum = #{wechatSum,jdbcType=DOUBLE},
+      </if> 
+      <if test="refundSum != null" >
+        refund_sum = #{refundSum,jdbcType=DOUBLE},
+      </if>
+      <if test="financialStaffId != null" >
+        financial_staff_id = #{financialStaffId,jdbcType=VARCHAR},
+      </if> 
+      <if test="accountTime != null" >
+        account_time = #{accountTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="accountState != null" >
+        account_state = #{accountState,jdbcType=TINYINT},
+      </if>
+      <if test="totalSum != null" >
+        total_sum = #{totalSum,jdbcType=DOUBLE},
+      </if>
+      <if test="staffId != null" >
+        staff_id = #{staffId,jdbcType=VARCHAR},
+      </if>      
+        batch_num = #{batchNum,jdbcType=VARCHAR},      
+      <if test="accountType != null" >
+        account_type = #{accountType,jdbcType=TINYINT},
+      </if>
+        <if test="parentId != null" >
+        parent_id = #{parentId,jdbcType=VARCHAR}
+      </if> 
+      
+    </set>
+    where account_record_id = #{accountRecordId,jdbcType=VARCHAR} 
+   </update>
+
+ <select id="listPageAccountRecordUnFinish" parameterType="com.flf.entity.AccountRecord" resultMap="BaseResultMap">
+ 	select  a.*,b.financial_staff_name from  tc_account_record a, tc_financial_staff  b  where
+  	a.financial_staff_id=b.financial_staff_id
+  	<if test="staffId!=null and staffId!=''">
+  		and a.staff_id=#{staffId,jdbcType=VARCHAR}
+  	</if>
+  	and a.account_state =0
+  	<!-- 
+  	  and a.account_state &lt;&gt; 2
+  	   -->
+ </select>  
+ 
+ <select id="listPageAccountRecordUnFinishTest" parameterType="com.flf.entity.AccountRecord" resultMap="BaseResultMap">
+ 	select ar.*, st.staff_name from tc_account_record ar
+ 	LEFT JOIN t_staff st on st.staff_id=ar.financial_staff_id
+	where ar.account_state='0'
+ </select>  
+
+  <!--查询交账中的列表  用于收款台 交账显示 -->
+  <select id="listPageByState" parameterType="com.flf.entity.AccountRecord" resultMap="BaseResultMap">
+ 		select * 
+ 		from tc_account_record		
+ 		where  financial_staff_id=#{financialStaffId,jdbcType=VARCHAR}
+ 		order by account_time DESC
+  </select>
+  
+  <!--收银员的交账列表  -->
+  <select id="listPagePostIdRecordRes" parameterType="com.flf.entity.AccountRecord" resultMap="BaseResultMap" >
+	SELECT
+	ar.*,
+	  st.staff_name
+	FROM
+		tc_account_record ar
+	LEFT JOIN t_teamwork_staff ts ON ts.staff_id = ar.financial_staff_id
+	LEFT JOIN t_staff st on st.staff_id=ar.financial_staff_id
+		where ts.post_id=#{postId,jdbcType=VARCHAR}
+		
+<!-- 		and ar.account_state not in ('1','3') -->
+		and ar.account_state = '2'
+		 
+<!-- 	<if test="accountState!=null and accountState!=''"> -->
+<!--   		and   ar.account_state = #{accountState,jdbcType=INTEGER} -->
+<!--   	</if> -->
+  	<if test="financialStaffName!=null and financialStaffName!=''">
+  		and st.staff_name like CONCAT('%',#{financialStaffName},'%')
+  	</if>
+  </select>
+   
+  
+  <!-- 根据交账人查询现金交账的数据   用于收银员结算（未结算） 2015/12/30-->
+  <select id="selectAccountRecordById" parameterType="com.flf.entity.AccountRecord" resultMap="BaseResultMap">
+  		select a.* from tc_account_record a
+  		where a.batch_num is null and a.account_state=0 and
+  		a.financial_staff_id=#{financialStaffId,jdbcType=VARCHAR} 
+  </select>
+  
+   <!-- 根据交账人查询现金交账的数据   已结算的数据2015/12/30-->
+  <select id="selectARById" parameterType="com.flf.entity.AccountRecord" resultMap="BaseResultMap">
+  		select a.* from tc_account_record a
+  		where a.batch_num is not null and  a.financial_staff_id=#{financialStaffId,jdbcType=VARCHAR}
+  </select>
+  
+  <select id="selectARByParenId" parameterType="com.flf.entity.AccountRecord" resultMap="BaseResultMap">
+  		select a.* from tc_account_record a
+  		where a.parent_id=#{parentId,jdbcType=VARCHAR}
+  </select>
+  
+    
+  <select id="selectARByStaffAndState" parameterType="com.flf.entity.AccountRecord" resultMap="BaseResultMap">
+  		select a.* from tc_account_record a
+  		where a.financial_staff_id=#{financialStaffId,jdbcType=VARCHAR}
+  		and  a.account_state=#{accountState,jdbcType=VARCHAR}
+  </select>
+ 
+</mapper>

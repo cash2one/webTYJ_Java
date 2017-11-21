@@ -1,0 +1,94 @@
+<!--
+    创建人：钟加诚
+    创建时间：2015/6/9
+    js路径：js/controllers/externalProfession/accounting/propertyGeneralExpenses/expenseEntering
+-->
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>物业管理费录用</title>
+    <style type="text/css">
+        #menu_zzjs_nett{margin:10px;width:200px;overflow:hidden;}
+        #menu_zzjs_nett li{line-height:25px;}
+        #menu_zzjs_nett li a{color:#666666;padding-left:5px;outline:none;}
+        #menu_zzjs_nett li input{vertical-align:middle;margin-left:5px;}
+        #menu_zzjs_nett .two{padding-left:10px;display:none;}
+        .col-md-2 button{width: 90px;height: 60px;margin-top: 20px;margin-bottom: 10px}
+    </style>
+</head>
+<body>
+
+        <div class="col-md-2" style="border: 1px solid;height: 300px">
+            <ul id="menu_zzjs_nett" style="margin-left:-30px;">
+                    <li>
+                        <label><a href="javascript:" class="glyphicon glyphicon-play">桃源居</a></label>
+                        <ul class="two">
+                            <li>
+                                <label><a href="javascript:">园林部</a></label>
+                                <ul class="two">
+                                    <li>
+                                        <label><input type="checkbox" value="123456"><a href="javascript:">一组</a></label>
+                                        <ul class="two">
+                                            <li>
+                                                <label><input type="checkbox" value="123456"><a href="#select1"  data-toggle="tab">张无忌</a></label>
+                                            </li>
+                                            <li>
+                                                <label><input type="checkbox" value="123456"><a href="#select1"  data-toggle="tab">谢逊</a></label>
+                                        </ul>
+                                    <li>
+                                        <label><input type="checkbox" value="123456"><a href="javascript:">二组</a></label></li>
+                                </ul>
+                            </li>
+
+                            <li><label><a href="javascript:">清洁部</a></label></li>
+                        </ul>
+                    </li>
+                </ul>
+        </div>
+        <div class="col-md-6">
+            <span>项目：深圳桃源居</span>
+            <button type="button">修改</button>
+            <button type="button">保存</button>
+        <table class="table table-bordered">
+            <tr>
+                <td>区域</td>
+                <td>计费方案<button type="button" >全选</button></td>
+            </tr>
+            <tr>
+                <td>深圳桃源居1区-世外桃源1栋101</td>
+                <td>方案一</td>
+            </tr>
+            <tr>
+                <td>深圳桃源居1区-世外桃源1栋102</td>
+                <td>方案二</td>
+            </tr>
+            <tr>
+                <td>深圳桃源居1区-世外桃源1栋103</td>
+                <td>方案二</td>
+            </tr>
+            <tr>
+                <td>深圳桃源居1区-世外桃源1栋104</td>
+                <td>方案二</td>
+            </tr>
+        </table>
+        <div class="row">
+            <div class="col-md-3"></div>
+            <div class="col-md-6">
+                <span>桃源居物业管理费方案一：</span>
+                <table class="table table-bordered">
+                    <tr>
+                        <td></td>
+                        <td>单价（元/平方米）</td>
+                    </tr>
+                    <tr>
+                        <td>物业管理费单价</td>
+                        <td>11.00</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+        </div>
+</body>
+
+</html>

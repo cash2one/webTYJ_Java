@@ -1,0 +1,95 @@
+package com.flf.mapper;
+
+import com.flf.entity.MeterReadingProgram;
+import com.flf.entity.MeterReadingProgram;
+import com.flf.entity.Search;
+import com.flf.entity.SearchMeter;
+
+import java.util.Date;
+import java.util.List;
+import org.apache.ibatis.annotations.Param;
+/* Created by Administrator on 2015/6/15. 
+author:尹磊
+修改时间：2015/6/15  修改人：尹磊 */
+public interface MeterReadingProgramMapper {
+	int deleteMeterReadingProgram(String meterReadingProgramId);// 删除抄表计划信息
+
+    int insertMeterReadingProgram(MeterReadingProgram meterReadingProgram); //新增抄表计划信息
+
+    /*List<MeterReadingProgram> listPageMeterReadingProgram(MeterReadingProgram meterReadingProgram); // 分页查询抄表计划信息
+*/    
+    List<MeterReadingProgram> listAllMeterReadingProgram();  // 查询所有抄表计划信息
+
+    MeterReadingProgram getMeterReadingProgrambyId(String meterReadingProgramId);  //根据抄表计划id查询抄表计划信息
+
+    int updateMeterReadingProgram(MeterReadingProgram meterReadingProgram); // 修改抄表计划信息
+    
+    List<MeterReadingProgram> listMeterReadingProgrambyDate(Date date); //根据日期查询抄表计划信息
+    
+    List<MeterReadingProgram> listMeterReadingProgrambyStaff(String currentExecutor); //根据执行人查询所有抄表计划信息
+    
+    List<MeterReadingProgram> listMeterReadingProgrambyTeam(String executiveTeam); //根据执行团队查询所有抄表计划信息
+    
+    List<MeterReadingProgram> listMeterReadingProgrambyName(String projectName); //根据抄表计划名称查询抄表计划信息
+    
+    List<MeterReadingProgram> listMeterReadingProgrambyState(byte programExecutionStatus); //根据执行状态查询抄表计划信息
+    
+    List<MeterReadingProgram> listPageMeterReadingProgram(SearchMeter searchMeter); //抄表计划多条件查询接口
+    
+    List<MeterReadingProgram> listPageMeterReadingProgramAll(MeterReadingProgram meterReadingProgram); //抄表计划
+    List<MeterReadingProgram> listPageMeterReadingProgramById(MeterReadingProgram meterReadingProgram); //抄表计划下抄表结果详情
+    
+    void insertSelective (MeterReadingProgram meterReadingProgram);
+
+    /**
+     * 执行抄表计划
+     * @param meterReadingProgramId
+     */
+	void implementProgram(List<String> meterReadingProgramIdList);
+
+	/**
+	 * 根据日期查询当前月的所有需要自动执行的抄表计划
+	 * @param nowDate
+	 * @return
+	 */
+	List<String> selectMeterReadingProgramAutomatic(Date nowDate);
+
+	/**
+	 * 根据日期查询需要自动审核的抄表计划
+	 * @param nowDate
+	 * @return
+	 */
+	List<String> selectMeterReadingProgramExamineProject(Date nowDate);
+
+	/**
+	 * 自动审核
+	 * @param meterReadingProgramIdList
+	 */
+	void examineProject(List<String> meterReadingProgramIdList);
+
+	/**
+	 * 根据当前日期查询需要自动创建的抄表计划
+	 * @param nowDate
+	 * @return
+	 */
+	List<MeterReadingProgram> selectMeterReadingProgramByNowDate(Date nowDate);
+
+	/**
+	 * 抄表结果列表
+	 * @param searchMerter
+	 * @return
+	 */
+	List<MeterReadingProgram> listPageMeterReadingResult(SearchMeter searchMerter);
+
+	MeterReadingProgram selectByPrimaryKey(String meterReadingProgramId);
+
+	/**
+	 * 根据抄表计划id查询抄表计划详情
+	 * @param meterReadingProgramId
+	 * @return
+	 */
+	MeterReadingProgram editData(String meterReadingProgramId);
+
+	int updateByPrimaryKeySelective(MeterReadingProgram record);
+	List<MeterReadingProgram> selectMeterChecked(List<String> meterReadingProgramIdList);
+}

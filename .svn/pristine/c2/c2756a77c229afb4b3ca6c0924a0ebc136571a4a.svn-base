@@ -1,0 +1,202 @@
+package com.flf.service.impl;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.UUID;
+import org.apache.commons.lang.StringUtils;
+import net.sf.json.JSONObject;
+import com.flf.entity.FinancialBankNum;
+import com.flf.entity.PageRestful;
+import com.flf.mapper.FinancialBankNumMapper;
+import com.flf.service.FinancialBankNumService;
+
+/**
+ * @author maogaofei
+ * @date 2016年6月13日 下午5:57:04
+ */
+public class FinancialBankNumServiceImpl implements FinancialBankNumService{
+
+	private FinancialBankNumMapper financialBankNumMapper;
+	
+	public FinancialBankNumMapper getFinancialBankNumMapper() {
+		return financialBankNumMapper;
+	}
+
+	public void setFinancialBankNumMapper(
+			FinancialBankNumMapper financialBankNumMapper) {
+		this.financialBankNumMapper = financialBankNumMapper;
+	}
+
+	@Override
+	public FinancialBankNum getFinancialBankNumById(String id) {
+		FinancialBankNum financialBankNum = financialBankNumMapper.getFinancialBankNumById(id);
+		return financialBankNum;
+	}
+
+	@Override
+	public PageRestful listPageFinancialBankNum(
+			FinancialBankNum financialBankNum) {
+		PageRestful pageRestful=new PageRestful();
+		List<FinancialBankNum> financialBankNums=financialBankNumMapper.listPageFinancialBankNum(financialBankNum);
+		financialBankNums.add(0,null);
+		pageRestful.setFinancialBankNums(financialBankNums);
+		pageRestful.setPage(financialBankNum.getPage());
+		return pageRestful;
+	}
+
+	@Override
+	public String updateFinancialBankNum(FinancialBankNum financialBankNum) {
+		FinancialBankNum fbnsjk = financialBankNumMapper.getFinancialBankNumById(financialBankNum.getFinancialBankNumId());
+		Map<String,String> map=new HashMap<String,String>();
+		
+		boolean bool = financialBankNum.getBankNum()==null||"".equals(financialBankNum.getBankNum());
+		boolean bl = financialBankNum.getUnionpayBankNum()==null||"".equals(financialBankNum.getUnionpayBankNum());
+		
+		if(bool && bl){
+			map.put("code","3001");
+			map.put("information","银行行别和银联银行行号应至少填写一个");
+		    return JSONObject.fromObject(map).toString();//3001表示参数不全    200表示成功
+		}
+		
+		if(!bool){
+			FinancialBankNum fbn = new FinancialBankNum();
+			fbn.setBankNum(financialBankNum.getBankNum());
+			List<FinancialBankNum> list = financialBankNumMapper.listAllFinancialBankNum(fbn);
+			if(list.size()>0 && !fbnsjk.getBankNum().equals(financialBankNum.getBankNum())){
+				map.put("code","3001");
+				map.put("information","金融联行别已存在");
+			    return JSONObject.fromObject(map).toString();//3001表示参数不全    200表示成功
+			}
+			if(financialBankNum.getBankNum().length() != 2){
+				map.put("code","3001");
+				map.put("information","行别长度必须为2位");
+			    return JSONObject.fromObject(map).toString();//3001表示参数不全    200表示成功
+			}
+		}
+		if(!bl){
+			FinancialBankNum fbnun = new FinancialBankNum();
+			fbnun.setUnionpayBankNum(financialBankNum.getUnionpayBankNum());
+			List<FinancialBankNum> listUn = financialBankNumMapper.listAllFinancialBankNum(fbnun);
+			if(listUn.size()>0 && !fbnsjk.getUnionpayBankNum().equals(financialBankNum.getUnionpayBankNum())){
+				map.put("code","3001");
+				map.put("information","银联银行行号已存在");
+			    return JSONObject.fromObject(map).toString();//3001表示参数不全    200表示成功
+			}
+		}
+		
+		if(financialBankNum.getBankName()==null||"".equals(financialBankNum.getBankName())){
+			map.put("code","3001");
+			map.put("information","银行名称未输入");
+		    return JSONObject.fromObject(map).toString();//3001表示参数不全    200表示成功
+		}
+		FinancialBankNum fcbn = new FinancialBankNum();
+		fcbn.setBankName(financialBankNum.getBankName());
+		List<FinancialBankNum> fcbnList = financialBankNumMapper.listAllFinancialBankNum(fcbn);
+		if(fcbnList.size()>0 && !fbnsjk.getBankName().equals(financialBankNum.getBankName())){
+			map.put("code","3001");
+			map.put("information","银行名称已存在");
+		    return JSONObject.fromObject(map).toString();//3001表示参数不全    200表示成功
+		}
+		if(financialBankNum.getBankNameSeq()==null||"".equals(financialBankNum.getBankNameSeq())){
+			map.put("code","3001");
+			map.put("information","简称序列未输入");
+		    return JSONObject.fromObject(map).toString();//3001表示参数不全    200表示成功
+		}
+		financialBankNumMapper.updateFinancialBankNum(financialBankNum);
+		map.put("code","200");
+		map.put("information","修改成功");
+	    return JSONObject.fromObject(map).toString();//3001表示参数不全    200表示成功
+	}
+
+	@Override
+	public String deleteFinancialBankNum(String financialBankNumId) {
+		Map<String,String> map=new HashMap<String,String>();
+		if(StringUtils.isNotBlank(financialBankNumId)){
+			String[] ids = financialBankNumId.split(",");
+			for(String id : ids){
+				financialBankNumMapper.deleteByPrimaryKey(id);
+				map.put("code","200");
+				map.put("information","删除成功");
+			}
+		}
+	    return JSONObject.fromObject(map).toString();//3001表示参数不全    200表示成功
+	}
+
+	@Override
+	public String insertFinancialBankNum(FinancialBankNum financialBankNum) {
+		Map<String,String> map=new HashMap<String,String>();
+		
+		boolean bool = financialBankNum.getBankNum()==null||"".equals(financialBankNum.getBankNum());
+		boolean bl = financialBankNum.getUnionpayBankNum()==null||"".equals(financialBankNum.getUnionpayBankNum());
+		
+		if(bool && bl){
+			map.put("code","3001");
+			map.put("information","银行行别和银联银行行号应至少填写一个");
+		    return JSONObject.fromObject(map).toString();//3001表示参数不全    200表示成功
+		}
+		if(!bool){
+			FinancialBankNum fbn = new FinancialBankNum();
+			fbn.setBankNum(financialBankNum.getBankNum());
+			List<FinancialBankNum> list = financialBankNumMapper.listAllFinancialBankNum(fbn);
+			if(list.size()>0){
+				map.put("code","3001");
+				map.put("information","金融联行别已存在");
+			    return JSONObject.fromObject(map).toString();//3001表示参数不全    200表示成功
+			}
+		}
+		if(!bl){
+			FinancialBankNum fbnun = new FinancialBankNum();
+			fbnun.setUnionpayBankNum(financialBankNum.getUnionpayBankNum());
+			List<FinancialBankNum> listUn = financialBankNumMapper.listAllFinancialBankNum(fbnun);
+			if(listUn.size()>0){
+				map.put("code","3001");
+				map.put("information","银联银行行号已存在");
+			    return JSONObject.fromObject(map).toString();//3001表示参数不全    200表示成功
+			}
+		}
+		
+		if(financialBankNum.getBankName()==null||"".equals(financialBankNum.getBankName())){
+			map.put("code","3001");
+			map.put("information","银行名称未输入");
+		    return JSONObject.fromObject(map).toString();//3001表示参数不全    200表示成功
+		}
+		FinancialBankNum fcbn = new FinancialBankNum();
+		fcbn.setBankName(financialBankNum.getBankName());
+		List<FinancialBankNum> fcbnList = financialBankNumMapper.listAllFinancialBankNum(fcbn);
+		if(fcbnList.size()>0){
+			map.put("code","3001");
+			map.put("information","银行名称已存在");
+		    return JSONObject.fromObject(map).toString();//3001表示参数不全    200表示成功
+		}
+		if(financialBankNum.getBankNameSeq()==null||"".equals(financialBankNum.getBankNameSeq())){
+			map.put("code","3001");
+			map.put("information","简称序列未输入");
+		    return JSONObject.fromObject(map).toString();//3001表示参数不全    200表示成功
+		}
+		financialBankNum.setFinancialBankNumId(UUID.randomUUID().toString());
+		financialBankNumMapper.insertFinancialBankNum(financialBankNum);
+		map.put("code","200");
+		map.put("information","银行行别新增成功");
+	    return JSONObject.fromObject(map).toString();//3001表示参数不全    200表示成功
+	}
+
+	@Override
+	public List<FinancialBankNum> listAllFinancialBankNum(
+			FinancialBankNum financialBankNum) {
+		List<FinancialBankNum> fcbList = new ArrayList<FinancialBankNum>(); 
+		List<FinancialBankNum> list = financialBankNumMapper.listAllFinancialBankNum(financialBankNum);
+		if(financialBankNum.getBankNameSeq() != null && !"".equals(financialBankNum.getBankNameSeq())){
+			for(FinancialBankNum fcb:list){
+				fcb.setBankNum(fcb.getUnionpayBankNum());
+				fcbList.add(fcb);
+			}
+		}else{
+			fcbList = list;
+		}
+		
+		return fcbList;
+	}
+
+}

@@ -1,0 +1,118 @@
+package com.flf.entity;
+
+import java.math.BigDecimal;
+
+import javax.xml.bind.annotation.XmlRootElement;
+
+@XmlRootElement(name="ProductFixedparkingspaceChild")
+public class ProductFixedparkingspaceChild {
+	//固定车位子表id
+    private String fixedparkingspaceChildId;
+    //固定车位id   链接表tc_building_structure(所有车位都在此表中)
+    private String stallId;
+    //固定车位主表id 
+    private String fixedparkingspaceId;
+    //车库名称  类独有
+    private String fullName;
+    //车位地址  类独有
+    private String codeName;
+    //生效时间
+    private String beginDate;
+    //失效时间
+    private String endDate;
+    //金额  单位（元/月）
+    private BigDecimal productPrice;
+    //租用状态
+    private String state;
+    public String getState() {
+		return state;
+	}
+
+	public void setState(String state) {
+		this.state = state;
+	}
+
+	//分页
+    private Page page;
+    
+    public String getBeginDate() {
+		return beginDate;
+	}
+
+	public void setBeginDate(String beginDate) {
+		this.beginDate = beginDate;
+	}
+
+	public String getEndDate() {
+		return endDate;
+	}
+
+	public void setEndDate(String endDate) {
+		this.endDate = endDate;
+	}
+
+	public BigDecimal getProductPrice() {
+		return productPrice;
+	}
+
+	public void setProductPrice(BigDecimal productPrice) {
+		this.productPrice = productPrice;
+	}
+
+	public Page getPage() {
+ 		if(this.page==null){
+ 			this.page=new Page();
+ 		}
+ 		return page;
+ 	}
+
+	public void setPage(Page page) {
+		this.page = page;
+	}
+
+    
+    
+    
+
+  
+
+	public String getFullName() {
+		return fullName;
+	}
+
+	public void setFullName(String fullName) {
+		this.fullName = fullName;
+	}
+
+	public String getCodeName() {
+		return codeName;
+	}
+
+	public void setCodeName(String codeName) {
+		this.codeName = codeName;
+	}
+
+	public String getFixedparkingspaceChildId() {
+        return fixedparkingspaceChildId;
+    }
+
+    public void setFixedparkingspaceChildId(String fixedparkingspaceChildId) {
+        this.fixedparkingspaceChildId = fixedparkingspaceChildId;
+    }
+
+    public String getStallId() {
+        return stallId;
+    }
+
+    public void setStallId(String stallId) {
+        this.stallId = stallId;
+    }
+
+    public String getFixedparkingspaceId() {
+        return fixedparkingspaceId;
+    }
+
+    public void setFixedparkingspaceId(String fixedparkingspaceId) {
+        this.fixedparkingspaceId = fixedparkingspaceId;
+    }
+}

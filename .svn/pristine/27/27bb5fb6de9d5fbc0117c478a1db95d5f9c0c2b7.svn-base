@@ -1,0 +1,36 @@
+<!--
+    作者:彭婷婷
+    页面名称:授权管理
+    js路径:js/controllers/propertyService/staffHome/empowerManagement
+-->
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>授权管理</title>
+</head>
+<body>
+<div class="complaint_user_list ">
+
+    <!--tab-->
+    <div style="padding:5px 10px 0">
+        <div class="complaint_user_info_navigation">
+            <a class="btn" ui-sref="index.propertyService.staffHome.empowerManagement.empower">办理授权</a>
+            <a class="btn" ui-sref="index.propertyService.staffHome.empowerManagement.history">历史记录</a>
+        </div>
+    </div>
+    <!--tab end-->
+
+    <!--模板-->
+    <div class="row">
+        <div style="padding:0px 30px 0;">
+            <div ui-view ></div>
+        </div>
+    </div>
+    <!--模板 end-->
+</div>
+
+
+
+</body>
+</html>

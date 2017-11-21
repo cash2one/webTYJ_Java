@@ -1,0 +1,111 @@
+package com.flf.service;
+
+import java.util.List;
+
+import javax.jws.WebService;
+import javax.ws.rs.Consumes;
+import javax.ws.rs.GET;
+import javax.ws.rs.POST;
+import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
+import javax.ws.rs.Produces;
+import javax.ws.rs.core.MediaType;
+
+import com.flf.entity.BuildingStructureNew;
+import com.flf.entity.PageRestful;
+import com.flf.entity.PaymentDetails;
+import com.flf.entity.Product;
+import com.flf.entity.ProductFixedparkingspace;
+import com.flf.entity.ProductFixedparkingspaceChild;
+/**
+ * 产品初始化-固定车位
+ * @author Hanyupeng
+ * @date 2016年7月14日15:46:03
+ */
+@WebService
+@Path("/ProductFixedparkingspace")
+public interface ProductFixedparkingspaceService {
+
+/**
+ * 增加固定车位
+ * @author hanyupeng
+ * @date 2016年7月14日16:31:52
+ */
+@POST
+@Path("/addPf")
+@Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+String addPf(ProductFixedparkingspace pf);
+/**
+ * 分页显示固定车位主表
+ * @author hanyupeng
+ * @date 2016年7月15日10:06:00
+ */
+@POST
+@Path("/listPageWithPf")
+@Produces(MediaType.APPLICATION_JSON)	
+PageRestful listPageWithPf(ProductFixedparkingspace pf);
+/**
+ * 分页显示固定车位子表
+ * @author hanyupeng
+ * @date 2016年7月15日17:34:34
+ */
+@POST
+@Path("/listPageWithPfc")
+@Produces(MediaType.APPLICATION_JSON)	
+PageRestful listPageWithPfc(ProductFixedparkingspaceChild pfc);
+/**
+ * 查询单条固定车位
+ * @author Hanyupeng
+ */
+@POST
+@Path("/getPf/{productId}")
+@Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+ProductFixedparkingspace getPf(@PathParam("productId") String productId);
+/**
+ * 编辑固定车位
+ * @author Hanyupeng
+ */
+@POST
+@Path("/updatePf")
+@Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+String updatePf(ProductFixedparkingspace pf);
+/**
+ * 失效固定车位
+ * @author Hanyupeng
+ */
+@POST
+@Path("/updatePfDate")
+@Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+String updatePfDate(ProductFixedparkingspace pf);
+/**
+ * 通过类型和id获取编辑固定车位信息
+ * @author Hanyupeng
+ */
+@POST
+@Path("/getBuildingListByTypeOrId/{productId}")
+@Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+List<BuildingStructureNew> getBuildingListByTypeOrId(@PathParam("productId") String id);
+/**
+ * 通过id获取编辑固定车位信息
+ * @author Hanyupeng
+ */
+@POST
+@Path("/getBuildingListById/{productId}")
+@Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+List<BuildingStructureNew> getBuildingListById(@PathParam("productId") String id);
+/**
+ * 提交全部信息 变为已启用
+ * @author hanyupeng
+ */
+@GET
+@Path("/updateAndSubmit")
+void updateAndSubmit();
+/**
+ * 接口
+ * @author hanyupeng
+ */
+@GET
+@Path("/getAllPfc")
+@Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+List<ProductFixedparkingspaceChild> getAllPfc();
+}

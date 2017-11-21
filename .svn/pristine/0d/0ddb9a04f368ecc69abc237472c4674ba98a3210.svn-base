@@ -1,0 +1,77 @@
+package com.flf.service.impl;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.UUID;
+
+import net.sf.json.JSONObject;
+
+import com.flf.entity.Constant;
+import com.flf.mapper.ConstantMapper;
+import com.flf.service.ConstantService;
+
+public class ConstantServiceImpl implements ConstantService {
+
+	private ConstantMapper constantMapper;
+	
+	public ConstantMapper getConstantMapper() {
+		return constantMapper;
+	}
+
+	public void setConstantMapper(ConstantMapper constantMapper) {
+		this.constantMapper = constantMapper;
+	}
+
+	/**
+	 * 查看常量
+	 */
+	@Override
+	public Constant getConstantByConstantId(String constantId) {
+		return constantMapper.getConstantById(constantId);
+	}
+
+	/**
+	 * 删除常量
+	 */
+	@Override
+	public void deleteConstantByConstantId(String constantId) {
+		constantMapper.deleteConstant(constantId);
+	}
+	
+	/**
+	 * 新增常量
+	 */
+	@Override
+	public String insertConstant(Constant constant) {
+		Map<String,String> map=new HashMap<String,String>();
+		constant.setConstantId(UUID.randomUUID().toString());
+		constant.setParentsId("1");
+		constant.setCommonValue("wp");
+		constantMapper.insertConstant(constant);
+		map.put("code","200");
+		map.put("information","保存成功");
+	    return JSONObject.fromObject(map).toString();//3001表示参数不全    200表示成功
+	}
+
+	/**
+	 * 根据方案id查询关联的常量
+	 * @return list
+	 */
+	@Override
+	public List<Constant> getConstantBySchemeId(String schemeId){
+		return constantMapper.listConstantBySchemeId(schemeId);
+	}
+
+	@Override
+	public List<Constant> getTopConstantBySchemeId(String schemeId) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
+	@Override
+	public List<Constant> listAllConstant(Constant constant){
+		return constantMapper.listAllConstant(constant);
+	}
+
+}

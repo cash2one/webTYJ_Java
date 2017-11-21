@@ -1,0 +1,393 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.flf.mapper.ProductMapper" >
+  <resultMap id="product" type="com.flf.entity.Product" >
+    <id column="product_id" property="productId" jdbcType="VARCHAR" />
+    <result column="product_name" property="productName" jdbcType="VARCHAR" />
+    <result column="product_num" property="productNum" jdbcType="VARCHAR" />
+    <result column="effect_date" property="effectDate" jdbcType="DATE" />
+    <result column="expiry_date" property="expiryDate" jdbcType="DATE" />
+    <result column="product_attributes" property="productAttributes" jdbcType="VARCHAR" />
+    <result column="price" property="price" jdbcType="DOUBLE" />
+    <result column="average_price" property="averagePrice" jdbcType="DOUBLE" />
+    <result column="product_type" property="productType" jdbcType="TINYINT" />
+    <result column="deposit_way" property="depositWay" jdbcType="VARCHAR" />
+    <result column="pay_way" property="payWay" jdbcType="VARCHAR" />
+    <result column="prepaid_date" property="prepaidDate" jdbcType="DATE" />
+    <result column="increasing_rent" property="increasingRent" jdbcType="TINYINT" />
+    <result column="rent_proportion" property="rentProportion" jdbcType="VARCHAR" />
+    <result column="rent_type" property="rentType" jdbcType="VARCHAR" />
+    <result column="lntroduction" property="lntroduction" jdbcType="VARCHAR" />
+    <result column="stall_id" property="stallId" jdbcType="VARCHAR" />
+    <result column="state" property="state" jdbcType="VARCHAR" />
+    <result column="is_rent_free" property="isRentFree" jdbcType="TINYINT" />
+    <result column="free_time" property="freeTime" jdbcType="TINYINT" />
+    <result column="modify_time" property="modifyTime" jdbcType="TIMESTAMP" />
+    <result column="unit" property="unit" jdbcType="VARCHAR" />
+    <result column="month" property="month" jdbcType="INTEGER" />	
+    <collection property="areadivisionlist" column="product_id" ofType="AreaDivision" select="com.flf.mapper.AreaDivisionMapper.listAreaDivisionByProductId" />
+  </resultMap>
+  
+  <resultMap type="Product" id="ResultMapWithExtends" extends="product">
+    <association property="pay" column="pay_way" javaType="DataDictionarySlave" select="com.flf.mapper.DataDictionarySlaveMapper.selectByPrimaryKey" />
+	<association property="rent" column="rent_type" javaType="DataDictionarySlave" select="com.flf.mapper.DataDictionarySlaveMapper.selectByPrimaryKey" /> 
+  	<collection property="areadivisionlist" column="product_id" ofType="AreaDivision" select="com.flf.mapper.AreaDivisionMapper.listAreaDivisionByProductId" />
+  	<collection property="annexs" column="product_id" ofType="Annex" select="com.flf.mapper.AnnexMapper.getAnnexbyRelationId" />
+    <collection property="serviceprojectlist" column="product_id" ofType="ServiceProject" select="com.flf.mapper.ServiceProjectMapper.listServiceProjectByProductId" />
+    <collection property="buildingstructruenewlist" column="product_id" ofType="BuildingStructrueNew" select="com.flf.mapper.BuildingStructureNewMapper.listBuildingStructureNewByProductId" />
+  </resultMap>
+  
+    
+    <!-- 产品初始化固定车位 -->
+  <resultMap id="fixedParkingSpaceMap" type="fixedParkingSpace" >
+    <result column="price" property="price" jdbcType="DOUBLE" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="cust_id" property="custId" jdbcType="VARCHAR" />
+    <result column="stall_id" property="stallId" jdbcType="VARCHAR" />
+    <result column="stall_position" property="stallPosition" jdbcType="VARCHAR" />
+    <result column="stall_property" property="stallProperty" jdbcType="VARCHAR" />
+    <result column="stall_number" property="stallNumber" jdbcType="VARCHAR" />
+    <result column="stall_type" property="stallType" jdbcType="VARCHAR" />
+    <result column="project_id" property="projectId" jdbcType="VARCHAR" />
+    <result column="product_id" property="productId" jdbcType="VARCHAR" />
+    <result column="full_name" property="fullName" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Product_Where_Clause">
+  	<where>
+		<if test="productType!=null and productType!=''">
+			AND product_type = #{productType}
+		</if>
+		<if test="productName != null and productName != ''">
+			AND product_name like CONCAT('%',#{productName},'%')
+		</if>
+		<if test="startPrice != null and startPrice != ''">
+			AND price &gt;= #{startPrice}
+		</if>
+		<if test="endPrice != null and endPrice != ''">
+			AND price &lt;= #{endPrice}
+		</if>
+	</where>
+  </sql>
+  <!--产品初始化分页  -->	
+  <select id="listPageProduct" parameterType="com.flf.entity.Product" resultMap="product">
+  	select tc_product_sum.* from (select commonservice_id as 'product_id',
+			 commonservice_name as 'product_name',
+			 NULL as 'product_num',
+			 NULL as 'effect_date',
+			 NULL as 'expiry_date',
+			 NULL as 'product_attributes',
+			 product_price 'price',
+			 NULL as 'average_price',
+			 '6' as 'product_type',
+			 NULL as 'deposit_way',
+			 NULL as 'pay_way',
+			 NULL as 'prepaid_date',
+			 NULL as 'increasing_rent',
+			 NULL as 'rent_proportion',
+			 NULL as 'rent_type',
+			 NULL as 'lntroduction',
+			 NULL as 'stall_id',
+			 NULL as 'month',
+			 case  when NOW() &gt;= product_begin_date &amp;&amp; NOW() &lt; IFNULL(product_end_date,'2099-12-31') then '1'
+			 when NOW() &lt; product_begin_date then '2'
+			 when NOW() &gt;product_end_date then '0' end as 'state',
+			 NULL as 'is_rent_free',
+			 NULL as 'free_time',
+			 create_date as 'modify_time',
+			 newpro.description as 'unit'
+			from (select a.*,b.description from
+			tc_product_commonservice as a 
+			left join data_dictionary_slave as b 
+			on a.product_unit=b.slave_id) as newpro
+		union  all
+		SELECT *,NULL as 'unit' from tc_product) as tc_product_sum
+  	<include refid="Product_Where_Clause" /> order by modify_time desc
+  </select>	
+ <!--根据产品ID删除  -->
+  <delete id="deleteProductById" parameterType="java.lang.String" >
+    delete from tc_product
+    where product_id = #{productId,jdbcType=VARCHAR}
+  </delete>
+   <!--根据车位ID删除  -->
+  <delete id="deleteProductByStallId" parameterType="java.lang.String" >
+    delete from tc_product
+    where stall_Id = #{stallId,jdbcType=VARCHAR}
+  </delete>
+  
+  <!-- 新增 -->
+  <insert id="insertProduct" parameterType="com.flf.entity.Product" >
+    insert into tc_product
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="productId != null" >
+        product_id,
+      </if>
+      <if test="productName != null" >
+        product_name,
+      </if>
+      <if test="productNum != null" >
+        product_num,
+      </if>
+      <if test="effectDate != null" >
+        effect_date,
+      </if>
+       <if test="expiryDate != null" >
+        expiry_date,
+      </if>
+      <if test="productAttributes != null" >
+        product_attributes,
+      </if>
+      <if test="price != null" >
+        price,
+      </if>
+      <if test="averagePrice != null" >
+        average_price,
+      </if>
+      <if test="productType != null" >
+        product_type,
+      </if>
+      <if test="depositWay != null" >
+        deposit_way,
+      </if>
+      <if test="payWay != null" >
+        pay_way,
+      </if>
+      <if test="prepaidDate != null" >
+        prepaid_date,
+      </if>
+      <if test="increasingRent != null" >
+        increasing_rent,
+      </if>
+      <if test="rentProportion != null" >
+        rent_proportion,
+      </if>
+      <if test="rentType != null" >
+        rent_type,
+      </if>
+      <if test="lntroduction != null" >
+        lntroduction,
+      </if>
+      <if test="stallId != null" >
+        stall_id,
+      </if>
+      <if test="state != null" >
+        state,
+      </if>
+      <if test="isRentFree != null">
+      	is_rent_free,
+      </if>
+      <if test="freeTime != null">
+      	free_time,
+      </if>
+      <if test="modifyTime != null">
+      	modify_time,
+      </if>
+      <if test="month != null">
+      	month,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="productId != null" >
+        #{productId,jdbcType=VARCHAR},
+      </if>
+      <if test="productName != null" >
+        #{productName,jdbcType=VARCHAR},
+      </if>
+      <if test="productNum != null" >
+        #{productNum,jdbcType=VARCHAR},
+      </if>
+      <if test="effectDate != null" >
+        #{effectDate,jdbcType=DATE},
+      </if>
+      <if test="expiryDate != null" >
+        #{expiryDate,jdbcType=DATE},
+      </if>
+      <if test="productAttributes != null" >
+        #{productAttributes,jdbcType=VARCHAR},
+      </if>
+      <if test="price != null" >
+        #{price,jdbcType=DOUBLE},
+      </if>
+      <if test="averagePrice != null" >
+        #{averagePrice,jdbcType=DOUBLE},
+      </if>
+      <if test="productType != null" >
+        #{productType,jdbcType=TINYINT},
+      </if>
+      <if test="depositWay != null" >
+        #{depositWay,jdbcType=VARCHAR},
+      </if>
+      <if test="payWay != null" >
+        #{payWay,jdbcType=VARCHAR},
+      </if>
+      <if test="prepaidDate != null" >
+        #{prepaidDate,jdbcType=DATE},
+      </if>
+      <if test="increasingRent != null" >
+        #{increasingRent,jdbcType=TINYINT},
+      </if>
+      <if test="rentProportion != null" >
+        #{rentProportion,jdbcType=VARCHAR},
+      </if>
+      <if test="rentType != null" >
+        #{rentType,jdbcType=VARCHAR},
+      </if>
+      <if test="lntroduction != null" >
+        #{lntroduction,jdbcType=VARCHAR},
+      </if>
+      <if test="stallId != null" >
+        #{stallId,jdbcType=VARCHAR},
+      </if>
+      <if test="state != null" >
+        #{state,jdbcType=VARCHAR},
+      </if>
+      <if test="isRentFree != null">
+      	#{isRentFree,jdbcType=TINYINT},
+      </if>
+      <if test="freeTime != null">
+      	#{freeTime,jdbcType=TINYINT},
+      </if>
+      <if test="modifyTime != null">
+      	#{modifyTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="month != null">
+      	#{month,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateProduct" parameterType="com.flf.entity.Product" >
+    update tc_product
+    <set >
+      <if test="productName != null" >
+        product_name = #{productName,jdbcType=VARCHAR},
+      </if>
+      <if test="productNum != null" >
+        product_num = #{productNum,jdbcType=VARCHAR},
+      </if>
+      <if test="effectDate != null" >
+        effect_date = #{effectDate,jdbcType=DATE},
+      </if>
+      <if test="expiryDate != null" >
+        expiry_date = #{expiryDate,jdbcType=DATE},
+      </if>
+      <if test="productAttributes != null" >
+        product_attributes = #{productAttributes,jdbcType=VARCHAR},
+      </if>
+      <if test="price != null" >
+        price = #{price,jdbcType=DOUBLE},
+      </if>
+      <if test="averagePrice != null" >
+        average_price = #{averagePrice,jdbcType=DOUBLE},
+      </if>
+      <if test="productType != null" >
+        product_type = #{productType,jdbcType=TINYINT},
+      </if>
+      <if test="depositWay != null" >
+        deposit_way = #{depositWay,jdbcType=VARCHAR},
+      </if>
+      <if test="payWay != null" >
+        pay_way = #{payWay,jdbcType=VARCHAR},
+      </if>
+      <if test="prepaidDate != null" >
+        prepaid_date = #{prepaidDate,jdbcType=DATE},
+      </if>
+      <if test="increasingRent != null" >
+        increasing_rent = #{increasingRent,jdbcType=TINYINT},
+      </if>
+      <if test="rentProportion != null" >
+        rent_proportion = #{rentProportion,jdbcType=VARCHAR},
+      </if>
+      <if test="rentType != null" >
+        rent_type = #{rentType,jdbcType=VARCHAR},
+      </if>
+      <if test="lntroduction != null" >
+        lntroduction = #{lntroduction,jdbcType=VARCHAR},
+      </if>
+      <if test="stallId != null" >
+        stall_id = #{stallId,jdbcType=VARCHAR},
+      </if>
+      <if test="isRentFree != null">
+      	is_rent_free = #{isRentFree,jdbcType=TINYINT},
+      </if>
+      <if test="freeTime != null">
+      	free_time = #{freeTime,jdbcType=TINYINT},
+      </if>
+      <if test="modifyTime != null">
+      	modify_time = #{modifyTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="month != null">
+      	month = #{month,jdbcType=INTEGER},
+      </if>
+    </set>
+    where product_id = #{productId,jdbcType=VARCHAR}
+  </update>
+
+<!-- 根据产品id查询对象及关联对象 -->
+<select id="getProductByProductId" parameterType="String" resultMap="ResultMapWithExtends">
+	select * from tc_product where product_id = #{productId}
+</select>
+
+<!-- 根据stall id查询对象及关联对象 -->
+<select id="getProductByStallId" parameterType="String" resultMap="ResultMapWithExtends">
+	select * from tc_product where stall_id = #{stallId}
+</select>
+	
+<!-- 根据项目id查询车位信息 -->
+<select id="listPageStallP" parameterType="StallNew" resultMap="fixedParkingSpaceMap">
+	select * from (select p.product_id,p.price,sc.*
+				from tc_product p
+				RIGHT JOIN
+				(SELECT
+					pc.name,
+					cs.*
+				FROM
+					tc_person_cust pc
+				RIGHT JOIN
+						(SELECT
+							pb.cust_id,
+							s.stall_id,
+							s.stall_position,
+							s.stall_number,
+							s.stall_type,
+							s.stall_property,
+							s.project_id,
+							s.full_name
+						FROM
+							tc_person_building pb
+						RIGHT JOIN
+							(select stall.*,tbs.full_name from tc_stall stall left join tc_building_structure tbs on stall.building_structure_id = tbs.id where 1=1
+							<if test="projectId!=null">
+							and stall.project_id=#{projectId,jdbcType=VARCHAR}
+							</if> and stall.project_id is not NULL) as s
+						on
+							pb.building_structure_id = s.building_structure_id
+					) AS cs
+				on
+					cs.cust_id = pc.cust_id
+				) as sc
+				on p.stall_id=sc.stall_id) pup where 1=1
+				<if test="productId != null and productId!=''" >
+       				 and pup.product_id=#{productId,jdbcType=VARCHAR}
+     		 	</if>
+     		 	<if test="stallNumber != null and stallNumber != ''">
+     		 		and pup.stall_number like CONCAT('%',#{stallNumber},'%')
+     		 	</if>
+     		 	<if test="stallPosition != null and stallPosition != ''">
+     		 		and pup.stall_position like CONCAT('%',#{stallPosition},'%')
+     		 	</if>
+</select>
+
+<!-- 修改产品状态为失效 -->
+<update id="changeState" parameterType="String">
+	update tc_product set state = '1' where product_id = #{productId,jdbcType=VARCHAR}
+</update>
+
+	<select id="getProductByType" parameterType="String" resultMap="product">
+		select * from tc_product where product_type = #{productType} order by effect_date desc limit 1
+	</select>
+	
+	<!-- 根据产品名称查询是否有数据  wangzhou 2016.04.22 -->
+	<select id="getProductByproductName" parameterType="String" resultMap="product">
+		select * from tc_product where state = 0 and product_name = #{0}
+	</select>
+
+</mapper>

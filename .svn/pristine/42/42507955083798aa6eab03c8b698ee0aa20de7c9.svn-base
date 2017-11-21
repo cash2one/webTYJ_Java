@@ -1,0 +1,143 @@
+<!--
+    作者:彭婷婷
+    页面名称:宠物登记--历史记录
+    js路径:js/controllers/propertyService/staffHome/petRegistration/history
+    修改人：李斌
+    修改时间：2015/6/3
+-->
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>历史记录</title>
+</head>
+<body>
+<div class="complaint_user">
+    <div class="row" style="padding:5px 10px 0">
+        <!--宠物列表-->
+
+        <div class="col-md-12">
+            <div class="col-md-12" style="margin-top:8px;border-bottom: 1px solid lightgray;">
+                <p class="col-md-10">宠物列表：</p>
+                <img src="images/propertyService/u459.png" style="width: 20px;height: 20px">
+                <a class="btn btn-xs" ui-sref="index.propertyService.staffHome.petRegistration.newPet">新增宠物</a>
+             </div>
+
+            <div class="col-lg-4 col-md-3 col-sm-4" ng-repeat="items in PetRegistration">
+                <div class="program_panel">
+                    <div class="complaint_panel_info">
+                        <div class="row">
+                            <div class="col-md-4">
+                                <img src="images/staffHome/carport/mao.png">
+                            </div>
+                            <div class="col-md-7">
+                                <div class="row">宠物昵称:{{items.petName}}</div>
+                                <div class="row">宠物品种：{{items.petType}}</div>
+                                <div class="row">宠物类型：{{items.petKinds}}</div>
+                                <div class="row">宠物性别：{{items.petSex}}</div>
+                            </div>
+                            <div class="col-md-1" style="margin-left: -5px">
+                                <span class="complaint1_panel_info_navigation">
+         						    <ul>
+                                        <li><a href="#" class="dropdown-toggle btn-sm" data-toggle="dropdown" role="button" aria-expanded="false"><span class="glyphicon glyphicon-menu-down" aria-hidden="true"></span></a>
+                                            <ul>
+                                                <li role="presentation"><a role="menuitem" tabindex="-1" data-toggle="modal" ng-click="view(items.petId)" data-target="#editModal">编辑</a></li>
+                                                <li role="presentation"><a role="menuitem" tabindex="-1" data-toggle="modal" ng-click="deletePet(items.petId)" data-target="#deleteModal">删除</a></li>
+                                            </ul>
+                                        </li>
+                                    </ul>
+                                 </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--宠物列表 end-->
+    </div>
+
+    <div class="modal fade" id="editModal" role="dialog" aria-label="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header" style="background-color: #02a0e7;height: 50px">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+
+                <div class="modal-body">
+                    <table class="table-bordered" style="width:95%;text-align: center;margin: auto">
+                        <tr >
+                            <td style="width: 30%">宠物昵称</td>
+                           <td><input type="text" class="input-sm form-control" ng-model="petRegistration.petName"/></td>
+                        </tr>
+                        <tr>
+                            <td>宠物类型</td>
+                            <td><input type="text" class="form-control" ng-model="petRegistration.petType"> </td>
+                        </tr>
+                        <tr>
+                            <td>宠物性别</td>
+                            <td><input type="text" class="form-control" ng-model="petRegistration.petSex"> </td>
+                        </tr>
+
+                        <tr>
+                            <td>宠物品种</td>
+                            <td><input type="text" class="form-control" ng-model="petRegistration.petKinds"> </td>
+                        </tr>
+                        <tr>
+                            <td>描述</td>
+                            <td><input type="text" class="form-control" ng-model="petRegistration.describe"> </td>
+                        </tr>
+                        <tr>
+                            <td>登记人</td>
+                            <td><input type="text" class="form-control" ng-model="petRegistration.registrant"  > </td>
+                        </tr>
+                        <tr>
+                            <td>登记时间</td>
+                            <td><input type="datetime-local" style="width: 100%" ng-model="petRegistration.registrationTime"></td>
+                        </tr>
+
+                    </table>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn bg-primary" data-dismiss="modal" aria-label="Close">取消</button>
+                    <button type="button" class="btn bg-primary" ng-click="update()">确认修改</button>
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+
+<!--  
+    <div class="modal fade" id="deleteModal" role="dialog" aria-label="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header" style="background-color: #02a0e7;height: 50px">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                
+                <!-- 
+
+                <div class="modal-body">
+                    <p>确定要删除？</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn bg-primary" data-dismiss="modal" aria-label="Close">取消</button>
+                    <button type="button" class="btn bg-primary">确定</button>
+            </div>
+             -->
+            </div>
+        </div>
+    </div>
+    
+
+
+
+
+
+</div>
+</body>
+</html>

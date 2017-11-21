@@ -1,0 +1,205 @@
+<!--
+    创建时间：2015/5/19
+    创建人：钟加诚
+    修改人：钟加诚
+    修改内容：Js数据，查询和删选效果
+    最后修改时间:2015/6/1
+    pageName:外部专业线---小区放行条
+    jsPath： 'controllers/externalProfession/allRelease
+-->
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>外部专业线全部放行条</title>
+</head>
+<body ng-controller="allReleaseCtrl">
+<div class="complaint_user_list" style="margin: 10px 10px;">
+    <div class="row" style="margin-top: 10px">
+        <table>
+            <tr style="height: 35px">
+                <td class="col-md-4">
+                    <form class="form-inline">
+                        <div class="form-group" style="width: 100px;text-align: right">
+                            申请人：
+                        </div>
+                        <div class="form-group">
+                            <input type="text" class="form-control input-sm"  ng-model='applicant'>
+                        </div>
+                    </form>
+                </td>
+                <td class="col-md-4">
+                    <form class="form-inline">
+                        <div class="form-group" style="width: 100px;text-align: right">
+                            申请身份证号码：
+                        </div>
+                        <div class="form-group">
+                            <input type="text" class="form-control input-sm">
+                        </div>
+                    </form>
+                </td>
+
+                <td class="col-md-4">
+                    <form class="form-inline">
+                        <div class="form-group" style="width: 100px;">
+                            出运人身份证号：
+                        </div>
+                        <div class="form-group">
+                            <input type="text" class="form-control input-sm">
+                        </div>
+                    </form>
+                </td>
+
+            </tr>
+            <tr style="height: 35px">
+                <td class="col-md-4">
+                    <form class="form-inline">
+                        <div class="form-group" style="width: 100px;text-align: right">
+                            编号：
+                        </div>
+                        <div class="form-group">
+                            <input type="text" class="form-control input-sm" ng-model='identifierNb'>
+                        </div>
+                    </form>
+                </td>
+                <td class="col-md-4">
+                    <form class="form-inline">
+                        <div class="form-group" style="width: 100px;text-align: right">
+                            申请单位：
+                        </div>
+                        <div class="form-group">
+                            <input type="text" class="form-control input-sm">
+                        </div>
+                    </form>
+                </td>
+                <td class="col-md-6">
+                    <form class="form-inline">
+                        <div class="form-group">筛选：</div>
+                        <div class="form-group" style="margin-left: 10px"><input value="1" type="radio" ng-model="typ">业户</div>
+                        <div class="form-group" style="margin-left: 10px"><input type="radio" value="2" ng-model="typ">单位</div>
+                        <button class="glyphicon glyphicon-search btn btn-sm" aria-hidden="true" ng-click="change()"></button>
+                    </form>
+                </td>
+
+            </tr>
+        </table>
+    </div>
+</div>
+<div class="complaint_user_list" style="margin: 10px 10px;">
+        <div class="row" style="height:auto">
+            <!--1-->
+            <div class="col-md-12" style="padding-top:8px" ng-repeat="item in itemsone" ng-show="item.releaseId!=null">
+                <div class="col-md-2">
+                    <a href="#" data-toggle="modal" data-target="#modifyPet" ng-click="show(item.releaseId)">
+                        <img src="images/company/u134.png" style="width: 110px;height: 89px;">
+                    </a>
+                </div>
+                <div class="col-md-10">
+                    <div class="row" style="margin-left:-50px;padding-top:15px">
+                        <p class="col-md-3">出口名称：{{item.userExit}}</p>
+                        <p class="col-md-3">申请人：{{item.applicant}}</p>
+                        <p class="col-md-3">有效期：{{item.validity}}</p>
+                        <p class="col-md-3">放行时间：{{item.releaseClock}}</p>
+                    </div>
+                    <div class="row" style="margin-left:-50px;">
+                        <p class="col-md-3">编号：{{item.identifierNb}}</p>
+                        <p class="col-md-3">需放行时间：{{item.releaseTime}}</p>
+                        <p class="col-md-3">出运人的电话：{{item.gonePhone}}</p>
+                        <p class="col-md-3">出运人签名：{{item.goneAutograph}}</p>
+                    </div>
+                </div>
+            </div>
+            <!--1 end-->
+        </div>
+        <div class="modal fade" id="modifyPet" role="dialog" aria-label="myModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header" style="background-color: white;height: 50px">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <a ui-sref="index.propertyService.staffHome.releasePass.addReleasePass"><span style="color: #000000">新增放行条</span></a>
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="media-left" style="height:auto;width: 600px;">
+                            <table class="table-bordered" style="width:95%;text-align: center;margin: auto">
+                                <tr >
+                                    <td style="width: 30%">出口名称</td>
+                                    <td>{{userExit}}</td>
+                                </tr>
+                                <tr>
+                                    <td>编号</td>
+                                    <td>{{identifierNb}}</td>
+                                </tr>
+                                <tr>
+                                    <td>业户</td>
+                                    <td>{{applicant}}</td>
+                                </tr>
+                                <tr>
+                                    <td>申请人</td>
+                                    <td>{{applicant}}</td>
+                                </tr>
+                                <tr>
+                                    <td>申请时间</td>
+                                    <td></td>
+                                </tr>
+                                <tr>
+                                    <td>有效期</td>
+                                    <td></td>
+                                </tr>
+                                <tr>
+                                    <td>放行时间</td>
+                                    <td>{{releaseClock}}</td>
+                                </tr>
+                                <tr>
+                                    <td>亲属关系</td>
+                                    <td></td>
+                                </tr>
+                                <tr>
+                                    <td>楼层单元</td>
+                                    <td></td>
+                                </tr>
+
+                                <tr>
+                                    <td>身份证号码</td>
+                                    <td></td>
+                                </tr>
+                                <tr>
+                                    <td>搬运物品名称与数量</td>
+                                    <td></td>
+                                </tr>
+
+                                <tr>
+                                    <td>不包含物品</td>
+                                    <td></td>
+                                </tr>
+
+                                <tr>
+                                    <td>出运人签字</td>
+                                    <td>{{goneAutograph}}</td>
+                                </tr>
+                                <tr>
+                                    <td>出运人身份证号码</td>
+                                    <td></td>
+                                </tr>
+                                <tr>
+                                    <td>出运人电话</td>
+                                    <td>{{gonePhone}}</td>
+                                </tr>
+                                <tr>
+                                    <td>经办人签字</td>
+                                    <td></td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn bg-primary" data-dismiss="modal" aria-label="Close">关闭</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

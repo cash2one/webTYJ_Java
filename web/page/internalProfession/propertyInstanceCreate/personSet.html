@@ -1,0 +1,113 @@
+<!--
+    作者：彭婷婷
+    页面名称：物业实例创建---人员控制权限设置
+    js路径：js/controllers/internalProfession/propertyInstanceCreate/personSet
+-->
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+    <style>
+        td {
+            width:30px;
+            height:30px;
+            line-height:30px;
+            cursor:pointer;
+        }
+    </style>
+    <script type="text/javascript">
+        window.onload =function(){
+            var tb = document.getElementById("tb");
+            for(var i=0;i<tb.rows.length;i++){
+                for(var j=0;j<tb.rows[0].cells.length;j++){
+                    tb.rows[i].cells[j].onclick = function(){
+                        tb.rows[i].cells[j].background='red';
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body>
+<table border="1" style="width: 98%;margin: 10px">
+    <tr>
+        <td>
+            <div class="row">
+                <div class="col-md-8">
+                    <h1 style="margin: 20px">公司名称及专业线选择：</h1>
+                </div>
+                <div class="col-md-2"><button class="pull-right" style="width: 100px;margin: 20px" ui-sref="index.internalProfession.propertyInstanceCreate.choosePost">上一步</button></div>
+                <div class="col-md-2"><button class="pull-right" style="width: 100px;margin: 20px"  ui-sref="index.internalProfession.propertyInstanceCreate.projectInitialization">下一步</button></div>
+            </div>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <table border="1" id="tb" style="width: 500px;margin: 20px 20px 150px 200px;text-align: center">
+                <tr>
+                    <td >序号</td>
+                    <td>项目</td>
+                    <td>项目经理</td>
+                    <td>清洁</td>
+                    <td>园林</td>
+                    <td>安保</td>
+                    <td>维修</td>
+                    <td>消防</td>
+                </tr>
+                <tr>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                    <td>张三</td>
+                    <td>李四</td>
+                    <td>王五</td>
+                    <td>李六</td>
+                    <td>王七</td>
+                </tr>
+                <tr>
+                    <td>1</td>
+                    <td>张一</td>
+                    <td>张二</td>
+                    <td>张四</td>
+                    <td>张五</td>
+                    <td>张六</td>
+                    <td>张七</td>
+                    <td>张八</td>
+                </tr>
+                <tr>
+                    <td>2</td>
+                    <td>李一</td>
+                    <td>李二</td>
+                    <td>李四</td>
+                    <td>李五</td>
+                    <td>李六</td>
+                    <td>李七</td>
+                    <td>李八</td>
+                </tr>
+                <tr>
+                    <td>3</td>
+                    <td>刘一</td>
+                    <td>刘二</td>
+                    <td>刘四</td>
+                    <td>刘五</td>
+                    <td>刘六</td>
+                    <td>刘七</td>
+                    <td>刘八</td>
+                </tr>
+                <tr>
+                    <td>4</td>
+                    <td>陈一</td>
+                    <td>陈二</td>
+                    <td>陈四</td>
+                    <td>陈五</td>
+                    <td>陈六</td>
+                    <td>陈七</td>
+                    <td>陈八</td>
+                </tr>
+            </table>
+        </td>
+    </tr>
+</table>
+</body>
+</html>

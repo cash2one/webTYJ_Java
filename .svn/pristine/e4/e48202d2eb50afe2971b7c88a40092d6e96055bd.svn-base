@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.flf.mapper.ServiceRequestJournalMapper" >
+  <resultMap id="BaseResultMap" type="ServiceRequestJournal" >
+    <id column="service_request_journal_id" property="serviceRequestJournalId" jdbcType="VARCHAR" />
+    <result column="service_request_id" property="serviceRequestId" jdbcType="VARCHAR" />
+    <result column="operator_id" property="operatorId" jdbcType="VARCHAR" />
+    <result column="operation_time" property="operationTime" jdbcType="TIMESTAMP" />
+    <result column="cre_task_id" property="creTaskId" jdbcType="VARCHAR" />
+    <result column="cre_task_type" property="creTaskType" jdbcType="TINYINT" />
+    <result column="change_state" property="changeState" jdbcType="TINYINT" />
+    <result column="remarks" property="remarks" jdbcType="VARCHAR" />
+  </resultMap>
+  
+ <delete id="deleteServiceRequestJournal" parameterType="String">
+  delete from ts_service_request_journal where service_request_journal_id=#{0}
+  </delete>
+  
+  <select id="listPageServiceRequestJournal" parameterType="ServiceRequestJournal" resultMap="BaseResultMap">
+  select * from ts_service_request_journal 
+  </select>
+  
+  <select id="listAllServiceRequestJournal"  resultMap="BaseResultMap">
+  select * from ts_service_request_journal 
+  </select>
+  
+  <select id="getServiceRequestJournalbyId" parameterType="String" resultMap="BaseResultMap">
+  select * from ts_service_request_journal where service_request_journal_id=#{0}
+  </select>
+
+  <insert id="insertServiceRequestJournal" parameterType="ServiceRequestJournal" >
+     insert into ts_service_request_journal (service_request_journal_id,
+     service_request_id,operator_id, operation_time, cre_task_id, 
+     cre_task_type, change_state, remarks
+      )
+    values (UUID(), #{serviceRequestId,jdbcType=VARCHAR}, 
+      #{operatorId,jdbcType=VARCHAR}, #{operationTime,jdbcType=TIMESTAMP}, #{creTaskId,jdbcType=VARCHAR}, 
+      #{creTaskType,jdbcType=TINYINT}, #{changeState,jdbcType=TINYINT}, #{remarks,jdbcType=VARCHAR}
+      )
+  </insert>
+ 
+  <update id="updateServiceRequestJournal" parameterType="ServiceRequestJournal" >
+    update ts_service_request_journal
+    set service_request_id = #{serviceRequestId,jdbcType=VARCHAR},
+      operator_id = #{operatorId,jdbcType=VARCHAR},
+      operation_time = #{operationTime,jdbcType=TIMESTAMP},
+      cre_task_id = #{creTaskId,jdbcType=VARCHAR},
+      cre_task_type = #{creTaskType,jdbcType=TINYINT},
+      change_state = #{changeState,jdbcType=TINYINT},
+      remarks = #{remarks,jdbcType=VARCHAR}
+    where service_request_journal_id = #{serviceRequestJournalId,jdbcType=VARCHAR},
+  </update>
+</mapper>

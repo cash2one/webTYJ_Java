@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.flf.mapper.ElectricityLossMapper" >
+  <resultMap id="BaseResultMap" type="com.flf.entity.ElectricityLoss" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="level" property="level" jdbcType="INTEGER" />
+    <result column="electricity_num" property="electricityNum" jdbcType="VARCHAR" />
+    <result column="electricity_name" property="electricityName" jdbcType="VARCHAR" />
+    <result column="consumption" property="consumption" jdbcType="DOUBLE" />
+    <result column="child_consumption" property="childConsumption" jdbcType="DOUBLE" />
+    <result column="electricity_loss" property="electricityLoss" jdbcType="DOUBLE" />
+    <result column="loss_rate" property="lossRate" jdbcType="VARCHAR" />
+    <result column="meter_date" property="meterDate" jdbcType="DATE" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, level, electricity_num, electricity_name, consumption, child_consumption, electricity_loss, loss_rate, 
+    meter_date
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from te_electricity_loss
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from te_electricity_loss
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.flf.entity.ElectricityLoss" >
+    insert into te_electricity_loss (id, level, electricity_num, 
+      electricity_name, consumption, child_consumption, 
+      electricity_loss, loss_rate, meter_date
+      )
+    values (#{id,jdbcType=INTEGER}, #{level,jdbcType=INTEGER}, #{electricityNum,jdbcType=VARCHAR}, 
+      #{electricityName,jdbcType=VARCHAR}, #{consumption,jdbcType=DOUBLE}, #{childConsumption,jdbcType=DOUBLE}, 
+      #{electricityLoss,jdbcType=DOUBLE}, #{lossRate,jdbcType=VARCHAR}, #{meterDate,jdbcType=DATE}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.flf.entity.ElectricityLoss" >
+    insert into te_electricity_loss
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="level != null" >
+        level,
+      </if>
+      <if test="electricityNum != null" >
+        electricity_num,
+      </if>
+      <if test="electricityName != null" >
+       electricity_name,
+      </if>
+      <if test="consumption != null" >
+        consumption,
+      </if>
+      <if test="childConsumption != null" >
+        child_consumption,
+      </if>
+      <if test="electricityLoss != null" >
+        electricity_loss,
+      </if>
+      <if test="lossRate != null" >
+        loss_rate,
+      </if>
+      <if test="meterDate != null" >
+        meter_date,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="level != null" >
+        #{level,jdbcType=INTEGER},
+      </if>
+      <if test="electricityNum != null" >
+        #{electricityNum,jdbcType=VARCHAR},
+      </if>
+      <if test="electricityName != null" >
+        #{electricityName,jdbcType=VARCHAR},
+      </if>
+      <if test="consumption != null" >
+        #{consumption,jdbcType=DOUBLE},
+      </if>
+      <if test="childConsumption != null" >
+        #{childConsumption,jdbcType=DOUBLE},
+      </if>
+      <if test="electricityLoss != null" >
+        #{electricityLoss,jdbcType=DOUBLE},
+      </if>
+      <if test="lossRate != null" >
+        #{lossRate,jdbcType=VARCHAR},
+      </if>
+      <if test="meterDate != null" >
+        #{meterDate,jdbcType=DATE},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.flf.entity.ElectricityLoss" >
+    update te_electricity_loss
+    <set >
+      <if test="level != null" >
+        level = #{level,jdbcType=INTEGER},
+      </if>
+      <if test="electricityNum != null" >
+        electricity_num = #{electricityNum,jdbcType=VARCHAR},
+      </if>
+      <if test="electricityName != null" >
+       electricity_name = #{electricityName,jdbcType=VARCHAR},
+      </if>
+      <if test="consumption != null" >
+        consumption = #{consumption,jdbcType=DOUBLE},
+      </if>
+      <if test="childConsumption != null" >
+        child_consumption = #{childConsumption,jdbcType=DOUBLE},
+      </if>
+      <if test="electricityLoss != null" >
+        electricity_loss = #{electricityLoss,jdbcType=DOUBLE},
+      </if>
+      <if test="lossRate != null" >
+        loss_rate = #{lossRate,jdbcType=VARCHAR},
+      </if>
+      <if test="meterDate != null" >
+        meter_date = #{meterDate,jdbcType=DATE},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.flf.entity.ElectricityLoss" >
+    update te_electricity_loss
+    set level = #{level,jdbcType=INTEGER},
+      electricity_num = #{electricityNum,jdbcType=VARCHAR},
+      electricity_name = #{electricityName,jdbcType=VARCHAR},
+      consumption = #{consumption,jdbcType=DOUBLE},
+      child_consumption = #{childConsumption,jdbcType=DOUBLE},
+      electricity_loss = #{electricityLoss,jdbcType=DOUBLE},
+      loss_rate = #{lossRate,jdbcType=VARCHAR},
+      meter_date = #{meterDate,jdbcType=DATE}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  
+  <select id="selectByDate" parameterType="java.util.Date" resultMap="BaseResultMap">
+  	select * from te_electricity_loss
+  	where YEAR(meter_date)=YEAR(#{0}) and MONTH(meter_date)=MONTH(#{0})
+  </select>
+  
+  <select id="selectMaxLevelByDate" parameterType="java.util.Date" resultType="Integer">
+  	select max(level) from te_electricity_loss
+  	where YEAR(meter_date)=YEAR(#{0}) and MONTH(meter_date)=MONTH(#{0})
+  </select>
+</mapper>

@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.flf.mapper.ConstructionPersonnelAssociatedMapper" >
+  <resultMap id="BaseResultMap" type="ConstructionPersonnelAssociated" >
+    <id column="record_id" property="recordId" jdbcType="VARCHAR" />
+    <result column="apply_id" property="applyId" jdbcType="VARCHAR" />
+    <result column="personnel_id" property="personnelId" jdbcType="VARCHAR" />
+     <result column="personnel_name" property="personnelName" jdbcType="VARCHAR" />
+      <result column="personnel_phone" property="personnelPhone" jdbcType="VARCHAR" />
+  </resultMap>
+  
+ <delete id="deleteConstructionPersonnelAssociated" parameterType="String">
+  delete from ts_construction_personnel_associated where record_id=#{0}
+  </delete>
+  
+  <select id="listAllConstructionPersonnelAssociated"  resultMap="BaseResultMap" >
+ 	 select * from ts_construction_personnel_associated 
+  </select>
+  
+  <select id="getConstructionPersonnelAssociatedbyId" parameterType="String" resultMap="BaseResultMap">
+  	select * from ts_construction_personnel_associated where record_id=#{0}
+  </select>
+  
+  <select id="getConstructionPersonnelAssociatedbyApplyId" parameterType="String" resultMap="BaseResultMap">
+  	select * from ts_construction_personnel_associated where apply_id=#{0}
+  </select>
+  
+  <insert id="insertConstructionPersonnelAssociated" parameterType="ConstructionPersonnelAssociated" >      
+      insert into ts_construction_personnel_associated (record_id, apply_id,personnel_id,personnel_name,personnel_phone)
+    values (UUID(), #{applyId,jdbcType=VARCHAR}, #{personnelId,jdbcType=VARCHAR}, #{personnelName,jdbcType=VARCHAR}, 
+    #{personnelPhone,jdbcType=VARCHAR})
+  </insert>
+ 
+  <update id="updateConstructionPersonnelAssociated" parameterType="ConstructionPersonnelAssociated" >
+    update ts_construction_personnel_associated
+    set apply_id = #{applyId,jdbcType=VARCHAR},
+      personnel_id = #{personnelId,jdbcType=VARCHAR},
+      personnel_name = #{personnelName,jdbcType=VARCHAR},
+      personnel_phone = #{personnelPhone,jdbcType=VARCHAR}
+    where record_id = #{recordId,jdbcType=VARCHAR}
+  </update>
+</mapper>

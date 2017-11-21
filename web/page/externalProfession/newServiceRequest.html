@@ -1,0 +1,371 @@
+<!--
+创建人：陶勇超
+创建时间：2015/6/3
+名称：新增服务请求
+JS路径： 'controllers/externalProfession/newServiceRequest',
+-->
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+    <style>
+        .current_ul li{width: 80px ;border:1px solid green}
+        .current_ul li{position: relative}
+        .current_ul li .card{display:none;position: absolute}
+        .current_ul li:hover .card{  display: inline-block;left:80px;top:0px;}
+
+        #menu{margin:10px;width:200px;overflow:hidden;}
+        #menu li{line-height:25px;}
+        #menu li a{color:#666666;padding-left:5px;outline:none;}
+        #menu li input{vertical-align:middle;margin-left:5px;}
+        #menu .two{padding-left:10px;display:none;}
+        .col-md-2 button{width: 90px;height: 60px;margin-top: 20px;margin-bottom: 10px}
+    </style>
+</head>
+<body>
+<div  class="complaint_user_list">
+    <div class="row" style="padding-left: 15px;">
+        <div class="col-md-4" style="height: 150px;width: 150px;margin-left:15px;margin-top:15px; background-color: #f0f0f0;border: 1px solid rgba(0, 0, 0, 0.99)">
+            <div class="panel_info" style="margin-top:15px;">
+                <div style="padding: 5px" align="center">
+                    <a  onclick="return click_a('divOne_10')">
+                        <img src="images/staffHome/addCar.png" style="width: 100px;height: 100px" ></a></div>
+            </div>
+        </div>
+        <!--业务办理下拉菜单-->
+        <!--请求信息-->
+        <div ng-repeat="vm in vms" class="col-md-4" style="margin-top: 15px;" >
+            <div style="height: 150px;width: 350px;border: 1px solid rgba(0, 0, 0, 0.99)">
+                <div>
+                    <div >
+                        <!--二级菜单 end-->
+                        <ul class="pull-right">
+                            <li class="dropdown">
+                                <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-expanded="true">
+                                    业务办理
+                                    <span class="caret"></span>
+                                </button>
+                                <ul class="dropdown-menu pull-right current_ul" role="menu" aria-labelledby="dropdownMenu2"
+                                    style="left:70px;margin-top: -38px;" >
+                                    <li role="presentation">
+                                        <a href="#" tabindex="-1" data-toggle="tab" class="card-wrapper">新建</a>
+                                        <!--右边显示二级菜单-->
+                                        <div class="card" style="width:100px;padding: 0">
+                                            <ul  class='card-content' style="padding: 0">
+                                                <li>维修单</li>
+                                            </ul>
+                                        </div>
+                                        <!--右边显示二级菜单 end-->
+                                    </li>
+                                    <li role="presentation"><a href="#" tabindex="-1" data-toggle="tab">编辑</a></li>
+                                    <li role="presentation"><a href="#" tabindex="-1" data-toggle="tab">拷贝</a></li>
+                                    <li role="presentation"><a href="#" tabindex="-1" data-toggle="tab">关闭</a></li>
+                                    <li role="presentation"><a href="#" tabindex="-1" data-toggle="tab">重启</a></li><li role="presentation"><a href="#" tabindex="-1" data-toggle="tab">重启</a></li>
+                                    <li role="presentation"><a href="#" tabindex="-1" data-toggle="tab">合并</a></li>
+                                </ul>
+                            </li>
+                        </ul>
+                        <!--二级菜单 end-->
+                    </div>
+                </div>
+                <div style="margin-top: 20px;">
+                    <!--<div class="col-md-12">请求ID：{{vm.reqId}}</div>-->
+                    <div class="col-md-12">请求时间：{{vm.reqDate}}</div>
+                    <div class="col-md-6">分类：{{vm.reqType}}</div>
+                    <div class="col-md-6">服务类型：{{vm.serviceType}}</div>
+                    <!--<div class="col-md-6">客户ID：{{vm.reqId}}</div>-->
+                    <div class="col-md-6">客户名称：{{vm.customerName}}</div>
+                </div>
+            </div>
+        </div>
+        <!--请求信息 end-->
+    </div>
+</div>
+<div class="complaint_user_list" id="divOne_10" style="display: none">
+    <div >
+        <div class="col-md-12" style="margin-left: 100px">
+            <!--请求基本信息-->
+            <table style="margin: 10px 60px;line-height: 30px">
+                <tr>
+                    <!--<td style="white-space: nowrap;text-align: right">服务编号：</td><td width="190">1001</td>-->
+                    <td style="white-space: nowrap;text-align: right">请求来源：</td><td width="190">前台</td>
+                    <td style="white-space: nowrap;text-align: right">客户名称：</td><td>周润发</td>
+                </tr>
+                <tr>
+                    <td style="white-space: nowrap;text-align: right">服务请求名称：</td>
+                    <td width="190"><input type="text" class="input-sm form-control" style="width:150px;"></td>
+                    <td style="white-space: nowrap;text-align: right">服务请求类型：</td>
+                    <td width="190"><select><option>业主请求</option></select></td>
+                </tr>
+            </table>
+            <!--请求基本信息end-->
+            <!--选择地址-->
+            <div class="col-md-12">
+                <p>地址：</p>
+                <div class="col-md-2" style="border: 1px solid rgba(0, 0, 0, 0.99);height: 300px;overflow-y: auto;overflow-x: hidden">
+                    <!--树形-->
+                    <ul id="menu" style="margin-left:-45px;">
+                        <li ng-repeat="tree in trees">
+                            <label><a href="javascript:" class="glyphicon glyphicon-play">{{tree.title}}</a></label>
+                            <!--二级-->
+                            <ul class="two">
+                                <li ng-repeat="treeNode in tree.nodes" >
+                                    <label><a href="javascript:" class="glyphicon glyphicon-play">{{treeNode.title}}</a></label>
+                                    <!--三级 <input type="checkbox" value="123456">-->
+                                    <ul class="two">
+                                        <li ng-repeat="treeNode in treeNode.nodes" >
+                                            <label><a href="javascript:" class="glyphicon glyphicon-play">{{treeNode.title}}</a></label>
+                                            <!--四级 <input type="checkbox" value="123456">-->
+                                            <ul class="two">
+                                                <li  ng-repeat="treeNode in treeNode.nodes" >
+                                                    <label><a href="#tree" data-toggle="tab">{{treeNode.title}}</a></label></li>
+                                            </ul>
+                                            <!--四级 end-->
+                                        <li>
+                                    </ul>
+                                    <!--三级 end  -->
+                                </li>
+                            </ul>
+                            <!--二级-->
+                        </li>
+                    </ul>
+                    <!--树形 end-->
+                </div>
+                <div class="col-md-1"style="margin-top: 130px"  >
+                    <span class="glyphicon glyphicon-arrow-right"></span>
+                </div>
+                <div class="col-md-4 tab-pane fade" id="tree" style="margin: 5px 5px;border: 1px solid rgba(0, 0, 0, 0.99);height: 50px;margin-top: 120px;">
+                    <p style="margin-left: 100px;margin-top: 15px;">桃源居一区一栋101</p>
+                </div>
+            </div>
+            <!--选择地址 end-->
+            <!--其它信息-->
+            <table>
+                <tr>
+                    <td style="text-align: right">回访人：</td>
+                    <td><label><select><option>周润发</option><option>陈荟莲</option><option>无</option></select></label></td>
+                    <td>联系电话：</td>
+                    <td><label><select><option>13567349080</option><option>13567349999</option></select></label></td>
+                </tr>
+                <tr>
+                    <td style="text-align: right">优先级：</td>
+                    <td><label><select><option>高</option><option>中</option><option>低</option></select></label></td>
+                    <td>重要程度：</td>
+                    <td><label><select><option>高</option><option>中</option><option>低</option></select></label></td>
+                    <td style="color: #ff0000">重大事项:</td>
+                    <td><label><select><option>是</option><option>否</option></select></label></td>
+                </tr>
+                <tr>
+                    <td>客户希望处理时间：</td>
+                    <td width="100"><label><input type="date" class="form-control input-sm" style="height:25px;"></label></td>
+                    <td style="padding-left: 10px"><label><select><option>9:00</option><option>10:00</option><option>11:00</option></select></label></td>
+                    <td>~<label><select><option>9:00</option><option>10:00</option><option>11:00</option></select></label></td>
+                </tr>
+            </table>
+            <table>
+                <tr>
+                    <td>事由描述：</td>
+                    <td><textarea style="width:450px" cols="3" placeholder="请输入内容"></textarea></td>
+                </tr>
+            </table>
+            <!--其它信息end-->
+            <!--添加任务类型-->
+            <div style="margin-top: 15px;">
+                <p>创建任务：</p>
+                <!--点击"+"号显示隐藏内容-->
+                <span onclick="return click_a('divOne_0')" style="cursor:pointer;" class="glyphicon glyphicon-plus"></span>
+                <div id="divOne_0" style="display: none;margin: 10px 20px">
+                    <!--<p class="col-md-2">任务ID：1001</p>-->
+                    <p class="col-md-2">客户:周润发</p>
+                    <div class="col-md-offset-4">
+                        <ul>
+                            <li class="dropdown">
+                                <span>任务类型:</span>
+                                <button class="btn btn-sm dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-expanded="true" style="background-color: #ffffff">
+                                    室内装修
+                                    <span class="caret"></span>
+                                </button>
+                                <ul class="dropdown-menu"  role="menu" aria-labelledby="dropdownMenu1" >
+                                    <li role="presentation">
+                                        <a href="#divOne_2" tabindex="-1" data-toggle="tab">赔偿给业主</a>
+                                    </li>
+                                    <li role="presentation">
+                                        <a href="#divOne_1" tabindex="-1" data-toggle="tab">清洁</a>
+                                    </li>
+                                    <li role="presentation">
+                                        <a href="#divOne_1" tabindex="-1" data-toggle="tab">园林</a>
+                                    </li>
+                                    <li role="presentation">
+                                        <a href="#divOne_1" tabindex="-1" data-toggle="tab">安保</a>
+                                    </li>
+                                    <li role="presentation">
+                                        <a href="#divOne_2" tabindex="-1" data-toggle="tab">领里纠纷</a>
+                                    </li>
+                                    <li role="presentation">
+                                        <a href="#divOne_1" tabindex="-1" data-toggle="tab">重大事项</a>
+                                    </li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </div>
+                    <div id="myTabContent" class="tab-content">
+                        <div id="divOne_1" class="tab-pane fade in active">
+                            <table>
+                                <tr>
+                                    <td style="text-align: right">专业：</td>
+                                    <td><label><select><option>电</option><option>水</option><option>窗</option><option>门</option><option>信报箱</option><option>房屋主体</option><option>抄水电表</option><option>核实水电表</option><option>开关水电</option><option>电器</option><option>洁具</option><option>栏杆</option><option>火灾</option></select></label></td>
+                                    <td style="text-align: right">产品：</td>
+                                    <td><label><select><option>电表</option><option>配电箱</option><option>管线</option><option>开关插座</option><option>水管</option></select></label></td>
+                                </tr>
+
+                                <tr>
+                                    <td style="text-align: right">地址：</td>
+                                    <td>桃源居3区21栋301</td>
+                                    <td style="text-align: right">电话：</td>
+                                    <td>13012345678</td>
+                                </tr>
+                                <tr>
+                                    <td>上门时间：</td>
+                                    <td><span>4-30</span><span>12:00--15:00</span></td>
+                                    <td width="200px" style="text-align: right">预计完成时间：</td>
+                                    <td><span>4-30</span><span>18:00</span></td>
+                                </tr>
+                            </table>
+                            <table>
+                                <tr>
+                                    <td>事由描述：</td>
+                                    <td><textarea style="width:450px" cols="3" placeholder="请输入内容"></textarea></td>
+                                </tr>
+                                <tr>
+                                    <td>负责人：</td>
+                                    <td><label><select><option>谢XXX</option></select></label></td>
+                                </tr>
+                            </table>
+                        </div>
+                        <div id="divOne_2" class="tab-pane fade" >
+                            <table style="margin: 30px 60px;line-height: 30px">
+                                <tr>
+                                    <td style="white-space: nowrap;text-align: right">索赔任务ID：</td><td width="190">101101</td>
+                                </tr>
+                                <tr>
+                                    <td style="white-space: nowrap;text-align: right">发起人：</td><td><input style="width: 90px" type="text" class="form-control input-sm" placeholder="张三"></td>
+                                    <td style="white-space: nowrap;text-align: right">索赔金额：</td><td><input style="width: 100px" type="text" class="form-control input-sm" placeholder="10000"></td>
+                                </tr>
+                                <tr>
+                                    <td style="text-align: right">相关联系人：</td><td><input style="width: 90px" type="text" class="form-control input-sm" placeholder="张四"></td>
+                                    <td style="text-align: right">联系电话：</td><td><input style="width: 100px" type="text" class="form-control input-sm" placeholder="15327219111"></td>
+                                    <td style="text-align: center"><button style="height: 30px;width: 90px">选择</button></td>
+                                </tr>
+                            </table>
+                            <table style="margin-left: 85px">
+                                <tr>
+                                    <td>事由描述：</td>
+                                    <td><textarea style="width:450px;" cols="3" placeholder="请输入内容"></textarea></td>
+                                </tr>
+                                <tr>
+                                    <td>上传照片：</td>
+                                    <td style="border: 1px solid lightgray;padding: 2px 2px"> <img src="images/workBench/u716.png" style="margin: 2px 2px"><img src="images/workBench/u716.png" style="margin: 2px 2px"><img src="images/workBench/u716.png" style="margin: 2px 2px"><img src="images/workBench/u716.png" style="margin: 2px 2px"></td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--添加任务类型 end-->
+        </div>
+    </div>
+    <div style="margin:20px 270px">
+        <button style="height: 30px;width: 90px" class="" ui-sref="index.externalProfession.newServiceRequest">提交</button>
+        <button style="height: 30px;width: 90px" ui-sref="index.externalProfession.newServiceRequest">取消</button>
+    </div>
+</div>
+</body>
+<script>
+    function click_a(divDisplay)
+    {
+        if(document.getElementById(divDisplay).style.display != "block")
+        {
+            document.getElementById(divDisplay).style.display = "block";
+        }
+        else
+        {
+            document.getElementById(divDisplay).style.display = "none";
+        }
+    }
+    function addEvent(el,name,fn){
+        if(el.addEventListener) return el.addEventListener(name,fn,false);
+        return el.attachEvent('on'+name,fn);
+    }
+    function nextnode(node){
+        if(!node)return ;
+        if(node.nodeType == 1)
+            return node;
+        if(node.nextSibling)
+            return nextnode(node.nextSibling);
+    }
+    function prevnode(node){
+        if(!node)return ;
+        if(node.nodeType == 1)
+            return node;
+        if(node.previousSibling)
+            return prevnode(node.previousSibling);
+    }
+    function parcheck(self,checked){
+        var par =  prevnode(self.parentNode.parentNode.parentNode.previousSibling);
+        if(par&&par.getElementsByTagName('input')[0]){
+            par.getElementsByTagName('input')[0].checked = checked;
+            parcheck(par.getElementsByTagName('input')[0],sibcheck(par.getElementsByTagName('input')[0]));
+        }
+    }
+    function sibcheck(self){
+        var sbi = self.parentNode.parentNode.parentNode.childNodes,n=0;
+        for(var i=0;i<sbi.length;i++){
+            if(sbi[i].nodeType != 1)
+                n++;
+            else if(sbi[i].getElementsByTagName('input')[0].checked)
+                n++;
+        }
+    }
+    addEvent(document.getElementById('menu'),'click',function(e){
+        e = e||window.event;
+        var target = e.target||e.srcElement;
+        var tp = nextnode(target.parentNode.nextSibling);
+        switch(target.nodeName){
+            case 'A':
+                if(tp&&tp.nodeName == 'UL'){
+                    if(tp.style.display != 'block' ){
+                        tp.style.display = 'block';
+                    }else{
+                        tp.style.display = 'none';
+                    }
+                }
+                break;
+            case 'SPAN':
+                var ap = nextnode(nextnode(target.nextSibling).nextSibling);
+                if(ap.style.display != 'block' ){
+                    ap.style.display = 'block';
+                }else{
+                    ap.style.display = 'none';
+                }
+                break;
+            case 'INPUT':
+                if(target.checked){
+                    if(tp){
+                        var checkbox = tp.getElementsByTagName('input');
+                        for(var i=0;i<checkbox.length;i++)
+                            checkbox[i].checked = true;
+                    }
+                }else{
+                    if(tp){
+                        var checkbox= tp.getElementsByTagName('input');
+                        for(var i=0;i<checkbox.length;i++)
+                            checkbox[i].checked = false;
+                    }
+                }
+                parcheck(target,sibcheck(target));
+                break;
+        }
+    });
+</script>
+</html>

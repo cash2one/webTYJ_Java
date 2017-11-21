@@ -1,0 +1,52 @@
+<!DOCTYPE>
+<html ng-app="AreaApp">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>Insert title here</title>
+</head >
+<link type="text/css" rel="stylesheet" href="/Home/css/main.css"/>
+<script src="/Home/js/AngularJS/angular-1.2.3.js"></script>
+<script src="/Home/js/AngularJS/AreaController.js"></script>
+<body>
+<script type="text/ng-template" id="listView">
+	<table class="main_head" width="100%" border="0" cellpadding="0" cellspacing="0" class="main_table">
+		<tr class="main_head">
+			<td>id</td>
+			<td>区域名称</td>
+			<td>备注</td>
+		</tr>
+		<tr ng-repeat="items in areas" class="main_head">
+			<td>{{items.id}}</td>
+			<td>{{items.areaName}}</td>
+			<td>{{items.note}}</td>
+			<td><a href="#" ng-click="GetArea(items.id)" class="myBtn"><em>修改</em></a></td>
+			<td><a href="#" ng-click="deleteArea(items.id)" class="myBtn"><em>删除</em></a></td>
+		</tr>
+	</table>
+	<div class="page_and_btn">
+			<a href="#" ng-click="GetArea(0)" class="myBtn"><em>新增</em></a>
+		</div>
+</script>
+<script type="text/ng-template" id="AddOrUpdateView">
+     <table class="main_head" width="100%" border="0" cellpadding="0" cellspacing="0" class="main_table">
+		<tr class="main_head">
+			<th>区域名称</th>
+			<td>
+				<input type="text" ng-model="area.areaName" />
+				<input type="hidden" ng-model="area.id" /> 
+			</td>
+		</tr>
+		<tr class="main_head">
+			<th>备注</th>
+			<td><input type="text" ng-model="area.note"/> </td>
+		</tr>
+		<tr class="main_head">
+			<td colspan="2"><input type="button" value="保存" ng-click="AddOrUpdateArea()"/></td>
+		</tr>
+	</table>
+</script>
+<div ng-controller="AreaCtrl">
+	<div ng-include="templateUrl"></div>
+</div>
+</body>
+</html>

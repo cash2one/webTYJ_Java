@@ -1,0 +1,86 @@
+package com.flf.service;
+
+import java.util.List;
+
+import javax.jws.WebService;
+import javax.ws.rs.Consumes;
+import javax.ws.rs.GET;
+import javax.ws.rs.POST;
+import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
+import javax.ws.rs.Produces;
+import javax.ws.rs.core.MediaType;
+
+import com.flf.entity.AreaNew;
+import com.flf.entity.Billing;
+import com.flf.entity.PageRestful;
+
+@WebService
+@Path("/Billing")
+public interface BillingService {
+	/**
+	 * 分页查询
+	 * @param acceptanceHouse
+	 * @return
+	 */
+	@POST
+	@Path("/listPageSearchBilling")
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
+	PageRestful listPageSearchBillingRes(Billing billing);
+	
+	  /**
+	   * 根据建筑收费项目id查询二级收费记录
+	   * @param String 建筑收费项目id
+	   * @return List 收费记录
+	   * */
+	  @GET
+	  @Path("/getBillingDatils/{id}")
+	  @Produces(MediaType.APPLICATION_JSON)
+	  List<Billing> getBillingDatilsRes(@PathParam("id") String id);
+	  
+	 
+	  /**
+	   * 手动计费
+	   * @param Billing 计费对象
+	   * */
+		@POST
+		@Path("/AddBilling")
+		@Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+		void AddBilling(Billing billing);
+		
+		/**
+		 * 重新计算项目计费
+		 * @param Billing 计费对象
+		 * */
+		@POST
+		@Path("/updateProjectBilling")
+		@Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+		void updateProjectBilling(Billing billing);
+		
+		/**
+		 * 重新计算收费项目计费
+		 * @param Billing 计费对象
+		 * */
+		@POST
+		@Path("/updateChargeItemBilling")
+		@Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+		void updateChargeItemBilling(Billing billing);
+		
+		/**
+		 * 重新计算收费项目计费
+		 * @param Billing 计费对象
+		 * */
+		@POST
+		@Path("/updateBuildBilling")
+		@Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+		void updateBuildBilling(Billing billing);
+		
+		//确认计费
+		@POST
+		@Path("/insertBilling")
+		@Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+		void insertBillingRes(Billing billing);
+		
+		
+}

@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>项目建筑分区</title>
+</head>
+<body>
+<div class="complaint_user_list" style="margin: 20px 20px;height:525px; white-space: nowrap">
+    <div style="margin-left: 30px;margin-bottom: 0">
+        <div class="complaint_user_info_navigation col-md-12" >
+            <a class="btn" ui-sref="index.internalProfession.projectbuildpartition.ruleAdd">新增规则</a>
+            <a class="btn"  ui-sref="index.internalProfession.projectbuildpartition.ruleCheck">规则查询</a>
+        </div>
+    </div>
+    <div class="clear"></div>
+    <div class="row" style="padding:5px 10px 0">
+        <div ui-view></div>
+    </div>
+</div>
+</body>
+</html>
+</body>
+</html>

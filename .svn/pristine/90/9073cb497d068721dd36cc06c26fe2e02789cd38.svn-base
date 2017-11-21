@@ -1,0 +1,207 @@
+package com.flf.service.impl;
+
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.UUID;
+
+import com.flf.entity.BuildingStructureNew;
+import com.flf.entity.ElectricityMeterProject;
+import com.flf.entity.ElectricityMeterReadingData;
+import com.flf.entity.ElectricityMeterReadingProgram;
+import com.flf.entity.ElectricityMeterRecords;
+import com.flf.entity.MeterReadingData;
+import com.flf.entity.PageRestful;
+import com.flf.entity.SearchMeter;
+import com.flf.mapper.ElectricityMeterProjectMapper;
+import com.flf.mapper.ElectricityMeterReadingDataMapper;
+import com.flf.mapper.ElectricityMeterReadingProgramMapper;
+import com.flf.mapper.ElectricityMeterRecordsMapper;
+import com.flf.service.ElectricityMeterProjectService;
+import com.flf.service.ElectricityMeterReadingProgramService;
+import com.flf.service.ElectricityMeterRecordsService;
+
+public class ElectricityMeterReadingProgramServiceImpl implements
+		ElectricityMeterReadingProgramService {
+	private ElectricityMeterReadingProgramMapper electricityMeterReadingProgramMapper;
+	
+	private ElectricityMeterRecordsService electricityMeterRecordsService;
+	
+	private ElectricityMeterProjectService electricityMeterProjectService;
+	
+	private ElectricityMeterProjectMapper electricityMeterProjectMapper;
+	
+	private ElectricityMeterRecordsMapper electricityMeterRecordsMapper;
+	
+	private ElectricityMeterReadingDataMapper electricityMeterReadingDataMapper;
+	
+	public ElectricityMeterReadingDataMapper getElectricityMeterReadingDataMapper() {
+		return electricityMeterReadingDataMapper;
+	}
+
+	public void setElectricityMeterReadingDataMapper(
+			ElectricityMeterReadingDataMapper electricityMeterReadingDataMapper) {
+		this.electricityMeterReadingDataMapper = electricityMeterReadingDataMapper;
+	}
+
+	public ElectricityMeterProjectMapper getElectricityMeterProjectMapper() {
+		return electricityMeterProjectMapper;
+	}
+
+	public void setElectricityMeterProjectMapper(
+			ElectricityMeterProjectMapper electricityMeterProjectMapper) {
+		this.electricityMeterProjectMapper = electricityMeterProjectMapper;
+	}
+
+	public ElectricityMeterRecordsMapper getElectricityMeterRecordsMapper() {
+		return electricityMeterRecordsMapper;
+	}
+
+	public void setElectricityMeterRecordsMapper(
+			ElectricityMeterRecordsMapper electricityMeterRecordsMapper) {
+		this.electricityMeterRecordsMapper = electricityMeterRecordsMapper;
+	}
+
+	public ElectricityMeterRecordsService getElectricityMeterRecordsService() {
+		return electricityMeterRecordsService;
+	}
+
+	public void setElectricityMeterRecordsService(
+			ElectricityMeterRecordsService electricityMeterRecordsService) {
+		this.electricityMeterRecordsService = electricityMeterRecordsService;
+	}
+
+	public ElectricityMeterProjectService getElectricityMeterProjectService() {
+		return electricityMeterProjectService;
+	}
+
+	public void setElectricityMeterProjectService(
+			ElectricityMeterProjectService electricityMeterProjectService) {
+		this.electricityMeterProjectService = electricityMeterProjectService;
+	}
+
+	public ElectricityMeterReadingProgramMapper getElectricityMeterReadingProgramMapper() {
+		return electricityMeterReadingProgramMapper;
+	}
+
+	public void setElectricityMeterReadingProgramMapper(
+			ElectricityMeterReadingProgramMapper electricityMeterReadingProgramMapper) {
+		this.electricityMeterReadingProgramMapper = electricityMeterReadingProgramMapper;
+	}
+
+	@Override
+	public List<ElectricityMeterReadingProgram> listAllElectricityMeterReadingProgram() {
+		// TODO Auto-generated method stub
+		return electricityMeterReadingProgramMapper.listAllElectricityMeterReadingProgram();
+	}
+
+	@Override
+	public ElectricityMeterReadingProgram getUserByIdRest(
+			String electricityMeterReadingProgramId) {
+		// TODO Auto-generated method stub
+		return electricityMeterReadingProgramMapper.getElectricityMeterReadingProgrambyId(electricityMeterReadingProgramId);
+	}
+
+	@Override
+	public List<ElectricityMeterReadingProgram> listElectricityMeterReadingProgrambyDate(
+			Date date) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<ElectricityMeterReadingProgram> listElectricityMeterReadingProgrambyStaff(
+			String currentExecutor) {
+		// TODO Auto-generated method stub
+		return electricityMeterReadingProgramMapper.listElectricityMeterReadingProgrambyStaff(currentExecutor);
+	}
+
+	@Override
+	public List<ElectricityMeterReadingProgram> listElectricityMeterReadingProgrambyState(
+			byte programExecutionStatus) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<ElectricityMeterReadingProgram> listElectricityMeterReadingProgrambyTeam(
+			String executiveTeam) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<ElectricityMeterReadingProgram> listElectricityMeterReadingProgrambyName(
+			String projectName) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public PageRestful listPageElectricityMeterReadingProgram(
+			SearchMeter searchMeter) {
+		// TODO Auto-generated method stub
+		PageRestful pageRestful =new PageRestful();
+		List<ElectricityMeterReadingProgram> electricityMeterReadingPrograms=electricityMeterReadingProgramMapper.listPageElectricityMeterReadingProgram(searchMeter);
+		electricityMeterReadingPrograms.add(0,null);
+		pageRestful.setElectricityMeterReadingProgram(electricityMeterReadingPrograms);
+		pageRestful.setPage(searchMeter.getPage());
+		return pageRestful;
+	}
+
+	@Override
+	public void insertElectricityMeterReadingProgramrest(
+			ElectricityMeterReadingProgram electricityMeterReadingProgram) {
+		// TODO Auto-generated method stub
+		String uuid=UUID.randomUUID().toString();
+		electricityMeterReadingProgram.setElectricityMeterReadingProgramId(uuid);
+		electricityMeterReadingProgramMapper.insertElectricityMeterReadingProgram(electricityMeterReadingProgram);
+		ElectricityMeterProject electricityMeterProject=new ElectricityMeterProject();
+		List<String> ids=new ArrayList<String>();
+		for (BuildingStructureNew buildingStructureNew : electricityMeterReadingProgram.getBuildingStructureNew()) {
+			ids.add(buildingStructureNew.getId());
+		}
+		List<ElectricityMeterRecords> electricityMeterRecords=electricityMeterRecordsService.listElectricityMeterRecordsbybuildigIds(ids);
+		for (ElectricityMeterRecords electricityMeterRecords2 : electricityMeterRecords) {
+			electricityMeterProject.setReadingProgramId(uuid);
+			electricityMeterProject.setElectricityMeterRecordsId(electricityMeterRecords2.getElectricityMeterRecordsId());
+			electricityMeterProjectService.insertElectricityMeterProjectrest(electricityMeterProject);
+			ElectricityMeterReadingData electricityMeterReadingData=new ElectricityMeterReadingData();
+			electricityMeterReadingData.setElectricityMeterRecordId(electricityMeterRecords2.getElectricityMeterRecordsId());
+			electricityMeterReadingData.setBuildingStructureId(electricityMeterRecords2.getBuildingStructureId());
+			electricityMeterReadingData.setElectricityMeterReadingProgramId(uuid);
+			electricityMeterReadingDataMapper.insertElectricityMeterReadingData(electricityMeterReadingData);
+		}
+	}
+
+	@Override
+	public void updateElectricityMeterReadingProgramrest(
+			ElectricityMeterReadingProgram electricityMeterReadingProgram) {
+		// TODO Auto-generated method stub
+		electricityMeterReadingProgramMapper.updateElectricityMeterReadingProgram(electricityMeterReadingProgram);
+		List<ElectricityMeterProject> electricityMeterProject=electricityMeterProjectMapper.listElectricityMeterProjectbyId(electricityMeterReadingProgram.getElectricityMeterReadingProgramId());
+		for (ElectricityMeterProject electricityMeterProjects : electricityMeterProject) {
+				String a=electricityMeterProjects.getBuildingStructureId();
+				List<BuildingStructureNew> buildingStructureNew=electricityMeterReadingProgram.getBuildingStructureNew();
+				for (BuildingStructureNew buildingStructureNews : buildingStructureNew) {
+					ElectricityMeterRecords electricityMeterRecords=electricityMeterRecordsMapper.listElectricityMeterRecordsbybuildigIds(buildingStructureNews.getId());
+					if(!a.equals(buildingStructureNews.getId())){
+						electricityMeterProjectMapper.deleteElectricityMeterProject(a);
+						ElectricityMeterProject electricityMeterProjectss=new ElectricityMeterProject();
+						electricityMeterProjectss.setElectricityMeterRecordsId(electricityMeterRecords.getElectricityMeterRecordsId());
+						electricityMeterProjectss.setBuildingStructureId(buildingStructureNews.getId());
+						electricityMeterProjectss.setReadingProgramId(electricityMeterReadingProgram.getElectricityMeterReadingProgramId());
+						electricityMeterProjectMapper.insertElectricityMeterProject(electricityMeterProjectss);
+					}
+				}
+			}
+		}
+
+	@Override
+	public void deleteElectricityMeterReadingProgramrest(
+			String electricityMeterReadingProgramId) {
+		// TODO Auto-generated method stub
+		electricityMeterReadingProgramMapper.deleteElectricityMeterReadingProgram(electricityMeterReadingProgramId);
+	}
+
+}

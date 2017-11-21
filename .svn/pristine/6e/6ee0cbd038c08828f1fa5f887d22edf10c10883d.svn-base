@@ -1,0 +1,129 @@
+<!--
+    作者：彭婷婷
+    页面名称：物业实例创建---岗位选择
+    js路径：js/controllers/internalProfession/propertyInstanceCreate/choosePost
+-->
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+<table border="1" style="width: 98%;margin: 10px">
+    <tr>
+        <td>
+            <div class="row">
+                <div class="col-md-8">
+                    <ul class="list-inline">
+                        <li><h1 style="margin: 20px">岗位选择:</h1></li>
+                        <li> <p>备注：带星号的岗位为核心岗位，需要任命，只有核心岗位可为其创建团队</p></li>
+                    </ul>
+                </div>
+                <div class="col-md-2"><button class="pull-right" style="width: 100px;margin: 20px" ui-sref="index.internalProfession.propertyInstanceCreate">上一步</button></div>
+                <div class="col-md-2"><button class="pull-right" style="width: 100px;margin: 20px" ui-sref="index.internalProfession.propertyInstanceCreate.personSet">下一步</button></div>
+            </div>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <table style="width: 350px;margin: 20px 20px 150px 200px">
+                <tr>
+                    <td><strong>清洁:</strong></td>
+                    <td><strong>维修:</strong></td>
+                </tr>
+                <tr>
+                    <td>
+                        <ul class="list-inline">
+                            <li><input type="checkbox">经理</li>
+                            <li>*</li>
+                        </ul>
+                    </td>
+                    <td>
+                        <ul class="list-inline">
+                            <li><input type="checkbox">经理</li>
+                            <li>*</li>
+                        </ul>
+                    </td>
+                </tr>
+                <tr>
+                    <td><input type="checkbox">主管</td>
+                    <td><input type="checkbox">主管</td>
+                </tr>
+                <tr>
+                    <td><input type="checkbox">领班</td>
+                    <td><input type="checkbox">班长</td>
+                </tr>
+                <tr>
+                    <td><input type="checkbox">清洁工</td>
+                    <td><input type="checkbox">维修工</td>
+                </tr>
+
+                <tr>
+                    <td><strong>园林:</strong></td>
+                    <td><strong>人力资源:</strong></td>
+                </tr>
+                <tr>
+                    <td>
+                        <ul class="list-inline">
+                            <li><input type="checkbox">经理</li>
+                            <li>*</li>
+                        </ul>
+                    </td>
+                    <td>
+                        <ul class="list-inline">
+                            <li><input type="checkbox">经理</li>
+                            <li>*</li>
+                        </ul>
+                    </td>
+                </tr>
+                <tr>
+                    <td><input type="checkbox">主管</td>
+                    <td><input type="checkbox">主管</td>
+                </tr>
+                <tr>
+                    <td><input type="checkbox">领班</td>
+                    <td><input type="checkbox">文员</td>
+                </tr>
+                <tr>
+                    <td><input type="checkbox">园林工</td>
+                    <td>&nbsp;</td>
+                </tr>
+
+                <tr>
+                    <td ><strong>安保:</strong></td>
+                    <td><strong>项目:</strong></td>
+                </tr>
+                <tr>
+                    <td>
+                        <ul class="list-inline">
+                            <li><input type="checkbox">经理</li>
+                            <li>*</li>
+                        </ul>
+                    </td>
+                    <td>
+                        <ul class="list-inline">
+                            <li><input type="checkbox">经理</li>
+                            <li>*</li>
+                        </ul>
+                    </td>
+                </tr>
+                <tr>
+                    <td><input type="checkbox">主管</td>
+                    <td><input type="checkbox">收费员</td>
+                </tr>
+                <tr>
+                    <td><input type="checkbox">班长</td>
+                    <td><input type="checkbox">前台客服</td>
+                </tr>
+                <tr>
+                    <td><input type="checkbox">保安</td>
+                    <td>&nbsp;</td>
+                </tr>
+
+            </table>
+        </td>
+    </tr>
+</table>
+</body>
+</html>

@@ -1,0 +1,92 @@
+<!--
+author:王志刚
+createTime:2015/5/28
+pageName:内部专业线云平台物业实例主页
+jsPath: controllers/internalProfession/propertyInstancepage
+-->
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>内部专业线云平台物业实例主页</title>
+</head>
+<body ng-controller="propertyInstancepageCtrl">
+<div class="complaint_user_list">
+    <div class="row" style="margin-top: 30px">
+        <div class="col-md-2">
+            <img src="images/company/u3510.png" style="width: 90px;height:60px;margin-left: 30px">
+        </div>
+        <div class="col-md-10">
+            <div class="row">
+                <div class="col-md-4">实例ID：001</div>
+                <div class="col-md-4">IP地址：202.103.25.155</div>
+                <div class="col-md-4">内存使用率：70%</div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-4">实例名称：物业公司1</div>
+                <div class="col-md-4">cpu使用率：60%</div>
+                <div class="col-md-4">硬盘用量：15G</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="complaint_user">
+    <div>
+        <div class="complaint_user_info_navigation">
+            <a class="btn" ui-sref="#">专业线设置</a>
+            <a class="btn" ui-sref="#">岗位设置</a>
+            <a class="btn" ui-sref="#">授权设置</a>
+            <a class="btn" ui-sref="#">员工管理</a>
+            <a class="btn" ui-sref="#">核心岗位任命</a>
+            <a class="btn" ui-sref="#">项目管理</a>
+            <a class="btn" ui-sref="#">组织结构</a>
+            <a class="btn" ui-sref="#">人员控置权限设置</a>
+        </div>
+
+        <div class="complaint_user_info1">
+            <div class="complaint_user_info_button">
+                    <span class="complaint_panel_info_navigation">
+                        <ul>
+                            <li><img src="images/propertyService/jiantoua.png" width="35" height="29">
+                                <ul>
+                                    <li class="program_panel_info_navigation_top">办理放行条</li>
+                                    <li>办理门禁卡</li>
+                                    <li>宠物登记</li>
+                                    <li class="program_panel_info_navigation_bottom">缴纳物业费</li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </span>
+            </div>
+        </div>
+    </div>
+         <div class="clear"></div>
+</div>
+
+<div class="complaint_user_list" style="height: 400px">
+<h2 style="margin-left: 20px">专业线选择</h2><br/>
+    <div class="row">
+        <div class="col-md-4" style="margin-left: 80px">
+           <p><strong>必选项：</strong></p>
+            <label><input type="checkbox">安保</label> <label style="margin-left: 10px"><input type="checkbox">清洁</label><br/>
+            <label><input type="checkbox">园林</label> <label style="margin-left: 10px"><input type="checkbox">维修</label><br/>
+            <label><input type="checkbox">消防</label> <label style="margin-left: 10px"><input type="checkbox">客户</label><br/>
+            <label><input type="checkbox">产品</label> <label style="margin-left: 10px"><input type="checkbox">人力资源</label><br/>
+            <label><input type="checkbox">计费</label> <label style="margin-left: 10px"><input type="checkbox">客户</label><br/>
+            <label><input type="checkbox">面积</label> <label style="margin-left: 10px"><input type="checkbox">安保</label><br/>
+        </div>
+        <div class="col-md-6">
+            <p><strong>可选项：</strong></p>
+            <label><input type="checkbox">门禁</label> <label style="margin-left: 10px"><input type="checkbox">停车卡</label><br/>
+            <label><input type="checkbox">车位</label> <label style="margin-left: 10px"><input type="checkbox">放行条</label><br/>
+            <label><input type="checkbox">租赁</label> <label style="margin-left: 10px"><input type="checkbox">入伙</label><br/>
+            <label><input type="checkbox">装修</label> <label style="margin-left: 10px"><input type="checkbox">施工</label><br/>
+            <label><input type="checkbox">质检</label> <label style="margin-left: 10px"><input type="checkbox">绩效</label><br/>
+            <label><input type="checkbox">售后</label> <label style="margin-left: 10px"><input type="checkbox">公告</label><br/>
+        </div>
+    </div>
+</div>
+</body>
+</html>

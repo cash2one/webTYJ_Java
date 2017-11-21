@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+	
+
+<mapper namespace="com.flf.mapper.NewsMapper">
+  <resultMap id="BaseResultMap" type="com.flf.entity.News" >
+    <id column="news_id" property="newsId" jdbcType="VARCHAR" />
+    <result column="news_title" property="newsTitle" jdbcType="VARCHAR" />
+    <result column="news_abstract" property="newsAbstract" jdbcType="VARCHAR" />
+    <result column="news_type" property="newsType" jdbcType="INTEGER" />
+    <result column="news_model" property="newsModel" jdbcType="INTEGER" />
+    <result column="staff_id" property="staffId" jdbcType="VARCHAR" />
+    <result column="division_id" property="divisionId" jdbcType="VARCHAR" />
+    <result column="news_text" property="newsText" />
+    <result column="news_date" property="newsDate" />
+  </resultMap>
+	
+	<select id="listAllNews" parameterType="SearchNews" resultMap="BaseResultMap">
+		select a.* from tc_news a
+		inner join t_staff b on a.staff_id = b.staff_id
+		inner join t_division c on b.division_id = c.id
+		where 1=1  	
+  	<if test="staffName!=null and staffName!= '' ">
+  		and b.staff_name like CONCAT('%',#{staffName},'%')
+  	</if>
+  	<if test="divisionName!=null and divisionName!= '' ">
+  		and c.division_name like CONCAT('%',#{divisionName},'%')
+  	</if>
+  	<if test="newsTitle!=null and newsTitle!= '' ">
+  		and a.news_title like CONCAT('%',#{newsTitle},'%')
+  	</if>
+  	<if test="newsAbstract!=null and newsAbstract!= '' ">
+  		and a.news_abstract like CONCAT('%',#{newsAbstract},'%')
+  	</if>
+  	<if test="newsType!=null and newsType!= '' ">
+  		and a.news_type like CONCAT('%',#{newsType},'%')
+  	</if>
+  	<if test="newsModel!=null and newsModel!= '' ">
+  		and a.news_model like CONCAT('%',#{newsModel},'%')
+  	</if>		
+	</select>
+	
+	<select id="listPageNews" parameterType="SearchNews" resultMap="BaseResultMap">
+		select a.* from tc_news a
+		inner join t_staff b on a.staff_id = b.staff_id
+		inner join t_division c on b.division_id = c.id
+		where 1=1  	
+  	<if test="staffName!=null and staffName!= '' ">
+  		and b.staff_name like CONCAT('%',#{staffName},'%')
+  	</if>
+  	<if test="divisionName!=null and divisionName!= '' ">
+  		and c.division_name like CONCAT('%',#{divisionName},'%')
+  	</if>
+  	<if test="newsTitle!=null and newsTitle!= '' ">
+  		and a.news_title like CONCAT('%',#{newsTitle},'%')
+  	</if>
+  	<if test="newsAbstract!=null and newsAbstract!= '' ">
+  		and a.news_abstract like CONCAT('%',#{newsAbstract},'%')
+  	</if>
+  	<if test="newsType!=null and newsType!= '' ">
+  		and a.news_type like CONCAT('%',#{newsType},'%')
+  	</if>
+  	<if test="newsModel!=null and newsModel!= '' ">
+  		and a.news_model like CONCAT('%',#{newsModel},'%')
+  	</if>		
+	</select>
+	
+	<select id="getNewsById" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select * from tc_news
+     where news_id = #{0}
+    </select>
+	
+  <insert id="insertNews" parameterType="News" >
+       insert into tc_news (news_id, news_title, news_abstract, 
+      news_type, news_model, staff_id, 
+      division_id, news_text,news_date)
+    values (UUID(), #{newsTitle,jdbcType=VARCHAR}, #{newsAbstract,jdbcType=VARCHAR}, 
+      #{newsType,jdbcType=INTEGER}, #{newsModel,jdbcType=INTEGER}, #{staffId,jdbcType=VARCHAR}, 
+      #{divisionId,jdbcType=VARCHAR}, #{newsText},#{newsDate})
+  </insert>
+  
+  <update id="updateNews" parameterType="News" >
+    update tc_news
+    set 
+      news_title = #{newsTitle,jdbcType=VARCHAR},
+      news_abstract = #{newsAbstract,jdbcType=VARCHAR},
+      news_type = #{newsType,jdbcType=INTEGER},
+      news_model = #{newsModel,jdbcType=INTEGER},
+      staff_id = #{staffId,jdbcType=VARCHAR},
+      division_id = #{divisionId,jdbcType=VARCHAR},
+      news_text = #{newsText},
+      news_date = #{newsDate}
+      where news_id = #{newsId}
+  </update>
+  
+  
+  <delete id="deleteNews" parameterType="String">
+    delete from tc_news
+    where news_id=#{0}
+  </delete>
+</mapper>

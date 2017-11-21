@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>工作台首页</title>
+    <style>
+        table tr td{
+            padding:0px 20px 0px 0px;
+            text-align:center;
+        }
+
+        table th{
+            padding:0px 10px 0px 0px;
+            text-align:center;
+        }
+    </style>
+</head>
+<body>
+<!--任务开始-->
+<div class="col-lg-4 col-md-4 col-sm-6">
+    <div class="panel">
+        <div class="panel_title">
+            <span class="panel_title_left">任务</span>
+                    <span class="panel_title_right">
+                        <a style="cursor:pointer" ui-sref="index.workBench.task"><span class="zoom_button"></span></a>
+                        <span class="close_button"></span>
+                    </span>
+        </div>
+        <div class="panel_info">
+            <div class="dot">
+                <span class="dot_Checked"></span>
+                <span class="dot_unCheck"></span>
+                <span class="dot_unCheck"></span>
+                <span class="dot_unCheck"></span>
+            </div>
+            <div class="panel_info clear">
+                <table class="panel_info clear" style="text-align: center;">
+                    <tr>
+                        <td class="col-sm-offset-2">状态 </td>
+                        <td class="col-sm-offset-2">任务名称 </td>
+                        <td class="col-sm-offset-2">任务描述 </td>
+                        <td class="pull-right">时间 </td>
+                    </tr>
+                    <tr ng-repeat="items in orders">
+                        <td class="col-sm-offset-2">{{items.evtStatCd}} </td>
+                        <td class="col-sm-offset-2">{{items.commentsName}} </td>
+                        <td class="col-sm-offset-2">{{items.commentsLong | limitTo:4}}... </td>
+                        <td class="pull-right">{{items.created | date:"yyyy-MM-dd"}}</td>
+                    </tr>
+                </table>
+            </div>
+            <span class="pull-right">详情<a href="#">>></a><br/><br/></span>
+        </div>
+    </div>
+</div>
+<!--任务结束-->
+<!--待办开始-->
+<div class="col-lg-4 col-md-4 col-sm-6">
+    <div class="panel">
+        <div class="panel_title">
+            <span class="panel_title_left">待办</span>
+                     <span class="panel_title_right">
+                         <a style="cursor:pointer" ui-sref="index.workBench.pending"><span class="zoom_button"></span></a>
+                         <span class="close_button"></span>
+                     </span>
+        </div>
+        <div class="panel_info">
+            <div class="dot"></div>
+            <div class="panel_info clear">
+                <table class="panel_info clear" style="text-align: center;">
+                    <tr>
+                        <td class="col-sm-offset-2">状态 </td>
+                        <td class="col-sm-offset-2">工单编号 </td>
+                        <td class="col-sm-offset-2">业主姓名 </td>
+                        <td class="pull-right">问题描述 </td>
+                    </tr>
+                    <tr ng-repeat="items in orders1">
+                        <td class="col-sm-offset-2">{{items.evtStatCd}}</td>
+                        <td class="col-sm-offset-2">{{items.workOrderId}}</td>
+                        <td class="col-sm-offset-2">{{items.lastName}}</td>
+                        <td class="pull-right">{{items.commentsLong | limitTo:4}}...</td>
+                    </tr>
+                </table>
+                <span class="pull-right">详情<a href="#">>></a><br/><br/></span>
+            </div>
+        </div>
+    </div>
+</div>
+<!--待办结束-->
+<!--工单开始-->
+<div class="col-lg-4 col-md-4 col-sm-6">
+    <div class="panel">
+        <div class="panel_title">
+            <span class="panel_title_left">工单</span>
+                    <span class="panel_title_right">
+                        <a style="cursor:pointer" ui-sref="index.workBench.worksheet"><span class="zoom_button"></span></a>
+                        <span class="close_button"></span>
+                    </span>
+        </div>
+        <div class="panel_info">
+            <div class="dot"></div>
+            <div class="panel_info clear">
+                <table class="panel_info clear" style="text-align: center;">
+                    <tr>
+                        <td class="col-sm-offset-2">状态 </td>
+                        <td class="col-sm-offset-2">工单编号 </td>
+                        <td class="col-sm-offset-2">业主姓名 </td>
+                        <td class="pull-right">问题描述 </td>
+                    </tr>
+                    <tr ng-repeat="items in orders2">
+                        <td class="col-sm-offset-2">{{items.evtStatCd}}</td>
+                        <td class="col-sm-offset-2">{{items.workOrderId}}</td>
+                        <td class="col-sm-offset-2">{{items.lastName}}</td>
+                        <td class="pull-right">{{items.commentsLong | limitTo:4}}...</td>
+                    </tr>
+                </table>
+                <span class="pull-right">详情<a href="#">>></a><br/><br/></span>
+            </div>
+        </div>
+    </div>
+</div>
+<!--工单结束-->
+<!--重大事项开始-->
+<div class="col-lg-4 col-md-4 col-sm-6">
+    <div class="panel">
+        <div class="panel_title">
+            <span class="panel_title_left">重大事项</span>
+                    <span class="panel_title_right">
+                        <span class="zoom_button"></span>
+                        <span class="close_button"></span>
+                    </span>
+        </div>
+        <div class="panel_info">
+            <div class="dot"></div>
+            <div class="panel_info clear">
+                <table class="panel_info clear" style="text-align: center;">
+                    <tr>
+                        <td class="col-sm-offset-2">状态 </td>
+                        <td class="col-sm-offset-2">事项标题 </td>
+                        <td class="col-sm-offset-2">事项描述 </td>
+                        <td class="pull-right">时间 </td>
+                    </tr>
+                    <tr ng-repeat="items in orders1">
+                        <td class="col-sm-offset-2">{{items.evtStatCd}}</td>
+                        <td class="col-sm-offset-2">{{items.commentsName}}</td>
+                        <td class="col-sm-offset-2">{{items.commentsLong | limitTo:4}}...</td>
+                        <td class="pull-right">{{items.created | date:"yyyy-MM-dd"}}</td>
+                    </tr>
+                </table>
+                <span class="pull-right">详情<a href="#">>></a><br/><br/></span>
+            </div>
+        </div>
+    </div>
+</div>
+<!--重大事项结束-->
+<!--绩效开始-->
+<div class="col-lg-4 col-md-4 col-sm-6">
+    <div class="panel">
+        <div class="panel_title">
+            <span class="panel_title_left">绩效</span>
+                    <span class="panel_title_right">
+                        <a style="cursor:pointer" ui-sref="index.workBench.performance"><span class="zoom_button"></span></a>
+                        <span class="close_button"></span>
+                    </span>
+        </div>
+        <div class="panel_info">
+            <div class="dot"></div>
+            <div class="panel_info clear panel_info_img">
+                <img src="images/workBench/exp.png" width="150" height="150">
+            </div>
+        </div>
+    </div>
+</div>
+<!--绩效结束-->
+<!--服务请求开始-->
+<div class="col-lg-4 col-md-4 col-sm-6">
+    <div class="panel">
+        <div class="panel_title">
+            <span class="panel_title_left">服务请求</span>
+                    <span class="panel_title_right">
+                        <span class="zoom_button"></span>
+                        <span class="close_button"></span>
+                    </span>
+        </div>
+        <div class="panel_info">
+            <div class="panel_info clear">
+                <div class="dot"></div>
+                <table class="panel_info clear" style="text-align: center;">
+                    <tr>
+                        <td class="col-sm-offset-2">服务请求ID</td>
+                        <td class="col-sm-offset-2">客户姓名</td>
+                        <td class="col-sm-offset-2">类型</td>
+                        <td class="col-sm-offset-2">时间</td>
+                    </tr>
+                    <tr>
+                        <td class="col-sm-offset-2">1001</td>
+                        <td class="col-sm-offset-2">刘晓明</td>
+                        <td class="col-sm-offset-2">维修</td>
+                        <td class="col-sm-offset-2">2015-04-05 </td>
+                    </tr>
+                    <tr>
+                        <td class="col-sm-offset-2">1002</td>
+                        <td class="col-sm-offset-2">张三</td>
+                        <td class="col-sm-offset-2">保安</td>
+                        <td class="col-sm-offset-2">2015-04-05 </td>
+                    </tr>
+                    <tr>
+                        <td class="col-sm-offset-2">1003</td>
+                        <td class="col-sm-offset-2">李四</td>
+                        <td class="col-sm-offset-2">清洁</td>
+                        <td class="col-sm-offset-2">2015-04-06</td>
+                    </tr>
+                    <tr>
+                        <td class="col-sm-offset-2">1004</td>
+                        <td class="col-sm-offset-2">刘晓明</td>
+                        <td class="col-sm-offset-2">维修</td>
+                        <td class="col-sm-offset-2">2015-04-14</td>
+                    </tr>
+                    <tr>
+                        <td class="col-sm-offset-2">1005</td>
+                        <td class="col-sm-offset-2">刘晓明</td>
+                        <td class="col-sm-offset-2">园林</td>
+                        <td class="col-sm-offset-2">2015-04-11</td>
+                    </tr>
+                </table>
+            </div>
+            <span class="pull-right">详情<a href="#">>></a><br/><br/></span>
+        </div>
+    </div>
+</div>
+<!--服务请求结束-->
+</body>
+</html>

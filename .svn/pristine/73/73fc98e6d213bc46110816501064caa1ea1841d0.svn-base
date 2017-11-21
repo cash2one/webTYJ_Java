@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.flf.mapper.BuildingBillingMapper" >
+  <resultMap id="BaseResultMap" type="com.flf.entity.BuildingBilling" >
+    <id column="building_billing_id" property="buildingBillingId" jdbcType="VARCHAR" />
+    <result column="billing_start_time" property="billingStartTime" jdbcType="DATE" />
+    <result column="current_sum" property="currentSum" jdbcType="DOUBLE" />
+    <result column="last_sum" property="lastSum" jdbcType="DOUBLE" />
+    <result column="billing_balance" property="billingBalance" jdbcType="DOUBLE" />
+    <result column="charge_item_name" property="chargeItemName" jdbcType="VARCHAR" />
+    <result column="billing_state" property="billingState" jdbcType="TINYINT" />
+    <result column="charge_item_billing_id" property="chargeItemBillingId" jdbcType="VARCHAR" />
+    <result column="building_id" property="buildingId" jdbcType="VARCHAR" />
+    <result column="charge_item_id" property="chargeItemId" jdbcType="VARCHAR" />
+    <result column="full_name" property="fullName" jdbcType="VARCHAR" />
+  </resultMap>
+  
+  <insert id="insertBuildingBilling" parameterType="com.flf.entity.BuildingBilling" >
+    insert into tc_building_billing (building_billing_id, billing_start_time,billing_end_time,  
+      current_sum, last_sum, billing_balance, charge_item_name,billing_state,
+      charge_item_billing_id, building_id, charge_item_id
+      )
+    values (#{buildingBillingId,jdbcType=VARCHAR},
+      #{billingStartTime,jdbcType=DATE},
+      #{billingEndTime,jdbcType=DATE},
+      #{currentSum,jdbcType=DOUBLE}, 
+      #{lastSum,jdbcType=DOUBLE}, 
+      #{billingBalance,jdbcType=DOUBLE}, 
+      #{chargeItemName,jdbcType=VARCHAR}, 
+      #{billingState,jdbcType=TINYINT},
+      #{chargeItemBillingId,jdbcType=VARCHAR},
+      #{buildingId,jdbcType=VARCHAR},
+      #{chargeItemId,jdbcType=VARCHAR}
+      )
+  </insert>
+  
+  <!-- 根据收费项目计费id查询关于建筑的收费项目详情  -->
+  <select id="listPageBuildingBillingList"  parameterType="com.flf.entity.BuildingBilling" resultMap="BaseResultMap">
+	select bc.* from  (SELECT
+		bb.*, b.full_name
+	FROM
+		(
+			SELECT
+				*
+			FROM
+				tc_building_billing
+			<where>
+				<if test="chargeItemBillingId!=null and chargeItemBillingId!= '' ">
+		       	and charge_item_billing_id = #{chargeItemBillingId,jdbcType=VARCHAR}
+		     	</if>
+	     	</where>
+		) AS bb
+	LEFT JOIN tc_building_structure AS b ON bb.building_id = b.id
+	) as bc 
+		<where>
+			<if test="fullName!=null and fullName!= '' ">
+	       		bc.full_name like CONCAT('%',#{fullName,jdbcType=VARCHAR},'%')
+	     	</if>
+	    </where>
+  </select>
+
+   <update id="updateBuildingBilling" parameterType="com.flf.entity.BuildingBilling" >
+    update tc_building_billing
+    <set >
+      <if test="billingStartTime != null" >
+        billing_start_time_date = #{billingStartTimeDate,jdbcType=DATE},
+      </if>
+      <if test="billingBalance != null and billingBalance != ''" >
+        billing_balance = #{billingBalance,jdbcType=DOUBLE},
+      </if>
+      <if test="chargeItemName != null and chargeItemName != ''" >
+        charge_item_name = #{chargeItemName,jdbcType=VARCHAR},
+      </if>
+      <if test="billingState != null" >
+        billing_state = #{billingState,jdbcType=TINYINT},
+      </if>
+      <if test="chargeItemBillingId != null" >
+        charge_item_billing_id = #{chargeItemBillingId,jdbcType=VARCHAR},
+      </if>
+      <if test="buildingId != null" >
+        building_id = #{buildingId,jdbcType=VARCHAR},
+      </if>        
+       <if test="chargeItemBillingId != null" >
+        charge_item_billing_id = #{chargeItemBillingId,jdbcType=VARCHAR},
+      </if>
+      <if test="chargeItemId != null" >
+        charge_item_id = #{chargeItemId,jdbcType=VARCHAR},
+      </if>
+      
+    </set>
+    where building_billing_id = #{buildingBillingId,jdbcType=VARCHAR}
+  </update>
+  <!-- 根据条件查询  -->
+  <select id="getBuildingBillingByCon"  parameterType="java.util.Map" resultMap="BaseResultMap">
+	select * from tc_building_billing
+		<where>
+			<if test="chargeItemBilling!=null and chargeItemBilling!= '' ">
+	       		charge_item_billing_id = #{chargeItemBillingId,jdbcType=VARCHAR}
+	     	</if>
+	    </where>
+  </select>
+  <!-- 根据条件删除 -->
+	<delete id="deleteBuildingBilling" parameterType="java.util.Map">
+		delete from tc_building_billing
+		<where>
+			<if test="chargeItemBilling!=null and chargeItemBilling!= '' ">
+	       		charge_item_billing_id = #{chargeItemBillingId,jdbcType=VARCHAR}
+	     	</if>
+		</where>
+	</delete>
+	
+	<select id="getBuildingBillingByBuildingId" parameterType="java.lang.String" resultMap="BaseResultMap">
+		select * from tc_building_billing 
+		where building_id=#{buildingId,jdbcType=VARCHAR}
+		order by billing_end_time desc
+	</select>
+	
+	<!-- 批量插入计费信息 -->
+	<insert id="insertList"  parameterType="java.util.List">
+		insert into tc_building_billing (building_billing_id, billing_start_time,billing_end_time,  
+      current_sum, last_sum, billing_balance, charge_item_name,billing_state,
+      charge_item_billing_id, building_id, charge_item_id
+      )
+    	values 
+		<foreach collection="list" item="item" index="index" separator="," >
+		(#{buildingBillingId,jdbcType=VARCHAR},
+      #{billingStartTime,jdbcType=DATE},
+      #{billingEndTime,jdbcType=DATE},
+      #{currentSum,jdbcType=DOUBLE}, 
+      #{lastSum,jdbcType=DOUBLE}, 
+      #{billingBalance,jdbcType=DOUBLE}, 
+      #{chargeItemName,jdbcType=VARCHAR}, 
+      #{billingState,jdbcType=TINYINT},
+      #{chargeItemBillingId,jdbcType=VARCHAR},
+      #{buildingId,jdbcType=VARCHAR},
+      #{chargeItemId,jdbcType=VARCHAR}
+      )
+		</foreach>
+	</insert>
+	<!-- 根据id获取建筑结构id 陈浪 2016.4.18 -->
+	<select id="selectBuildingIdByBuildingBillingId" parameterType="java.lang.String" resultMap="BaseResultMap">
+		SELECT Building_id FROM tc_building_billing WHERE building_billing_id =#{0}
+	</select>
+	<!-- 根据id获取建筑收费信息 陈浪 2016.4.18 -->
+	<select id="getBuildingBillingById" parameterType="java.lang.String" resultMap="BaseResultMap">
+		SELECT * FROM tc_building_billing WHERE building_billing_id =#{0}
+	</select>
+	<select id="listBuildingBillingByChargeItemBillingId" parameterType="java.lang.String" resultMap="BaseResultMap">
+		SELECT * FROM tc_building_billing WHERE charge_item_billing_id =#{0}
+	</select>
+	<select id="listBuildingBillingNoPostingByChargeItemBillingId" parameterType="java.lang.String" resultMap="BaseResultMap">
+		SELECT * FROM tc_building_billing WHERE charge_item_billing_id =#{0} and billing_state = 1
+	</select>
+	
+	
+</mapper>

@@ -1,0 +1,324 @@
+package com.flf.entity;
+
+import java.util.Date;
+import java.util.List;
+
+import javax.xml.bind.annotation.XmlRootElement;
+@XmlRootElement(name = "ElectricityMeterReadingData") // ��?�����
+public class ElectricityMeterReadingData {
+    private String electricityMeterReadingDataId; // ��?�����id
+
+    private String electricityMeterRecordId;  // ���ʹ�ü�¼id
+
+    private Double lastMonthReading;  // ���¶���el
+
+    private Double reading;  // ���¶���
+
+    private String meterReadingPeople;  // ������
+
+    private Byte meterReadingState;  // ����״̬
+
+    private Date meterReadingDate;  // ��������
+
+    private Byte readingState;  //����״̬
+
+    private String note;  // ��ע
+
+    private Byte auditState;  // ���״̬
+
+    private String auditPeople;  // �����
+
+    private Double correction;  // ������
+
+    private String reason;  // ԭ��
+
+    private Double electricityDamage; // ������
+
+    private Byte abnormalState;  // �쳣״̬
+
+    private String electricityMeterReadingProgramId;  //	����ƻ�id
+
+    private String teamworkId;  // �Ŷ�id
+    
+    private String fullName; //房屋全名
+    
+    private String electricityMeterNum; //电表编号
+    
+    private String electricityMeterId; //电表id
+    
+    private Page page;
+    
+    private Date specifiedDate;// 指定抄表日期
+    
+	private Double consumption;// 电表用量
+	
+	private Double lastMonthUse;// 上月用量
+	
+	private Double lastYearUse;// 去年用量
+	
+public String getElectricityMeterId() {
+		return electricityMeterId;
+	}
+
+	public void setElectricityMeterId(String electricityMeterId) {
+		this.electricityMeterId = electricityMeterId;
+	}
+
+private Double dosage; //用量
+    
+    public Double getDosage() {
+    	if(this.reading!=null&&this.lastMonthReading!=null){    		
+    		this. dosage=this.reading-this.lastMonthReading;
+    	}
+    	return this. dosage;
+	}
+
+	private Double comparedSame;  //同比
+    
+    private Double sequential; //环比
+    
+    private Double dosagePoor; // 用量差
+    
+    private String buildingStructureId; //建筑结构id
+
+    private List<String> meterReadingDataIds; 
+    
+
+    public List<String> getMeterReadingDataIds() {
+		return meterReadingDataIds;
+	}
+
+	public void setMeterReadingDataIds(List<String> meterReadingDataIds) {
+		this.meterReadingDataIds = meterReadingDataIds;
+	}
+
+	public String getBuildingStructureId() {
+		return buildingStructureId;
+	}
+
+	public void setBuildingStructureId(String buildingStructureId) {
+		this.buildingStructureId = buildingStructureId;
+	}
+
+	public String getElectricityMeterNum() {
+		return electricityMeterNum;
+	}
+
+	public void setElectricityMeterNum(String electricityMeterNum) {
+		this.electricityMeterNum = electricityMeterNum;
+	}
+
+	public Double getComparedSame() {
+		return comparedSame;
+	}
+
+	public void setComparedSame(Double comparedSame) {
+		this.comparedSame = comparedSame;
+	}
+
+	public Double getSequential() {
+		return sequential;
+	}
+
+	public void setSequential(Double sequential) {
+		this.sequential = sequential;
+	}
+
+	public Double getDosagePoor() {
+		return dosagePoor;
+	}
+
+	public void setDosagePoor(Double dosagePoor) {
+		this.dosagePoor = dosagePoor;
+	}
+
+	public void setDosage(Double dosage) {
+		this.dosage = dosage;
+	}
+
+	public String getFullName() {
+		return fullName;
+	}
+
+	public void setFullName(String fullName) {
+		this.fullName = fullName;
+	}
+
+	public String getElectricityMeterReadingDataId() {
+        return electricityMeterReadingDataId;
+    }
+
+    public void setElectricityMeterReadingDataId(String electricityMeterReadingDataId) {
+        this.electricityMeterReadingDataId = electricityMeterReadingDataId;
+    }
+
+    public String getElectricityMeterRecordId() {
+        return electricityMeterRecordId;
+    }
+
+    public void setElectricityMeterRecordId(String electricityMeterRecordId) {
+        this.electricityMeterRecordId = electricityMeterRecordId;
+    }
+
+    public Double getLastMonthReading() {
+        return lastMonthReading;
+    }
+
+    public void setLastMonthReading(Double lastMonthReading) {
+        this.lastMonthReading = lastMonthReading;
+    }
+
+    public Double getReading() {
+        return reading;
+    }
+
+    public void setReading(Double reading) {
+        this.reading = reading;
+    }
+
+    public String getMeterReadingPeople() {
+        return meterReadingPeople;
+    }
+
+    public void setMeterReadingPeople(String meterReadingPeople) {
+        this.meterReadingPeople = meterReadingPeople;
+    }
+
+    public Byte getMeterReadingState() {
+        return meterReadingState;
+    }
+
+    public void setMeterReadingState(Byte meterReadingState) {
+        this.meterReadingState = meterReadingState;
+    }
+
+    public Date getMeterReadingDate() {
+        return meterReadingDate;
+    }
+
+    public void setMeterReadingDate(Date meterReadingDate) {
+        this.meterReadingDate = meterReadingDate;
+    }
+
+    public Byte getReadingState() {
+        return readingState;
+    }
+
+    public void setReadingState(Byte readingState) {
+        this.readingState = readingState;
+    }
+
+    public String getNote() {
+        return note;
+    }
+
+    public void setNote(String note) {
+        this.note = note;
+    }
+
+    public Byte getAuditState() {
+        return auditState;
+    }
+
+    public void setAuditState(Byte auditState) {
+        this.auditState = auditState;
+    }
+
+    public String getAuditPeople() {
+        return auditPeople;
+    }
+
+    public void setAuditPeople(String auditPeople) {
+        this.auditPeople = auditPeople;
+    }
+
+    public Double getCorrection() {
+        return correction;
+    }
+
+    public void setCorrection(Double correction) {
+        this.correction = correction;
+    }
+
+    public String getReason() {
+        return reason;
+    }
+
+    public void setReason(String reason) {
+        this.reason = reason;
+    }
+
+    public Double getElectricityDamage() {
+        return electricityDamage;
+    }
+
+    public void setElectricityDamage(Double electricityDamage) {
+        this.electricityDamage = electricityDamage;
+    }
+
+    public Byte getAbnormalState() {
+        return abnormalState;
+    }
+
+    public void setAbnormalState(Byte abnormalState) {
+        this.abnormalState = abnormalState;
+    }
+
+    public String getElectricityMeterReadingProgramId() {
+        return electricityMeterReadingProgramId;
+    }
+
+    public void setElectricityMeterReadingProgramId(String electricityMeterReadingProgramId) {
+        this.electricityMeterReadingProgramId = electricityMeterReadingProgramId;
+    }
+
+    public String getTeamworkId() {
+        return teamworkId;
+    }
+
+    public void setTeamworkId(String teamworkId) {
+        this.teamworkId = teamworkId;
+    }
+
+	public Page getPage() {
+		return page;
+	}
+
+	public void setPage(Page page) {
+		this.page = page;
+	}
+	
+	public Date getSpecifiedDate() {
+		return specifiedDate;
+	}
+	
+	public void setSpecifiedDate(Date specifiedDate) {
+		this.specifiedDate = specifiedDate;
+	}
+	
+	public Double getConsumption() {
+		return consumption;
+	}
+
+	public void setConsumption(Double consumption) {
+		this.consumption = consumption;
+	}
+
+	public Double getLastMonthUse() {
+		return lastMonthUse;
+	}
+	
+	public void setLastMonthUse(Double lastMonthUse) {
+		this.lastMonthUse = lastMonthUse;
+	}
+	
+	public Double getLastYearUse() {
+		return lastYearUse;
+	}
+
+	public void setLastYearUse(Double lastYearUse) {
+		this.lastYearUse = lastYearUse;
+	}
+
+
+}

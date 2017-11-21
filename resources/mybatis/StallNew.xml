@@ -1,0 +1,384 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.flf.mapper.StallNewMapper" >
+  <resultMap id="BaseResultMap" type="StallNew" >
+    <result column="stall_id" property="stallId" jdbcType="VARCHAR" />
+    <result column="maintenance_price" property="maintenancePrice" jdbcType="DOUBLE" />
+    <result column="garage_id" property="garageId" jdbcType="INTEGER" />
+    <result column="person_id" property="personId" jdbcType="INTEGER" />
+    <result column="floor_number" property="floorNumber" jdbcType="VARCHAR" />
+    <result column="bairro" property="bairro" jdbcType="VARCHAR" />
+    <result column="is_mechanical_stall" property="isMechanicalStall" jdbcType="VARCHAR" />
+    <result column="stall_number" property="stallNumber" jdbcType="VARCHAR" />
+    <result column="stall_position" property="stallPosition" jdbcType="VARCHAR" />
+    <result column="stall_property" property="stallProperty" jdbcType="VARCHAR" />
+    <result column="fixed_parking" property="fixedParking" jdbcType="TINYINT" />
+    <result column="is_fixed_stall" property="isFixedStall" jdbcType="VARCHAR" />
+    <result column="intake_date" property="intakeDate" jdbcType="DATE" />
+    <result column="sales_state" property="salesState" jdbcType="TINYINT" />
+    <result column="intake_state" property="intakeState" jdbcType="TINYINT" />
+    <result column="rent_state" property="rentState" jdbcType="TINYINT" />
+    <result column="project_number" property="projectNumber" jdbcType="VARCHAR" />
+    <result column="project_name" property="projectName" jdbcType="VARCHAR" />
+    <result column="parcel_number" property="parcelNumber" jdbcType="VARCHAR" />
+    <result column="stall_coding" property="stallCoding" jdbcType="VARCHAR" />
+    <result column="garage_number" property="garageNumber" jdbcType="VARCHAR" />
+    <result column="garage_position" property="garagePosition" jdbcType="VARCHAR" />
+    <result column="contract_number" property="contractNumber" jdbcType="VARCHAR" />
+    <result column="subscription_date" property="subscriptionDate" jdbcType="DATE" />
+    <result column="contract_date" property="contractDate" jdbcType="DATE" />
+    <result column="Property_person" property="propertyPerson" jdbcType="VARCHAR" />
+    <result column="property_type" property="propertyType" jdbcType="VARCHAR" />
+    <result column="register_price" property="registerPrice" jdbcType="DOUBLE" />
+    <result column="mortgage_amount" property="mortgageAmount" jdbcType="DOUBLE" />
+    <result column="registrant" property="registrant" jdbcType="VARCHAR" />
+    <result column="registration_date" property="registrationDate" jdbcType="DATE" />
+    <result column="down_payment_amount" property="downPaymentAmount" jdbcType="DOUBLE" />
+    <result column="payment_method" property="paymentMethod" jdbcType="VARCHAR" />
+    <result column="transaction_type" property="transactionType" jdbcType="VARCHAR" />
+    <result column="discounted_prices" property="discountedPrices" jdbcType="DOUBLE" />
+    <result column="house_number" property="houseNumber" jdbcType="VARCHAR" />
+    <result column="parking_information" property="parkingInformation" jdbcType="VARCHAR" />
+    <result column="trade_information" property="tradeInformation" jdbcType="VARCHAR" />
+    <result column="stall_Type" property="stallType" jdbcType="VARCHAR" />
+    <result column="building_structure_id" property="buildingStructureId" jdbcType="VARCHAR" />
+    <result column="building_id" property="buildingId" jdbcType="VARCHAR" />   
+    <result column="usable_area" property="usableArea" jdbcType="DOUBLE"  />
+    <result column="project_id" property="projectId" jdbcType="VARCHAR" /> 
+    <result column="stall_state" property="stallState" jdbcType="VARCHAR" /> 
+    <result column="full_name" property="fullName" jdbcType="VARCHAR" /> 
+     <result column="building_certificate" property="buildingCertificate" jdbcType="VARCHAR" />
+  </resultMap>
+  
+  <resultMap type="StallNew" id="ResultMapWithExport" extends="BaseResultMap">
+  	<association property="buildingStructureNew" column="building_structure_id" javaType="BuildingStructureNew" select="com.flf.mapper.BuildingStructureNewMapper.getBuildingStructureNewbyId" />
+  </resultMap>
+ 
+<!--  通过搜索条件找到车位 -->
+	<select id="listSearchStallNew" resultMap="BaseResultMap" parameterType="Search">
+		SELECT a.* ,b.full_name FROM tc_stall a 
+		LEFT JOIN tc_building_structure b ON a.building_structure_id=b.id 
+		LEFT JOIN tc_person_building c ON b.id=c.building_structure_id
+		LEFT JOIN tc_person_cust d ON c.cust_id=d.cust_id
+		LEFT JOIN t_car_info e on e.owner = d.cust_id
+		WHERE 1=1
+		<if test="stallType!='' and stallType!=null"> 
+  			and a.stall_Type = #{stallType}
+  		</if>
+		<if test="staffName!='' and staffName!=null"> 
+  			and d.name like CONCAT('%',#{staffName},'%')
+  		</if>
+  		<if test="idNum!='' and idNum!=null">
+  			and d.card_num like CONCAT('%',#{idNum},'%')
+  		</if>
+  		<if test="phone!='' and phone!=null">
+  			and d.register_phone like CONCAT('%',#{phone},'%')
+  		</if>
+  		<if test="carportNum!='' and carportNum!=null">
+  			and a.stall_number like CONCAT('%',#{carportNum},'%')
+  		</if>
+  		<if test="custId!='' and custId!=null">
+  			and d.cust_id = #{custId}
+  		</if>
+  		<if test="carNum!='' and carNum!=null">
+  			and e.car_num like CONCAT('%',#{carNum},'%')
+  		</if>
+  		<if test="personBuildingState!=null">
+  			and c.state = #{personBuildingState}
+  		</if>
+  		<if test="houseAddress != null and houseAddress != ''">
+  			and b.full_name like CONCAT('%',#{houseAddress},'%')
+  		</if>
+		group by a.stall_id
+	</select>
+	<!-- 通过条件查询被授权了的车位信息 -->
+	<select id="listSearchStallNewAu" resultMap="BaseResultMap" parameterType="Search">
+		SELECT a.* ,f.full_name FROM tc_stall a 
+        LEFT JOIN tc_building_structure f ON a.building_structure_id=f.id 
+		LEFT JOIN tc_person_building c ON a.building_structure_id=c.building_structure_id
+		LEFT JOIN tc_person_cust d ON c.cust_id=d.cust_id
+		LEFT JOIN t_authorization e ON e.authorizer_personId =d.cust_id
+		WHERE e.status = '1' and e.authorized_personId=#{custId}  AND NOW() BETWEEN e.sta_date AND e.end_date  	
+		<if test="staffName!='' and staffName!=null">
+  			and d.name like CONCAT('%',#{staffName},'%')
+  		</if>
+  		<if test="idNum!='' and idNum!=null">
+  			and d.card_num like CONCAT('%',#{idNum},'%')
+  		</if>
+  		<if test="phone!='' and phone!=null">
+  			and d.phone_num like CONCAT('%',#{phone},'%')
+  		</if>
+  		<if test="carportNum!='' and carportNum!=null">
+  			and a.stall_number like CONCAT('%',#{carportNum},'%')
+  		</if>
+         <if test="personBuildingState!=null">
+  			and c.state = #{personBuildingState}
+  		</if>
+  		<if test="carportManage!=null">
+  			and e.carport_manage = #{carportManage}
+  		</if>
+  		<if test="ropertyChanges!=null">
+  			and e.roperty_changes = #{ropertyChanges}
+  		</if>
+		GROUP BY a.stall_id
+	</select>
+
+  	<select id="listPageStallNew" parameterType="StallNew" resultMap="BaseResultMap">
+		  select * from tc_stall 
+	</select>
+		<select id="listPageStallNewByType" parameterType="StallNew" resultMap="BaseResultMap">
+		  select * from tc_stall where stall_Type = "固定"
+		  <if test="stallCoding !=null and stallCoding !=''">
+		  and stall_coding like CONCAT('%',#{stallCoding},'%')
+		  </if>
+		  <if test="garagePosition !='' and garagePosition !=null">
+		  and garage_position like CONCAT('%',#{garagePosition},'%')
+		  </if>
+		  <if test="stallState !='' and stallState != null">
+		  and stall_state = #{stallState}
+		  </if>
+	</select>
+	<select id="listPageFixedStallNew" parameterType="StallNew" resultMap="BaseResultMap">
+		  	SELECT a.*,b.full_name FROM tc_stall a 
+			INNER JOIN tc_building_structure b ON a.building_structure_id = b.id
+			WHERE stall_Type = "固定"
+		  <if test="stallCoding !=null and stallCoding !=''">
+		  and stall_coding like CONCAT('%',#{stallCoding},'%')
+		  </if>
+		  <if test="garagePosition !='' and garagePosition !=null">
+		  and garage_position like CONCAT('%',#{garagePosition},'%')
+		  </if>
+		  <if test="fullName !='' and fullName !=null">
+		  and b.full_name like CONCAT('%',#{fullName},'%')
+		  </if>
+		  <if test="stallState !='' and stallState != null">
+		  and stall_state = #{stallState}
+		  </if>
+	</select>
+  
+   	<select id="listAllStallNew" resultMap="ResultMapWithExport">
+		  select * from tc_stall 
+	</select>
+	
+	<select id="listStallByPersonCustId" parameterType="String" resultMap="BaseResultMap">
+		  select * from tc_stall where person_id=#{0}
+	</select>
+	
+	 <select id="getStallNewById" parameterType="String" resultMap="BaseResultMap">
+		  select * from tc_stall where  stall_id = #{stallId,jdbcType=VARCHAR}
+	</select>
+	
+	<select id="getStallNewByBuildingStructureId" parameterType="String" resultMap="BaseResultMap">
+		  select * from tc_stall where  building_structure_id = #{0}
+	</select>
+	
+	<select id="getUsableAreaByBuildingStructureId" parameterType="String" resultType="Double">
+		  select usable_area from tc_stall where  building_structure_id = #{0}
+	</select>
+ 
+    <select id="listStallByBuildingStructureId" resultMap="BaseResultMap" parameterType="String">
+  	select a.*,b.full_name,b.completion_area from tc_stall a 
+     left join tc_building_structure b on a.building_structure_id=b.id
+ 	 where a.building_structure_id=#{0} limit 1
+  </select>
+
+  <delete id="deleteStoreNew" parameterType="String" >
+    delete from tc_stall where  stall_id = #{stallId,jdbcType=VARCHAR}
+  </delete>
+ 
+  <insert id="insertStallNew" parameterType="StallNew" >
+    insert into tc_stall (stall_id, maintenance_price, garage_id, 
+      person_id, floor_number, bairro, 
+      is_mechanical_stall, stall_number, stall_position, 
+      stall_property, fixed_parking, is_fixed_stall, 
+      intake_date, sales_state, intake_state, 
+      rent_state, project_number, project_name, 
+      parcel_number, stall_coding, garage_number, 
+      garage_position, contract_number, subscription_date, 
+      contract_date, Property_person, property_type, 
+      register_price, mortgage_amount, registrant, 
+      registration_date, down_payment_amount, payment_method, 
+      transaction_type, discounted_prices, house_number, 
+      parking_information, trade_information, stall_Type, 
+      building_structure_id, building_id,usable_area,project_id,building_certificate)
+    values (#{stallId,jdbcType=VARCHAR}, #{maintenancePrice,jdbcType=DOUBLE}, #{garageId,jdbcType=INTEGER}, 
+      #{personId,jdbcType=INTEGER}, #{floorNumber,jdbcType=VARCHAR}, #{bairro,jdbcType=VARCHAR}, 
+      #{isMechanicalStall,jdbcType=VARCHAR}, #{stallNumber,jdbcType=VARCHAR}, #{stallPosition,jdbcType=VARCHAR}, 
+      #{stallProperty,jdbcType=VARCHAR}, #{fixedParking,jdbcType=TINYINT}, #{isFixedStall,jdbcType=VARCHAR}, 
+      #{intakeDate,jdbcType=DATE}, #{salesState,jdbcType=TINYINT}, #{intakeState,jdbcType=TINYINT}, 
+      #{rentState,jdbcType=TINYINT}, #{projectNumber,jdbcType=VARCHAR}, #{projectName,jdbcType=VARCHAR}, 
+      #{parcelNumber,jdbcType=VARCHAR}, #{stallCoding,jdbcType=VARCHAR}, #{garageNumber,jdbcType=VARCHAR}, 
+      #{garagePosition,jdbcType=VARCHAR}, #{contractNumber,jdbcType=VARCHAR}, #{subscriptionDate,jdbcType=DATE}, 
+      #{contractDate,jdbcType=DATE}, #{propertyPerson,jdbcType=VARCHAR}, #{propertyType,jdbcType=VARCHAR}, 
+      #{registerPrice,jdbcType=DOUBLE}, #{mortgageAmount,jdbcType=DOUBLE}, #{registrant,jdbcType=VARCHAR}, 
+      #{registrationDate,jdbcType=DATE}, #{downPaymentAmount,jdbcType=DOUBLE}, #{paymentMethod,jdbcType=VARCHAR}, 
+      #{transactionType,jdbcType=VARCHAR}, #{discountedPrices,jdbcType=DOUBLE}, #{houseNumber,jdbcType=VARCHAR}, 
+      #{parkingInformation,jdbcType=VARCHAR}, #{tradeInformation,jdbcType=VARCHAR}, #{stallType,jdbcType=VARCHAR}, 
+      #{buildingStructureId,jdbcType=VARCHAR}, #{buildingId,jdbcType=VARCHAR},#{usableArea,jdbcType=DOUBLE}, #{projectId,jdbcType=VARCHAR},#{buildingCertificate})
+  </insert>
+ 
+  <update id="updateStallNew" parameterType="StallNew" >
+    update tc_stall
+    set
+      maintenance_price = #{maintenancePrice,jdbcType=DOUBLE},
+      garage_id = #{garageId,jdbcType=INTEGER},
+      person_id = #{personId,jdbcType=INTEGER},
+      floor_number = #{floorNumber,jdbcType=VARCHAR},
+      bairro = #{bairro,jdbcType=VARCHAR},
+      is_mechanical_stall = #{isMechanicalStall,jdbcType=VARCHAR},
+      stall_number = #{stallNumber,jdbcType=VARCHAR},
+      stall_position = #{stallPosition,jdbcType=VARCHAR},
+      stall_property = #{stallProperty,jdbcType=VARCHAR},
+      fixed_parking = #{fixedParking,jdbcType=TINYINT},
+      is_fixed_stall = #{isFixedStall,jdbcType=VARCHAR},
+      intake_date = #{intakeDate,jdbcType=DATE},
+      sales_state = #{salesState,jdbcType=TINYINT},
+      intake_state = #{intakeState,jdbcType=TINYINT},
+      rent_state = #{rentState,jdbcType=TINYINT},
+      project_number = #{projectNumber,jdbcType=VARCHAR},
+      project_name = #{projectName,jdbcType=VARCHAR},
+      parcel_number = #{parcelNumber,jdbcType=VARCHAR},
+      stall_coding = #{stallCoding,jdbcType=VARCHAR},
+      garage_number = #{garageNumber,jdbcType=VARCHAR},
+      garage_position = #{garagePosition,jdbcType=VARCHAR},
+      contract_number = #{contractNumber,jdbcType=VARCHAR},
+      subscription_date = #{subscriptionDate,jdbcType=DATE},
+      contract_date = #{contractDate,jdbcType=DATE},
+      Property_person = #{propertyPerson,jdbcType=VARCHAR},
+      property_type = #{propertyType,jdbcType=VARCHAR},
+      register_price = #{registerPrice,jdbcType=DOUBLE},
+      mortgage_amount = #{mortgageAmount,jdbcType=DOUBLE},
+      registrant = #{registrant,jdbcType=VARCHAR},
+      registration_date = #{registrationDate,jdbcType=DATE},
+      down_payment_amount = #{downPaymentAmount,jdbcType=DOUBLE},
+      payment_method = #{paymentMethod,jdbcType=VARCHAR},
+      transaction_type = #{transactionType,jdbcType=VARCHAR},
+      discounted_prices = #{discountedPrices,jdbcType=DOUBLE},
+      house_number = #{houseNumber,jdbcType=VARCHAR},
+      parking_information = #{parkingInformation,jdbcType=VARCHAR},
+      trade_information = #{tradeInformation,jdbcType=VARCHAR},
+      stall_Type = #{stallType,jdbcType=VARCHAR},
+      stall_state = #{stallState},
+      building_structure_id = #{buildingStructureId,jdbcType=VARCHAR},
+      building_id = #{buildingId,jdbcType=VARCHAR},
+      usable_area= #{usableArea,jdbcType=DOUBLE},
+      project_id=#{projectId,jdbcType=VARCHAR}
+       where  stall_id = #{stallId,jdbcType=VARCHAR}
+  </update>
+  <!-- 通过人员id查询车位信息  肖聪 2015/6/17   -->
+  <select id="listStallNewByPerson" resultMap="BaseResultMap" parameterType="String">
+		SELECT a.* FROM tc_stall a 
+		LEFT JOIN tc_building_structure b ON a.building_structure_id=b.id 
+		LEFT JOIN tc_person_building c ON b.id=c.building_structure_id
+		LEFT JOIN tc_person_cust d ON c.cust_id=d.cust_id
+		WHERE d.cust_id=#{0}
+		<!-- <if test="staffName!='' and staffName!=null">
+  			and d.name like CONCAT('%',#{staffName},'%')
+  		</if>
+  		<if test="idNum!='' and idNum!=null">
+  			and d.card_num like CONCAT('%',#{idNum},'%')
+  		</if>
+  		<if test="phone!='' and phone!=null">
+  			and d.phone_num like CONCAT('%',#{phone},'%')
+  		</if>
+  		<if test="carportNum!='' and carportNum!=null">
+  			and a.stall_number like CONCAT('%',#{carportNum},'%')
+  		</if>
+		LIMIT 0,300 -->
+	</select>
+	<update id="updateStallNewType" parameterType="StallNew" >
+    update tc_stall
+    set
+      stall_Type = #{stallType,jdbcType=VARCHAR}
+       where  stall_id = #{stallId,jdbcType=VARCHAR}
+  </update>
+
+	<!-- 根据项目id查询车位数据 -->
+	<select id="listStallByProjectId" parameterType="String" resultMap="BaseResultMap">
+		select a.*,b.full_name from tc_stall a left join tc_building_structure b on a.building_structure_id = b.id where a.project_id = #{projectId,jdbcType=VARCHAR}
+	</select>
+		<!-- 根据车位类型查询车位数据 -->
+	<select id="listStallByStallType" parameterType="String" resultMap="BaseResultMap">
+		select * from tc_stall where stall_type = #{0}
+	</select>
+	  <update id="updateStall" parameterType="String">
+      update tc_stall 
+      set building_certificate=#{1}
+      where building_structure_id=#{0}
+  </update>
+  
+  	<!-- 批量插入车位信息（用于Excel导入）
+	<insert id="insertList"  parameterType="java.util.List">
+		insert into tc_stall (stall_id,building_structure_id, building_id,project_id)
+    	values 
+		<foreach collection="list" item="item" index="index" separator="," >
+			(#{item.stallId,jdbcType=VARCHAR},#{item.buildingStructureId,jdbcType=VARCHAR}, #{item.buildingId,jdbcType=VARCHAR},#{item.projectId,jdbcType=VARCHAR})
+		</foreach>
+	</insert>
+	 -->
+	<!-- 批量插入车位信息（用于Excel导入） -->
+	<insert id="insertList"  parameterType="java.util.List">
+		Insert Into tc_stall (stall_id, maintenance_price, garage_id
+	      , person_id, floor_number, bairro
+	      , is_mechanical_stall, stall_number, stall_position
+	      , stall_property, fixed_parking, is_fixed_stall
+	      , intake_date, sales_state, intake_state
+	      , rent_state, project_number, project_name
+	      , parcel_number, stall_coding, garage_number
+	      , garage_position, contract_number, subscription_date
+	      , contract_date, Property_person, property_type
+	      , register_price, mortgage_amount, registrant
+	      , registration_date, down_payment_amount, payment_method
+	      , transaction_type, discounted_prices, house_number
+	      , parking_information, trade_information, stall_Type
+	      , building_structure_id, building_id,usable_area
+	      , project_id,building_certificate)
+    	Values 
+		<foreach collection="list" item="item" index="index" separator="," >
+			(#{item.stallId,jdbcType=VARCHAR}, #{item.maintenancePrice,jdbcType=DOUBLE}, #{item.garageId,jdbcType=INTEGER}
+	      , #{item.personId,jdbcType=INTEGER}, #{item.floorNumber,jdbcType=VARCHAR}, #{item.bairro,jdbcType=VARCHAR}
+	      , #{item.isMechanicalStall,jdbcType=VARCHAR}, #{item.stallNumber,jdbcType=VARCHAR}, #{item.stallPosition,jdbcType=VARCHAR}
+	      , #{item.stallProperty,jdbcType=VARCHAR}, #{item.fixedParking,jdbcType=TINYINT}, #{item.isFixedStall,jdbcType=VARCHAR}
+	      , #{item.intakeDate,jdbcType=DATE}, #{item.salesState,jdbcType=TINYINT}, #{item.intakeState,jdbcType=TINYINT}
+	      , #{item.rentState,jdbcType=TINYINT}, #{item.projectNumber,jdbcType=VARCHAR}, #{item.projectName,jdbcType=VARCHAR}
+	      , #{item.parcelNumber,jdbcType=VARCHAR}, #{item.stallCoding,jdbcType=VARCHAR}, #{item.garageNumber,jdbcType=VARCHAR}
+	      , #{item.garagePosition,jdbcType=VARCHAR}, #{item.contractNumber,jdbcType=VARCHAR}, #{item.subscriptionDate,jdbcType=DATE}
+	      , #{item.contractDate,jdbcType=DATE}, #{item.propertyPerson,jdbcType=VARCHAR}, #{item.propertyType,jdbcType=VARCHAR}
+	      , #{item.registerPrice,jdbcType=DOUBLE}, #{item.mortgageAmount,jdbcType=DOUBLE}, #{item.registrant,jdbcType=VARCHAR}
+	      , #{item.registrationDate,jdbcType=DATE}, #{item.downPaymentAmount,jdbcType=DOUBLE}, #{item.paymentMethod,jdbcType=VARCHAR}
+	      , #{item.transactionType,jdbcType=VARCHAR}, #{item.discountedPrices,jdbcType=DOUBLE}, #{item.houseNumber,jdbcType=VARCHAR}
+	      , #{item.parkingInformation,jdbcType=VARCHAR}, #{item.tradeInformation,jdbcType=VARCHAR}, #{item.stallType,jdbcType=VARCHAR}
+	      , #{item.buildingStructureId,jdbcType=VARCHAR}, #{item.buildingId,jdbcType=VARCHAR},#{item.usableArea,jdbcType=DOUBLE}
+	      , #{item.projectId,jdbcType=VARCHAR},#{item.buildingCertificate,jdbcType=VARCHAR})
+		</foreach>
+	</insert>
+	
+	
+	<!-- 根据项目id分页查询车位数据  wangzhou 2016-03-24 -->
+	<select id="listPageStallByProjectId" parameterType="StallNew" resultMap="BaseResultMap">
+		select a.*,b.full_name from tc_stall a left join tc_building_structure b on a.building_structure_id = b.id where a.project_id = #{projectId,jdbcType=VARCHAR}
+	</select>
+	
+	<!-- 根据建筑结构id分页查询车位数据  ylq 2016-07-05 -->
+	<select id="listPageStallByBuildingStructureId" parameterType="StallNew" resultMap="BaseResultMap">
+		Select a.*,b.full_name From tc_stall a 
+		Left Join tc_building_structure b On a.building_structure_id = b.id
+		Where a.building_structure_id = #{buildingStructureId,jdbcType=VARCHAR} Or b.parent_id = #{buildingStructureId,jdbcType=VARCHAR}
+	</select>
+	
+	<!-- 根据建筑结构id分页查询车位数据  ylq 2016-07-28 
+	<select id="listPageStallByBuildingStructureId" parameterType="StallNew" resultMap="BaseResultMap">
+		Select a.*,s.full_name From tc_stall a 
+		Left Join tc_building_structure s On a.building_structure_id = s.id
+		Where a.building_structure_id In
+		(
+			Select d.id From tc_building_structure b
+			Inner Join tc_building_structure c On c.parent_id = b.id
+			Inner Join tc_building_structure d On d.parent_id = c.id
+			Where b.id = #{buildingStructureId,jdbcType=VARCHAR} Or c.id = #{buildingStructureId,jdbcType=VARCHAR} 
+			Or d.id = #{buildingStructureId,jdbcType=VARCHAR}
+		)
+	</select>
+	-->
+	
+</mapper>

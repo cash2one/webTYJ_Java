@@ -1,0 +1,133 @@
+package com.flf.push;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpResponse;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.entity.UrlEncodedFormEntity;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.message.BasicNameValuePair;
+import org.apache.http.util.EntityUtils;
+
+/**
+ * 调用远程api实现推送
+ * 
+ * @author naiyu
+ * 
+ */
+public class PushMsgUtil {
+
+	// public static final String PUSH_URL =
+	// "https://api.jpush.cn:443/sendmsg/sendmsg";
+	// public static final String PUSH_URL =
+	// "http://api.jpush.cn:8800/sendmsg/sendmsg";
+	public static final String PUSH_URL = "http://api.jpush.cn:8800/v2/push";
+//	public static final String app_key = "8f3ff27f03563e064349f5e3";
+//	public static final String master_secret = "456c5d7db71f6b3c5b854c6e";
+//	public static final String app_key = "a4ed5d5f6bcf51bd7bbbb1d2";
+	public static final String app_key = "9dd2a61f8cf6950b170149ed";
+//	public static final String master_secret = "1ef5bdab971b4c21e889b3c9";
+	public static final String master_secret = "3fb9b683bdef1c268c73f3fe";
+
+	private static void pushMsg(String msg,String tags) {//msg推送消息的内容  tags组
+		BasicNameValuePair value = new BasicNameValuePair("receiver_value",
+				tags); // 用户名
+		BasicNameValuePair sendno = new BasicNameValuePair("sendno", "3621"); // 发送编号。由开发者自己维护，标识一次发送请求
+		BasicNameValuePair appkeys = new BasicNameValuePair("app_key",
+				app_key); // 待发送的应用程序(appKey)，只能填一个。
+		BasicNameValuePair receiver_type = new BasicNameValuePair(
+				"receiver_type", "2");
+		// 验证串，用于校验发送的合法性。
+		BasicNameValuePair verification_code = new BasicNameValuePair(
+				"verification_code", getVerificationCode(tags));
+		// 发送消息的类型：1 通知 2 自定义
+		BasicNameValuePair msg_type = new BasicNameValuePair("msg_type", "1");
+		BasicNameValuePair msg_content = new BasicNameValuePair("msg_content",
+				msg);
+		// 目标用户终端手机的平台类型，如： android, ios 多个请使用逗号分隔。
+		BasicNameValuePair platform = new BasicNameValuePair("platform",
+				"android,ios");
+		List<BasicNameValuePair> datas = new ArrayList<BasicNameValuePair>();
+		datas.add(value);
+		datas.add(sendno);
+		datas.add(appkeys);
+		datas.add(receiver_type);
+		datas.add(verification_code);
+		datas.add(msg_type);
+		datas.add(msg_content);
+		datas.add(platform);
+		try {
+			HttpEntity entity = new UrlEncodedFormEntity(datas, "utf-8");
+			HttpPost post = new HttpPost(PUSH_URL);
+			post.setEntity(entity);
+			HttpClient client = ClientUtil.getNewHttpClient();
+			HttpResponse reponse = client.execute(post);
+			HttpEntity resEntity = reponse.getEntity();
+			System.out.println(EntityUtils.toString(resEntity));
+		} catch (Exception ex) {
+			ex.printStackTrace();
+		}
+
+	}
+
+	private static String getVerificationCode(String tag) {
+
+		int sendno = 3621;
+		int receiverType = 2;
+		String value = tag;
+		String masterSecret = master_secret;
+
+		String input = String.valueOf(sendno) + receiverType + value
+				+ masterSecret;
+		String verificationCode = StringUtils.toMD5(input).toUpperCase();
+		return verificationCode;
+	}
+
+//	public static void main(String[] args) {  
+//        String msg = "{\"n_title\":\"来点外卖\",\"n_content\":\"你好\"}";  
+//        String msg1 = "{\"n_content\":\"通知内容\", \"n_extras\":{\"ios\":{\"badge\":88, \"sound\":\"ringing.wav\", \"content-available\":1}}}";
+//        System.out.println(msg1);  
+//        PushMsgUtil.pushMsg(msg1);  
+//    }
+//	
+	public static void sendMsg(String msg,String tags){
+		
+		String jsonStr = "{\"n_content\":\""+msg+"\", \"n_extras\":{\"ios\":{\"badge\":1, \"sound\":\"ringing.wav\", \"content-available\":1},\"user_param_1\":\"value1\", \"user_param_2\":\"value2\"}}";
+		PushMsgUtil.pushMsg(jsonStr,tags); 
+	}
+	
+	
+	/**
+	 * 
+	 * @param msg 消息
+	 * @param tags 目前是账号
+	 * @param paramas 参数列表（company_id[公司id];msg_type[消息类型，1，检测；2，审核]）
+	 */
+	public static void toAppMsg(String msg,String tags,java.util.Map<String,String> paramas){
+		
+		if(msg==null||msg.length()==0){
+			return;
+		}
+		
+		if(paramas == null || paramas.size() == 0){
+			return;
+		}
+		
+		String jsonStr = "{\"n_content\":\""+msg+"\", \"n_extras\":{\"ios\":{\"badge\":1, \"sound\":\"ringing.wav\", \"content-available\":1} ";
+		
+		if (paramas != null && paramas.size() > 0) {
+			java.util.Set<?> set = paramas.entrySet();
+			java.util.Iterator<?>  iterator = set.iterator();
+			java.util.Map.Entry mapentry = null;
+			while (iterator.hasNext()) {
+				mapentry = (java.util.Map.Entry) iterator.next();
+				jsonStr +=",\""+mapentry.getKey()+"\":\""+mapentry.getValue()+"\"";
+				mapentry = null;
+			}
+		}
+		jsonStr += "}}";
+		PushMsgUtil.pushMsg(jsonStr,tags); 
+	}
+}

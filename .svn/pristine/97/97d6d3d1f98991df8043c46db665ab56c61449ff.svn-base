@@ -1,0 +1,23 @@
+package com.flf.service.impl;
+
+import com.flf.mapper.ChargeTypeDetailsBuildingBillingMapper;
+import com.flf.service.ChargeTypeDetailsBuildingBillingService;
+/**
+ * @author maogaofei
+ * @date 2016年7月9日 下午2:47:03
+ */
+public class ChargeTypeDetailsBuildingBillingServiceImpl implements ChargeTypeDetailsBuildingBillingService {
+	
+	private ChargeTypeDetailsBuildingBillingMapper chargeTypeDetailsBuildingBillingMapper;
+
+	public ChargeTypeDetailsBuildingBillingMapper getChargeTypeDetailsBuildingBillingMapper() {
+		return chargeTypeDetailsBuildingBillingMapper;
+	}
+
+	public void setChargeTypeDetailsBuildingBillingMapper(
+			ChargeTypeDetailsBuildingBillingMapper chargeTypeDetailsBuildingBillingMapper) {
+		this.chargeTypeDetailsBuildingBillingMapper = chargeTypeDetailsBuildingBillingMapper;
+	}
+
+
+}

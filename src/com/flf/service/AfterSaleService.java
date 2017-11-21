@@ -1,0 +1,123 @@
+/**
+ * @Title: AfterSaleService.java
+ * @Package com.flf.service
+ * @Description: TODO
+ * Copyright: Copyright (c) 2011 
+ * Company:武汉闻风多奇软件开发有限公司
+ * 
+ * @author wangtao
+ * @date 2015-4-20 下午4:45:25
+ * @version V1.0
+ */
+
+package com.flf.service;
+
+import java.util.List;
+
+import javax.ws.rs.Consumes;
+import javax.ws.rs.DELETE;
+import javax.ws.rs.GET;
+import javax.ws.rs.POST;
+import javax.ws.rs.PUT;
+import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
+import javax.ws.rs.Produces;
+import javax.ws.rs.core.MediaType;
+
+import com.flf.entity.AfterSale;
+import com.flf.entity.AfterSaleQuery;
+import com.flf.entity.PageRestful;
+import com.flf.entity.Project;
+import com.flf.entity.PropertyType;
+
+/**
+ * @ClassName: AfterSaleService
+ * @Description: TODO
+ * @author wangyang
+ * @date 2015-4-20 下午4:45:25
+ *
+ */
+@Path(value="/AfterSale")
+public interface AfterSaleService {
+	List<AfterSale> listAllAfterSale();
+    List<AfterSale> listPageAfterSale(AfterSaleQuery afterSaleQuery);
+    AfterSale getAfterSaleById(String id);
+    int insertAfterSale(AfterSale afterSale);
+    int updateAfterSale(AfterSale afterSale);
+    
+    //查询售后管理表所有数据
+    @POST
+  	@Path("/listPageAfterSaleByProcessId")
+  	@Produces(MediaType.APPLICATION_JSON)
+    PageRestful listPageAfterSaleByProcessId(AfterSale afterSale);
+    
+    @POST
+    @Path("/listPageAfterSaleRestful")
+    @Produces(MediaType.APPLICATION_JSON)
+    PageRestful listPageAfterSaleRestful(AfterSaleQuery afterSaleQuery);
+    
+    @GET
+  	@Path("/listAllAfterSaleRestful")
+  	@Produces(MediaType.APPLICATION_JSON)
+    List<AfterSale> listAllAfterSaleRestful();
+    
+    //查询条件项目以及专业
+    @POST
+  	@Path("/listProjectAndTypeName")
+    @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+    PageRestful listProjectAndTypeName(AfterSaleQuery afterSaleQuery);
+    
+    //根据传入的id修改保修单位字段的值
+    @PUT
+    @Path("updateGuaranteeById/{id}")
+    @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+    void updateGuaranteeById(@PathParam("id") String id);
+    
+    @GET
+  	@Path("/getAfterSaleByIdRestful/{id}")
+  	@Produces(MediaType.APPLICATION_JSON)
+    AfterSale getAfterSaleByIdRestful(@PathParam("id") String id);
+    
+    @DELETE
+   	@Path("/deleteAfterSaleRestful/{id}")
+    @Produces(MediaType.APPLICATION_JSON)
+    void deleteAfterSaleRestful(@PathParam("id") String id);
+    
+    @POST
+   	@Path("/insertAfterSaleRestful")
+   	@Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+    void insertAfterSaleRestful(AfterSale afterSale);
+    
+    @PUT
+   	@Path("/updateAfterSaleRestful")
+   	@Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+    void updateAfterSaleRestful(AfterSale afterSale);
+    
+    @PUT
+    @Path("/updateAfterSaleRelationIdById")
+    @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+    void updateAfterSaleRelationIdById(AfterSale afterSale);
+    
+    @PUT
+    @Path("/updateAfterSaleProcessStateByProcessId")
+    @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+    void updateAfterSaleProcessStateByProcessId(AfterSale afterSale);
+    
+    //查询所有项目放入下拉框
+    @GET
+    @Path("/listprojectname")
+    @Produces(MediaType.APPLICATION_JSON)
+    List<Project> listProjectName();
+    
+    //查询所有专业
+    @GET
+    @Path("listpropertytype")
+    @Produces(MediaType.APPLICATION_JSON)
+    List<PropertyType> listPropertyType();
+    
+  //根据projectId查询售后管理信息
+    @GET
+    @Path("/getAfterSaleInfoByProjectId/{projectId}")
+    @Produces(MediaType.APPLICATION_JSON)
+    List<AfterSale> getAfterSaleInfoByProjectId(@PathParam("projectId") String projectId);
+}

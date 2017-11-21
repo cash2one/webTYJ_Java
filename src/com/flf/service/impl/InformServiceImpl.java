@@ -1,0 +1,196 @@
+package com.flf.service.impl;
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.List;
+
+import javax.jws.WebService;
+
+import net.sf.json.JSONObject;
+
+import com.flf.entity.Inform;
+import com.flf.entity.PageRestful;
+import com.flf.entity.Rules;
+import com.flf.mapper.InformMapper;
+import com.flf.service.InformService;
+import com.flf.util.JsonUtil;
+@WebService
+public class InformServiceImpl implements InformService{
+	private InformMapper informMapper;
+	public InformMapper getInformMapper() {
+		return informMapper;
+	}
+
+	public void setInformMapper(InformMapper informMapper) {
+		this.informMapper = informMapper;
+	}
+
+	@Override
+	public List<Inform> listPageInform(Inform inform) {
+		// TODO Auto-generated method stub
+		return informMapper.listPageInform(inform);
+	}
+
+	@Override
+	public String getInformById(String id) {
+		// TODO Auto-generated method stub
+		Inform inform=informMapper.getInformById(id);
+		if(inform!=null){
+			JSONObject json=JSONObject.fromObject(inform);
+			return JsonUtil.success(json, false);
+		}else{
+			return JsonUtil.failure("failure", true);
+		}
+	}
+
+	@Override
+	public String deleteInform(String id) {
+		// TODO Auto-generated method stub
+		try {			
+			if(informMapper.deleteInform(id)>0)
+			{
+			return JsonUtil.success("success", true);
+			}else{
+				return JsonUtil.failure("failure", true);
+			}
+
+		} catch (Exception e) {
+			// TODO: handle exception
+			return JsonUtil.failure("failure", true);
+		}
+	}
+
+	@Override
+	public String insertInform(String inform) {
+		// TODO Auto-generated method stub
+		JSONObject json=JSONObject.fromObject(inform);
+		Inform inform1=(Inform) JSONObject.toBean(json,Inform.class);
+		if(informMapper.insertInform(inform1)>0){
+			return JsonUtil.success("success",true);
+		}
+		return JsonUtil.failure("failure",true);
+	}
+
+	@Override
+	public String updateInform(String inform) {
+		// TODO Auto-generated method stub	
+		JSONObject json=JSONObject.fromObject(inform);
+		Inform inform2=(Inform) JSONObject.toBean(json,Inform.class);
+		if(informMapper.updateInform(inform2)>0){
+			return JsonUtil.success("success",true);
+		}
+		return JsonUtil.failure("failure",true);
+	}
+
+	@Override
+	public List<Inform> listAllInform() {
+		// TODO Auto-generated method stub
+		return informMapper.listAllInform();
+	}
+
+	@Override
+	public Inform getInforms(String id) {
+		// TODO Auto-generated method stub
+		return informMapper.getInforms(id);
+	}
+
+	@Override
+	public int updateInforms(Inform inform) {
+		// TODO Auto-generated method stub
+		return informMapper.updateInforms(inform);
+	}
+
+	@Override
+	public void insertInforms(Inform inform) {
+		// TODO Auto-generated method stub
+		Date date =new Date();
+		//SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		inform.setTime(date);
+		informMapper.insertInforms(inform);
+		return;
+	}
+
+	@Override
+	public int deleteInforms(String id) {
+		// TODO Auto-generated method stub
+		return informMapper.deleteInforms(id);
+	}
+
+
+	@Override
+	public Inform getInformByIdRest(String id) {
+		// TODO Auto-generated method stub
+		Inform inform=informMapper.getInformById(id);
+		return inform;
+	}
+
+	@Override
+	public void AllInform(Inform inform) {
+		// TODO Auto-generated method stub
+		informMapper.insertInform(inform);
+		return;
+	}
+
+	@Override
+	public void UpdateInform(Inform inform) {
+		// TODO Auto-generated method stub
+		inform.setTime(new Date());
+		informMapper.updateInform(inform);
+		return;
+	}
+
+	@Override
+	public void DeleteInform(String id) {
+		// TODO Auto-generated method stub
+		informMapper.deleteInform(id);
+		return;
+	}
+
+	/*
+	  * <p>Title: listPageinform</p>
+	  * <p>Description: </p>
+	  * @param inform
+	  * @return
+	  * @see com.flf.service.InformService#listPageinform(com.flf.entity.Inform)
+	  */
+	
+	
+	@Override
+	public PageRestful listPageinform(Inform inform) {
+		// TODO Auto-generated method stub
+		PageRestful pageRestful=new PageRestful();
+		List<Inform> informs = informMapper.listPageInform(inform);
+		informs.add(0,null);
+		pageRestful.setInforms(informs);
+		pageRestful.setPage(inform.getPage());
+		return pageRestful;
+	}
+
+	/*
+	  * <p>Title: listAllinform</p>
+	  * <p>Description: </p>
+	  * @return
+	  * @see com.flf.service.InformService#listAllinform()
+	  */
+	
+	
+	@Override
+	public List<Inform> listAllinform() {
+		// TODO Auto-generated method stubaaaa
+		List<Inform> informs = informMapper.listAllInform();
+		return informs;
+	}
+	
+	public List<Inform> listAllsinform() {
+		// TODO Auto-generated method stubaaaa
+		List<Inform> informs = informMapper.listAllsInform();
+		return informs;
+	}
+
+	@Override
+	public List<Inform> listAllsinformByUserId(String userId) {
+		// TODO Auto-generated method stub
+		return informMapper.listAllsinformByUserId(userId);
+	}
+
+}

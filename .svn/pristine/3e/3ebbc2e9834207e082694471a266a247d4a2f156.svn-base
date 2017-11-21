@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.flf.mapper.ContractMapper" >
+  <resultMap id="BaseResultMap" type="Contract" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="contract_odd_num" property="contractOddNum" jdbcType="VARCHAR" />
+    <result column="contract_num" property="contractNum" jdbcType="VARCHAR" />
+    <result column="contract_type" property="contractType" jdbcType="VARCHAR" />
+    <result column="contract_project" property="contractProject" jdbcType="VARCHAR" />
+    <result column="first_party" property="firstParty" jdbcType="VARCHAR" />
+    <result column="second_party" property="secondParty" jdbcType="VARCHAR" />
+    <result column="third_party" property="thirdParty" jdbcType="VARCHAR" />
+    <result column="four_party" property="fourParty" jdbcType="VARCHAR" />
+     <result column="start_using_date" property="startUsingDate" jdbcType="DATE" />
+  </resultMap>
+
+	<resultMap type="Contract" id="ContractResultMap" extends="BaseResultMap">
+		<collection property="contractPropertyStructures" column="id" select="com.flf.mapper.ContractPropertyStructureMapper.listAllContractPropertyStructureByContractId"></collection>
+		<collection property="annexs" column="id" ofType="Annex" select="com.flf.mapper.AnnexMapper.getAnnexbyRelationId"></collection>
+	</resultMap>
+	<resultMap type="Contract" id="ContractIdResultMap" extends="BaseResultMap">
+		<collection property="annexs" column="id" ofType="Annex" select="com.flf.mapper.AnnexMapper.getAnnexbyRelationId"></collection>
+	</resultMap>
+  
+  <delete id="deleteContract" parameterType="java.lang.String" >
+    delete from t_contract
+    where id = #{0,jdbcType=VARCHAR}
+  </delete>
+  
+  <insert id="insertContract" parameterType="Contract" >
+    insert into t_contract (id, contract_odd_num, contract_num,
+      contract_type, contract_project, first_party,second_party,third_party,four_party,start_using_date
+      )
+    values (#{id,jdbcType=VARCHAR}, #{contractOddNum,jdbcType=VARCHAR}, #{contractNum,jdbcType=VARCHAR}, 
+      #{contractType,jdbcType=VARCHAR}, #{contractProject,jdbcType=VARCHAR}, #{firstParty,jdbcType=VARCHAR}, 
+      #{secondParty,jdbcType=VARCHAR},#{thirdParty},#{fourParty},#{startUsingDate,jdbcType=DATE})
+  </insert>
+  
+  <select id="listPageContract" parameterType="Contract" resultMap="ContractIdResultMap">
+    select  ct.id,ct.contract_odd_num,ct.contract_num,ct.contract_type,ct.contract_project,ct.first_party
+    ,ct.second_party,ct.third_party,ct.four_party,ct.start_using_date,
+    pty.property_id,pty.property_name,pty.expiration_date
+    from 
+    t_contract ct 
+    inner join t_contract_property_structure cps on ct.id=cps.contract_id
+    inner join t_property pty on cps.property_id=pty.property_id
+    
+    <if test="contractNum !=null and contractNum !='' ">
+    and ct.contract_num LIKE CONCAT('%',#{contractNum},'%')
+    </if>
+    <if test="contractProject !='' and contractProject !=null">
+    and ct.contract_project LIKE CONCAT('%',#{contractProject},'%')
+    </if>
+     <if test="startTime !='' and startTime !=null or endTime !='' and  endTime !=null" >
+    and ct.start_using_date between #{startTime} and  #{endTime}
+    </if>
+   
+    group by ct.id
+  </select>
+  
+  <select id="listAllContract" resultMap="BaseResultMap">
+    select * from t_contract   
+  </select>
+  
+  <select id="getContractById" resultMap="ContractResultMap" parameterType="String">
+    select * from t_contract where id=#{0}   
+  </select>
+  
+  
+  
+  <update id="updateByPrimaryKey" parameterType="Contract" >
+    update t_contract
+    set contract_odd_num = #{contractOddNum,jdbcType=VARCHAR},
+      contract_num = #{contractNum,jdbcType=VARCHAR},
+      contract_type = #{contractType,jdbcType=VARCHAR},
+      contract_project = #{contractProject,jdbcType=VARCHAR},
+      first_party = #{firstParty,jdbcType=VARCHAR},
+      second_party = #{secondParty,jdbcType=VARCHAR},
+      third_part=#{thirdParty},
+      four_party=#{fourParty},
+      start_using_date=#{startUsingDate,jdbcType=DATE}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  
+  
+  <select id="getContractDataById" parameterType="java.lang.String" resultMap="BaseResultMap">
+ 	 SELECT * FROM  t_contract_property_structure a ,t_contract c
+	 WHERE a.contract_id=c.id 
+	 AND a.property_id=#{0}  
+  </select>
+</mapper>

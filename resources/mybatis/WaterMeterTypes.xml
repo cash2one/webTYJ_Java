@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.flf.mapper.MeterTypesMapper" >
+  <resultMap id="BaseResultMap" type="com.flf.entity.WaterMeterTypes" >
+    <id column="water_meter_types_id" property="waterMeterTypesId" jdbcType="VARCHAR" />
+    <result column="water_meter_types_name" property="waterMeterTypesName" jdbcType="VARCHAR" />
+    <result column="water_meter_described" property="waterMeterDescribed" jdbcType="VARCHAR" />
+  </resultMap>
+  
+  
+<!--   分页查询水表所属建筑类型id信息 -->
+  <select id="listPageWaterMeterTypes" parameterType="WaterMeterTypes" resultMap="BaseResultMap">
+      select * from t_water_meter_types
+  </select>
+  
+   <!-- 查询所有水表所属建筑类型id信息 -->
+  <select id="listAllWaterMeterTypes" resultMap="BaseResultMap">
+      select * from t_water_meter_types
+  </select>
+  
+<!--    根据id查询水表所属建筑类型id信息 -->
+  <select id="getWaterMeterTypesbyId" parameterType="String" resultMap="BaseResultMap">
+      select * from t_water_meter_types  where water_meter_types_id=#{0}
+  </select>
+  
+ <!--   删除水表所属建筑类型id信息 -->
+  <delete id="deleteWaterMeterTypes" parameterType="String">
+      delete from t_water_meter_types where water_meter_types_id=#{0}
+  </delete>
+  
+<!--    新增水表所属建筑类型id信息 -->
+  <insert id="insertWaterMeterTypes" parameterType="com.flf.entity.WaterMeterTypes" >
+    insert into t_water_meter_types (water_meter_types_id, water_meter_types_name, 
+      water_meter_described)
+    values (UUID(), #{waterMeterTypesName,jdbcType=VARCHAR}, 
+      #{waterMeterDescribed,jdbcType=VARCHAR})
+  </insert>
+  
+<!--    修改水表所属建筑类型id信息 -->
+  <update id="updateWaterMeterTypes" parameterType="com.flf.entity.WaterMeterTypes" >
+    update t_water_meter_types
+    <set >
+      <if test="waterMeterTypesName != null" >
+        water_meter_types_name = #{waterMeterTypesName,jdbcType=VARCHAR},
+      </if>
+      <if test="waterMeterDescribed != null" >
+        water_meter_described = #{waterMeterDescribed,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where water_meter_types_id = #{waterMeterTypesId,jdbcType=VARCHAR}
+  </update>
+ 
+</mapper>

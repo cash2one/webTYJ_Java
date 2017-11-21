@@ -1,0 +1,411 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.flf.mapper.EnterpriseCustNewMapper">
+	<resultMap id="BaseResultMap" type="EnterpriseCustNew">
+		<id column="enterprise_id" property="enterpriseId" jdbcType="VARCHAR" />
+		<result column="enterprise_name" property="enterpriseName"
+			jdbcType="VARCHAR" />
+		<result column="address" property="address" jdbcType="VARCHAR" />
+		<result column="representative" property="representative"
+			jdbcType="VARCHAR" />
+		<result column="office_phone" property="officePhone" jdbcType="VARCHAR" />
+		<result column="fax_number" property="faxNumber" jdbcType="VARCHAR" />
+		<result column="enterprise_url" property="enterpriseUrl"
+			jdbcType="VARCHAR" />
+		<result column="tax_certificate" property="taxCertificate"
+			jdbcType="VARCHAR" />
+		<result column="enterprise_property" property="enterpriseProperty"
+			jdbcType="VARCHAR" />
+		<result column="trading_date" property="tradingDate" jdbcType="DATE" />
+		<result column="trading_number" property="tradingNumber"
+			jdbcType="VARCHAR" />
+		<result column="tax_number" property="taxNumber" jdbcType="VARCHAR" />
+		<result column="tax_date" property="taxDate" jdbcType="DATE" />
+		<result column="manage_type" property="manageType" jdbcType="VARCHAR" />
+		<result column="unit_number" property="unitNumber" jdbcType="VARCHAR" />
+		<result column="e_mail" property="email" jdbcType="VARCHAR" />
+		<result column="business_address" property="businessAddress"
+			jdbcType="VARCHAR" />
+		<result column="principal" property="principal" jdbcType="VARCHAR" />
+		<result column="emergency_contact" property="emergencyContact"
+			jdbcType="VARCHAR" />
+		<result column="emergency_contact_phone" property="emergencyContactPhone"
+			jdbcType="VARCHAR" />
+		<result column="organization_code" property="organizationCode"
+			jdbcType="VARCHAR" />
+		<result column="register_date" property="registerDate"
+			jdbcType="DATE" />
+		<result column="modify_time" property="modifyTime"/>
+		<association property="personCustNew" column="representative"
+			javaType="PersonCustNew" select="com.flf.mapper.PersonCustNewMapper.getPersonCustNewById" />
+	</resultMap>
+
+	<resultMap id="PersonBuildingNewResultMap" type="PersonBuildingNew">
+		<result column="person_building_id" property="personBuildingId"
+			jdbcType="VARCHAR" />
+		<result column="cust_id" property="custId" jdbcType="VARCHAR" />
+		<result column="enterprise_id" property="enterpriseId"
+			jdbcType="VARCHAR" />
+		<result column="building_structure_id" property="buildingStructureId"
+			jdbcType="VARCHAR" />
+		<result column="state" property="state" jdbcType="TINYINT" />
+		<result column="cust_type" property="custType" jdbcType="VARCHAR" />
+		<result column="enterprise_call_type" property="enterpriseCallType"
+			jdbcType="TINYINT" />
+		<result column="accessory" property="accessory" jdbcType="VARCHAR" />
+	</resultMap>
+
+	<sql id="Base_Where_Clause">
+		<where>
+			<trim prefixOverrides="and">
+				<if test="enterpriseName != null"> and a.enterprise_name like
+					CONCAT('%',#{enterpriseName},'%')</if>
+				<if test="manageType != null">and a.manage_type = #{manageType,jdbcType=VARCHAR}</if>
+				<if test="unitNumber != null">and a.unit_number = #{unitNumber,jdbcType=VARCHAR}</if>
+				<if test="bsnList != null">
+					and b.building_structure_id in
+					<foreach collection="bsnList" index="index" item="item"
+						open="(" separator="," close=")">#{item}</foreach>
+				</if>
+			</trim>
+		</where>
+	</sql>
+
+	<sql id="Page_Where_Clause">
+		<where>
+			<trim prefixOverrides="and">
+				<if test="buildingStructureId != null and buildingStructureId != ''">and b.building_structure_id = #{buildingStructureId}
+				</if><!-- 项目列表 -->
+				<if test="manageType != null and manageType != ''">and a.manage_type = #{manageType,jdbcType=VARCHAR}</if><!-- 
+					经营类型 -->
+				<if test="projectId != null and projectId!=''">and tp.project_id = #{projectId,jdbcType=VARCHAR}</if>
+				<if test="enterpriseName != null and enterpriseName != ''"> and a.enterprise_name like
+					CONCAT('%',#{enterpriseName},'%')</if><!-- 企业名称 -->
+				<if test="unitNumber != null and unitNumber != ''"> and a.unit_number like CONCAT('%',#{unitNumber},'%')
+				</if><!-- 企业编号 -->
+				<if test="officePhone!= null and officePhone!= ''"> and a.office_phone like
+					CONCAT('%',#{officePhone},'%')
+				</if>
+				<if test="email!= null and  email!= ''"> and a.e_mail like
+					CONCAT('%',#{email},'%')</if>
+				<if test="principal!= null and  principal!= ''"> and a.principal like
+					CONCAT('%',#{principal},'%')</if>
+				<if test="enterpriseProperty!= null and  enterpriseProperty!= ''"> and a.enterprise_property like
+					CONCAT('%',#{enterpriseProperty},'%')</if>
+				<if test="emergencyContact!= null and  emergencyContact!= ''"> and a.emergency_contact like
+					CONCAT('%',#{emergencyContact},'%')</if>
+				<if test="emergencyContactPhone!= null and  emergencyContactPhone!= ''"> and a.emergency_contact_phone like
+					CONCAT('%',#{emergencyContactPhone},'%')</if>
+			</trim>
+		</where>
+	</sql>
+
+	<select id="listEnterpriseCustNewByCondition" parameterType="PersonCustNew"
+		resultMap="BaseResultMap">
+		SELECT * FROM tc_enterprise_cust a inner JOIN tc_person_building b ON
+		a.enterprise_id=b.enterprise_id
+		<include refid="Base_Where_Clause" />
+	</select>
+
+	<select id="listPageEnterpriseCustNewByCondition" parameterType="EnterpriseCustNew"
+		resultMap="BaseResultMap">
+		SELECT a.*, bs.project_id FROM tc_enterprise_cust a
+		left JOIN
+		tc_person_building b ON a.enterprise_id=b.enterprise_id
+		left JOIN
+		tc_building_structure bs on b.building_structure_id=bs.id
+		left JOIN
+		t_project tp on bs.project_id=tp.project_id
+		<!-- <include refid="Page_Where_Clause" /> -->
+		WHERE a.company_id=#{companyId,jdbcType=VARCHAR}
+		<if test="buildingStructureId != null and buildingStructureId != ''">
+			and b.building_structure_id = #{buildingStructureId}
+		</if><!-- 项目列表 -->
+		<if test="manageType != null and manageType != ''">
+			and a.manage_type = #{manageType,jdbcType=VARCHAR}
+		</if><!--经营类型 -->
+		<if test="projectId != null and projectId!=''">and tp.project_id = #{projectId,jdbcType=VARCHAR}</if>
+		<if test="enterpriseName != null and enterpriseName != ''"> and a.enterprise_name like
+			CONCAT('%',#{enterpriseName},'%')</if><!-- 企业名称 -->
+		<if test="unitNumber != null and unitNumber != ''"> and a.unit_number like CONCAT('%',#{unitNumber},'%')
+		</if><!-- 企业编号 -->
+		<if test="officePhone!= null and officePhone!= ''"> and a.office_phone like
+			CONCAT('%',#{officePhone},'%')</if>
+		<if test="email!= null and  email!= ''"> and a.e_mail like
+			CONCAT('%',#{email},'%')</if>
+		<if test="principal!= null and  principal!= ''"> and a.principal like
+			CONCAT('%',#{principal},'%')</if>
+		<if test="enterpriseProperty!= null and  enterpriseProperty!= ''"> and a.enterprise_property like
+			CONCAT('%',#{enterpriseProperty},'%')</if>
+		<if test="emergencyContact!= null and  emergencyContact!= ''"> and a.emergency_contact like
+			CONCAT('%',#{emergencyContact},'%')</if>
+		<if test="emergencyContactPhone!= null and  emergencyContactPhone!= ''"> and a.emergency_contact_phone like
+			CONCAT('%',#{emergencyContactPhone},'%')</if>
+		group by a.enterprise_id
+		order by a.unit_number desc
+	</select>
+
+	<select id="listPageEnterpriseCustNew" parameterType="EnterpriseCustNew"
+		resultMap="BaseResultMap">
+		select * from tc_enterprise_cust
+		where 1=1
+		<if test="enterpriseName!=null and enterpriseName != '' ">
+			and enterprise_name like CONCAT('%',#{enterpriseName},'%')
+		</if>
+		<if test="representative!=null and representative!=''">
+			and representative like CONCAT('%',#{representative},'%')</if>
+	</select>
+
+
+	<select id="findEnterpriseCustNew" parameterType="EnterpriseCustNew"
+		resultMap="BaseResultMap">
+		select * from tc_enterprise_cust where 1=1
+		<if test="enterpriseName!=null and enterpriseName != '' ">
+			and enterprise_name like CONCAT('%',#{enterpriseName},'%')
+		</if>
+		<if test="address!=null and address != '' ">
+			and address like CONCAT('%',#{address},'%')
+		</if>
+		<if test="unitNumber!=null and unitNumber != '' ">
+			and unit_number like CONCAT('%',#{unitNumber},'%')
+		</if>
+		<if test="representative!=null and representative != '' ">
+			and representative = #{representative}
+		</if>
+	</select>
+
+	<select id="listAllEnterpriseCustNew" resultMap="BaseResultMap">
+		select * from
+		tc_enterprise_cust
+	</select>
+
+	<resultMap type="EnterpriseCustNew" extends="BaseResultMap"
+		id="AllResultMap">
+		<collection property="annexs"
+			select="com.flf.mapper.AnnexMapper.getAnnexbyRelationId" ofType="Annex"
+			column="enterprise_id">
+			<result column="annex_address" property="annexAddress"
+				jdbcType="VARCHAR" />
+		</collection>
+	</resultMap>
+
+	<select id="getEnterpriseCustNewById" parameterType="String"
+		resultMap="AllResultMap">
+		select * from tc_enterprise_cust where enterprise_id=#{0}
+	</select>
+
+	<!-- Bug 747 陈浪 2016.3.7 -->
+	<delete id="deleteEnterpriseCustNew" parameterType="String">
+		delete from
+		tc_enterprise_cust where enterprise_id=#{enterpriseId}
+	</delete>
+
+	<insert id="insertEnterpriseCustNew" parameterType="EnterpriseCustNew">
+		insert into
+		tc_enterprise_cust (enterprise_id, enterprise_name, address,
+		representative, office_phone, fax_number,
+		enterprise_url,
+		tax_certificate, enterprise_property,
+		trading_date, trading_number,
+		tax_number,
+		tax_date, manage_type, unit_number,
+		e_mail,
+		business_address, principal,
+		emergency_contact,emergency_contact_phone,
+		organization_code,register_date,company_id)
+		values
+		(#{enterpriseId,jdbcType=VARCHAR},
+		#{enterpriseName,jdbcType=VARCHAR},
+		#{address,jdbcType=VARCHAR},
+		#{representative,jdbcType=VARCHAR},
+		#{officePhone,jdbcType=VARCHAR},
+		#{faxNumber,jdbcType=VARCHAR},
+		#{enterpriseUrl,jdbcType=VARCHAR}, #{taxCertificate,jdbcType=VARCHAR},
+		#{enterpriseProperty,jdbcType=VARCHAR},
+		#{tradingDate,jdbcType=DATE},
+		#{tradingNumber,jdbcType=VARCHAR}, #{taxNumber,jdbcType=VARCHAR},
+		#{taxDate,jdbcType=DATE}, #{manageType,jdbcType=VARCHAR},
+		#{unitNumber,jdbcType=VARCHAR},
+		#{email,jdbcType=VARCHAR},
+		#{businessAddress,jdbcType=VARCHAR}, #{principal,jdbcType=VARCHAR},
+		#{emergencyContact,jdbcType=VARCHAR},#{emergencyContactPhone,jdbcType=VARCHAR},#{organizationCode,jdbcType=VARCHAR},
+		#{registerDate,jdbcType=DATE},#{companyId,jdbcType=VARCHAR} )
+	</insert>
+
+
+	<insert id="insertEnterpriseCustNewUUID" parameterType="EnterpriseCustNew"
+		useGeneratedKeys="true" keyProperty="enterpriseId">
+		insert into tc_enterprise_cust
+		(enterprise_id, enterprise_name, address,
+		representative, office_phone,
+		fax_number,
+		enterprise_url, tax_certificate, enterprise_property,
+		trading_date, trading_number, tax_number,
+		tax_date, manage_type,
+		unit_number,
+		e_mail, business_address, principal,
+		emergency_contact,emergency_contact_phone
+		organization_code,company_id)
+		values (UUID(),
+		#{enterpriseName,jdbcType=VARCHAR},
+		#{address,jdbcType=VARCHAR},
+		#{representative,jdbcType=VARCHAR}, #{officePhone,jdbcType=VARCHAR},
+		#{faxNumber,jdbcType=VARCHAR},
+		#{enterpriseUrl,jdbcType=VARCHAR},
+		#{taxCertificate,jdbcType=VARCHAR},
+		#{enterpriseProperty,jdbcType=VARCHAR},
+		#{tradingDate,jdbcType=DATE},
+		#{tradingNumber,jdbcType=VARCHAR}, #{taxNumber,jdbcType=VARCHAR},
+		#{taxDate,jdbcType=DATE}, #{manageType,jdbcType=VARCHAR},
+		#{unitNumber,jdbcType=VARCHAR},
+		#{email,jdbcType=VARCHAR},
+		#{businessAddress,jdbcType=VARCHAR}, #{principal,jdbcType=VARCHAR},
+		#{emergencyContact,jdbcType=VARCHAR},#{emergencyContactPhone,jdbcType=VARCHAR},#{organizationCode,jdbcType=VARCHAR},
+		#{companyId,jdbcType=VARCHAR})
+	</insert>
+
+	<!-- 修改 -->
+	<update id="updateEnterpriseCustNew" parameterType="EnterpriseCustNew">
+		update tc_enterprise_cust
+		<set>
+			<if test="enterpriseName != null">
+				enterprise_name = #{enterpriseName,jdbcType=VARCHAR},
+			</if>
+			<if test="address != null">
+				address = #{address,jdbcType=VARCHAR},
+			</if>
+			<if test="representative != null">
+				representative = #{representative,jdbcType=VARCHAR},
+			</if>
+			<if test="officePhone != null">
+				office_phone = #{officePhone,jdbcType=VARCHAR},
+			</if>
+			<if test="faxNumber != null">
+				fax_number = #{faxNumber,jdbcType=VARCHAR},
+			</if>
+			<if test="enterpriseUrl != null">
+				enterprise_url = #{enterpriseUrl,jdbcType=VARCHAR},
+			</if>
+			<if test="taxCertificate != null">
+				tax_certificate = #{taxCertificate,jdbcType=VARCHAR},
+			</if>
+			<if test="enterpriseProperty != null">
+				enterprise_property =
+				#{enterpriseProperty,jdbcType=VARCHAR},
+			</if>
+			<if test="tradingDate != null">
+				trading_date = #{tradingDate,jdbcType=DATE},
+			</if>
+			<if test="tradingNumber != null">
+				trading_number = #{tradingNumber,jdbcType=VARCHAR},
+			</if>
+			<if test="taxNumber != null">
+				tax_number = #{taxNumber,jdbcType=VARCHAR},
+			</if>
+			<if test="registerDate != null">
+				register_date = #{registerDate,jdbcType=DATE},
+			</if>
+			<if test="manageType != null">
+				manage_type = #{manageType,jdbcType=VARCHAR},
+			</if>
+			<if test="unitNumber != null">
+				unit_number = #{unitNumber,jdbcType=VARCHAR},
+			</if>
+			<if test="email != null">
+				e_mail = #{email,jdbcType=VARCHAR},
+			</if>
+			<if test="businessAddress != null">
+				business_address = #{businessAddress,jdbcType=VARCHAR},
+			</if>
+			<if test="principal != null">
+				principal = #{principal,jdbcType=VARCHAR},
+			</if>
+			<if test="emergencyContact != null">
+				emergency_contact = #{emergencyContact,jdbcType=VARCHAR},
+			</if>
+			<if test="emergencyContactPhone != null">
+				emergency_contact_phone =
+				#{emergencyContactPhone,jdbcType=VARCHAR},
+			</if>
+			<if test="organizationCode != null">
+				organization_code = #{organizationCode,jdbcType=VARCHAR}
+			</if>
+			modify_time =now()
+		</set>
+		where enterprise_id = #{enterpriseId,jdbcType=VARCHAR}
+	</update>
+
+	<!-- 创建 by 肖聪 2015/6/25 -->
+	<select id="getSearchEnterprise" parameterType="SearchPersonAndEnterprise"
+		resultMap="BaseResultMap">
+		SELECT a.* FROM tc_enterprise_cust
+
+		WHERE 1=1
+		<if test="representative!='' and representative!=null">
+			and representative like CONCAT('%',#{representative},'%')
+		</if>
+		<if test="enterpriseName!='' and enterpriseName!=null">
+			and enterprise_name like CONCAT('%',#{enterpriseName},'%')
+		</if>
+
+	</select>
+	<select id="getenterpriseCustNewByHouseId" parameterType="String"
+		resultMap="BaseResultMap">
+		SELECT * FROM tc_enterprise_cust
+		WHERE enterprise_id IN
+		(SELECT enterprise_id FROM tc_person_building
+		WHERE state=0 AND
+		building_structure_id = (SELECT building_structure_id
+		FROM tc_house
+		WHERE id = #{0}))
+	</select>
+
+	<select id="getenterpriseCustNewByStallNewId" parameterType="String"
+		resultMap="BaseResultMap">
+		SELECT * FROM tc_enterprise_cust
+		WHERE enterprise_id IN
+		(SELECT enterprise_id FROM tc_person_building
+		WHERE state=0 AND
+		building_structure_id = (SELECT building_structure_id
+		FROM tc_stall
+		WHERE stall_id = #{0} ))
+
+	</select>
+
+	<!-- 查询表中 编号最大的数据 -->
+	<select id="selectCustCode" resultType="String">
+		select max(unit_number+0)
+		from tc_enterprise_cust
+
+	</select>
+
+	<select id="selectEnterpriseCust" parameterType="String"
+		resultMap="BaseResultMap">
+		select b.* from tc_person_building a
+		inner join
+		tc_enterprise_cust b on a.enterprise_id=b.enterprise_id
+		where
+		a.building_structure_id = #{0} and a.cust_type='业主' and a.state=0
+	</select>
+
+
+	<select id="listEnterpriseCustNewListByCondition" parameterType="EnterpriseCustNew"
+		resultMap="BaseResultMap">
+		SELECT a.*, bs.project_id FROM tc_enterprise_cust a
+		left JOIN
+		tc_person_building b ON a.enterprise_id=b.enterprise_id
+		left JOIN
+		tc_building_structure bs on b.building_structure_id=bs.id
+		left JOIN
+		t_project tp on bs.project_id=tp.project_id
+		<include refid="Page_Where_Clause" />
+		group by a.enterprise_id
+		order by a.unit_number
+	</select>
+
+	<select id="getEnterpriseId" parameterType="String" resultType="String">
+		select enterprise_id from tc_enterprise_cust where trading_number=#{0}
+		and enterprise_name like CONCAT('%',#{1},'%')
+	</select>
+
+</mapper>

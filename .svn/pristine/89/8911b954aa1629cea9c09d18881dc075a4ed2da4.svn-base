@@ -1,0 +1,81 @@
+package com.flf.mapper;
+
+import java.util.List;
+
+import com.flf.entity.AssetAccount;
+import com.flf.entity.Search;
+
+
+public interface AssetAccountMapper {
+	/*查询所有的资产账户信息*/
+	List<AssetAccount> listAllAssetAccount();
+	/*分页查询资产账户信息*/
+    List<AssetAccount> listPageAssetAccount(Search search);
+    /*根据id查询资产账户信息*/
+    AssetAccount getAssetAccountById(String assetAccountId);
+    /*删除资产账户信息*/
+    int deleteAssetAccount(String assetAccountId);
+    /*新增资产账户信息*/
+    int insertAssetAccount(AssetAccount assetAccount);
+    /*修改资产账户信息*/
+    int updateAssetAccount(AssetAccount assetAccount);
+    /*查询押金账户信息assetAccountType=1	（押金）*/
+    /****获取后调用预支付明细表的汇总接口并设置相应字段*****/
+    List<AssetAccount> getAssetAccountByCustId(String custId);
+    /*获取欠费账户总余额*/
+    Double getTotalBalanceOfDelinquentAccounts(String assetAccountId);    
+    
+    /*根据客户id查询资产账户信息*/
+    AssetAccount seletctAssetAccountByCustId(String custId,String buildingId);
+    /*根据项目id获取管理户数*/
+    int countAccountNumByProjectId(String projectId);
+    
+    /*充值*/
+    int topUP(AssetAccount assetAccount);
+    //根据建筑ID获取该建筑的资产类型
+	AssetAccount getAssetAccountByBuildingStructureId(String buildingStructureId);
+	
+	/**
+	 * 批量插入资产账户数据
+	 * 王洲
+	 * 2016.04.19
+	 * @param list
+	 * @return
+	 */
+	int insertAssetAccountList(List<AssetAccount> list);
+	
+	/**
+	 * 根据建筑结构id查询对应的资产账户
+	 * @author 王洲
+	 * @param buildingId
+	 * @return
+	 */
+	AssetAccount getAssetAccountByBuildingId(String buildingId);
+	
+	
+	/**
+	 * 分页查询资产账户信息
+	 * @author zhuqi 2016.04.19
+	 * @param search
+	 * @return
+	 */
+	List listPageAssetAccountStall(Search search);
+
+	/**
+	 * 根据客户id获取关联的资产账户和押金账户
+	 * @param custId
+	 * @return list
+	 * @author wangzhou
+	 * @date 2016.04.27
+	 */
+	List<AssetAccount> listAssetAccountByCustId(String custId);
+	
+	/**
+	 * 根据建筑id获取资产账户和收支明细
+	 * @param custId
+	 * @return 
+	 * @author wangzhou
+	 * @date 2016.04.27
+	 */
+	AssetAccount listAssetAccountByBuildingId(String buildingId);
+}

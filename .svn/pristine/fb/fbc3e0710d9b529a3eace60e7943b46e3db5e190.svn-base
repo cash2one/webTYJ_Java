@@ -1,0 +1,191 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.flf.mapper.HrPermissionsMapper" >
+  <resultMap id="BaseResultMap" type="com.flf.entity.HrPermissions" >
+    <id column="permissions_id" property="permissionsId" jdbcType="VARCHAR" />
+    <result column="permissions_name" property="permissionsName" jdbcType="VARCHAR" />
+    <result column="permissions_address" property="permissionsAddress" jdbcType="VARCHAR" />
+    <result column="permissions_description" property="permissionsDescription" jdbcType="VARCHAR" />
+    <result column="permissions_type" property="permissionsType" jdbcType="VARCHAR" />
+    <result column="status" property="status" jdbcType="TINYINT" />
+  </resultMap>
+  
+  <resultMap id="BaseResultMapAdmin" type="com.flf.entity.HrPermissions" >
+    <id column="permissions_id" property="permissionsId" jdbcType="VARCHAR" />
+    <result column="permissions_name" property="permissionsName" jdbcType="VARCHAR" />
+    <result column="permissions_address" property="permissionsAddress" jdbcType="VARCHAR" />
+    <result column="permissions_description" property="permissionsDescription" jdbcType="VARCHAR" />
+    <result column="permissions_type" property="permissionsType" jdbcType="VARCHAR" />
+    <result column="status" property="status" jdbcType="TINYINT" />
+  </resultMap>
+  
+  <resultMap type="HrPermissions" id="resultHrPAndAction" extends="BaseResultMap">
+  		<collection property="actionList" column="permissions_id" ofType="Action" select="com.flf.mapper.ActionMapper.selectActionByRoleId"></collection>
+  </resultMap>
+  
+  <sql id="Base_Column_List" >
+    permissions_id, permissions_name, permissions_address, permissions_description, permissions_type, 
+    status
+  </sql>
+  
+  <select id="selectByMap" resultMap="BaseResultMap" parameterType="java.util.Map">
+  	select 
+    <include refid="Base_Column_List" />
+    from hr_permissions 
+    <trim prefix="where" prefixOverrides="and">
+    	<if test="permissionsId != null">
+    		permissions_id = #{permissionsId}
+    	</if>
+    	<if test="permissionsName != null">
+    		and permissions_name = #{permissionsName}
+    	</if>
+    	<if test="permissionsAaddress != null">
+    		and permissions_address = #{permissionsAaddress}
+    	</if>
+    	<if test="permissionsDescription != null">
+    		and permissions_description = #{permissionsDescription}
+    	</if>
+    	<if test="permissionsType != null">
+    		and permissions_type = #{permissionsType}
+    	</if>
+    	<if test="status != bull">
+    		and status = #{status}
+    	</if>
+    </trim>
+  </select>
+  
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from hr_permissions
+    where permissions_id = #{permissionsId,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from hr_permissions
+    where permissions_id = #{permissionsId,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.flf.entity.HrPermissions" >
+    insert into hr_permissions (permissions_id, permissions_name, permissions_address, 
+      permissions_description, permissions_type, 
+      status)
+    values (#{permissionsId,jdbcType=VARCHAR}, #{permissionsName,jdbcType=VARCHAR}, #{permissionsAddress,jdbcType=VARCHAR}, 
+      #{permissionsDescription,jdbcType=VARCHAR}, #{permissionsType,jdbcType=VARCHAR}, 
+      #{status,jdbcType=TINYINT})
+  </insert>
+  <insert id="insertSelective" parameterType="com.flf.entity.HrPermissions" >
+    insert into hr_permissions
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="permissionsId != null" >
+        permissions_id,
+      </if>
+      <if test="permissionsName != null" >
+        permissions_name,
+      </if>
+      <if test="permissionsAddress != null" >
+        permissions_address,
+      </if>
+      <if test="permissionsDescription != null" >
+        permissions_description,
+      </if>
+      <if test="permissionsType != null" >
+        permissions_type,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="permissionsId != null" >
+        #{permissionsId,jdbcType=VARCHAR},
+      </if>
+      <if test="permissionsName != null" >
+        #{permissionsName,jdbcType=VARCHAR},
+      </if>
+      <if test="permissionsAddress != null" >
+        #{permissionsAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="permissionsDescription != null" >
+        #{permissionsDescription,jdbcType=VARCHAR},
+      </if>
+      <if test="permissionsType != null" >
+        #{permissionsType,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=TINYINT},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.flf.entity.HrPermissions" >
+    update hr_permissions
+    <set >
+      <if test="permissionsName != null" >
+        permissions_name = #{permissionsName,jdbcType=VARCHAR},
+      </if>
+      <if test="permissionsAddress != null" >
+        permissions_address = #{permissionsAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="permissionsDescription != null" >
+        permissions_description = #{permissionsDescription,jdbcType=VARCHAR},
+      </if>
+      <if test="permissionsType != null" >
+        permissions_type = #{permissionsType,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=TINYINT},
+      </if>
+    </set>
+    where permissions_id = #{permissionsId,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.flf.entity.HrPermissions" >
+    update hr_permissions
+    set permissions_name = #{permissionsName,jdbcType=VARCHAR},
+      permissions_address = #{permissionsAddress,jdbcType=VARCHAR},
+      permissions_description = #{permissionsDescription,jdbcType=VARCHAR},
+      permissions_type = #{permissionsType,jdbcType=VARCHAR},
+      status = #{status,jdbcType=TINYINT}
+    where permissions_id = #{permissionsId,jdbcType=VARCHAR}
+  </update>
+  
+  <select id="listHrPermissions" resultMap="BaseResultMap">
+  	select <include refid="Base_Column_List" /> from hr_permissions where status = 0
+  </select>
+  
+  <select id="getHrPermissions" parameterType="TUser" resultMap="resultHrPAndAction">
+  	SELECT DISTINCT hrp1.permissions_id FROM 
+	(SELECT
+		hrp.*
+	FROM
+		(
+			(
+				SELECT
+					post_id
+				FROM
+					tc_user_post
+				WHERE
+					user_id = #{userId}
+			) up
+			LEFT JOIN t_post p ON up.post_id = p.post_id
+			LEFT JOIN tc_post_authority pa ON pa.post_id = p.post_id
+			LEFT JOIN hr_permissions hrp ON hrp.permissions_id = pa.role_id
+		)
+	
+	UNION 
+	
+	SELECT
+		hrp.*
+	FROM
+		(
+			(
+				SELECT
+				hra.permissions_id
+				FROM
+					hr_authority hra
+				WHERE
+					hra.t_user_id = #{userId}
+				AND hra.permissions_id IS NOT NULL
+			) hra
+			LEFT JOIN hr_permissions hrp ON hra.permissions_id = hrp.permissions_id
+		)
+	) AS hrp1
+  </select>
+</mapper>

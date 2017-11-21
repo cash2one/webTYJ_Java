@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.flf.mapper.ElectronicBillingMapper">
+	<resultMap type="ElectronicBilling" id="BaseResultMap">
+		<id column="electronic_billing_id" property="electronicBillingId" jdbcType="VARCHAR"/>
+		<result column="electronic_billing_num" property="electronicBillingNum" jdbcType="VARCHAR"/>
+		<result column="overdue" property="overdue" jdbcType="DOUBLE"/>
+		<result column="current_overdue" property="currentOverdue" jdbcType="DOUBLE"/>
+		<result column="last_overdue" property="lastOverdue" jdbcType="DOUBLE"/>
+		<result column="billing_sum" property="billingSum" jdbcType="DOUBLE"/>
+		<result column="bill_date" property="billDate" jdbcType="DATE"/>
+		<result column="building_id" property="buildingId" jdbcType="VARCHAR"/>
+		<result column="collect_sum" property="collectSum" jdbcType="DOUBLE"/>
+		<result column="no_collect_sum" property="noCollectSum" jdbcType="DOUBLE"/>
+		<result column="current_sum" property="currentSum" jdbcType="DOUBLE"/>
+		<result column="last_sum" property="lastSum" jdbcType="DOUBLE"/>
+		<result column="current_owe_sum" property="currentOweSum" jdbcType="DOUBLE"/>
+		<result column="last_owe_sum" property="lastOweSum" jdbcType="DOUBLE"/>
+		<!-- 附加字段 -->
+		<result column="full_name" property="fullName" jdbcType="VARCHAR"/>
+		<result column="cust_id" property="custId" jdbcType="VARCHAR"/>
+		<result column="asset_account_id" property="assetAccountId" jdbcType="VARCHAR"/>
+	</resultMap>
+	
+	<insert id="insertElectronicBilling" parameterType="ElectronicBilling">
+		insert into tc_electronic_billing (electronic_billing_id,electronic_billing_num,overdue,billing_sum,
+			bill_date,building_id,collect_sum,no_collect_sum,current_sum,last_sum,
+			current_owe_sum,last_owe_sum,last_overdue,current_overdue
+		) values(#{electronicBillingId,jdbcType=VARCHAR},#{electronicBillingNum,jdbcType=VARCHAR},
+			#{overdue,jdbcType=DOUBLE},#{billingSum,jdbcType=DOUBLE},
+			#{billDate,jdbcType=DATE},#{buildingId,jdbcType=VARCHAR},
+			#{collectSum,jdbcType=DOUBLE},#{noCollectSum,jdbcType=DOUBLE},
+			#{currentSum,jdbcType=DOUBLE},#{lastSum,jdbcType=DOUBLE},
+			#{currentOweSum,jdbcType=DOUBLE},#{lastOweSum,jdbcType=DOUBLE},
+			#{lastOverdue,jdbcType=DOUBLE},#{currentOverdue,jdbcType=DOUBLE}
+		)
+	</insert>
+	<select id="getElectronicBillingsByCustId" parameterType="String" resultMap="BaseResultMap">
+		select a.*,b.full_name from tc_electronic_billing a
+		left join tc_building_structure b on a.building_id=b.id
+		left join tc_asset_account c on b.id=c.building_id
+		left join tc_account_relation d on c.asset_account_id=d.asset_account
+		left join tc_account e on d.account_id=e.account_id
+		where e.cust_id=#{0}
+	</select>
+	
+	<select id="QueryResultElectronicBillings" parameterType="ElectronicBilling" resultMap="BaseResultMap">
+		select a.*,b.full_name from tc_electronic_billing a
+		left join tc_building_structure b on a.building_id=b.id
+		left join tc_asset_account c on b.id=c.building_id
+		left join tc_account_relation d on c.asset_account_id=d.asset_account
+		left join tc_account e on d.account_id=e.account_id
+		where 1=1
+			<if test="custId!=null and custId!=''">
+				and e.cust_id=#{custId}
+			</if>
+			<if test="electronicBillingNum!=null and electronicBillingNum!=''">
+				and a.electronic_billing_num=#{electronicBillingNum}
+			</if>
+			<if test="fullName!=null and fullName!=''">
+				and b.full_name=#{fullName}
+			</if>
+			<if test="billDate!=null">
+				and year(a.bill_date)=year(#{billDate}) and month(a.bill_date)=month(#{billDate})
+			</if>
+	</select>
+	
+	<update id="updateElectronicBilling" parameterType="ElectronicBilling">
+		update tc_electronic_billing
+		set
+			overdue=#{overdue,jdbcType=DOUBLE},
+			billing_sum=#{billingSum,jdbcType=DOUBLE},
+			bill_date=#{billDate,jdbcType=DATE},
+			building_id=#{buildingId,jdbcType=VARCHAR},
+			collect_sum=#{collectSum,jdbcType=DOUBLE},
+			no_collect_sum=#{noCollectSum,jdbcType=DOUBLE},
+			current_sum=#{currentSum,jdbcType=DOUBLE},
+			last_sum=#{lastSum,jdbcType=DOUBLE},
+			current_owe_sum=#{currentOweSum,jdbcType=DOUBLE},
+			last_owe_sum=#{lastOweSum,jdbcType=DOUBLE},
+			last_overdue=#{lastOverdue,jdbcType=DOUBLE},
+			current_overdue=#{currentOverdue,jdbcType=DOUBLE}
+		where electronic_billing_id=#{electronicBillingId,jdbcType=VARCHAR}
+	</update>
+	<!-- 根据条件分页查询电子账单记录   用于收款台    账单查询模块 2015/12/22 -->
+	<select id="listPageElectronicBilling" parameterType="ElectronicBilling" resultMap="BaseResultMap">
+		select eb.electronic_billing_id,eb.building_id,eb.electronic_billing_num,eb.overdue,eb.billing_sum,eb.bill_date,eb.collect_sum,
+		eb.no_collect_sum,eb.current_sum,eb.last_sum,eb.current_owe_sum,eb.last_owe_sum,pc.name,pc.cust_id,b.full_name,aa.asset_account_id
+		from tc_electronic_billing eb
+		inner join tc_building_structure b on eb.building_id=b.id
+		inner join tc_asset_account aa on aa.building_id=b.id
+		inner join tc_account_relation ar on ar.asset_account=aa.asset_account_id
+		inner join tc_account a on a.account_id=ar.account_id
+		inner join tc_person_cust pc on pc.cust_id=a.cust_id
+		where 1=1
+		<if test="cardNum!=null and cardNum!=''">
+			and pc.card_num = #{cardNum}
+		</if>
+		<if test="custName!=null and custName!=''">
+			and pc.name = #{custName}
+		</if>
+		<if test="electronicBillingNum!=null and electronicBillingNum!=''">
+			and eb.electronic_billing_num = #{electronicBillingNum}
+		</if>
+	</select>
+
+	<select id="getMaxElectronicBillingNum" resultType="String">
+		SELECT MAX(electronic_billing_num )FROM tc_electronic_billing
+	</select>
+	
+	<select id="getElectronicBillingById" parameterType="java.lang.String" resultMap="BaseResultMap">
+		SELECT * FROM tc_electronic_billing WHERE electronic_billing_id = #{0}
+	</select>
+	
+	<select id="getElectronicBillingByBuildingId" parameterType="java.lang.String" resultMap="BaseResultMap">
+		SELECT * FROM tc_electronic_billing WHERE building_id = #{0}
+	</select>
+	
+</mapper>

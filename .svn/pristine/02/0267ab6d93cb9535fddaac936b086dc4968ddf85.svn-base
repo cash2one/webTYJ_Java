@@ -1,0 +1,29 @@
+<!--
+author：王志刚
+createTime:2015/5/15
+pageName:外部专业线---配置部门检
+jsPath： 'controllers/externalProfession/allocationInspectionDepartment
+-->
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>配置部门检</title>
+</head>
+<body ng-controller="allocationInspectionDepartmentCtrl">
+<div class="row">
+    <div class="complaint_user_list" style="margin-top: 15px;">
+        <div style="padding:5px 10px 0">
+            <div class="complaint_user_info_navigation">
+                <a class="btn" ui-sref="index.externalProfession.allocationInspectionDepartment.allocationDepartmentAdd">新增质检任务</a>
+                <a class="btn" ui-sref="index.externalProfession.allocationInspectionDepartment.allocationDepartmentCheck">查看质检任务</a>
+            </div>
+            <div class="clear"></div>
+        </div>
+        <div class="row" style="padding:5px 10px 0">
+            <div ui-view></div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

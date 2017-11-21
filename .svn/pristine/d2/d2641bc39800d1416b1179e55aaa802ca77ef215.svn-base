@@ -1,0 +1,184 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.flf.mapper.FinancialStaffMapper" >
+    <resultMap id="BaseResultMap" type="FinancialStaff" >
+    <id column="financial_staff_id" property="financialStaffId" jdbcType="VARCHAR" />
+    <result column="financial_staff_name" property="financialStaffName" jdbcType="VARCHAR" />
+    <result column="parent_id" property="parentId"  jdbcType="VARCHAR" />
+    <result column="parent_name" property="parentName"  jdbcType="VARCHAR" />
+    <result column="parent_name1" property="parentName1"  jdbcType="VARCHAR" />
+    <result column="parent_name2" property="parentName2"  jdbcType="VARCHAR" />
+    <result column="staff_id" property="staffId" jdbcType="VARCHAR"/>
+  	<result column="name_of_custom" property="postName" jdbcType="VARCHAR"/>
+  </resultMap>
+  
+  <resultMap type="FinancialStaff" id="ResultMapWithStaff" extends="BaseResultMap">
+    <association property="staff" column="staff_id" javaType="Staff" select="com.flf.mapper.StaffMapper.selectByid" />
+    <association property="pstaff" column="parent_id" javaType="Staff" select="com.flf.mapper.StaffMapper.selectByid" />
+  </resultMap>
+  
+	<sql id="Base_Column_List">
+		financial_staff_id,financial_staff_name,parent_id,staff_id,post_id
+	</sql>
+  
+    <select id="selectAllsByStaffId" parameterType="FinancialStaff" resultMap="BaseResultMap">
+  	SELECT t1.financial_staff_name AS parentName, t2.financial_staff_name as parentName1,t3.financial_staff_name as parentName2,t4.financial_staff_name,t3.financial_staff_id
+	FROM tc_financial_staff  AS t1
+	LEFT JOIN tc_financial_staff  AS t2 ON t2.parent_id  = t1.financial_staff_id 
+	LEFT JOIN tc_financial_staff  AS t3 ON t3.parent_id  = t2.financial_staff_id 
+	LEFT JOIN tc_financial_staff  AS t4 ON t4.parent_id  = t3.financial_staff_id
+	LEFT JOIN t_post AS tp ON tp.post_id=t4.post_id
+	where t4.financial_staff_id=#{financialStaffId,jdbcType=VARCHAR}
+	
+	</select>
+  
+  <!-- 查询上级id (出纳)-->
+  <select id="selectById" parameterType="String" resultMap="BaseResultMap">
+  	select a.financial_staff_name,b.financial_staff_name AS parentName , b.financial_staff_id 
+  	from tc_financial_staff a ,tc_financial_staff b 
+  	where a.parent_id = b.financial_staff_id and a.financial_staff_id=#{financialStaffId,jdbcType=VARCHAR}
+  </select>
+  
+  <!-- 查询上级id(收银员) -->
+   <select id="selectAllsById" parameterType="String" resultMap="BaseResultMap">
+  	SELECT t4.parent_id,t1.financial_staff_name AS parentName, t2.financial_staff_name as parentName1,t3.financial_staff_name as parentName2,t4.financial_staff_name,t4.financial_staff_id
+	FROM tc_financial_staff  AS t1
+	LEFT JOIN tc_financial_staff  AS t2 ON t2.parent_id  = t1.financial_staff_id 
+	LEFT JOIN tc_financial_staff  AS t3 ON t3.parent_id  = t2.financial_staff_id 
+	LEFT JOIN tc_financial_staff  AS t4 ON t4.parent_id  = t3.financial_staff_id
+	where t4.financial_staff_id=#{financialStaffId,jdbcType=VARCHAR}
+	</select>
+  
+  <!-- 查询上级id(收银组长) -->
+   <select id="selectCashierById" parameterType="String" resultMap="BaseResultMap">
+	SELECT t2.financial_staff_id ,t1.financial_staff_name AS parentName, t2.financial_staff_name as parentName1, t3.financial_staff_name
+	FROM tc_financial_staff  AS t1
+	LEFT JOIN tc_financial_staff  AS t2 ON t2.parent_id  = t1.financial_staff_id 
+	LEFT JOIN tc_financial_staff  AS t3 ON t3.parent_id  = t2.financial_staff_id 
+	
+	where t3.financial_staff_id=#{financialStaffId,jdbcType=VARCHAR}
+  </select>
+  
+  <!--通过Id查询财务人员表信息   -->
+    <select id="getFinancialStaffbyId" parameterType="String" resultMap="BaseResultMap">
+  	select a.financial_staff_name from tc_financial_staff a
+  	where a.financial_staff_id=#{financialStaffId,jdbcType=VARCHAR}
+  </select>
+  
+  <!--通过用工id查询财务人员表信息   -->
+    <select id="getFinancialStaffbyStaffId" parameterType="String" resultMap="BaseResultMap">
+  	select a.* ,p.name_of_custom
+  	from tc_financial_staff a
+  	left join t_post p on p.post_id=a.post_id
+  	where a.staff_id=#{staffId,jdbcType=VARCHAR}
+  </select>
+
+	<!-- 增加财务人员表数据  王洲  2016.04.20 -->
+	<insert id="insertFinancialStaff" parameterType="FinancialStaff">
+		insert into tc_financial_staff 
+			<trim prefix="(" suffix=")" suffixOverrides="," >
+				<if test="financialStaffId != null and financialStaffId != ''">
+					financial_staff_id,
+				</if>
+				<if test="staffId != null and staffId != ''">
+					staff_id,
+				</if>
+				<if test="financialStaffName != null and financialStaffName != ''">
+					financial_staff_name,
+				</if>
+				<if test="parentId != null and parentId != ''">
+					parent_id,
+				</if>
+				<if test="postId != null and postId != ''">
+					post_id,
+				</if>
+			</trim>
+			<trim prefix="values (" suffix=")" suffixOverrides="," >
+				<if test="financialStaffId != null and financialStaffId != ''">
+					financialStaffId,
+				</if>
+				<if test="staffId != null and staffId != ''">
+					staffId,
+				</if>
+				<if test="financialStaffName != null and financialStaffName != ''">
+					financialStaffName,
+				</if>
+				<if test="parentId != null and parentId != ''">
+					parentId,
+				</if>
+				<if test="postId != null and postId != ''">
+					postId,
+				</if>
+			</trim>
+	</insert>
+	
+	<!-- 修改财务人员表数据  wangzhou 2016.04.20 -->
+	<update id="updateFinancialStaff" parameterType="FinancialStaff">
+		update tc_financial_staff
+		<set>
+			<if test="staffId != null and staffId != ''">
+				staff_id = #{staffId,jdbcType=VARCHAR},
+			</if>
+			<if test="financialStaffName != null and financialStaffName != ''">
+				financial_staff_name = #{financialStaffName,jdbcType=VARCHAR},
+			</if>
+			<if test="parentId != null and parentId">
+				parent_id = #{parentId,jdbcType=VARCHAR},
+			</if>
+			<if test="postId != null and postId != ''">
+				post_id = #{postId,jdbcType=VARCHAR},
+			</if>
+		</set>
+		where financial_staff_id = #{financialStaffId,jdbcType=VARCHAR}
+	</update>
+	
+	<!-- 根据id删除数据  wangzhou 2016.04.20 -->
+	<delete id="deleteFinancialStaffById" parameterType="String">
+		delete from tc_financial_staff where financial_staff_id = #{0}
+	</delete>
+	
+	<!-- 根据员工id和上级id删除数据  wangzhou 2016.04.20 -->
+	<delete id="deleteFinancialStaffByStaffIdAndParentId" parameterType="String">
+		delete from tc_financial_staff where staff_id = #{0} and parent_id = #{1}
+	</delete>
+	
+	<!-- 根据parentId删除所有下级   wangzhou  2016.04.20 -->
+	<delete id="deleteFinancialStaffByParentId" parameterType="String">
+		delete from tc_financial_staff where parent_id = #{0}
+	</delete>
+	
+	<!-- 批量新增数据   wangzhou  2016.04.20 -->
+	<insert id="insertFinancialStaffList" parameterType="java.util.List">
+		insert into tc_financial_staff
+			(financial_staff_id,staff_id,financial_staff_name,parent_id,post_id)
+			values
+			<foreach collection="list" item="item" index="index" separator="," >
+				(#{item.financialStaffId,jdbcType=VARCHAR},#{item.staffId,jdbcType=VARCHAR},#{item.financialStaffName,jdbcType=VARCHAR},
+				#{item.parentId,jdbcType=VARCHAR},#{item.postId,jdbcType=VARCHAR})
+			</foreach>
+	</insert>
+	
+	<!-- 根据主键集合批量删除   wangzhou  2016.04.20 -->
+	<delete id="deleteByIdList" parameterType="java.util.List">
+		delete from tc_financial_staff where financial_staff_id in
+		<foreach collection="list" index="index" item="item" separator="," open="(" close=")">
+			#{item}
+		</foreach>
+	</delete>
+	
+	<!-- 查询所有数据   wangzhou  2016.04.20 -->
+	<select id="selectFinancialStaffList" parameterType="FinancialStaff" resultMap="ResultMapWithStaff">
+		select <include refid="Base_Column_List" /> from tc_financial_staff
+		<where>
+			<if test="financialStaffName != null and financialStaffName != ''">
+				financial_staff_name = #{financialStaffName,jdbcType=VARCHAR}
+			</if>
+		</where>
+	</select>
+	
+	<!-- 根据parentId查询关联的所有下级   wangzhou  2016.04.20 -->
+	<select id="listFinancialStaffByParentId" parameterType="String" resultMap="BaseResultMap">
+		select <include refid="Base_Column_List" /> from tc_financial_staff where parent_id = #{0}
+	</select>
+
+</mapper> 

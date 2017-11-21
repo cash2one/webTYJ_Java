@@ -1,0 +1,122 @@
+<!--创建人：李斌    日期：2015/5/6
+    页面名称：外部专业线的重大事项详情
+    JS路径：'controllers/externalProfession/majorMatter',
+-->
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>重大事项</title>
+    <style>
+        .order td{  height: 30px;  }
+    </style>
+</head>
+<body ng-controller="majorMatterCtrl">
+<div class="container-fluid">
+    <div class="row">
+        <div class="order">
+            <div class="program_search" style="padding: 10px 0">
+                <!--外部专业线的重大事项详情的搜索部分-->
+                <div class="col-md-12" style="margin: 10px 0">
+                    <form class="form-inline ng-pristine ng-valid" style="margin-top: 15px;">
+                        <div>
+                            <label for="exampleInputEmail1">请求时间：</label>
+                            <input type="date" class="form-control input-sm" ng-model="start" id="exampleInputEmail1" style="width:150px;">~~
+                            <input type="date" class="form-control input-sm" ng-model="end" id="exampleInputPassword1" style="width:150px;">
+                            <!--复选框-->
+                            <div class="checkbox" style="margin:0 100px;">
+                                <span>处理状态：</span>
+                                <label>
+                                    <input type="checkbox"> 全部
+                                </label>
+                                <label>
+                                    <input type="checkbox" > 处理中
+                                </label>
+                                <label>
+                                    <input type="checkbox"> 已完成
+                                </label>
+                            </div>
+                            <!--复选框 end-->
+                            <button type="submit" class="btn btn-sm" ng-click="click_a()">搜索</button>
+                        </div>
+                    </form>
+                </div>
+                <!--外部专业线的重大事项详情的搜索部分end-->
+                <div class="container">
+                    <!--外部专业线的重大事项详情的添加模版-->
+                    <div class="col-md-4">
+                        <div class="program_panel">
+                            <div class="program_panel_people_title">
+                                <span class="panel_title_left">重大事项新增：</span>
+                            </div>
+                            <div class="complaint_panel_info">
+                                <div align="center">
+                                    <a ui-sref="index.externalProfession.majorMatter.majorMatterAdd"><img src="images/staffHome/addCar.png" style="width: 100px;height: 100px"></a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!--外部专业线的重大事项详情的添加模版end-->
+                    <!--外部专业线的重大事项详情的显示信息模版-->
+                    <div class="col-md-4" ng-repeat="item in majorMatter">
+                        <div class="program_panel">
+                            <div class="program_panel_people_title">
+                                <span class="panel_title_left">重大事项查询：</span>
+                                  <span class="panel_title_right">
+                                  <span class="complaint1_panel_info_navigation">
+         						    <ul>
+                                        <li><a href="#" class="dropdown-toggle btn-lg" data-toggle="dropdown" role="button" aria-expanded="false"><span class="glyphicon glyphicon-menu-down" aria-hidden="true"></span></a>
+                                            <ul>
+                                                <li class="program_panel_info_navigation_top">新建</li>
+                                                <li>编辑</li>
+                                                <li>拷贝</li>
+                                                <li>重启</li>
+                                                <li>关闭</li>
+                                                <li>合并</li>
+                                                <li>打印</li>
+                                                <li>传阅</li>
+                                                <li>催单</li>
+                                                <li>日志</li>
+                                                <li><a ui-sref="index.externalProfession.majorMatter.majorMatterCheck">查看</a></li>
+                                                <li>回访</li>
+                                                <li class="program_panel_info_navigation_bottom">关闭</li>
+                                            </ul>
+                                        </li>
+                                    </ul>
+                                 </span>
+                                  </span>
+                            </div>
+                            <div class="complaint_panel_info">
+                                <table>
+                                    <tr>
+                                        <td>请求ID：</td>
+                                        <td>{{majorMatter.id}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>请求时间：</td>
+                                        <td>{{majorMatter.time}}</td>
+                                        <td>处理状态：</td>
+                                        <td>{{majorMatter.status}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>请求类型：</td>
+                                        <td>{{majorMatter.requestType}}</td>
+                                        <td>服务来源：</td>
+                                        <td>{{majorMatter.serviceSource}}</td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    <!--外部专业线的重大事项详情的显示信息模版-->
+                    <div  class="col-md-12">
+                        <div ui-view></div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,112 @@
+/**
+ * @Title: StoreNewMapper.java
+ * @Package com.flf.mapper
+ * @Description: TODO
+ * Copyright: Copyright (c) 2011 
+ * Company:武汉闻风多奇软件开发有限公司
+ * 
+ * @author wangtao
+ * @date 2015-6-10 上午10:16:29
+ * @version V1.0
+ */
+
+package com.flf.mapper;
+
+import java.util.List;
+
+
+
+import com.flf.entity.Search;
+
+
+import com.flf.entity.StoreNew;
+
+/**
+ * @ClassName: StoreNewMapper
+ * @Description: TODO
+ * @author wangyong
+ * @date 2015-6-10 上午10:16:29
+ *
+ */
+
+public interface StoreNewMapper {
+
+	 int  insert(StoreNew storeNew);  //添加商铺信息
+	 
+	 StoreNew  selectStoreNew(String storeId); //根据id查询商铺信息
+
+	 
+	 List<StoreNew> listSearchStoreNew(Search search);//物业服务商铺信息
+
+	 StoreNew listStoreByBuildingStructureId(String buildingStructureId)  ; //根据建筑结构id查询商铺信息集合
+
+	List<StoreNew> listSearchStoreNewAu(Search search);//通过条件查询授权了的商铺信息
+
+	/**
+	 * 根据项目id查询项目下所有商铺信息
+	 * @param projectId
+	 * @return
+	 */
+	List<StoreNew> listStoreByProjectId(String projectId);
+    
+	/**
+	 * 根据建筑结构id修改房产证信息
+	 * @author xiaocong
+	 * @date 上午10:34:17
+	 * @Description:TODO
+	 * @param id
+	 * @param buildingCertificate
+	 * @updateby
+	 */
+	void updateStore(String id, String buildingCertificate);
+	
+	/**
+	 * 查询所有商铺信息
+	 * 王洲
+	 * 2016.1.8
+	 * @return
+	 */
+	List<StoreNew> listAllStoreNew();
+	
+	/**
+	 * 修改商铺信息
+	 * @author 王洲
+	 * @date 2016.03.11
+	 * @param storeNew
+	 * @return
+	 */
+	int updateStoreNew(StoreNew storeNew);
+	
+	
+	/**
+	 * 批量插入商铺信息
+	 * @param list
+	 * @return
+	 */
+	int insertList(List<StoreNew> list);
+	
+	/**
+	 * 根据项目id分页查询项目下所有商铺信息
+	 * @author wangzhou
+	 * @date 2016-03-24
+	 * @param projectId
+	 * @return
+	 */
+	List<StoreNew> listPageStoreByProjectId(StoreNew storeNew);
+	
+	/**
+	 * 根据建筑结构id查询对应的商铺
+	 * @param buildingStructureId
+	 * @return
+	 */
+	StoreNew getStoreNewByBuildingStructureId(String buildingStructureId);
+	
+	/**
+	 * 根据项目id分页查询项目下所有商铺信息
+	 * @author ylq
+	 * @date 2016-07-05
+	 * @param BuildingStructureId
+	 * @return
+	 */
+	List<StoreNew> listPageStoreByBuildingStructureId(StoreNew storeNew);
+}

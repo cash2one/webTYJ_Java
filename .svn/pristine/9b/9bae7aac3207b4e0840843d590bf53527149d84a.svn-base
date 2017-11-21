@@ -1,0 +1,163 @@
+package com.flf.service;
+
+import java.io.InputStream;
+import java.util.List;
+
+import javax.jws.WebService;
+import javax.ws.rs.Consumes;
+import javax.ws.rs.DELETE;
+import javax.ws.rs.GET;
+import javax.ws.rs.POST;
+import javax.ws.rs.PUT;
+import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
+import javax.ws.rs.Produces;
+import javax.ws.rs.core.MediaType;
+
+import com.flf.entity.Annex;
+import com.flf.entity.ElectricityMeter;
+import com.flf.entity.PageRestful;
+import com.flf.entity.SearchMeter;
+import com.flf.entity.WaterMeter;
+import com.flf.request.Info;
+/* Created by Administrator on 2015/7/6. 
+author:尹磊
+修改时间：2015/7/6  修改人：尹磊 */
+@WebService
+@Path("/ElectricityMeter")
+public interface ElectricityMeterService {
+
+	/**
+	 * 查询所有电表信息
+	 * @return
+	 */
+	@GET
+	@Path("/listAllElectricityMeter")
+	@Produces(MediaType.APPLICATION_JSON)
+	List<ElectricityMeter> listAllElectricityMeter();
+
+	
+	/**
+	 * 根据id查询所有电表信息
+	 * @return
+	 */
+	@GET
+	@Path("/getElectricityMeterbyId/{electricityMeterId}")
+	@Produces(MediaType.APPLICATION_JSON)
+	ElectricityMeter getElectricityMeterbyId(@PathParam("electricityMeterId") String electricityMeterId);
+
+	/**
+	 * 根据电表id查询所有电表信息和使用记录//表数据里面
+	 * @return
+	 */
+	@GET
+	@Path("/getElectricityMeterbyElectricityMeterId/{electricityMeterId}")
+	@Produces(MediaType.APPLICATION_JSON)
+	ElectricityMeter getElectricityMeterbyElectricityMeterId(@PathParam("electricityMeterId") String electricityMeterId);
+	
+	
+	/**
+	 * 根据电表使用记录id查询所有电表信息
+	 * @return
+	 */
+	@GET
+	@Path("/getElectricityMeterbyElectricityMeterRecordsId/{electricityMeterRecordsId}")
+	@Produces(MediaType.APPLICATION_JSON)
+	ElectricityMeter getElectricityMeterbyElectricityMeterRecordsId(@PathParam("electricityMeterRecordsId") String electricityMeterRecordsId);
+
+	
+	/**
+	 * 根据父级id查询所有电表信息
+	 * @return
+	 */
+	@GET
+	@Path("/listElectricityMeterbyParent/{parentId}")
+	@Produces(MediaType.APPLICATION_JSON)
+	List<ElectricityMeter> listElectricityMeterbyParent(@PathParam("parentId") String parentId);
+	
+	
+	
+	/**
+	 * 新增电表信息
+	 * @return
+	 */
+	@POST
+	@Path("/insertElectricityMeter")
+	@Consumes({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
+	Info insertElectricityMeterrest(ElectricityMeter electricityMeter);
+
+	
+	/**
+	 * 修改电表信息
+	 * @return
+	 */
+	@PUT
+	@Path("/updateElectricityMeter")
+	@Consumes({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
+	Info updateElectricityMeter(ElectricityMeter electricityMeter);
+
+	
+	/**
+	 * 删除电表信息
+	 * @return
+	 */
+	@DELETE
+	@Path("/deleteElectricityMeter/{electricityMeterId}")
+	void deleteElectricityMeterrest(@PathParam("electricityMeterId") String electricityMeterId);
+	
+	/**
+	 * 电表多功能查询接口
+	 * @return
+	 */
+	@POST
+	@Path("/listPageElectricityMeter")
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
+	PageRestful listPageElectricityMeter(ElectricityMeter electricityMeter);
+	
+	/**
+	 * 根据建筑结构id获取电表多功能查询接口
+	 * @return
+	 */
+	@POST
+	@Path("/getElectricityMeterByBuildingStructureId")
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
+	ElectricityMeter getElectricityMeterByBuildingStructureId(ElectricityMeter electricityMeter);
+	
+	/**
+  	 * 导入Excel数据文档
+  	 * @param annex
+  	 * @return
+  	 */
+  	@POST
+  	@Path("/importExcelFileElectricityMeter")
+  	@Produces(MediaType.APPLICATION_JSON)
+  	@Consumes({MediaType.APPLICATION_JSON,MediaType.APPLICATION_XML})
+  	Info importExcelFileElectricityMeter(Annex annex);
+  	
+  	 /**
+     * 将需要进行EXCEL导入的数据先写入模板并导出到本地
+     */
+    InputStream exportElectricityMeterFile();
+    
+    /**
+	 * 根据单元的建筑结构id查询使用中的水表及建筑全名
+	 * @param parentId
+	 * @return
+	 */
+	@GET
+	@Path("/getWaterMeterAndFullNameByParentId/{parentId}")
+	@Produces(MediaType.APPLICATION_JSON)
+	String getWaterMeterAndFullNameByParentId(@PathParam("parentId") String parentId);
+	
+	/**
+	 * 根据电表使用记录id查询电表循环值
+	 * @param waterMeterRecordId
+	 * @return
+	 */
+	@GET
+	@Path("/getElectricityMeterbyMeterRecordId/{electricityMeterRecordId}")
+	@Produces(MediaType.APPLICATION_JSON)
+	ElectricityMeter getElectricityMeterbyMeterRecordId(@PathParam("electricityMeterRecordId") String electricityMeterRecordId);
+}

@@ -1,0 +1,106 @@
+package com.flf.service;
+
+import java.util.List;
+
+import javax.jws.WebService;
+import javax.ws.rs.GET;
+import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
+import javax.ws.rs.Produces;
+import javax.ws.rs.core.MediaType;
+
+import com.flf.entity.Tasks;
+import com.flf.entity.TasksJournal;
+
+@WebService
+@Path("/PropertyApp")
+/**
+ * 任务表
+ * 创建人：朱琪
+ * 创建时间：2016/7/29
+ */
+public interface PropertyAppService {
+
+	/**
+	 * @TODO 通过staffid和2个状态获取任务信息（待接受4,5，处理中3,100，历史任务2,0）
+	 * @param staffId 员工id, state1 状态1, state2 状态2
+	 * @author zhuqi
+	 * @return
+	 * @date 2016/7/29
+	 */
+	public String getTasksbyState2(String staffId,String state1,String state2);
+	
+	/**
+	 * @TODO 通过staffid和状态获取任务信息
+	 * @param staffId 员工id, state 状态
+	 * @author zhuqi
+	 * @return
+	 * @date 2016/7/29
+	 */
+	public String getTasksByState(String staffId, String state);
+	
+	/**
+	 * @TODO 获取所有任务
+	 * @param 
+	 * @author zhuqi 
+	 * @return
+	 * @date 2016/7/29
+	 */
+	public String listAllTasks();
+	
+	/**
+	 * @TODO 获取未接受任务
+	 * @param
+	 * @author zhuqi 
+	 * @return
+	 * @date 2016/7/29
+	 */
+	public String listTasksbyStateRestful();
+	
+	/**
+	 * @TODO 根据员工id获取所有任务
+	 * @param  staffId 员工id
+	 * @author zhuqi 
+	 * @return
+	 * @date 2016/8/01
+	 */
+	public String getTasksbyStaffId(String staffId);
+	
+	/**                              
+	 * @TODO 根据员工id和任务id接受任务           
+	 * @param  staffId 员工id, tasksId 任务id                      
+     * @author zhuqi                 
+     * @return                       
+     * @date 2016/8/01               
+     */                
+	 public String acceptTasks(String staffId, String tasksId);
+	 
+	 /**                              
+	  * @TODO 修改任务状态
+	  * 0.关闭 1.重启 2.已完成   3.已接受 4.未接受  5.转出   6.提交完成  7.处理中 
+	  * 8.合并9.转专项  10.转集中处理(这三个特殊处理),11指派
+	  * 
+	  * @param  Tasks 实体类,                     
+	  * @author zhuqi                 
+	  * @return                       
+	  * @date 2016/8/02           
+	 */ 
+	 public String changeTaskState(Tasks tasks);
+	 
+	 /**
+		 * 通过任务Id查询任务日志信息
+		 * @param tasksId 任务id
+		 * @return
+		 * @data 2016/08/03
+		 */
+	public String getTasksJournalbyTasksId(String tasksId);
+	
+	/**                              
+	 * @TODO 根据任务类型和状态获取任务      
+	 * @param  Type 任务类型 , State 任务类型                   
+     * @author zhuqi                 
+     * @return                       
+     * @date 2016/8/04               
+     */  
+	public String getTasksByTypeState(String Type, String State);
+}

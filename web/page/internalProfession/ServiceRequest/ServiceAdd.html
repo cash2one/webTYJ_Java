@@ -1,0 +1,309 @@
+<!--
+    页面名称：【内部专业线】内部服务请求——添加服务请求
+    前端负责人：刘洋
+    js路径：js/controllers/internalProfession/majorAssetInitialization/ServiceAdd.js
+    创建时间：2015/4/29
+    修改日期：2015/5/28
+-->
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+    <style type="text/css">
+        #menu_zzjs_net{margin:10px;width:200px;overflow:hidden;}
+        #menu_zzjs_net li{line-height:25px;}
+        #menu_zzjs_net li a{color:#666666;padding-left:5px;outline:none;}
+        #menu_zzjs_net li input{vertical-align:middle;margin-left:5px;}
+        #menu_zzjs_net .two{padding-left:10px;display:none;}
+        .col-md-2 button{width: 90px;height: 60px;margin-top: 20px;margin-bottom: 10px}
+    </style>
+</head>
+<body ng-controller="ServiceAddCtrl">
+<!--添加服务请求-->
+<div class="complaint_user_list">
+    <div >
+        <div class="col-md-12" style="margin-left: 100px">
+            <!--请求基本信息-->
+            <table style="margin: 10px 60px;line-height: 30px">
+                <tr>
+                    <td style="white-space: nowrap;text-align: right">服务编号：</td><td width="190">1001</td>
+                    <td style="white-space: nowrap;text-align: right">请求来源：</td><td width="190">园林部</td>
+                </tr>
+                <tr>
+                    <td>房屋ID：</td><td>1011212413234</td>
+                    <td style="white-space: nowrap;text-align: right">客户名称：</td><td>周润发</td>
+                </tr>
+            </table>
+            <!--请求基本信息end-->
+            <!--选择地址-->
+            <div class="col-md-12">
+                <div class="col-md-2" style="border: 1px solid rgba(0, 0, 0, 0.99);height: 300px">
+                    <!--树形-->
+                    <ul id="menu_zzjs_net" style="margin-left:-45px;">
+                        <li>
+                            <label><a href="javascript:" class="glyphicon glyphicon-play">桃源居</a></label>
+                            <ul class="two">
+                                <li>
+                                    <label><a href="javascript:">一区</a></label>
+                                    <ul class="two">
+                                        <li>
+                                            <label><input type="checkbox" value="123456"><a href="javascript:">一栋</a></label>
+                                            <ul class="two">
+                                                <li><label><input type="checkbox" value="123456"><a href="javascript:">101</a></label></li>
+                                                <li>
+                                                    <label><input type="checkbox" value="123456"><a href="javascript:">102</a></label>
+                                            </ul>
+                                        <li>
+                                            <label><input type="checkbox" value="123456"><a href="javascript:">二栋</a></label></li>
+                                    </ul>
+                                </li>
+                                <li><label><a href="javascript:">二区</a></label></li>
+                            </ul>
+                        </li>
+                    </ul>
+                    <!--树形 end-->
+                </div>
+                <div class="col-md-1"style="margin-top: 130px"  >
+                    <span class="glyphicon glyphicon-arrow-right" ></span>
+                </div>
+                <div class="col-md-4" style="margin: 5px 5px;border: 1px solid rgba(0, 0, 0, 0.99);height: 50px;margin-top: 120px;">
+                    <p style="margin-left: 100px;margin-top: 15px;">桃源居一区一栋101</p>
+                </div>
+            </div>
+            <!--选择地址 end-->
+            <!--其它信息-->
+            <table>
+                <tr>
+                    <td style="text-align: right">回访人：</td>
+                    <td><label><select><option>周润发</option><option>陈荟莲</option><option>无</option></select></label></td>
+                    <td>联系电话：</td>
+                    <td><label><select><option>13567349080</option><option>13567349999</option></select></label></td>
+                </tr>
+                <tr>
+                    <td style="text-align: right">优先级：</td>
+                    <td><label><select><option>高</option><option>中</option><option>低</option></select></label></td>
+                    <td>重要程度：</td>
+                    <td><label><select><option>高</option><option>中</option><option>低</option></select></label></td>
+                    <td style="color: #ff0000">重大事项:</td>
+                    <td><label><select><option>是</option><option>否</option></select></label></td>
+                </tr>
+                <tr>
+                    <td>客户希望处理时间：</td>
+                    <td width="100"><label><input type="text" class="form-control input-sm"></label></td>
+                    <td style="padding-left: 10px"><label><select><option>9:00</option><option>10:00</option><option>11:00</option></select></label></td>
+                    <td>~<label><select><option>9:00</option><option>10:00</option><option>11:00</option></select></label></td>
+                </tr>
+            </table>
+            <table>
+                <tr>
+                    <td>事由描述：</td>
+                    <td><textarea style="width:450px" cols="3" placeholder="请输入内容"></textarea></td>
+                </tr>
+            </table>
+            <!--其它信息end-->
+            <!--添加任务类型-->
+            <div style="margin-top: 15px;">
+                <!--点击"+"号显示隐藏内容-->
+                <span onclick="return click_a('divOne_0')" style="cursor:pointer;" class="glyphicon glyphicon-plus"></span>
+                <div id="divOne_0" style="display: none;margin: 10px 20px">
+                    <div style="margin-top:-40px; " class="col-md-3">
+                        <ul>
+                            <li class="dropdown">
+                                <span>任务类型:</span>
+                                <button class="btn btn-sm dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-expanded="true" style="background-color: #ffffff">
+                                    室内装修
+                                    <span class="caret"></span>
+                                </button>
+                                <ul class="dropdown-menu pull-right" role="menu" aria-labelledby="dropdownMenu1" >
+                                    <!--<li role="presentation">-->
+                                        <!--<a href="#divOne_1" tabindex="-1" data-toggle="tab">室内装修</a>-->
+                                    <!--</li>-->
+                                    <li role="presentation">
+                                        <a href="#divOne_2" tabindex="-1" data-toggle="tab">赔偿给业主</a>
+                                    </li>
+                                    <li role="presentation">
+                                        <a href="#divOne_1" tabindex="-1" data-toggle="tab">清洁</a>
+                                    </li>
+                                    <li role="presentation">
+                                        <a href="#divOne_1" tabindex="-1" data-toggle="tab">园林</a>
+                                    </li>
+                                    <li role="presentation">
+                                        <a href="#divOne_1" tabindex="-1" data-toggle="tab">安保</a>
+                                    </li>
+                                    <li role="presentation">
+                                        <a href="#divOne_2" tabindex="-1" data-toggle="tab">领里纠纷</a>
+                                    </li>
+                                    <li role="presentation">
+                                        <a href="#divOne_1" tabindex="-1" data-toggle="tab">重大事项</a>
+                                    </li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </div>
+                    <div id="myTabContent" class="tab-content">
+                        <div id="divOne_1" class="tab-pane fade in active">
+                            <table>
+                                <tr>
+                                    <td style="text-align: right">专业：</td>
+                                    <td><label><select><option>电</option><option>水</option><option>窗</option><option>门</option><option>信报箱</option><option>房屋主体</option><option>抄水电表</option><option>核实水电表</option><option>开关水电</option><option>电器</option><option>洁具</option><option>栏杆</option><option>火灾</option></select></label></td>
+                                    <td style="text-align: right">产品：</td>
+                                    <td><label><select><option>电表</option><option>配电箱</option><option>管线</option><option>开关插座</option><option>水管</option></select></label></td>
+                                </tr>
+                                <tr>
+                                    <td>任务ID：</td>
+                                    <td>XXXXXX</td>
+                                    <td style="text-align: right">客户：</td>
+                                    <td>周润发</td>
+                                </tr>
+                                <tr>
+                                    <td style="text-align: right">地址：</td>
+                                    <td>桃源居3区21栋301</td>
+                                    <td style="text-align: right">电话：</td>
+                                    <td>13012345678</td>
+                                </tr>
+                                <tr>
+                                    <td>上门时间：</td>
+                                    <td><span>4-30</span><span>12:00--15:00</span></td>
+                                    <td width="200px" style="text-align: right">预计完成时间：</td>
+                                    <td><span>4-30</span><span>18:00</span></td>
+                                </tr>
+                            </table>
+                            <table>
+                                <tr>
+                                    <td>事由描述：</td>
+                                    <td><textarea style="width:450px" cols="3" placeholder="请输入内容"></textarea></td>
+                                </tr>
+                                <tr>
+                                    <td>负责人：</td>
+                                    <td><label><select><option>谢XXX</option></select></label></td>
+                                </tr>
+                            </table>
+                        </div>
+                        <div id="divOne_2" class="tab-pane fade" >
+                            <table style="margin: 30px 60px;line-height: 30px">
+                                <tr>
+                                    <td style="white-space: nowrap;text-align: right">索赔任务ID：</td><td width="190">101101</td>
+                                </tr>
+                                <tr>
+                                    <td style="white-space: nowrap;text-align: right">发起人：</td><td><input style="width: 90px" type="text" class="form-control input-sm" placeholder="张三"></td>
+                                    <td style="white-space: nowrap;text-align: right">索赔金额：</td><td><input style="width: 100px" type="text" class="form-control input-sm" placeholder="10000"></td>
+                                </tr>
+                                <tr>
+                                    <td style="text-align: right">相关联系人：</td><td><input style="width: 90px" type="text" class="form-control input-sm" placeholder="张四"></td>
+                                    <td style="text-align: right">联系电话：</td><td><input style="width: 100px" type="text" class="form-control input-sm" placeholder="15327219111"></td>
+                                    <td style="text-align: center"><button style="height: 30px;width: 90px">选择</button></td>
+                                </tr>
+                            </table>
+                            <table style="margin-left: 85px">
+                                <tr>
+                                    <td>事由描述：</td>
+                                    <td><textarea style="width:450px;" cols="3" placeholder="请输入内容"></textarea></td>
+                                </tr>
+                                <tr>
+                                    <td>上传照片：</td>
+                                    <td style="border: 1px solid lightgray;padding: 2px 2px"> <img src="images/workBench/u716.png" style="margin: 2px 2px"><img src="images/workBench/u716.png" style="margin: 2px 2px"><img src="images/workBench/u716.png" style="margin: 2px 2px"><img src="images/workBench/u716.png" style="margin: 2px 2px"></td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--添加任务类型 end-->
+        </div>
+    </div>
+    <div style="margin:20px 270px">
+        <button style="height: 30px;width: 90px" class="glyphicon" ui-sref="index.internalProfession.ServiceRequest">提交</button>
+        <button style="height: 30px;width: 90px" ui-sref="index.internalProfession.ServiceRequest">取消</button>
+    </div>
+</div>
+<!--添加服务请求 end-->
+<script>
+    function click_a(divDisplay)
+    {
+        if(document.getElementById(divDisplay).style.display != "block")
+        {
+            document.getElementById(divDisplay).style.display = "block";
+        }
+        else
+        {
+            document.getElementById(divDisplay).style.display = "none";
+        }
+    }
+    function addEvent(el,name,fn){
+        if(el.addEventListener) return el.addEventListener(name,fn,false);
+        return el.attachEvent('on'+name,fn);
+    }
+    function nextnode(node){
+        if(!node)return ;
+        if(node.nodeType == 1)
+            return node;
+        if(node.nextSibling)
+            return nextnode(node.nextSibling);
+    }
+    function prevnode(node){
+        if(!node)return ;
+        if(node.nodeType == 1)
+            return node;
+        if(node.previousSibling)
+            return prevnode(node.previousSibling);
+    }
+    function parcheck(self,checked){
+        var par =  prevnode(self.parentNode.parentNode.parentNode.previousSibling);
+        if(par&&par.getElementsByTagName('input')[0]){
+            par.getElementsByTagName('input')[0].checked = checked;
+            parcheck(par.getElementsByTagName('input')[0],sibcheck(par.getElementsByTagName('input')[0]));
+        }
+    }
+    function sibcheck(self){
+        var sbi = self.parentNode.parentNode.parentNode.childNodes,n=0;
+        for(var i=0;i<sbi.length;i++){
+            if(sbi[i].nodeType != 1)
+                n++;
+            else if(sbi[i].getElementsByTagName('input')[0].checked)
+                n++;
+        }
+    }
+    addEvent(document.getElementById('menu_zzjs_net'),'click',function(e){
+        e = e||window.event;
+        var target = e.target||e.srcElement;
+        var tp = nextnode(target.parentNode.nextSibling);
+        switch(target.nodeName){
+            case 'A':
+                if(tp&&tp.nodeName == 'UL'){
+                    if(tp.style.display != 'block' ){
+                        tp.style.display = 'block';
+                    }else{
+                        tp.style.display = 'none';
+                    }
+                }
+                break;
+            case 'SPAN':
+                var ap = nextnode(nextnode(target.nextSibling).nextSibling);
+                if(ap.style.display != 'block' ){
+                    ap.style.display = 'block';
+                }else{
+                    ap.style.display = 'none';
+                }
+                break;
+            case 'INPUT':
+                if(target.checked){
+                    if(tp){
+                        var checkbox = tp.getElementsByTagName('input');
+                        for(var i=0;i<checkbox.length;i++)
+                            checkbox[i].checked = true;
+                    }
+                }else{
+                    if(tp){
+                        var checkbox= tp.getElementsByTagName('input');
+                        for(var i=0;i<checkbox.length;i++)
+                            checkbox[i].checked = false;
+                    }
+                }
+                parcheck(target,sibcheck(target));
+                break;
+        }
+    });
+</script>
+</body>
+</html>

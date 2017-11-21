@@ -1,0 +1,309 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.flf.mapper.SchedulingMapper" >
+  <resultMap id="BaseResultMap" type="Scheduling" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="staff_id" property="staffId" jdbcType="INTEGER" />
+    <result column="staff_name" property="staffName" jdbcType="VARCHAR" />
+    <result column="classes_type_id" property="classesTypeId" jdbcType="INTEGER" />
+    <result column="classes_type_name" property="classesTypeName" jdbcType="VARCHAR" />
+    <result column="classes_id" property="classesId" jdbcType="INTEGER" />
+    <result column="classes_name" property="classesName" jdbcType="VARCHAR" />
+    <result column="currentDate" property="currentdate" jdbcType="DATE" />
+    <result column="STATUS_CD" property="statusCd" jdbcType="TINYINT" />
+    <result column="START_DT" property="startDt" jdbcType="VARCHAR" />
+    <result column="END_DT" property="endDt" jdbcType="VARCHAR" />
+    <result column="post_id" property="postId" jdbcType="INTEGER" />
+    <result column="post_name" property="postName" jdbcType="VARCHAR" />
+    <result column="division_id" property="divisionId" jdbcType="INTEGER" />
+    <result column="division_name" property="divisionName" jdbcType="DATE" />
+  </resultMap>
+  
+  <select id="getSchedulingById" resultMap="BaseResultMap" parameterType="int">
+  	select * from t_scheduling
+    where id = #{0}
+  </select>
+  
+  
+  <select id="listAllScheduling" resultMap="BaseResultMap" parameterType="int">
+    select * from t_scheduling
+    where id = #{0}
+  </select>
+  
+  <resultMap type="Map" id="ResultMap">
+  	<result   column="id" property="id" jdbcType="INTEGER"/>
+  	<result   column="division_name" property="divisionName" jdbcType="VARCHAR"/>
+  	<result   column="post_name" property="postName" jdbcType="VARCHAR"/>
+  	<result   column="staff_name" property="staffName" jdbcType="VARCHAR"/>
+  	<result   column="1" property="id1" jdbcType="VARCHAR"/>
+  	<result   column="2" property="id2" jdbcType="VARCHAR"/>
+  	<result   column="3" property="id3" jdbcType="VARCHAR"/>
+  	<result   column="4" property="id4" jdbcType="VARCHAR"/>
+  	<result   column="5" property="id5" jdbcType="VARCHAR"/>
+  	<result   column="6" property="id6" jdbcType="VARCHAR"/>
+  	<result   column="7" property="id7" jdbcType="VARCHAR"/>
+  	<result   column="8" property="id8" jdbcType="VARCHAR"/>
+  	<result   column="9" property="id9" jdbcType="VARCHAR"/>
+  	<result   column="10" property="id10" jdbcType="VARCHAR"/>
+  	<result   column="11" property="id11" jdbcType="VARCHAR"/>
+  	<result   column="12" property="id12" jdbcType="VARCHAR"/>
+  	<result   column="13" property="id13" jdbcType="VARCHAR"/>
+  	<result   column="14" property="id14" jdbcType="VARCHAR"/>
+  	<result   column="15" property="id15" jdbcType="VARCHAR"/>
+  	<result   column="16" property="id16" jdbcType="VARCHAR"/>
+  	<result   column="17" property="id17" jdbcType="VARCHAR"/>
+  	<result   column="18" property="id18" jdbcType="VARCHAR"/>
+  	<result   column="19" property="id19" jdbcType="VARCHAR"/>
+  	<result   column="20" property="id20" jdbcType="VARCHAR"/>
+  	<result   column="21" property="id21" jdbcType="VARCHAR"/>
+  	<result   column="22" property="id22" jdbcType="VARCHAR"/>
+  	<result   column="23" property="id23" jdbcType="VARCHAR"/>
+  	<result   column="24" property="id24" jdbcType="VARCHAR"/>
+  	<result   column="25" property="id25" jdbcType="VARCHAR"/>
+  	<result   column="26" property="id26" jdbcType="VARCHAR"/>
+  	<result   column="27" property="id27" jdbcType="VARCHAR"/>
+  	<result   column="28" property="id28" jdbcType="VARCHAR"/>
+  	<result   column="29" property="id29" jdbcType="VARCHAR"/>
+  	<result   column="30" property="id30" jdbcType="VARCHAR"/>
+  	<result   column="31" property="id31" jdbcType="VARCHAR"/>
+  	
+  	
+  </resultMap>
+  
+  <select id="getCountBydivisionIdAndDate" resultType="int">
+  	 SELECT COUNT(*) FROM t_scheduling WHERE YEAR(currentDate)=#{year} AND MONTH(currentDate)=#{month} AND division_id=#{divisionId}
+  </select>
+ 
+  <select id="listAllSchedulingBypostIdOrStaffId" resultMap="ResultMap" parameterType="Scheduling" >
+	SELECT id,division_name,post_name,staff_name,
+	group_concat(case when DAY(currentDate)=1 then classes_type_name end) as '1',
+	group_concat(CASE WHEN DAY(currentDate)=2 THEN classes_type_name END)
+	AS '2',
+	group_concat(CASE WHEN DAY(currentDate)=3 THEN classes_type_name END) AS '3',
+	group_concat(CASE WHEN DAY(currentDate)=4 THEN classes_type_name END)
+	AS '4',
+	group_concat(CASE WHEN DAY(currentDate)=5 THEN classes_type_name END) AS '5',
+	GROUP_CONCAT(CASE WHEN DAY(currentDate)=6 THEN classes_type_name END)
+	AS '6',
+	GROUP_CONCAT(CASE WHEN DAY(currentDate)=7 THEN classes_type_name END) AS '7',
+	GROUP_CONCAT(CASE WHEN DAY(currentDate)=8 THEN classes_type_name END)
+	AS '8',
+	GROUP_CONCAT(CASE WHEN DAY(currentDate)=9 THEN classes_type_name END) AS '9',
+	GROUP_CONCAT(CASE WHEN DAY(currentDate)=10 THEN classes_type_name END)
+	AS '10',
+	GROUP_CONCAT(CASE WHEN DAY(currentDate)=11 THEN classes_type_name END) AS '11',
+	GROUP_CONCAT(CASE WHEN DAY(currentDate)=12 THEN classes_type_name END)
+	AS '12',
+	GROUP_CONCAT(CASE WHEN DAY(currentDate)=13 THEN classes_type_name END) AS '13',
+	GROUP_CONCAT(CASE WHEN DAY(currentDate)=14 THEN classes_type_name END)
+	AS '14',
+	GROUP_CONCAT(CASE WHEN DAY(currentDate)=15 THEN classes_type_name END) AS '15',
+	GROUP_CONCAT(CASE WHEN DAY(currentDate)=16 THEN classes_type_name END)
+	AS '16',
+	GROUP_CONCAT(CASE WHEN DAY(currentDate)=17 THEN classes_type_name END) AS '17',
+	GROUP_CONCAT(CASE WHEN DAY(currentDate)=18 THEN classes_type_name END)
+	AS '18',
+	GROUP_CONCAT(CASE WHEN DAY(currentDate)=19 THEN classes_type_name END) AS '19',
+	GROUP_CONCAT(CASE WHEN DAY(currentDate)=20 THEN classes_type_name END)
+	AS '20',
+	GROUP_CONCAT(CASE WHEN DAY(currentDate)=21 THEN classes_type_name END) AS '21',
+	GROUP_CONCAT(CASE WHEN DAY(currentDate)=22 THEN classes_type_name END)
+	AS '22',
+	GROUP_CONCAT(CASE WHEN DAY(currentDate)=23 THEN classes_type_name END) AS '23',
+	GROUP_CONCAT(CASE WHEN DAY(currentDate)=24 THEN classes_type_name END)
+	AS '24',
+	GROUP_CONCAT(CASE WHEN DAY(currentDate)=25 THEN classes_type_name END) AS '25',
+	GROUP_CONCAT(CASE WHEN DAY(currentDate)=26 THEN classes_type_name END)
+	AS '26',
+	GROUP_CONCAT(CASE WHEN DAY(currentDate)=27 THEN classes_type_name END) AS '27',
+	GROUP_CONCAT(CASE WHEN DAY(currentDate)=28 THEN classes_type_name END)
+	AS '28',
+	GROUP_CONCAT(CASE WHEN DAY(currentDate)=29 THEN classes_type_name END) AS '29',
+	GROUP_CONCAT(CASE WHEN DAY(currentDate)=30 THEN classes_type_name END)
+	AS '30',
+	GROUP_CONCAT(CASE WHEN DAY(currentDate)=31 THEN classes_type_name END) AS '31'
+	FROM `t_scheduling` where
+ 
+    <if test="divisionId!=null">
+    	<if test="divisionId>0">
+    		division_id=#{divisionId} and
+    	</if>
+    </if>
+     <if test="postId!=null">
+    	<if test="postId>0">
+    		post_id=#{postId} and
+    	</if>
+    </if>
+    <if test="staffName!=null and staffName !=''">
+    	staff_name=#{staffName} and
+    </if>
+    <if test="currentdate!=null">
+    	YEAR(currentDate)=YEAR(#{currentdate}) and MONTH(currentDate)=  MONTH(#{currentdate}) and
+    </if>
+    <if test="currentdate==null">
+    	YEAR(currentDate)=YEAR(CURDATE()) and  MONTH(CURDATE())= MONTH(currentDate) and
+    </if>
+   1=1 GROUP BY staff_id;
+  </select>
+  
+  
+  
+  
+  
+    <resultMap type="Map" id="ResultMapStaffname">
+  	<result   column="id" property="id" jdbcType="INTEGER"/>
+  	<result   column="division_name" property="divisionName" jdbcType="VARCHAR"/>
+  	<result   column="post_name" property="postName" jdbcType="VARCHAR"/>
+  	<result   column="classes_type_name" property="classesTypeName" jdbcType="VARCHAR"/>
+  	<result   column="1" property="id1" jdbcType="VARCHAR"/>
+  	<result   column="2" property="id2" jdbcType="VARCHAR"/>
+  	<result   column="3" property="id3" jdbcType="VARCHAR"/>
+  	<result   column="4" property="id4" jdbcType="VARCHAR"/>
+  	<result   column="5" property="id5" jdbcType="VARCHAR"/>
+  	<result   column="6" property="id6" jdbcType="VARCHAR"/>
+  	<result   column="7" property="id7" jdbcType="VARCHAR"/>
+  	<result   column="8" property="id8" jdbcType="VARCHAR"/>
+  	<result   column="9" property="id9" jdbcType="VARCHAR"/>
+  	<result   column="10" property="id10" jdbcType="VARCHAR"/>
+  	<result   column="11" property="id11" jdbcType="VARCHAR"/>
+  	<result   column="12" property="id12" jdbcType="VARCHAR"/>
+  	<result   column="13" property="id13" jdbcType="VARCHAR"/>
+  	<result   column="14" property="id14" jdbcType="VARCHAR"/>
+  	<result   column="15" property="id15" jdbcType="VARCHAR"/>
+  	<result   column="16" property="id16" jdbcType="VARCHAR"/>
+  	<result   column="17" property="id17" jdbcType="VARCHAR"/>
+  	<result   column="18" property="id18" jdbcType="VARCHAR"/>
+  	<result   column="19" property="id19" jdbcType="VARCHAR"/>
+  	<result   column="20" property="id20" jdbcType="VARCHAR"/>
+  	<result   column="21" property="id21" jdbcType="VARCHAR"/>
+  	<result   column="22" property="id22" jdbcType="VARCHAR"/>
+  	<result   column="23" property="id23" jdbcType="VARCHAR"/>
+  	<result   column="24" property="id24" jdbcType="VARCHAR"/>
+  	<result   column="25" property="id25" jdbcType="VARCHAR"/>
+  	<result   column="26" property="id26" jdbcType="VARCHAR"/>
+  	<result   column="27" property="id27" jdbcType="VARCHAR"/>
+  	<result   column="28" property="id28" jdbcType="VARCHAR"/>
+  	<result   column="29" property="id29" jdbcType="VARCHAR"/>
+  	<result   column="30" property="id30" jdbcType="VARCHAR"/>
+  	<result   column="31" property="id31" jdbcType="VARCHAR"/>
+  	
+  	
+  </resultMap>
+  
+  <select id="listAllSchedulingBypostIdOrStaffName" resultMap="ResultMapStaffname" parameterType="Scheduling" >
+  		SELECT division_name,post_name,classes_type_name,                                                                                                                                                                                                                                                                                                                   
+	GROUP_CONCAT(CASE WHEN DAY(currentDate)=1 THEN staff_name END) AS '1',
+	GROUP_CONCAT(CASE WHEN DAY(currentDate)=2 THEN staff_name END)
+	AS '2',
+	GROUP_CONCAT(CASE WHEN DAY(currentDate)=3 THEN staff_name END) AS '3',
+	GROUP_CONCAT(CASE WHEN DAY(currentDate)=4 THEN staff_name END)
+	AS '4',
+	GROUP_CONCAT(CASE WHEN DAY(currentDate)=5 THEN staff_name END) AS '5',
+	GROUP_CONCAT(CASE WHEN DAY(currentDate)=6 THEN staff_name END)
+	AS '6',
+	GROUP_CONCAT(CASE WHEN DAY(currentDate)=7 THEN staff_name END) AS '7',
+	GROUP_CONCAT(CASE WHEN DAY(currentDate)=8 THEN staff_name END)
+	AS '8',
+	GROUP_CONCAT(CASE WHEN DAY(currentDate)=9 THEN staff_name END) AS '9',
+	GROUP_CONCAT(CASE WHEN DAY(currentDate)=10 THEN staff_name END)
+	AS '10',
+	GROUP_CONCAT(CASE WHEN DAY(currentDate)=11 THEN staff_name END) AS '11',
+	GROUP_CONCAT(CASE WHEN DAY(currentDate)=12 THEN staff_name END)
+	AS '12',
+	GROUP_CONCAT(CASE WHEN DAY(currentDate)=13 THEN staff_name END) AS '13',
+	GROUP_CONCAT(CASE WHEN DAY(currentDate)=14 THEN staff_name END)
+	AS '14',
+	GROUP_CONCAT(CASE WHEN DAY(currentDate)=15 THEN staff_name END) AS '15',
+	GROUP_CONCAT(CASE WHEN DAY(currentDate)=16 THEN staff_name END)
+	AS '16',
+	GROUP_CONCAT(CASE WHEN DAY(currentDate)=17 THEN staff_name END) AS '17',
+	GROUP_CONCAT(CASE WHEN DAY(currentDate)=18 THEN staff_name END)
+	AS '18',
+	GROUP_CONCAT(CASE WHEN DAY(currentDate)=19 THEN staff_name END) AS '19',
+	GROUP_CONCAT(CASE WHEN DAY(currentDate)=20 THEN staff_name END)
+	AS '20',
+	GROUP_CONCAT(CASE WHEN DAY(currentDate)=21 THEN staff_name END) AS '21',
+	GROUP_CONCAT(CASE WHEN DAY(currentDate)=22 THEN staff_name END)
+	AS '22',
+	GROUP_CONCAT(CASE WHEN DAY(currentDate)=23 THEN staff_name END) AS '23',
+	GROUP_CONCAT(CASE WHEN DAY(currentDate)=24 THEN staff_name END)
+	AS '24',
+	GROUP_CONCAT(CASE WHEN DAY(currentDate)=25 THEN staff_name END) AS '25',
+	GROUP_CONCAT(CASE WHEN DAY(currentDate)=26 THEN staff_name END)
+	AS '26',
+	GROUP_CONCAT(CASE WHEN DAY(currentDate)=27 THEN staff_name END) AS '27',
+	GROUP_CONCAT(CASE WHEN DAY(currentDate)=28 THEN staff_name END)
+	AS '28',
+	GROUP_CONCAT(CASE WHEN DAY(currentDate)=29 THEN staff_name END) AS '29',
+	GROUP_CONCAT(CASE WHEN DAY(currentDate)=30 THEN staff_name END)
+	AS '30',
+	GROUP_CONCAT(CASE WHEN DAY(currentDate)=31 THEN staff_name END) AS '31'
+	FROM `t_scheduling`  where
+	
+	<if test="divisionId!=null">
+    	<if test="divisionId>0">
+    		division_id=#{divisionId} and
+    	</if>
+    </if>
+     <if test="postId!=null">
+    	<if test="postId>0">
+    		post_id=#{postId} and
+    	</if>
+    </if>
+<!--     <if test="staffName!=null and staffName !=''">
+    	staff_name=#{staffName} and
+    </if> -->
+    <if test="currentdate!=null">
+    	YEAR(currentDate)=YEAR(#{currentdate}) and MONTH(currentDate)=  MONTH(#{currentdate}) and
+    </if>
+    <if test="currentdate==null">
+    	YEAR(currentDate)=YEAR(CURDATE()) and  MONTH(CURDATE())= MONTH(currentDate) and
+    </if>
+	1=1 GROUP BY  division_name,post_name, classes_type_name
+  </select>
+ 
+  <insert id="insertScheduling" parameterType="Scheduling" >
+      insert into t_scheduling (id, staff_id, staff_name, 
+      classes_type_id, classes_type_name, classes_id, 
+      classes_name, currentDate, STATUS_CD, 
+      START_DT, END_DT, post_id, post_name, 
+      division_id, division_name)
+    values (#{id,jdbcType=INTEGER}, #{staffId,jdbcType=INTEGER}, #{staffName,jdbcType=VARCHAR}, 
+      #{classesTypeId,jdbcType=INTEGER}, #{classesTypeName,jdbcType=VARCHAR}, #{classesId,jdbcType=INTEGER}, 
+      #{classesName,jdbcType=VARCHAR}, #{currentdate,jdbcType=DATE}, #{statusCd,jdbcType=TINYINT}, 
+      #{startDt,jdbcType=VARCHAR}, #{endDt,jdbcType=VARCHAR}, #{postId,jdbcType=INTEGER}, #{postName,jdbcType=VARCHAR}, 
+      #{divisionId,jdbcType=INTEGER}, #{divisionName,jdbcType=DATE})
+  </insert>
+
+  <update id="updateScheduling" parameterType="Scheduling" >
+  	update t_scheduling
+    	set id = #{record.id,jdbcType=INTEGER},
+      staff_id = #{record.staffId,jdbcType=INTEGER},
+      staff_name = #{record.staffName,jdbcType=VARCHAR},
+      classes_type_id = #{record.classesTypeId,jdbcType=INTEGER},
+      classes_type_name = #{record.classesTypeName,jdbcType=VARCHAR},
+      classes_id = #{record.classesId,jdbcType=INTEGER},
+      classes_name = #{record.classesName,jdbcType=VARCHAR},
+      currentDate = #{record.currentdate,jdbcType=DATE},
+      STATUS_CD = #{record.statusCd,jdbcType=TINYINT},
+      START_DT = #{record.startDt,jdbcType=VARCHAR},
+      END_DT = #{record.endDt,jdbcType=VARCHAR},
+      post_id = #{record.postId,jdbcType=INTEGER},
+      post_name = #{record.postName,jdbcType=VARCHAR},
+      division_id = #{record.divisionId,jdbcType=INTEGER},
+      division_name = #{record.divisionName,jdbcType=DATE}
+  </update>
+  
+  <delete id="deleteScheduling" parameterType="java.lang.Integer" >
+    delete from t_scheduling
+    where id = #{0}
+  </delete>
+  
+  
+  <update id="updateSchedulingByStaffId" parameterType="Scheduling">
+  		update t_scheduling set 
+  			classes_type_id = #{classesTypeId,jdbcType=INTEGER},
+  		 classes_type_name = #{classesTypeName,jdbcType=VARCHAR}
+  		where  staff_id = #{staffId,jdbcType=INTEGER} and currentDate = #{currentdate,jdbcType=DATE}
+  </update>
+</mapper>

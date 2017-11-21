@@ -1,0 +1,438 @@
+package com.flf.service.impl;
+
+import java.text.DecimalFormat;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.UUID;
+import org.springframework.beans.factory.annotation.Autowired;
+
+import com.flf.entity.ElectricityLoss;
+import com.flf.entity.ElectricityMeter;
+import com.flf.entity.ElectricityMeterRecords;
+import com.flf.entity.Log;
+import com.flf.entity.PageRestful;
+import com.flf.entity.SearchMeter;
+import com.flf.entity.Staff;
+import com.flf.entity.WaterMeterRecords;
+import com.flf.mapper.ElectricityLossMapper;
+import com.flf.mapper.ElectricityMeterMapper;
+import com.flf.mapper.ElectricityMeterRecordsMapper;
+import com.flf.mapper.MeterMapper;
+import com.flf.mapper.StaffMapper;
+import com.flf.service.ElectricityMeterRecordsService;
+import com.flf.service.LogService;
+import com.flf.util.Tools;
+
+public class ElectricityMeterRecordsServiceImpl implements ElectricityMeterRecordsService {
+	
+	private LogService logService;
+	
+	private ElectricityMeterRecordsMapper electricityMeterRecordsMapper;
+	
+	private ElectricityMeterMapper electricityMeterMapper;
+	
+	private ElectricityLossMapper electricityLossMapper;
+	
+	private StaffMapper staffMapper;
+	
+	public LogService getLogService() {
+		return logService;
+	}
+
+	public ElectricityMeterMapper getElectricityMeterMapper() {
+		return electricityMeterMapper;
+	}
+
+
+	public void setElectricityMeterMapper(ElectricityMeterMapper electricityMeterMapper) {
+		this.electricityMeterMapper = electricityMeterMapper;
+	}
+
+
+	public void setLogService(LogService logService) {
+		this.logService = logService;
+	}
+
+	public ElectricityMeterRecordsMapper getElectricityMeterRecordsMapper() {
+		return electricityMeterRecordsMapper;
+	}
+
+
+	public void setElectricityMeterRecordsMapper(ElectricityMeterRecordsMapper electricityMeterRecordsMapper) {
+		this.electricityMeterRecordsMapper = electricityMeterRecordsMapper;
+	}
+
+	public ElectricityLossMapper getElectricityLossMapper() {
+		return electricityLossMapper;
+	}
+
+	public void setElectricityLossMapper(ElectricityLossMapper electricityLossMapper) {
+		this.electricityLossMapper = electricityLossMapper;
+	}
+
+	
+	@Override
+	public PageRestful listElectricityMeterRecords(SearchMeter searchMeter) {
+		// TODO Auto-generated method stub
+		PageRestful pageRestful = new PageRestful();
+		List<ElectricityMeterRecords> electricityMeterRecordss=electricityMeterRecordsMapper.listPageElectricityMeterRecords(searchMeter);
+		electricityMeterRecordss.add(0,null);
+		pageRestful.setElectricityMeterRecords(electricityMeterRecordss);
+		pageRestful.setPage(searchMeter.getPage());
+		return pageRestful;
+	}
+
+	@Override
+	public List<ElectricityMeterRecords> listAllElectricityMeterRecords() {
+		// TODO Auto-generated method stub
+		return electricityMeterRecordsMapper.listAllElectricityMeterRecords();
+	}
+
+	@Override
+	public ElectricityMeterRecords getUserByIdRest(
+			String electricityMeterRecordsId) {
+		// TODO Auto-generated method stub
+		return electricityMeterRecordsMapper.getElectricityMeterRecordsbyId(electricityMeterRecordsId);
+	}
+
+	@Override
+	public List<ElectricityMeterRecords> listElectricityMeterRecordsbyWaterId(
+			String waterMeterNum) {
+		// TODO Auto-generated method stub
+		List<ElectricityMeterRecords> aa= electricityMeterRecordsMapper.listElectricityMeterRecordsbyWaterId(waterMeterNum);
+		return aa;
+	}
+
+	@Override
+	public void insertElectricityMeterRecordsrest(
+			ElectricityMeterRecords electricityMeterRecords) {
+		// TODO Auto-generated method stub
+		String uuid=UUID.randomUUID().toString();
+		
+		electricityMeterRecords.setElectricityMeterRecordsId(uuid);
+		ElectricityMeter electricityMeter = electricityMeterMapper.getElectricityMeterbyId(electricityMeterRecords.getElectricityMeterId());
+		if(electricityMeter!=null){
+			electricityMeter.setState(electricityMeterRecords.getState());
+			electricityMeterRecords.setAssetsId(electricityMeter.getAssetsId());
+			electricityMeterRecords.setParentId(electricityMeter.getElectricityMeterId());
+		
+//			propertyMapper.updateByPrimaryKey(waterMeterRecords.getProperty());		
+		}
+		ElectricityMeterRecords electricityMeterRecord=electricityMeterRecordsMapper.selectByBuildingStructureId(electricityMeterRecords.getBuildingStructureId());
+		if (electricityMeterRecord!=null) {
+			electricityMeterRecords.setElectricityMeterDescribed(electricityMeterRecord.getFullName());
+		}
+		electricityMeterRecordsMapper.insertElectricityMeterRecords(electricityMeterRecords);
+		electricityMeterMapper.updateElectricityMeter(electricityMeter);
+		//electricityMeterRecordsMapper.insertElectricityMeterRecords(electricityMeterRecords);
+	}
+
+	@Override
+	public void updateElectricityMeterRecordsrest(
+			ElectricityMeterRecords electricityMeterRecords) {
+		// TODO Auto-generated method stub
+		electricityMeterRecordsMapper.updateElectricityMeterRecords(electricityMeterRecords);
+	}
+
+	@Override
+	public void updateElectricityMeterRecordsrestbyNum(
+			ElectricityMeterRecords electricityMeterRecords) {
+		// TODO Auto-generated method stub
+        Date date =new Date();
+	if(electricityMeterRecordsMapper.updateElectricityMeterRecordsbyNum(electricityMeterRecords)>0){
+		Log log=new Log();
+		log.setOperation("停用");//操作
+		log.setService("电表停用");//业务
+		log.setThing("停用电表："+electricityMeterRecords.getElectricityMeterNum());
+		log.setStaff(electricityMeterRecords.getMeterReadingPeople());//操作人
+		log.setTable("t_electricity_meter_records");//操作的表名
+		log.setTime(date);
+		log.setRelevanceId(electricityMeterRecords.getElectricityMeterRecordsId());//关联id
+		logService.insertElectricityLog(log);//记录日志
+		
+	}
+	ElectricityMeter electricityMeter = electricityMeterMapper.getElectricityMeterbyId(electricityMeterRecords.getElectricityMeterId());
+	if(electricityMeter!=null){
+		electricityMeter.setState(3);
+	}
+	electricityMeterMapper.updateElectricityMeter(electricityMeter);
+	electricityMeterRecordsMapper.updateElectricityMeterRecordsbyNum(electricityMeterRecords);
+
+	}
+
+	@Override
+	public void deleteElectricityMeterRecordsrest(
+			String electricityMeterRecordsId) {
+		// TODO Auto-generated method stub
+		electricityMeterRecordsMapper.deleteElectricityMeterRecords(electricityMeterRecordsId);
+	}
+
+	@Override
+	public List<ElectricityMeterRecords> listElectricityMeterRecordsbybuildigIds(
+			List<String> ids) {
+		// TODO Auto-generated method stub
+		List<ElectricityMeterRecords> electricityMeterRecords=new ArrayList<ElectricityMeterRecords>();
+		for(String id : ids){
+			ElectricityMeterRecords electricityMeterRecord=electricityMeterRecordsMapper.listElectricityMeterRecordsbybuildigIds(id);
+			electricityMeterRecords.add(electricityMeterRecord);
+		}
+		return electricityMeterRecords;
+	}
+
+	@Override
+	public ElectricityMeterRecords electricityMeterRecordsbybuildigId(
+			String buildingId) {
+		if(Tools.notEmpty(buildingId)){
+			return electricityMeterRecordsMapper.listElectricityMeterRecordsbybuildigIds(buildingId);
+		}
+		return null;
+	}
+	
+	@Override
+	public List<ElectricityMeterRecords> listElectricityMeterRecordsByIds(
+			String buildingStructureId) {
+		// TODO Auto-generated method stub
+		List<ElectricityMeterRecords> list = electricityMeterRecordsMapper.listElectricityMeterRecordsByIds(buildingStructureId);
+		list.isEmpty();
+		return electricityMeterRecordsMapper.listElectricityMeterRecordsByIds(buildingStructureId);
+	}
+	
+	
+	@Override
+	public List<ElectricityMeterRecords> listElectricityMeterRecordsbybuildigId(
+			String buildingStructureId) {
+		// TODO Auto-generated method stub
+		return electricityMeterRecordsMapper.listElectricityMeterRecordsbybuildigId(buildingStructureId);
+	}
+
+	@Override
+	public List<ElectricityMeterRecords> listElectricityMeterRecordsByElectricityMeterId(
+			String electricityMeterId,Integer year) {
+		// TODO Auto-generated method stub
+		List<ElectricityMeterRecords> list = electricityMeterRecordsMapper.listElectricityMeterRecordsByElectricityMeterId(electricityMeterId,year);
+		for (ElectricityMeterRecords item: list) {
+			if (item.getMeterReadingPeople()!=null) {
+				Staff staff=staffMapper.findStaffBystaffId(item.getMeterReadingPeople());
+				if (staff!=null) {
+					if (staff.getStaffName()!=null) {
+						item.setMeterReadingPeople(staff.getStaffName());
+					}
+				}
+			}
+		}
+		return electricityMeterRecordsMapper.listElectricityMeterRecordsByElectricityMeterId(electricityMeterId,year);
+	}
+
+	@Override
+	public PageRestful getElectricityDamage(ElectricityMeterRecords electricityMeterRecords) {
+		Date nowDate = new Date();
+		List<ElectricityMeterRecords> electricityMeterRecordList = electricityMeterRecordsMapper.listPageElectricityDamage(electricityMeterRecords); //查询所有父表编号为空的电表
+		for (ElectricityMeterRecords item : electricityMeterRecordList) {
+			item.setChildMeterReading(0.0);
+			Double sumReading = electricityMeterRecordsMapper.selectSumReadingByParentNum(item.getElectricityMeterNum(), electricityMeterRecords.getQueryDate());//主表的子表总量
+			if(sumReading != null){
+				item.setChildMeterReading(sumReading + item.getChildMeterReading());
+			}
+			
+			item.setChildConsumption(0.0);
+			Double sumConsumption = electricityMeterRecordsMapper.selectSumConsumptionByParentNum(item.getElectricityMeterNum(), electricityMeterRecords.getQueryDate());//主表的子表用电总量
+			if(sumConsumption != null){
+				item.setChildConsumption(sumConsumption + item.getChildConsumption());
+			}
+			
+			
+			if(item.getFromNum() != null && !"".equals(item.getFromNum())){ //如果从表id不为空
+				ElectricityMeterRecords electricityMeterRecord = electricityMeterRecordsMapper.selectReadingById(item.getFromNum(), electricityMeterRecords.getQueryDate()); //查询从表读数
+				if(electricityMeterRecord.getReading() != null && !"".equals(electricityMeterRecord.getReading())){
+					item.setReading((Double.parseDouble(electricityMeterRecord.getReading()) + Double.parseDouble(item.getReading())) + "");//主从表读数相加
+				}
+				item.setElectricityMeterDescribed(item.getElectricityMeterDescribed() + "," + electricityMeterRecord.getElectricityMeterDescribed());//主从表描述相加
+				item.setElectricityMeterNum(item.getElectricityMeterNum() + "," + electricityMeterRecord.getElectricityMeterNum());//主从表编号相加
+				
+				sumReading = electricityMeterRecordsMapper.selectSumReadingByParentNum(electricityMeterRecord.getElectricityMeterNum(), electricityMeterRecords.getQueryDate());//从表的子表总量
+				if(sumReading != null){
+					item.setChildMeterReading(sumReading + item.getChildMeterReading());
+				}
+			}
+			ElectricityLoss electricityLoss1=new ElectricityLoss();
+			electricityLoss1.setQueryDate(nowDate);
+			electricityLoss1.setElectricityNum(item.getElectricityMeterNum());
+			electricityLoss1=electricityLossMapper.selectByElectricityNum(electricityLoss1);
+			if (electricityLoss1!=null) {
+				item.setElectricityMeterNum(electricityLoss1.getElectricityNum());
+				item.setElectricityMeterDescribed(electricityLoss1.getElectricityName());
+				item.setConsumption(electricityLoss1.getConsumption());
+				item.setChildConsumption(electricityLoss1.getChildConsumption());
+				item.setElectricityLoss(electricityLoss1.getElectricityLoss());
+				item.setLossRate(electricityLoss1.getLossRate());
+				item.setBootChildConsumption(electricityLoss1.getBootChildConsumption());
+			}
+		}
+		PageRestful pageRestful =new PageRestful();
+		List<ElectricityMeterRecords> electricityMeterRecordss = electricityMeterRecordList;
+		electricityMeterRecordss.add(0,null);
+		pageRestful.setElectricityMeterRecords(electricityMeterRecordss);
+		pageRestful.setPage(electricityMeterRecords.getPage());
+		return pageRestful;
+	}
+
+
+	@Override
+	public PageRestful getElectricityDamageTwo(ElectricityMeterRecords electricityMeterRecords) {
+		Date nowDate = new Date();
+		List<ElectricityMeterRecords> electricityMeterRecordList = electricityMeterRecordsMapper.listPageElectricityDamageTwo(electricityMeterRecords); 
+		for (ElectricityMeterRecords item : electricityMeterRecordList) {
+			item.setChildMeterReading(0.0);
+			Double sumReading = electricityMeterRecordsMapper.selectSumReadingByParentNum(item.getElectricityMeterNum(), electricityMeterRecords.getQueryDate());//主表的子表总量
+			if(sumReading != null){
+				item.setChildMeterReading(sumReading + item.getChildMeterReading());
+			}
+			
+			item.setChildConsumption(0.0);
+			Double sumConsumption = electricityMeterRecordsMapper.selectSumConsumptionByParentNum(item.getElectricityMeterNum(), electricityMeterRecords.getQueryDate());//主表的子表用水总量
+			if(sumConsumption != null){
+				item.setChildConsumption(sumConsumption + item.getChildConsumption());
+			}
+			if(item.getFromNum() != null && !"".equals(item.getFromNum())){ //如果从表id不为空
+				ElectricityMeterRecords electricityMeterRecord = electricityMeterRecordsMapper.selectReadingById(item.getFromNum(), electricityMeterRecords.getQueryDate()); //查询从表读数
+				if(electricityMeterRecord.getReading() != null && !"".equals(electricityMeterRecord.getReading())){
+					item.setReading((Double.parseDouble(electricityMeterRecord.getReading()) + Double.parseDouble(item.getReading())) + "");//主从表读数相加
+				}
+				item.setElectricityMeterDescribed(item.getElectricityMeterDescribed() + "," + electricityMeterRecord.getElectricityMeterDescribed());//主从表描述相加
+				item.setElectricityMeterNum(item.getElectricityMeterNum() + "," + electricityMeterRecord.getElectricityMeterNum());//主从表编号相加
+				
+				sumReading = electricityMeterRecordsMapper.selectSumReadingByParentNum(electricityMeterRecord.getElectricityMeterNum(), electricityMeterRecords.getQueryDate());//从表的子表总量
+				if(sumReading != null){
+					item.setChildMeterReading(sumReading + item.getChildMeterReading());
+				}
+			}
+			ElectricityLoss electricityLoss1=new ElectricityLoss();
+			electricityLoss1.setQueryDate(nowDate);
+			electricityLoss1.setElectricityNum(item.getElectricityMeterNum());
+			electricityLoss1=electricityLossMapper.selectByElectricityNum(electricityLoss1);
+			if (electricityLoss1!=null) {
+				item.setElectricityMeterNum(electricityLoss1.getElectricityNum());
+				item.setElectricityMeterDescribed(electricityLoss1.getElectricityName());
+				item.setConsumption(electricityLoss1.getConsumption());
+				item.setChildConsumption(electricityLoss1.getChildConsumption());
+				item.setElectricityLoss(electricityLoss1.getElectricityLoss());
+				item.setLossRate(electricityLoss1.getLossRate());
+				item.setBootChildConsumption(electricityLoss1.getBootChildConsumption());
+			}
+			Map<String, Object> map = new HashMap<String, Object>();
+			map.put("queryDate", electricityMeterRecords.getQueryDate());
+			map.put("parentNumList", Arrays.asList(item.getElectricityMeterNum()));
+			List<ElectricityMeterRecords> itemList = electricityMeterRecordsMapper.getElectricityDamageTwo(map);
+			if(itemList != null && itemList.size() > 0){
+				item.setHasChird("1");
+			} else {
+				item.setHasChird("0");
+			}
+		}
+		PageRestful pageRestful =new PageRestful();
+		List<ElectricityMeterRecords> electricityMeterRecordss = electricityMeterRecordList;
+		electricityMeterRecordss.add(0,null);
+		pageRestful.setElectricityMeterRecords(electricityMeterRecordss);
+		pageRestful.setPage(electricityMeterRecords.getPage());
+		return pageRestful;
+	}
+
+	public void getElectricityDamage(){
+		Date nowDate = new Date();
+		ElectricityMeterRecords electricityMeterRecords = new ElectricityMeterRecords();
+		electricityMeterRecords.setQueryDate(nowDate);
+		qwer(electricityMeterRecords, 1);
+	}
+	
+	public List<ElectricityMeterRecords> qwer(ElectricityMeterRecords electricityMeterRecords, int count){
+		List<ElectricityMeterRecords> electricityMeterRecordList = new ArrayList<ElectricityMeterRecords>();
+		if(electricityMeterRecords.getParentNumList() == null || electricityMeterRecords.getParentNumList().size() == 0){
+			electricityMeterRecordList = electricityMeterRecordsMapper.getElectricityDamage(electricityMeterRecords); //查询所有父表编号为空的电表
+			electricityLossMapper.deleteByMeterDate(electricityMeterRecords.getQueryDate());
+		} else {
+			Map<String, Object> map = new HashMap<String, Object>();
+			map.put("queryDate", electricityMeterRecords.getQueryDate());
+			map.put("parentNumList", electricityMeterRecords.getParentNumList());
+			electricityMeterRecordList = electricityMeterRecordsMapper.getElectricityDamageTwo(map);
+		}
+		
+		for (ElectricityMeterRecords item : electricityMeterRecordList) {
+			item.setChildMeterReading(0.0);
+			Double sumReading = electricityMeterRecordsMapper.selectSumReadingByParentNum(item.getElectricityMeterNum(), electricityMeterRecords.getQueryDate());//主表的子表总量
+			if(sumReading != null){
+				item.setChildMeterReading(sumReading + item.getChildMeterReading());
+			}
+			if(item.getFromNum() != null && !"".equals(item.getFromNum())){ //如果从表id不为空
+				ElectricityMeterRecords meterRecords = electricityMeterRecordsMapper.selectReadingById(item.getFromNum(), electricityMeterRecords.getQueryDate()); //查询从表读数
+				if(meterRecords.getReading() != null && !"".equals(meterRecords.getReading())){
+					item.setReading((Double.parseDouble(meterRecords.getReading()) + Double.parseDouble(item.getReading())) + "");//主从表读数相加
+				}
+				item.setElectricityMeterDescribed(item.getElectricityMeterDescribed() + "," + meterRecords.getElectricityMeterDescribed());//主从表描述相加
+				item.setElectricityMeterNum(item.getElectricityMeterNum() + "," + meterRecords.getElectricityMeterNum());//主从表编号相加
+				
+				sumReading = electricityMeterRecordsMapper.selectSumReadingByParentNum(meterRecords.getElectricityMeterNum(), electricityMeterRecords.getQueryDate());//从表的子表总量
+				if(sumReading != null){
+					item.setChildMeterReading(sumReading + item.getChildMeterReading());
+				}
+			}
+			
+			Double bootReading = 0.0;
+			
+			
+			java.util.List<String> pnList = new java.util.ArrayList<String>();
+			String s[]=item.getElectricityMeterNum().split(",");
+			for(String b : s){
+				pnList.add(b);
+			}
+			
+			Map<String, Object> bootMap = new HashMap<String, Object>();
+			bootMap.put("queryDate", electricityMeterRecords.getQueryDate());
+			bootMap.put("parentNumList", pnList);
+			List<ElectricityMeterRecords> bootElectricityMeterRecordList = electricityMeterRecordsMapper.getElectricityDamageTwo(bootMap);
+			
+
+			for(ElectricityMeterRecords bootItem : bootElectricityMeterRecordList){
+				Double tmp=electricityMeterRecordsMapper.selectSumReadingByParentNum_AndIsBilling1(bootItem.getElectricityMeterNum(), electricityMeterRecords.getQueryDate());//子表的子表总量
+
+				if(tmp!=null){
+					bootReading += tmp;
+			
+				}
+			}
+			item.setParentNumList(Arrays.asList(item.getElectricityMeterNum().split(",")));
+			item.setQueryDate(electricityMeterRecords.getQueryDate());
+			ElectricityLoss electricityLoss = new ElectricityLoss();
+			electricityLoss.setElectricityNum(item.getElectricityMeterNum());
+			electricityLoss.setElectricityName(item.getElectricityMeterDescribed());
+			electricityLoss.setLevel(count);
+			if (item.getReading()==null) {
+				electricityLoss.setConsumption(0.0);
+			}else{
+				electricityLoss.setConsumption(Double.parseDouble(item.getReading()));
+			}			
+			if(item.getChildMeterReading() != 0){
+				electricityLoss.setChildConsumption(item.getChildMeterReading());
+				electricityLoss.setElectricityLoss(electricityLoss.getConsumption() - electricityLoss.getChildConsumption());
+				DecimalFormat df = new DecimalFormat("#.00");
+				electricityLoss.setLossRate(df.format((electricityLoss.getConsumption() - electricityLoss.getChildConsumption())/electricityLoss.getConsumption()*100) + "%");
+			}
+			electricityLoss.setMeterDate(item.getQueryDate());
+			electricityLossMapper.insertSelective(electricityLoss);
+			qwer(item,count + 1);
+		}
+		
+		return null;
+	}
+
+	public StaffMapper getStaffMapper() {
+		return staffMapper;
+	}
+
+	public void setStaffMapper(StaffMapper staffMapper) {
+		this.staffMapper = staffMapper;
+	}
+}

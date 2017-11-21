@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.flf.mapper.ConstructionAssociatedRecordMapper" >
+  <resultMap id="BaseResultMap" type="ConstructionAssociatedRecord" >
+    <id column="record_id" property="recordId" jdbcType="VARCHAR" />
+    <result column="apply_id" property="applyId" jdbcType="VARCHAR" />
+    <result column="construction_id" property="constructionId" jdbcType="VARCHAR" />
+    <result column="head_id" property="headId" jdbcType="VARCHAR" />
+  </resultMap>
+  
+   <resultMap type="ConstructionAssociatedRecord" id="resultConstructionAssociatedRecordMap" extends="BaseResultMap">
+  	<association property="enterpriseCustNew" column="enterprise_id" javaType="EnterpriseCustNew" select="com.flf.mapper.EnterpriseCustNewMapper.getEnterpriseCustNew"></association>
+ <association property="personCustNew" column="cust_id" javaType="PersonCustNew" select="com.flf.mapper.PersonCustNewMapper.getPersonCustNew"></association>
+  </resultMap>
+ <delete id="deleteConstructionAssociatedRecord" parameterType="String">
+  delete from ts_construction_associated_record where record_id=#{0}
+  </delete>
+  
+  <select id="listAllConstructionAssociatedRecord"  resultMap="BaseResultMap" >
+ 	 select * from ts_construction_associated_record 
+  </select>
+  
+  <select id="getConstructionAssociatedRecordbyId" parameterType="String" resultMap="BaseResultMap">
+  	select * from ts_construction_associated_record where record_id=#{0}
+  </select>
+  
+  <select id="getConstructionAssociatedRecordbyApplyId" parameterType="String" resultMap="BaseResultMap">
+  	select * from ts_construction_associated_record where apply_id=#{0}
+  </select>
+  
+  <insert id="insertConstructionAssociatedRecord" parameterType="ConstructionAssociatedRecord" >      
+      insert into ts_construction_associated_record (record_id, apply_id,construction_id, head_id)
+    values (UUID(), #{applyId,jdbcType=VARCHAR}, #{constructionId,jdbcType=VARCHAR}, 
+      #{headId,jdbcType=VARCHAR})
+  </insert>
+ 
+  <update id="updateConstructionAssociatedRecord" parameterType="ConstructionAssociatedRecord" >
+    update ts_construction_associated_record
+    set apply_id = #{applyId,jdbcType=VARCHAR},
+     construction_id = #{constructionId,jdbcType=VARCHAR},
+      head_id = #{headId,jdbcType=VARCHAR}
+    where record_id = #{recordId,jdbcType=VARCHAR}
+  </update>
+</mapper>

@@ -1,0 +1,1463 @@
+package com.flf.service.impl;
+
+
+import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.UUID;
+
+import com.flf.entity.Billing;
+import com.flf.entity.BuildingBilling;
+import com.flf.entity.ChargeItemBilling;
+import com.flf.entity.ChargeItemNew;
+import com.flf.entity.Condition;
+import com.flf.entity.Constant;
+import com.flf.entity.ElectricityMeterReadingData;
+import com.flf.entity.Formula;
+import com.flf.entity.MeterReadingData;
+import com.flf.entity.PageRestful;
+import com.flf.entity.ProjectBilling;
+import com.flf.entity.Scheme;
+import com.flf.entity.SchemeDatails;
+import com.flf.mapper.BillingMapper;
+import com.flf.mapper.BuildingBillingMapper;
+import com.flf.mapper.ChargeItemBillingMapper;
+import com.flf.mapper.ChargeItemNewMapper;
+import com.flf.mapper.ConstantMapper;
+import com.flf.mapper.ElectricityMeterReadingDataMapper;
+import com.flf.mapper.FormulaMapper;
+import com.flf.mapper.MeterReadingDataMapper;
+import com.flf.mapper.ProjectBillingMapper;
+import com.flf.mapper.SchemeDatailsMapper;
+import com.flf.mapper.SchemeMapper;
+import com.flf.mapper.SchemeRelationMapper;
+import com.flf.service.BillingService;
+import com.flf.util.DateUtil;
+import com.flf.util.FormulaHelper;
+import com.flf.util.JavaCT;
+
+public class BillingServiceImpl implements BillingService{
+
+	private BillingMapper billingMapper;
+	
+	private SchemeMapper schemeMapper;
+	
+	private ChargeItemNewMapper chargeItemNewMapper;
+
+	private SchemeDatailsMapper schemeDatailsMapper;
+	
+	private FormulaMapper formulaMapper;
+	
+	private MeterReadingDataMapper meterReadingDataMapper;
+
+	private ElectricityMeterReadingDataMapper electricityMeterReadingDataMapper;
+	
+	private SchemeRelationMapper schemeRelationMapper;
+	
+	private ConstantMapper constantMapper;
+	
+	private ProjectBillingMapper projectBillingMapper;
+	
+	private ChargeItemBillingMapper chargeItemBillingMapper;
+	
+	private BuildingBillingMapper buildingBillingMapper;
+
+	//条件判断工具
+	private JavaCT javaCT=new JavaCT();
+	//计算工具
+	private FormulaHelper formulaHelper=new FormulaHelper();
+	//时间工具
+	private DateUtil dateUtil=new DateUtil();
+	
+	@Override
+	public PageRestful listPageSearchBillingRes(Billing billing) {
+		// TODO Auto-generated method stub
+		PageRestful pageRestful=new PageRestful();
+		List<Billing> billings = billingMapper.listPageSearchBilling(billing);
+		billings.add(0, null);
+		pageRestful.setBillings(billings);
+		pageRestful.setPage(billing.getPage());
+		return pageRestful;
+	}
+	
+	/**根据收费项目计费id查询二级收费详情 */
+	@Override
+	public List<Billing> getBillingDatilsRes(String id) {
+		Map map=new HashMap<String,Object>();
+		map.put("buildingBillingId", id);
+		return billingMapper.getBillingDatils(map);
+	}
+
+
+	
+	@Override
+	public void AddBilling(Billing billing) {
+//		//计算时间
+//		Date date=new Date();
+//		// TODO Auto-generated method stub
+//		/***1.根据项目id得到一级 收费项目 **************/
+//		//得到选中物业项目id集合
+//		List<ProjectBilling> projectList=billing.getProjectBillingList();
+//		//得到选中的一级收费项目id集合
+//		List<ChargeItemNew> chargeLevelOne=billing.getChargeItemNewList();
+//		//方案公式收费项目集合
+//		List<SchemeDatails> schemeDatailsList;
+//		//水量集合
+//		List<MeterReadingData> meterReadingDataL;
+//		//电量集合
+//		List<ElectricityMeterReadingData> electricityMeterReadingDataL;
+//		//公式
+//		Formula formula;
+//		//一级收费项目ID
+//		String chargeLevelOneId;
+//		//一级收费项目计费(总金额)
+//		ChargeItemBilling chargeItemBilling;
+//		//建筑一级收费项目计费(计费金额)
+//		BuildingBilling buildingBilling;
+//		//二级收费项目计费(计费金额)
+//		Billing billingInfo;
+//		//条件字符串
+//		String cond = "";
+//		//读数名称
+//		String[] pName;
+//		//读数值
+//		String[] val;
+//		//公司字符串
+//		String form;
+//		SchemeDatails myObject;
+//		SchemeDatails _myObject;
+//		Map map;
+//		//项目计费对象(总金额)
+//		for (ProjectBilling projectBilling : projectList) {
+//			//物业项目总金额
+//			BigDecimal pNum=new BigDecimal(0);
+//			for (ChargeItemNew chargeItemNewOne : chargeLevelOne) {
+//				//一级收费项目总金额
+//				BigDecimal lOneNum=new BigDecimal(0);
+//				chargeLevelOneId=chargeItemNewOne.getChargeItemNewId();
+//				chargeItemBilling=new ChargeItemBilling();
+//				chargeItemBilling.setChargeItemBillingId(UUID.randomUUID().toString());
+//				chargeItemBilling.setProjectBillingId(projectBilling.getProjectBillingId());
+//				chargeItemBilling.setChargeItemId(chargeLevelOneId);
+////				chargeItemBilling.setChargeItemName(chargeItemNewOne.getChargeItemNewName());
+//				chargeItemBilling.setBillingStartTime(date);
+//				chargeItemBilling.setBillingEndTime(date);
+//				chargeItemBilling.setBillingType(0);
+//				chargeItemBilling.setProjectName(projectBilling.getProjectName());
+//				chargeItemBilling.setProjectId(projectBilling.getProjectId());
+//				map=new HashMap<String,Object>();
+//				map.put("projectId", projectBilling.getProjectId());
+//				map.put("ciId",chargeLevelOneId);
+//				schemeDatailsList=schemeDatailsMapper.getManualCharge(map);//方案公式收费项目集合
+//				if(schemeDatailsList.size()>0){
+//					for (int i = 0; i < schemeDatailsList.size();) {
+////						System.out.println("一级判断"+i);
+//						//条件结果
+//						myObject = schemeDatailsList.get(i);
+//						//同一建筑ID的一级收费项目总金额
+//						BigDecimal pLOneNum=new BigDecimal(0);
+//						//二级收费项目金额
+//						BigDecimal twoNum=new BigDecimal(0);
+//						//建筑收费项目计费记录
+//						buildingBilling=new BuildingBilling();
+//						buildingBilling.setBuildingBillingId(UUID.randomUUID().toString());
+//						buildingBilling.setBillingStartTime(date);
+//						buildingBilling.setBillingEndTime(date);
+//						buildingBilling.setChargeItemId(chargeLevelOneId);
+////						buildingBilling.setChargeItemName(chargeItemNewOne.getChargeItemNewName());
+//						buildingBilling.setBuildingId(myObject.getBuildingId());
+//						buildingBilling.setChargeItemBillingId(chargeItemBilling.getChargeItemBillingId());
+//						//二级收费计费记录
+//						billingInfo=new Billing();
+//						billingInfo.setBillingId(UUID.randomUUID().toString());
+//						billingInfo.setBillingStartTime(date);
+//						billingInfo.setBillingEndTime(date);
+//						billingInfo.setSchemeDatailsId(myObject.getSchemeDatailsId());
+//						billingInfo.setChargeItemName(myObject.getChargeItemName());
+//						billingInfo.setBillingState(0);
+//						billingInfo.setProjectId(projectBilling.getProjectId());
+//						billingInfo.setBuildingBillingId(buildingBilling.getBuildingBillingId());
+//						//根据公式id查询公式及条件表
+//						formula=formulaMapper.getFormulaByciId(myObject.getFormulaId()).get(0);
+//						form=formula.getFormulaExpression();
+//						Map map1=new HashMap();
+//						map1.put("buildingStructureId", myObject.getBuildingId());
+//						map1.put("month", dateUtil.getMonthLastDay(projectBilling.getMonth()));
+//						if(formula.getConditionList().size()<1){
+//							pName=new String[1];
+//							val=new String[1];
+//						}else{
+//							pName=new String[formula.getConditionList().size()];
+//							val=new String[formula.getConditionList().size()];
+//						}
+//						//计算
+//						if(chargeItemNewOne.getChargeItemNewName().contains("水")){
+//							pName[0]="Q";
+//							//根据建筑结构id和时间查水用量
+//							meterReadingDataL=meterReadingDataMapper.getMeterReadingByC(map1);
+//							if(meterReadingDataL.size()>0){
+//								//得到用水量
+//								val[0]=String.valueOf(meterReadingDataL.get(0).getReading()-meterReadingDataL.get(0).getLastMonthReading());
+//							}else{
+//								val[0]="0.0";
+//							}
+//						}else if(chargeItemNewOne.getChargeItemNewName().contains("电")){
+//							pName[0]="E";
+//							pName[1]="M";
+//							//根据建筑结构id和时间查水用量
+//							electricityMeterReadingDataL=electricityMeterReadingDataMapper.getElectricityMeterReadingbyId(map1);
+//							if(electricityMeterReadingDataL.size()>0){
+//								//得到用水量
+//								val[0]=String.valueOf(electricityMeterReadingDataL.get(0).getReading()-electricityMeterReadingDataL.get(0).getLastMonthReading());
+//							}else{
+//								val[0]="0.0";
+//							}
+//							val[1]=projectBilling.getMonth().split("-")[1];
+//						}
+//						if(formula.getConditionList().size()>0){
+//							//临时保存阶梯价格条件
+//							String condF="";
+//							//临时保存非阶梯价格条件
+//							String condP="";
+//							for (int c=0;c<formula.getConditionList().size();c++ ) {
+//								if(formula.getConditionList().get(c).getConditionExpression().contains(pName[0])){
+//									condF=formula.getConditionList().get(c).getConditionExpression();
+//								}else{
+//									if("".equals(condP)){
+//										condP=condP+"("+formula.getConditionList().get(c).getConditionExpression()+")";
+//									}else{
+//										condP=condP+"&&("+formula.getConditionList().get(c).getConditionExpression()+")";
+//									}
+//								}
+//								if(c==0){
+//									cond=cond+"("+formula.getConditionList().get(c).getConditionExpression()+")";
+//								}else{
+//									cond=cond+"&&("+formula.getConditionList().get(c).getConditionExpression()+")";
+//								}
+//							}
+//							for (int p=0;p<pName.length;p++) {
+//								cond= cond.replaceAll(pName[p],val[p]);
+//								condP= condP.replaceAll(pName[p],val[p]);
+//							}
+////							System.out.println(cond);
+//							//判断公式条件是否成立
+//							if(javaCT.checkIf(cond)){
+//								form=form.replaceAll(pName[0],val[0].toString());
+//								twoNum=new BigDecimal(Double.toString(formulaHelper.eval(form)));
+//							}else{
+//								if("".equals(condP)||javaCT.checkIf(condP)){
+//								if(condF.contains("<=")){
+//									String[] str=condF.split("<=");
+//									Double max=Double.parseDouble(str[str.length-1]);
+//								if(Double.valueOf(val[0])>max){
+//									form=form.replaceAll(pName[0].toString(),max.toString());
+//									twoNum=new BigDecimal(Double.toString(formulaHelper.eval(form)));
+//								}else{
+//									twoNum=new BigDecimal(0);
+//								}
+//								}else{
+//									twoNum=new BigDecimal(0);
+//								}
+//								}
+//							}
+//						}else{
+//							form=form.replaceAll(pName[0],val[0].toString());
+//							twoNum=new BigDecimal(Double.toString(formulaHelper.eval(form)));
+//						}
+//						System.out.println(myObject.getChargeItemName()+":"+form);
+//						lOneNum=lOneNum.add(twoNum);
+//						pLOneNum=pLOneNum.add(twoNum);
+//						billingInfo.setBillingBalance(twoNum.doubleValue());
+//						//插入计费表
+//						billingMapper.insertBilling(billingInfo);
+//						schemeDatailsList.remove(myObject);
+//						for (int j = 0; j < schemeDatailsList.size();){
+////							System.out.println("二级判断"+j);
+//							cond="";
+//							twoNum=new BigDecimal(0);
+//							_myObject = schemeDatailsList.get(j);  
+//			                // 相同，分组，并加入到组容器集合  
+//			                if (_myObject.getBuildingId().equals(myObject.getBuildingId())){
+//			                	//二级收费计费记录
+//								billingInfo=new Billing();
+//								billingInfo.setBillingId(UUID.randomUUID().toString());
+//								billingInfo.setBillingStartTime(date);
+//								billingInfo.setBillingEndTime(date);
+//								billingInfo.setSchemeDatailsId(_myObject.getSchemeDatailsId());
+//								billingInfo.setChargeItemName(_myObject.getChargeItemName());
+//								billingInfo.setBillingState(0);
+//								billingInfo.setProjectId(projectBilling.getProjectId());
+//								billingInfo.setBuildingBillingId(buildingBilling.getBuildingBillingId());
+//								//根据公式id查询公式及条件表
+//								formula=formulaMapper.getFormulaByciId(_myObject.getFormulaId()).get(0);
+//								form=formula.getFormulaExpression();
+//								//计算
+//								if(chargeItemNewOne.getChargeItemNewName().contains("水")){
+//									pName[0]="Q";
+//									//根据建筑结构id和时间查水用量
+//									meterReadingDataL=meterReadingDataMapper.getMeterReadingByC(map1);
+//									if(meterReadingDataL.size()>0){
+//										//得到用水量
+//										val[0]=String.valueOf(meterReadingDataL.get(0).getReading()-meterReadingDataL.get(0).getLastMonthReading());
+//									}else{
+//										val[0]="0.0";
+//									}
+//								}else if(chargeItemNewOne.getChargeItemNewName().contains("电")){
+//									pName[0]="E";
+//									pName[1]="M";
+//									//根据建筑结构id和时间查水用量
+//									electricityMeterReadingDataL=electricityMeterReadingDataMapper.getElectricityMeterReadingbyId(map1);
+//									if(electricityMeterReadingDataL.size()>0){
+//										//得到用水量
+//										val[0]=String.valueOf(electricityMeterReadingDataL.get(0).getReading()-electricityMeterReadingDataL.get(0).getLastMonthReading());
+//									}else{
+//										val[0]="0.0";
+//									}
+//									val[1]=projectBilling.getMonth().split("-")[1];
+//								}
+//								if(formula.getConditionList().size()>0){
+//									//临时保存阶梯价格条件
+//									String condF="";
+//									//临时保存非阶梯价格条件
+//									String condP="";
+//									for (int c=0;c<formula.getConditionList().size();c++ ) {
+//										if(formula.getConditionList().get(c).getConditionExpression().contains(pName[0])){
+//											condF=formula.getConditionList().get(c).getConditionExpression();
+//										}else{
+//											if("".equals(condP)){
+//												condP=condP+"("+formula.getConditionList().get(c).getConditionExpression()+")";
+//											}else{
+//												condP=condP+"&&("+formula.getConditionList().get(c).getConditionExpression()+")";
+//											}
+//										}
+//										if(c==0){
+//											cond=cond+"("+formula.getConditionList().get(c).getConditionExpression()+")";
+//										}else{
+//											cond=cond+"&&("+formula.getConditionList().get(c).getConditionExpression()+")";
+//										}
+//									}
+//									for (int p=0;p<pName.length;p++) {
+//										cond= cond.replaceAll(pName[p],val[p]);
+//										condP= condP.replaceAll(pName[p],val[p]);
+//									}
+////									System.out.println(cond);
+//									//判断公式条件是否成立
+//									if(javaCT.checkIf(cond)){
+//										form=form.replaceAll(pName[0].toString(),val[0].toString());
+//										System.out.println(form);
+//										twoNum=new BigDecimal(Double.toString(formulaHelper.eval(form)));
+//									}else{
+//										if("".equals(condP)||javaCT.checkIf(condP)){
+//										if(condF.contains("<=")){
+//											String[] str=condF.split("<=");
+//											Double max=Double.parseDouble(str[str.length-1]);
+//										if(Double.valueOf(val[0])>max){
+//											form=form.replaceAll(pName[0],max.toString());
+//											twoNum=new BigDecimal(Double.toString(formulaHelper.eval(form)));
+//										}else{
+//											twoNum=new BigDecimal(0);
+//										}
+//										}else{
+//											twoNum=new BigDecimal(0);
+//										}
+//										}
+//									}
+//								}else{
+//									form=form.replaceAll(pName[0],val[0].toString());
+//									twoNum=new BigDecimal(Double.toString(formulaHelper.eval(form)));
+//								}
+//								lOneNum=lOneNum.add(twoNum);
+//								pLOneNum=pLOneNum.add(twoNum);
+//								billingInfo.setBillingBalance(twoNum.doubleValue());
+//								//插入计费表
+//								billingMapper.insertBilling(billingInfo);
+//								schemeDatailsList.remove(_myObject);
+//			                }else{
+//			                	j++;
+//			                }
+////			                System.out.println(_myObject.getChargeItemName()+":"+form);
+//			            }
+//			            buildingBilling.setBillingBalance(pLOneNum.doubleValue());
+//			            //插入建筑收费项目计费表
+//			            buildingBillingMapper.insertBuildingBilling(buildingBilling);
+//					}
+//				}else{
+//					break;
+//				}
+//				chargeItemBilling.setSum(lOneNum.doubleValue());
+//				//插入收费项目计费表
+//				chargeItemBillingMapper.insertChargeItemBilling(chargeItemBilling);
+//				pNum=pNum.add(lOneNum);
+//			}
+//			projectBilling.setSum(pNum.doubleValue());
+//			projectBilling.setIsPosting("2");
+//			projectBilling.setBillingStartTime(date);
+//			projectBilling.setBillingEndTime(date);
+//			//修改项目计费表
+//			projectBillingMapper.updateProjectBilling(projectBilling);
+//		}
+	}
+
+	@Override
+	public void updateProjectBilling(Billing billing) {
+//		//计算时间
+//		Date date=new Date();
+//		//得到选中物业项目id集合
+//		List<ProjectBilling> projectList=billing.getProjectBillingList();
+//		//得到收费项目集合
+//		List<ChargeItemBilling> chargeLevelOne;
+//		//方案公式收费项目集合
+//		List<SchemeDatails> schemeDatailsList;
+//		//水量集合
+//		List<MeterReadingData> meterReadingDataL;
+//		//电量集合
+//		List<ElectricityMeterReadingData> electricityMeterReadingDataL;
+//		//公式
+//		Formula formula;
+//		//一级收费项目ID
+//		String chargeLevelOneId;
+//		//一级收费项目名称
+//		String chargeLevelOneName;
+//		//一级收费项目计费(总金额)
+//		ChargeItemBilling chargeItemBilling;
+//		//建筑一级收费项目计费(计费金额)
+//		BuildingBilling buildingBilling;
+//		//建筑一级收费项目计费集合
+//		List<BuildingBilling> buildingBillingList;
+//		//二级收费项目计费(计费金额)
+//		Billing billingInfo;
+//		//条件字符串
+//		String cond = "";
+//		//读数名称
+//		String[] pName;
+//		//读数值
+//		String[] val;
+//		//公式字符串
+//		String form;
+//		SchemeDatails myObject;
+//		SchemeDatails _myObject;
+//		Map map;
+//		//项目计费对象(总金额)
+//		for (ProjectBilling projectBilling : projectList) {
+//			//物业项目总金额
+//			chargeLevelOne=chargeItemBillingMapper.getChargeItemBillingbyProjectId(projectBilling.getProjectId());
+//			BigDecimal pNum=new BigDecimal(0);
+//			for (ChargeItemBilling chargeItemNewOne : chargeLevelOne) {
+//				chargeLevelOneId=chargeItemNewOne.getChargeItemId();
+//				chargeLevelOneName=chargeItemNewOne.getChargeItemName();
+//				map=new HashMap<String,Object>();
+//				map.put("chargeItemBillingId", chargeItemNewOne.getChargeItemBillingId());
+//				/**删除之前的计算记录**/
+//				buildingBillingList=buildingBillingMapper.getBuildingBillingByCon(map);
+//				for (BuildingBilling buildingBillingDel : buildingBillingList) {
+//					map.put("buildingBillingId", buildingBillingDel.getBuildingBillingId());
+//					billingMapper.deleteBilling(map);
+//				}
+//				buildingBillingMapper.deleteBuildingBilling(map);
+//				chargeItemBillingMapper.deleteChargeItemBilling(map);
+//				/**删除结束**/
+//				//一级收费项目总金额
+//				BigDecimal lOneNum=new BigDecimal(0);
+//				chargeItemBilling=new ChargeItemBilling();
+//				chargeItemBilling.setChargeItemBillingId(UUID.randomUUID().toString());
+//				chargeItemBilling.setProjectBillingId(projectBilling.getProjectBillingId());
+//				chargeItemBilling.setChargeItemId(chargeLevelOneId);
+//				chargeItemBilling.setChargeItemName(chargeLevelOneName);
+//				chargeItemBilling.setBillingStartTime(date);
+//				chargeItemBilling.setBillingEndTime(date);
+//				chargeItemBilling.setBillingType(0);
+//				chargeItemBilling.setProjectName(projectBilling.getProjectName());
+//				chargeItemBilling.setProjectId(projectBilling.getProjectId());
+//				map=new HashMap<String,Object>();
+//				map.put("projectId", projectBilling.getProjectId());
+//				map.put("ciId",chargeLevelOneId);
+//				schemeDatailsList=schemeDatailsMapper.getManualCharge(map);//方案公式收费项目集合
+//				if(schemeDatailsList.size()>0){
+//					for (int i = 0; i < schemeDatailsList.size();) {
+//						myObject = schemeDatailsList.get(i);
+//						//同一建筑ID的一级收费项目总金额
+//						BigDecimal pLOneNum=new BigDecimal(0);
+//						//二级收费项目金额
+//						BigDecimal twoNum=new BigDecimal(0);
+//						//建筑收费项目计费记录
+//						buildingBilling=new BuildingBilling();
+//						buildingBilling.setBuildingBillingId(UUID.randomUUID().toString());
+//						buildingBilling.setBillingStartTime(date);
+//						buildingBilling.setBillingEndTime(date);
+//						buildingBilling.setChargeItemId(chargeLevelOneId);
+//						buildingBilling.setChargeItemName(chargeItemNewOne.getChargeItemName());
+//						buildingBilling.setBuildingId(myObject.getBuildingId());
+//						buildingBilling.setChargeItemBillingId(chargeItemBilling.getChargeItemBillingId());
+//						//二级收费计费记录
+//						billingInfo=new Billing();
+//						billingInfo.setBillingId(UUID.randomUUID().toString());
+//						billingInfo.setBillingStartTime(date);
+//						billingInfo.setBillingEndTime(date);
+//						billingInfo.setSchemeDatailsId(myObject.getSchemeDatailsId());
+//						billingInfo.setChargeItemName(myObject.getChargeItemName());
+//						billingInfo.setBillingState(0);
+//						billingInfo.setProjectId(projectBilling.getProjectId());
+//						billingInfo.setBuildingBillingId(buildingBilling.getBuildingBillingId());
+//						//根据公式id查询公式及条件表
+//						formula=formulaMapper.getFormulaByciId(myObject.getFormulaId()).get(0);
+//						form=formula.getFormulaExpression();
+//						Map map1=new HashMap();
+//						map1.put("buildingStructureId", myObject.getBuildingId());
+//						map1.put("month", dateUtil.getMonthLastDay(projectBilling.getMonth()));
+//						if(formula.getConditionList().size()<1){
+//							pName=new String[1];
+//							val=new String[1];
+//						}else{
+//							pName=new String[formula.getConditionList().size()];
+//							val=new String[formula.getConditionList().size()];
+//						}
+//						//计算
+//						if(chargeLevelOneName.contains("水")){
+//							pName[0]="Q";
+//							//根据建筑结构id和时间查水用量
+//							meterReadingDataL=meterReadingDataMapper.getMeterReadingByC(map1);
+//							if(meterReadingDataL.size()>0){
+//								//得到用水量
+//								val[0]=String.valueOf(meterReadingDataL.get(0).getReading()-meterReadingDataL.get(0).getLastMonthReading());
+//							}else{
+//								val[0]="0.0";
+//							}
+//						}else if(chargeLevelOneName.contains("电")){
+//							pName[0]="E";
+//							pName[1]="M";
+//							//根据建筑结构id和时间查水用量
+//							electricityMeterReadingDataL=electricityMeterReadingDataMapper.getElectricityMeterReadingbyId(map1);
+//							if(electricityMeterReadingDataL.size()>0){
+//								//得到用水量
+//								val[0]=String.valueOf(electricityMeterReadingDataL.get(0).getReading()-electricityMeterReadingDataL.get(0).getLastMonthReading());
+//							}else{
+//								val[0]="0.0";
+//							}
+//							val[1]=projectBilling.getMonth().split("-")[1];
+//						}
+//						if(formula.getConditionList().size()>0){
+//							//临时保存阶梯价格条件
+//							String condF="";
+//							//临时保存非阶梯价格条件
+//							String condP="";
+//							for (int c=0;c<formula.getConditionList().size();c++ ) {
+//								if(formula.getConditionList().get(c).getConditionExpression().contains(pName[0])){
+//									condF=formula.getConditionList().get(c).getConditionExpression();
+//								}else{
+//									if("".equals(condP)){
+//										condP=condP+"("+formula.getConditionList().get(c).getConditionExpression()+")";
+//									}else{
+//										condP=condP+"&&("+formula.getConditionList().get(c).getConditionExpression()+")";
+//									}
+//								}
+//								if(c==0){
+//									cond=cond+"("+formula.getConditionList().get(c).getConditionExpression()+")";
+//								}else{
+//									cond=cond+"&&("+formula.getConditionList().get(c).getConditionExpression()+")";
+//								}
+//							}
+//							for (int p=0;p<pName.length;p++) {
+//								cond= cond.replaceAll(pName[p],val[p]);
+//								condP= condP.replaceAll(pName[p],val[p]);
+//							}
+////									System.out.println(cond);
+//							//判断公式条件是否成立
+//							if(javaCT.checkIf(cond)){
+//								form=form.replaceAll(pName[0],val[0].toString());
+//								twoNum=new BigDecimal(Double.toString(formulaHelper.eval(form)));
+//							}else{
+//								if("".equals(condP)||javaCT.checkIf(condP)){
+//								if(condF.contains("<=")){
+//									String[] str=condF.split("<=");
+//									Double max=Double.parseDouble(str[str.length-1]);
+//								if(Double.valueOf(val[0])>max){
+//									form=form.replaceAll(pName[0].toString(),max.toString());
+//									twoNum=new BigDecimal(Double.toString(formulaHelper.eval(form)));
+//								}else{
+//									twoNum=new BigDecimal(0);
+//								}
+//								}else{
+//									twoNum=new BigDecimal(0);
+//								}
+//								}
+//							}
+//						}else{
+//							form=form.replaceAll(pName[0],val[0].toString());
+//							twoNum=new BigDecimal(Double.toString(formulaHelper.eval(form)));
+//						}
+//						System.out.println(myObject.getChargeItemName()+":"+form);
+//						lOneNum=lOneNum.add(twoNum);
+//						pLOneNum=pLOneNum.add(twoNum);
+//						billingInfo.setBillingBalance(twoNum.doubleValue());
+//						//插入计费表
+//						billingMapper.insertBilling(billingInfo);
+//						schemeDatailsList.remove(myObject);
+//						for (int j = 0; j < schemeDatailsList.size();){
+////									System.out.println("二级判断"+j);
+//							cond="";
+//							twoNum=new BigDecimal(0);
+//							_myObject = schemeDatailsList.get(j);  
+//			                // 相同，分组，并加入到组容器集合  
+//			                if (_myObject.getBuildingId().equals(myObject.getBuildingId())){
+//			                	//二级收费计费记录
+//								billingInfo=new Billing();
+//								billingInfo.setBillingId(UUID.randomUUID().toString());
+//								billingInfo.setBillingStartTime(date);
+//								billingInfo.setBillingEndTime(date);
+//								billingInfo.setSchemeDatailsId(_myObject.getSchemeDatailsId());
+//								billingInfo.setChargeItemName(_myObject.getChargeItemName());
+//								billingInfo.setBillingState(0);
+//								billingInfo.setProjectId(projectBilling.getProjectId());
+//								billingInfo.setBuildingBillingId(buildingBilling.getBuildingBillingId());
+//								//根据公式id查询公式及条件表
+//								formula=formulaMapper.getFormulaByciId(_myObject.getFormulaId()).get(0);
+//								form=formula.getFormulaExpression();
+//								//计算
+//								if(chargeLevelOneName.contains("水")){
+//									pName[0]="Q";
+//									//根据建筑结构id和时间查水用量
+//									meterReadingDataL=meterReadingDataMapper.getMeterReadingByC(map1);
+//									if(meterReadingDataL.size()>0){
+//										//得到用水量
+//										val[0]=String.valueOf(meterReadingDataL.get(0).getReading()-meterReadingDataL.get(0).getLastMonthReading());
+//									}else{
+//										val[0]="0.0";
+//									}
+//								}else if(chargeLevelOneName.contains("电")){
+//									pName[0]="E";
+//									pName[1]="M";
+//									//根据建筑结构id和时间查水用量
+//									electricityMeterReadingDataL=electricityMeterReadingDataMapper.getElectricityMeterReadingbyId(map1);
+//									if(electricityMeterReadingDataL.size()>0){
+//										//得到用水量
+//										val[0]=String.valueOf(electricityMeterReadingDataL.get(0).getReading()-electricityMeterReadingDataL.get(0).getLastMonthReading());
+//									}else{
+//										val[0]="0.0";
+//									}
+//									val[1]=projectBilling.getMonth().split("-")[1];
+//								}
+//								if(formula.getConditionList().size()>0){
+//									//临时保存阶梯价格条件
+//									String condF="";
+//									//临时保存非阶梯价格条件
+//									String condP="";
+//									for (int c=0;c<formula.getConditionList().size();c++ ) {
+//										if(formula.getConditionList().get(c).getConditionExpression().contains(pName[0])){
+//											condF=formula.getConditionList().get(c).getConditionExpression();
+//										}else{
+//											if("".equals(condP)){
+//												condP=condP+"("+formula.getConditionList().get(c).getConditionExpression()+")";
+//											}else{
+//												condP=condP+"&&("+formula.getConditionList().get(c).getConditionExpression()+")";
+//											}
+//										}
+//										if(c==0){
+//											cond=cond+"("+formula.getConditionList().get(c).getConditionExpression()+")";
+//										}else{
+//											cond=cond+"&&("+formula.getConditionList().get(c).getConditionExpression()+")";
+//										}
+//									}
+//									for (int p=0;p<pName.length;p++) {
+//										cond= cond.replaceAll(pName[p],val[p]);
+//										condP= condP.replaceAll(pName[p],val[p]);
+//									}
+////											System.out.println(cond);
+//									//判断公式条件是否成立
+//									if(javaCT.checkIf(cond)){
+//										form=form.replaceAll(pName[0].toString(),val[0].toString());
+//										System.out.println(form);
+//										twoNum=new BigDecimal(Double.toString(formulaHelper.eval(form)));
+//									}else{
+//										if("".equals(condP)||javaCT.checkIf(condP)){
+//										if(condF.contains("<=")){
+//											String[] str=condF.split("<=");
+//											Double max=Double.parseDouble(str[str.length-1]);
+//										if(Double.valueOf(val[0])>max){
+//											form=form.replaceAll(pName[0],max.toString());
+//											twoNum=new BigDecimal(Double.toString(formulaHelper.eval(form)));
+//										}else{
+//											twoNum=new BigDecimal(0);
+//										}
+//										}else{
+//											twoNum=new BigDecimal(0);
+//										}
+//										}
+//									}
+//								}else{
+//									form=form.replaceAll(pName[0],val[0].toString());
+//									twoNum=new BigDecimal(Double.toString(formulaHelper.eval(form)));
+//								}
+//								lOneNum=lOneNum.add(twoNum);
+//								pLOneNum=pLOneNum.add(twoNum);
+//								billingInfo.setBillingBalance(twoNum.doubleValue());
+//								//插入计费表
+//								billingMapper.insertBilling(billingInfo);
+//								schemeDatailsList.remove(_myObject);
+//			                }else{
+//			                	j++;
+//			                }
+////					                System.out.println(_myObject.getChargeItemName()+":"+form);
+//			            }
+//			            buildingBilling.setBillingBalance(pLOneNum.doubleValue());
+//			            //插入建筑收费项目计费表
+//			            buildingBillingMapper.insertBuildingBilling(buildingBilling);
+//					}
+//				}else{
+//					break;
+//				}
+//				chargeItemBilling.setSum(lOneNum.doubleValue());
+//				//插入收费项目计费表
+//				chargeItemBillingMapper.insertChargeItemBilling(chargeItemBilling);
+//				pNum=pNum.add(lOneNum);
+//			}
+//			projectBilling.setSum(pNum.doubleValue());
+//			projectBilling.setIsPosting("2");
+//			projectBilling.setBillingStartTime(date);
+//			projectBilling.setBillingEndTime(date);
+//			//修改项目计费表
+//			projectBillingMapper.updateProjectBilling(projectBilling);
+//		}
+	}
+	
+	@Override
+	public void updateChargeItemBilling(Billing billing) {
+//		//计算时间
+//		Date date=new Date();
+//		//得到收费项目集合
+//		List<ChargeItemBilling> chargeLevelOne=billing.getChargeItemBillingList();
+//		//方案公式收费项目集合
+//		List<SchemeDatails> schemeDatailsList;
+//		//水量集合
+//		List<MeterReadingData> meterReadingDataL;
+//		//电量集合
+//		List<ElectricityMeterReadingData> electricityMeterReadingDataL;
+//		//公式
+//		Formula formula;
+//		//一级收费项目ID
+//		String chargeLevelOneId;
+//		//一级收费项目名称
+//		String chargeLevelOneName;
+//		//一级收费项目计费(总金额)
+//		ChargeItemBilling chargeItemBilling;
+//		//建筑一级收费项目计费(计费金额)
+//		BuildingBilling buildingBilling;
+//		//建筑一级收费项目计费集合
+//		List<BuildingBilling> buildingBillingList;
+//		//二级收费项目计费(计费金额)
+//		Billing billingInfo;
+//		//条件字符串
+//		String cond = "";
+//		//读数名称
+//		String[] pName;
+//		//读数值
+//		String[] val;
+//		//公式字符串
+//		String form;
+//		SchemeDatails myObject;
+//		SchemeDatails _myObject;
+//		Map map;
+//		//项目计费对象(总金额)
+//		ProjectBilling projectBilling=projectBillingMapper.getProjectBillingById(chargeLevelOne.get(0).getProjectBillingId());
+//		for (ChargeItemBilling chargeItemNewOne : chargeLevelOne) {
+//				chargeLevelOneId=chargeItemNewOne.getChargeItemId();
+//				chargeLevelOneName=chargeItemNewOne.getChargeItemName();
+//				map=new HashMap<String,Object>();
+//				map.put("chargeItemBillingId", chargeItemNewOne.getChargeItemBillingId());
+//				/**删除之前的计算记录**/
+//				buildingBillingList=buildingBillingMapper.getBuildingBillingByCon(map);
+//				for (BuildingBilling buildingBillingDel : buildingBillingList) {
+//					map.put("buildingBillingId", buildingBillingDel.getBuildingBillingId());
+//					billingMapper.deleteBilling(map);
+//				}
+//				buildingBillingMapper.deleteBuildingBilling(map);
+//				/**删除结束**/
+//				//一级收费项目总金额
+//				BigDecimal lOneNum=new BigDecimal(0);
+//				map=new HashMap<String,Object>();
+//				map.put("projectId", projectBilling.getProjectId());
+//				map.put("ciId",chargeLevelOneId);
+//				schemeDatailsList=schemeDatailsMapper.getManualCharge(map);//方案公式收费项目集合
+//				if(schemeDatailsList.size()>0){
+//					for (int i = 0; i < schemeDatailsList.size();) {
+//						myObject = schemeDatailsList.get(i);
+//						//同一建筑ID的一级收费项目总金额
+//						BigDecimal pLOneNum=new BigDecimal(0);
+//						//二级收费项目金额
+//						BigDecimal twoNum=new BigDecimal(0);
+//						//建筑收费项目计费记录
+//						buildingBilling=new BuildingBilling();
+//						buildingBilling.setBuildingBillingId(UUID.randomUUID().toString());
+//						buildingBilling.setBillingStartTime(date);
+//						buildingBilling.setBillingEndTime(date);
+//						buildingBilling.setChargeItemId(chargeLevelOneId);
+//						buildingBilling.setChargeItemName(chargeLevelOneName);
+//						buildingBilling.setBuildingId(myObject.getBuildingId());
+//						buildingBilling.setChargeItemBillingId(chargeItemNewOne.getChargeItemBillingId());
+//						//二级收费计费记录
+//						billingInfo=new Billing();
+//						billingInfo.setBillingId(UUID.randomUUID().toString());
+//						billingInfo.setBillingStartTime(date);
+//						billingInfo.setBillingEndTime(date);
+//						billingInfo.setSchemeDatailsId(myObject.getSchemeDatailsId());
+//						billingInfo.setChargeItemName(myObject.getChargeItemName());
+//						billingInfo.setBillingState(0);
+//						billingInfo.setProjectId(projectBilling.getProjectId());
+//						billingInfo.setBuildingBillingId(buildingBilling.getBuildingBillingId());
+//						//根据公式id查询公式及条件表
+//						formula=formulaMapper.getFormulaByciId(myObject.getFormulaId()).get(0);
+//						form=formula.getFormulaExpression();
+//						Map map1=new HashMap();
+//						map1.put("buildingStructureId", myObject.getBuildingId());
+//						map1.put("month", dateUtil.getMonthLastDay(projectBilling.getMonth()));
+//						if(formula.getConditionList().size()<1){
+//							pName=new String[1];
+//							val=new String[1];
+//						}else{
+//							pName=new String[formula.getConditionList().size()];
+//							val=new String[formula.getConditionList().size()];
+//						}
+//						//计算
+//						if(chargeLevelOneName.contains("水")){
+//							pName[0]="Q";
+//							//根据建筑结构id和时间查水用量
+//							meterReadingDataL=meterReadingDataMapper.getMeterReadingByC(map1);
+//							if(meterReadingDataL.size()>0){
+//								//得到用水量
+//								val[0]=String.valueOf(meterReadingDataL.get(0).getReading()-meterReadingDataL.get(0).getLastMonthReading());
+//							}else{
+//								val[0]="0.0";
+//							}
+//						}else if(chargeLevelOneName.contains("电")){
+//							pName[0]="E";
+//							pName[1]="M";
+//							//根据建筑结构id和时间查水用量
+//							electricityMeterReadingDataL=electricityMeterReadingDataMapper.getElectricityMeterReadingbyId(map1);
+//							if(electricityMeterReadingDataL.size()>0){
+//								//得到用水量
+//								val[0]=String.valueOf(electricityMeterReadingDataL.get(0).getReading()-electricityMeterReadingDataL.get(0).getLastMonthReading());
+//							}else{
+//								val[0]="0.0";
+//							}
+//							val[1]=projectBilling.getMonth().split("-")[1];
+//						}
+//						if(formula.getConditionList().size()>0){
+//							//临时保存阶梯价格条件
+//							String condF="";
+//							//临时保存非阶梯价格条件
+//							String condP="";
+//							for (int c=0;c<formula.getConditionList().size();c++ ) {
+//								if(formula.getConditionList().get(c).getConditionExpression().contains(pName[0])){
+//									condF=formula.getConditionList().get(c).getConditionExpression();
+//								}else{
+//									if("".equals(condP)){
+//										condP=condP+"("+formula.getConditionList().get(c).getConditionExpression()+")";
+//									}else{
+//										condP=condP+"&&("+formula.getConditionList().get(c).getConditionExpression()+")";
+//									}
+//								}
+//								if(c==0){
+//									cond=cond+"("+formula.getConditionList().get(c).getConditionExpression()+")";
+//								}else{
+//									cond=cond+"&&("+formula.getConditionList().get(c).getConditionExpression()+")";
+//								}
+//							}
+//							for (int p=0;p<pName.length;p++) {
+//								cond= cond.replaceAll(pName[p],val[p]);
+//								condP= condP.replaceAll(pName[p],val[p]);
+//							}
+////									System.out.println(cond);
+//							//判断公式条件是否成立
+//							if(javaCT.checkIf(cond)){
+//								form=form.replaceAll(pName[0],val[0].toString());
+//								twoNum=new BigDecimal(Double.toString(formulaHelper.eval(form)));
+//							}else{
+//								if("".equals(condP)||javaCT.checkIf(condP)){
+//								if(condF.contains("<=")){
+//									String[] str=condF.split("<=");
+//									Double max=Double.parseDouble(str[str.length-1]);
+//								if(Double.valueOf(val[0])>max){
+//									form=form.replaceAll(pName[0].toString(),max.toString());
+//									twoNum=new BigDecimal(Double.toString(formulaHelper.eval(form)));
+//								}else{
+//									twoNum=new BigDecimal(0);
+//								}
+//								}else{
+//									twoNum=new BigDecimal(0);
+//								}
+//								}
+//							}
+//						}else{
+//							form=form.replaceAll(pName[0],val[0].toString());
+//							twoNum=new BigDecimal(Double.toString(formulaHelper.eval(form)));
+//						}
+//						System.out.println(myObject.getChargeItemName()+":"+form);
+//						lOneNum=lOneNum.add(twoNum);
+//						pLOneNum=pLOneNum.add(twoNum);
+//						billingInfo.setBillingBalance(twoNum.doubleValue());
+//						//插入计费表
+//						billingMapper.insertBilling(billingInfo);
+//						schemeDatailsList.remove(myObject);
+//						for (int j = 0; j < schemeDatailsList.size();){
+////									System.out.println("二级判断"+j);
+//							cond="";
+//							twoNum=new BigDecimal(0);
+//							_myObject = schemeDatailsList.get(j);  
+//			                // 相同，分组，并加入到组容器集合  
+//			                if (_myObject.getBuildingId().equals(myObject.getBuildingId())){
+//			                	//二级收费计费记录
+//								billingInfo=new Billing();
+//								billingInfo.setBillingId(UUID.randomUUID().toString());
+//								billingInfo.setBillingStartTime(date);
+//								billingInfo.setBillingEndTime(date);
+//								billingInfo.setSchemeDatailsId(_myObject.getSchemeDatailsId());
+//								billingInfo.setChargeItemName(_myObject.getChargeItemName());
+//								billingInfo.setBillingState(0);
+//								billingInfo.setProjectId(projectBilling.getProjectId());
+//								billingInfo.setBuildingBillingId(buildingBilling.getBuildingBillingId());
+//								//根据公式id查询公式及条件表
+//								formula=formulaMapper.getFormulaByciId(_myObject.getFormulaId()).get(0);
+//								form=formula.getFormulaExpression();
+//								//计算
+//								if(chargeLevelOneName.contains("水")){
+//									pName[0]="Q";
+//									//根据建筑结构id和时间查水用量
+//									meterReadingDataL=meterReadingDataMapper.getMeterReadingByC(map1);
+//									if(meterReadingDataL.size()>0){
+//										//得到用水量
+//										val[0]=String.valueOf(meterReadingDataL.get(0).getReading()-meterReadingDataL.get(0).getLastMonthReading());
+//									}else{
+//										val[0]="0.0";
+//									}
+//								}else if(chargeLevelOneName.contains("电")){
+//									pName[0]="E";
+//									pName[1]="M";
+//									//根据建筑结构id和时间查水用量
+//									electricityMeterReadingDataL=electricityMeterReadingDataMapper.getElectricityMeterReadingbyId(map1);
+//									if(electricityMeterReadingDataL.size()>0){
+//										//得到用水量
+//										val[0]=String.valueOf(electricityMeterReadingDataL.get(0).getReading()-electricityMeterReadingDataL.get(0).getLastMonthReading());
+//									}else{
+//										val[0]="0.0";
+//									}
+//									val[1]=projectBilling.getMonth().split("-")[1];
+//								}
+//								if(formula.getConditionList().size()>0){
+//									//临时保存阶梯价格条件
+//									String condF="";
+//									//临时保存非阶梯价格条件
+//									String condP="";
+//									for (int c=0;c<formula.getConditionList().size();c++ ) {
+//										if(formula.getConditionList().get(c).getConditionExpression().contains(pName[0])){
+//											condF=formula.getConditionList().get(c).getConditionExpression();
+//										}else{
+//											if("".equals(condP)){
+//												condP=condP+"("+formula.getConditionList().get(c).getConditionExpression()+")";
+//											}else{
+//												condP=condP+"&&("+formula.getConditionList().get(c).getConditionExpression()+")";
+//											}
+//										}
+//										if(c==0){
+//											cond=cond+"("+formula.getConditionList().get(c).getConditionExpression()+")";
+//										}else{
+//											cond=cond+"&&("+formula.getConditionList().get(c).getConditionExpression()+")";
+//										}
+//									}
+//									for (int p=0;p<pName.length;p++) {
+//										cond= cond.replaceAll(pName[p],val[p]);
+//										condP= condP.replaceAll(pName[p],val[p]);
+//									}
+////											System.out.println(cond);
+//									//判断公式条件是否成立
+//									if(javaCT.checkIf(cond)){
+//										form=form.replaceAll(pName[0].toString(),val[0].toString());
+//										System.out.println(form);
+//										twoNum=new BigDecimal(Double.toString(formulaHelper.eval(form)));
+//									}else{
+//										if("".equals(condP)||javaCT.checkIf(condP)){
+//										if(condF.contains("<=")){
+//											String[] str=condF.split("<=");
+//											Double max=Double.parseDouble(str[str.length-1]);
+//										if(Double.valueOf(val[0])>max){
+//											form=form.replaceAll(pName[0],max.toString());
+//											twoNum=new BigDecimal(Double.toString(formulaHelper.eval(form)));
+//										}else{
+//											twoNum=new BigDecimal(0);
+//										}
+//										}else{
+//											twoNum=new BigDecimal(0);
+//										}
+//										}
+//									}
+//								}else{
+//									form=form.replaceAll(pName[0],val[0].toString());
+//									twoNum=new BigDecimal(Double.toString(formulaHelper.eval(form)));
+//								}
+//								lOneNum=lOneNum.add(twoNum);
+//								pLOneNum=pLOneNum.add(twoNum);
+//								billingInfo.setBillingBalance(twoNum.doubleValue());
+//								//插入计费表
+//								billingMapper.insertBilling(billingInfo);
+//								schemeDatailsList.remove(_myObject);
+//			                }else{
+//			                	j++;
+//			                }
+////					                System.out.println(_myObject.getChargeItemName()+":"+form);
+//			            }
+//			            buildingBilling.setBillingBalance(pLOneNum.doubleValue());
+//			            //插入建筑收费项目计费表
+//			            buildingBillingMapper.insertBuildingBilling(buildingBilling);
+//					}
+//				}else{
+//					break;
+//				}
+//				chargeItemNewOne.setSum(lOneNum.doubleValue());
+//				chargeItemNewOne.setBillingStartTime(date);
+//				chargeItemNewOne.setBillingEndTime(date);
+//				//修改收费项目计费表
+//				chargeItemBillingMapper.updateChargeItemBilling(chargeItemNewOne);
+//			}
+//			projectBilling.setIsPosting("2");
+//			projectBilling.setBillingStartTime(date);
+//			projectBilling.setBillingEndTime(date);
+//			projectBilling.setCurrentSum(chargeItemBillingMapper.getProjectBillingNum(projectBilling.getProjectBillingId()));
+//			//修改项目计费表
+//			projectBillingMapper.updateProjectBilling(projectBilling);
+	}
+	
+	@Override
+	public void updateBuildBilling(Billing billing) {
+//		//计算时间
+//		Date date=new Date();
+//		//方案公式收费项目集合
+//		List<SchemeDatails> schemeDatailsList;
+//		//水量集合
+//		List<MeterReadingData> meterReadingDataL;
+//		//电量集合
+//		List<ElectricityMeterReadingData> electricityMeterReadingDataL;
+//		//公式
+//		Formula formula;
+//		//建筑一级收费项目计费集合
+//		List<BuildingBilling> buildingBillingList=billing.getBuildingBillingList();
+//		//一级收费项目计费(总金额)
+//		ChargeItemBilling chargeItemBilling=chargeItemBillingMapper.getChargeItemBillingByKey(buildingBillingList.get(0).getChargeItemBillingId());
+//		//物业项目计费
+//		ProjectBilling projectBilling=projectBillingMapper.getProjectBillingById(chargeItemBilling.getProjectId());
+//		//一级收费项目名称
+//		String chargeLevelOneName=chargeItemBilling.getChargeItemName();
+//		//二级收费项目计费(计费金额)
+//		Billing billingInfo;
+//		//条件字符串
+//		String cond = "";
+//		//读数名称
+//		String[] pName;
+//		//读数值
+//		String[] val;
+//		//公式字符串
+//		String form;
+//		SchemeDatails myObject;
+//		SchemeDatails _myObject;
+//		Map map;
+//		//项目计费对象(总金额)
+//		/**删除之前的计算记录**/
+//		for (BuildingBilling buildingBilling : buildingBillingList) {
+//			map=new HashMap();
+//			map.put("buildingBillingId", buildingBilling.getBuildingBillingId());
+//			billingMapper.deleteBilling(map);
+//			/**删除结束**/
+//			schemeDatailsList=schemeDatailsMapper.getDatailsByBuildingBillingId(map);//方案公式收费项目集合
+//			if(schemeDatailsList.size()>0){
+//				for (int i = 0; i < schemeDatailsList.size();) {
+//					myObject = schemeDatailsList.get(i);
+//					//同一建筑ID的一级收费项目总金额
+//					BigDecimal pLOneNum=new BigDecimal(0);
+//					//二级收费项目金额
+//					BigDecimal twoNum=new BigDecimal(0);
+//					//二级收费计费记录
+//					billingInfo=new Billing();
+//					billingInfo.setBillingId(UUID.randomUUID().toString());
+//					billingInfo.setBillingStartTime(date);
+//					billingInfo.setBillingEndTime(date);
+//					billingInfo.setSchemeDatailsId(myObject.getSchemeDatailsId());
+//					billingInfo.setChargeItemName(myObject.getChargeItemName());
+//					billingInfo.setBillingState(0);
+//					billingInfo.setProjectId(projectBilling.getProjectId());
+//					billingInfo.setBuildingBillingId(buildingBilling.getBuildingBillingId());
+//					//根据公式id查询公式及条件表
+//					formula=formulaMapper.getFormulaByciId(myObject.getFormulaId()).get(0);
+//					form=formula.getFormulaExpression();
+//					Map map1=new HashMap();
+//					map1.put("buildingStructureId", myObject.getBuildingId());
+//					map1.put("month", dateUtil.getMonthLastDay(projectBilling.getMonth()));
+//					if(formula.getConditionList().size()<1){
+//						pName=new String[1];
+//						val=new String[1];
+//					}else{
+//						pName=new String[formula.getConditionList().size()];
+//						val=new String[formula.getConditionList().size()];
+//					}
+//					//计算
+//					if(chargeLevelOneName.contains("水")){
+//						pName[0]="Q";
+//						//根据建筑结构id和时间查水用量
+//						meterReadingDataL=meterReadingDataMapper.getMeterReadingByC(map1);
+//						if(meterReadingDataL.size()>0){
+//							//得到用水量
+//							val[0]=String.valueOf(meterReadingDataL.get(0).getReading()-meterReadingDataL.get(0).getLastMonthReading());
+//						}else{
+//							val[0]="0.0";
+//						}
+//					}else if(chargeLevelOneName.contains("电")){
+//						pName[0]="E";
+//						pName[1]="M";
+//						//根据建筑结构id和时间查水用量
+//						electricityMeterReadingDataL=electricityMeterReadingDataMapper.getElectricityMeterReadingbyId(map1);
+//						if(electricityMeterReadingDataL.size()>0){
+//							//得到用水量
+//							val[0]=String.valueOf(electricityMeterReadingDataL.get(0).getReading()-electricityMeterReadingDataL.get(0).getLastMonthReading());
+//						}else{
+//							val[0]="0.0";
+//						}
+//						val[1]=projectBilling.getMonth().split("-")[1];
+//					}
+//					if(formula.getConditionList().size()>0){
+//						//临时保存阶梯价格条件
+//						String condF="";
+//						//临时保存非阶梯价格条件
+//						String condP="";
+//						for (int c=0;c<formula.getConditionList().size();c++ ) {
+//							if(formula.getConditionList().get(c).getConditionExpression().contains(pName[0])){
+//								condF=formula.getConditionList().get(c).getConditionExpression();
+//							}else{
+//								if("".equals(condP)){
+//									condP=condP+"("+formula.getConditionList().get(c).getConditionExpression()+")";
+//								}else{
+//									condP=condP+"&&("+formula.getConditionList().get(c).getConditionExpression()+")";
+//								}
+//							}
+//							if(c==0){
+//								cond=cond+"("+formula.getConditionList().get(c).getConditionExpression()+")";
+//							}else{
+//								cond=cond+"&&("+formula.getConditionList().get(c).getConditionExpression()+")";
+//							}
+//						}
+//						for (int p=0;p<pName.length;p++) {
+//							cond= cond.replaceAll(pName[p],val[p]);
+//							condP= condP.replaceAll(pName[p],val[p]);
+//						}
+//						//判断公式条件是否成立
+//						if(javaCT.checkIf(cond)){
+//							form=form.replaceAll(pName[0],val[0].toString());
+//							twoNum=new BigDecimal(Double.toString(formulaHelper.eval(form)));
+//						}else{
+//							if("".equals(condP)||javaCT.checkIf(condP)){
+//							if(condF.contains("<=")){
+//								String[] str=condF.split("<=");
+//								Double max=Double.parseDouble(str[str.length-1]);
+//							if(Double.valueOf(val[0])>max){
+//								form=form.replaceAll(pName[0].toString(),max.toString());
+//								twoNum=new BigDecimal(Double.toString(formulaHelper.eval(form)));
+//							}else{
+//								twoNum=new BigDecimal(0);
+//							}
+//							}else{
+//								twoNum=new BigDecimal(0);
+//							}
+//							}
+//						}
+//					}else{
+//						form=form.replaceAll(pName[0],val[0].toString());
+//						twoNum=new BigDecimal(Double.toString(formulaHelper.eval(form)));
+//					}
+//					System.out.println(myObject.getChargeItemName()+":"+form);
+//					pLOneNum=pLOneNum.add(twoNum);
+//					billingInfo.setBillingBalance(twoNum.doubleValue());
+//					//插入计费表
+//					billingMapper.insertBilling(billingInfo);
+//					schemeDatailsList.remove(myObject);
+//					for (int j = 0; j < schemeDatailsList.size();){
+//						cond="";
+//						twoNum=new BigDecimal(0);
+//						_myObject = schemeDatailsList.get(j);  
+//		                // 相同，分组，并加入到组容器集合  
+//		                if (_myObject.getBuildingId().equals(myObject.getBuildingId())){
+//		                	//二级收费计费记录
+//							billingInfo=new Billing();
+//							billingInfo.setBillingId(UUID.randomUUID().toString());
+//							billingInfo.setBillingStartTime(date);
+//							billingInfo.setBillingEndTime(date);
+//							billingInfo.setSchemeDatailsId(_myObject.getSchemeDatailsId());
+//							billingInfo.setChargeItemName(_myObject.getChargeItemName());
+//							billingInfo.setBillingState(0);
+//							billingInfo.setProjectId(projectBilling.getProjectId());
+//							billingInfo.setBuildingBillingId(buildingBilling.getBuildingBillingId());
+//							//根据公式id查询公式及条件表
+//							formula=formulaMapper.getFormulaByciId(_myObject.getFormulaId()).get(0);
+//							form=formula.getFormulaExpression();
+//							//计算
+//							if(chargeLevelOneName.contains("水")){
+//								pName[0]="Q";
+//								//根据建筑结构id和时间查水用量
+//								meterReadingDataL=meterReadingDataMapper.getMeterReadingByC(map1);
+//								if(meterReadingDataL.size()>0){
+//									//得到用水量
+//									val[0]=String.valueOf(meterReadingDataL.get(0).getReading()-meterReadingDataL.get(0).getLastMonthReading());
+//								}else{
+//									val[0]="0.0";
+//								}
+//							}else if(chargeLevelOneName.contains("电")){
+//								pName[0]="E";
+//								pName[1]="M";
+//								//根据建筑结构id和时间查水用量
+//								electricityMeterReadingDataL=electricityMeterReadingDataMapper.getElectricityMeterReadingbyId(map1);
+//								if(electricityMeterReadingDataL.size()>0){
+//									//得到用水量
+//									val[0]=String.valueOf(electricityMeterReadingDataL.get(0).getReading()-electricityMeterReadingDataL.get(0).getLastMonthReading());
+//								}else{
+//									val[0]="0.0";
+//								}
+//								val[1]=projectBilling.getMonth().split("-")[1];
+//							}
+//							if(formula.getConditionList().size()>0){
+//								//临时保存阶梯价格条件
+//								String condF="";
+//								//临时保存非阶梯价格条件
+//								String condP="";
+//								for (int c=0;c<formula.getConditionList().size();c++ ) {
+//									if(formula.getConditionList().get(c).getConditionExpression().contains(pName[0])){
+//										condF=formula.getConditionList().get(c).getConditionExpression();
+//									}else{
+//										if("".equals(condP)){
+//											condP=condP+"("+formula.getConditionList().get(c).getConditionExpression()+")";
+//										}else{
+//											condP=condP+"&&("+formula.getConditionList().get(c).getConditionExpression()+")";
+//										}
+//									}
+//									if(c==0){
+//										cond=cond+"("+formula.getConditionList().get(c).getConditionExpression()+")";
+//									}else{
+//										cond=cond+"&&("+formula.getConditionList().get(c).getConditionExpression()+")";
+//									}
+//								}
+//								for (int p=0;p<pName.length;p++) {
+//									cond= cond.replaceAll(pName[p],val[p]);
+//									condP= condP.replaceAll(pName[p],val[p]);
+//								}
+//								//判断公式条件是否成立
+//								if(javaCT.checkIf(cond)){
+//									form=form.replaceAll(pName[0].toString(),val[0].toString());
+//									System.out.println(form);
+//									twoNum=new BigDecimal(Double.toString(formulaHelper.eval(form)));
+//								}else{
+//									if("".equals(condP)||javaCT.checkIf(condP)){
+//									if(condF.contains("<=")){
+//										String[] str=condF.split("<=");
+//										Double max=Double.parseDouble(str[str.length-1]);
+//									if(Double.valueOf(val[0])>max){
+//										form=form.replaceAll(pName[0],max.toString());
+//										twoNum=new BigDecimal(Double.toString(formulaHelper.eval(form)));
+//									}else{
+//										twoNum=new BigDecimal(0);
+//									}
+//									}else{
+//										twoNum=new BigDecimal(0);
+//									}
+//									}
+//								}
+//							}else{
+//								form=form.replaceAll(pName[0],val[0].toString());
+//								twoNum=new BigDecimal(Double.toString(formulaHelper.eval(form)));
+//							}
+//							pLOneNum=pLOneNum.add(twoNum);
+//							billingInfo.setBillingBalance(twoNum.doubleValue());
+//							//插入计费表
+//							billingMapper.insertBilling(billingInfo);
+//							schemeDatailsList.remove(_myObject);
+//		                }else{
+//		                	j++;
+//		                }
+//		            }
+//		            buildingBilling.setBillingBalance(pLOneNum.doubleValue());
+//		            //插入建筑收费项目计费表
+//		            buildingBillingMapper.updateBuildingBilling(buildingBilling);
+//				}
+//			}else{
+//				break;
+//			}
+//		}
+//				chargeItemBilling.setBillingStartTime(date);
+//				chargeItemBilling.setBillingEndTime(date);
+//				//修改收费项目计费表
+//				chargeItemBillingMapper.updateChargeItemBilling(chargeItemBilling);
+	}
+	
+	@Override
+	public void insertBillingRes(Billing billing) {
+//		// TODO Auto-generated method stub
+//		String id=billing.getProjectId();
+//		List<ProjectBilling> projectIdList=billing.getProjectBillingList();//得到选中的项目id集合
+//		List<ChargeItemNew> chargeItem=chargeItemNewMapper.getChargeItemNew();		
+//		List<ChargeItemNew> chargeList=null;//根据一级收费id查询的二级收费项目
+//		List<Scheme> schemeList=null;//方案集合
+//		List<SchemeDatails> schemeDatailsList=null;//方案公式收费项目集合
+//		MeterReadingData meterReadingData=null;//水量
+//		List<Constant> constant=null;//常量
+//		List<Formula> formula=null;//公式
+//		for(int i=0;i<projectIdList.size();i++){
+//			schemeList=schemeMapper.getChargeItemByProjectId(projectIdList.get(i).getProjectId());
+//			/*2.根据方案id查询 方案公式收费项目关系表*****/
+//			for(int j=0;j<schemeList.size();j++){
+//				String schemeId=schemeList.get(j).getSchemeId();
+//				schemeDatailsList=schemeDatailsMapper.getSchemeDatailsResBySchemeId(schemeId);//方案公式收费项目集合
+//				String chargeItemId=schemeList.get(j).getSchemeRelation().getChargeItemId();//得到方案收费项目关系表的一级收费id
+//				for(int x=0;x<chargeItem.size();x++){
+//					String chargeItemId1=chargeItem.get(x).getChargeItemNewId()();//得到选中的一级收费项目id
+//					if(chargeItemId.equals(chargeItemId1)){
+//						 for(int m=0;m<schemeDatailsList.size();m++){
+//							 chargeList=chargeItemNewMapper.getChargeItemNewByIds(chargeItemId1);//查询一级收费项目下的二级收费项目列表
+//							 	for(int y=0;y<chargeList.size();y++){
+//							 		if(chargeList.get(y).getCiId().equals(schemeDatailsList.get(m).getChargeItemId())){
+//							 			String buildId=schemeDatailsList.get(m).getBuildingId();//得到建筑结构id
+//										String formulaId=schemeDatailsList.get(m).getFormulaId();//得到公式id
+//										//根据建筑结构id查水电用量
+//										meterReadingData=meterReadingDataMapper.getMeterReadings(buildId);
+//										 if(meterReadingData!=null){
+//												Double num=meterReadingData.getReading()-meterReadingData.getLastMonthReading();//得到用水量
+//												//根据方案id查询常量表
+//												constant=constantMapper.listConstantBySchemeId(schemeId);								 
+//												//根据公式id查询公式及条件表
+//												formula=formulaMapper.getFormulaByIds(formulaId);
+//												for(int s=0;s<formula.size();s++){
+//													String a=formula.get(s).getFormulaExpression();
+//													String s1="单价";
+//													String s2="水量";
+//													if(a.contains(s1)){	
+//														a=a.replace(a.substring(a.indexOf(s1)),Double.toString(1.7));
+//													}
+//													if(a.contains(s2)){
+//														a=a.replace(a.substring(a.indexOf(s2)),Double.toString(num));
+//													}
+//													double result = FormulaHelper.eval(a);
+//													billing.setBillingId(UUID.randomUUID().toString());
+//													billing.setBillingBalance(result);
+//													billing.setBillingStartTime(new Date());
+//													billing.setBuildingId(buildId);
+//													billing.setProjectId(projectIdList.get(i).getProjectId());
+//													billing.setBuildingBillingId(UUID.randomUUID().toString());
+//													billing.setBillId(UUID.randomUUID().toString());
+//													billing.setSchemeDatailsId(schemeDatailsList.get(m).getSchemeDatailsId());
+//													billingMapper.insertBilling(billing);
+//													
+//												}   
+//												
+//										}
+//							 		}
+//							 	}
+//						 	}							
+//						}
+//					}
+//				}				
+//			}
+	}
+	public ProjectBillingMapper getProjectBillingMapper() {
+		return projectBillingMapper;
+	}
+
+	public void setProjectBillingMapper(ProjectBillingMapper projectBillingMapper) {
+		this.projectBillingMapper = projectBillingMapper;
+	}
+
+	public SchemeRelationMapper getSchemeRelationMapper() {
+		return schemeRelationMapper;
+	}
+
+	public void setSchemeRelationMapper(SchemeRelationMapper schemeRelationMapper) {
+		this.schemeRelationMapper = schemeRelationMapper;
+	}
+	
+	public ConstantMapper getConstantMapper() {
+		return constantMapper;
+	}
+
+	public void setConstantMapper(ConstantMapper constantMapper) {
+		this.constantMapper = constantMapper;
+	}
+
+	
+	public MeterReadingDataMapper getMeterReadingDataMapper() {
+		return meterReadingDataMapper;
+	}
+
+	public void setMeterReadingDataMapper(
+			MeterReadingDataMapper meterReadingDataMapper) {
+		this.meterReadingDataMapper = meterReadingDataMapper;
+	}
+
+	public ElectricityMeterReadingDataMapper getElectricityMeterReadingDataMapper() {
+		return electricityMeterReadingDataMapper;
+	}
+
+	public void setElectricityMeterReadingDataMapper(ElectricityMeterReadingDataMapper electricityMeterReadingDataMapper) {
+		this.electricityMeterReadingDataMapper = electricityMeterReadingDataMapper;
+	}
+
+	public FormulaMapper getFormulaMapper() {
+		return formulaMapper;
+	}
+
+	public void setFormulaMapper(FormulaMapper formulaMapper) {
+		this.formulaMapper = formulaMapper;
+	}
+
+	public SchemeDatailsMapper getSchemeDatailsMapper() {
+		return schemeDatailsMapper;
+	}
+
+	public void setSchemeDatailsMapper(SchemeDatailsMapper schemeDatailsMapper) {
+		this.schemeDatailsMapper = schemeDatailsMapper;
+	}
+
+	
+	public ChargeItemNewMapper getChargeItemNewMapper() {
+		return chargeItemNewMapper;
+	}
+
+	public void setChargeItemNewMapper(ChargeItemNewMapper chargeItemNewMapper) {
+		this.chargeItemNewMapper = chargeItemNewMapper;
+	}
+
+	public SchemeMapper getSchemeMapper() {
+		return schemeMapper;
+	}
+
+	public void setSchemeMapper(SchemeMapper schemeMapper) {
+		this.schemeMapper = schemeMapper;
+	}
+
+	public BillingMapper getBillingMapper() {
+		return billingMapper;
+	}
+
+	public void setBillingMapper(BillingMapper billingMapper) {
+		this.billingMapper = billingMapper;
+	}
+
+	public ChargeItemBillingMapper getChargeItemBillingMapper() {
+		return chargeItemBillingMapper;
+	}
+
+	public void setChargeItemBillingMapper(
+			ChargeItemBillingMapper chargeItemBillingMapper) {
+		this.chargeItemBillingMapper = chargeItemBillingMapper;
+	}
+
+	public BuildingBillingMapper getBuildingBillingMapper() {
+		return buildingBillingMapper;
+	}
+
+	public void setBuildingBillingMapper(BuildingBillingMapper buildingBillingMapper) {
+		this.buildingBillingMapper = buildingBillingMapper;
+	}
+}

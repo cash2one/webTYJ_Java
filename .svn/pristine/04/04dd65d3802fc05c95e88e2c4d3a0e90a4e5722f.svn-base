@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.flf.mapper.ExecutionTimeRecordsMapper" >
+  <resultMap id="BaseResultMap" type="com.flf.entity.ExecutionTimeRecords" >
+    <id column="executive_num_id" property="executiveNumId" jdbcType="VARCHAR" />
+    <result column="service_request_id" property="serviceRequestId" jdbcType="VARCHAR" />
+    <result column="executionFrequency_id" property="executionFrequencyId" jdbcType="VARCHAR" />
+    <result column="executive_num" property="executiveNum" jdbcType="TINYINT" />
+    <result column="executive_num_time" property="executiveNumTime" jdbcType="TIMESTAMP" />
+    <result column="next_executive_time" property="nextExecutiveTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    executive_num_id, service_request_id, record_id, executive_num, executive_num_time
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from ts_execution_time_records
+    where executive_num_id = #{executiveNumId,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from ts_execution_time_records
+    where executive_num_id = #{executiveNumId,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.flf.entity.ExecutionTimeRecords" >
+    insert into ts_execution_time_records (executive_num_id, service_request_id, 
+      executionFrequency_id, executive_num, executive_num_time
+      )
+    values (UUID(), #{serviceRequestId,jdbcType=VARCHAR}, 
+      #{executionFrequencyId,jdbcType=VARCHAR}, #{executiveNum,jdbcType=TINYINT}, #{executiveNumTime,jdbcType=TIMESTAMP}
+      )
+  </insert>
+  <insert id="insertUUID" parameterType="com.flf.entity.ExecutionTimeRecords" >
+    insert into ts_execution_time_records (executive_num_id, service_request_id, 
+      executionFrequency_id, executive_num, executive_num_time
+      )
+    values (#{executiveNumId,jdbcType=VARCHAR}, #{serviceRequestId,jdbcType=VARCHAR}, 
+      #{executionFrequencyId,jdbcType=VARCHAR}, #{executiveNum,jdbcType=TINYINT}, #{executiveNumTime,jdbcType=TIMESTAMP}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.flf.entity.ExecutionTimeRecords" >
+    insert into ts_execution_time_records
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="executiveNumId != null" >
+        executive_num_id,
+      </if>
+      <if test="serviceRequestId != null" >
+        service_request_id,
+      </if>
+      <if test="recordId != null" >
+        executionFrequency_id,
+      </if>
+      <if test="executiveNum != null" >
+        executive_num,
+      </if>
+      <if test="executiveNumTime != null" >
+        executive_num_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="executiveNumId != null" >
+        #{executiveNumId,jdbcType=VARCHAR},
+      </if>
+      <if test="serviceRequestId != null" >
+        #{serviceRequestId,jdbcType=VARCHAR},
+      </if>
+      <if test="recordId != null" >
+        #{executionFrequencyId,jdbcType=VARCHAR},
+      </if>
+      <if test="executiveNum != null" >
+        #{executiveNum,jdbcType=TINYINT},
+      </if>
+      <if test="executiveNumTime != null" >
+        #{executiveNumTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.flf.entity.ExecutionTimeRecords" >
+    update ts_execution_time_records
+    <set >
+      <if test="serviceRequestId != null" >
+        service_request_id = #{serviceRequestId,jdbcType=VARCHAR},
+      </if>
+      <if test="recordId != null" >
+        executionFrequency_id = #{executionFrequencyId,jdbcType=VARCHAR},
+      </if>
+      <if test="executiveNum != null" >
+        executive_num = #{executiveNum,jdbcType=TINYINT},
+      </if>
+      <if test="executiveNumTime != null" >
+        executive_num_time = #{executiveNumTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where executive_num_id = #{executiveNumId,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.flf.entity.ExecutionTimeRecords" >
+    update ts_execution_time_records
+    set service_request_id = #{serviceRequestId,jdbcType=VARCHAR},
+      executionFrequency_id = #{executionFrequencyId,jdbcType=VARCHAR},
+      executive_num = #{executiveNum,jdbcType=TINYINT},
+      executive_num_time = #{executiveNumTime,jdbcType=TIMESTAMP}
+    where executive_num_id = #{executiveNumId,jdbcType=VARCHAR}
+  </update>
+  
+  <update id="updateNextExecutiveTimeByExecutiveNumId" parameterType="com.flf.entity.ExecutionTimeRecords" >
+    update ts_execution_time_records
+    set next_executive_time = #{nextExecutiveTime,TIMESTAMP}
+    where executive_num_id = #{executiveNumId,jdbcType=VARCHAR}
+  </update>
+  
+  
+</mapper>

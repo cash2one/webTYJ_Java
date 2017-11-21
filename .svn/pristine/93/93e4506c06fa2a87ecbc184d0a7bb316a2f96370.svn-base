@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.flf.mapper.ChargeItemNewMapper" >
+  <resultMap id="BaseResultMap" type="com.flf.entity.ChargeItemNew" >
+    <id column="charge_item_new_id" property="chargeItemNewId" jdbcType="VARCHAR" />
+    <result column="charge_item_new_num" property="chargeItemNewNum" jdbcType="VARCHAR" />
+    <result column="charge_item_new_unit" property="chargeItemNewUnit" jdbcType="VARCHAR" />
+    <result column="house_num" property="houseNum" jdbcType="INTEGER" />
+    <result column="scheme_id" property="schemeId" jdbcType="VARCHAR" />
+    <result column="charge_type_id" property="chargeTypeId" jdbcType="VARCHAR" />
+    <result column="create_user" property="createUser" jdbcType="VARCHAR" />
+    <result column="create_time" property="createTime" jdbcType="VARCHAR" />
+    <result column="update_user" property="updateUser" jdbcType="VARCHAR" />
+    <result column="update_time" property="updateTime" jdbcType="VARCHAR" />
+    <!-- 收费类型名称字段，附加，数据表中无 -->
+    <result column="charge_type_name" property="chargeTypeName" jdbcType="VARCHAR"/>
+  </resultMap>
+  <sql id="Base_Column_List" >
+    charge_item_new_id, charge_item_new_num, charge_item_new_unit, 
+    house_num, scheme_id, charge_type_id, create_user, create_time, update_user, update_time
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from tc_charge_item_new
+    where charge_item_new_id = #{chargeItemNewId,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from tc_charge_item_new
+    where charge_item_new_id = #{chargeItemNewId,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.flf.entity.ChargeItemNew" >
+    insert into tc_charge_item_new (charge_item_new_id, charge_item_new_num, 
+      charge_item_new_unit, house_num, 
+      scheme_id, charge_type_id, create_user, 
+      create_time, update_user, update_time
+      )
+    values (#{chargeItemNewId,jdbcType=VARCHAR}, #{chargeItemNewNum,jdbcType=VARCHAR}, 
+      #{chargeItemNewUnit,jdbcType=VARCHAR}, #{houseNum,jdbcType=INTEGER}, 
+      #{schemeId,jdbcType=VARCHAR}, #{chargeTypeId,jdbcType=VARCHAR}, #{createUser,jdbcType=VARCHAR}, 
+      #{createTime,jdbcType=VARCHAR}, #{updateUser,jdbcType=VARCHAR}, #{updateTime,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.flf.entity.ChargeItemNew" >
+    insert into tc_charge_item_new
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="chargeItemNewId != null" >
+        charge_item_new_id,
+      </if>
+      <if test="chargeItemNewNum != null" >
+        charge_item_new_num,
+      </if>
+      <if test="chargeItemNewUnit != null" >
+        charge_item_new_unit,
+      </if>
+      <if test="houseNum != null" >
+        house_num,
+      </if>
+      <if test="schemeId != null" >
+        scheme_id,
+      </if>
+      <if test="chargeTypeId != null" >
+        charge_type_id,
+      </if>
+      <if test="createUser != null" >
+        create_user,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="updateUser != null" >
+        update_user,
+      </if>
+      <if test="updateTime != null" >
+        update_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="chargeItemNewId != null" >
+        #{chargeItemNewId,jdbcType=VARCHAR},
+      </if>
+      <if test="chargeItemNewNum != null" >
+        #{chargeItemNewNum,jdbcType=VARCHAR},
+      </if>
+      <if test="chargeItemNewUnit != null" >
+        #{chargeItemNewUnit,jdbcType=VARCHAR},
+      </if>
+      <if test="houseNum != null" >
+        #{houseNum,jdbcType=INTEGER},
+      </if>
+      <if test="schemeId != null" >
+        #{schemeId,jdbcType=VARCHAR},
+      </if>
+      <if test="chargeTypeId != null" >
+        #{chargeTypeId,jdbcType=VARCHAR},
+      </if>
+      <if test="createUser != null" >
+        #{createUser,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=VARCHAR},
+      </if>
+      <if test="updateUser != null" >
+        #{updateUser,jdbcType=VARCHAR},
+      </if>
+      <if test="updateTime != null" >
+        #{updateTime,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.flf.entity.ChargeItemNew" >
+    update tc_charge_item_new
+    <set >
+      <if test="chargeItemNewNum != null" >
+        charge_item_new_num = #{chargeItemNewNum,jdbcType=VARCHAR},
+      </if>
+      <if test="chargeItemNewUnit != null" >
+        charge_item_new_unit = #{chargeItemNewUnit,jdbcType=VARCHAR},
+      </if>
+      <if test="houseNum != null" >
+        house_num = #{houseNum,jdbcType=INTEGER},
+      </if>
+      <if test="schemeId != null" >
+        scheme_id = #{schemeId,jdbcType=VARCHAR},
+      </if>
+      <if test="chargeTypeId != null" >
+        charge_type_id = #{chargeTypeId,jdbcType=VARCHAR},
+      </if>
+      <if test="createUser != null" >
+        create_user = #{createUser,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=VARCHAR},
+      </if>
+      <if test="updateUser != null" >
+        update_user = #{updateUser,jdbcType=VARCHAR},
+      </if>
+      <if test="updateTime != null" >
+        update_time = #{updateTime,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where charge_item_new_id = #{chargeItemNewId,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.flf.entity.ChargeItemNew" >
+    update tc_charge_item_new
+    set charge_item_new_num = #{chargeItemNewNum,jdbcType=VARCHAR},
+      charge_item_new_unit = #{chargeItemNewUnit,jdbcType=VARCHAR},
+      house_num = #{houseNum,jdbcType=INTEGER},
+      scheme_id = #{schemeId,jdbcType=VARCHAR},
+      charge_type_id = #{chargeTypeId,jdbcType=VARCHAR},
+      create_user = #{createUser,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=VARCHAR},
+      update_user = #{updateUser,jdbcType=VARCHAR},
+      update_time = #{updateTime,jdbcType=VARCHAR}
+    where charge_item_new_id = #{chargeItemNewId,jdbcType=VARCHAR}
+  </update>
+  <select id="listAllChargeItemNew" parameterType="com.flf.entity.ChargeItemNew" resultMap="BaseResultMap">
+  	select a.*,b.charge_type_name from tc_charge_item_new as a 
+  	left join tc_charge_type as b on a.charge_type_id = b.charge_type_id
+  	where 1=1
+  	<if test="schemeId != null">
+  		and a.scheme_id = #{schemeId}
+  	</if>
+  </select>
+  
+</mapper>

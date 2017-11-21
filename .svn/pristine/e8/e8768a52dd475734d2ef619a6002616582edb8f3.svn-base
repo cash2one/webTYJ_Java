@@ -1,0 +1,91 @@
+package com.flf.service.impl;
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+
+import com.flf.entity.AfterSaleProcess;
+import com.flf.entity.PageRestful;
+import com.flf.entity.TUser;
+import com.flf.mapper.AfterSaleProcessMapper;
+import com.flf.mapper.TUserMapper;
+import com.flf.service.AfterSaleProcessService;
+
+public class AfterSaleProcessServiceImpl implements AfterSaleProcessService{
+
+	private AfterSaleProcessMapper afterSaleProcessMapper;
+	private TUserMapper tUserMapper;
+
+	public TUserMapper gettUserMapper() {
+		return tUserMapper;
+	}
+
+	public void settUserMapper(TUserMapper tUserMapper) {
+		this.tUserMapper = tUserMapper;
+	}
+
+	public AfterSaleProcessMapper getAfterSaleProcessMapper() {
+		return afterSaleProcessMapper;
+	}
+
+	public void setAfterSaleProcessMapper(AfterSaleProcessMapper afterSaleProcessMapper) {
+		this.afterSaleProcessMapper = afterSaleProcessMapper;
+	}
+
+	@Override
+	public PageRestful listPageAfterSaleProcess(AfterSaleProcess afterSaleProcess) {
+		// TODO Auto-generated method stub
+		PageRestful pageRestful = new PageRestful();
+		List<AfterSaleProcess> afterSaleProcesslist = afterSaleProcessMapper.listPageAfterSaleProcess(afterSaleProcess);
+		afterSaleProcesslist.add(0, null);
+		pageRestful.setPage(afterSaleProcess.getPage());
+		pageRestful.setAfterSaleProcess(afterSaleProcesslist);
+		return pageRestful;
+	}
+
+	@Override
+	public List<AfterSaleProcess> listAllAfterSaleProcessRestful() {
+		// TODO Auto-generated method stub
+		return afterSaleProcessMapper.listAllAfterSaleProcess();
+	}
+
+	@Override
+	public AfterSaleProcess getAfterSaleProcessByIdRestful(String id) {
+		// TODO Auto-generated method stub
+		return afterSaleProcessMapper.getAfterSaleProcessById(id);
+	}
+
+	@Override
+	public void deleteAfterSaleProcessRestful(String id) {
+		// TODO Auto-generated method stub
+		afterSaleProcessMapper.deleteAfterSaleProcessById(id);
+	}
+
+	@Override
+	public void insertAfterSaleProcessRestful(AfterSaleProcess afterSaleProcess) {
+		// TODO Auto-generated method stub
+		afterSaleProcess.setLetterDate(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()));
+		afterSaleProcessMapper.insertAfterSaleProcess(afterSaleProcess);
+	}
+
+	@Override
+	public void updateAfterSaleRestful(AfterSaleProcess afterSaleProcess) {
+		// TODO Auto-generated method stub
+		afterSaleProcessMapper.updateAfterSaleProcess(afterSaleProcess);
+	}
+
+	@Override
+	public void updateAfterSaleProcessSelectiveRestful(AfterSaleProcess afterSaleProcess) {
+		// TODO Auto-generated method stub
+		afterSaleProcessMapper.updateAfterSaleProcessSelective(afterSaleProcess);
+	}
+
+	@Override
+	public TUser getUserNameByUserId(String id) {
+		// TODO Auto-generated method stub
+		return tUserMapper.selectByPrimaryKey(id);
+	}
+
+}

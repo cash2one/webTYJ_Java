@@ -1,0 +1,82 @@
+<!--
+    前端负责人：倪明
+    页面名称：首页加载
+    创建时间：2015/4/1
+    修改时间：2015/5/27
+-->
+<!--头部-->
+<div class="row">
+    <div class="header">
+        <div class="logo"> </div>
+        <div class="set">
+            <span class="set_button" ></span>
+                <span class="set_start font16 fontBold">
+                    <a href="#" data-toggle="modal" data-target="#login">登录</a>
+                </span>
+            <div class="modal fade" id="login" tabindex="-1" role="dialog"
+                 aria-labelledby="myModalLabel" aria-hidden="true">
+                <div class="modal-dialog" style="width: 500px">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close"
+                                    data-dismiss="modal" aria-hidden="true">
+                                &times;
+                            </button>
+                            <h4 class="modal-title" id="myModalLabel">
+                                登录
+                            </h4>
+                        </div>
+                        <div class="modal-body" ng-controller="loginCtrl" id="login">
+                            <div class="panel ">
+                                <div class="panel panel-body">
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <form class="form-horizontal" role="form">
+                                                <div class="form-group" style="margin-top: 40px">
+                                                    <label class="col-md-3 col-md-offset-1 control-label">
+                                                        {{test}}
+                                                        用户名：
+                                                    </label>
+                                                    <div class="col-md-5">
+                                                        <input type="text" class="form-control" placeholder="login" ng-model="AppUser.csn"/>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="col-md-3 col-md-offset-1 control-label">
+                                                        密码：
+                                                    </label>
+                                                    <div class="col-md-5 ">
+                                                        <input type="password" class="form-control" placeholder="password" ng-model="AppUser.password"/>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <div class="col-md-2 col-md-offset-3 control-label">
+                                                        <button type="button" class="btn btn-primary "
+                                                                ng-click="login()">登录
+                                                        </button>
+                                                    </div>
+                                                    <div class="col-md-2 control-label">
+                                                        <button type="button" class="btn btn-default" data-dismiss="modal">
+                                                            取消
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">
+                                关闭
+                            </button>
+                        </div>
+                    </div><!-- /.modal-content -->
+                </div><!-- /.modal -->
+            </div>
+            <span class="set_close font16 fontBold"><a href="#">退出</a></span>
+        </div>
+    </div>
+</div>
+<!--头部结束-->

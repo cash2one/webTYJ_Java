@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+
+</head>
+<body>
+<div style="margin: 100px">
+   <h1>新增质检完成</h1>
+    <a class="btn" ui-sref="index.externalProfession.departmentCheck.task.chooseTask">返回</a>
+</div>
+</body>
+</html>

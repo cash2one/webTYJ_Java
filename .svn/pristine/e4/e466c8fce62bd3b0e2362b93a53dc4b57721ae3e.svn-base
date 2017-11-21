@@ -1,0 +1,429 @@
+<!--
+    作者：彭婷婷
+    页面名称：外部专业线---服务请求详情--全部工单
+    js路径：js/controllers/externalProfession/serviceRequestDatil/allWorkOrders
+    创建时间：2015/4/30
+-->
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+<div class="order">
+    <div class="row"  ng-repeat="title in serviceRequestDatil.titleList">
+        <div style="width:96%; margin:15px 30px; background:#f0f0f0; -moz-border-radius:7px; -webkit-border-radius:7px; border-radius:7px; border:1px solid #bbb; padding-bottom:15px; height:auto; ">
+            <!--新增-->
+            <div class="col-lg-4 col-md-4 col-sm-6">
+                <div class="program_panel">
+                    <div class="program_panel_people_title">
+                    </div>
+                    <div>
+                        <table style="width: 98%;height:230px;margin:5px;text-align: center">
+                            <tr>
+                                <td>
+                                   <a href="#" ui-sref="index.externalProfession.serviceRequestDatil.addTask">
+                                       <span class="glyphicon glyphicon-plus" style="font-size: 25px"></span>
+                                   </a>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <!--维修开始-->
+            <div class="col-lg-4 col-md-4 col-sm-6"   ng-repeat="maintain in serviceRequestDatil.maintainList">
+                <div class="program_panel">
+                    <div class="program_panel_people_title">
+                        <span class="panel_title_left">维修</span>
+                                  <span class="panel_title_right">
+                                  <span class="complaint1_panel_info_navigation">
+         						    <ul>
+                                        <li><a href="#" class="dropdown-toggle btn-lg" data-toggle="dropdown" role="button" aria-expanded="false"><span class="glyphicon glyphicon-menu-down" aria-hidden="true"></span></a>
+                                            <ul>
+                                                <li class="program_panel_info_navigation_top">接受</li>
+                                                <li>转出</li>
+                                                <li>合并</li>
+                                                <li>转专项</li>
+                                                <li class="program_panel_info_navigation_bottom">集中处理</li>
+                                            </ul>
+                                        </li>
+                                    </ul>
+                                 </span>
+                                  </span>
+                    </div>
+                    <div>
+                        <div>
+                            <table style="width: 98%;margin:5px;height:230px;">
+                                <tr>
+                                    <td style="width: 35%">任务号：{{maintain.taskOrder}}</td>
+                                    <td style="width: 40%">任务来源：{{maintain.taskSource}}</td>
+                                    <td style="width: 20%"></td>
+                                </tr>
+                                <tr>
+                                    <td>任务状态：{{maintain.taskState}}</td>
+                                    <td>催办次数：{{maintain.remindNumber}}</td>
+                                    <td></td>
+                                </tr>
+                                <tr>
+                                    <td>项目：{{maintain.project}}</td>
+                                    <td>区：{{maintain.area}}</td>
+                                    <td>栋/座：{{maintain.building}}</td>
+                                </tr>
+
+                                <tr>
+                                    <td>单元：{{maintain.unit}}</td>
+                                    <td>房号：{{maintain.roomNumber}}</td>
+                                    <td></td>
+                                </tr>
+                                <tr>
+                                    <td>请求类型：{{maintain.requestType}}</td>
+                                    <td>分类：{{maintain.classification}}</td>
+                                    <td>专业：{{maintain.Professional}}</td>
+                                </tr>
+                                <tr>
+                                    <td>是否回访：{{maintain.isVisit}}</td>
+                                    <td>回访电话:{{maintain.visitPhone}}</td>
+                                    <td></td>
+                                </tr>
+
+                                <tr>
+                                    <td>优先级：{{maintain.priority}}</td>
+                                    <td>是否公共区域：{{maintain.isPublicArea}}</td>
+                                </tr>
+
+                                <tr>
+                                    <td>负责人工号：{{maintain.chargePersonNumber}}</td>
+                                    <td>处理人：{{maintain.chargePerson}}</td>
+                                </tr>
+                                <tr>
+                                    <td>处理人工号：{{maintain.handleNumber}}</td>
+                                    <td>处理人：{{maintain.handlePerson}}</td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--维修开始--->
+            <!--清洁开始-->
+            <div class="col-lg-4 col-md-4 col-sm-6"   ng-repeat="cleaning in serviceRequestDatil.cleaningList">
+                <div class="program_panel">
+                    <div class="program_panel_people_title">
+                        <span class="panel_title_left">清洁</span>
+                                  <span class="panel_title_right">
+                                 <span class="complaint1_panel_info_navigation">
+         						    <ul>
+                                        <li><a href="#" class="dropdown-toggle btn-lg" data-toggle="dropdown" role="button" aria-expanded="false"><span class="glyphicon glyphicon-menu-down" aria-hidden="true"></span></a>
+                                            <ul>
+                                                <li class="program_panel_info_navigation_top">接受</li>
+                                                <li>转出</li>
+                                                <li>合并</li>
+                                                <li>转专项</li>
+                                                <li class="program_panel_info_navigation_bottom">集中处理</li>
+                                            </ul>
+                                        </li>
+                                    </ul>
+                                 </span>
+                                  </span>
+                    </div>
+                    <div>
+                        <div>
+                            <table style="width: 98%;margin:5px;height:230px;">
+                                <tr>
+                                    <td style="width: 35%">任务号：{{cleaning.taskOrder}}</td>
+                                    <td style="width: 40%">任务来源：{{cleaning.taskSource}}</td>
+                                    <td style="width: 20%"></td>
+                                </tr>
+                                <tr>
+                                    <td>任务状态：{{cleaning.taskState}}</td>
+                                    <td>催办次数：{{cleaning.remindNumber}}</td>
+                                    <td></td>
+                                </tr>
+                                <tr>
+                                    <td>项目：{{cleaning.project}}</td>
+                                    <td>区：{{cleaning.area}}</td>
+                                    <td>栋/座：{{cleaning.building}}</td>
+                                </tr>
+
+                                <tr>
+                                    <td>单元：{{cleaning.unit}}</td>
+                                    <td>房号：{{cleaning.roomNumber}}</td>
+                                    <td></td>
+                                </tr>
+                                <tr>
+                                    <td>请求类型：{{cleaning.requestType}}</td>
+                                    <td>分类：{{cleaning.classification}}</td>
+                                    <td>专业：{{cleaning.Professional}}</td>
+                                </tr>
+                                <tr>
+                                    <td>是否回访：{{cleaning.isVisit}}</td>
+                                    <td>回访电话:{{cleaning.visitPhone}}</td>
+                                    <td></td>
+                                </tr>
+
+                                <tr>
+                                    <td>优先级：{{cleaning.priority}}</td>
+                                    <td>是否公共区域：{{cleaning.isPublicArea}}</td>
+                                </tr>
+
+                                <tr>
+                                    <td>负责人工号：{{cleaning.chargePersonNumber}}</td>
+                                    <td>处理人：{{cleaning.chargePerson}}</td>
+                                </tr>
+                                <tr>
+                                    <td>处理人工号：{{cleaning.handleNumber}}</td>
+                                    <td>处理人：{{cleaning.handlePerson}}</td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!--清洁结束-->
+            <!--园林开始-->
+            <div class="col-lg-4 col-md-4 col-sm-6"   ng-repeat="park in serviceRequestDatil.parkList">
+                <div class="program_panel">
+                    <div class="program_panel_people_title">
+                        <span class="panel_title_left">园林</span>
+                                  <span class="panel_title_right">
+                                <span class="complaint1_panel_info_navigation">
+         						    <ul>
+                                        <li><a href="#" class="dropdown-toggle btn-lg" data-toggle="dropdown" role="button" aria-expanded="false"><span class="glyphicon glyphicon-menu-down" aria-hidden="true"></span></a>
+                                            <ul>
+                                                <li class="program_panel_info_navigation_top">接受</li>
+                                                <li>转出</li>
+                                                <li>合并</li>
+                                                <li>转专项</li>
+                                                <li>集中处理</li>
+                                                <li class="program_panel_info_navigation_bottom" >
+                                                    <a ui-sref="index.externalProfession.serviceRequestDatil.cleanQuery.logDetails">
+                                                        查看</a>
+                                                </li>
+                                            </ul>
+                                        </li>
+                                    </ul>
+                                 </span>
+                                  </span>
+                    </div>
+                    <div>
+                        <div>
+                            <table style="width: 98%;margin:5px;height:230px;">
+                                <tr>
+                                    <td style="width: 35%">任务号：{{park.taskOrder}}</td>
+                                    <td style="width: 40%">任务来源：{{park.taskSource}}</td>
+                                    <td style="width: 20%"></td>
+                                </tr>
+                                <tr>
+                                    <td>任务状态：{{park.taskState}}</td>
+                                    <td>催办次数：{{park.remindNumber}}</td>
+                                    <td></td>
+                                </tr>
+                                <tr>
+                                    <td>项目：{{park.project}}</td>
+                                    <td>区：{{park.area}}</td>
+                                    <td>栋/座：{{park.building}}</td>
+                                </tr>
+
+                                <tr>
+                                    <td>单元：{{park.unit}}</td>
+                                    <td>房号：{{park.roomNumber}}</td>
+                                    <td></td>
+                                </tr>
+                                <tr>
+                                    <td>请求类型：{{park.requestType}}</td>
+                                    <td>分类：{{park.classification}}</td>
+                                    <td>专业：{{park.Professional}}</td>
+                                </tr>
+                                <tr>
+                                    <td>是否回访：{{park.isVisit}}</td>
+                                    <td>回访电话:{{park.visitPhone}}</td>
+                                    <td></td>
+                                </tr>
+
+                                <tr>
+                                    <td>优先级：{{park.priority}}</td>
+                                    <td>是否公共区域：{{park.isPublicArea}}</td>
+                                </tr>
+
+                                <tr>
+                                    <td>负责人工号：{{park.chargePersonNumber}}</td>
+                                    <td>处理人：{{park.chargePerson}}</td>
+                                </tr>
+                                <tr>
+                                    <td>处理人工号：{{park.handleNumber}}</td>
+                                    <td>处理人：{{park.handlePerson}}</td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--园林结束-->
+            <!--安保开始-->
+            <div class="col-lg-4 col-md-4 col-sm-6"   ng-repeat="security in serviceRequestDatil.securityList">
+                <div class="program_panel">
+                    <div class="program_panel_people_title">
+                        <span class="panel_title_left">清洁</span>
+                                  <span class="panel_title_right">
+                                  <span class="complaint1_panel_info_navigation">
+         						    <ul>
+                                        <li><a href="#" class="dropdown-toggle btn-lg" data-toggle="dropdown" role="button" aria-expanded="false"><span class="glyphicon glyphicon-menu-down" aria-hidden="true"></span></a>
+                                            <ul>
+                                                <li class="program_panel_info_navigation_top">接受</li>
+                                                <li>转出</li>
+                                                <li>合并</li>
+                                                <li>转专项</li>
+                                                <li>集中处理</li>
+                                                <li class="program_panel_info_navigation_bottom" >
+                                                    <a ui-sref="index.externalProfession.serviceRequestDatil.cleanQuery.logDetails">
+                                                        查看</a>
+                                                </li>
+                                            </ul>
+                                        </li>
+
+                                    </ul>
+                                 </span>
+                                  </span>
+                    </div>
+                    <div>
+                        <div>
+                            <table style="width: 98%;margin:5px;height:230px;">
+                                <tr>
+                                    <td style="width: 35%">任务号：{{security.taskOrder}}</td>
+                                    <td style="width: 40%">任务来源：{{security.taskSource}}</td>
+                                    <td style="width: 20%"></td>
+                                </tr>
+                                <tr>
+                                    <td>任务状态：{{security.taskState}}</td>
+                                    <td>催办次数：{{security.remindNumber}}</td>
+                                    <td></td>
+                                </tr>
+                                <tr>
+                                    <td>项目：{{security.project}}</td>
+                                    <td>区：{{security.area}}</td>
+                                    <td>栋/座：{{security.building}}</td>
+                                </tr>
+
+                                <tr>
+                                    <td>单元：{{security.unit}}</td>
+                                    <td>房号：{{security.roomNumber}}</td>
+                                    <td></td>
+                                </tr>
+                                <tr>
+                                    <td>请求类型：{{security.requestType}}</td>
+                                    <td>分类：{{security.classification}}</td>
+                                    <td>专业：{{security.Professional}}</td>
+                                </tr>
+                                <tr>
+                                    <td>是否回访：{{security.isVisit}}</td>
+                                    <td>回访电话:{{security.visitPhone}}</td>
+                                    <td></td>
+                                </tr>
+
+                                <tr>
+                                    <td>优先级：{{security.priority}}</td>
+                                    <td>是否公共区域：{{security.isPublicArea}}</td>
+                                </tr>
+
+                                <tr>
+                                    <td>负责人工号：{{security.chargePersonNumber}}</td>
+                                    <td>处理人：{{security.chargePerson}}</td>
+                                </tr>
+                                <tr>
+                                    <td>处理人工号：{{security.handleNumber}}</td>
+                                    <td>处理人：{{security.handlePerson}}</td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--安保结束-->
+            <!--投诉开始-->
+            <div class="col-lg-4 col-md-4 col-sm-6"   ng-repeat="complaint in serviceRequestDatil.complaintList">
+                <div class="program_panel">
+                    <div class="program_panel_people_title">
+                        <span class="panel_title_left">投诉</span>
+                                  <span class="panel_title_right">
+                                  <span class="complaint1_panel_info_navigation">
+         						    <ul>
+                                        <li><a href="#" class="dropdown-toggle btn-lg" data-toggle="dropdown" role="button" aria-expanded="false"><span class="glyphicon glyphicon-menu-down" aria-hidden="true"></span></a>
+                                            <ul>
+                                                <li class="program_panel_info_navigation_top">接受</li>
+                                                <li>转出</li>
+                                                <li>合并</li>
+                                                <li>转专项</li>
+                                                <li>集中处理</li>
+                                                <li class="program_panel_info_navigation_bottom" >
+                                                    <a ui-sref="index.externalProfession.serviceRequestDatil.cleanQuery.logDetails">
+                                                        查看</a>
+                                                </li>
+                                            </ul>
+                                        </li>
+                                    </ul>
+                                 </span>
+                                  </span>
+                    </div>
+                    <div>
+                        <div>
+                            <table style="width: 98%;margin:5px;height:230px;">
+                                <tr>
+                                    <td style="width: 35%">任务号：{{complaint.taskOrder}}</td>
+                                    <td style="width: 40%">任务来源：{{complaint.taskSource}}</td>
+                                    <td style="width: 20%"></td>
+                                </tr>
+                                <tr>
+                                    <td>任务状态：{{complaint.taskState}}</td>
+                                    <td>催办次数：{{complaint.remindNumber}}</td>
+                                    <td></td>
+                                </tr>
+                                <tr>
+                                    <td>项目：{{complaint.project}}</td>
+                                    <td>区：{{complaint.area}}</td>
+                                    <td>栋/座：{{complaint.building}}</td>
+                                </tr>
+
+                                <tr>
+                                    <td>单元：{{complaint.unit}}</td>
+                                    <td>房号：{{complaint.roomNumber}}</td>
+                                    <td></td>
+                                </tr>
+                                <tr>
+                                    <td>请求类型：{{complaint.requestType}}</td>
+                                    <td>分类：{{complaint.classification}}</td>
+                                    <td>专业：{{complaint.Professional}}</td>
+                                </tr>
+                                <tr>
+                                    <td>是否回访：{{complaint.isVisit}}</td>
+                                    <td>回访电话:{{complaint.visitPhone}}</td>
+                                    <td></td>
+                                </tr>
+
+                                <tr>
+                                    <td>优先级：{{complaint.priority}}</td>
+                                    <td>是否公共区域：{{complaint.isPublicArea}}</td>
+                                </tr>
+
+                                <tr>
+                                    <td>负责人工号：{{complaint.chargePersonNumber}}</td>
+                                    <td>处理人：{{complaint.chargePerson}}</td>
+                                </tr>
+                                <tr>
+                                    <td>处理人工号：{{complaint.handleNumber}}</td>
+                                    <td>处理人：{{complaint.handlePerson}}</td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--投诉结束-->
+            <div class="clear"></div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

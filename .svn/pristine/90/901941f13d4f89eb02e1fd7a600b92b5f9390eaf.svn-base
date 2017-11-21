@@ -1,0 +1,16 @@
+package com.flf.mapper;
+
+import com.flf.entity.FrequencyRecord;
+
+public interface FrequencyRecordMapper {
+
+	int insertFrequencyRecord(FrequencyRecord frequencyRecord);//频率新增
+	
+	int insertFrequencyRecordUUID(FrequencyRecord frequencyRecord);//频率新增
+	
+	
+	FrequencyRecord getFrequencyRecordbyId(String recordId);//根据id查询频率信息
+	
+	FrequencyRecord getFrequencyRecordbyServieId(String relationId);//根据服务请求id查询频率信息
+	
+}

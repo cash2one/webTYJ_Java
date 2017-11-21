@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.flf.mapper.UserPostMapper" >
+  <resultMap id="BaseResultMap" type="UserPost" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="user_id" property="userId" jdbcType="VARCHAR" />
+    <result column="post_id" property="postId" jdbcType="VARCHAR" />
+    <result column="create_person_id" property="createPersonId" jdbcType="VARCHAR" />
+    <result column="create_date" property="createDate" jdbcType="DATE" />
+    <result column="last_modify_id" property="lastModifyId" jdbcType="VARCHAR" />
+    <result column="last_modify_date" property="lastModifyDate" jdbcType="DATE" />
+    <result column="state" property="state" jdbcType="TINYINT" />
+  </resultMap>
+
+  <sql id="Base_Column_List" >
+    id, user_id, post_id, create_person_id, create_date, last_modify_id, last_modify_date, 
+    state
+  </sql>
+
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from tc_user_post
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from tc_user_post
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+
+  <insert id="insert" parameterType="UserPost" >
+    insert into tc_user_post (id, user_id, post_id, 
+      create_person_id, create_date, last_modify_id, 
+      last_modify_date, state)
+    values (#{id,jdbcType=VARCHAR}, #{userId,jdbcType=VARCHAR}, #{postId,jdbcType=VARCHAR},  #{createPersonId,jdbcType=VARCHAR},
+     now(),  #{lastModifyId,jdbcType=VARCHAR}, 
+      now(),0)
+  </insert>
+  
+  <update id="updateByPrimaryKey" parameterType="UserPost" >
+    update tc_user_post
+    set user_id = #{userId,jdbcType=VARCHAR},
+      post_id = #{postId,jdbcType=VARCHAR},
+      create_person_id = #{createPersonId,jdbcType=VARCHAR},
+      create_date = #{createDate,jdbcType=DATE},
+      last_modify_id = #{lastModifyId,jdbcType=VARCHAR},
+      last_modify_date = #{lastModifyDate,jdbcType=DATE},
+      state = #{state,jdbcType=TINYINT}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  
+<!--   根据岗位id和用户id查询员工是否在员工岗位表中存在有效关系 -->
+ <select id="countUserPosts" resultType="int" parameterType="java.lang.String" >
+    select count(*)
+    from tc_user_post
+    where user_id=#{1} and post_id=#{0} and state=0
+  </select> 
+</mapper>

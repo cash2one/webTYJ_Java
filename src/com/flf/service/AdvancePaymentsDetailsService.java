@@ -1,0 +1,44 @@
+package com.flf.service;
+
+import javax.jws.WebService;
+import javax.ws.rs.Consumes;
+import javax.ws.rs.POST;
+import javax.ws.rs.Path;
+import javax.ws.rs.core.MediaType;
+import com.flf.entity.AdvancePaymentsDetails;
+import com.flf.entity.PageRestful;
+
+@WebService
+@Path("/AdvancePaymentsDetails")
+public interface AdvancePaymentsDetailsService {
+	/*
+	 * 新增
+	 */
+	@POST
+	@Path("/insertAdvancePaymentsDetails")
+	@Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+	public int insertAdvancePaymentsDetails(AdvancePaymentsDetails advancePaymentsDetails);
+	
+	/*分页查询资产账户下的明细*/
+	@POST
+	@Path("/listPageAdvancePaymentDetailByAssetAccuontNum")
+	@Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+	PageRestful listPageAdvancePaymentDetailByAssetAccuontNum(AdvancePaymentsDetails advancePaymentsDetails);
+	
+	/*根据资产账户id分页查询*/
+	@POST
+	@Path("/listPageAdvancePaymentDetailByAssetAccountId")
+	@Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+	PageRestful listPageAdvancePaymentDetailByAssetAccountId(AdvancePaymentsDetails advancePaymentsDetails);
+	
+	/**
+	 * 退款
+	 * @author zhuqi 2016.04.20
+	 * @param advancePaymentsDetails
+	 * @return
+	 */
+	@POST
+  	@Path("/refundMoney")
+	@Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+    int refundMoney(AdvancePaymentsDetails advancePaymentsDetails);
+}

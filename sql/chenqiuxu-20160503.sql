@@ -1,0 +1,1 @@
+alter table t_article_release add building_structure_id varchar(36) default null COMMENT '建筑结构id' ;

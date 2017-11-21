@@ -1,0 +1,23 @@
+package com.flf.mapper;
+
+import com.flf.entity.ElectricityMeterReadingProgram;
+import com.flf.entity.SearchMeter;
+
+import java.util.List;
+
+public interface ElectricityMeterReadingProgramMapper {
+	int deleteElectricityMeterReadingProgram(String electricityMeterReadingProgramId);  //��ݵ��ƻ���ϵ��idɾ����Ϣ
+
+    int insertElectricityMeterReadingProgram(ElectricityMeterReadingProgram electricityMeterReadingProgram); //������ƻ���ϵ����Ϣ
+
+    List<ElectricityMeterReadingProgram> listPageElectricityMeterReadingProgram(SearchMeter searchMeter);//��ҳ��ѯ���ƻ���ϵ����Ϣ
+    
+    List<ElectricityMeterReadingProgram> listAllElectricityMeterReadingProgram(); //��ѯ���е��ƻ���ϵ����Ϣ
+
+    ElectricityMeterReadingProgram getElectricityMeterReadingProgrambyId(String electricityMeterReadingProgramId); //ͨ����ƻ���ϵ��id��ȡ���ƻ���ϵ����Ϣ
+
+    int updateElectricityMeterReadingProgram(ElectricityMeterReadingProgram electricityMeterReadingProgram);//���µ��ƻ���ϵ����Ϣ
+    
+    public List<ElectricityMeterReadingProgram> listElectricityMeterReadingProgrambyStaff(
+			String currentExecutor);  //根据执行人查询抄表数据
+}

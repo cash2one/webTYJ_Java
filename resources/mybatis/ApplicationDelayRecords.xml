@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.flf.mapper.ApplicationDelayRecordsMapper">
+	<resultMap type="ApplicationDelayRecords" id="BaseResultMap">
+		<id column="record_id" property="recordId" jdbcType="VARCHAR"/>
+		<result column="task_id" property="taskId" jdbcType="VARCHAR"/>
+		<result column="operator_id" property="operatorId" jdbcType="VARCHAR"/>
+		<result column="operation_time" property="operationTime" jdbcType="TIMESTAMP"/>
+		<result column="delay_time" property="delayTime" jdbcType="TIMESTAMP"/>
+		<result column="remarks" property="remarks" jdbcType="VARCHAR"/>
+	</resultMap>
+	
+	<resultMap type="ApplicationDelayRecords" id="resultApplicationDelayRecordsMap" extends="BaseResultMap">
+  		<association property="staff" column="operator_id" javaType="Staff" select="com.flf.mapper.StaffMapper.selectByid"></association>
+  	</resultMap>
+  
+	<select id="listAllApplicationDelayRecords" resultMap="BaseResultMap">
+		select * from ts_application_delay_records
+	</select>
+	<select id="getApplicationDelayRecordsById" parameterType="String" resultMap="BaseResultMap">
+		select * from ts_application_delay_records
+		where record_id = #{0}
+	</select>
+	
+	<select id="getApplicationDelayRecordsbyTaskId" parameterType="String" resultMap="resultApplicationDelayRecordsMap">
+		select * from ts_application_delay_records where task_id = #{0}
+	</select>
+	
+	<select id="listPageApplicationDelayRecords" parameterType="ApplicationDelayRecords" resultMap="resultApplicationDelayRecordsMap">
+		select * from ts_application_delay_records where task_id=#{taskId,jdbcType=VARCHAR} order by operation_time desc
+	</select>
+	
+	<insert id="insertApplicationDelayRecords" parameterType="ApplicationDelayRecords">
+		insert into ts_application_delay_records(record_id,task_id,operator_id,operation_time,delay_time,remarks)
+		values(
+			#{recordId,jdbcType=VARCHAR},
+			#{taskId,jdbcType=VARCHAR},
+			#{operatorId,jdbcType=VARCHAR},
+			#{operationTime,jdbcType=TIMESTAMP},
+			#{delayTime,jdbcType=TIMESTAMP},
+			#{remarks,jdbcType=VARCHAR})
+	</insert>
+	<delete id="deleteApplicationDelayRecordsById" parameterType="String">
+		delete from ts_application_delay_records
+		where record_id = #{0}
+	</delete>
+	<update id="updateApplicationDelayRecords" parameterType="ApplicationDelayRecords">
+		update ts_application_delay_records
+			set 
+				record_id = #{recordId,jdbcType=VARCHAR},
+				task_id = #{taskId,jdbcType=VARCHAR},
+				operator_id = #{operatorId,jdbcType=VARCHAR},
+				operation_time = #{operationTime,jdbcType=TIMESTAMP},
+				delay_time = #{delayTime,jdbcType=TIMESTAMP},
+				remarks = #{remarks,jdbcType=VARCHAR}
+			where record_id = #{recordId,jdbcType=VARCHAR}
+	</update>
+</mapper>

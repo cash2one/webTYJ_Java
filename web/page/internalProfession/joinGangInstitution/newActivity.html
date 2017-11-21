@@ -1,0 +1,103 @@
+<!--
+    作者:彭婷婷
+    页面名称:入伙初始化--新增活动
+    js路径:js/controllers/internalProfession/joinGangInstitution/newActivity
+-->
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>入伙初始化</title>
+</head>
+<body>
+<div class="container" style="margin:5px;width:99%;">
+    <div class="complaint_user_list">
+        <div class="row pull-right" style="margin: 25px;">
+            <button style="height: 30px;width: 120px" ui-sref="index.internalProfession.joinGangInstitution.institutionNext02">下一步</button>
+        </div>
+        <table style="width: 50%;margin: 50px;height: 250px;">
+            <tr>
+                <td class="td1">入伙开始时间：</td>
+                <td><input type="date" ng-model="vm.joinGangStartTime" ></td>
+            </tr>
+            <tr>
+                <td class="td1">入伙结束时间：</td>
+                <td><input type="date" ng-model="vm.joinGangEndTime"></td>
+            </tr>
+            <tr>
+                <td class="td1">管理费默认计费时间：</td>
+               <td><input type="text" ng-model="vm.defaultTime" ng-change="change()" /></td>
+            </tr>
+
+            <tr>
+                <td class="td1">选择预交管理费月数：</td>
+                <td>
+                    <select  ng-model="vm.selectVal"  ng-options="a.id as a.name for a in vm.chooseMonth">
+                        <option value="">选择预交管理费月数</option>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td class="td1">若拒绝入伙管理费承担人：</td>
+                <td>
+                    <label ng-repeat="pd in vm.pds">
+                        <input type="checkbox">{{ pd.name}}
+                    </label>
+                </td>
+            </tr>
+        </table>
+        <div class="row">
+            <img src="images/staffHome/u83_line.png" style="width: 1000px;margin-left: 45px">
+        </div>
+
+        <table style="width:60%;height:300px;margin: 10px 85px 85px;">
+            <tr><td><h4>创建团队</h4></td></tr>
+            <tr>
+                <td colspan="2">
+                    负责人：
+                </td>
+                <td colspan="2">
+                    <span class="glyphicon glyphicon-plus"></span>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="4">
+                    <div class="media-left">
+                        <a href="#">
+                            <img style="width: 60px;height: 60px;" src="images/staffHome/u116.jpg">
+                        </a>
+                    </div>
+                    <div class="media-body">
+                        <p class="media-heading" style="margin-top: 5px"></p>
+                        黄小林<br>
+                        维修部
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2">
+                    团队成员：
+                </td>
+                <td colspan="2">
+                    <span class="glyphicon glyphicon-plus"></span>
+                </td>
+            </tr>
+            <tr>
+                <td  ng-repeat="item in vm.teams">
+                    <div class="media-left">
+                        <a href="#">
+                            <img style="width: 60px;height: 60px;" src="images/staffHome/u116.jpg">
+                        </a>
+                    </div>
+                    <div class="media-body">
+                        <p class="media-heading" style="margin-top: 5px"></p>
+                        {{item.name}}<br>
+                        {{item.department}}
+                    </div>
+                </td>
+            </tr>
+        </table>
+    </div>
+</div>
+</body>
+</html>

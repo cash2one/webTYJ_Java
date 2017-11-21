@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>部门检（配）</title>
+</head>
+<body>
+<div class="row">
+    <div class="complaint_user_list" style="margin-top: 15px;">
+        <div style="padding:5px 10px 0">
+            <div class="complaint_user_info_navigation">
+                <a class="btn" ui-sref="index.externalProfession.departmentOfInspection.cleaning">清洁</a>
+                <a class="btn" ui-sref="index.externalProfession.departmentOfInspection.gardens">园林</a>
+                <a class="btn" ui-sref="index.externalProfession.departmentOfInspection.security">安保</a>
+            </div>
+            <div class="clear"></div>
+        </div>
+        <div class="row" style="padding:5px 10px 0">
+            <div ui-view></div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

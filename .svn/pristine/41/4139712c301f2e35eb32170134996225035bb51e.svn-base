@@ -1,0 +1,564 @@
+package com.flf.service;
+
+import java.io.InputStream;
+import java.util.List;
+
+import javax.jws.WebService;
+import javax.ws.rs.Consumes;
+import javax.ws.rs.GET;
+import javax.ws.rs.POST;
+import javax.ws.rs.PUT;
+import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
+import javax.ws.rs.Produces;
+import javax.ws.rs.core.MediaType;
+
+import com.flf.entity.Annex;
+import com.flf.entity.BuildingStructureNew;
+import com.flf.entity.BuildingStructureSearch;
+import com.flf.request.BuildingStructureListAll;
+import com.flf.request.Info;
+import com.flf.request.Tree;
+import com.flf.request.TreeResult;
+import com.flf.util.Node;
+
+@WebService
+@Path("/BuildingStructureNew")
+public interface BuildingStructureNewService {
+
+	List<BuildingStructureNew> listPageBuildingStructureNew(
+			BuildingStructureNew buildingStructure);
+
+	List<BuildingStructureNew> listAllBuildingStructureNew(String projectid);
+
+	BuildingStructureNew getBuildingStructureNewbyId(String id);
+
+	int insertBuildingStructureNew(BuildingStructureNew buildingStructure);
+
+	int updateBuildingStructureNew(BuildingStructureNew buildingStructure);
+
+	int deleteBuildingStructureNew(String id);
+
+	// Cxf
+	String listAllBuildingStructureNewCxf(String projectid);
+
+	String getBuildingStructureNewByIdCxf(String id);
+
+	String insertBuildingStructureNewCXF(String buildingStructure);
+
+	String updateBuildingStructureNewCxf(String buildingStructure);
+
+	String deleteBuildingStructureNewCxf(String id);
+	//获取围墙机账号绑定的房屋
+	String listParentBuildingStructureCxf(String houseGates);
+
+	String listChildrenBuildingStructureByparentIdCxf(String houseGates,String parentId);
+	//根据父id获取建筑机构id
+	String listBuildingStructureByParentIds(String ids);
+	
+	/**
+	 * getAllHouseTree(查询所有房屋的树形节点)
+	 *
+	 * @Title: getAllHouseTree
+	 * @param @param id
+	 * @param @return 设定文件
+	 * @return List<Tree> 返回类型
+	 * @throws
+	 */
+
+	@GET
+	@Path("/getTree/{gateAccountId}")
+	@Produces(MediaType.APPLICATION_JSON)
+	List<Tree> getTree(@PathParam("gateAccountId") String gateAccountId);
+
+	/**
+	 * listAllBuildingStructureNewRest(获取所有建筑结构信息)
+	 *
+	 * @Title: listAllBuildingStructureNewRest
+	 * @param @return 设定文件
+	 * @return List<BuildingStructureNew> 返回类型
+	 * @throws
+	 */
+
+	@GET
+	@Path("/listAllBuildingStructureNewRest/{projectId}")
+	@Produces(MediaType.APPLICATION_JSON)
+	List<BuildingStructureNew> listAllBuildingStructureNewRest(
+			@PathParam("projectId") String projectId);
+	
+	/**
+	 * 根据项目ID查询数据，只查必须数据，减少数据传输量
+	 * @param projectId
+	 * @return
+	 */
+	@GET
+	@Path("/listAllBuildingStructureTreeNewRest/{projectId}")
+	@Produces(MediaType.APPLICATION_JSON)
+	List<BuildingStructureNew> listAllBuildingStructureTreeNewRest(
+			@PathParam("projectId") String projectId);
+	
+	@GET
+	@Path("/listAllBuildingStructureTreeNew1Rest/{projectId}/{parentId}")
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
+	List<BuildingStructureNew> listAllBuildingStructureTreeNew1Rest(
+			@PathParam("projectId") String projectId,@PathParam("parentId") String parentId);
+	
+
+	/**
+	 * 根据建筑id查询该建筑的建筑结构
+	 * 
+	 * @author zhuwei
+	 * @date 2015/07/03
+	 * @param projectId
+	 * @return
+	 */
+	@GET
+	@Path("/listBuildingStructureNewByProjectId/{buildingId}")
+	@Produces(MediaType.APPLICATION_JSON)
+	List<BuildingStructureNew> listBuildingStructureNewByProjectId(
+			@PathParam("buildingId") String buildingId);
+
+	@GET
+	@Path("/getTreeHouseId/{gateAccountId}")
+	@Produces(MediaType.APPLICATION_JSON)
+	List<Tree> getTreeHouseId(@PathParam("gateAccountId") String gateAccountId);
+
+	// 添加建筑结构信息
+	@POST
+	@Path("/addBuildingStructureNew")
+	@Consumes({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
+	void addBuildingStructureNewRestful(TreeResult treeResult);
+
+	// 添加建筑结构信息(例子)
+	@POST
+	@Path("/addBuildingStructureNew/{ids}/{names}/{pIds}/{isParents}")
+	@Consumes({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
+	void addBuildingStructureNew(@PathParam("ids") String ids,
+			@PathParam("names") String names, @PathParam("pIds") String pIds,
+			@PathParam("isParents") String isParents);
+
+	String listBuildingStructureNewByhouseGates(String houseGates);
+
+	@POST
+	@Path("/listBuildingStructureByProjectIdAndAreaId")
+	@Produces(MediaType.APPLICATION_JSON)
+	List<BuildingStructureNew> listBuildingStructureByProjectIdAndAreaId(
+			BuildingStructureNew buildingStructureNew);
+	
+	/**
+	 * 根据建筑结构查询建筑下的所有住宅、车位、商铺
+	 * @param buildingStructureNew
+	 * @author 王洲
+	 * @date 2016.03.11
+	 * @return BuildingStructureNew
+	 */
+	@POST
+	@Path("/listAllBuildingStructureNewByProjectIdAndAreaId")
+	@Produces(MediaType.APPLICATION_JSON)
+	BuildingStructureNew listAllBuildingStructureNewByProjectIdAndAreaId(BuildingStructureNew buildingStructureNew);
+
+	// 添加最后子节点信息与住宅信息
+	@POST
+	@Path("/addBuildingStructureAllNewRestful")
+	@Consumes({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
+	void addBuildingStructureAllNewRestful(TreeResult treeResult);
+
+	// 修改修改建筑结构信息
+	@PUT
+	@Path("/updateBuildingStructure")
+	@Consumes({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
+	void updateBuildingStructure(BuildingStructureNew buildingStructureNew);
+
+	// 搜索查询建筑结构信息
+	@POST
+	@Path("/listBuildingStructureSearch")
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
+	List<Node> listBuildingStructureSearch(
+			BuildingStructureSearch buildingStructureSearch);
+
+	/**
+	 * 
+	 * @Title: 根据个人客户id查询客户的建筑资产信息
+	 * @param @param CustId
+	 * @param @return 设定文件
+	 * @return List<BuildingStructureNew> 返回类型
+	 * @throws
+	 */
+	@GET
+	@Path("/getBuildingStructureNewByCustId/{CustId}")
+	@Produces(MediaType.APPLICATION_JSON)
+	List<BuildingStructureNew> getBuildingStructureNewByCustId(
+			@PathParam("CustId") String CustId);
+
+	/**
+	 * 根据节点id 查询子节点信息
+	 * 
+	 * @Title: getBrandbybrandId
+	 * @param @param brandId
+	 * @param @return 设定文件
+	 * @return Brand 返回类型
+	 * @throws
+	 */
+	@GET
+	@Path("/getBrandbyparentId/{parentId}")
+	@Produces(MediaType.APPLICATION_JSON)
+	List<BuildingStructureNew> getBrandbyparentId(
+			@PathParam("parentId") String parentId);
+
+	/**
+	 * 查询当前节点的所有子节点的详细信息
+	 * 
+	 * @return
+	 */
+	@GET
+	@Path("/listBuildingStructureAll/{parentId}")
+	@Produces(MediaType.APPLICATION_JSON)
+	BuildingStructureListAll listBuildingStructureAll(
+			@PathParam("parentId") String parentId);
+
+	/**
+	 * 根据房屋全名查询房屋信息 尹磊
+	 * 
+	 * @param fullName
+	 * @return
+	 */
+	@GET
+	@Path("/getTreeHouseId/{fullName}")
+	@Produces(MediaType.APPLICATION_JSON)
+	List<BuildingStructureNew> getBuildingStructureNewByfullName(
+			@PathParam("fullName") String fullName);
+
+	/**
+	 * 根据房屋全名查询房屋信息 尹磊
+	 * 
+	 * @param fullName
+	 * @return
+	 */
+	@GET
+	@Path("/getBuildingStructureNewByProjectId/{ProjectId}")
+	@Produces(MediaType.APPLICATION_JSON)
+	List<BuildingStructureNew> getBuildingStructureNewByProjectId(
+			@PathParam("ProjectId") String ProjectId);
+
+	@GET
+	@Path("/listAllBuildingStructureNewByAll")
+	@Produces(MediaType.APPLICATION_JSON)
+	List<BuildingStructureNew> listAllBuildingStructureNewByAll();
+
+	@GET
+	@Path("/listAllBuildingStructureNewByAllId/{meterReadingProgramId}")
+	@Produces(MediaType.APPLICATION_JSON)
+	List<BuildingStructureNew> listAllBuildingStructureNewByAllId(
+			@PathParam("meterReadingProgramId") String meterReadingProgramId);
+
+	/**
+	 * 用于建筑结构的查询，优化，不涉及人员查询 fansensen 2015.09.25
+	 * 
+	 * @param meterReadingProgramId
+	 * @return
+	 */
+	@GET
+	@Path("/listAllBuildingStructureNewByAllIdOptimize/{meterReadingProgramId}")
+	@Produces(MediaType.APPLICATION_JSON)
+	List<BuildingStructureNew> listAllBuildingStructureNewByAllOptimize(
+			@PathParam("meterReadingProgramId") String meterReadingProgramId);
+
+	/**
+	 * 资产绑定建筑信息树形表结构
+	 * 
+	 * @return
+	 */
+	@GET
+	@Path("/listAllBuildingStructureNewByPar/{projectId}")
+	@Produces(MediaType.APPLICATION_JSON)
+	List<Node> listAllBuildingStructureNewByPar(
+			@PathParam("projectId") String projectId);
+
+	/**
+	 * 资产绑定建筑信息树形表结构
+	 * 
+	 * @return
+	 */
+	@GET
+	@Path("/listAllBuildingStructureNewone")
+	@Produces(MediaType.APPLICATION_JSON)
+	Node listAllBuildingStructureNewone();
+
+	/**
+	 * 通过项目id获取建筑结构树形
+	 * 
+	 * @param projectId
+	 * @return
+	 */
+	@GET
+	@Path("/getBuildingStructureNewAndComponent/{projectId}")
+	@Produces(MediaType.APPLICATION_JSON)
+	List<BuildingStructureNew> getBuildingStructureNewAndComponent(
+			@PathParam("projectId") String projectId);
+
+	/**
+	 * 通过项目id获取建筑结构树形（视频对讲接口）
+	 * 
+	 * @param projectId
+	 * @return
+	 */
+	@GET
+	@Path("/getBuildingStructureNewAndComponentV/{projectId}")
+	@Produces(MediaType.APPLICATION_JSON)
+	List<BuildingStructureNew> getBuildingStructureNewAndComponentV(
+			@PathParam("projectId") String projectId);
+	
+	/**
+	 * 资产绑定建筑信息树形表结构(企业客户)
+	 * 
+	 * @return
+	 */
+	@GET
+	@Path("/listAllBuildingStructureNewtwo")
+	@Produces(MediaType.APPLICATION_JSON)
+	Node listAllBuildingStructureNewtwo();
+
+	/**
+	 * 根据建筑名和车库类型查询建筑信息
+	 * 
+	 * @param BuildingStructureNew
+	 * @return
+	 */
+	@POST
+	@Path("/listIdAndfullNameByType")
+	@Produces(MediaType.APPLICATION_JSON)
+	List<BuildingStructureNew> listIdAndfullNameByType(
+			BuildingStructureNew buildingStructureNew);
+	/**
+	 * 查询没有绑定产品的车库车库建筑信息
+	 * 
+	 * @param BuildingStructureNew
+	 * @return
+	 */
+	@POST
+	@Path("/listAllByType")
+	@Produces(MediaType.APPLICATION_JSON)
+	List<BuildingStructureNew> listAllByType();
+	
+	/**
+	 * 根据产品ID查绑定的车位
+	 * */
+	@POST
+	@Path("/listAllByProductId/{productId}")
+	@Produces(MediaType.APPLICATION_JSON)
+	List<BuildingStructureNew> listAllByProductId(@PathParam("productId") String productId);
+	
+	@POST
+	@Path("/listAllByPId/{productId}")
+	@Produces(MediaType.APPLICATION_JSON)
+	List<BuildingStructureNew> listAllByPId(@PathParam("productId") String productId);
+
+	/**
+	 * 
+	 * @Title: 根据客户建筑关系id查询客户的建筑信息
+	 * @param @param CustId
+	 * @param @return 设定文件
+	 * @return List<BuildingStructureNew> 返回类型
+	 * @throws
+	 */
+	@GET
+	@Path("/getBuildingStructureNewByPersonBuildingId/{personBuildingId}")
+	@Produces(MediaType.APPLICATION_JSON)
+	BuildingStructureNew getBuildingStructureNewByPersonBuildingId(
+			@PathParam("personBuildingId") String personBuildingId);
+
+	/**
+	 * 根据客户id查询资产总数及各类资产数量 肖聪
+	 */
+	@GET
+	@Path("/getCountByCustId/{custId}")
+	@Produces(MediaType.APPLICATION_JSON)
+	String getCountByCustId(@PathParam("custId") String custId);
+
+	/**
+	 * 根据建筑结构id查询详细的建筑结构信息
+	 * @author xiaocong
+	 * @date 下午3:57:18
+	 * @param id
+	 * @return
+	 * @updateby
+	 */
+	@GET
+	@Path("/getBuildingStructurebyId/{id}")
+	@Produces(MediaType.APPLICATION_JSON)
+	BuildingStructureNew getBuildingStructurebyId(@PathParam("id") String id);
+	
+	/**
+	 * 根据建筑结构id判断是否存在子节点信息
+	 * @author xiaocong
+	 * @date 上午9:49:48
+	 * @param buildingStructureId
+	 * @return
+	 * @updateby
+	 */
+	@GET
+	@Path("/listAllBuildingStructureByParentId/{buildingStructureId}")
+	@Produces(MediaType.APPLICATION_JSON)
+	String listAllBuildingStructureByParentId(@PathParam("buildingStructureId") String buildingStructureId);
+	
+	/**
+	 * 根据建筑结构中的建筑结构id和建筑类型修改详细资产的房产证信息
+	 * @author xiaocong
+	 * @date 上午10:14:18
+	 * @param buildingStructureId
+	 * @param buildingType
+	 * @return
+	 * @updateby
+	 */
+	@POST
+	@Path("/updateDetailBuilding")
+	@Produces(MediaType.APPLICATION_JSON)
+	String updateDetailBuilding(BuildingStructureNew buildingStructureNew);
+	
+	
+	@POST
+	@Path("/savaZichanbangding")
+	@Produces(MediaType.APPLICATION_JSON)
+	String savaZichanbangding(BuildingStructureNew buildingStructureNew);
+	
+	@GET
+	@Path("/listBuildingforconllection/{custId}")
+	@Produces(MediaType.APPLICATION_JSON)
+	List<BuildingStructureNew> listBuildingforconllection(@PathParam("custId") String custId);
+
+	/**
+	 * 导出数据
+	 * @author xiaocong
+	 * @date 下午2:49:42
+	 * @param buildingStructureSearch
+	 * @return
+	 * @updateby
+	 */
+	InputStream listBuildingStructureSearchMB(String projectId,String fullName,String name,Byte isBindingAssets,int num);
+	
+	/**
+	 * 修改建筑结构名称
+	 * @param buildingStructureId
+	 * @param nodeName
+	 * @author 王洲
+	 * 2016.2.23
+	 * @return
+	 */
+	@POST
+	@Path("/changeBuildName/{id}/{nodeName}")
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes({MediaType.APPLICATION_JSON, MediaType.APPLICATION_JSON})
+	Info changeBuildName(@PathParam("id") String id, @PathParam("nodeName") String nodeName);
+	
+	/**
+	 * 根据多个id查询建筑结构（ids用逗号隔开）
+	 * by wuying
+	 * @param ids
+	 * @return
+	 */
+	@GET
+	@Path("/getBuildingByIds/{ids}")
+	@Produces(MediaType.APPLICATION_JSON)
+	List<BuildingStructureNew> getBuildingByIds(@PathParam("ids") String ids);
+	
+	/**
+	 * 根据项目id查询建筑结构（只查询2层）
+	 * @param projectId
+	 * @return
+	 */
+	@GET
+	@Path("/listBuildingByProjectId/{projectId}")
+	@Produces(MediaType.APPLICATION_JSON)
+	List<BuildingStructureNew> listBuildingByProjectId(
+			@PathParam("projectId") String projectId);
+	
+	/**
+	 * 住宅、商铺、车位合并模板导出
+	 * @author 王洲
+	 * @date 2016.03.04
+	 * @param projectId
+	 * @return
+	 * @updateby
+	 */
+	InputStream importAllBuidingStructureByProjectId(String projectId);
+	
+	/**
+	 * 住宅、商铺、车位数据导出
+	 * @author 王洲
+	 * @date 2016.03.08
+	 * @param projectId
+	 * @return
+	 */
+	InputStream exportAllBuildingStructtureByProjectId(String projectId);
+	
+	/**
+	 * 输出建筑结构导入模板
+	 * @author 王洲
+	 * @date 2016.03.10
+	 * @return
+	 */
+	InputStream createBuildingModel();
+	
+	/**
+	 * 添加从Excel文件导入建筑结构信息
+	 */
+	@POST
+  	@Path("/importDataFromExcelFile")
+  	@Produces(MediaType.APPLICATION_JSON)
+  	@Consumes({MediaType.APPLICATION_JSON,MediaType.APPLICATION_XML})
+	Info importDataFromExcelFile(Annex annex);
+	
+	/**
+	 * 
+	 * @param projectId
+	 * @param parentId
+	 * @return
+	 */
+//	@GET
+//	@Path("/findListByProAndParentId/{projectId}/{parentId}")
+//	@Produces(MediaType.APPLICATION_JSON)
+//	List<Node> findListByProAndParentId(@PathParam("projectId")String projectId,@PathParam("parentId")String parentId);
+	
+	
+	/**
+	 * 
+	 * @param projectId
+	 * @param parentId
+	 * @return
+	 */
+	@POST
+	@Path("/findListByProAndParentId")
+	@Consumes({MediaType.APPLICATION_JSON,MediaType.APPLICATION_XML})
+	List<Node> findListByProAndParentId(BuildingStructureNew bsn);
+
+	
+	/**
+     * 根据父节点id查询建筑信息
+     * @param houseIdList 
+     * @param parentId
+     * @return
+     */
+	String listChildrenBuildingStructureByparentId(List<String> houseIdList, String parentId);	
+
+	
+	
+	/**
+	 * 客户绑定资产模板导出
+	 * @return
+	 */
+	InputStream importExcelTemplet();
+	
+	@POST
+	@Path("/listBuildingStructureById/{id}")
+	@Produces(MediaType.APPLICATION_JSON)
+	List<BuildingStructureNew> listBuildingStructureById(
+			@PathParam("id") String id); 
+	
+	
+	
+	
+	
+
+}

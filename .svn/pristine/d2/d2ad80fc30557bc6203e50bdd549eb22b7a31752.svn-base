@@ -1,0 +1,279 @@
+package com.flf.service;
+
+import java.util.List;
+
+import javax.jws.WebService;
+import javax.ws.rs.Consumes;
+import javax.ws.rs.DELETE;
+import javax.ws.rs.GET;
+import javax.ws.rs.POST;
+import javax.ws.rs.PUT;
+import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
+import javax.ws.rs.Produces;
+import javax.ws.rs.core.MediaType;
+
+import com.flf.entity.PageRestful;
+import com.flf.entity.ServiceRequest;
+import com.flf.entity.ServiceRequestJournal;
+import com.flf.entity.Tasks;
+import com.flf.request.Info;
+@WebService
+@Path("/ServiceRequest")
+
+public interface ServiceRequestService {
+
+    List<ServiceRequest> listPageServiceRequest(ServiceRequest serviceRequest);//分页查询服务请求
+	
+	/**
+	 * 查询所有服务请求
+	 * @return
+	 */
+	@GET
+	@Path("/listAllServiceRequest")
+	@Produces(MediaType.APPLICATION_JSON)
+	List<ServiceRequest> listAllServiceRequest();
+	
+	/**
+	 * 通过Id查询服务请求
+	 * @param serverId
+	 * @return
+	 */
+	@GET
+	@Path("/getServiceRequestbyId/{serviceRequestId}")
+	@Produces(MediaType.APPLICATION_JSON)
+	ServiceRequest getServiceRequestbyId(@PathParam("serviceRequestId") String serviceRequestId);
+	
+	/**
+	 * 通过客户Id查询服务请求
+	 * @param customerId
+	 * @return
+	 */
+	@GET
+	@Path("/getServiceRequestbyCustomerId/{customerId}")
+	@Produces(MediaType.APPLICATION_JSON)
+	List<ServiceRequest> getServiceRequestbyCustomerId(@PathParam("customerId") String customerId);
+	
+	/**
+	 * 通过客户Id查询服务请求(分页)
+	 * @param customerId
+	 * @return
+	 */
+	@POST
+	@Path("/listPageServiceRequestbyCustomerId")
+	@Produces(MediaType.APPLICATION_JSON)
+	PageRestful  listPageServiceRequestbyCustomerId(ServiceRequest serviceRequest);
+	
+	/**
+	 * 通过服务请求类型和客户Id查询服务请求
+	 * @param serviceRequestType customerId
+	 * @return
+	 */
+	@GET
+	@Path("/getServiceRequestbyTypeAndCustomerId/{serviceRequestType}/{customerId}")
+	@Produces(MediaType.APPLICATION_JSON)
+	List<ServiceRequest> getServiceRequestbyTypeAndCustomerId(@PathParam("serviceRequestType") String serviceRequestType,@PathParam("customerId") String customerId);
+	
+	/**
+	 * 添加服务请求
+	 * @param serviceRequest
+	 */
+	@POST
+	@Path("/insertServiceRequest")
+	@Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+	public void insertServiceRequest(ServiceRequest serviceRequest ,Tasks tasks);
+	
+	
+	
+	/**
+	 * 修改服务请求
+	 * @param serviceRequest
+	 */
+	@PUT
+	@Path("/updateServiceRequest")
+	@Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+	public void updateServiceRequest(ServiceRequest serviceRequest);
+	
+	/**
+	 * 删除服务请求
+	 * @param serverId
+	 */
+	@DELETE
+	@Path("/deleteServiceRequest/{serviceRequestId}")
+	public void deleteServiceRequest(@PathParam("serviceRequestId") String serviceRequestId);
+	
+	/**
+	 * 关闭服务请求
+	 * @param serviceRequestId
+	 */
+	@PUT
+	@Path("/closeServiceRequest/{serviceRequestId}")
+	@Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+	public void closeServiceRequest(@PathParam("serviceRequestId") String serviceRequestId);
+	
+//	/**
+//	 * 添加服务请求
+//	 * @param serviceRequest
+//	 */
+//	@POST
+//	@Path("/insertServiceRequestRestful")
+//	@Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+//	public void insertServiceRequestRestful(ServiceRequest serviceRequest ,Tasks tasks);
+	
+	/**
+	 * 添加服务请求
+	 * @param serviceRequest
+	 */
+	@POST
+	@Path("/insertServiceRequestRestful")
+	@Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+	public void insertServiceRequestRestful(ServiceRequest serviceRequest);
+	
+	/**
+	 * 添加部门质检服务请求
+	 * @param serviceRequest
+	 */
+	@POST
+	@Path("/insertDeptServiceRequest")
+	@Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+	public void insertDeptServiceRequest(ServiceRequest serviceRequest);
+	
+	
+	/**
+	 * 根据类型查询部门质检
+	 * @param QCType
+	 * @return
+	 */
+	@GET
+	@Path("/getServiceRequestbyQCType/{QCType}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public List<ServiceRequest> getServiceRequestbyQCType(@PathParam("QCType") String QCType);
+	
+	/**
+	 * 获取业主一个月内的服务请求个数
+	 * @return
+	 */
+	@GET
+	@Path("/getCount/{customerId}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public String getCount(@PathParam("customerId") String customerId);
+	
+	/**
+	 * 修改服务请求状态
+	 */
+	@PUT
+	@Path("/changeServiceState")
+	@Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+	public Info changeServiceState(ServiceRequestJournal journal);
+	
+	/**
+	 * 根据状态获取进行中的服务请求
+	 * @param state
+	 * @return
+	 */
+	@GET
+	@Path("/getGoingServiceRequestbyStateAndType/{type}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public List<ServiceRequest> getGoingServiceRequestbyStateAndType(@PathParam("type")String type);
+	
+	/**
+	 * 根据状态获取历史的服务请求
+	 * @param state
+	 * @return
+	 */
+	@GET
+	@Path("/getHistoryServiceRequestbyStateAndType/{type}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public List<ServiceRequest> getHistoryServiceRequestbyStateAndType(@PathParam("type")String type);
+	
+	/**
+	 * 物业服务验房服务请求
+	 * @param serviceRequest
+	 * @author wangyang
+	 * 创建时间:2015-7-24
+	 */
+	@POST
+	@Path("/HomeInspectionServiceRequest")
+	@Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+	@Produces(MediaType.APPLICATION_JSON)
+	public List<Tasks> HomeInspectionServiceRequest(ServiceRequest serviceRequest);
+	
+	/**
+	 * 通过服务请求类型获取服务请求
+	 * @param serviceRequestType
+	 * @return
+	 */
+	@GET
+	@Path("/getServiceRequestbyDecoration/{serviceRequestType}")
+	@Produces(MediaType.APPLICATION_JSON)
+	List<ServiceRequest> getServiceRequestbyDecoration(@PathParam("serviceRequestType") String serviceRequestType);
+	
+	/**
+	 * 通过服务请求类型获取服务请求（分页）
+	 */
+	@POST
+	@Path("/listPageServiceRequestbyDecoration")
+	@Produces(MediaType.APPLICATION_JSON)
+	public PageRestful listPageServiceRequestbyDecoration(ServiceRequest serviceRequest);
+	
+	/**
+	 * 新增重大事项
+	 * @param serviceRequest
+	 */
+	@POST
+	@Path("/insertImportantEvent")
+	@Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+	public void insertImportantEvent(ServiceRequest serviceRequest);
+	
+	/** 
+	 * 获取所有的重大事项
+	 * @return
+	 */
+	@GET
+	@Path("/getAllServiceRequestsbyEventType")
+	@Produces(MediaType.APPLICATION_JSON)
+	public List<ServiceRequest> getAllServiceRequestsbyEventType();
+	
+	/**
+	 * 获取所有的重大事项（分页）
+	 */
+	@POST
+	@Path("/listPageAllServiceRequestsbyEventType")
+	@Produces(MediaType.APPLICATION_JSON)
+	public PageRestful listPageAllServiceRequestsbyEventType(ServiceRequest serviceRequest);
+	
+	/**
+	 * 根据服务请求类型分页查询
+	 */
+	@POST
+	@Path("/listPageServiceRequestByType")
+	@Produces(MediaType.APPLICATION_JSON)
+	PageRestful listPageServiceRequestByType(ServiceRequest serviceRequest);
+	
+	/**
+	 * 将id在集合中的服务请求的状态设置为失效
+	 */
+	@POST
+	@Path("/changeServiceRequestStateByIds")
+	@Produces(MediaType.APPLICATION_JSON)
+	Info changeServiceRequestStateByIds(ServiceRequest serviceRequest);
+	
+	
+	@POST
+	@Path("/listPageServiceRequestbyStateAndType")
+	@Produces(MediaType.APPLICATION_JSON)
+	PageRestful listPageServiceRequestbyStateAndType(ServiceRequest serviceRequest);
+	
+	/**
+	 * 新增巡检任务
+	 */
+	@POST
+	@Path("/insertInspectionPlan")
+	@Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+	public void insertInspectionPlan(ServiceRequest serviceRequest);
+}
+
+
+
+
+

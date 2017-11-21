@@ -1,0 +1,57 @@
+<!--
+author:王志刚
+pageName:内部专业线--项目团队管理---团队成员添加页面
+jsPath:	controllers/internalProfession/projectManagementTeam/search
+修改人：王志刚
+最后修改时间：2015/6/3
+-->
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body ng-controller="searchCtrl">
+        <div style="width:97%; margin:0 auto; background:#f0f0f0; -moz-border-radius:7px; -webkit-border-radius:7px; border-radius:7px; border:1px solid #bbb; padding-bottom:15px; height:auto; ">
+            <table border="1" style="height:auto;width:90%;background: #ffffff;text-align: center">
+                <tr>
+                    <td>团队名称:</td>
+                    <td>按岗位筛选：
+                        <input type="checkbox">清洁
+                        <input type="checkbox">园林
+                        <input type="checkbox">管理
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <img style="width: 60px;height: 60px;" src="images/staffHome/u116.jpg">
+                    </td>
+                    <td>
+
+                    </td>
+                </tr>
+            </table>
+
+            <table style="margin-top: 30px">
+                <tr>
+                    <td>管理项目:</td>
+                    <td><select style="width: 100px">
+                        <option></option>
+                    </select>
+                    </td>
+                    <td>
+                        <img src="images/propertyService/u459.png" style="width: 20px;height: 20px">
+                        <a class="btn btn-xs" ui-sref="" >添加到管理列表</a>
+                    </td>
+                </tr>
+                <tr>
+                    <td>序号</td>
+                    <td>项目名称</td>
+                    <td>清洁</td>
+                </tr>
+            </table>
+        </div>
+        <div class="clear"></div>
+
+</body>
+</html>

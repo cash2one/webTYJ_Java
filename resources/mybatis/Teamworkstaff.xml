@@ -1,0 +1,511 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.flf.mapper.TeamworkstaffMapper" >
+  <resultMap id="BaseResultMap" type="com.flf.entity.Teamworkstaff" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="teamwork_id" property="teamworkId" jdbcType="VARCHAR" />
+    <result column="staff_id" property="staffId" jdbcType="VARCHAR" />
+    <result column="prepare_id" property="prepareId" jdbcType="VARCHAR" />
+    <result column="post_id" property="postId" jdbcType="VARCHAR" />
+    <result column="project_id" property="projectId" jdbcType="VARCHAR" />
+    <result column="professional_line_id" property="professionalLineId" jdbcType="VARCHAR" />
+ 	<result column="staff_name" property="staffName" jdbcType="VARCHAR" />
+ 	<result column="state" property="state" />
+  </resultMap>
+  
+  <resultMap type="com.flf.entity.Teamworkstaff"  id="teamworkStaffRestfull" extends = "BaseResultMap">
+     <association property="post" column="post_id" javaType="Post" select="com.flf.mapper.PostMapper.getPostById" />
+	<association property="prepare" column="prepare_id" javaType="Prepare" select="com.flf.mapper.PrepareMapper.getPreparebyIdone" />
+	<association property="staff" column="staff_id" javaType="Staff" select="com.flf.mapper.StaffMapper.findStaffBystaffId" />
+  </resultMap>
+  
+  <resultMap id="TeamworkResultMap" type="com.flf.entity.Teamwork" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="manage" property="manage" jdbcType="VARCHAR" />
+    <result column="team_members" property="teamMembers" jdbcType="VARCHAR" />
+    <result column="team_name" property="teamName" jdbcType="VARCHAR" />
+    <result column="team_major" property="teamMajor" jdbcType="VARCHAR" />
+    <result column="leader" property="leader" jdbcType="VARCHAR" />
+    <result column="management_item" property="managementItem" jdbcType="VARCHAR" />
+    <result column="project_id" property="projectId" jdbcType="VARCHAR" />
+  </resultMap>
+  
+  <resultMap id="StaffResultMap" type="Staff" >
+    <id column="staff_id" property="staffId" jdbcType="VARCHAR" />
+    <result column="company_id" property="companyId" jdbcType="VARCHAR" />
+    <result column="staff_number" property="staffNumber" jdbcType="VARCHAR" />
+    <result column="first_name" property="firstName" jdbcType="VARCHAR" />
+    <result column="last_name" property="lastName" jdbcType="VARCHAR" />
+    <result column="first_name_spell" property="firstNameSpell" jdbcType="VARCHAR" />
+    <result column="last_name_spell" property="lastNameSpell" jdbcType="VARCHAR" />
+    <result column="sex" property="sex" jdbcType="INTEGER" />
+    <result column="native_place" property="nativePlace" jdbcType="VARCHAR" />
+    <result column="married" property="married" jdbcType="INTEGER" />
+    <result column="edu_lever" property="eduLever" jdbcType="INTEGER" />
+    <result column="landscape" property="landscape" jdbcType="INTEGER" />
+    <result column="birthday" property="birthday" jdbcType="DATE" />
+    <result column="hobby" property="hobby" jdbcType="VARCHAR" />
+    <result column="card_type" property="cardType" jdbcType="INTEGER" />
+    <result column="card_num" property="cardNum" jdbcType="VARCHAR" />
+    <result column="address" property="address" jdbcType="VARCHAR" />
+    <result column="telphone" property="telphone" jdbcType="VARCHAR" />
+    <result column="email" property="email" jdbcType="VARCHAR" />
+    <result column="QQ" property="qq" jdbcType="VARCHAR" />
+    <result column="position" property="position" jdbcType="INTEGER" />
+    <result column="division_id" property="divisionId" jdbcType="VARCHAR" />
+    <result column="divisionName" property="divisionname" jdbcType="VARCHAR" />
+    <result column="post_id" property="postId" jdbcType="VARCHAR" />
+    <result column="work_count" property="workCount" jdbcType="INTEGER" />
+    <result column="state" property="state" jdbcType="VARCHAR" />
+    <result column="staff_name" property="staffName" jdbcType="VARCHAR" />
+  </resultMap>
+  
+  <resultMap id="PrepareResultMap" type="com.flf.entity.Prepare" >
+    <id column="prepare_id" property="prepareId" jdbcType="VARCHAR" />
+    <result column="project_id" property="projectId" jdbcType="VARCHAR" />
+    <result column="post_id" property="postId" jdbcType="VARCHAR" />
+    <result column="prepare_number" property="prepareNumber" jdbcType="INTEGER" />
+  </resultMap>
+  
+  <resultMap id="PostResultMap" type="com.flf.entity.Post" >
+    <id column="post_id" property="postId" jdbcType="VARCHAR" />
+    <result column="professional_line_id" property="professionalLineId" jdbcType="VARCHAR" />
+    <result column="name_of_custom" property="nameOfCustom" jdbcType="VARCHAR" />
+    <result column="is_core_post" property="isCorePost" jdbcType="TINYINT" />
+    <result column="project_id" property="projectId" jdbcType="VARCHAR" />
+  </resultMap>
+  
+  <resultMap type="Project" id="ProjectResultMap">
+  <id column="project_id" property="projectId"/>
+    <result column="cust_id" property="custId"/>
+    <result column="project_number" property="projectNumber"/>
+    <result column="project_name" property="projectName"/>
+    <result column="stall_matching" property="stallMatching"/>
+    <result column="park_area" property="parkArea"/>
+    <result column="car_entri_num" property="carEntrinum"/>
+    <result column="person_entri_num" property="personEntrinum"/>
+    <result column="car_stall_num" property="carStallnum"/>
+    <result column="add_capacitance_area" property="addCapacitancearea"/>
+    <result column="capacitance_area" property="capacitanceArea"/>
+    <result column="private_stall_num" property="privateStallnum"/>
+    <result column="private_stall_sold" property="privateStallsold"/>
+    <result column="private_stall_unsold" property="privateStallunsold"/>
+    <result column="garage_num" property="garageNum"/>
+    <result column="garage_sold" property="garageSold"/>
+    <result column="garage_ubsold" property="garageUbsold"/>
+    <result column="project_total_area" property="projectTotalarea"/>
+    <result column="discount_price" property="discountPrice"/>
+    <result column="house_total_num" property="houseTotalnum"/>
+    <result column="build_area_num" property="buildAreanum"/>
+    <result column="build_unit_num" property="buildUnitnum"/>
+    <result column="build_build_num" property="buildBuildnum"/>
+    <result column="stall_num" property="stallNum"/>
+    <result column="underground_parking_spaces_total" property="undergroundParkingspacestotal"/>
+    <result column="ground_parking_space_total" property="groundParkingspacetotal"/>
+    <result column="greening_rate" property="greeningRate"/>
+    <result column="total_build_area" property="totalBuildarea"/>
+    <result column="basement_area" property="basementArea"/>
+    <result column="province" property="province"/>
+    <result column="full_address" property="fullAddress"/>
+    <result column="postcode" property="postcode"/>
+    <result column="street" property="street"/>
+    <result column="address" property="address"/>
+    <result column="post_code" property="postCode"/>
+    <result column="company" property="company"/>
+    <result column="outline" property="outline"/>
+    <result column="phone" property="phone"/>
+    <result column="parcel" property="parcel"/>
+    <result column="planning" property="planning"/>
+    <result column="instance_id" property="instanceId"/>
+    <result column="staff_id" property="staffId"/>
+  </resultMap>
+  
+  <resultMap id="ResultProject" type="Project" >
+    <id column="project_id" property="projectId"/>
+    <result column="cust_id" property="custId"/>
+    <result column="project_number" property="projectNumber"/>
+    <result column="project_name" property="projectName"/>
+    <result column="stall_matching" property="stallMatching"/>
+    <result column="park_area" property="parkArea"/>
+    <result column="car_entri_num" property="carEntrinum"/>
+    <result column="person_entri_num" property="personEntrinum"/>
+    <result column="car_stall_num" property="carStallnum"/>
+    <result column="add_capacitance_area" property="addCapacitancearea"/>
+    <result column="capacitance_area" property="capacitanceArea"/>
+    <result column="private_stall_num" property="privateStallnum"/>
+    <result column="private_stall_sold" property="privateStallsold"/>
+    <result column="private_stall_unsold" property="privateStallunsold"/>
+    <result column="garage_num" property="garageNum"/>
+    <result column="garage_sold" property="garageSold"/>
+    <result column="garage_ubsold" property="garageUbsold"/>
+    <result column="project_total_area" property="projectTotalarea"/>
+    <result column="discount_price" property="discountPrice"/>
+    <result column="house_total_num" property="houseTotalnum"/>
+    <result column="build_area_num" property="buildAreanum"/>
+    <result column="build_unit_num" property="buildUnitnum"/>
+    <result column="build_build_num" property="buildBuildnum"/>
+    <result column="stall_num" property="stallNum"/>
+    <result column="underground_parking_spaces_total" property="undergroundParkingspacestotal"/>
+    <result column="ground_parking_space_total" property="groundParkingspacetotal"/>
+    <result column="greening_rate" property="greeningRate"/>
+    <result column="total_build_area" property="totalBuildarea"/>
+    <result column="basement_area" property="basementArea"/>
+    <result column="province" property="province"/>
+    <result column="full_address" property="fullAddress"/>
+    <result column="postcode" property="postcode"/>
+    <result column="street" property="street"/>
+    <result column="address" property="address"/>
+    <result column="post_code" property="postCode"/>
+    <result column="company" property="company"/>
+    <result column="outline" property="outline"/>
+    <result column="phone" property="phone"/>
+    <result column="parcel" property="parcel"/>
+    <result column="planning" property="planning"/>
+    <result column="instance_id" property="instanceId"/>
+    <result column="staff_id" property="staffId"/>
+  </resultMap>
+  
+  <resultMap id="TeaworkStaffResultMap"  type="com.flf.entity.Teamworkstaff" extends="BaseResultMap">
+  	<id column="id" property="id" jdbcType="VARCHAR" />
+    <!-- <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="teamwork_id" property="teamworkId" jdbcType="VARCHAR" />
+    <result column="staff_id" property="staffId" jdbcType="VARCHAR" />
+    <result column="prepare_id" property="prepareId" jdbcType="VARCHAR" />
+    <result column="post_id" property="postId" jdbcType="VARCHAR" />
+    <result column="project_id" property="projectId" jdbcType="VARCHAR" />
+    <result column="professional_line_id" property="professionalLineId" jdbcType="VARCHAR" /> -->
+    <association property="teamwork" select="selectTeamwork" column="teamwork_id" javaType="Teamwork">
+        <!-- <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="manage" property="manage" jdbcType="VARCHAR" />
+    <result column="team_members" property="teamMembers" jdbcType="INTEGER" />
+    <result column="team_name" property="teamName" jdbcType="VARCHAR" />
+    <result column="team_major" property="teamMajor" jdbcType="VARCHAR" />
+    <result column="leader" property="leader" jdbcType="VARCHAR" />
+    <result column="management_item" property="managementItem" jdbcType="VARCHAR" />
+    <result column="project_id" property="projectId" jdbcType="VARCHAR" /> -->
+    </association>
+    <association property="staff" select="com.flf.mapper.StaffMapper.selectByid" column="staff_id" javaType="Staff">
+         <id column="staff_id" property="staffId" jdbcType="VARCHAR" />
+    <result column="company_id" property="companyId" jdbcType="VARCHAR" />
+    <result column="staff_number" property="staffNumber" jdbcType="VARCHAR" />
+    <result column="first_name" property="firstName" jdbcType="VARCHAR" />
+    <result column="last_name" property="lastName" jdbcType="VARCHAR" />
+    <result column="first_name_spell" property="firstNameSpell" jdbcType="VARCHAR" />
+    <result column="last_name_spell" property="lastNameSpell" jdbcType="VARCHAR" />
+    <result column="sex" property="sex" jdbcType="INTEGER" />
+    <result column="native_place" property="nativePlace" jdbcType="VARCHAR" />
+    <result column="married" property="married" jdbcType="INTEGER" />
+    <result column="edu_lever" property="eduLever" jdbcType="INTEGER" />
+    <result column="landscape" property="landscape" jdbcType="INTEGER" />
+    <result column="birthday" property="birthday" jdbcType="DATE" />
+    <result column="hobby" property="hobby" jdbcType="VARCHAR" />
+    <result column="card_type" property="cardType" jdbcType="INTEGER" />
+    <result column="card_num" property="cardNum" jdbcType="VARCHAR" />
+    <result column="address" property="address" jdbcType="VARCHAR" />
+    <result column="telphone" property="telphone" jdbcType="VARCHAR" />
+    <result column="email" property="email" jdbcType="VARCHAR" />
+    <result column="QQ" property="qq" jdbcType="VARCHAR" />
+    <result column="position" property="position" jdbcType="INTEGER" />
+    <result column="division_id" property="divisionId" jdbcType="VARCHAR" />
+    <result column="divisionName" property="divisionname" jdbcType="VARCHAR" />
+    <result column="post_id" property="postId" jdbcType="VARCHAR" />
+    <result column="work_count" property="workCount" jdbcType="INTEGER" />
+    <result column="state" property="state" jdbcType="VARCHAR" />
+    <result column="staff_name" property="staffName" jdbcType="VARCHAR" /> 
+    </association>
+    <association property="prepare" select="selectPrepare" column="prepare_id" javaType="Prepare">
+        <!-- <id column="prepare_id" property="prepareId" jdbcType="VARCHAR" />
+    <result column="project_id" property="projectId" jdbcType="VARCHAR" />
+    <result column="post_id" property="postId" jdbcType="VARCHAR" />
+    <result column="prepare_number" property="prepareNumber" jdbcType="INTEGER" /> -->
+    </association>
+  	<association property="post" select="selectPost" column="post_id" javaType="Post">
+  	    <!-- <id column="post_id" property="postId" jdbcType="VARCHAR" />
+    <result column="professional_line_id" property="professionalLineId" jdbcType="VARCHAR" />
+    <result column="name_of_custom" property="nameOfCustom" jdbcType="VARCHAR" />
+    <result column="is_core_post" property="isCorePost" jdbcType="TINYINT" />
+    <result column="project_id" property="projectId" jdbcType="VARCHAR" /> -->
+  	</association>
+  	<association property="project" select="selectProject" column="project_id" javaType="Project">
+  	    <!-- <id column="project_id" property="projectId"/>
+    <result column="cust_id" property="custId"/>
+    <result column="project_number" property="projectNumber"/>
+    <result column="project_name" property="projectName"/>
+    <result column="stall_matching" property="stallMatching"/>
+    <result column="park_area" property="parkArea"/>
+    <result column="car_entri_num" property="carEntrinum"/>
+    <result column="person_entri_num" property="personEntrinum"/>
+    <result column="car_stall_num" property="carStallnum"/>
+    <result column="add_capacitance_area" property="addCapacitancearea"/>
+    <result column="capacitance_area" property="capacitanceArea"/>
+    <result column="private_stall_num" property="privateStallnum"/>
+    <result column="private_stall_sold" property="privateStallsold"/>
+    <result column="private_stall_unsold" property="privateStallunsold"/>
+    <result column="garage_num" property="garageNum"/>
+    <result column="garage_sold" property="garageSold"/>
+    <result column="garage_ubsold" property="garageUbsold"/>
+    <result column="project_total_area" property="projectTotalarea"/>
+    <result column="discount_price" property="discountPrice"/>
+    <result column="house_total_num" property="houseTotalnum"/>
+    <result column="build_area_num" property="buildAreanum"/>
+    <result column="build_unit_num" property="buildUnitnum"/>
+    <result column="build_build_num" property="buildBuildnum"/>
+    <result column="stall_num" property="stallNum"/>
+    <result column="underground_parking_spaces_total" property="undergroundParkingspacestotal"/>
+    <result column="ground_parking_space_total" property="groundParkingspacetotal"/>
+    <result column="greening_rate" property="greeningRate"/>
+    <result column="total_build_area" property="totalBuildarea"/>
+    <result column="basement_area" property="basementArea"/>
+    <result column="province" property="province"/>
+    <result column="full_address" property="fullAddress"/>
+    <result column="postcode" property="postcode"/>
+    <result column="street" property="street"/>
+    <result column="address" property="address"/>
+    <result column="post_code" property="postCode"/>
+    <result column="company" property="company"/>
+    <result column="outline" property="outline"/>
+    <result column="phone" property="phone"/>
+    <result column="parcel" property="parcel"/>
+    <result column="planning" property="planning"/>
+    <result column="instance_id" property="instanceId"/>
+    <result column="staff_id" property="staffId"/> -->
+  	    </association>
+  	    <association property="specialtyInfo" column="professional_line_id" javaType="SpecialtyInfo" select="com.flf.mapper.SpecialtyInfoMapper.selectSpecialtyInfoById"></association>
+  </resultMap>
+  
+	<resultMap type="Teamworkstaff" id="ResultMapForPay">
+		<result column="staff_id" property="staffId" jdbcType="VARCHAR" />
+		<result column="project_id" property="projectId" jdbcType="VARCHAR" />
+		<result column="project_name" property="projectName" jdbcType="VARCHAR" />
+	</resultMap>
+  
+  <select id="selectPost" parameterType="String" resultMap="PostResultMap">
+     select * from t_post where post_id=#{0}
+ </select>
+ 
+ <select id="selectProject" parameterType="String" resultMap="ProjectResultMap">
+     select * from t_project where project_id=#{0}
+ </select>
+ 
+ <select id="selectStaff" parameterType="String" resultMap="StaffResultMap">
+     select * from t_staff where staff_id=#{0}
+ </select>
+ 
+ <select id="getStaffByTeamworkId" parameterType="String" resultMap="StaffResultMap">
+ 	SELECT s.* FROM t_teamwork_staff ts LEFT JOIN t_staff s ON s.staff_id = ts.staff_id WHERE ts.teamwork_id = #{0}
+ </select>
+ 
+ <select id="selectTeamwork" parameterType="String" resultMap="TeamworkResultMap">
+     select * from t_teamwork where id=#{0}
+ </select>
+ 
+ <select id="selectPrepare" parameterType="String" resultMap="PrepareResultMap">
+     select * from t_prepare where prepare_id=#{0}
+ </select>
+ 
+ <select id="listPageTeamworkstaff" parameterType="Teamworkstaff" resultMap="TeaworkStaffResultMap">
+     select * from t_teamwork_staff
+ </select>
+ 
+ <select id="listTeanmworkstaffbyProject" parameterType="Teamworkstaff" resultMap="TeaworkStaffResultMap">
+     select * from t_teamwork_staff where post_id=#{postId} and project_id= #{projectId} and state = 0
+ </select>
+ 
+ <select id="staffCount" parameterType="String" resultType="int">
+ 	SELECT COUNT(staff_id) FROM t_teamwork_staff 
+ 	WHERE project_id=#{0} AND professional_line_id=#{1} AND prepare_id IS NOT NULL AND staff_id IS NOT NULL and state = 0
+ </select>
+ 
+<!--  查询项目某专业线下已分配了员工的编制 数量 -->
+ <select id="staffCountForPrepare" parameterType="String" resultType="int">
+ 	SELECT COUNT(staff_id) FROM t_teamwork_staff 
+ 	WHERE project_id=#{0} AND professional_line_id=#{1} AND prepare_id IS NOT NULL AND staff_id IS NOT NULL and state=0
+ </select>
+ 
+ 
+  <select id="staffCountByPrepareId" parameterType="String" resultType="int">
+ 	SELECT COUNT(staff_id) FROM t_teamwork_staff 
+ 	WHERE prepare_id =#{0}
+ </select>
+ 
+<!--  <select id="listAllTeamworkstaff"  resultMap="TeaworkStaffResultMap">
+     select * from t_teamwork_staff
+ </select> -->
+ 
+ <select id="listTeanmworkstaffByListpostId"  resultMap="BaseResultMap">
+     SELECT a.* FROM t_teamwork_staff a 
+				LEFT JOIN t_staff b  ON a.staff_id=b.staff_id
+				WHERE a.post_id in(<foreach collection="list" separator="," item="items">#{items}</foreach>)
+ </select>
+ 
+ <select id="getTeamworkstaffbyId" parameterType="String" resultMap="TeaworkStaffResultMap">
+     select * from t_teamwork_staff where id=#{0}
+ </select>
+ 
+ <select id="listTeamworkstaffbyPostId" parameterType="String" resultMap="TeaworkStaffResultMap">
+     select * from t_teamwork_staff where post_id=#{0}
+ </select>
+ 
+ <select id="getTeamworkstaffbyStaffId" parameterType="String" resultMap="TeaworkStaffResultMap">
+     select * from t_teamwork_staff where staff_id=#{0}
+ </select>
+ 
+ <select id="getTeamworkstaffbyStaffId_one" parameterType="String" resultMap="BaseResultMap">
+     select * from t_teamwork_staff where staff_id=#{0} and state=0;
+ </select>
+ 
+ <select id="getTeamworkstaffbyTeamworkId" parameterType="String" resultMap="TeaworkStaffResultMap">
+     select * from t_teamwork_staff where teamwork_id=#{0} and state = '0' GROUP BY staff_id
+ </select>
+ 
+  <select id="getTeamworkstaffbyProjectAndSpecial" parameterType="String" resultMap="TeaworkStaffResultMap">
+     select * from t_teamwork_staff where project_id=#{0} and professional_line_id=#{1}
+ </select>
+ 		<!-- 根据团队id查询该团队所管理的项目和岗位对应的人数 -->
+  <select id="listTeanworkstaffbyTeamworkId" parameterType="String" resultMap="TeaworkStaffResultMap">
+       SELECT b.project_id , post_id, COUNT(*) FROM t_teamwork_staff a 
+			INNER JOIN  t_prepare b ON a.prepare_id=b.prepare_id 
+ 			INNER JOIN t_teamwork c ON a.teamwork_id=c.id 
+ 			WHERE a.teamwork_id =2     GROUP BY  post_id  
+ </select>
+ 
+ 
+ <delete id="deleteTeamworkstaff" parameterType="String">
+     delete from t_teamwork_staff where id=#{0}
+ </delete>
+ 
+  <insert id="insertTeamworkstaff" parameterType="com.flf.entity.Teamworkstaff" >
+    insert into t_teamwork_staff 
+        (id, teamwork_id, staff_id ,post_id ,project_id,prepare_id,professional_line_id
+      )
+    values (#{id}, #{teamworkId}, #{staffId},#{postId},#{projectId},#{prepareId},#{professionalLineId}
+      )
+  </insert>
+  
+  <insert id="insertListTeamworkstaff">
+  	insert into t_teamwork_staff (id, teamwork_id, staff_id,post_id ,project_id,prepare_id,professional_line_id
+      )
+    values <foreach collection="list" separator="," item="items">
+    	(UUID(), #{items.teamworkId}, #{items.staffId},#{items.postId},#{items.projectId},#{items.prepareId},#{items.professionalLineId})
+    </foreach>
+  </insert>
+
+  <update id="updateTeamworkstaff" parameterType="com.flf.entity.Teamworkstaff" >
+    update t_teamwork_staff
+    <set >
+      <if test="teamworkId != null" >
+        teamwork_id = #{teamworkId,jdbcType=VARCHAR},
+      </if>
+      <if test="staffId != null" >
+        staff_id = #{staffId,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  
+  <update id="AddStaffPrepare">
+  	update t_teamwork_staff a
+  	set a.prepare_id=(SELECT b.prepare_id FROM t_prepare b WHERE b.project_id=#{projectId} and b.post_id=#{postId}) ,
+  	a.post_id=#{postId},
+  	a.project_id=#{projectId},
+  	a.professional_line_id=(SELECT c.professional_line_id FROM t_post c WHERE c.post_id=#{postId}) 
+  	where a.staff_id IN <foreach collection="list"  separator=","  open="(" close=")" item="items">#{items.staffId}</foreach> and a.state = 0
+  </update>  
+  
+ <!-- 查询所有的信息 -->
+ <select id="listAllTeamworkstaff" parameterType="String" resultMap="BaseResultMap">
+     select ts.teamwork_id,s.staff_name 
+     from t_teamwork_staff ts ,t_staff s
+     where ts.staff_id=s.staff_id
+ </select>
+ <!-- 查询专业线下员工 -->
+  <select id="listPageTeamworkStaff" parameterType="Teamworkstaff" resultMap="TeaworkStaffResultMap">
+	  select ts.project_id,si.specialty_name,s.staff_name,s.telphone,ts.id,ts.staff_id,ts.professional_line_id from t_teamwork_staff ts 
+	  inner join t_staff s on  ts.staff_id=s.staff_id
+	  inner join t_specialty_info si on ts.professional_line_id=si.specialty_id
+	  where 1=1
+	  <if test="staffName !='' and staffName !=null">
+	 and s.staff_name LIKE CONCAT('%',#{staffName},'%')
+	  </if>
+	  <if test="telphone !=null and telphone !='' ">
+	 and s.telphone  LIKE CONCAT('%',#{telphone},'%')
+	  </if>
+	  <if test="specialtyName !='' and specialtyName !=null">
+	 and si.specialty_name = #{specialtyName}
+	  </if>
+	   <if test="professionalLineId !='' and professionalLineId !=null">
+	 and ts.professional_line_id = #{professionalLineId}
+	  </if>
+  </select>
+  
+  <!-- 根据员工id查询员工岗位 -->
+  <select id="getStaffPostById" parameterType="String" resultMap="BaseResultMap">
+  	  select si.specialty_name,s.staff_name,s.telphone 
+  	  from t_teamwork_staff ts 
+	  inner join t_staff s on  ts.staff_id=s.staff_id
+	  inner join t_specialty_info si on ts.professional_line_id=si.specialty_id
+	  where s.staff_id=#{staffId,jdbcType=VARCHAR}
+  </select>
+  
+  <select id="getCountByTeamworkId" parameterType="String" resultType="java.lang.Integer">
+  	select count(DISTINCT staff_id) from t_teamwork_staff where teamwork_id = #{0} and state = '0'
+  </select>
+  
+  <delete id="deleteByTeamworkId" parameterType="String">
+     delete from t_teamwork_staff where teamwork_id=#{0}
+ </delete>
+ 
+ 	<!-- 根据团队id和员工id删除数据    王洲    2016.1.27 -->
+	<delete id="deleteMember" parameterType="Teamworkstaff">
+		delete from t_teamwork_staff where teamwork_id = #{teamworkId} and staff_id = #{staffId}
+	</delete>
+	
+	 <select id="isFenpei" parameterType="String" resultType="int">
+  	select count(*) from t_teamwork_staff where staff_id = #{0} and post_id=#{1} and prepare_id=#{2} and state=0
+  </select>
+
+
+	<!-- 根据团队id，项目id，专业线id查询此团队在此项目专业线下分配的人数    王洲    2016.1.29 -->
+	<select id="getListByTeamworkIdAndProjectIdAndPostId" parameterType="String" resultMap="BaseResultMap">
+		select * from t_teamwork_staff where teamwork_id = #{0} and project_id = #{1} and post_id = #{2}
+	</select>
+	
+  
+   <select id="getFenpeiguanxi" parameterType="String"  resultMap="teamworkStaffRestfull">
+      select * from t_teamwork_staff where post_id=#{0} and professional_line_id=#{1} and project_id=#{2} and state=0
+  </select>
+  
+    <select id="getPostyuangongxinxi" parameterType="String"  resultMap="teamworkStaffRestfull">
+      select * from t_teamwork_staff where post_id=#{0} and professional_line_id=#{1} and project_id=#{2} and state=0
+    </select>
+  
+	<update id="shanchuTeamworkstaff" parameterType="String">
+	update t_teamwork_staff
+	set
+	  prepare_id = NULL,
+	  post_id = NULL,
+	  project_id = NULL
+	  where id=#{0} 
+    </update>
+
+	<!-- 根据团队id、员工id获得员工信息    王洲    2016.1.29 -->
+	<select id="getListStaffByTeamworkIdAndStaffId" parameterType="String" resultMap="BaseResultMap">
+		select * from t_teamwork_staff where teamwork_id = #{0} and staff_id = #{1}
+	</select>
+	
+	<!-- 修改团队成员信息  王洲  2016.1.29 -->
+	<update id="updateTeamworkStaffs" parameterType="Teamworkstaff">
+		update t_teamwork_staff a
+  		set a.prepare_id=(SELECT b.prepare_id FROM t_prepare b WHERE b.project_id=#{projectId} and b.post_id=#{postId}) ,
+  		a.post_id=#{postId},
+  		a.project_id=#{projectId},
+  		a.professional_line_id=(SELECT c.professional_line_id FROM t_post c WHERE c.post_id=#{postId}) 
+  		where a.staff_id =#{staffId} and a.state = 0 and a.teamwork_id = #{teamworkId}
+	</update>
+		
+	<select id="getProjectByStaffId" parameterType="String" resultMap="ResultMapForPay">
+		select distinct a.staff_id,b.project_id,project_name from t_teamwork_staff a 
+		left join t_project b on a.project_id = b.project_id where a.staff_id = #{0}
+	</select>		
+		
+</mapper>

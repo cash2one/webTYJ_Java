@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>工单管理首页</title>
+</head>
+<body>
+<div class="row" style="padding:20px 30px 0;">
+    <!--导航搜索-->
+    <div class="col-md-12" id="orderMain">
+        <form class="form-inline">
+            <div class="pull-left col-md-4 form-group">
+                <h5 >搜&nbsp;&nbsp;索</h5>
+            </div>
+            <div class="form-group col-md-6">
+                <input type="text" class="form-control" style="width: 350px" placeholder="search">
+                <div type="button" class=" btn btn-default form-group">
+                    <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
+                </div>
+            </div>
+
+            <div class="col-md-2 form-group" style="margin-top: 10px">
+                展开
+                    <span class="glyphicon" ng-class="vm.collapsed?'glyphicon-chevron-up':'glyphicon-chevron-down'"
+                          ng-click="vm.collapsed = !vm.collapsed"></span>
+            </div>
+        </form>
+    </div>
+    <!--导航搜索 end-->
+
+
+    <!--搜索条件-->
+    <div class="panel-collapse collapse" ng-class="{in: !vm.collapsed}">
+        <div class="col-lg-12" style="height:30px">
+            <ul class="list-inline" >
+                <li style="width: 70px"><h6>服务类型：</h6></li>
+                <li><button type="button" class="btn btn-default btn-xs" id="xz">全部</button></li>
+                <li ng-repeat="button in buttons">
+                    <button type="button" class="btn btn-default btn-xs" data-toggle="button">
+                        {{button.content}}
+                    </button>
+                </li>
+                <li >
+                    <div class="checkbox" >
+                        <label><input type="checkbox">多选</label>
+                    </div>
+                </li>
+            </ul>
+        </div>
+        <div class="col-lg-6" style="height: 30px">
+            <ul class="list-inline" >
+                <li style="width: 70px"><h6>业主类型：</h6></li>
+                <li><button type="button" class="btn btn-default btn-xs">全部</button></li>
+                <li ng-repeat="button in buttons1">
+                    <button type="button" class="btn btn-default btn-xs" data-toggle="button">{{button.content}}</button>
+                </li>
+                <li>
+                    <div class="checkbox">
+                        <label><input type="checkbox">多选</label>
+                    </div>
+                </li>
+            </ul>
+        </div>
+        <div class="col-lg-6" style="height: 30px">
+            <ul class="list-inline" >
+                <li style="width: 60px"><h6>状&nbsp;&nbsp;&nbsp;&nbsp;态：</h6></li>
+                <li><button type="button" class="btn btn-default btn-xs">全部</button></li>
+                <li ng-repeat="button in buttons2">
+                    <button type="button" class="btn btn-default btn-xs" data-toggle="button">{{button.content}}</button>
+                </li>
+                <li>
+                    <div class="checkbox">
+                        <label><input type="checkbox">多选</label>
+                    </div>
+                </li>
+            </ul>
+        </div>
+        <div class="col-lg-6" style="height: 40px">
+            <ul class="list-inline" >
+                <li style="width: 70px"><h6>工单类型：</h6></li>
+                <li><button type="button" class="btn btn-default btn-xs">全部</button></li>
+                <li ng-repeat="button in buttons3">
+                    <button type="button" class="btn btn-default btn-xs" data-toggle="button">{{button.content}}</button>
+                </li>
+                <li>
+                    <div class="checkbox">
+                        <label><input type="checkbox">多选</label>
+                    </div>
+                </li>
+            </ul>
+        </div>
+        <div class="col-lg-6" style="height: 40px">
+            <ul class="list-inline" >
+                <li style="width: 60px"><h6>优先级：</h6></li>
+                <li><button type="button" class="btn btn-default btn-xs">全部</button></li>
+                <li ng-repeat="button in buttons4">
+                    <button type="button" class="btn btn-default btn-xs" data-toggle="button">{{button.content}}</button>
+                </li>
+                <li>
+                    <div class="checkbox">
+                        <label><input type="checkbox">多选</label>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <!--搜索条件 end-->
+
+    <!--排序-->
+    <div class="col-lg-10" style="height: 40px">
+        <ul class="list-inline">
+            <li><h5>排&nbsp;&nbsp;&nbsp序:</h5></li>
+            <li>
+                <button class="btn btn-xs btn-primary" type="button" aria-expanded="true">业主类型
+                    <span class="glyphicon glyphicon-triangle-bottom" aria-hidden="true"></span>
+                </button></li>
+            <li>
+                <button class="btn btn-xs btn-primary" type="button" aria-expanded="true">工单类型
+                    <span class="glyphicon glyphicon-triangle-top" aria-hidden="true"></span>
+                </button></li>
+            <li>
+                <button class="btn btn-xs btn-primary" type="button" aria-expanded="true">优先级
+                    <span class="glyphicon glyphicon-triangle-bottom" aria-hidden="true"></span>
+                </button></li>
+            <li>
+                <button class="btn btn-xs btn-primary" type="button" aria-expanded="true">状态
+                    <span class="glyphicon glyphicon-triangle-top" aria-hidden="true"></span>
+                </button></li>
+            <li>
+                <button class="btn btn-xs btn-primary" type="button" aria-expanded="true">服务类型
+                    <span class="glyphicon glyphicon-triangle-top" aria-hidden="true"></span>
+                </button></li>
+            <li>
+        </ul>
+    </div>
+    <!--排序-->
+
+    <!--panel-->
+    <div class="col-lg-12" style="margin-left:-15px;margin-top: 10px;">
+
+        <!--panel1-->
+        <div class="col-lg-3">
+            <div class="panel panel-success" style="width:250px;height:142px;font-size: 12px;">
+                <div class="panel-heading" data-toggle="modal"
+                     data-target="#myModal1" style="height: 30px;cursor:pointer">
+                    <ul class="list-inline">
+                        <li>1-142692950</li>
+                        <li class="pull-right" style="margin-top:-3px;">姓名:李斯<img src="images/order/u816.png"/></li>
+                    </ul>
+                </div>
+                <div class="panel-body">
+                    <div class="pull-left" style="width: 170px;">
+                        <ul class="list-inline">
+                            <li>电话：13798907889</li>
+                            <li>住址：3栋 3单元 5楼 A002号</li>
+                        </ul>
+                    </div>
+                    <div class="pull-right">
+                        <div class="btn-group-vertical" role="group" aria-label="...">
+                            <div>
+                                <button type="button" class="btn btn-default btn-xs" data-toggle="modal"
+                                        data-target="#myModal">下单</button>
+                            </div>
+                            <div>
+                                <button type="button" class="btn btn-default btn-xs">购物车</button>
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="pull-left">
+                        工单描述：家里没电了...
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--panel1 end-->
+
+        <!--panel2-->
+        <div class="col-lg-3">
+            <div class="panel panel-success" style="width:250px;height:142px;font-size: 12px;">
+                <div class="panel-heading" data-toggle="modal"
+                     data-target="#myModal1" style="height: 30px;cursor:pointer">
+                    <ul class="list-inline">
+                        <li>1-142692950</li>
+                        <li class="pull-right" style="margin-top:-3px;">姓名:李斯<img src="images/order/u818.png"/></li>
+                    </ul>
+                </div>
+                <div class="panel-body">
+                    <div class="pull-left" style="width: 170px;">
+                        <ul class="list-inline">
+                            <li>电话：13798907889</li>
+                            <li>住址：3栋 3单元 5楼 A002号</li>
+                        </ul>
+                    </div>
+                    <div class="pull-right">
+                        <div class="btn-group-vertical" role="group" aria-label="...">
+                            <div>
+                                <button type="button" class="btn btn-default btn-xs" data-toggle="modal"
+                                        data-target="#myModal">下单</button>
+                            </div>
+                            <div>
+                                <button type="button" class="btn btn-default btn-xs">购物车</button>
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="pull-left">
+                        工单描述：家里没电了...
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--panel2 end-->
+
+        <!--panel3-->
+        <div class="col-lg-3">
+            <div class="panel panel-success" style="width:250px;height:142px;font-size: 12px;">
+                <div class="panel-heading" data-toggle="modal"
+                     data-target="#myModal1" style="height: 30px;cursor:pointer">
+                    <ul class="list-inline">
+                        <li>1-142692950</li>
+                        <li class="pull-right" style="margin-top:-3px;">姓名:李斯<img src="images/order/u830.png"/></li>
+                    </ul>
+                </div>
+                <div class="panel-body">
+                    <div class="pull-left" style="width: 170px;">
+                        <ul class="list-inline">
+                            <li>电话：13798907889</li>
+                            <li>住址：3栋 3单元 5楼 A002号</li>
+                        </ul>
+                    </div>
+                    <div class="pull-right">
+                        <div class="btn-group-vertical" role="group" aria-label="...">
+                            <div>
+                                <button type="button" class="btn btn-default btn-xs" data-toggle="modal"
+                                        data-target="#myModal">下单</button>
+                            </div>
+                            <div>
+                                <button type="button" class="btn btn-default btn-xs">购物车</button>
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="pull-left">
+                        工单描述：家里没电了...
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--panel3 end-->
+
+        <!--panel4-->
+        <div class="col-lg-3">
+            <div class="panel panel-success" style="width:250px;height:142px;font-size: 12px;">
+                <div class="panel-heading" data-toggle="modal"
+                     data-target="#myModal1" style="height: 30px;cursor:pointer">
+                    <ul class="list-inline">
+                        <li>1-142692950</li>
+                        <li class="pull-right" style="margin-top:-3px;">姓名:李斯<img src="images/order/u816.png"/></li>
+                    </ul>
+                </div>
+                <div class="panel-body">
+                    <div class="pull-left" style="width: 170px;">
+                        <ul class="list-inline">
+                            <li>电话：13798907889</li>
+                            <li>住址：3栋 3单元 5楼 A002号</li>
+                        </ul>
+                    </div>
+                    <div class="pull-right">
+                        <div class="btn-group-vertical" role="group" aria-label="...">
+                            <div>
+                                <button type="button" class="btn btn-default btn-xs" data-toggle="modal"
+                                        data-target="#myModal">下单</button>
+                            </div>
+                            <div>
+                                <button type="button" class="btn btn-default btn-xs">购物车</button>
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="pull-left">
+                        工单描述：家里没电了...
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--panel4 end-->
+
+        <!--panel5-->
+        <div class="col-lg-3">
+            <div class="panel panel-success" style="width:250px;height:142px;font-size: 12px;">
+                <div class="panel-heading" data-toggle="modal"
+                     data-target="#myModal1" style="height: 30px;cursor:pointer">
+                    <ul class="list-inline">
+                        <li>1-142692950</li>
+                        <li class="pull-right" style="margin-top:-3px;">姓名:李斯<img src="images/order/u816.png"/></li>
+                    </ul>
+                </div>
+                <div class="panel-body">
+                    <div class="pull-left" style="width: 170px;">
+                        <ul class="list-inline">
+                            <li>电话：13798907889</li>
+                            <li>住址：3栋 3单元 5楼 A002号</li>
+                        </ul>
+                    </div>
+                    <div class="pull-right">
+                        <div class="btn-group-vertical" role="group" aria-label="...">
+                            <div>
+                                <button type="button" class="btn btn-default btn-xs" data-toggle="modal"
+                                        data-target="#myModal">下单</button>
+                            </div>
+                            <div>
+                                <button type="button" class="btn btn-default btn-xs">购物车</button>
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="pull-left">
+                        工单描述：家里没电了...
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--panel5 end-->
+
+        <!--panel6-->
+        <div class="col-lg-3">
+            <div class="panel panel-success" style="width:250px;height:142px;font-size: 12px;">
+                <div class="panel-heading" data-toggle="modal"
+                     data-target="#myModal1" style="height: 30px;cursor:pointer">
+                    <ul class="list-inline">
+                        <li>1-142692950</li>
+                        <li class="pull-right" style="margin-top:-3px;">姓名:李斯<img src="images/order/u816.png"/></li>
+                    </ul>
+                </div>
+                <div class="panel-body">
+                    <div class="pull-left" style="width: 170px;">
+                        <ul class="list-inline">
+                            <li>电话：13798907889</li>
+                            <li>住址：3栋 3单元 5楼 A002号</li>
+                        </ul>
+                    </div>
+                    <div class="pull-right">
+                        <div class="btn-group-vertical" role="group" aria-label="...">
+                            <div>
+                                <button type="button" class="btn btn-default btn-xs" data-toggle="modal"
+                                        data-target="#myModal">下单</button>
+                            </div>
+                            <div>
+                                <button type="button" class="btn btn-default btn-xs">购物车</button>
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="pull-left">
+                        工单描述：家里没电了...
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--panel6 end-->
+
+        <!--panel7-->
+        <div class="col-lg-3">
+            <div class="panel panel-success" style="width:250px;height:142px;font-size: 12px;">
+                <div class="panel-heading" data-toggle="modal"
+                     data-target="#myModal1" style="height: 30px;cursor:pointer">
+                    <ul class="list-inline">
+                        <li>1-142692950</li>
+                        <li class="pull-right" style="margin-top:-3px;">姓名:李斯<img src="images/order/u816.png"/></li>
+                    </ul>
+                </div>
+                <div class="panel-body">
+                    <div class="pull-left" style="width: 170px;">
+                        <ul class="list-inline">
+                            <li>电话：13798907889</li>
+                            <li>住址：3栋 3单元 5楼 A002号</li>
+                        </ul>
+                    </div>
+                    <div class="pull-right">
+                        <div class="btn-group-vertical" role="group" aria-label="...">
+                            <div>
+                                <button type="button" class="btn btn-default btn-xs" data-toggle="modal"
+                                        data-target="#myModal">下单</button>
+                            </div>
+                            <div>
+                                <button type="button" class="btn btn-default btn-xs">购物车</button>
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="pull-left">
+                        工单描述：家里没电了...
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--panel7 end-->
+
+        <!--panel8-->
+        <div class="col-lg-3">
+            <div class="panel panel-success" style="width:250px;height:142px;font-size: 12px;">
+                <div class="panel-heading" data-toggle="modal"
+                     data-target="#myModal1" style="height: 30px;cursor:pointer">
+                    <ul class="list-inline">
+                        <li>1-142692950</li>
+                        <li class="pull-right" style="margin-top:-3px;">姓名:李斯<img src="images/order/u816.png"/></li>
+                    </ul>
+                </div>
+                <div class="panel-body">
+                    <div class="pull-left" style="width: 170px;">
+                        <ul class="list-inline">
+                            <li>电话：13798907889</li>
+                            <li>住址：3栋 3单元 5楼 A002号</li>
+                        </ul>
+                    </div>
+                    <div class="pull-right">
+                        <div class="btn-group-vertical" role="group" aria-label="...">
+                            <div>
+                                <button type="button" class="btn btn-default btn-xs" data-toggle="modal"
+                                        data-target="#myModal">下单</button>
+                            </div>
+                            <div>
+                                <button type="button" class="btn btn-default btn-xs">购物车</button>
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="pull-left">
+                        工单描述：家里没电了...
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--panel8 end-->
+
+    </div>
+    <!--panel end-->
+
+    <div style="margin-right:20px;">
+        <div class="pagination">
+            <a href="#" >上一页</a>
+            <a href="#" class="number">1</a>
+            <a href="#" class="number">2</a>
+            <a href="#" class="number">3</a>
+            <a href="#" class="number">4</a>
+            <a href="#" class="number">5</a>
+            <a href="#">下一页</a>
+        </div>
+    </div>
+</div>
+</body>
+</html>

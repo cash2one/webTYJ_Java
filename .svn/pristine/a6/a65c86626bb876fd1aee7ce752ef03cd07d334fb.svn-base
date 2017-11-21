@@ -1,0 +1,203 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.flf.mapper.RepairOrdersMapper" >
+  <resultMap id="BaseResultMap" type="com.flf.entity.RepairOrders" >
+    <id column="order_id" property="orderId" jdbcType="VARCHAR" />
+    <result column="order_num" property="orderNum" jdbcType="VARCHAR" />
+    <result column="order_type" property="orderType" jdbcType="TINYINT" />
+    <result column="order_state" property="orderState" jdbcType="TINYINT" />
+    <result column="task_id" property="taskId" jdbcType="VARCHAR" />
+    <result column="service_request_id" property="serviceRequestId" jdbcType="VARCHAR" />
+    <result column="operator_id" property="operatorId" jdbcType="VARCHAR" />
+    <result column="node_id" property="nodeId" jdbcType="VARCHAR" />
+    <result column="remarks" property="remarks" jdbcType="VARCHAR" />
+    <result column="finish_time" property="finishTime" jdbcType="TIMESTAMP" />
+    <result column="close_person_id" property="closePersonId" jdbcType="VARCHAR" />
+    <result column="close_time" property="closeTime" jdbcType="TIMESTAMP" />
+    <result column="close_remarks" property="closeRemarks" jdbcType="VARCHAR" />
+    <result column="signature" property="signature" jdbcType="VARCHAR" />
+  </resultMap>
+  
+  <resultMap type="com.flf.entity.RepairOrders" id="ResultMapWithAnnexs" extends="BaseResultMap">
+  	<collection property="annexs" column="order_id" ofType="Annex" select="com.flf.mapper.AnnexMapper.getAnnexbyRelationId" />
+  	<collection property="actualConsumptionRecords" column="order_id" ofType="ActualConsumptionRecords" select="com.flf.mapper.ActualConsumptionRecordsMapper.listRecordsByOrderId" />
+  </resultMap>
+  
+  <sql id="Base_Column_List" >
+    order_id, order_num, order_type, order_state, task_id, service_request_id, operator_id, 
+    node_id, remarks, finish_time, close_person_id, close_time, close_remarks,signature
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="ResultMapWithAnnexs" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from ts_repair_orders
+    where order_id = #{orderId,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from ts_repair_orders
+    where order_id = #{orderId,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.flf.entity.RepairOrders" >
+    insert into ts_repair_orders (order_id, order_num, order_type, 
+      order_state, task_id, service_request_id, 
+      operator_id, node_id, remarks, 
+      finish_time, close_person_id, close_time, 
+      close_remarks,signature)
+    values (#{orderId,jdbcType=VARCHAR}, #{orderNum,jdbcType=VARCHAR}, #{orderType,jdbcType=TINYINT}, 
+      #{orderState,jdbcType=TINYINT}, #{taskId,jdbcType=VARCHAR}, #{serviceRequestId,jdbcType=VARCHAR}, 
+      #{operatorId,jdbcType=VARCHAR}, #{nodeId,jdbcType=VARCHAR}, #{remarks,jdbcType=VARCHAR}, 
+      #{finishTime,jdbcType=TIMESTAMP}, #{closePersonId,jdbcType=VARCHAR}, #{closeTime,jdbcType=TIMESTAMP}, 
+      #{closeRemarks,jdbcType=VARCHAR},#{signature,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.flf.entity.RepairOrders" >
+    insert into ts_repair_orders
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="orderId != null" >
+        order_id,
+      </if>
+      <if test="orderNum != null" >
+        order_num,
+      </if>
+      <if test="orderType != null" >
+        order_type,
+      </if>
+      <if test="orderState != null" >
+        order_state,
+      </if>
+      <if test="taskId != null" >
+        task_id,
+      </if>
+      <if test="serviceRequestId != null" >
+        service_request_id,
+      </if>
+      <if test="operatorId != null" >
+        operator_id,
+      </if>
+      <if test="nodeId != null" >
+        node_id,
+      </if>
+      <if test="remarks != null" >
+        remarks,
+      </if>
+      <if test="finishTime != null" >
+        finish_time,
+      </if>
+      <if test="closePersonId != null" >
+        close_person_id,
+      </if>
+      <if test="closeTime != null" >
+        close_time,
+      </if>
+      <if test="closeRemarks != null" >
+        close_remarks,
+      </if>
+      <if test="signature != null">
+      	signature,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="orderId != null" >
+        #{orderId,jdbcType=VARCHAR},
+      </if>
+      <if test="orderNum != null" >
+        #{orderNum,jdbcType=VARCHAR},
+      </if>
+      <if test="orderType != null" >
+        #{orderType,jdbcType=TINYINT},
+      </if>
+      <if test="orderState != null" >
+        #{orderState,jdbcType=TINYINT},
+      </if>
+      <if test="taskId != null" >
+        #{taskId,jdbcType=VARCHAR},
+      </if>
+      <if test="serviceRequestId != null" >
+        #{serviceRequestId,jdbcType=VARCHAR},
+      </if>
+      <if test="operatorId != null" >
+        #{operatorId,jdbcType=VARCHAR},
+      </if>
+      <if test="nodeId != null" >
+        #{nodeId,jdbcType=VARCHAR},
+      </if>
+      <if test="remarks != null" >
+        #{remarks,jdbcType=VARCHAR},
+      </if>
+      <if test="finishTime != null" >
+        #{finishTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="closePersonId != null" >
+        #{closePersonId,jdbcType=VARCHAR},
+      </if>
+      <if test="closeTime != null" >
+        #{closeTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="closeRemarks != null" >
+        #{closeRemarks,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.flf.entity.RepairOrders" >
+    update ts_repair_orders
+    <set >
+      <if test="orderNum != null" >
+        order_num = #{orderNum,jdbcType=VARCHAR},
+      </if>
+      <if test="orderType != null" >
+        order_type = #{orderType,jdbcType=TINYINT},
+      </if>
+      <if test="orderState != null" >
+        order_state = #{orderState,jdbcType=TINYINT},
+      </if>
+      <if test="taskId != null" >
+        task_id = #{taskId,jdbcType=VARCHAR},
+      </if>
+      <if test="serviceRequestId != null" >
+        service_request_id = #{serviceRequestId,jdbcType=VARCHAR},
+      </if>
+      <if test="operatorId != null" >
+        operator_id = #{operatorId,jdbcType=VARCHAR},
+      </if>
+      <if test="nodeId != null" >
+        node_id = #{nodeId,jdbcType=VARCHAR},
+      </if>
+      <if test="remarks != null" >
+        remarks = #{remarks,jdbcType=VARCHAR},
+      </if>
+      <if test="finishTime != null" >
+        finish_time = #{finishTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="closePersonId != null" >
+        close_person_id = #{closePersonId,jdbcType=VARCHAR},
+      </if>
+      <if test="closeTime != null" >
+        close_time = #{closeTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="closeRemarks != null" >
+        close_remarks = #{closeRemarks,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where order_id = #{orderId,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.flf.entity.RepairOrders" >
+    update ts_repair_orders
+    set order_num = #{orderNum,jdbcType=VARCHAR},
+      order_type = #{orderType,jdbcType=TINYINT},
+      order_state = #{orderState,jdbcType=TINYINT},
+      task_id = #{taskId,jdbcType=VARCHAR},
+      service_request_id = #{serviceRequestId,jdbcType=VARCHAR},
+      operator_id = #{operatorId,jdbcType=VARCHAR},
+      node_id = #{nodeId,jdbcType=VARCHAR},
+      remarks = #{remarks,jdbcType=VARCHAR},
+      finish_time = #{finishTime,jdbcType=TIMESTAMP},
+      close_person_id = #{closePersonId,jdbcType=VARCHAR},
+      close_time = #{closeTime,jdbcType=TIMESTAMP},
+      close_remarks = #{closeRemarks,jdbcType=VARCHAR}
+    where order_id = #{orderId,jdbcType=VARCHAR}
+  </update>
+
+	<!-- 查询所有维修单信息 -->
+	<select id="listAllRepairOrders" resultMap="BaseResultMap">
+		select <include refid="Base_Column_List" /> from ts_repair_orders
+	</select>
+</mapper>

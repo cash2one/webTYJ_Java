@@ -1,0 +1,49 @@
+<!--
+    页面名称：任务详情【检测单】
+    负责人：刘洋
+    js路径：js/externalProfession/taskDetails/detection.js
+-->
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>检测</title>
+</head>
+<body>
+<div class="complaint_user">
+    <div  style="height: 600px;width: 400px;margin: 20px;border: 1px solid rgba(0, 0, 0, 0.99)">
+        <!--标题-->
+        <div >
+            <span class="glyphicon glyphicon-envelope" aria-hidden="true" style="margin: 10px"></span>
+            <span>检测单</span>
+        </div>
+        <!--标题 end-->
+        <!--内容-->
+        <div>
+            <div class="row col-md-12" style="margin: 10px;">
+                <div class="col-md-6">关联任务：20012</div>
+                <div class="col-md-6">服务请求：Q1122</div>
+            </div>
+            <div class="row col-md-12" style="margin: 10px;">
+                <div class="col-md-6">工单ID：10020</div>
+                <div class="col-md-6">工单状态：已完成</div>
+            </div>
+            <div class="row col-md-12" style="margin: 10px;">
+                <div class="col-md-6">检测项目：电灯</div>
+            </div>
+            <div class="row col-md-12" style="margin: 10px;">
+                <div class="col-md-12">
+                检测结果：电灯灯丝熔断、火线短路，电线高温熔断；
+                </div>
+            </div>
+            <div class="row col-md-12" style="margin: 10px;">
+                <div class="col-md-12">
+                意见建议：更换电线、更改电灯
+                </div>
+            </div>
+        </div>
+        <!--内容 end-->
+    </div>
+</div>
+</body>
+</html>

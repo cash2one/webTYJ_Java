@@ -1,0 +1,88 @@
+<!--
+    创建人：钟加诚
+    创建时间：2015/6/9
+    js路径：js/controllers/externalProfession/accounting/propertyGeneralExpenses/expensePlanEntering
+-->
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>物业管理费方案录用</title>
+    <style type="text/css">
+        #menu_zzjs_nett{margin:10px;width:200px;overflow:hidden;}
+        #menu_zzjs_nett li{line-height:25px;}
+        #menu_zzjs_nett li a{color:#666666;padding-left:5px;outline:none;}
+        #menu_zzjs_nett li input{vertical-align:middle;margin-left:5px;}
+        #menu_zzjs_nett .two{padding-left:10px;display:none;}
+        .col-md-2 button{width: 90px;height: 60px;margin-top: 20px;margin-bottom: 10px}
+    </style>
+</head>
+<body>
+    <div class="col-md-2" style="border: 1px solid;height: 300px">
+    <ul id="menu_zzjs_nett" style="margin-left:-30px;">
+        <li>
+            <label><a href="javascript:" class="glyphicon glyphicon-play">桃源居</a></label>
+            <ul class="two">
+                <li>
+                    <label><a href="javascript:">园林部</a></label>
+                    <ul class="two">
+                        <li>
+                            <label><input type="checkbox" value="123456"><a href="javascript:">一组</a></label>
+                            <ul class="two">
+                                <li>
+                                    <label><input type="checkbox" value="123456"><a href="#select1"  data-toggle="tab">张无忌</a></label>
+                                </li>
+                                <li>
+                                    <label><input type="checkbox" value="123456"><a href="#select1"  data-toggle="tab">谢逊</a></label>
+                            </ul>
+                        <li>
+                            <label><input type="checkbox" value="123456"><a href="javascript:">二组</a></label></li>
+                    </ul>
+                </li>
+
+                <li><label><a href="javascript:">清洁部</a></label></li>
+            </ul>
+        </li>
+    </ul>
+</div>
+    <div class="col-md-8">
+        <button type="button">新建</button>
+        <button type="button">修改</button>
+        <button type="button">保存</button>
+        <button type="button" data-toggle="modal" data-target="#modifyPet">录入新方案</button>
+        <table class="table table-bordered">
+            <tr>
+                <td></td>
+                <td>单价（元/平方米）</td>
+            </tr>
+            <tr>
+                <td>物业管理费单价</td>
+                <td></td>
+            </tr>
+        </table>
+    </div>
+
+
+
+    <div class="modal fade" id="modifyPet" role="dialog" aria-label="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header" style="background-color: white;height: 50px">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span>录入方案</span>
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn bg-primary" data-dismiss="modal" aria-label="Close">提交</button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>

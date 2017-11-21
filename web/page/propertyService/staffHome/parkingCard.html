@@ -1,0 +1,27 @@
+<!--
+author:钟加诚
+pageName:物业服务人员主页停车卡页面
+jsPath: controllers/propertyService/staffHome/parkingCard
+最后修改时间：2015/5/28
+-->
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>物业服务人员主页停车卡</title>
+</head>
+<body ng-controller="parkingCardCtrl">
+    <div class="complaint_user_list">
+        <div style="padding:5px 10px 0">
+            <div class="complaint_user_info_navigation">
+                <a class="btn" ui-sref="index.propertyService.staffHome.parkingCard.newCard" ng-class="{'complaint_user_info_navigation a:hover':btnIndexe==2}" ng-click="doclick(2)">新增停车</a>
+                <a class="btn" ui-sref="index.propertyService.staffHome.parkingCard.historyRecord" ng-class="{'complaint_user_info_navigation a:hover':btnIndexe==1}" ng-click="doclick(1)">历史记录</a>
+            </div>
+        <div class="clear"></div>
+        <div class="row">
+            <div ui-view></div>
+        </div>
+        </div>
+    </div>
+</body>
+</html>

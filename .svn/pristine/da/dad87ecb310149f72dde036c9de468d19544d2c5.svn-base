@@ -1,0 +1,28 @@
+package com.flf.mapper;
+
+import com.flf.entity.ElectricityMeterRecords;
+import com.flf.entity.SearchMeter;
+import com.flf.entity.WaterMeterRecords;
+
+import java.util.List;
+
+public interface ElectricityMeterRecordsMapper {
+	int deleteElectricityMeterRecords(String electricityMeterRecordsId);  //��ݵ��ʹ�ü�¼idɾ����Ϣ
+
+    int insertElectricityMeterRecords(ElectricityMeterRecords electricityMeterRecords); //������ʹ�ü�¼��Ϣ
+
+    List<ElectricityMeterRecords> listPageElectricityMeterRecords(SearchMeter searchMeter);//��ҳ��ѯ���ʹ�ü�¼��Ϣ
+    
+    List<ElectricityMeterRecords> listAllElectricityMeterRecords(); //��ѯ���е��ʹ�ü�¼��Ϣ
+
+    ElectricityMeterRecords getElectricityMeterRecordsbyId(String electricityMeterRecordsId); //ͨ����ʹ�ü�¼id��ȡ���ʹ�ü�¼��Ϣ
+
+    int updateElectricityMeterRecords(ElectricityMeterRecords electricityMeterRecords);//���µ��ʹ�ü�¼��Ϣ
+    
+    List<ElectricityMeterRecords> listElectricityMeterRecordsbyWaterId(
+			String waterMeterNum); //根据水表编号查询水表使用记录
+    
+    int updateElectricityMeterRecordsbyNum(ElectricityMeterRecords electricityMeterRecords); // 停用电表
+    
+    ElectricityMeterRecords listElectricityMeterRecordsbybuildigIds(String buildingStructureId); //根据建筑结构id查询鼠标使用记录
+}

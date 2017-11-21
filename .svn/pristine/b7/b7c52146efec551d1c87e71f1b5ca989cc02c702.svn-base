@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.flf.mapper.FunctionalMapper" >
+  <resultMap id="BaseResultMap" type="Functional" >
+    <id column="functional_id" property="functionalId" jdbcType="VARCHAR" />
+    <result column="functional_no" property="functionalNo" jdbcType="VARCHAR" />
+    <result column="functional_name" property="functionalName" jdbcType="VARCHAR" />
+    <result column="creater_name" property="createrName" jdbcType="VARCHAR" />
+    <result column="creater_date" property="createrDate" jdbcType="TIMESTAMP" />
+    <result column="create_id" property="createId" jdbcType="VARCHAR" />
+    <result column="update_name" property="updateName" jdbcType="VARCHAR" />
+    <result column="update_date" property="updateDate" jdbcType="TIMESTAMP" />
+    <result column="update_id" property="updateId" jdbcType="VARCHAR" />
+    <association column="create_id" property="staff" javaType="TUser" select="com.flf.mapper.TUserMapper.selectByPrimaryKey" />
+    <association column="update_id" property="staffs" javaType="TUser" select="com.flf.mapper.TUserMapper.selectByPrimaryKey" />
+  </resultMap>
+  
+  <sql id="Base_Column_List">
+  	functional_id, functional_no, functional_name, creater_name, creater_date, create_id, update_name, update_date, update_id
+  </sql>
+ 
+  <select id="listPageFunctional" resultMap="BaseResultMap" parameterType="Functional" >
+    	select <include refid="Base_Column_List" /> from tc_functional 
+  </select>
+  
+  <select id="listFunctionalAll" resultMap="BaseResultMap" >
+    select <include refid="Base_Column_List" /> from tc_functional 
+  </select>
+
+  <select id="selectFunctionalById" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select <include refid="Base_Column_List" /> from tc_functional where functional_id = #{functionalId}
+  </select>
+  
+  
+  <delete id="deleteFunctional" parameterType="java.lang.String" >
+    delete from tc_functional
+    where functional_id = #{0}
+  </delete>
+
+  <insert id="insertFunctional" parameterType="Functional" >
+    insert into tc_functional (functional_id, functional_no, functional_name, creater_name, 
+      creater_date, update_name, update_date
+      )
+    values (UUID(), #{functionalNo,jdbcType=VARCHAR}, #{functionalName,jdbcType=VARCHAR}, #{createrName,jdbcType=VARCHAR}, 
+      #{createrDate,jdbcType=TIMESTAMP}, #{updateName,jdbcType=VARCHAR}, #{updateDate,jdbcType=TIMESTAMP}
+      )
+  </insert>
+  
+  <update id="updateFunctional" parameterType="Functional" >
+    update tc_functional
+    set functional_no = #{functionalNo,jdbcType=VARCHAR},
+      functional_name = #{functionalName,jdbcType=VARCHAR},
+      creater_name = #{createrName,jdbcType=VARCHAR},
+      creater_date = #{createrDate,jdbcType=TIMESTAMP},
+      create_id = #{createId,jdbcType=VARCHAR},
+      update_name = #{updateName,jdbcType=VARCHAR},
+      update_date = #{updateDate,jdbcType=TIMESTAMP},
+      update_id = #{updateId,jdbcType=VARCHAR}
+    where functional_id = #{functionalId,jdbcType=VARCHAR}
+  </update>
+  
+  <!-- 新增功能区间，不使用mysql的UUID -->
+  <insert id="insertFunctionalUUID" parameterType="Functional">
+  	insert into tc_functional (functional_id, functional_no, functional_name, creater_name, creater_date, create_id, 
+  		update_name, update_date, update_id
+  		)
+  		values (#{functionalId,jdbcType=VARCHAR}, #{functionalNo,jdbcType=VARCHAR}, #{functionalName,jdbcType=VARCHAR},#{createrName,jdbcType=VARCHAR},#{createrDate,jdbcType=TIMESTAMP},
+  			#{createId,jdbcType=VARCHAR},#{updateName,jdbcType=VARCHAR},#{updateDate,jdbcType=TIMESTAMP},#{updateId,jdbcType=VARCHAR}
+  		)
+  </insert>
+  
+  <!-- 根据编号或名称查询是否数据库中已有相同名称数据 -->
+  <select id="getCountByNoOrName" parameterType="Functional" resultType="int">
+  	select count(*) from tc_functional <include refid="Base_Select_List" />
+  </select>
+  
+  <!-- 查询条件 -->
+  <sql id="Base_Select_List">
+  	<where>
+		<if test="functionalNo != null and functionalNo != ''">
+			functional_no = #{functionalNo,jdbcType=VARCHAR}
+		</if>
+		<if test="functionalName != null and functionalName != ''">
+			OR functional_name = #{functionalName,jdbcType=VARCHAR}
+		</if>
+  	</where>
+  </sql>
+  
+   <!-- 查询表中 组件最大的编号 -->
+    <select id="selectCustCode" resultType="String">
+ 		select max(functional_no+0) from tc_functional 
+ 	</select>
+</mapper>

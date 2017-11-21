@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.flf.mapper.FinancialGroupTotalMapper" >
+    <resultMap id="BaseResultMap" type="FinancialGroupTotal" >
+    <id column="financial_group_total_id" property="financialGroupTotalId" jdbcType="VARCHAR"/>
+    <result column="agency_bank_num" property="agencyBankNum" jdbcType="VARCHAR" />
+    <result column="payment_unit_code" property="paymentUnitCode"  jdbcType="VARCHAR" />
+    <result column="coin_type" property="coinType" jdbcType="TINYINT" />
+    <result column="payment_state" property="paymentState" jdbcType="TINYINT" />
+    <result column="collection_total_num" property="collectionTotalNum" jdbcType="VARCHAR"/> 
+    <result column="collection_total_name" property="collectionTotalName" jdbcType="VARCHAR"/>
+    <result column="house_number" property="houseNumber"  jdbcType="TINYINT" />
+    <result column="sum" property="sum" jdbcType="DOUBLE" />
+    <result column="deductions_house_number" property="deductionsHouseNumber" jdbcType="TINYINT" />
+    <result column="deductions_sum" property="deductionsSum" jdbcType="DOUBLE" />
+    <result column="tobank_date" property="tobankDate" jdbcType="DATE" />  
+    <result column="prepare_deductions_date" property="prepareDeductionsDate" jdbcType="DATE" />
+    <result column="deductions_date" property="deductionsDate"  jdbcType="DATE" />
+    <result column="collection_state" property="collectionState" jdbcType="TINYINT" />
+    <result column="collection_type" property="collectionType" jdbcType="TINYINT" />
+    <result column="project_id" property="projectId"  jdbcType="VARCHAR" />  
+    <result column="bankDateString" property="bankDateString"  jdbcType="VARCHAR" />
+    <result column="preDateString" property="preDateString"  jdbcType="VARCHAR" />
+    <result column="deduDateString" property="deduDateString"  jdbcType="VARCHAR" />
+    <result column="batch_number" property="batchNumber"  jdbcType="VARCHAR" />
+    <result column="create_time" property="createTime" jdbcType="VARCHAR"/>
+    <!-- 项目名称字段，附加，数据表中无 -->
+    <result column="project_name" property="projectName" jdbcType="VARCHAR"/>
+   </resultMap>
+   
+	<select id="listAllFinancial" parameterType="String" resultMap="BaseResultMap">
+	  	select * from tc_financial_group_total where 1=1 AND collection_type = #{0} order by create_time desc
+	</select> 
+	
+	<!-- 根据条件查询所有的托收总结文件 -->
+	<select id="listAllFinancialGroupTotal" parameterType="FinancialGroupTotal"  resultMap="BaseResultMap">
+		select * from tc_financial_group_total where 1=1 
+	     <if test="collectionState!=null and collectionState!=''">
+	     	and collection_state = #{collectionState} 
+	     </if>
+	     <if test="projectId!=null and projectId!= '' ">
+	       and project_id = #{projectId} 
+	     </if>
+	     order by create_time desc 
+	</select>
+	
+	<select id="listFinancialIng" parameterType="String" resultMap="BaseResultMap">
+	  	select * from tc_financial_group_total where 1=1 AND collection_state = 1 and project_id = #{0}  order by create_time desc
+	</select> 
+	
+	<select id="listPageFinancial" parameterType="FinancialGroupTotal"  resultMap="BaseResultMap">
+	 select a.*,p.project_name from tc_financial_group_total as a 
+	 left join t_project as p on a.project_id = p.project_id 
+	 where 1=1  
+	 <if test="batchNumber!=null and batchNumber!=''">
+     	and a.batch_number = #{batchNumber} 
+     </if>
+	 <if test="collectionType!=null and collectionType!=''">
+     	and a.collection_type = #{collectionType} 
+     </if>
+     <if test="collectionState!=null and collectionState !=''">
+     	and a.collection_state = #{collectionState} 
+     </if>
+     <if test="collectionState == null or collectionState == ''">
+     	<![CDATA[
+     		and (a.collection_state = 1 or a.collection_state = 2)  
+     	]]>
+     </if>
+     <if test="tobankDate!=null and tobankDate!='' and deductionsDate!=null and deductionsDate!=''">
+		<![CDATA[
+	      and DATE_FORMAT(a.tobank_date, '%Y-%m-%d') between DATE_FORMAT(#{tobankDate}, '%Y-%m-%d') 
+	      and DATE_FORMAT(#{deductionsDate}, '%Y-%m-%d') 
+		]]>
+	</if>
+	<if test="tobankDate!=null and deductionsDate==null">
+		<![CDATA[
+	      and DATE_FORMAT(a.tobank_date, '%Y-%m-%d') >=  DATE_FORMAT(#{tobankDate}, '%Y-%m-%d') 
+		]]>
+	</if> 
+	<if test="tobankDate==null and deductionsDate!=null">
+		<![CDATA[
+	      and DATE_FORMAT(a.tobank_date, '%Y-%m-%d') <=  DATE_FORMAT(#{deductionsDate}, '%Y-%m-%d') 
+		]]>
+	</if> 
+     <if test="projectId!=null and projectId!= '' ">
+       and a.project_id = #{projectId} 
+     </if>
+     <if test="agencyBankNum!=null and agencyBankNum!=''">
+     	and a.agency_bank_num=#{agencyBankNum} 
+     </if>
+      order by create_time desc
+	</select>
+	
+	<select id="getDatasById" parameterType="String" resultMap="BaseResultMap">
+		select a.*,p.project_name ,a.tobank_date as bankDateString, a.prepare_deductions_date as preDateString, a.deductions_date as deduDateString from tc_financial_group_total as a
+	    left join t_project as p on a.project_id = p.project_id
+		where a.financial_group_total_id=#{financialGroupTotalId,jdbcType=VARCHAR} group by a.financial_group_total_id
+	</select>
+	<!-- maogaofei update 2016.06.01 -->
+ 	<insert id="insertFinancialGroupTotal" parameterType="FinancialGroupTotal">
+ 		insert into tc_financial_group_total(financial_group_total_id,agency_bank_num,payment_unit_code,coin_type,payment_state,
+ 			collection_total_num,collection_total_name,house_number,sum,deductions_house_number,batch_number,
+ 			deductions_sum,tobank_date,prepare_deductions_date,deductions_date,collection_state,
+ 			collection_type,project_id,create_time)
+ 		values(#{financialGroupTotalId},#{agencyBankNum},#{paymentUnitCode},#{coinType},#{paymentState},
+ 			#{collectionTotalNum},#{collectionTotalName},#{houseNumber},#{sum},#{deductionsHouseNumber},#{batchNumber},
+ 			#{deductionsSum},#{tobankDate},#{prepareDeductionsDate},#{deductionsDate},#{collectionState},
+ 			#{collectionType},#{projectId},#{createTime})
+ 	</insert>
+ 	
+ 	<!-- 修改 -->
+  	<update id="updateFinancialGroupTotal" parameterType="com.flf.entity.FinancialGroupTotal">
+  		update tc_financial_group_total 
+  		<set>
+  			<if test="collectionTotalName != null" >
+		       collection_total_name = #{collectionTotalName},
+		    </if>
+		    <if test="batchNumber != null" >
+		       batch_number = #{batchNumber},
+		    </if>
+		    <if test="collectionState != null" >
+		       collection_state = #{collectionState},
+		    </if>
+  		</set>
+  		where financial_group_total_id=#{financialGroupTotalId,jdbcType=VARCHAR}
+ 	</update>
+ 	<delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+	    delete from tc_financial_group_total
+	    where financial_group_total_id = #{0}
+	 </delete>
+	 <!-- 根据交易文件名头模糊查询已回盘的所有托收总结记录 -->
+	<select id="listAllFGTLikeFileNameHeader" parameterType="FinancialGroupTotal"  resultMap="BaseResultMap">
+		select * from tc_financial_group_total where 1=1 
+	     	and collection_total_name like #{0} and project_id = #{1}
+	     	 and collection_state = 2 order by create_time desc
+	</select>
+	 
+</mapper>

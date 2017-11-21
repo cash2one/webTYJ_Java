@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.flf.mapper.SettleAccountsItemRecordsMapper" >
+  <resultMap id="BaseResultMap" type="SettleAccountsItemRecords" >
+    <id column="record_id" property="recordId" jdbcType="VARCHAR" />
+    <result column="order_id" property="orderId" jdbcType="VARCHAR" />
+    <result column="settle_accounts_item_id" property="itemId" jdbcType="VARCHAR" />
+    <result column="settle_accounts_item_type" property="itemType" jdbcType="TINYINT" />
+    <result column="settle_accounts_item_name" property="itemName" jdbcType="VARCHAR" />
+    <result column="settle_accounts_item_num" property="itemNum" jdbcType="VARCHAR" />
+    <result column="settle_accounts_item_total" property="itemTotal" jdbcType="DOUBLE" />
+    <result column="quote_item_records_id" property="quoteItemRecordsId" jdbcType="VARCHAR" />
+    <result column="settle_accounts_item_price" property="itemPrice" jdbcType="DOUBLE" />
+  </resultMap>
+  
+  <select id="getSettleAccountsItemRecordsById" parameterType="String" resultMap="BaseResultMap">
+  	select * from ts_settle_accounts_item_records where record_id=#{0}
+  </select>
+  
+  <select id="getSettleAccountsItemRecordsByOrderId" parameterType="String" resultMap="BaseResultMap">
+  	select * from ts_settle_accounts_item_records where order_id=#{0}
+  </select>
+  
+  <insert id="insertSettleAccountsItemRecords" parameterType="SettleAccountsItemRecords" >      
+      insert into ts_settle_accounts_item_records (record_id, order_id,settle_accounts_item_id,settle_accounts_item_type,settle_accounts_item_name, settle_accounts_item_num, 
+      settle_accounts_item_total, quote_item_records_id,settle_accounts_item_price)
+    values (UUID(), #{orderId,jdbcType=VARCHAR},#{itemId,jdbcType=VARCHAR}, #{itemType,jdbcType=TINYINT}, #{itemName,jdbcType=VARCHAR}, #{itemNum,jdbcType=VARCHAR}, 
+      #{itemTotal,jdbcType=DOUBLE},#{quoteItemRecordsId,jdbcType=DOUBLE},#{itemPrice,,jdbcType=DOUBLE})
+  </insert>
+</mapper>

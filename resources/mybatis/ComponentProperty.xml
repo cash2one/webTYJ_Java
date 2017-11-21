@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.flf.mapper.ComponentPropertyMapper" >
+  <resultMap id="BaseResultMap" type="ComponentProperty" >
+    <id column="component_property_id" property="componentPropertyId" jdbcType="VARCHAR" />
+    <result column="component_id" property="componentId" jdbcType="VARCHAR" />
+    <result column="property_id" property="propertyId" jdbcType="VARCHAR" />
+    <result column="property_number" property="propertyNumber" jdbcType="DOUBLE" />
+    <result column="property_area" property="propertyArea" jdbcType="VARCHAR" />
+    <result column="functional_id" property="functionalId" jdbcType="VARCHAR" />
+    <result column="functional_name" property="functionalName" jdbcType="VARCHAR"/>
+    <result column="building_structure_id" property="buildingStructureId" jdbcType="VARCHAR" />
+    <result column="property_name" property="propertyName" jdbcType="VARCHAR" />
+    <result column="full_name" property="fullName" jdbcType="VARCHAR" />
+  </resultMap>
+  
+  <resultMap type="BuildingComponent" id="ComponentPropertyResultMap" extends="BaseResultMap">
+  	<association property="property"  column="property_id" select="com.flf.mapper.PropertyMapper.selectByPrimaryKey"></association>
+  </resultMap>
+  
+  <resultMap type="ComponentProperty" id="ResultMapWithRelation" extends="BaseResultMap">
+  	<association property="property" column="property_id" select="com.flf.mapper.PropertyMapper.selectByPrimaryKey" />
+  	<association property="functionals" column="functional_id" select="com.flf.mapper.FunctionalMapper.selectFunctionalById" />
+  </resultMap>
+  
+  <select id="getComponentPropertyByComponentIdRest" resultMap="ResultMapWithRelation" parameterType="java.lang.String" >
+    select * from tc_component_property   where component_id=#{0}
+  </select>
+
+  
+   <select id="ListPageComponentProperty" resultMap="BaseResultMap" parameterType="ComponentProperty" >
+    select *
+    from tc_component_property  
+  </select>
+  
+   <select id="ListComponentPropertyAll" resultMap="BaseResultMap"  >
+    select *
+    from tc_component_property  
+  </select>
+ 
+  <select id="selectComponentPropertyById" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select *
+    from tc_component_property  where component_property_id=#{0}
+  </select>
+  
+  <delete id="deleteComponentProperty" parameterType="java.lang.String" >
+    delete from tc_component_property where component_property_id=#{0}
+  </delete>
+  
+  <delete id="deleteComponentPropertyByBuildingComponentId" parameterType="java.lang.String" >
+    delete from tc_component_property where component_id=#{0}
+  </delete>
+  
+  <insert id="insertComponentProperty" parameterType="ComponentProperty" >
+    insert into tc_component_property (component_property_id, component_id, 
+      property_id, property_number, property_area, functional_id
+      )
+    values (UUID(), #{componentId,jdbcType=VARCHAR}, 
+      #{propertyId,jdbcType=VARCHAR}, #{propertyNumber,jdbcType=DOUBLE}, #{propertyArea,jdbcType=VARCHAR}, #{functionalId,jdbcType=VARCHAR}
+      )
+  </insert>
+ 
+ 
+  
+  <update id="updateComponentProperty" parameterType="ComponentProperty" >
+    update tc_component_property 
+    set 
+      component_id = #{record.componentId,jdbcType=VARCHAR},
+      property_id = #{record.propertyId,jdbcType=VARCHAR},
+      property_number = #{record.propertyNumber,jdbcType=DOUBLE},
+      property_area = #{record.propertyArea,jdbcType=VARCHAR},
+      functional_id = #{record.functionalId,jdbcType=VARCHAR}
+  where component_property_id = #{record.componentPropertyId,jdbcType=VARCHAR}
+  </update>
+  
+  <select id="getPropertyById" resultMap="BaseResultMap" parameterType="java.lang.String" >
+   	SELECT c.property_id,c.property_name,a.building_structure_id,d.full_name
+  	FROM tc_component_structure a,tc_component_property b,t_property c,tc_building_structure d
+	WHERE a.component_property_id=b.component_id 
+	AND b.property_id=c.property_id
+	AND d.id=a.building_structure_id
+	AND a.building_structure_id=#{buildingStructureId}
+  </select>
+  <!-- ****** -->
+  <select id="getComponentPropertyByBSId" parameterType="String" resultMap="ResultMapWithRelation">
+  	select a.building_structure_id ,b.property_id,b.functional_id,c.functional_name,d.property_name 
+ 	from tc_component_structure a left join tc_component_property b on a.component_property_id = b.component_id 
+ 	left join tc_functional c on c.functional_id = b.functional_id 
+ 	left join t_property d on d.property_id = b.property_id 
+ 	where a.building_structure_id  = #{buildingStructureId}
+  </select>
+  <select id="selectComponentAndProperty" parameterType="String" resultMap="ResultMapWithRelation">
+  	select * from tc_component_property   where component_id=#{componentId}
+  </select>
+
+	<select id="selectComProById" parameterType="String" resultMap="ResultMapWithRelation">
+  	select * from tc_component_property   where component_property_id=#{componentPropertyId}
+  </select>
+	<update id="updateComponentPropertyById" parameterType="ComponentProperty" >
+    update tc_component_property 
+    set 
+      component_id = #{componentId,jdbcType=VARCHAR},
+      property_id = #{propertyId,jdbcType=VARCHAR},
+      property_number = #{propertyNumber,jdbcType=DOUBLE},
+      property_area = #{propertyArea,jdbcType=VARCHAR},
+      functional_id = #{functionalId,jdbcType=VARCHAR}
+  where component_property_id = #{componentPropertyId,jdbcType=VARCHAR}
+  </update>
+  
+  
+</mapper>

@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.flf.mapper.LostMapper">
+    <resultMap type="Lost" id="BaseResultMap">
+		<id column="article_id" property="articleId"/>
+		<result column="article_name" property="articleName"/>
+		<result column="article_amount" property="articleAmount"/>
+		<result column="article_place" property="articlePlace"/>
+		<result column="article_people" property="articlePeople"/>
+		<result column="article_claimant" property="articleClaimant"/>
+		<result column="article_timePicker" property="articleTimePicker"/>
+		<result column="article_timeCheck" property="articleTimeCheck"/>
+		<result column="article_timeClaim" property="articleTimeClaim"/>
+		<result column="article_describe" property="articleDescribe"/>
+		<result column="lost_state" property="lostState"/>
+		<result column="pick_place" property="pickPlace"/>
+		<result column="lost_time" property="lostTime"/>
+		<result column="remarks" property="remarks"/>
+		<result column="article_lostpeople" property="articleLostPeople"/>
+		<result column="name" property="name"/>
+		<result column="phone_num" property="phoneNum"/>
+		<association property="personPicker" column="article_people" javaType="PersonCustNew" select="com.flf.mapper.PersonCustNewMapper.getPersonCustNewById" />
+		<association property="personLoser" column="article_claimant" javaType="PersonCustNew" select="com.flf.mapper.PersonCustNewMapper.getPersonCustNewById" />
+		<association property="personGeter" column="article_lostpeople" javaType="PersonCustNew" select="com.flf.mapper.PersonCustNewMapper.getPersonCustNewById" />
+	</resultMap>
+
+	<resultMap type="Lost" id="lostResultMap" extends="BaseResultMap">
+		<association property="personPicker" column="article_people" javaType="PersonCustNew" select="com.flf.mapper.PersonCustNewMapper.getPersonCustNewById" />
+		<association property="personLoser" column="article_claimant" javaType="PersonCustNew" select="com.flf.mapper.PersonCustNewMapper.getPersonCustNewById" />
+		<association property="personGeter" column="article_lostpeople" javaType="PersonCustNew" select="com.flf.mapper.PersonCustNewMapper.getPersonCustNewById" />
+	</resultMap>
+	
+	 <select id="listAllLostBySearch" parameterType="Search" resultMap="lostResultMap">
+  	SELECT a.* FROM t_lost a 
+  	WHERE  1=1
+  		<if test="lostState!=null">
+  			and a.lost_state =#{lostState}
+  		</if> 
+  			
+    </select>
+    	
+	 <select id="listAllLostSearch" parameterType="Search" resultMap="lostResultMap">
+  		select * from t_lost a 
+		LEFT JOIN tc_person_cust b on a.article_lostpeople=b.cust_id
+		where 1=1
+  		<if test="lostState!=null">
+  			and a.lost_state =#{lostState}
+  		</if> 
+  			
+    </select>
+    <select id="listAllGetSearch" parameterType="Search" resultMap="lostResultMap">
+  		select * from t_lost a 
+		LEFT JOIN tc_person_cust b on a.article_claimant=b.cust_id
+		where 1=1
+  		<if test="lostState!=null">
+  			and a.lost_state =#{lostState}
+  		</if> 
+  			
+    </select>
+    <select id="listAllUpSearch" parameterType="Search" resultMap="lostResultMap">
+  		select * from t_lost a 
+		LEFT JOIN tc_person_cust b on a.article_people=b.cust_id
+		where 1=1
+  		<if test="lostState!=null">
+  			and a.lost_state =#{lostState}
+  		</if> 
+  			
+    </select>
+	
+	<select id="listPageLost" parameterType="Lost" resultMap="lostResultMap">
+		select * from t_lost where 1=1  	
+  	<if test="articleName!=null">
+  		and article_name like CONCAT('%',#{articleName},'%')
+  	</if>
+  	<if test="lostState!=null">
+  		and article_name like =#{lostState}
+  	</if>	
+	</select>
+	
+	<select id="listAllLost"  resultMap="lostResultMap">
+		select * from t_lost where 1=1  	
+  	<if test="articleName!=null and articleName != '' ">
+  		and article_name like CONCAT('%',#{articleName},'%')
+  	</if>	
+	</select>
+	
+	<select id="countLostByState" parameterType="Integer" resultType="int">
+		select count(*) from t_lost where lost_state=#{0}
+	</select>
+	
+	<select id="getLostById" resultMap="lostResultMap" parameterType="String" >
+    select * from t_lost
+     where article_id = #{0}
+    </select>
+	
+  <insert id="insertLost" parameterType="Lost" >
+       insert into t_lost (article_id,article_name,article_amount,article_place,article_people,article_claimant,article_timePicker,article_timeClaim,article_describe,article_timeCheck,lost_state,remarks,pick_place,lost_time,article_lostpeople)
+       values (UUId(),#{articleName}, #{articleAmount}, #{articlePlace}, #{articlePeople}, #{articleClaimant}, #{articleTimePicker}, #{articleTimeClaim}, #{articleDescribe}, #{articleTimeCheck}, #{lostState},#{remarks},#{pickPlace},#{lostTime},#{articleLostPeople})
+  </insert>
+  
+  <update id="updateLost" parameterType="Lost" >
+    update t_lost
+    set
+     article_name = #{articleName},
+     article_amount = #{articleAmount},
+     article_place = #{articlePlace},
+     article_people = #{articlePeople},
+     article_claimant = #{articleClaimant},
+     article_timePicker = #{articleTimePicker},
+     article_timeClaim = #{articleTimeClaim},
+     article_describe = #{articleDescribe},
+     article_timeCheck=#{articleTimeCheck},
+     lost_state=#{lostState},
+     remarks=#{remarks},
+     pick_place=#{pickPlace},
+     lost_time=#{lostTime},
+     article_lostpeople=#{articleLostPeople}
+    where article_id=#{articleId}
+  </update>
+  
+  <update id="updateLostClaim" parameterType="Lost" >
+    update t_lost
+    set
+     article_claimant = #{articleClaimant},
+     article_timeCheck = #{articleTimeCheck},
+     lost_state=2
+    where article_id=#{articleId}
+  </update>
+  <delete id="deleteLost" parameterType="String">
+    delete from t_lost
+    where article_id=#{0}
+  </delete>
+</mapper>

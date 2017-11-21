@@ -1,0 +1,35 @@
+<!--
+    作者：彭婷婷
+    页面名称：外部专业线---服务请求详情--验收详情
+    js路径：js/controllers/externalProfession/serviceRequestDatil/cleanQuery/acceptanceDetails
+    创建时间：2015/4/30
+-->
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>验收详情</title>
+</head>
+<body>
+<div class="order">
+    <div class="row" style="margin-top: 20px">
+        <div style="width:94%; margin:15px 50px;">
+            <div class="row" style="margin: 20px 0px 0px 20px">
+                <div class="col-md-2"><img src="images/u115.png"><strong>验收</strong></div>
+            </div>
+            <div class="row" style="margin-left: 40px">
+                <div class="col-md-12">验收时间：&nbsp;2014/10/10 10:10</div>
+                <div class="col-md-12">负责人：刘明</div>
+                <div class="col-md-12">处理结果：符合要求</div>
+                <div class="col-md-12">详情描述：基本符合要求</div>
+                <div class="col-md-12">照片：&nbsp;&nbsp;<img src="images/u1557.png">&nbsp;&nbsp;&nbsp;&nbsp;<img src="images/u1557.png">&nbsp;&nbsp;&nbsp;&nbsp;<img src="images/u1557.png"></div>
+                 <div class="col-md-4"><button class="btn btn-default pull-right" style="margin-top: 20px">返回</button></div>
+            </div>
+
+        </div>
+
+        <div class="clear"></div>
+    </div>
+</div>
+</body>
+</html>

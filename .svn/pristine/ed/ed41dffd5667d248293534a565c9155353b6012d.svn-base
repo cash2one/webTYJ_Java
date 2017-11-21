@@ -1,0 +1,24 @@
+package com.flf.mapper;
+
+
+import java.util.List;
+
+import com.flf.entity.TasksMerge;
+/**
+ * 合并任务表
+ * 创建人：邵政
+ * 创建时间：2015-7-7
+ */
+public interface TasksMergeMapper {
+	int deleteTasksMerge(String tasksMergeId);//删除合并任务信息
+
+	int insertTasksMerge(TasksMerge tasksMerge);//添加合并任务信息
+
+    List<TasksMerge> listAllTasksMerge();//查询所有合并任务信息
+
+    TasksMerge getTasksMergebyId(String tasksMergeId);//通过Id查询合并任务信息
+
+    int updateTasksMerge(TasksMerge tasksMerge);//修改合并任务信息
+
+    
+}

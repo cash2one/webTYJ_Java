@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+<div class="complaint_user_list" style="margin-top: 15px;">
+    <div style="padding:5px 10px 0">
+        <div class="rouw">
+            <div class="listtitle">
+                <a ui-sref="index.internalProfession.staffsuperviseIT.staffsuperviseITAdd">新增</a>
+                <a ui-sref="index.internalProfession.staffsuperviseIT.staffsuperviseITCheck">查看人员</a>
+            </div>
+        </div>
+
+        <div class="clear"></div>
+    </div>
+    <div class="row" style="padding:5px 10px 0">
+        <div ui-view></div>
+    </div>
+</div>
+</body>
+</html>

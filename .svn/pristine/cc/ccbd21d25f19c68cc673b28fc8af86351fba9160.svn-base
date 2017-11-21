@@ -1,0 +1,211 @@
+/**
+ * @Title: StallNewService.java
+ * @Package com.flf.service
+ * @Description: TODO
+ * Copyright: Copyright (c) 2011 
+ * Company:武汉闻风多奇软件开发有限公司
+ * 
+ * @author wangtao
+ * @date 2015-6-16 上午10:16:57
+ * @version V1.0
+ */
+
+package com.flf.service;
+
+import java.io.InputStream;
+import java.util.List;
+
+import javax.jws.WebService;
+import javax.ws.rs.Consumes;
+import javax.ws.rs.DELETE;
+import javax.ws.rs.GET;
+import javax.ws.rs.POST;
+import javax.ws.rs.PUT;
+import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
+import javax.ws.rs.Produces;
+import javax.ws.rs.core.MediaType;
+
+import com.flf.entity.Annex;
+import com.flf.entity.Caraccesscard;
+import com.flf.entity.PageRestful;
+import com.flf.entity.PersonBuildingNew;
+import com.flf.entity.Search;
+import com.flf.entity.StallNew;
+import com.flf.request.Info;
+
+/**
+ * @ClassName: StallNewService
+ * @Description: TODO
+ * @author wangyong
+ * @date 2015-6-16 上午10:16:57
+ *
+ */
+@WebService
+@Path("/StallNew")
+public interface StallNewService {
+	
+	/**
+	 * 查询所有车位信息
+	 * @return
+	 */
+	@GET
+	@Path("/listStallNew")
+	@Produces(MediaType.APPLICATION_JSON)
+	List<StallNew> listStallNew();
+	
+	/**
+	 * 根据Id查询车位信息
+	 * @param StallNewId
+	 * @return
+	 */
+	@GET
+	@Path("/getStallNewById/{StallNewId}")
+	@Produces(MediaType.APPLICATION_JSON)
+	StallNew getStallNewByIdRest(@PathParam("StallNewId") String StallNewId);
+	
+	/**
+	 * 添加车位
+	 * @param StallNew
+	 */
+	@POST
+	@Path("/AddStallNew")
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+	void AddStallNew(StallNew StallNew);
+	
+	/**
+	 * 修改车位信息
+	 * @param StallNew
+	 */
+	@PUT
+	@Path("/UpdateStallNew")
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+	void UpdateStallNew(StallNew StallNew);
+	
+	/**
+	 * 删除车位信息
+	 * @param StallNewId
+	 */
+	@DELETE
+	@Path("/DeleteStallNewById/{StallNewId}")
+	@Produces(MediaType.APPLICATION_JSON)
+	void DeleteStallNewById(@PathParam("StallNewId") String StallNewId);
+	
+	/**
+	 * 添加车位
+	 * @param StallNew
+	 */
+	@POST
+	@Path("/AddStallNew2")
+	@Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+	void AddStallNew2(StallNew stallNew);
+	
+	/**
+	 * 创建by肖聪 2015/7/10
+	 * 通过条件查询车位信息
+	 * @param Stall
+	 */
+	@POST
+	@Path("/listSearchStall")
+	@Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+	@Produces(MediaType.APPLICATION_JSON)
+	List<StallNew> listSearchStall(Search search);
+	
+	/**
+	 * 创建by肖聪 2015/7/10
+	 * 通过条件查询办理人和授权人的车位信息
+	 * @param Stall
+	 */
+	@POST
+	@Path("/listSearchStallAu")
+	@Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+	@Produces(MediaType.APPLICATION_JSON)
+	List<StallNew> listSearchStallAu(Search search);
+	
+	/**
+	 * 创建by汪洋2015-7-16
+	 * 查询客户关联车位信息
+	 * @param Stall
+	 */
+	@GET
+	@Path("/listStallByPersonCustId/{personCustId}")
+	@Produces(MediaType.APPLICATION_JSON)
+	List<StallNew> listStallByPersonCustId(@PathParam("personCustId")String personCustId);
+
+	@POST
+	@Path("/listPageStallNewByType")
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes( {MediaType.APPLICATION_JSON,MediaType.APPLICATION_XML})
+	PageRestful listPageStallNewByType(StallNew stallNew);
+    
+    /**
+  	 * 导入Excel数据文档
+  	 * @param annex
+  	 * @return
+  	 */
+  	@POST
+  	@Path("/importExcelFile")
+  	@Produces(MediaType.APPLICATION_JSON)
+  	@Consumes({MediaType.APPLICATION_JSON,MediaType.APPLICATION_XML})
+  	Info importExcelFile(Annex annex);
+  	
+  	/**
+     * 将需要进行EXCEL导入的数据先写入模板并导出到本地
+     */
+    InputStream exportStallNewFile(String projectId);
+    
+    /**
+     * 导出所有车位记录
+     * 王洲
+     * 2016.1.8
+     * @return
+     */
+    InputStream exportAllStallNew();
+    /**
+     * 根据车位类型查询车
+     * 陶勇超
+     * 2016年1月12日 16:11:01
+     * @param stallType
+     * @return
+     */
+    @GET
+	@Path("/listStallByStallType/{stallType}")
+	@Produces(MediaType.APPLICATION_JSON)
+	List<StallNew> listStallByStallType(@PathParam("stallType")String stallType);
+    
+    /**
+     * 修改车位数据
+     * @author 王洲
+     * @date 2016.03.11
+     * @param stallNew
+     */
+    @POST
+    @Path("/updateStallNew")
+    @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+    void updateStallNew(StallNew stallNew);
+    
+    /**
+     * 根据项目id分页查询车位信息
+     * @author 王洲
+     * date 2016-03-24
+     * @param stallNew
+     * @return
+     */
+    @POST
+    @Path("/listPageStallByProjectId")
+    @Produces(MediaType.APPLICATION_JSON)
+    PageRestful listPageStallByProjectId(StallNew stallNew);
+
+    /**
+     * 修改单条车位数据
+     * @author 王洲
+     * @date 2016.03.11
+     * @param stallNew
+     */
+    @POST
+    @Path("/updateStall")
+    @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+    void updateStall(StallNew stallNew);
+}

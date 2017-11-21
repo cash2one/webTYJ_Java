@@ -1,0 +1,94 @@
+package com.flf.service;
+
+import java.util.List;
+import javax.jws.WebService;
+import javax.ws.rs.Consumes;
+import javax.ws.rs.GET;
+import javax.ws.rs.POST;
+import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
+import javax.ws.rs.Produces;
+import javax.ws.rs.core.MediaType;
+import com.flf.entity.CollectionManage;
+import com.flf.entity.PageRestful;
+
+/**
+ * 银行托收办理service
+ * @author 倪明
+ *
+ */
+@WebService
+@Path("/CollectionManage")
+public interface CollectionManageService {
+
+	/**
+	 * 查询所有银行托收办理信息
+	 * @return
+	 */
+	@GET
+	@Path("/listAllCollectionManage")
+	@Produces(MediaType.APPLICATION_JSON)
+	List<CollectionManage> listAllCollectionManage();
+	
+	/**
+	 * 分页查询银行托收办理信息
+	 * @param collectionManage
+	 * @return
+	 */
+	@POST
+	@Path("/listPageCollectionManage")
+	@Consumes({MediaType.APPLICATION_XML,MediaType.APPLICATION_JSON})
+	@Produces(MediaType.APPLICATION_JSON)
+	PageRestful listPageCollectionManage(CollectionManage collectionManage);
+	
+	/**
+	 * 根据id查询银行托收办理信息
+	 * @param collectionManageId
+	 * @return
+	 */
+	@GET
+	@Path("/getCollectionManageById/{collectionManageId}")
+	@Produces(MediaType.APPLICATION_JSON)
+	CollectionManage getCollectionManageById(@PathParam("collectionManageId") String collectionManageId);
+	
+	/**
+	 * 新增银行托收办理信息
+	 * @param collectionManage
+	 */
+	@POST
+	@Path("/insertCollectionManage")
+	@Consumes({MediaType.APPLICATION_XML,MediaType.APPLICATION_JSON})
+	String insertCollectionManage(CollectionManage collectionManage);
+	
+	/**
+	 * 修改银行托收办理信息
+	 * @param collectionManage
+	 */
+	@POST
+	@Path("/updateCollectionManage")
+	@Consumes({MediaType.APPLICATION_XML,MediaType.APPLICATION_JSON})
+	String updateCollectionManage(CollectionManage collectionManage);
+	
+	/**
+	 * 删除银行托收办理信息
+	 * @param collectionManageId
+	 */
+	@GET
+	@Path("/deleteCollectionManage/{collectionManageId}")
+	@Consumes({MediaType.APPLICATION_XML,MediaType.APPLICATION_JSON})
+	@Produces(MediaType.APPLICATION_JSON)
+	String deleteCollectionManage(@PathParam("collectionManageId") String collectionManageId);
+	
+	/**
+	 * 校验合同号是否重复
+	 * @param contactNumber
+	 */
+	@GET
+	@Path("/checkContactNumber/{contractNumber}")
+	@Consumes({MediaType.APPLICATION_XML,MediaType.APPLICATION_JSON})
+	@Produces(MediaType.APPLICATION_JSON)
+	String checkContactNumber(@PathParam("contractNumber") String contractNumber);
+
+
+
+}

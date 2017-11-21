@@ -1,0 +1,327 @@
+package com.flf.entity;
+
+import java.util.Date;
+import java.util.List;
+import java.util.Set;
+
+import javax.xml.bind.annotation.XmlRootElement;
+
+/**
+ * 用户表
+ * 
+ * @author wangzhou
+ *
+ */
+@XmlRootElement(name = "TUser")
+public class TUser {
+
+	// 主键
+	private String userId;
+
+	// 员工id
+	private String employId;
+
+	// 用户名
+	private String userName;
+
+	// 登录名
+	private String loginName;
+
+	// 密码
+	private String password;
+
+	// 联系电话
+	private String tel;
+
+	// 证件类型
+	private String documentType;
+
+	// 证件号码
+	private String documentNum;
+
+	// 创建人id
+	private String createrId;
+
+	// 创建时间
+	private Date createTime;
+
+	// 修改人id
+	private String modifyId;
+
+	// 修改时间
+	private Date modifyTime;
+
+	// 状态
+	private Byte state;
+
+	// 角色类型
+	private String roleType;
+
+	// 关联员工
+	private Staff staff;
+
+	// 关联用户角色集合
+	private List<TUserRole> tUserRoles;
+
+	// 用户权限集合
+	private Set<String> hrAuthority;
+
+	// sessionId
+	private String sessionId;
+	// 公司ID
+	private String companyId;
+
+	// 功能权限集合
+	private List<TUserPermissions> tuserPermissions;
+
+	// 关联岗位 王洲 2016.03.06
+	private String postRole;
+
+	// 团队id zhuqi 2016.03.24
+	private String teamworkId;
+
+	private List<FinancialStaff> financials;// 财务信息集合
+
+	private String cashierStatus;// 收银员审批状态（0没有交账权限 1有交账权限）
+	private String cashierLeaderStatus;// 收银组长审批状态（0没有交账权限 1有交账权限）
+	private String tellerStatus;// 出纳审批状态（0没有交账权限 1有交账权限）
+	private String accountantStatus;// 会计审批状态（0没有交账权限 1有交账权限）
+
+	private Page page;
+
+	private List<String> listUserId;
+	
+
+	public String getCashierStatus() {
+		return cashierStatus;
+	}
+
+	public void setCashierStatus(String cashierStatus) {
+		this.cashierStatus = cashierStatus;
+	}
+
+	public String getCashierLeaderStatus() {
+		return cashierLeaderStatus;
+	}
+
+	public void setCashierLeaderStatus(String cashierLeaderStatus) {
+		this.cashierLeaderStatus = cashierLeaderStatus;
+	}
+
+	public String getTellerStatus() {
+		return tellerStatus;
+	}
+
+	public void setTellerStatus(String tellerStatus) {
+		this.tellerStatus = tellerStatus;
+	}
+
+	public String getAccountantStatus() {
+		return accountantStatus;
+	}
+
+	public void setAccountantStatus(String accountantStatus) {
+		this.accountantStatus = accountantStatus;
+	}
+
+	public List<String> getListUserId() {
+		return listUserId;
+	}
+
+	public void setListUserId(List<String> listUserId) {
+		this.listUserId = listUserId;
+	}
+
+	public Page getPage() {
+		return page;
+	}
+
+	public void setPage(Page page) {
+		this.page = page;
+	}
+
+	public List<FinancialStaff> getFinancials() {
+		return financials;
+	}
+
+	public void setFinancials(List<FinancialStaff> financials) {
+		this.financials = financials;
+	}
+
+	public String getTeamworkId() {
+		return teamworkId;
+	}
+
+	public void setTeamworkId(String teamworkId) {
+		this.teamworkId = teamworkId;
+	}
+
+	public String getUserId() {
+		return userId;
+	}
+
+	public void setUserId(String userId) {
+		this.userId = userId;
+	}
+
+	public String getEmployId() {
+		return employId;
+	}
+
+	public void setEmployId(String employId) {
+		this.employId = employId;
+	}
+
+	public String getUserName() {
+		return userName;
+	}
+
+	public void setUserName(String userName) {
+		this.userName = userName;
+	}
+
+	public String getLoginName() {
+		return loginName;
+	}
+
+	public void setLoginName(String loginName) {
+		this.loginName = loginName;
+	}
+
+	public String getPassword() {
+		return password;
+	}
+
+	public void setPassword(String password) {
+		this.password = password;
+	}
+
+	public String getTel() {
+		return tel;
+	}
+
+	public void setTel(String tel) {
+		this.tel = tel;
+	}
+
+	public String getDocumentType() {
+		return documentType;
+	}
+
+	public void setDocumentType(String documentType) {
+		this.documentType = documentType;
+	}
+
+	public String getDocumentNum() {
+		return documentNum;
+	}
+
+	public void setDocumentNum(String documentNum) {
+		this.documentNum = documentNum;
+	}
+
+	public String getCreaterId() {
+		return createrId;
+	}
+
+	public void setCreaterId(String createrId) {
+		this.createrId = createrId;
+	}
+
+	public Date getCreateTime() {
+		return createTime;
+	}
+
+	public void setCreateTime(Date createTime) {
+		this.createTime = createTime;
+	}
+
+	public String getModifyId() {
+		return modifyId;
+	}
+
+	public void setModifyId(String modifyId) {
+		this.modifyId = modifyId;
+	}
+
+	public Date getModifyTime() {
+		return modifyTime;
+	}
+
+	public void setModifyTime(Date modifyTime) {
+		this.modifyTime = modifyTime;
+	}
+
+	public Byte getState() {
+		return state;
+	}
+
+	public void setState(Byte state) {
+		this.state = state;
+	}
+
+	public String getRoleType() {
+		return roleType;
+	}
+
+	public void setRoleType(String roleType) {
+		this.roleType = roleType;
+	}
+
+	public Staff getStaff() {
+		return staff;
+	}
+
+	public void setStaff(Staff staff) {
+		this.staff = staff;
+	}
+
+	public String getSessionId() {
+		return sessionId;
+	}
+
+	public void setSessionId(String sessionId) {
+		this.sessionId = sessionId;
+	}
+
+	public Set<String> getHrAuthority() {
+		return hrAuthority;
+	}
+
+	public void setHrAuthority(Set<String> hrAuthority) {
+		this.hrAuthority = hrAuthority;
+	}
+
+	public String getCompanyId() {
+		return companyId;
+	}
+
+	public void setCompanyId(String companyId) {
+		this.companyId = companyId;
+	}
+
+	public List<TUserRole> gettUserRoles() {
+		return tUserRoles;
+	}
+
+	public void settUserRoles(List<TUserRole> tUserRoles) {
+		this.tUserRoles = tUserRoles;
+	}
+
+	public List<TUserPermissions> getTuserPermissions() {
+		return tuserPermissions;
+	}
+
+	public void setTuserPermissions(List<TUserPermissions> tuserPermissions) {
+		this.tuserPermissions = tuserPermissions;
+	}
+
+	public String getPostRole() {
+		return postRole;
+	}
+
+	public void setPostRole(String postRole) {
+		this.postRole = postRole;
+	}
+
+}

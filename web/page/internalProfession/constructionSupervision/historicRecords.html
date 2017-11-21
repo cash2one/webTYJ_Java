@@ -1,0 +1,46 @@
+<!--
+    创建时间：2015/5/19
+    作者:
+    修改者：钟加诚
+    修改时间：2015/6/1
+    修改内容：Js数据，查询效果
+    页面名称:历史记录
+    js路径:js/controllers/externalProfession/allPets
+-->
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>历史记录</title>
+</head>
+<body>
+<div class="container" style="margin:20px;width: 97%;height: 260px">
+    <table class="table-bordered" style="width: 100%;text-align: center">
+        <tr style="background-color: #00FF66;">
+            <td>房屋编号</td>
+            <td>业主姓名</td>
+            <td>房屋地址</td>
+            <td>装修类型</td>
+            <td>装修公司</td>
+            <td>企业法人</td>
+            <td>负责人</td>
+            <td>装修开始日期</td>
+            <td>装修完成日期</td>
+            <td>装修状态</td>
+        </tr>
+        <tr ng-repeat="">
+            <td>{{homeNb}}</td>
+            <td>{{ownerName}}</td>
+            <td>{{homeAd}}</td>
+            <td>{{decorationType}}</td>
+            <td>{{decorationCompany}}</td>
+            <td>{{}}</td>
+            <td>{{}}</td>
+            <td>{{}}</td>
+            <td>{{}}</td>
+            <td>{{}}</td>
+        </tr>
+    </table>
+</div>
+</body>
+</html>

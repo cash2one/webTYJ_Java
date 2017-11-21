@@ -1,0 +1,187 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.flf.mapper.TenementInsuranceMapper" >
+  <resultMap id="BaseResultMap" type="TenementInsurance" >
+    <id column="insurance_id" property="insuranceId" jdbcType="VARCHAR" />
+    <result column="project_id" property="projectId" jdbcType="VARCHAR" />
+    <result column="enterprise_id" property="enterpriseId" jdbcType="VARCHAR" />
+    <result column="enterprise_money" property="enterpriseMoney" jdbcType="DOUBLE" />
+    <result column="start_time" property="startTime" jdbcType="DATE" />
+    <result column="end_time" property="endTime" jdbcType="DATE" />
+    <result column="area_insurance_company_id" property="areaInsuranceCompanyId" jdbcType="VARCHAR" />
+    <result column="insurance_type" property="insuranceType" jdbcType="TINYINT" />
+    <result column="premium_money" property="premiumMoney" jdbcType="DOUBLE" />
+    <result column="settling_fee" property="settlingFee" jdbcType="DOUBLE" />
+    <result column="staff_id" property="staffId" jdbcType="VARCHAR" />
+    <result column="insurance_num" property="insuranceNum" jdbcType="VARCHAR" />
+    <result column="settling_fee_sum" property="settlingFeeSum" jdbcType="DOUBLE" />
+    <result column="project_name" property="projectName" jdbcType="VARCHAR" />
+    <result column="colors" property="colors" jdbcType="VARCHAR" />
+    <result column="state" property="state" jdbcType="VARCHAR" />
+    
+    <result column="staff_name" property="staffName" jdbcType="VARCHAR" />
+  </resultMap>
+  
+  <resultMap type="TenementInsurance" id="resultTenementInsuranceMap" extends="BaseResultMap">
+  	<collection property="annexs" column="insurance_id" ofType="Annex" select="com.flf.mapper.AnnexMapper.getAnnexbyRelationId"></collection>
+  </resultMap>
+  
+ <delete id="deleteTenementInsurance" parameterType="String">
+  delete from tc_tenement_insurance where insurance_id=#{0}
+  </delete>
+  
+  <select id="getTenementInsuranceById" parameterType="String" resultMap="resultTenementInsuranceMap">
+  SELECT * FROM tc_tenement_insurance a
+			LEFT JOIN t_project b on a.project_id=b.project_id
+			LEFT JOIN tc_enterprise_cust c on a.enterprise_id=c.enterprise_id
+			 where insurance_id=#{0}
+  </select>
+  
+  <select id="searchTenementInsurance" parameterType="TenementInsurance" resultMap="resultTenementInsuranceMap">
+  		SELECT * FROM tc_tenement_insurance a
+			LEFT JOIN t_project b on a.project_id=b.project_id
+			LEFT JOIN tc_enterprise_cust c on a.enterprise_id=c.enterprise_id
+  		 WHERE 1=1 
+  		<if test="insuranceName != null and insuranceName !=''">
+  			AND insurance_name LIKE CONCAT('%',#{insuranceName},'%')
+  		</if>
+  		<if test="projectId !=null and projectId!=''">
+  			AND b.project_id = #{projectId}
+  		</if>
+  		<if test="enterpriseId !=null and enterpriseId!=''">
+  			AND c.enterprise_id = #{enterpriseId}
+  		</if>
+  		<if test="minStaTime!=null and minStaTime!= '' or maxStaTime!=null and maxStaTime!=''">
+  		     and a.end_time between #{minStaTime} and #{maxStaTime}
+  	    </if>
+  		<if test="startTime!=null and startTime!=''">
+ 			<![CDATA[
+		  AND DATE_FORMAT(start_time, '%Y-%m-%d') <=  DATE_FORMAT(#{startTime, '%Y-%m-%d')
+		]]>
+  		</if>
+  		<if test="endTime!=null and endTime!=''">
+  			<![CDATA[
+		  AND DATE_FORMAT(end_time, '%Y-%m-%d') >=  DATE_FORMAT(#{endTime, '%Y-%m-%d')
+		]]>
+  		</if>
+  		<if test="alreadyExpire != null and alreadyExpire != ''">
+  			<![CDATA[
+  				and DATE_FORMAT(end_time, '%Y-%m-%d') <= DATE_FORMAT(now(),'%Y-%m-%d')
+  			]]>
+  		</if>
+  		<if test="notExpire != null and notExpire != ''">
+  			<![CDATA[
+  				and DATE_FORMAT(end_time, '%Y-%m-%d') >= DATE_FORMAT(now(),'%Y-%m-%d')
+  			]]>
+  		</if>
+  </select>
+  <select id="getAllTenementInsurance" resultMap="resultTenementInsuranceMap">
+       SELECT * FROM tc_tenement_insurance
+  </select>
+  <insert id="insertTenementInsurance" parameterType="TenementInsurance" >      
+      insert into tc_tenement_insurance (insurance_id,project_id,enterprise_id,enterprise_money,start_time,end_time,
+      area_insurance_company_id,insurance_type,premium_money,settling_fee,staff_id,insurance_num,settling_fee_sum)
+    values (#{insuranceId,jdbcType=VARCHAR},#{projectId,jdbcType=VARCHAR}, #{enterpriseId,jdbcType=VARCHAR}, 
+      #{enterpriseMoney,jdbcType=DOUBLE}, #{startTime,jdbcType=TIMESTAMP}, #{endTime,jdbcType=TIMESTAMP},
+      #{areaInsuranceCompanyId,jdbcType=VARCHAR},#{insuranceType,jdbcType=TINYINT}, #{premiumMoney,jdbcType=DOUBLE}, 
+      #{settlingFee,jdbcType=DOUBLE},#{staffId,jdbcType=VARCHAR}, #{insuranceNum,jdbcType=DOUBLE}, #{settlingFeeSum,jdbcType=DOUBLE})
+  </insert>
+ 
+  <update id="updateTenementInsurance" parameterType="TenementInsurance" >
+    update tc_tenement_insurance
+    <set >
+      <if test="projectId != null" >
+        project_id = #{projectId,jdbcType=VARCHAR},
+      </if>
+      <if test="enterpriseId != null" >
+       enterprise_id = #{enterpriseId,jdbcType=VARCHAR},
+      </if>
+      <if test="enterpriseMoney != null" >
+       enterprise_money = #{enterpriseMoney,jdbcType=DOUBLE},
+      </if>
+       <if test="startTime != null" >
+        start_time = #{startTime,jdbcType=TIMESTAMP},
+      </if>
+        <if test="endTime != null" >
+       end_time = #{endTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="areaInsuranceCompanyId != null" >
+       area_insurance_company_id= #{areaInsuranceCompanyId,jdbcType=VARCHAR},
+      </if>
+      <if test="insuranceType != null" >
+      insurance_type= #{insuranceType,jdbcType=TINYINT},
+      </if>
+       <if test="premiumMoney != null" >
+      premium_money=#{premiumMoney,jdbcType=DOUBLE},
+      </if>
+       <if test="settlingFee != null" >
+     settling_fee=#{settlingFee,jdbcType=DOUBLE},
+      </if>
+      <if test="staffId != null" >
+     staff_id=#{staffId,jdbcType=VARCHAR},
+      </if>
+       <if test="insuranceNum != null" >
+     insurance_num=#{insuranceNum,jdbcType=DOUBLE},
+      </if>
+       <if test="settlingFeeSum != null" >
+        settling_fee_sum=#{settlingFeeSum,jdbcType=DOUBLE}
+      </if>
+    </set>
+   where insurance_id = #{insuranceId,jdbcType=VARCHAR}   
+  </update>
+  
+  
+  <!-- 搜索查询物业保险合同 -->
+	<select id="listPageTenementInsurance" parameterType="TenementInsurance" resultMap="BaseResultMap">
+		select t.*,p.project_name from t_project p
+		left join  tc_tenement_insurance t on p.project_id=t.project_id 
+		where 1=1 	
+		<if test="insuranceType != null and insuranceType != ''">
+			and t.insurance_type=#{insuranceType}
+		</if>
+		<if test="projectName != null and projectName != ''">
+			and p.project_name like CONCAT('%',#{projectName},'%')
+		</if>
+		<if test="startTime != null and startTime != '' and endTime == null or endTime == ''">
+			and t.end_time &gt;= #{startTime}
+		</if>
+		<if test="endTime != null and endTime != '' and startTime == null or startTime == ''">
+			and #{endTime} &gt;= t.end_time 
+		</if>
+		<if test="startTime != null and startTime != '' and endTime != null and endTime != ''">
+			and t.end_time between #{startTime} and #{endTime}
+		</if>
+		<if test="state == 1">
+			and t.insurance_id!=''
+		</if>
+		<if test="state == 2">
+			and t.insurance_id is null
+		</if>
+		<if test="state == 3">
+			and end_time between NOW() and DATE_ADD(NOW(), INTERVAL 1 MONTH)
+			or end_time between NOW() and DATE_ADD(NOW(), INTERVAL 4 MONTH)			
+		</if> 
+		
+	</select>
+	
+	
+	<resultMap type="TenementInsurance" id="TenementInsuranceResultMap" extends="BaseResultMap">
+           
+        <collection property="annexs" select="com.flf.mapper.AnnexMapper.getAnnexbyRelationId" ofType="Annex" column="insurance_id">
+			 <result column="annex_address" property="annexAddress" jdbcType="VARCHAR" />
+		</collection> 
+     </resultMap>
+	
+	
+	<!-- 根据保险id查看详情 -->
+	<select id="getTenementInsuranceByIds" parameterType="String" resultMap="TenementInsuranceResultMap">
+		select ti.*,p.project_name,s.staff_name
+	    from tc_tenement_insurance ti
+		inner join t_project p on p.project_id=ti.project_id
+		inner join t_staff s on s.staff_id=ti.staff_id
+		where insurance_id = #{insuranceId,jdbcType=VARCHAR}   
+	
+	</select>
+  
+  
+</mapper>

@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.flf.mapper.AcceptanceHouseMapper" >
+  <resultMap id="BaseResultMap" type="AcceptanceHouse" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="person_in_charge" property="personInCharge" jdbcType="VARCHAR" />
+    <result column="person_in_charge_name" property="personInChargeName" jdbcType="VARCHAR" />
+    <result column="start_date" property="startDate" jdbcType="TIMESTAMP" />
+    <result column="end_date" property="endDate" jdbcType="TIMESTAMP" />
+    <result column="acceptance_type" property="acceptanceType" jdbcType="VARCHAR" />
+    <result column="issuer" property="issuer" jdbcType="VARCHAR" />
+    <result column="issuer_date" property="issuerDate" jdbcType="TIMESTAMP" />
+    <result column="project_id" property="projectId" jdbcType="VARCHAR" />
+    <result column="service_request_id" property="serviceRequestId" jdbcType="VARCHAR" />
+	  <association property="issuerName" column="issuer" javaType="TUser" select="com.flf.mapper.TUserMapper.selectByPrimaryKey" />
+	<collection property="allNum" column="service_request_id" ofType="Tasks" select="com.flf.mapper.TasksMapper.getCountByServerId" />
+    <collection property="finishNum" column="service_request_id" ofType="Tasks" select="com.flf.mapper.TasksMapper.getFinishCountByServerId" />
+  </resultMap>
+   
+  <select id="listAllAcceptanceHouse" resultMap="BaseResultMap">
+  select * from tc_acceptance_house
+  </select>
+  
+  <insert id="insertAcceptanceHouse" parameterType="AcceptanceHouse">      
+      insert into tc_acceptance_house (id, person_in_charge,person_in_charge_name, start_date,end_date, 
+      acceptance_type, issuer,issuer_date, project_id,service_request_id)
+      values (#{id,jdbcType=VARCHAR}, #{personInCharge,jdbcType=VARCHAR}, #{personInChargeName,jdbcType=VARCHAR},
+      #{startDate}, #{endDate},#{acceptanceType,jdbcType=VARCHAR},
+      #{issuer,jdbcType=VARCHAR}, #{issuerDate}, #{projectId,jdbcType=VARCHAR},#{serviceRequestId,jdbcType=VARCHAR})
+  </insert>
+  
+    <select id="getAcceptanceHouseById" parameterType="String" resultMap="BaseResultMap">
+ 	select * from tc_acceptance_house where id=#{0}
+    </select>
+    
+    <select id="listPageAcceptanceHouse" parameterType="AcceptanceHouse" resultMap="BaseResultMap">
+  	select * from tc_acceptance_house where 1=1
+  	<if test="id != null">
+  		id = #{id}
+  	</if>
+  	 <if test="startDate!='' and startDate!=null">
+  				and start_date  =#{startDate}
+  	</if>
+  	 <if test="endDate!='' and endDate!=null">
+  				and end_date =#{endDate}
+  	</if>
+  	order by id
+  	</select>
+  
+</mapper>

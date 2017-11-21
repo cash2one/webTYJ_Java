@@ -1,0 +1,126 @@
+<!--
+createAuthor:王志刚
+pageName:内部专业线项目建筑初始化---新增建筑
+修改人：王志刚
+最后修改时间：2015/6/8
+-->
+<!DOCTYPE html>
+<html>
+<head>
+    <title>内部专业线项目建筑管理新增建筑</title>
+</head>
+<body>
+
+<div class="col-lg-3 col-md-3 col-sm-6">
+    <div class="row architecture_padding">
+        <div class="architecture_list">
+            <div class="professional_list_title">
+                <input type="button"  class="added_button" value="新增">
+                <input type="button"  class="delate_button" value="册除">
+            </div>
+            <div class="architecture_height">
+                <ul>
+                    <li class="">深圳桃园居</li>
+                    <li>1栋 </li>
+                    <ul>
+                        <li>住宅 </li>
+                        <ul>
+                            <li>1入口、2入口  </li>
+                        </ul>
+                    </ul>
+                    <li>2栋 </li>
+                    <li>2栋 </li>
+                    <li>2栋  </li>
+                    <li>2栋 </li>
+                    <li>2栋  </li>
+                    <li>2栋  </li>
+                    <li>2栋  </li>
+                    <li>2栋  </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+<!--专业类型选择表格结束-->
+<!--楼层勾选列表-->
+<div class="col-lg-5 col-md-5 col-sm-6">
+    <div class="row architecture_table_padding">
+        <div class="contract_table">
+            <div class="architecture_table_height">
+                <ul>
+                    <li>
+                        <span class="architecture_input_span">区域名称:</span>
+                        <form><input name="input" type="text" class="architecture_input" /></form>
+                        <div class="clear"></div>
+                    </li>
+                    <li>
+                        <span class="architecture_input_span">建筑面积:</span>
+                        <form><input name="input" type="text" class="architecture_input" /></form>
+                        <div class="clear"></div>
+                    </li>
+                    <li>
+                        <span class="architecture_input_span">实用率:</span>
+                        <form><input name="input" type="text" class="architecture_input" /></form>
+                        <div class="clear"></div>
+                    </li>
+                    <li>
+                        <span class="architecture_input_span">套内面积:</span>
+                        <form><input name="input" type="text" class="architecture_input" /></form>
+                        <div class="clear"></div>
+                    </li>
+                    <li>
+                        <span class="architecture_input_span">户型:</span>
+                        A-1户型
+                        <div class="clear"></div>
+                    </li>
+                    <li>
+                        <span class="architecture_input_span">属性:</span>
+                        商铺
+                        <div class="clear"></div>
+                    </li>
+                    <li>
+                        <span class="architecture_input_span">销售状态:</span>
+                        <form><input name="input" type="text" class="architecture_input" /></form>
+                        <div class="clear"></div>
+                    </li>
+                    <li>
+                        <span class="architecture_input_span">房屋编码:</span>
+                        <form><input name="input" type="text" class="architecture_input" /></form>
+                        <div class="clear"></div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <input type="button"  class="authorizationb" value="保存">
+        <input type="button"  class="authorization_save" value="下一步">
+    </div>
+</div>
+<!--楼层勾选列表结束-->
+<!--楼层勾选列表-->
+<div class="col-lg-4 col-md-4 col-sm-6">
+    <div class="row scope-padding">
+    <div class="architecture_table">
+        <div class="architecture_table_title">
+            <span class="architecture_span_left">建筑名称：1栋</span>
+            <span class="architecture_span_right">建筑总面积：400</span>
+        </div>
+        <table width="100%">
+            <tr>
+                <td  width="30%" height="42px" align="center" valign="middle" >
+                    <span style="margin-left: -20px;">区域名称</span>
+                </td>
+                <td  width="20%" height="42px" align="center" valign="middle" >
+                    <span style="margin-left: -20px;">建筑面积</span>
+                </td>
+                <td  width="20%" height="42px" align="center" valign="middle">
+                    <span style="margin-left: -20px;">实用率</span>
+                </td>
+                <td  width="20%" height="42px" align="center" valign="middle">
+                    <span style="margin-left: -20px;">套内面积</span>
+                </td>
+            </tr>
+        </table>
+
+
+</body>
+</html>

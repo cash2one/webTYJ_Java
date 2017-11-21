@@ -1,0 +1,30 @@
+<!--author:王志刚-->
+<!--页面名称：物业服务办理装修流程页面-->
+<!--js: 'controllers/propertyService/staffHome/decorate/decoration'-->
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>办理装修流程</title>
+    <link rel="stylesheet" href="css/propertyService.css">
+</head>
+<body ng-controller="decorationCtrl">
+<div style="padding:20px 30px 0;" class="complaint_user1">
+    <div class="complaint_user_info_navigation col-md-12">
+        <a class="btn col-md-offset-1" ui-sref="index.propertyService.staffHome.decorate.decoration.chooseHouse">选择房屋</a>
+        <a class="btn" ui-sref="index.propertyService.staffHome.decorate.decoration.applicationData">申请资料</a>
+        <a class="btn" ui-sref="index.propertyService.staffHome.decorate.decoration.verification">现场核查</a>
+        <a class="btn" ui-sref="index.propertyService.staffHome.decorate.decoration.payDeposit">缴纳押金</a>
+        <a class="btn" ui-sref="index.propertyService.staffHome.decorate.decoration.Alicence">发放许可证</a>
+        <a class="btn" ui-sref="index.propertyService.staffHome.decorate.decoration.workProgress">施工过程</a>
+        <a class="btn" ui-sref="index.propertyService.staffHome.decorate.decoration.acceptance">验收</a>
+        <a class="btn" ui-sref="index.propertyService.staffHome.decorate.decoration.costClearing">费用结算</a>
+    </div>
+    <div class="row">
+        <div style="padding:0px 30px 0;">
+            <div ui-view></div>
+        </div>
+    </div>
+    </div>
+</body>
+</html>

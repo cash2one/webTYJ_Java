@@ -1,0 +1,103 @@
+<!--
+    作者:彭婷婷
+    页面名称:我的团队(专业)
+    js路径:js/controllers/internalProfession/myTeamProfession
+    修改时间:2015/6/4
+    修改内容:数据动态显示
+-->
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>我的团队(专业)</title>
+</head>
+<body>
+<div class="order">
+    <div class="row">
+        <div style="width:97%; margin:0 auto; background:#f0f0f0; -moz-border-radius:7px; -webkit-border-radius:7px; border-radius:7px; border:1px solid #bbb; padding-bottom:15px; height:auto; ">
+            <div style="border: 1px solid #000000;width: 95%;margin: 20px auto">
+                <div class="media-left" style="width: 800px">
+                    <div class="row" style="margin: 10px 0px 0px 10px" ng-repeat="items in teamworkstaffs">
+                        <div class="col-md-12" >
+                            <p>我的团队成员</p>
+                        </div>
+                        <div class="col-md-1" ng-repeat="items1 in items.teamworkstaffs">
+                            <img style="width: 60px;height: 60px;" src="images/staffHome/u116.jpg">
+                            <p style="text-align: center">{{items1.staff.staffName}}</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="media-right" style="text-align: center;">
+                    <div class="pull-right">
+                        <img src="images/propertyService/u459.png" style="width: 20px;height: 20px">
+                        <a class="btn btn-xs" ui-sref="index.propertyService.staffHome.empowerManagement.empower" >添加子团队</a>
+                    </div>
+                    <table border="1px" style="width: 300px;height: 150px;">
+                        <tr>
+                            <td>安保1队</td>
+                            <td>安保2队</td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <img style="width: 60px;height: 60px;" src="images/staffHome/u116.jpg"><br>
+                                张三
+                            </td>
+                            <td>
+                                <img style="width: 60px;height: 60px;" src="images/staffHome/u116.jpg"><br>
+                                李四
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>5人</td>
+                            <td>5人</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+            <!--上部分结束-->
+            <div style="border: 1px solid #000000;width: 45%;margin: 20px;">
+                <table class="table-bordered" style="width:100%;text-align: center">
+                    <tr style="background: #46c8fa" item in titleList>
+                        <td>{{item.title}}</td>
+                        <td>{{item.projectname}}</td>
+                        <td>{{item.clean}}</td>
+                        <td>{{item.maintain}}</td>
+                        <td>{{item.park}}</td>
+                        <td>{{item.security}}</td>
+                    </tr>
+                    <tr>
+                        <td style="background: snow">{{item.id}}</td>
+                        <td style="background: #7b846b">{{item.projectname}}</td>
+                        <td style="background: #7b846b">{{item.clean}}</td>
+                        <td style="background: snow">{{item.maintain}}</td>
+                        <td style="background: #7b846b">{{item.park}}</td>
+                        <td style="background: #7b846b">{{item.security}}</td>
+                    </tr>
+                    <!--<tr>-->
+                        <!--<td style="background: #f2fa9b">2</td>-->
+                        <!--<td style="background: #f2fa9b">深圳宝安桃源商务大厦</td>-->
+                        <!--<td style="background: #7b846b">2</td>-->
+                        <!--<td style="background: #7b846b">2</td>-->
+                        <!--<td style="background: #7b846b">2</td>-->
+                        <!--<td style="background: #f2fa9b">2</td>-->
+                        <!--<td style="background: #f2fa9b">2</td>-->
+                    <!--</tr>-->
+                    <!--<tr>-->
+                        <!--<td style="background: snow">3</td>-->
+                        <!--<td style="background: snow">深圳龙岗桃源居</td>-->
+                        <!--<td style="background: #7b846b">2</td>-->
+                        <!--<td style="background: #7b846b">2</td>-->
+                        <!--<td style="background: snow">2</td>-->
+                        <!--<td style="background: #7b846b">2</td>-->
+                        <!--<td style="background: #7b846b">2</td>-->
+                    <!--</tr>-->
+                </table>
+            </div>
+        </div>
+        <div class="clear"></div>
+    </div>
+</div>
+</div>
+</body>
+</html>

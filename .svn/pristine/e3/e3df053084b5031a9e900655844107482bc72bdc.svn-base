@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+<meta charset="UTF-8">
+<title>车位信息</title>
+</head>
+<body ng-controller="parkingIntCtrl">
+	<div style="height: 532px">
+		<div class="row">
+			<!--车位信息start-->
+			<div class="complaint_user">
+				<div class="complaint_user_img">
+					<img src="images/company/u178.jpg" width="100" height="100">
+				</div>
+				<div class="complaint_user_info">
+					<div class="complaint_user_info_button">
+						<span class="dot_Checked"></span><br> <span
+							class="dot_unCheck"></span><br> <span
+							class="complaint_panel_info_navigation">
+							<ul>
+								<li><img src="images/propertyService/jiantoua.png"
+									width="35" height="29">
+									<ul>
+										<li class="program_panel_info_navigation_top">办理放行条</li>
+										<li>办理门禁卡</li>
+										<li>宠物登记</li>
+										<li class="program_panel_info_navigation_bottom">缴纳物业费</li>
+									</ul></li>
+							</ul> </span>
+					</div>
+					<div class="complaint_user_info_info">
+						<table class="complaint_user_info_userinfo">
+							<tr>
+								<td class="col-md-3">资产类型：汽车</td>
+								<td class="col-md-3">车位类型：私人车位</td>
+								<td class="col-md-3">车库位置：负一A区</td>
+								<td class="col-md-3">宗地号：666666</td>
+							</tr>
+
+							<tr>
+								<td class="col-md-3">所属人：周润发</td>
+								<td class="col-md-3">车位属性：标准车位</td>
+								<td class="col-md-3">世外桃源3区负一楼A区0054号</td>
+								<td class="col-md-3">车位编码：0007</td>
+							</tr>
+
+							<tr>
+								<td class="col-md-3">联系电话：13856888788</td>
+								<td class="col-md-3">车位编号：TYJ-54</td>
+								<td class="col-md-3">车库编号：2号车库</td>
+								<td class="col-md-3">项目名称：桃源居</td>
+							</tr>
+
+						</table>
+					</div>
+
+				</div>
+				<div class="clear"></div>
+			</div>
+			<!--车位信息end-->
+		</div>
+		<!--添加车位-->
+		<div class=" complaint_user_list" style="width: 1054px;">
+			<div class="modal-body" style="line-height:38px;">
+				<form>
+					<table style="margin:0px auto;text-align: center;">
+						<tr>
+							<td width="100px">项目编号</td>
+							<td><input type="text" class="form-control input-sm" />
+							</td>
+							<td width="100px">车位位置</td>
+							<td><input type="text" class="form-control input-sm"
+								value="负一A区" />
+							</td>
+							<td width="100px">项目名称</td>
+							<td><input type="text" class="form-control input-sm" />
+							</td>
+							<td width="100px">车位属性</td>
+							<td><input type="text" class="form-control input-sm"
+								value="桃源居" />
+							</td>
+						</tr>
+
+						<tr>
+							<td width="100px">管理费单价</td>
+							<td><input type="text" class="form-control input-sm" />
+							</td>
+							<td width="100px">固定车位</td>
+							<td><input type="text" class="form-control input-sm" />
+							</td>
+							<td width="100px">宗地号</td>
+							<td><input type="text" class="form-control input-sm" />
+							</td>
+							<td width="100px">竣工日期</td>
+							<td><input type="text" class="form-control input-sm" />
+							</td>
+						</tr>
+
+						<tr>
+							<td width="100px">车库编号</td>
+							<td><input type="text" class="form-control input-sm" />
+							</td>
+							<td width="100px">入伙日期</td>
+							<td><input type="text" class="form-control input-sm" />
+							</td>
+							<td width="100px">车库位置</td>
+							<td><input type="text" class="form-control input-sm" />
+							</td>
+							<td width="100px">销售状态</td>
+							<td><input type="text" class="form-control input-sm" />
+							</td>
+						</tr>
+
+						<tr>
+							<td width="100px">车位编码</td>
+							<td><input type="text" class="form-control input-sm" />
+							</td>
+							<td width="100px">入伙状态</td>
+							<td><input type="text" class="form-control input-sm" />
+							</td>
+							<td width="100px">车位编码</td>
+							<td><input type="text" class="form-control input-sm" />
+							</td>
+							<td width="100px">入伙状态</td>
+							<td><input type="text" class="form-control input-sm" />
+							</td>
+						</tr>
+
+						<tr>
+							<td width="100px">楼层号</td>
+							<td><input type="text" class="form-control input-sm" />
+							</td>
+							<td width="100px">租赁状态</td>
+							<td><input type="text" class="form-control input-sm" />
+							</td>
+							<td width="100px">所在区</td>
+							<td><input type="text" class="form-control input-sm" />
+							</td>
+							<td width="100px">交易信息</td>
+							<td><input type="text" class="form-control input-sm" />
+							</td>
+						</tr>
+
+						<tr>
+							<td width="100px">车位号</td>
+							<td><input type="text" class="form-control input-sm" />
+							</td>
+							<td width="100px">停车信息</td>
+							<td><input type="text" class="form-control input-sm" />
+							</td>
+							<td width="100px">机械车位</td>
+							<td><input type="text" class="form-control input-sm" />
+							</td>
+							<td width="100px">房屋编号</td>
+							<td><input type="text" class="form-control input-sm" />
+							</td>
+						</tr>
+						<tr>
+							<td width="100px">合同编号</td>
+							<td><input type="text" class="form-control input-sm" />
+							</td>
+							<td width="100px">房屋折后实价</td>
+							<td><input type="text" class="form-control input-sm" />
+							</td>
+							<td width="100px">房产证号</td>
+							<td><input type="text" class="form-control input-sm" />
+							</td>
+							<td width="100px">建筑面积单价</td>
+							<td><input type="text" class="form-control input-sm" />
+							</td>
+						</tr>
+
+						<tr>
+							<td width="100px">认购日期</td>
+							<td><input type="text" class="form-control input-sm" />
+							</td>
+							<td width="100px">套内面积单价</td>
+							<td><input type="text" class="form-control input-sm" />
+							</td>
+							<td width="100px">签约日期</td>
+							<td><input type="datetime-local"
+								class="form-control input-sm" />
+							</td>
+							<td width="100px">交易类型</td>
+							<td><input type="text" class="form-control input-sm" />
+							</td>
+						</tr>
+
+						<tr>
+							<td colspan="3">
+								<button type="button" class="btn btn-default btn-sm"
+									aria-label="Left Align" data-dismiss="modal">
+									<span class="glyphicon glyphicon-ok" aria-hidden="true">确认提交</span>
+								</button></td>
+							<td>
+								<button type="button" class="btn btn-default btn-sm"
+									aria-label="Left Align" data-dismiss="modal">
+									<span class="glyphicon glyphicon-remove" aria-hidden="true">新增</span>
+								</button></td>
+							<td colspan="3">
+								<button type="button" class="btn btn-sm btn-default">
+									<span class="glyphicon glyphicon-ok"></span>编辑
+								</button></td>
+						</tr>
+					</table>
+				</form>
+			</div>
+		</div>
+		<!--添加车位 end-->
+	</div>
+</body>
+</html>

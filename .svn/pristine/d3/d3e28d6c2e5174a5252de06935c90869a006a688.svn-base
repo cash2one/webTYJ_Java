@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>入伙</title>
+    <script type="text/ng-template" id="top-printing">
+        <div ng-include="'page/propertyService/housesHome/joinGang/printing.html'" ng-controller="printingCtrl"></div>
+    </script>
+</head>
+<body ng-controller="joinGangCtrl">
+<div class="complaint_user_list ">
+    <div style="padding:5px 10px 0">
+        <form class="form-inline">
+            <div class="form-group" >
+                <img src="images/propertyService/u7.png">
+                <a class="btn btn-xs" >chart</a>
+            </div>
+            <div class="form-group"style="margin-left: 10px">
+                <img src="images/propertyService/u7.png">
+                <a class="btn btn-xs" >List</a>
+            </div>
+            <div class="form-group"style="margin-left: 10px">
+                <img src="images/propertyService/u39.png" style="width: 20px;height: 20px">
+                <a class="btn btn-xs" >切换业主</a>
+            </div>
+            <div class="form-group"style="margin-left: 10px">
+                <img src="images/propertyService/u39.png" style="width: 20px;height: 20px">
+                <a class="btn btn-xs" >切换房屋</a>
+            </div>
+            <div class="form-group pull-right">
+                <li class="dropdown pull-right">
+                    <a href="#" data-toggle="dropdown" class="btn btn-xs"  aria-expanded="false"> <img src="images/propertyService/m1_u297.png" style="width: 20px;height: 20px">
+                    </a>
+                    <ul class="dropdown-menu" role="menu">
+                        <li><a href="#" data-toggle="modal" data-target="#addMenjin">切换业主</a></li>
+                        <li><a href="#" data-toggle="modal" data-target="#change">切换房屋</a></li>
+                        <li><a href="#" data-toggle="modal" data-target="#kickback">新增业主</a></li>
+                        <li><a href="#" data-toggle="modal" data-target="#report">办理停车卡</a></li>
+                        <li><a href="#" data-toggle="modal" data-target="#report">办理门禁卡</a></li>
+                        <li><a href="#" data-toggle="modal" data-target="#report">打印</a></li>
+                        <li><a href="#" data-toggle="modal" data-target="#report">FAQ</a></li>
+                    </ul>
+                </li>
+            </div>
+            <div class="form-group pull-right">
+                <a class="btn btn-xs" ng-click="changeTemplate(2)"><img src="images/propertyService/u35.png" style="width: 20px;height: 20px;">
+                </a>
+            </div>
+            <div class="form-group pull-right">
+                <a class="btn btn-xs"> <img src="images/propertyService/u17.png" style="width: 20px;height: 20px">
+                </a>
+            </div>
+        </form>
+    </div>
+
+    <div style="padding:5px 10px 0">
+        <div class="complaint_user_info_navigation">
+            <a class="btn" ui-sref="index.propertyService.housesHome.joinGang.licensing.choiceHousing">办理授权</a>
+            <a class="btn" ui-sref="index.propertyService.housesHome.joinGang.historicRecords">历史记录</a>
+        </div>
+        <div class="clear"></div>
+    </div>
+    <div class="row" style="padding:5px 10px 0">
+        <div ui-view></div>
+    </div>
+</div>
+</body>
+</html>

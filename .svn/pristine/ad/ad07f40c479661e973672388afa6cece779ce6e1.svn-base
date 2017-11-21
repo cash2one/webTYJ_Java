@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>服务请求回访</title>
+</head>
+<body>
+<div class="complaint_user_list" style="margin: 10px auto">
+    <div class="container">
+        <table style="margin: 10px 200px;line-height: 30px;white-space: nowrap">
+            <tr>
+                <td width="280"><span>服务请求id：</span><span>D_153</span></td>
+                <td width="280"><span>服务请求来源：</span><span>前台</span></td>
+            </tr>
+            <tr>
+                <td><span>客户姓名：</span><span>周润发</span></td>
+                <td><span>联系电话：</span><span>13312312123</span></td>
+            </tr>
+            <tr>
+                <td><span>服务区域：</span><span>桃源居一区一栋101</span></td>
+            </tr>
+            <tr>
+                <td><span>回访人：</span><span>周润发</span></td>
+                <td><span>回访电话：</span><span>13312312123</span></td>
+            </tr>
+            <tr>
+                <td><span>客户希望处理时间：</span><span>2015-05-01 12:00---14:00</span></td>
+            </tr>
+            <tr>
+                <td><span>描述：</span><span>电灯坏了，需要维修；</span></td>
+            </tr>
+        </table>
+        <div style="border: 1px solid #000000;height: 350px;width: 600px;margin-left: 170px">
+            <div class="col-md-12">
+                <div class="col-md-2">回访结果:</div>
+            </div>
+            <div class="col-md-12">
+                <div class="radio" style="margin-left: 60px">
+                    <label>
+                        <input type="radio" name="InteriorServerequestState" value="0" ng-model="InteriorServe.requestState">
+                        满意
+                    </label>
+                    <label>
+                        <input type="radio" name="InteriorServerequestState" value="1" ng-model="InteriorServe.requestState">
+                        不满意
+                    </label>
+                </div>
+            </div>
+            <div class="col-md-12">
+                <div class="col-md-3">备注说明：</div>
+            </div>
+            <div class="col-md-12" style="margin-left: 50px">
+                <textarea style="width:450px;height: 170px" cols="9" ></textarea>
+            </div>
+            <div class="col-md-12" style="text-align: center">
+                <button type="button" class="btn btn-primary">取消</button>
+                <button type="button" class="btn btn-primary">提交</button>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.flf.mapper.ConstantMapper" >
+  <resultMap id="BaseResultMap" type="Constant" >
+    <id column="constant_id" property="constantId" jdbcType="VARCHAR" />
+    <result column="constant_name" property="constantName" jdbcType="VARCHAR" />
+    <result column="scheme_id" property="schemeId" jdbcType="VARCHAR" />
+    <result column="value" property="value" jdbcType="DOUBLE" />
+    <result column="constant_num" property="constantNum" jdbcType="VARCHAR" />
+    <result column="common_value" property="commonValue" jdbcType="VARCHAR" />
+    <result column="parents_id" property="parentsId" jdbcType="VARCHAR" />
+  </resultMap>
+  
+  <!-- 根据常量id查询常量信息 -->
+  <select id="getConstantById" parameterType="String" resultMap="BaseResultMap">
+  	select * from tc_constant where constant_id = #{constantId}
+  </select>
+  
+   <!-- 根据常量id删除常量信息 -->
+  <select id="deleteConstant" parameterType="String">
+  	delete from tc_constant where constant_id = #{constantId}
+  </select>
+ 
+  <insert id="insertConstant" parameterType="Constant" >
+    insert into tc_constant (constant_id, constant_name, scheme_id, 
+      value, constant_num,common_value,parents_id)
+    values (#{constantId,jdbcType=VARCHAR}, #{constantName,jdbcType=VARCHAR}, #{schemeId,jdbcType=VARCHAR}, 
+      #{value,jdbcType=DOUBLE}, #{constantNum,jdbcType=VARCHAR},#{commonValue,jdbcType=VARCHAR},#{parentsId,jdbcType=VARCHAR})
+  </insert>
+  
+  <update id="updateConstant" parameterType="Constant" >
+    update tc_constant
+    <set >
+      <if test="constantName != null" >
+        constant_name = #{constantName,jdbcType=VARCHAR},
+      </if>
+      <if test="schemeId != null" >
+        scheme_id = #{schemeId,jdbcType=VARCHAR},
+      </if>
+      <if test="value != null" >
+        value = #{value,jdbcType=DOUBLE},
+      </if>
+      <if test="constantNum != null" >
+        constant_num = #{constantNum,jdbcType=VARCHAR},
+      </if>
+      <if test="common_value != null" >
+        common_value = #{commonValue,jdbcType=VARCHAR},
+      </if>
+      <if test="common_value != null" >
+        parents_id = #{parentsId,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where constant_id = #{constantId,jdbcType=VARCHAR}
+  </update>
+  
+  <!-- 根据方案id查询常量信息 -->
+  <select id="listConstantBySchemeId" parameterType="String" resultMap="BaseResultMap">
+  	select * from tc_constant where scheme_id = #{schemeId}
+  </select>
+  
+	<select id="listConstantForPay" resultMap="BaseResultMap">
+		select * from tc_constant where constant_name like '%水费单价%' or constant_name like '%电费单价%' or constant_name like '%物业管理费单价%'
+	</select>
+	
+	<select id="listAllConstant" parameterType="com.flf.entity.Constant" resultMap="BaseResultMap">
+		select * from tc_constant where 1=1
+		<if test="parentsId != null">
+	  		and parents_id = #{parentsId}
+	  	</if>
+	</select>
+  
+</mapper>

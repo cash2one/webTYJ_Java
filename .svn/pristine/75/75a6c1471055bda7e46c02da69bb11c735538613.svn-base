@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>部门检查</title>
+    <link rel="stylesheet" href="css/personnel.css">
+</head>
+<body>
+<div class="row">
+    <div class="complaint_user">
+       <div class="complaint_user_info">
+        <div class="complaint_user_info_navigation">
+                <a class="btn" ui-sref="index.externalProfession.departmentCheck.plan.page1">计划</a>
+                <a class="btn" ui-sref="index.externalProfession.departmentCheck.task.chooseTask">任务</a>
+        </div>
+        </div>
+        <div class="clear"></div>
+    </div>
+</div>
+<div class="row">
+    <div ui-view></div>
+</div>
+</body>
+</html>

@@ -1,0 +1,17 @@
+package com.flf.mapper;
+
+import com.flf.entity.CorrectedReading;
+
+public interface CorrectedReadingMapper {
+    int deleteByPrimaryKey(String correctedReadingId);
+
+    int insert(CorrectedReading record);
+
+    int insertSelective(CorrectedReading record);
+
+    CorrectedReading selectByPrimaryKey(String correctedReadingId);
+
+    int updateByPrimaryKeySelective(CorrectedReading record);
+
+    int updateByPrimaryKey(CorrectedReading record);
+}

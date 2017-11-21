@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.flf.mapper.SubCompanyProjectRelationMapper">
+	<resultMap type="SubCompanyProjectRelation" id="BaseResultMap">
+		<id column="subCompany_project_relation_id" property="subCompanyProjectRelationId" jdbcType="VARCHAR"/>
+		<result column="subCompany_id" property="subCompanyId" jdbcType="VARCHAR"/>
+		<result column="project_id" property="projectId" jdbcType="VARCHAR"/>
+	</resultMap>
+	<resultMap type="SubCompanyProjectRelation" id="resultSubCompanyProjectRelationMap" extends="BaseResultMap">
+	       <association property="project" column="project_id" select="com.flf.mapper.ProjectMapper.getProjectJson" ></association>
+	
+	</resultMap>
+	<!-- 获取所有已与子公司关联的项目id -->
+	<select id="getAllUsedProjectIds" resultType="String">
+		select distinct project_id from tc_subcompany_project_relation
+	</select>
+	
+	<!-- 添加 -->
+	<insert id="insertSubCompanyProjectRelation" parameterType="SubCompanyProjectRelation">
+		insert into tc_subCompany_project_relation(
+			subCompany_project_relation_id,subCompany_id,project_id
+		) values (
+			UUID(),
+			#{subCompanyId,jdbcType=VARCHAR},
+			#{projectId,jdbcType=VARCHAR}
+		)
+	</insert>
+	
+	<!-- 删除 -->
+	<delete id="deleteSubCompanyProjectRelation" parameterType="String">
+		delete from tc_subCompany_project_relation
+		where subCompany_project_relation_id = #{0}
+	</delete>
+	
+	<!-- 根据子公司id删除 -->
+	<delete id="deleteRelationsBySubCompanyId" parameterType="String">
+		delete from tc_subCompany_project_relation
+		where subCompany_id = #{0}
+	</delete>
+
+	<!-- 修改 -->
+	<update id="updateSubCompanyProjectRelation" parameterType="SubCompanyProjectRelation">
+		update tc_subCompany_project_relation
+		<set>
+			<if test="subCompanyProjectRelationId != null and subCompanyProjectRelationId != ''">
+				subCompany_project_relation_id = #{subCompanyProjectRelationId,jdbcType=VARCHAR}
+			</if>
+			<if test="subCompanyId !=null and subCompanyId != ''">
+				subCompany_id = #{subCompanyId,jdbcType=VARCHAR}
+			</if>
+			<if test="projectId != null and projectId != ''">
+				project_id = #{projectId,jdbcType=VARCHAR}
+			</if>
+		</set>
+		where subCompany_project_relation_id = #{subCompanyProjectRelationId,jdbcType=VARCHAR}
+	</update>
+	
+	<select id="getAllData" resultMap="BaseResultMap">
+		select spr.subCompany_id,spr.project_id,p.project_name
+		from tc_subCompany_project_relation spr,t_project p
+		where spr.project_id=p.project_id
+	</select>
+		<select id="getAllProject" resultMap="resultSubCompanyProjectRelationMap" parameterType="String">
+		select *
+		from tc_subCompany_project_relation 
+		where subCompany_id=#{0}
+	</select>
+</mapper>

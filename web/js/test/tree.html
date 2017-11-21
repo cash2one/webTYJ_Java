@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Angular Tree</title>
+    <script src="/webTYJ/js/lib/jquery/jquery-1.11.2.js"></script>
+    <script src="/webTYJ/js/test/tree/js/angular.1.2.29.js"></script>
+<!--  	<script src="/webTYJ/js/test/tree/js/bootstrap.3.1.1.js"></script> -->
+    <script src="/webTYJ/js/lib/bootstrap/ui-bootstrap-tpls-0.12.1.js"></script>
+<!--     <script src="/webTYJ/js/test/tree/js/prettify.1.0.1.js"></script> -->
+    <script src="/webTYJ/js/test/Equality.js"></script>
+
+<!--     <link  href="/webTYJ/js/test/tree/js/bootstrap.3.1.1.css" rel="stylesheet" type="text/css">
+    <link  href="/webTYJ/js/test/tree/js/prettify-style.css" rel="stylesheet" type="text/css"> -->
+
+    <script src="/webTYJ/js/test/angular-tree-control.js"></script>
+    <link rel="stylesheet" type="text/css" href="/webTYJ/js/test/tree/css/tree-control.css">
+<!--     <link rel="stylesheet" type="text/css" href="/webTYJ/js/test/tree/css/tree-control-attribute.css"> -->
+</head>
+<body ng-app="example">
+
+                        <treecontrol class="tree-light"
+                                     tree-model="treedata"
+                                     options="opts">
+                            {{node.name}}
+                        </treecontrol>
+  
+
+
+<script>
+/*     var entityMap = {
+        "&": "&amp;",
+        "<": "&lt;",
+        ">": "&gt;",
+        '"': '&quot;',
+        "'": '&#39;',
+        "/": '&#x2F;'
+    };
+    function escapeHtml(string) {
+        return String(string).replace(/[&<>"'\/]/g, function (s) {
+            return entityMap[s];
+        });
+    }
+    var nonSpace = /\S/;
+    function trimIndent(content) {
+        var lines = content.split("\n");
+        var begin = 0;
+        var end = lines.length-1;
+        while ((nonSpace.exec(lines[begin]) == null) && (begin < lines.length))
+            begin = begin + 1;
+        while ((nonSpace.exec(lines[end]) == null) && end >= begin)
+            end = end - 1;
+        var ident = nonSpace.exec(lines[begin]).index;
+        var formatted = "";
+        for (var i = begin; i <= end; i++) {
+            formatted = formatted + lines[i].slice(ident-1) + ((i < end)?"\n":"");
+        }
+        return formatted;
+    } */
+      var example = angular.module("example", ["treeControl", "ui.bootstrap", "template/tabs/tab.html", "template/tabs/tabset.html"])
+                    .factory("$savedContent", function() {
+                        return [];
+                    })
+                    .directive("saveContent", function($savedContent) {
+                        return {
+                            restrict: "A",
+                            compile: function($element, $attrs) {
+                                var content = $element.html();
+                                $savedContent[$attrs.saveContent] = content;
+                            }
+                        }
+                    })
+                    .directive("applyContent", function($savedContent) {
+                        return {
+                            restrict: "EAC",
+                            compile: function($element, $attrs) {
+                                return function($scope, $element, $attrs) {
+                                    var content = $savedContent[$attrs.applyContent];
+                                    var lang = $attrs.highlightLang;
+                                    if (lang == "html")
+                                        content = escapeHtml(content);
+                                    content = trimIndent(content);
+                                    var pre = prettyPrintOne(content, lang);
+                                    $element.html(pre);
+                                }
+                            }
+                        }
+                    })
+                    .directive("nav", function() {
+                        return {
+                            restrict: "A",
+                            compile: function($element) {
+                                var sections = $("section");
+                                angular.forEach(sections, function(section) {
+                                    var $section = $(section);
+                                    var id = $section.attr('id');
+                                    var titleHtml = $section.find("h1").html();
+                                    titleHtml = titleHtml.slice(0, titleHtml.indexOf("<")).trim();
+                                    $element.append("<li><a href='#"+id+"'>"+titleHtml+"</a></li>")
+                                })
+                            }
+                        }
+                    })
+            ;
+/*     function createSubTree(level, width, prefix) {
+        if (level > 0) {
+            var res = [];
+            for (var i=1; i <= width; i++)
+                res.push({ "label" : "Node " + prefix + i, "id" : "id"+prefix + i, "i": i, "children": createSubTree(level-1, width, prefix + i +".") });
+            return res;
+        }
+        else
+            return [];
+    } */
+</script>
+
+</body>
+</html>

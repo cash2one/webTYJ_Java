@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.flf.mapper.TUserRoleMapper" >
+  <resultMap id="BaseResultMap" type="com.flf.entity.TUserRole" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="user_id" property="userId" jdbcType="VARCHAR" />
+    <result column="role_id" property="roleId" jdbcType="VARCHAR" />
+     <result column="role_type" property="roleType" />
+  </resultMap>
+  <resultMap type="TUserRole" id="ResultMapWithUser" extends="BaseResultMap">
+  	<association property="tUser" column="user_id" javaType="TUser" select="com.flf.mapper.TUserMapper.selectByPrimaryKey" />
+  </resultMap>
+  <resultMap type="TUserRole" id="ResultMapWithRole" extends="BaseResultMap">
+  	<association property="tRole" column="role_id" javaType="TRole" select="com.flf.mapper.TRoleMapper.selectByPrimaryKey" />
+  </resultMap>
+  
+  <sql id="Base_Column_List" >
+    id, user_id, role_id
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_user_role
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+  
+  <delete id="deleteByPrimaryKey" parameterType="java.util.Map" >
+    delete from t_user_role
+    <trim prefix="where" prefixOverrides="and">
+    	<if test="id != null and id != ''">
+    		id = #{id,jdbcType=VARCHAR}
+    	</if>
+    	<if test="userId != null and userId != ''">
+    		and user_id = #{userId,jdbcType=VARCHAR}
+    	</if>
+	    <if test="roleId != null and roleId != ''">
+    		and role_id = #{roleId,jdbcType=VARCHAR}
+ 	   </if>
+    </trim>
+  </delete>
+  
+  <insert id="insert" parameterType="com.flf.entity.TUserRole" >
+    insert into t_user_role (id, user_id, role_id, create_time)
+    values (#{id,jdbcType=VARCHAR}, #{userId,jdbcType=VARCHAR}, #{roleId,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.flf.entity.TUserRole" >
+    insert into t_user_role
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="userId != null" >
+        user_id,
+      </if>
+      <if test="roleId != null" >
+        role_id,
+      </if>
+      <if test="createTime != null">
+      	create_time
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="userId != null" >
+        #{userId,jdbcType=VARCHAR},
+      </if>
+      <if test="roleId != null" >
+        #{roleId,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+      	#{createTime,jdbcType=TIMESTAMP}
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.flf.entity.TUserRole" >
+    update t_user_role
+    <set >
+      <if test="userId != null" >
+        user_id = #{userId,jdbcType=VARCHAR},
+      </if>
+      <if test="roleId != null" >
+        role_id = #{roleId,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+      	create_time = #{createTime,jdbcType=TIMESTAMP}
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.flf.entity.TUserRole" >
+    update t_user_role
+    set user_id = #{userId,jdbcType=VARCHAR},
+      role_id = #{roleId,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  
+  <select id="listTUserRoleByRoleId" parameterType="String" resultMap="BaseResultMap">
+  	select 
+  	<include refid="Base_Column_List" />
+  	from t_user_role 
+  	where role_id = #{roleId,jdbcType=VARCHAR}
+  </select>
+  
+	<!-- 根据角色id或用户id查询表 -->
+  <select id="getTUserRoleByMap" parameterType="java.util.Map" resultMap="BaseResultMap">
+  	select 
+  	<include refid="Base_Column_List" />
+  	from t_user_role 
+  	<trim prefix="where" prefixOverrides="and || or">
+  	<if test="roleId != null">
+	 	role_id = #{roleId,jdbcType=VARCHAR}
+	</if>
+	<if test="userId != null">
+		and user_id = #{userId,jdbcType=VARCHAR}
+	</if>
+	<if test="roleIdHradmin != null and roleIdHradmin != ''">
+		or role_id = #{roleIdHradmin,jdbcType=VARCHAR}
+	</if>
+	<if test="roleIdProjectAdmin != null and roleIdProjectAdmin != ''">
+		and role_id = #{roleIdProjectAdmin,jdbcType=VARCHAR}
+	</if>
+  	</trim>
+  </select>
+  
+
+  
+  <update id="updateRoleIdByUserId" parameterType="com.flf.entity.TUserRole">
+  	update t_user_role set role_id = #{roleId,jdbcType=VARCHAR} where user_id = #{userId,jdbcType=VARCHAR}
+  </update>
+  
+  <select id="listPageAdmin" parameterType="TUserRole" resultMap="ResultMapWithUser">
+  		SELECT a.* FROM t_user_role a 
+ 	LEFT JOIN t_role b ON a.role_id=b.role_id left join t_user c on a.user_id = c.user_id 
+ 	WHERE c.user_id is not null
+ 	 <if test="roleType != null and roleType!=''" >
+       and b.role_type=#{roleType}
+      </if>
+      order by create_time DESC
+  </select>
+  
+  <select id="getTURbyUserId" parameterType="String" resultMap="ResultMapWithRole">
+  	select * from t_user_role where user_id = #{userId,jdbcType=VARCHAR}
+  </select>
+  
+	<!-- 根据staffid获取角色关联信息 -->
+  <select id="getTURByStaffId" parameterType="java.util.Map" resultMap="ResultMapWithRole">
+  	SELECT ur.* FROM t_user_role ur 
+  	LEFT JOIN t_user u ON u.employ_id = #{staffId}
+  	WHERE ur.user_id = u.user_id
+  </select>
+ 
+</mapper>

@@ -1,0 +1,520 @@
+
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>内部专业线首页</title>
+    <link rel="stylesheet" href="css/internalPro.css">
+</head>
+<body>
+<div id="pm" class="container-fluid">
+    <div class="row">
+        <div class="col-md-3" style="height: 120px;">
+            <div class="col-md-4"><a ui-sref="index.internalProfession.propertyManagementContract"><img src="images/taoyuanju/21.png" class="img-rounded" style="margin-top: 15px;margin-left:-18px"></a></div>
+            <div class="col-md-8" style="margin-top: 5px">
+                <h4 style="font-weight: bold">物业合同管理</h4>
+                前台和CC进行咨询服
+                务时可以查询FAQ解答
+                客户问题。
+            </div>
+        </div>
+
+        <div class="col-md-3" style="height: 120px;">
+            <div class="col-md-4">
+                <a ui-sref="index.internalProfession.vacationManagement"><img src="images/taoyuanju/15.png" class="img-rounded" style="margin-top: 15px;margin-left:-18px"></a>
+            </div>
+            <div class="col-md-8" style="margin-top: 5px">
+                <h4 style="font-weight: bold">假期管理</h4>
+                前台和CC进行咨询服
+                务时可以查询FAQ解答
+                客户问题。
+            </div>
+        </div>
+
+        <div class="col-md-3" style="height: 120px;">
+            <div class="col-md-4">
+                <a ui-sref="index.internalProfession.customerManagement"><img src="images/taoyuanju/16.png" class="img-rounded" style="margin-top: 15px;margin-left:-18px"></a>
+            </div>
+            <div class="col-md-8" style="margin-top: 5px">
+                <h4 style="font-weight: bold">售后管理</h4>
+                前台和CC进行咨询服
+                务时可以查询FAQ解答
+                客户问题。
+            </div>
+        </div>
+
+        <div class="col-md-3" style="height: 120px;">
+            <div class="col-md-4">
+                <a ui-sref="index.internalProfession.productManagement">
+                    <img src="images/taoyuanju/9.png" class="img-rounded" style="margin-top: 15px;margin-left:-18px">
+                </a></div>
+            <div class="col-md-8" style="margin-top: 5px">
+                <h4 style="font-weight: bold">产品管理</h4>
+                各类物业服务
+                产品展示
+            </div>
+        </div>
+
+        <div class="col-md-3" style="height: 120px;">
+            <div class="col-md-4">
+                <a ui-sref="index.internalProfession.enterpriseNews">
+                    <img src="images/taoyuanju/1.png" class="img-rounded" style="margin-top: 15px;margin-left:-18px">
+                </a>
+            </div>
+            <div class="col-md-8" style="margin-top: 5px">
+                <h4 style="font-weight: bold">企业新闻</h4>
+                前台和CC进行咨询服
+                务时可以查询FAQ解答
+                客户问题。
+            </div>
+        </div>
+
+        <div class="col-md-3" style="height: 120px">
+            <div class="col-md-4">
+                <a ui-sref="index.internalProfession.contractInitialization.contractCheck">
+                    <img src="images/taoyuanju/4.png" class="img-rounded" style="margin-top: 15px;margin-left:-18px">
+                </a>
+            </div>
+            <div class="col-md-8" style="margin-top: 5px">
+                <h4 style="font-weight: bold">合同初始化</h4>
+                前台和CC进行咨询服
+                务时可以查询FAQ解答
+                客户问题。
+            </div>
+        </div>
+
+        <div class="col-md-3" style="height: 120px;">
+            <div class="col-md-4">
+                <a ui-sref="index.internalProfession.initialization.houseAdd">
+                    <img src="images/taoyuanju/1.png" class="img-rounded" style="margin-top: 15px;margin-left:-18px">
+                </a>
+            </div>
+            <div class="col-md-8" style="margin-top: 5px">
+                <h4 style="font-weight: bold">房型初始化</h4>
+                前台和CC进行咨询服
+                务时可以查询FAQ解答
+                客户问题。
+            </div>
+        </div>
+
+        <div class="col-md-3" style="height: 120px">
+            <div class="col-md-4">
+                <a ui-sref="index.internalProfession.relationshipInitialize.addProfessional">
+                    <img src="images/taoyuanju/2.png" class="img-rounded" style="margin-top: 15px;margin-left:-18px">
+                </a>
+            </div>
+            <div class="col-md-8" style="margin-top: 5px">
+                <h4 style="font-weight: bold">房屋与合同初始化</h4>
+                前台和CC进行咨询服
+                务时可以查询FAQ解答
+                客户问题。
+            </div>
+        </div>
+
+        <div class="col-md-3" style="height: 120px">
+            <div class="col-md-4">
+                <a ui-sref="index.internalProfession.builder">
+                    <img src="images/taoyuanju/3.png" class="img-rounded" style="margin-top: 15px;margin-left:-18px">
+                </a>
+            </div>
+            <div class="col-md-8" style="margin-top: 5px">
+                <h4 style="font-weight: bold">施工单位</h4>
+                前台和CC进行咨询服
+                务时可以查询FAQ解答
+                客户问题。
+            </div>
+        </div>
+
+        <div class="col-md-3" style="height: 120px">
+            <div class="col-md-4">
+                <a ui-sref="index.internalProfession.developer">
+                    <img src="images/taoyuanju/4.png" class="img-rounded" style="margin-top: 15px;margin-left:-18px">
+                </a>
+            </div>
+            <div class="col-md-8" style="margin-top: 5px">
+                <h4 style="font-weight: bold">开发商</h4>
+                前台和CC进行咨询服
+                务时可以查询FAQ解答
+                客户问题。
+            </div>
+        </div>
+
+        <div class="col-md-3" style="height: 120px">
+            <div class="col-md-4">
+                <a ui-sref="index.internalProfession.joinGangInstitution.newActivity">
+                    <img src="images/taoyuanju/5.png" class="img-rounded" style="margin-top: 15px;margin-left:-18px">
+                </a>
+            </div>
+            <div class="col-md-8" style="margin-top: 5px">
+                <h4 style="font-weight: bold">入伙初始化</h4>
+                前台和CC进行咨询服
+                务时可以查询FAQ解答
+                客户问题。
+            </div>
+        </div>
+
+        <div class="col-md-3" style="height: 120px">
+            <div class="col-md-4">
+                <a ui-sref="index.internalProfession.ServiceRequest">
+                    <img src="images/taoyuanju/2.png" class="img-rounded" style="margin-top: 15px;margin-left:-18px">
+                </a>
+            </div>
+            <div class="col-md-8" style="margin-top: 5px">
+                <h4 style="font-weight: bold">内部服务请求</h4>
+                前台和CC进行咨询服
+                务时可以查询FAQ解答
+                客户问题。
+            </div>
+        </div>
+
+        <div class="col-md-3" style="height: 120px">
+            <div class="col-md-4">
+                <a ui-sref="index.internalProfession.majorAssetInitialization.newProfessional">
+                    <img src="images/taoyuanju/21.png" class="img-rounded" style="margin-top: 15px;margin-left:-18px">
+                </a>
+            </div>
+            <div class="col-md-8" style="margin-top: 5px">
+                <h4 style="font-weight: bold">专业资产初始化</h4>
+                查询资产
+                务时可以查询FAQ解答
+                客户问题。
+            </div>
+        </div>
+
+        <div class="col-md-3" style="height: 120px;">
+            <div class="col-md-4">
+                <a ui-sref="index.internalProfession.contractManagement.newContract">
+                    <img src="images/taoyuanju/6.png" class="img-rounded" style="margin-top: 15px;margin-left:-18px">
+                </a>
+            </div>
+            <div class="col-md-8" style="margin-top: 5px">
+                <h4 style="font-weight: bold">合同管理</h4>
+                前台和CC进行咨询服
+                务时可以查询FAQ解答
+                客户问题。
+            </div>
+        </div>
+
+        <div class="col-md-3" style="height: 120px;">
+            <div class="col-md-4">
+                <a ui-sref="index.internalProfession.projectbuildpartition.ruleAdd">
+                    <img src="images/taoyuanju/11.png" class="img-rounded" style="margin-top: 15px;margin-left:-18px">
+                </a>
+            </div>
+            <div class="col-md-8" style="margin-top: 5px">
+                <h4 style="font-weight: bold">项目建筑分区</h4>
+                前台和CC进行咨询服
+                务时可以查询FAQ解答
+                客户问题。
+            </div>
+        </div>
+
+        <div class="col-md-3" style="height: 120px;">
+            <div class="col-md-4">
+                <a ui-sref="index.internalProfession.projectManagementTeam.checkProject">
+                    <img src="images/taoyuanju/11.png" class="img-rounded" style="margin-top: 15px;margin-left:-18px">
+                </a>
+            </div>
+            <div class="col-md-8" style="margin-top: 5px">
+                <h4 style="font-weight: bold">项目团队管理</h4>
+                前台和CC进行咨询服
+                务时可以查询FAQ解答
+                客户问题。
+            </div>
+        </div>
+
+        <div class="col-md-3" style="height: 120px;">
+            <div class="col-md-4">
+                <a ui-sref="index.internalProfession.projectConstruction.newProjectConstruction">
+                    <img src="images/taoyuanju/5.png" class="img-rounded" style="margin-top: 15px;margin-left:-18px">
+                </a>
+            </div>
+            <div class="col-md-8" style="margin-top: 5px">
+                <h4 style="font-weight: bold">项目建筑管理</h4>
+                前台和CC进行咨询服
+                务时可以查询FAQ解答
+                客户问题。
+            </div>
+        </div>
+
+        <div class="col-md-3" style="height: 120px;">
+            <div class="col-md-4">
+                <a ui-sref="index.internalProfession.myTeamProfession">
+                    <img src="images/taoyuanju/11.png" class="img-rounded" style="margin-top: 15px;margin-left:-18px">
+                </a>
+            </div>
+            <div class="col-md-8" style="margin-top: 5px">
+                <h4 style="font-weight: bold">我的团队(专业)</h4>
+                前台和CC进行咨询服
+                务时可以查询FAQ解答
+                客户问题。
+            </div>
+        </div>
+
+        <div class="col-md-3" style="height: 120px;">
+            <div class="col-md-4">
+                <a ui-sref="index.internalProfession.myTeamProjectManager">
+                    <img src="images/taoyuanju/11.png" class="img-rounded" style="margin-top: 15px;margin-left:-18px">
+                </a>
+            </div>
+            <div class="col-md-8" style="margin-top: 5px">
+                <h4 style="font-weight: bold">我的团队(项目经理)</h4>
+                前台和CC进行咨询服
+                务时可以查询FAQ解答
+                客户问题。
+            </div>
+        </div>
+
+        <div class="col-md-3" style="height: 120px;">
+            <div class="col-md-4">
+                <a ui-sref="index.internalProfession.constructionSupervision.licensing.constructApply">
+                    <img src="images/taoyuanju/11.png" class="img-rounded" style="margin-top: 15px;margin-left:-18px">
+                </a>
+            </div>
+            <div class="col-md-8" style="margin-top: 5px">
+                <h4 style="font-weight: bold">施工管理</h4>
+                前台和CC进行咨询服
+                务时可以查询FAQ解答
+                客户问题。
+            </div>
+        </div>
+
+        <div class="col-md-3" style="height: 120px;">
+            <div class="col-md-4">
+                <a ui-sref="index.internalProfession.staffsuperviseIT.staffsuperviseITCheck">
+                    <img src="images/taoyuanju/11.png" class="img-rounded" style="margin-top: 15px;margin-left:-18px">
+                </a>
+            </div>
+            <div class="col-md-8" style="margin-top: 5px">
+                <h4 style="font-weight: bold">人员管理</h4>
+                前台和CC进行咨询服
+                务时可以查询FAQ解答
+                客户问题。
+            </div>
+        </div>
+
+        <div class="col-md-3" style="height: 120px;">
+            <div class="col-md-4">
+                <a ui-sref="index.internalProfession.projectmanagementpersonnell">
+                    <img src="images/taoyuanju/12.png" class="img-rounded" style="margin-top: 15px;margin-left:-18px">
+                </a>
+            </div>
+            <div class="col-md-8" style="margin-top: 5px">
+                <h4 style="font-weight: bold">项目人员管理设置</h4>
+                前台和CC进行咨询服
+                务时可以查询FAQ解答
+                客户问题。
+            </div>
+        </div>
+
+        <div class="col-md-3" style="height: 120px;">
+            <div class="col-md-4">
+                <a ui-sref="index.internalProfession.professionallinemanagement">
+                    <img src="images/taoyuanju/16.png" class="img-rounded" style="margin-top: 15px;margin-left:-18px">
+                </a>
+            </div>
+            <div class="col-md-8" style="margin-top: 5px">
+                <h4 style="font-weight: bold">专业线管理</h4>
+
+                前台和CC进行咨询服
+                务时可以查询FAQ解答
+                客户问题。
+            </div>
+        </div>
+
+        <div class="col-md-3" style="height: 120px;">
+            <div class="col-md-4">
+                <a ui-sref="index.internalProfession.customerServiceManagement">
+                    <img src="images/taoyuanju/16.png" class="img-rounded" style="margin-top: 15px;margin-left:-18px">
+                </a>
+            </div>
+            <div class="col-md-8" style="margin-top: 5px">
+                <h4 style="font-weight: bold">售后管理</h4>
+                前台和CC进行咨询服
+                务时可以查询FAQ解答
+                客户问题。
+            </div>
+        </div>
+
+        <div class="col-md-3" style="height: 120px;">
+            <div class="col-md-4">
+                <a ui-sref="index.internalProfession.taskSet.clean">
+                    <img src="images/taoyuanju/21.png" class="img-rounded" style="margin-top: 15px;margin-left:-18px">
+                </a>
+            </div>
+            <div class="col-md-8" style="margin-top: 5px">
+                <h4 style="font-weight: bold">任务类型设置</h4>
+                前台和CC进行咨询服
+                务时可以查询FAQ解答
+                客户问题。
+            </div>
+        </div>
+
+        <div class="col-md-3" style="height: 120px;">
+            <div class="col-md-4">
+                <a ui-sref="index.internalProfession.organizationalstructure">
+                    <img src="images/taoyuanju/24.png" class="img-rounded" style="margin-top: 15px;margin-left:-18px">
+                </a>
+            </div>
+            <div class="col-md-8" style="margin-top: 5px">
+                <h4 style="font-weight: bold">公司组织架构</h4>
+                前台和CC进行咨询服
+                务时可以查询FAQ解答
+                客户问题。
+            </div>
+        </div>
+
+
+        <div class="col-md-3" style="height: 120px;">
+            <div class="col-md-4">
+                <a ui-sref="index.internalProfession.personnelManagement">
+                    <img src="images/taoyuanju/24.png" class="img-rounded" style="margin-top: 15px;margin-left:-18px">
+                </a>
+            </div>
+            <div class="col-md-8" style="margin-top: 5px">
+                <h4 style="font-weight: bold">人员管理设置</h4>
+                前台和CC进行咨询服
+                务时可以查询FAQ解答
+                客户问题。
+            </div>
+        </div>
+
+        <div class="col-md-3" style="height: 120px;">
+            <div class="col-md-4">
+                <a ui-sref="index.internalProfession.postPersonnelConfiguration">
+                    <img src="images/taoyuanju/24.png" class="img-rounded" style="margin-top: 15px;margin-left:-18px">
+                </a>
+            </div>
+            <div class="col-md-8" style="margin-top: 5px">
+                <h4 style="font-weight: bold">岗位人员配置</h4>
+                前台和CC进行咨询服
+                务时可以查询FAQ解答
+                客户问题。
+            </div>
+        </div>
+        <div class="col-md-3" style="height: 120px;">
+            <div class="col-md-4">
+                <a ui-sref="index.internalProfession.employeeInput">
+                    <img src="images/taoyuanju/24.png" class="img-rounded" style="margin-top: 15px;margin-left:-18px">
+                </a>
+            </div>
+            <div class="col-md-8" style="margin-top: 5px">
+                <h4 style="font-weight: bold">员工录入</h4>
+                前台和CC进行咨询服
+                务时可以查询FAQ解答
+                客户问题。
+            </div>
+        </div>
+
+        <div class="col-md-3" style="height: 120px;">
+            <div class="col-md-4">
+                <a ui-sref="index.internalProfession.projectInitialization">
+                    <img src="images/taoyuanju/24.png" class="img-rounded" style="margin-top: 15px;margin-left:-18px">
+                </a>
+            </div>
+            <div class="col-md-8" style="margin-top: 5px">
+                <h4 style="font-weight: bold">项目初始化</h4>
+                前台和CC进行咨询服
+                务时可以查询FAQ解答
+                客户问题。
+            </div>
+        </div>
+        <div class="col-md-3" style="height: 120px;">
+            <div class="col-md-4">
+                <a ui-sref="index.internalProfession.organizationStructure">
+                    <img src="images/taoyuanju/14.png" class="img-rounded" style="margin-top: 15px;margin-left:-18px">
+                </a>
+            </div>
+            <div class="col-md-8" style="margin-top: 5px">
+                <h4 style="font-weight: bold">组织结构</h4>
+                前台和CC进行咨询服
+                务时可以查询FAQ解答
+                客户问题。
+            </div>
+        </div>
+        <div class="col-md-3" style="height: 120px;">
+            <div class="col-md-4">
+                <a ui-sref="index.internalProfession.authorizationRole">
+                    <img src="images/taoyuanju/24.png" class="img-rounded" style="margin-top: 15px;margin-left:-18px">
+                </a>
+            </div>
+            <div class="col-md-8" style="margin-top: 5px">
+                <h4 style="font-weight: bold">权限角色</h4>
+                前台和CC进行咨询服
+                务时可以查询FAQ解答
+                客户问题。
+            </div>
+        </div>
+
+        <!--内部专业线云平台物业实例主页开始--王志刚-->
+        <div class="col-md-3" style="height: 120px;">
+            <div class="col-md-4">
+                <a ui-sref="index.internalProfession.propertyInstancepage">
+                    <img src="images/taoyuanju/5.png" class="img-rounded" style="margin-top: 15px;margin-left:-18px">
+                </a>
+            </div>
+            <div class="col-md-8" style="margin-top: 5px">
+                <h4 style="font-weight: bold">云平台物业实例主页</h4>
+                前台和CC进行咨询服
+                务时可以查询FAQ解答
+                客户问题。
+            </div>
+        </div>
+        <!--内部专业线云平台物业实例主页结束---王志刚-->
+
+        <!--内部专业线云平台物业实例查询开始--王志刚-->
+        <div class="col-md-3" style="height: 120px;">
+            <div class="col-md-4">
+                <a ui-sref="index.internalProfession.propertyInstanceCheck">
+                    <img src="images/taoyuanju/5.png" class="img-rounded" style="margin-top: 15px;margin-left:-18px">
+                </a>
+            </div>
+            <div class="col-md-8" style="margin-top: 5px">
+                <h4 style="font-weight: bold">云平台物业实例查询</h4>
+                前台和CC进行咨询服
+                务时可以查询FAQ解答
+                客户问题。
+            </div>
+        </div>
+        <!--内部专业线云平台物业实例查询结束---王志刚-->
+
+        <!--内部专业线云平台物业实例创建开始--彭婷婷-->
+        <div class="col-md-3" style="height: 120px;">
+            <div class="col-md-4">
+                <a ui-sref="index.internalProfession.propertyInstanceCreate">
+                    <img src="images/taoyuanju/5.png" class="img-rounded" style="margin-top: 15px;margin-left:-18px">
+                </a>
+            </div>
+            <div class="col-md-8" style="margin-top: 5px">
+                <h4 style="font-weight: bold">云平台物业实例创建</h4>
+                前台和CC进行咨询服
+                务时可以查询FAQ解答
+                客户问题。
+            </div>
+        </div>
+        <!--内部专业线云平台物业实例创建结束---彭婷婷-->
+
+        <div class="col-md-3" style="height: 120px;">
+            <div class="col-md-4">
+                <a ui-sref="index.internalProfession.achievement">
+                    <img src="images/taoyuanju/5.png" class="img-rounded" style="margin-top: 15px;margin-left:-18px">
+                </a>
+            </div>
+            <div class="col-md-8" style="margin-top: 5px">
+                <h4 style="font-weight: bold">个人成就</h4>
+                前台和CC进行咨询服
+                务时可以查询FAQ解答
+                客户问题。
+            </div>
+        </div>
+    </div>
+    <div class="row" style="margin-top: 29px;text-align: center">
+        <div class="doted">
+            <span class="dot_Check"></span>
+            <span class="dot_unChecked"></span>
+            <span class="dot_unChecked"></span>
+        </div>
+    </div>
+</div>
+</body>
+</html>

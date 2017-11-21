@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.flf.mapper.GiftMapper" >
+<resultMap id="BaseResultMap" type="Gift" >
+    <id column="gift_id" property="giftId" jdbcType="VARCHAR" />
+    <result column="gift_name" property="giftName" jdbcType="VARCHAR" />
+    <result column="building_structure_id" property="buildingStructureId" jdbcType="VARCHAR" />
+    <result column="gift_amount" property="giftAmount" jdbcType="VARCHAR" />
+  </resultMap>
+  
+
+	<select id="listPageGift" parameterType="Gift" resultMap="BaseResultMap">
+	    select * from t_gift where 1=1
+	    <if test="giftName !=null and giftName!='' ">
+	        and gift_name=#{giftName}
+	    </if>
+	</select>
+	
+
+<!-- 新增礼包物品关系信息 -->
+	<insert id="insertGift" parameterType="com.flf.entity.Gift" >
+    insert into t_gift (gift_id,gift_name, gift_amount)
+    values (#{giftId},#{giftName}, #{giftAmount})
+  </insert>
+  
+	<!-- 修改礼包物品关系信息 -->
+	<update id="updateGift" parameterType="com.flf.entity.Gift" >
+    update t_gift
+    <set >
+      <if test="giftName != null" >
+        gift_name = #{giftName,jdbcType=VARCHAR},
+      </if>
+      <if test="buildingStructureId != null" >
+        building_structure_id = #{buildingStructureId,jdbcType=VARCHAR},
+      </if>
+      <if test="giftAmount != null" >
+        gift_amount = #{giftAmount,jdbcType=VARCHAR},
+      </if>
+        gift_id = #{giftId,jdbcType=VARCHAR},
+    </set>
+    where gift_id = #{giftId,jdbcType=VARCHAR}
+  </update>
+</mapper>

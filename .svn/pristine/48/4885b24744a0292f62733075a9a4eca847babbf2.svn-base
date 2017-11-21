@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.flf.mapper.WaterMeterOrdersMapper" >
+  <resultMap id="BaseResultMap" type="WaterMeterOrders" >
+    <id column="order_id" property="orderId" jdbcType="VARCHAR" />
+    <result column="order_type" property="orderType" jdbcType="TINYINT" />
+    <result column="order_state" property="orderState" jdbcType="TINYINT" />
+    <result column="task_id" property="taskId" jdbcType="VARCHAR" />
+    <result column="service_request_id" property="serviceRequestId" jdbcType="VARCHAR" />
+    <result column="operator_id" property="operatorId" jdbcType="VARCHAR" />
+    <result column="finish_time" property="finishTime" jdbcType="TIMESTAMP" />
+    <result column="remarks" property="remarks" jdbcType="VARCHAR" />
+    <result column="close_time" property="closeTime" jdbcType="TIMESTAMP" />
+    <result column="close_person_id" property="closePersonId" jdbcType="VARCHAR" />
+    <result column="close_remarks" property="closeRemarks" jdbcType="VARCHAR" />
+  </resultMap>
+  
+  <resultMap type="WaterMeterOrders" id="resultWaterMeterOrdersMap" extends="BaseResultMap">
+  	<association property="staff" column="operator_id" javaType="Staff" select="com.flf.mapper.StaffMapper.selectByid"></association>
+  	<collection property="waterMeterOrderRecords" column="order_id" ofType="WaterMeterOrderRecords" select="com.flf.mapper.WaterMeterOrderRecordsMapper.getWaterMeterOrderRecordsbyOrderId"></collection>
+  	<collection property="annexs" column="order_id" ofType="Annex" select="com.flf.mapper.AnnexMapper.getAnnexbyRelationId"></collection>
+  </resultMap>
+  
+  <select id="getWaterMeterOrdersbyId" parameterType="String" resultMap="resultWaterMeterOrdersMap">
+  select * from ts_water_meter_reading_orders where order_id=#{0}
+  </select>
+  
+  <insert id="insertWaterMeterOrders" parameterType="WaterMeterOrders" >      
+      insert into ts_water_meter_reading_orders (order_id, order_type, order_state,task_id, 
+      service_request_id, operator_id, finish_time,remarks,close_time,close_person_id,close_remarks)
+    values (UUID(),#{orderType,jdbcType=TINYINT},#{orderState,jdbcType=TINYINT}, #{taskId,jdbcType=VARCHAR}, 
+      #{serviceRequestId,jdbcType=VARCHAR}, #{operatorId,jdbcType=VARCHAR}, #{finishTime,jdbcType=TIMESTAMP},#{remarks,jdbcType=VARCHAR},
+      #{closeTime,jdbcType=TIMESTAMP},#{closePersonId,jdbcType=VARCHAR},#{closeRemarks,jdbcType=VARCHAR})
+  </insert>
+  
+   <insert id="insertWaterMeterOrdersUUID" parameterType="WaterMeterOrders" >      
+      insert into ts_water_meter_reading_orders (order_id, order_type, order_state,task_id, 
+      service_request_id, operator_id, finish_time,remarks,close_time,close_person_id,close_remarks)
+    values ( #{orderId,jdbcType=VARCHAR},#{orderType,jdbcType=TINYINT},#{orderState,jdbcType=TINYINT}, #{taskId,jdbcType=VARCHAR}, 
+      #{serviceRequestId,jdbcType=VARCHAR}, #{operatorId,jdbcType=VARCHAR}, #{finishTime,jdbcType=TIMESTAMP},#{remarks,jdbcType=VARCHAR},
+      #{closeTime,jdbcType=TIMESTAMP},#{closePersonId,jdbcType=VARCHAR},#{closeRemarks,jdbcType=VARCHAR})
+  </insert>
+ 
+  <update id="updateWaterMeterOrders" parameterType="WaterMeterOrders" >
+    update ts_water_meter_reading_orders
+    set order_type = #{orderType,jdbcType=TINYINT},
+    	order_state = #{orderState,jdbcType=TINYINT},
+      task_id = #{taskId,jdbcType=VARCHAR},
+      service_request_id = #{serviceRequestId,jdbcType=VARCHAR},
+      operator_id = #{operatorId,jdbcType=VARCHAR},
+      finish_time = #{finishTime,jdbcType=TIMESTAMP},
+      remarks = #{remarks,jdbcType=VARCHAR},
+      close_time = #{closeTime,jdbcType=TIMESTAMP},
+      close_person_id = #{closePersonId,jdbcType=VARCHAR},
+      close_remarks = #{closeRemarks,jdbcType=VARCHAR}
+    where order_id = #{orderId,jdbcType=VARCHAR}
+  </update>
+</mapper>

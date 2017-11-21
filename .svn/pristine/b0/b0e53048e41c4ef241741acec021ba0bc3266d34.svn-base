@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.flf.mapper.FinancialGroupDetailMapper" >
+    <resultMap id="BaseResultMap" type="FinancialGroupDetail" >
+    <id column="financial_group_detail_id" property="financialGroupDetailId" jdbcType="VARCHAR" />
+    <result column="bank_type" property="bankType" jdbcType="TINYINT" />
+    <result column="bank_num" property="bankNum"  jdbcType="VARCHAR" />
+    <result column="house_num" property="houseNum"  jdbcType="VARCHAR" />
+    <result column="house_address" property="houseAddress"  jdbcType="VARCHAR" />
+    <result column="collection_manage_id" property="collectionManegeId" jdbcType="VARCHAR" />
+    <result column="bill_id" property="billId" jdbcType="VARCHAR" />
+    <result column="deductions_tag" property="deductionsTag" jdbcType="TINYINT"/> 
+    <result column="collection_state" property="collectionState" jdbcType="TINYINT"/>
+    <result column="birth_date" property="birthDate"  jdbcType="DATE" />
+    <result column="collection_type" property="collectionType" jdbcType="TINYINT" />
+    <result column="project_id" property="projectId" jdbcType="VARCHAR" />
+    <result column="financial_group_total_id" property="financialGroupTotalId" jdbcType="VARCHAR" />
+    <!-- 附加字段 -->
+    <result column="contract_Number" property="contractNumber" jdbcType="VARCHAR"/>   
+    <result column="message" property="message" jdbcType="VARCHAR"/>   
+    <result column="cust_Name" property="custName" jdbcType="VARCHAR"/>   
+    <result column="bank_Account" property="bankAccount" jdbcType="VARCHAR"/>   
+    <result column="sum" property="sum" jdbcType="DOUBLE"/>
+    <result column="batch_number" property="batchNumber"  jdbcType="VARCHAR" />
+   </resultMap>
+
+	<select id="getDatas" parameterType="String" resultMap="BaseResultMap">
+		<!-- select c.contractNumber,b.bankType,b.bankNum,c.deductionsTag,c.message,c.custName,c.bankAccount,
+	    from tc_financial_group_total a,tc_financial_group_detail b,tc_collection_manage c
+		where b.collection_manage_id=c.collection_manage_id
+		and a.financial_group_total_id=b.financial_group_total_id and
+	    a.financial_group_total_id=#{0} -->
+	    select c.contract_Number,a.bank_Type,a.bank_Num,a.deductions_Tag,c.message,c.cust_Name,c.bank_Account,b.sum
+		from tc_financial_group_detail a
+		left join tc_financial_group_total b on a.financial_group_total_id=b.financial_group_total_id
+		left join tc_collection_manage c on a.collection_manage_id=c.collection_manage_id
+		where b.financial_group_total_id=#{0};
+	</select>
+	
+	<select id="getDetail" parameterType="String" resultMap="BaseResultMap">
+		SELECT * FROM tc_financial_group_detail WHERE financial_group_total_id=#{0}
+	</select>
+	
+	<!-- <select id="listPageFinancialGroupDetail"  parameterType="FinancialGroupDetail" resultMap="BaseResultMap">
+	 	select c.contract_Number,a.bank_Type,a.bank_Num,a.deductions_Tag,c.message,c.cust_Name,c.bank_Account,b.sum
+		from tc_financial_group_detail a
+		left join tc_financial_group_total b on a.financial_group_total_id=b.financial_group_total_id
+		left join tc_collection_manage c on a.collection_manage_id=c.collection_manage_id
+		where b.financial_group_total_id=#{financialGroupTotalId,jdbcType=VARCHAR}
+	</select> -->
+	<select id="listPageFinancialGroupDetail"  parameterType="FinancialGroupDetail" resultMap="BaseResultMap">
+	 	select * from tc_financial_group_detail
+		where 1=1
+		 <if test="financialGroupTotalId!=null and financialGroupTotalId!=''">
+	     	and financial_group_total_id=#{financialGroupTotalId}
+	     </if>
+	     <if test="contractNumber!=null and contractNumber!=''">
+	     	and contract_Number=#{contractNumber}
+	     </if>
+	</select>
+	<!-- maogaofei update 2016.06.01 -->
+ 	<insert id="insertFinancialGroupDetail" parameterType="FinancialGroupDetail">
+ 		insert into tc_financial_group_detail(financial_group_detail_id,financial_group_total_id,
+ 			house_num,house_address,contract_number,bank_type,bank_num,
+ 			bank_account,sum,deductions_tag,cust_name,message,
+ 			collection_manage_id,bill_id,batch_number,
+ 			collection_state,birth_date,collection_type,
+ 			project_id
+ 		)
+ 		values(#{financialGroupDetailId},#{financialGroupTotalId},
+ 			#{houseNum},#{houseAddress},#{contractNumber},#{bankType},#{bankNum},
+ 			#{bankAccount},#{sum},#{deductionsTag},#{custName},#{message},
+ 			#{collectionManegeId},#{billId},#{batchNumber},
+ 			#{collectionState},#{birthDate},#{collectionType},
+ 			#{projectId}
+ 		)
+ 	</insert>
+ 	<insert id="insertFinancialGroupDetailById" parameterType="FinancialGroupDetail">
+ 		insert into tc_financial_group_detail(financial_group_detail_id,contract_number,bank_type,bank_num,
+ 			bank_account,sum,deductions_tag,
+ 			cust_name,message,
+ 			financial_group_total_id
+ 		)
+ 		values(#{financialGroupDetailId},#{contractNumber},#{bankType},#{bankNum},
+ 			#{bankAccount},#{sum},#{deductionsTag},
+ 			#{custName},#{message},#{financialGroupTotalId}
+ 		)
+ 	</insert>
+ 	<!-- 根据条件查询所有的明细 -->
+ 	<select id="listAllFinancialGroupDetail"  parameterType="FinancialGroupDetail" resultMap="BaseResultMap">
+	 	select * from tc_financial_group_detail
+		where 1=1
+		 <if test="financialGroupTotalId!=null and financialGroupTotalId!=''">
+	     	and financial_group_total_id=#{financialGroupTotalId}
+	     </if>
+	     <if test="contractNumber!=null and contractNumber!=''">
+	     	and contract_Number=#{contractNumber}
+	     </if>
+	</select>
+ 	<!-- 修改 -->
+  	<update id="updateFinancialGroupDetail" parameterType="com.flf.entity.FinancialGroupDetail">
+  		update tc_financial_group_detail 
+  		<set>
+  			<if test="batchNumber != null" >
+		       batch_number = #{batchNumber},
+		    </if>
+  			<if test="collectionState != null" >
+		       collection_state = #{collectionState},
+		    </if>
+  		</set>
+  		 where financial_group_detail_id=#{financialGroupDetailId,jdbcType=VARCHAR}
+ 	</update>
+ 	<!-- 删除 -->
+ 	<delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+	    delete from tc_financial_group_detail
+	    where financial_group_detail_id = #{0}
+	 </delete>
+</mapper>

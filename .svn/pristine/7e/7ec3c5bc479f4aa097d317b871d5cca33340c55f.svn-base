@@ -1,0 +1,262 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.flf.mapper.AfterSaleProcessMapper" >
+  <resultMap id="BaseResultMap" type="com.flf.entity.AfterSaleProcess" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="letter_date" property="letterDate" jdbcType="TIMESTAMP" />
+    <result column="guarantee" property="guarantee" jdbcType="VARCHAR" />
+    <result column="state" property="state" jdbcType="VARCHAR" />
+    <result column="repair_time" property="repairTime" jdbcType="TIMESTAMP" />
+    <result column="reply_time" property="replyTime" jdbcType="TIMESTAMP" />
+    <result column="is_letter" property="isLetter" jdbcType="INTEGER" />
+    <result column="is_reply" property="isReply" jdbcType="INTEGER" />
+    <result column="time" property="time" jdbcType="TIMESTAMP" />
+    <result column="express_num1" property="expressNum1" jdbcType="VARCHAR" />
+    <result column="express_company1" property="expressCompany1" jdbcType="VARCHAR" />
+    <result column="express_man1" property="expressMan1" jdbcType="VARCHAR" />
+    <result column="express_man_phone1" property="expressManPhone1" jdbcType="VARCHAR" />
+    <result column="exact_letter_date1" property="exactLetterDate1" jdbcType="TIMESTAMP" />
+    <result column="letter_type1" property="letterType1" jdbcType="VARCHAR" />
+    <result column="express_num2" property="expressNum2" jdbcType="VARCHAR" />
+    <result column="express_company2" property="expressCompany2" jdbcType="VARCHAR" />
+    <result column="express_man2" property="expressMan2" jdbcType="VARCHAR" />
+    <result column="express_man_phone2" property="expressManPhone2" jdbcType="VARCHAR" />
+    <result column="exact_letter_date2" property="exactLetterDate2" jdbcType="TIMESTAMP" />
+    <result column="letter_type2" property="letterType2" jdbcType="VARCHAR" />
+    <result column="express_num3" property="expressNum3" jdbcType="VARCHAR" />
+    <result column="express_company3" property="expressCompany3" jdbcType="VARCHAR" />
+    <result column="express_man3" property="expressMan3" jdbcType="VARCHAR" />
+    <result column="express_man_phone3" property="expressManPhone3" jdbcType="VARCHAR" />
+    <result column="exact_letter_date3" property="exactLetterDate3" jdbcType="TIMESTAMP" />
+    <result column="letter_type3" property="letterType3" jdbcType="VARCHAR" />
+    <result column="operater1" property="operater1" jdbcType="VARCHAR" />
+    <result column="operater2" property="operater2" jdbcType="VARCHAR" />
+    <result column="operater3" property="operater3" jdbcType="VARCHAR" />
+    <result column="is_accept_warranty" property="isAcceptWarranty" jdbcType="INTEGER" />
+    <result column="responsible_project" property="responsibleProject" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, letter_date, guarantee, state, repair_time, reply_time, is_letter, is_reply, 
+    time, express_num1, express_company1, is_accept_warranty
+  </sql>
+  <select id="listPageAfterSaleProcess" resultMap="BaseResultMap" parameterType="AfterSaleProcess">
+  	select * from t_after_sale_process ORDER BY letter_date DESC
+  </select>
+  
+  <select id="listAllAfterSaleProcess" resultMap="BaseResultMap">
+  	select * from t_after_sale_process
+  </select>
+  <select id="getAfterSaleProcessById" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_after_sale_process
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteAfterSaleProcessById" parameterType="java.lang.String" >
+    delete from t_after_sale_process
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insertAfterSaleProcess" parameterType="com.flf.entity.AfterSaleProcess" >
+    insert into t_after_sale_process (id, letter_date, guarantee, 
+      state, repair_time, reply_time, 
+      is_letter, is_reply, time, 
+      express_num1, express_company1, is_accept_warranty,responsible_project
+      )
+    values (#{id}, #{letterDate,jdbcType=TIMESTAMP}, #{guarantee,jdbcType=VARCHAR}, 
+      #{state,jdbcType=VARCHAR}, #{repairTime,jdbcType=TIMESTAMP}, #{replyTime,jdbcType=TIMESTAMP}, 
+      #{isLetter,jdbcType=INTEGER}, #{isReply,jdbcType=INTEGER}, #{time,jdbcType=TIMESTAMP}, 
+      #{expressNum1,jdbcType=VARCHAR}, #{expressCompany1,jdbcType=VARCHAR}, #{isAcceptWarranty,jdbcType=INTEGER},
+      #{responsibleProject}
+      )
+  </insert>
+  <insert id="insertAfterSaleProcessSelective" parameterType="com.flf.entity.AfterSaleProcess" >
+    insert into t_after_sale_process
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="letterDate != null" >
+        letter_date,
+      </if>
+      <if test="guarantee != null" >
+        guarantee,
+      </if>
+      <if test="state != null" >
+        state,
+      </if>
+      <if test="repairTime != null" >
+        repair_time,
+      </if>
+      <if test="replyTime != null" >
+        reply_time,
+      </if>
+      <if test="isLetter != null" >
+        is_letter,
+      </if>
+      <if test="isReply != null" >
+        is_reply,
+      </if>
+      <if test="time != null" >
+        time,
+      </if>
+      <if test="expressNum1 != null" >
+        express_num1,
+      </if>
+      <if test="expressCompany1 != null" >
+        express_company1,
+      </if>
+      <if test="isAcceptWarranty != null" >
+        is_accept_warranty,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="letterDate != null" >
+        #{letterDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="guarantee != null" >
+        #{guarantee,jdbcType=VARCHAR},
+      </if>
+      <if test="state != null" >
+        #{state,jdbcType=VARCHAR},
+      </if>
+      <if test="repairTime != null" >
+        #{repairTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="replyTime != null" >
+        #{replyTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="isLetter != null" >
+        #{isLetter,jdbcType=INTEGER},
+      </if>
+      <if test="isReply != null" >
+        #{isReply,jdbcType=INTEGER},
+      </if>
+      <if test="time != null" >
+        #{time,jdbcType=TIMESTAMP},
+      </if>
+      <if test="expressNum1 != null" >
+        #{expressNum1,jdbcType=VARCHAR},
+      </if>
+      <if test="expressCompany1 != null" >
+        #{expressCompany1,jdbcType=VARCHAR},
+      </if>
+      <if test="isAcceptWarranty != null" >
+        #{isAcceptWarranty,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateAfterSaleProcessSelective" parameterType="com.flf.entity.AfterSaleProcess" >
+    update t_after_sale_process
+    <set >
+      <if test="letterDate != null" >
+        letter_date = #{letterDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="guarantee != null" >
+        guarantee = #{guarantee,jdbcType=VARCHAR},
+      </if>
+      <if test="state != null" >
+        state = #{state,jdbcType=VARCHAR},
+      </if>
+      <if test="repairTime != null" >
+        repair_time = #{repairTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="replyTime != null" >
+        reply_time = #{replyTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="isLetter != null" >
+        is_letter = #{isLetter,jdbcType=INTEGER},
+      </if>
+      <if test="isReply != null" >
+        is_reply = #{isReply,jdbcType=INTEGER},
+      </if>
+      <if test="time != null" >
+        time = #{time,jdbcType=TIMESTAMP},
+      </if>
+      <if test="expressNum1 != null" >
+        express_num1 = #{expressNum1,jdbcType=VARCHAR},
+      </if>
+      <if test="expressCompany1 != null" >
+        express_company1 = #{expressCompany1,jdbcType=VARCHAR},
+      </if>
+      <if test="expressMan1 != null" >
+        express_man1 = #{expressMan1,jdbcType=VARCHAR},
+      </if>
+      <if test="expressManPhone1 != null" >
+        express_man_phone1 = #{expressManPhone1,jdbcType=VARCHAR},
+      </if>
+      <if test="exactLetterDate1 != null" >
+        exact_letter_date1 = #{exactLetterDate1,jdbcType=TIMESTAMP},
+      </if>
+      <if test="letterType1 != null" >
+        letter_type1 = #{letterType1,jdbcType=VARCHAR},
+      </if>
+      <if test="expressNum2 != null" >
+        express_num2 = #{expressNum2,jdbcType=VARCHAR},
+      </if>
+      <if test="expressCompany2 != null" >
+        express_company2 = #{expressCompany2,jdbcType=VARCHAR},
+      </if>
+      <if test="expressMan2 != null" >
+        express_man2 = #{expressMan2,jdbcType=VARCHAR},
+      </if>
+      <if test="expressManPhone2 != null" >
+        express_man_phone2 = #{expressManPhone2,jdbcType=VARCHAR},
+      </if>
+      <if test="exactLetterDate2 != null" >
+        exact_letter_date2 = #{exactLetterDate2,jdbcType=TIMESTAMP},
+      </if>
+      <if test="letterType2 != null" >
+        letter_type2 = #{letterType2,jdbcType=VARCHAR},
+      </if>
+      <if test="expressNum3 != null" >
+        express_num1 = #{expressNum1,jdbcType=VARCHAR},
+      </if>
+      <if test="expressCompany3 != null" >
+        express_company3 = #{expressCompany3,jdbcType=VARCHAR},
+      </if>
+      <if test="expressMan3 != null" >
+        express_man3 = #{expressMan3,jdbcType=VARCHAR},
+      </if>
+      <if test="expressManPhone3 != null" >
+        express_man_phone3 = #{expressManPhone3,jdbcType=VARCHAR},
+      </if>
+      <if test="exactLetterDate3 != null" >
+        exact_letter_date3 = #{exactLetterDate3,jdbcType=TIMESTAMP},
+      </if>
+      <if test="letterType3 != null" >
+        letter_type3 = #{letterType3,jdbcType=VARCHAR},
+      </if>
+      <if test="operater1 != null" >
+        operater1 = #{operater1,jdbcType=VARCHAR},
+      </if>
+      <if test="operater2 != null" >
+        operater2 = #{operater2,jdbcType=VARCHAR},
+      </if>
+      <if test="operater3 != null" >
+        operater3 = #{operater3,jdbcType=VARCHAR},
+      </if>
+      <if test="isAcceptWarranty != null" >
+        is_accept_warranty = #{isAcceptWarranty,jdbcType=INTEGER},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateAfterSaleProcess" parameterType="com.flf.entity.AfterSaleProcess" >
+    update t_after_sale_process
+    set letter_date = #{letterDate,jdbcType=TIMESTAMP},
+      guarantee = #{guarantee,jdbcType=VARCHAR},
+      state = #{state,jdbcType=VARCHAR},
+      repair_time = #{repairTime,jdbcType=TIMESTAMP},
+      reply_time = #{replyTime,jdbcType=TIMESTAMP},
+      is_letter = #{isLetter,jdbcType=INTEGER},
+      is_reply = #{isReply,jdbcType=INTEGER},
+      time = #{time,jdbcType=TIMESTAMP},
+      express_num1 = #{expressNum1,jdbcType=VARCHAR},
+      express_company1 = #{expressCompany1,jdbcType=VARCHAR},
+      is_accept_warranty = #{isAcceptWarranty,jdbcType=INTEGER}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+</mapper>

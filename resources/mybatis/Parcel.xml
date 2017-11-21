@@ -1,0 +1,213 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.flf.mapper.ParcelMapper" >
+  <resultMap id="BaseResultMap" type="com.flf.entity.Parcel" >
+    <id column="parcel_id" property="parcelId" jdbcType="VARCHAR" />
+    <result column="project_id" property="projectId" jdbcType="VARCHAR" />
+    <result column="parcel_num" property="parcelNum" jdbcType="VARCHAR" />
+    <result column="stall_matching" property="stallMatching" jdbcType="DOUBLE" />
+    <result column="parcel_area" property="parcelArea" jdbcType="DOUBLE" />
+    <result column="civil_air_defence_area" property="civilAirDefenceArea" jdbcType="DOUBLE" />
+    <result column="floor_area" property="floorArea" jdbcType="DOUBLE" />
+    <result column="build_area" property="buildArea" jdbcType="DOUBLE" />
+    <result column="road_area" property="roadArea" jdbcType="DOUBLE" />
+    <result column="greening_area" property="greeningArea" jdbcType="DOUBLE" />
+    <result column="ground_parking_space" property="groundParkingSpace" jdbcType="INTEGER" />
+    <result column="underground_parking_space" property="undergroundParkingSpace" jdbcType="INTEGER" />
+    <result column="plot_ratio" property="plotRatio" jdbcType="DOUBLE" />
+    <result column="basement_area" property="basementArea" jdbcType="DOUBLE" />
+  </resultMap>
+  <resultMap type="Parcel" id="resultParcelMap" extends="BaseResultMap">
+    	<association property="project" column="project_id" javaType="Project" select="com.flf.mapper.ProjectMapper.getProject"></association>
+  </resultMap>
+  <sql id="Base_Column_List" >
+    parcel_id, project_id, parcel_num, stall_matching, parcel_area, civil_air_defence_area, 
+    floor_area, build_area, road_area, greening_area, ground_parking_space, underground_parking_space, 
+    plot_ratio
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from tc_parcel
+    where parcel_id = #{parcelId,jdbcType=VARCHAR}
+  </select>
+   <select id="selectByProjectId" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from tc_parcel
+    where project_id = #{projectId,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from tc_parcel
+    where parcel_id = #{parcelId,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insertParcel" parameterType="com.flf.entity.Parcel" >
+    insert into tc_parcel (parcel_id, project_id, parcel_num, 
+      stall_matching, parcel_area, civil_air_defence_area, 
+      floor_area, build_area, road_area, 
+      greening_area, ground_parking_space, underground_parking_space, 
+      plot_ratio,basement_area)
+    values (UUID(), #{projectId,jdbcType=VARCHAR}, #{parcelNum,jdbcType=VARCHAR}, 
+      #{stallMatching,jdbcType=DOUBLE}, #{parcelArea,jdbcType=DOUBLE}, #{civilAirDefenceArea,jdbcType=DOUBLE}, 
+      #{floorArea,jdbcType=DOUBLE}, #{buildArea,jdbcType=DOUBLE}, #{roadArea,jdbcType=DOUBLE}, 
+      #{greeningArea,jdbcType=DOUBLE}, #{groundParkingSpace,jdbcType=INTEGER}, #{undergroundParkingSpace,jdbcType=INTEGER}, 
+      #{plotRatio,jdbcType=DOUBLE},#{basementArea,jdbcType=DOUBLE})
+  </insert>
+   <insert id="insertListParcel" parameterType="Parcel" >
+    insert into tc_parcel (parcel_id, project_id, parcel_num, 
+      stall_matching, parcel_area, civil_air_defence_area, 
+      floor_area, build_area, road_area, 
+      greening_area, ground_parking_space, underground_parking_space, 
+      plot_ratio,basement_area)
+    values <foreach collection="list" separator="," item="items">
+    (UUID(), #{items.projectId,jdbcType=VARCHAR}, #{items.parcelNum,jdbcType=VARCHAR}, 
+      #{items.stallMatching,jdbcType=DOUBLE}, #{items.parcelArea,jdbcType=DOUBLE}, #{items.civilAirDefenceArea,jdbcType=DOUBLE}, 
+      #{items.floorArea,jdbcType=DOUBLE}, #{items.buildArea,jdbcType=DOUBLE}, #{items.roadArea,jdbcType=DOUBLE}, 
+      #{items.greeningArea,jdbcType=DOUBLE}, #{items.groundParkingSpace,jdbcType=INTEGER}, #{items.undergroundParkingSpace,jdbcType=INTEGER}, 
+      #{items.plotRatio,jdbcType=DOUBLE},#{items.basementArea,jdbcType=DOUBLE})
+       </foreach>
+  </insert>
+  <insert id="insertSelective" parameterType="com.flf.entity.Parcel" >
+    insert into tc_parcel
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="parcelId != null" >
+        parcel_id,
+      </if>
+      <if test="projectId != null" >
+        project_id,
+      </if>
+      <if test="parcelNum != null" >
+        parcel_num,
+      </if>
+      <if test="stallMatching != null" >
+        stall_matching,
+      </if>
+      <if test="parcelArea != null" >
+        parcel_area,
+      </if>
+      <if test="civilAirDefenceArea != null" >
+        civil_air_defence_area,
+      </if>
+      <if test="floorArea != null" >
+        floor_area,
+      </if>
+      <if test="buildArea != null" >
+        build_area,
+      </if>
+      <if test="roadArea != null" >
+        road_area,
+      </if>
+      <if test="greeningArea != null" >
+        greening_area,
+      </if>
+      <if test="groundParkingSpace != null" >
+        ground_parking_space,
+      </if>
+      <if test="undergroundParkingSpace != null" >
+        underground_parking_space,
+      </if>
+      <if test="plotRatio != null" >
+        plot_ratio,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="parcelId != null" >
+        #{parcelId,jdbcType=VARCHAR},
+      </if>
+      <if test="projectId != null" >
+        #{projectId,jdbcType=VARCHAR},
+      </if>
+      <if test="parcelNum != null" >
+        #{parcelNum,jdbcType=VARCHAR},
+      </if>
+      <if test="stallMatching != null" >
+        #{stallMatching,jdbcType=DOUBLE},
+      </if>
+      <if test="parcelArea != null" >
+        #{parcelArea,jdbcType=DOUBLE},
+      </if>
+      <if test="civilAirDefenceArea != null" >
+        #{civilAirDefenceArea,jdbcType=DOUBLE},
+      </if>
+      <if test="floorArea != null" >
+        #{floorArea,jdbcType=DOUBLE},
+      </if>
+      <if test="buildArea != null" >
+        #{buildArea,jdbcType=DOUBLE},
+      </if>
+      <if test="roadArea != null" >
+        #{roadArea,jdbcType=DOUBLE},
+      </if>
+      <if test="greeningArea != null" >
+        #{greeningArea,jdbcType=DOUBLE},
+      </if>
+      <if test="groundParkingSpace != null" >
+        #{groundParkingSpace,jdbcType=INTEGER},
+      </if>
+      <if test="undergroundParkingSpace != null" >
+        #{undergroundParkingSpace,jdbcType=INTEGER},
+      </if>
+      <if test="plotRatio != null" >
+        #{plotRatio,jdbcType=DOUBLE},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.flf.entity.Parcel" >
+    update tc_parcel
+    <set >
+      <if test="projectId != null" >
+        project_id = #{projectId,jdbcType=VARCHAR},
+      </if>
+      <if test="parcelNum != null" >
+        parcel_num = #{parcelNum,jdbcType=VARCHAR},
+      </if>
+      <if test="stallMatching != null" >
+        stall_matching = #{stallMatching,jdbcType=DOUBLE},
+      </if>
+      <if test="parcelArea != null" >
+        parcel_area = #{parcelArea,jdbcType=DOUBLE},
+      </if>
+      <if test="civilAirDefenceArea != null" >
+        civil_air_defence_area = #{civilAirDefenceArea,jdbcType=DOUBLE},
+      </if>
+      <if test="floorArea != null" >
+        floor_area = #{floorArea,jdbcType=DOUBLE},
+      </if>
+      <if test="buildArea != null" >
+        build_area = #{buildArea,jdbcType=DOUBLE},
+      </if>
+      <if test="roadArea != null" >
+        road_area = #{roadArea,jdbcType=DOUBLE},
+      </if>
+      <if test="greeningArea != null" >
+        greening_area = #{greeningArea,jdbcType=DOUBLE},
+      </if>
+      <if test="groundParkingSpace != null" >
+        ground_parking_space = #{groundParkingSpace,jdbcType=INTEGER},
+      </if>
+      <if test="undergroundParkingSpace != null" >
+        underground_parking_space = #{undergroundParkingSpace,jdbcType=INTEGER},
+      </if>
+      <if test="plotRatio != null" >
+        plot_ratio = #{plotRatio,jdbcType=DOUBLE},
+      </if>
+    </set>
+    where parcel_id = #{parcelId,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.flf.entity.Parcel" >
+    update tc_parcel
+    set project_id = #{projectId,jdbcType=VARCHAR},
+      parcel_num = #{parcelNum,jdbcType=VARCHAR},
+      stall_matching = #{stallMatching,jdbcType=DOUBLE},
+      parcel_area = #{parcelArea,jdbcType=DOUBLE},
+      civil_air_defence_area = #{civilAirDefenceArea,jdbcType=DOUBLE},
+      floor_area = #{floorArea,jdbcType=DOUBLE},
+      build_area = #{buildArea,jdbcType=DOUBLE},
+      road_area = #{roadArea,jdbcType=DOUBLE},
+      greening_area = #{greeningArea,jdbcType=DOUBLE},
+      ground_parking_space = #{groundParkingSpace,jdbcType=INTEGER},
+      underground_parking_space = #{undergroundParkingSpace,jdbcType=INTEGER},
+      plot_ratio = #{plotRatio,jdbcType=DOUBLE}
+    where parcel_id = #{parcelId,jdbcType=VARCHAR}
+  </update>
+</mapper>

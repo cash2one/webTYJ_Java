@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.flf.mapper.HandleMechanismMapper" >
+  <resultMap id="BaseResultMap" type="HandleMechanism" >
+    <id column="handle_id" property="handleId" jdbcType="VARCHAR" />
+    <result column="handle_type" property="handleType" jdbcType="TINYINT" />
+    <result column="important_event_type_id" property="eventTypeId" jdbcType="VARCHAR" />
+    <result column="establish_id" property="createPersonId" jdbcType="VARCHAR" />
+    <result column="principal" property="principal" jdbcType="VARCHAR" />
+    <result column="create_time" property="createTime" jdbcType="DATE" />
+    <result column="remarks" property="remarks" jdbcType="VARCHAR" />
+    <result column="state" property="state" jdbcType="TINYINT" />
+  </resultMap>
+  
+  <resultMap type="HandleMechanism" id="resultHandleMechanismMap" extends="BaseResultMap">
+   	<association property="staff" column="principal" javaType="Staff" select="com.flf.mapper.StaffMapper.selectByid"></association> 
+  </resultMap>
+  
+  <select id="getHandleMechanismbyId" parameterType="String" resultMap="resultHandleMechanismMap">
+  	select * from ts_handle_mechanism where handle_id=#{0}
+  </select>
+  
+  <select id="getHandleMechanismbyEventTypeId" parameterType="String" resultMap="resultHandleMechanismMap">
+  	select * from ts_handle_mechanism where important_event_type_id = #{0}
+  </select>
+  
+  <insert id="insertHandleMechanism" parameterType="HandleMechanism" >      
+      insert into ts_handle_mechanism (handle_id,handle_type,important_event_type_id,establish_id,principal,create_time,remarks,state)
+    values (UUID(), #{handleType,jdbcType=TINYINT}, #{eventTypeId,jdbcType=VARCHAR}, #{createPersonId,jdbcType=VARCHAR},#{principal,jdbcType=VARCHAR},#{createTime,jdbcType=TIMESTAMP},#{remarks,jdbcType=VARCHAR},#{state,jdbcType=TINYINT})
+  </insert>
+  
+  <insert id="insertHandleMechanismUUID" parameterType="HandleMechanism" >      
+     insert into ts_handle_mechanism (handle_id,handle_type,important_event_type_id,establish_id,principal,create_time,remarks,state)
+    values (#{handleId,jdbcType=VARCHAR}, #{handleType,jdbcType=TINYINT}, #{eventTypeId,jdbcType=VARCHAR}, #{createPersonId,jdbcType=VARCHAR},#{principal,jdbcType=VARCHAR},#{createTime,jdbcType=DATE},#{remarks,jdbcType=VARCHAR},#{state,jdbcType=TINYINT})
+  </insert>
+  
+  <update id="updateHandleMechanism" parameterType="HandleMechanism">
+  	update ts_handle_mechanism 
+  	set handle_type = #{handleType,jdbcType=TINYINT},
+  	important_event_type_id = #{eventTypeId,jdbcType=VARCHAR},
+  	establish_id = #{createPersonId,jdbcType=VARCHAR},
+  	principal = #{principal,jdbcType=VARCHAR},
+  	create_time = #{createTime,jdbcType=TIMESTAMP},
+  	remarks = #{remarks,jdbcType=VARCHAR},
+  	state=#{state,jdbcType=TINYINT}
+  	where handle_id = #{handleId,jdbcType=VARCHAR}
+  </update>
+  
+  <!-- 将处理机制设为失效 -->
+   <update id="updateHandleState" parameterType="HandleMechanism">  	
+  		update ts_handle_mechanism set state=0
+  		where handle_id = #{handleId,jdbcType=VARCHAR}
+  </update>
+  
+
+</mapper>

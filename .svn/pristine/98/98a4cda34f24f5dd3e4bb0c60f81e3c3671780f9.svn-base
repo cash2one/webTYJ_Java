@@ -1,0 +1,371 @@
+package com.flf.service.impl;
+
+import java.awt.print.Printable;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
+import java.util.UUID;
+
+import org.omg.CosNaming.NamingContextExtPackage.StringNameHelper;
+import org.springframework.beans.factory.annotation.Autowired;
+
+import com.flf.entity.Bill;
+import com.flf.entity.PageRestful;
+import com.flf.entity.PaymentDetails;
+import com.flf.mapper.BillMapper;
+import com.flf.mapper.ElectronicBillingMapper;
+import com.flf.mapper.FinancialStaffMapper;
+import com.flf.mapper.PaymentDetailsMapper;
+import com.flf.service.PaymentDetailsService;
+import com.flf.service.ProductCommonserviceService;
+import com.flf.util.PrintPay;
+
+import net.sf.json.JSONObject;
+
+public class PaymentDetailsServiceImpl implements PaymentDetailsService {
+	private PaymentDetailsMapper paymentDetailsMapper;//支付明细
+	private FinancialStaffMapper financialStaffMapper;//财务人员
+	private BillMapper billMapper;//每月账单
+	private ElectronicBillingMapper electronicBillingMapper;//电子账单
+	@Autowired
+	private ProductCommonserviceService productCommonserviceService;
+
+	public ElectronicBillingMapper getElectronicBillingMapper() {
+		return electronicBillingMapper;
+	}
+
+	public void setElectronicBillingMapper(ElectronicBillingMapper electronicBillingMapper) {
+		this.electronicBillingMapper = electronicBillingMapper;
+	}
+
+	public BillMapper getBillMapper() {
+		return billMapper;
+	}
+
+	public void setBillMapper(BillMapper billMapper) {
+		this.billMapper = billMapper;
+	}
+
+	public PaymentDetailsMapper getPaymentDetailsMapper() {
+		return paymentDetailsMapper;
+	}
+
+	public void setPaymentDetailsMapper(PaymentDetailsMapper paymentDetailsMapper) {
+		this.paymentDetailsMapper = paymentDetailsMapper;
+	}
+
+	public FinancialStaffMapper getFinancialStaffMapper() {
+		return financialStaffMapper;
+	}
+
+	public void setFinancialStaffMapper(FinancialStaffMapper financialStaffMapper) {
+		this.financialStaffMapper = financialStaffMapper;
+	}
+
+	@Override
+	public List<PaymentDetails> listAllPaymentDetails(String financialStaffId) {
+		return paymentDetailsMapper.listAllPaymentDetails(financialStaffId);
+	}
+
+
+	@Override
+	public PageRestful listPagePaymentDetails(
+			PaymentDetails paymentDetails) {  
+		 PageRestful pageRestful = new PageRestful();
+		 List<PaymentDetails> paymentDetailss=paymentDetailsMapper.listPagePaymentDetails(paymentDetails);
+		 paymentDetailss.add(0,null);
+		 pageRestful.setPaymentDetail(paymentDetailss);
+		 pageRestful.setPage(paymentDetails.getPage());
+		return pageRestful;
+	}
+
+	@Override
+	public PaymentDetails getPaymentDetailsById(String paymentDetailsId) {
+		return paymentDetailsMapper.getPaymentDetailsById(paymentDetailsId);
+	}
+	
+
+	@Override
+	public void insertPaymentDetailsRes(PaymentDetails paymentDetails) {
+		// TODO Auto-generated method stub	
+//		结算总金额
+//		double sum = 0;
+//		//收费项目
+//		String namtTmp = "混合";
+//		if(paymentDetails.getCashSum() != null){
+//			sum += paymentDetails.getCashSum();
+//		}
+//		if(paymentDetails.getCreditCardSum() != null){
+//			sum += paymentDetails.getCreditCardSum();
+//		}
+//		if(paymentDetails.getWechatSum() != null){
+//			sum += paymentDetails.getWechatSum();
+//		}
+//		String electronicBillingId = "";
+//		if(paymentDetails.getBills().size() != 0){
+//			if(paymentDetails.getBills().get(0).getElectronicBillingId() != null){
+//				electronicBillingId = paymentDetails.getBills().get(0).getElectronicBillingId();
+//			}
+//		}
+//		ElectronicBilling electronicBilling = electronicBillingMapper.getElectronicBillingById(electronicBillingId);
+//		
+//		
+//		if(paymentDetails.getBills()!=null && paymentDetails.getBills().size()!=0 && 
+//				paymentDetails.getBills().get(0).getChargeTypeId()!=null){
+//			namtTmp = paymentDetails.getBills().get(0).getChargeTypeId();
+//		}
+//		for (Bill bill : paymentDetails.getBills()) {
+//			bill = billMapper.getBillById(bill.getBillId());
+//			if(sum <= 0){
+//				break;
+//			}
+//			//收费项目
+//			if(bill.getChargeTypeId()!=null){
+//				if(!namtTmp.equals(bill.getChargeTypeId())){
+//					namtTmp = "混合";
+//					break;
+//				}
+//			}
+//			if(sum >0 && bill.getOverdue()>0){
+//				double tmpSum = sum - bill.getOverdue();
+//				if(tmpSum>=0){
+//					electronicBilling.setOverdue(electronicBilling.getOverdue()-bill.getOverdue());
+//					bill.setOverdue(0);
+//					sum = tmpSum;
+//				}else{
+//					electronicBilling.setOverdue(electronicBilling.getOverdue()-sum);
+//					bill.setOverdue(bill.getOverdue()-sum);
+//					sum = 0;
+//				}
+//			}
+//			if(sum>0 && bill.getLastOweSum() >0){
+//				double tmpSum = sum - bill.getLastOweSum();
+//				if(tmpSum>=0){
+//					electronicBilling.setLastOweSum(electronicBilling.getLastOweSum()-bill.getLastOweSum());
+//					bill.setLastOweSum(0);
+//					sum = tmpSum;
+//				}else{
+//					electronicBilling.setLastOweSum(electronicBilling.getLastOweSum()-sum);
+//					bill.setLastOweSum(bill.getLastOweSum()-sum);
+//					sum = 0;
+//				}
+//			}
+//			if(sum>0 && bill.getCurrentOweSum()>0){
+//				double tmpSum = sum - bill.getCurrentOweSum();
+//				if(tmpSum>=0){
+//					electronicBilling.setCurrentOweSum(electronicBilling.getCurrentOweSum()-bill.getCurrentOweSum());
+//					bill.setCurrentOweSum(0);
+//					sum = tmpSum;
+//				}else{
+//					electronicBilling.setCurrentOweSum(electronicBilling.getCurrentOweSum()-sum);
+//					bill.setLastOweSum(bill.getCollectSum()-sum);
+//					sum = 0;
+//				}
+//			}
+//			billMapper.updateBill(bill);
+//		}
+//		electronicBillingMapper.updateElectronicBilling(electronicBilling);
+
+		//PrintPay printPay = new PrintPay();
+		//printPay.Print(paymentDetails);
+		// 结算总金额
+		double sum = 0;
+		// 收费项目
+		String namtTmp = "混合";
+		if (paymentDetails.getCashSum() != null) {
+			sum += paymentDetails.getCashSum();
+		}
+		if (paymentDetails.getCreditCardSum() != null) {
+			sum += paymentDetails.getCreditCardSum();
+		}
+		if (paymentDetails.getWechatSum() != null) {
+			sum += paymentDetails.getWechatSum();
+		}
+		// String electronicBillingId = "";
+		if (paymentDetails.getBills().size() != 0) {
+			// if(paymentDetails.getBills().get(0).getElectronicBillingId() !=
+			// null){
+			// electronicBillingId =
+			// paymentDetails.getBills().get(0).getElectronicBillingId();
+			// }
+		}
+		// electronicBilling =
+		// electronicBillingMapper.getElectronicBillingById(electronicBillingId);
+
+		if (paymentDetails.getBills() != null && paymentDetails.getBills().size() != 0
+				&& paymentDetails.getBills().get(0).getChargeTypeId() != null) {
+			namtTmp = paymentDetails.getBills().get(0).getChargeTypeId();
+		}
+
+		
+		List<Bill> list = paymentDetails.getBills();
+		//把优先级为空的放在最后面
+		
+		//把list变成数组排序
+		Bill[] billArray = new Bill[list.size()];
+		int t=0;
+		for(int i=0;i<paymentDetails.getBills().size();i++){
+			if(paymentDetails.getBills().get(i).getChargeTypePriority()!=null){
+				billArray[t++]=paymentDetails.getBills().get(i);
+			}
+		}
+		for(int i=0;i<paymentDetails.getBills().size();i++){
+			if(paymentDetails.getBills().get(i).getChargeTypePriority()==null){
+				billArray[t++]=paymentDetails.getBills().get(i);
+			}
+		}
+		for (int i = 0; i < billArray.length; i++) {
+			for (int j = i; j < billArray.length; j++) {
+				if (billArray[j].getChargeTypePriority()!=null) {
+				if (billArray[i].getChargeTypePriority() >= 
+					billArray[j].getChargeTypePriority()) {
+					Bill billtag;
+					billtag = billArray[i];
+					billArray[i]=billArray[j];
+					billArray[j]=billtag;
+
+				}
+				}
+			}
+		}
+
+		for (int i=0; i < billArray.length;i++) {
+			//billArray[i] = billMapper.getBillById(billArray[i].getBillId());
+			Bill bill=billArray[i];
+			List<Bill> billsDetails= billMapper.findChargeDetailsBychargeTypeIdThisMonth(bill);
+			if(sum<=0){
+				return;
+			}
+			else
+			{		//结算违约金
+				if(bill.getTotalOverdue()>0&&sum>0 ){
+					double tmpSum = sum - bill.getOverdue();
+					if(tmpSum>0){
+						for (Bill bill1 : billsDetails) {
+							bill1.setOverdue(0);
+							billMapper.updateBill(bill1);
+						}
+					sum -= bill.getTotalOverdue();
+				}
+				else{
+					for (Bill bill1 : billsDetails){
+						if(bill1.getOverdue()>0&&sum>0){
+								if(sum-bill1.getOverdue()>=0){
+									bill1.setOverdue(0);
+									billMapper.updateBill(bill1);
+									sum=sum-bill1.getOverdue();
+								}else{
+									bill1.setOverdue(bill1.getOverdue()-sum);
+									billMapper.updateBill(bill1);
+									sum=0;
+								}
+								
+							}
+						}
+							
+					}
+					
+				}	
+			//上期累计未结清
+				if(bill.getTotalLastOweSum()>0&&sum>0){
+					if(sum-bill.getTotalLastOweSum()>=0){
+						for (Bill bill1 : billsDetails) {
+							bill1.setLastOweSum(0);
+							billMapper.updateBill(bill1);
+						}
+						sum-=bill.getTotalLastOweSum();
+					}
+					else{
+						for (Bill bill1 : billsDetails){
+							if(sum-bill1.getLastOweSum()>0){
+								bill1.setLastOweSum(0);
+								billMapper.updateBill(bill1);
+								sum=sum-bill1.getLastOweSum();
+							}
+							else{
+								bill1.setLastOweSum(bill1.getLastOweSum()-sum);
+								billMapper.updateBill(bill1);
+								sum=0;
+							}
+						}
+					}
+				}
+			//本期欠款结清
+				if(sum>0&&bill.getTotalCurrentOweSum()>0){
+					if(sum-bill.getTotalCurrentOweSum()>0){
+						for (Bill bill1 : billsDetails){
+							bill1.setCurrentOweSum(0);
+							billMapper.updateBill(bill1);
+						}
+						sum=sum-bill.getTotalCurrentOweSum();
+					}
+					else{
+						for (Bill bill1 : billsDetails){
+							if(sum-bill1.getCurrentOweSum()>0){
+								bill1.setCurrentOweSum(0);
+								billMapper.updateBill(bill1);
+								sum=sum-bill1.getCurrentOweSum();
+							}
+							else{
+								bill1.setCurrentOweSum(bill1.getCurrentOweSum()-sum);
+								billMapper.updateBill(bill1);
+								sum=0;
+							}
+						}
+					}
+				}
+			
+		}
+		}
+		paymentDetails.setPaymentDetailsId(UUID.randomUUID().toString());
+		paymentDetails.setTransactionDate(new Date());
+		String paymentNum=Long.toString(System.currentTimeMillis());
+		paymentDetails.setPaymentNum(paymentNum);
+		paymentDetails.setRefundState(0);
+		paymentDetails.setCiName(namtTmp);
+		//支出
+		paymentDetails.setIsOutIn(1);
+		paymentDetailsMapper.insertPaymentDetails(paymentDetails);
+	}
+
+
+	@Override
+	public List<PaymentDetails> getPaymentDatilsByStaffId(
+			String financialStaffId) {
+		// TODO Auto-generated method stub
+		return paymentDetailsMapper.getPaymentDatilsByStaffId(financialStaffId);
+	}
+	
+	@Override
+		public PaymentDetails  createPaymentNum(String projectId) {
+			// TODO Auto-generated method stub
+				PaymentDetails paymentDetailsRes=new PaymentDetails();
+				PaymentDetails paymentDetails=paymentDetailsMapper.getPaymentNum();
+				String serialNumber=paymentDetails.getPaymentNum();
+				String paymentNumJson=productCommonserviceService.getProductNumber("440300", projectId, "02","005" , serialNumber);
+				JSONObject  jasonObject = JSONObject.fromObject(paymentNumJson);
+				@SuppressWarnings("unchecked")
+				Map<String,String> map = (Map<String,String>)jasonObject;
+				String paymentNum = map.get("code");
+				paymentDetailsRes.setPaymentNum(paymentNum);
+				return paymentDetailsRes ;
+		}
+	@Override
+	public PageRestful listPageWithPaymentDetails(PaymentDetails paymentDetail) {
+		
+		PageRestful pageRestful=new PageRestful();
+		List<PaymentDetails> paymentDetails = paymentDetailsMapper.listPageWithPaymentDetails(paymentDetail);
+		paymentDetails.add(0, null);
+		pageRestful.setPaymentDetail(paymentDetails);
+		pageRestful.setPage(paymentDetail.getPage());		
+		return pageRestful;
+	}
+
+	@Override
+	public PaymentDetails getPaymentDatilsSumByStaffId(String financialStaffId) {
+			PaymentDetails  paymentDetails = paymentDetailsMapper.getPaymentDetailsSum(financialStaffId);
+			return paymentDetails;
+	}	
+
+}

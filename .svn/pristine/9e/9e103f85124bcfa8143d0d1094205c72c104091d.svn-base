@@ -1,0 +1,196 @@
+package com.flf.service.impl;
+
+import java.util.Date;
+import java.util.List;
+import java.util.UUID;
+
+import com.flf.entity.Bill;
+import com.flf.entity.ElectronicBilling;
+import com.flf.entity.PageRestful;
+import com.flf.entity.PaymentDetails;
+import com.flf.entity.Staff;
+import com.flf.mapper.BillMapper;
+import com.flf.mapper.ElectronicBillingMapper;
+import com.flf.mapper.FinancialStaffMapper;
+import com.flf.mapper.PaymentDetailsMapper;
+import com.flf.mapper.StaffMapper;
+import com.flf.service.PaymentDetailsService;
+
+public class PaymentDetailsServiceImpl implements PaymentDetailsService {
+	private PaymentDetailsMapper paymentDetailsMapper;//支付明细
+	private FinancialStaffMapper financialStaffMapper;//财务人员
+	private BillMapper billMapper;//每月账单
+	private ElectronicBillingMapper electronicBillingMapper;//电子账单
+
+	public ElectronicBillingMapper getElectronicBillingMapper() {
+		return electronicBillingMapper;
+	}
+
+
+	public void setElectronicBillingMapper(ElectronicBillingMapper electronicBillingMapper) {
+		this.electronicBillingMapper = electronicBillingMapper;
+	}
+
+
+	public BillMapper getBillMapper() {
+		return billMapper;
+	}
+
+
+	public void setBillMapper(BillMapper billMapper) {
+		this.billMapper = billMapper;
+	}
+
+
+	public PaymentDetailsMapper getPaymentDetailsMapper() {
+		return paymentDetailsMapper;
+	}
+
+
+	public void setPaymentDetailsMapper(PaymentDetailsMapper paymentDetailsMapper) {
+		this.paymentDetailsMapper = paymentDetailsMapper;
+	}
+
+
+	public FinancialStaffMapper getFinancialStaffMapper() {
+		return financialStaffMapper;
+	}
+
+
+	public void setFinancialStaffMapper(FinancialStaffMapper financialStaffMapper) {
+		this.financialStaffMapper = financialStaffMapper;
+	}
+
+
+	@Override
+	public List<PaymentDetails> listAllPaymentDetails(String financialStaffId) {
+		// TODO Auto-generated method stub
+		return paymentDetailsMapper.listAllPaymentDetails(financialStaffId);
+	}
+
+
+	@Override
+	public PageRestful listPagePaymentDetails(
+			PaymentDetails paymentDetails) {  
+		// TODO Auto-generated method stub
+		 PageRestful pageRestful = new PageRestful();
+		 Double sum=0.0;
+		 List<PaymentDetails> paymentDetailss=paymentDetailsMapper.listPagePaymentDetails(paymentDetails);
+		 paymentDetailss.add(0,null);
+		 pageRestful.setPaymentDetail(paymentDetailss);
+		 pageRestful.setPage(paymentDetails.getPage());
+		return pageRestful;
+	}
+
+	@Override
+	public PaymentDetails getPaymentDetailsById(String paymentDetailsId) {
+		// TODO Auto-generated method stub
+		return paymentDetailsMapper.getPaymentDetailsById(paymentDetailsId);
+	}
+	
+
+	@Override
+	public void insertPaymentDetailsRes(PaymentDetails paymentDetails) {
+		// TODO Auto-generated method stub
+		
+		//结算总金额
+		double sum = 0;
+		//收费项目
+		String namtTmp = "混合";
+		if(paymentDetails.getCashSum() != null){
+			sum += paymentDetails.getCashSum();
+		}
+		if(paymentDetails.getCreditCardSum() != null){
+			sum += paymentDetails.getCreditCardSum();
+		}
+		if(paymentDetails.getWechatSum() != null){
+			sum += paymentDetails.getWechatSum();
+		}
+		String electronicBillingId = "";
+		if(paymentDetails.getBills().size() != 0){
+			if(paymentDetails.getBills().get(0).getElectronicBillingId() != null){
+				electronicBillingId = paymentDetails.getBills().get(0).getElectronicBillingId();
+			}
+		}
+		ElectronicBilling electronicBilling = electronicBillingMapper.getElectronicBillingById(electronicBillingId);
+		
+		
+		if(paymentDetails.getBills()!=null && paymentDetails.getBills().size()!=0 && 
+				paymentDetails.getBills().get(0).getChargeItemName()!=null){
+			namtTmp = paymentDetails.getBills().get(0).getChargeItemName();
+		}
+		for (Bill bill : paymentDetails.getBills()) {
+			bill = billMapper.getBillById(bill.getBillId());
+			if(sum <= 0){
+				break;
+			}
+			//收费项目
+			if(bill.getChargeItemName()!=null){
+				if(!namtTmp.equals(bill.getChargeItemName())){
+					namtTmp = "混合";
+					break;
+				}
+			}
+			if(sum >0 && bill.getOverdue()>0){
+				double tmpSum = sum - bill.getOverdue();
+				if(tmpSum>=0){
+					electronicBilling.setOverdue(electronicBilling.getOverdue()-bill.getOverdue());
+					bill.setOverdue(0);
+					sum = tmpSum;
+				}else{
+					electronicBilling.setOverdue(electronicBilling.getOverdue()-sum);
+					bill.setOverdue(bill.getOverdue()-sum);
+					sum = 0;
+				}
+			}
+			if(sum>0 && bill.getLastOweSum() >0){
+				double tmpSum = sum - bill.getLastOweSum();
+				if(tmpSum>=0){
+					electronicBilling.setLastOweSum(electronicBilling.getLastOweSum()-bill.getLastOweSum());
+					bill.setLastOweSum(0);
+					sum = tmpSum;
+				}else{
+					electronicBilling.setLastOweSum(electronicBilling.getLastOweSum()-sum);
+					bill.setLastOweSum(bill.getLastOweSum()-sum);
+					sum = 0;
+				}
+			}
+			if(sum>0 && bill.getCurrentOweSum()>0){
+				double tmpSum = sum - bill.getCurrentOweSum();
+				if(tmpSum>=0){
+					electronicBilling.setCurrentOweSum(electronicBilling.getCurrentOweSum()-bill.getCurrentOweSum());
+					bill.setCurrentOweSum(0);
+					sum = tmpSum;
+				}else{
+					electronicBilling.setCurrentOweSum(electronicBilling.getCurrentOweSum()-sum);
+					bill.setLastOweSum(bill.getCollectSum()-sum);
+					sum = 0;
+				}
+			}
+			billMapper.updateBill(bill);
+		}
+		electronicBillingMapper.updateElectronicBilling(electronicBilling);
+		
+		paymentDetails.setPaymentDetailsId(UUID.randomUUID().toString());
+		paymentDetails.setTransactionDate(new Date());
+		String paymentNum=Long.toString(System.currentTimeMillis());
+		paymentDetails.setPaymentNum(paymentNum);
+		paymentDetails.setRefundState(0);
+		paymentDetails.setCiName(namtTmp);
+		//支出
+		paymentDetails.setIsOutIn(1);
+		paymentDetailsMapper.insertPaymentDetails(paymentDetails);
+	}
+
+
+	@Override
+	public List<PaymentDetails> getPaymentDatilsByStaffId(
+			String financialStaffId) {
+		// TODO Auto-generated method stub
+		return paymentDetailsMapper.getPaymentDatilsByStaffId(financialStaffId);
+	}
+
+	
+	
+
+}

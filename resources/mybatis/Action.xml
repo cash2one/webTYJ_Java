@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.flf.mapper.ActionMapper" >
+  <resultMap id="BaseResultMap" type="com.flf.entity.Action" >
+    <id column="action_id" property="actionId" jdbcType="VARCHAR" />
+    <result column="role_id" property="roleId" jdbcType="VARCHAR" />
+    <result column="action_name" property="actionName" jdbcType="VARCHAR" />
+    <result column="action_type" property="actionType" jdbcType="VARCHAR" />
+    <result column="state" property="state" jdbcType="TINYINT" />
+    <result column="action_instruction" property="actionInstruction" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    action_id, role_id, action_name, action_type, state, action_instruction
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from tc_action
+    where action_id = #{actionId,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from tc_action
+    where action_id = #{actionId,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.flf.entity.Action" >
+    insert into tc_action (action_id, role_id, action_name, 
+      action_type, state, action_instruction
+      )
+    values (#{actionId,jdbcType=VARCHAR}, #{roleId,jdbcType=VARCHAR}, #{actionName,jdbcType=VARCHAR}, 
+      #{actionType,jdbcType=VARCHAR}, #{state,jdbcType=TINYINT}, #{actionInstruction,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.flf.entity.Action" >
+    insert into tc_action
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="actionId != null" >
+        action_id,
+      </if>
+      <if test="roleId != null" >
+        role_id,
+      </if>
+      <if test="actionName != null" >
+        action_name,
+      </if>
+      <if test="actionType != null" >
+        action_type,
+      </if>
+      <if test="state != null" >
+        state,
+      </if>
+      <if test="actionInstruction != null" >
+        action_instruction,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="actionId != null" >
+        #{actionId,jdbcType=VARCHAR},
+      </if>
+      <if test="roleId != null" >
+        #{roleId,jdbcType=VARCHAR},
+      </if>
+      <if test="actionName != null" >
+        #{actionName,jdbcType=VARCHAR},
+      </if>
+      <if test="actionType != null" >
+        #{actionType,jdbcType=VARCHAR},
+      </if>
+      <if test="state != null" >
+        #{state,jdbcType=TINYINT},
+      </if>
+      <if test="actionInstruction != null" >
+        #{actionInstruction,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.flf.entity.Action" >
+    update tc_action
+    <set >
+      <if test="roleId != null" >
+        role_id = #{roleId,jdbcType=VARCHAR},
+      </if>
+      <if test="actionName != null" >
+        action_name = #{actionName,jdbcType=VARCHAR},
+      </if>
+      <if test="actionType != null" >
+        action_type = #{actionType,jdbcType=VARCHAR},
+      </if>
+      <if test="state != null" >
+        state = #{state,jdbcType=TINYINT},
+      </if>
+      <if test="actionInstruction != null" >
+        action_instruction = #{actionInstruction,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where action_id = #{actionId,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.flf.entity.Action" >
+    update tc_action
+    set role_id = #{roleId,jdbcType=VARCHAR},
+      action_name = #{actionName,jdbcType=VARCHAR},
+      action_type = #{actionType,jdbcType=VARCHAR},
+      state = #{state,jdbcType=TINYINT},
+      action_instruction = #{actionInstruction,jdbcType=VARCHAR}
+    where action_id = #{actionId,jdbcType=VARCHAR}
+  </update>
+  
+  <!-- 根据功能id查询操作 -->
+  <select id="selectActionById" parameterType="String" resultMap="BaseResultMap">
+		select action_name from tc_action where role_id = #{roleId,jdbcType=VARCHAR} 
+  </select>
+  
+  <select id="selectActionByRoleId" parameterType="String" resultMap="BaseResultMap">
+		select * from tc_action where role_id = #{roleId,jdbcType=VARCHAR} 
+  </select>
+</mapper>

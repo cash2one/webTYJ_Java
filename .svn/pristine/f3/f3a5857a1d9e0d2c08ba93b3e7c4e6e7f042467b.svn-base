@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.flf.mapper.DecoreateServiceRequestAssociatedMapper" >
+  <resultMap id="BaseResultMap" type="DecoreateServiceRequestAssociated" >
+    <id column="record_id" property="recordId" jdbcType="VARCHAR" />
+    <result column="apply_id" property="applyId" jdbcType="VARCHAR" />
+    <result column="service_request_id" property="serviceRequestId" jdbcType="VARCHAR" />
+  </resultMap>
+  
+ <delete id="deleteDecoreateServiceRequestAssociated" parameterType="String">
+  delete from ts_decoreate_service_request_associated where record_id=#{0}
+  </delete>
+  
+  <select id="listAllDecoreateServiceRequestAssociated"  resultMap="BaseResultMap" >
+ 	 select * from ts_decoreate_service_request_associated 
+  </select>
+  
+  <select id="getDecoreateServiceRequestAssociatedbyId" parameterType="String" resultMap="BaseResultMap">
+  	select * from ts_decoreate_service_request_associated where record_id=#{0}
+  </select>
+  
+  <insert id="insertDecoreateServiceRequestAssociated" parameterType="DecoreateServiceRequestAssociated" >      
+      insert into ts_decoreate_service_request_associated (record_id, apply_id,service_request_id)
+    values (UUID(), #{applyId,jdbcType=VARCHAR}, #{serviceRequestId,jdbcType=VARCHAR})
+  </insert>
+ 
+  <update id="updateDecoreateServiceRequestAssociated" parameterType="DecoreateServiceRequestAssociated" >
+    update ts_decoreate_service_request_associated
+    set apply_id = #{applyId,jdbcType=VARCHAR},
+      service_request_id = #{serviceRequestId,jdbcType=VARCHAR},
+    where record_id = #{recordId,jdbcType=VARCHAR}
+  </update>
+</mapper>

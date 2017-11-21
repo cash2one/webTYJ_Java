@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>车辆管理</title>
+    <link rel="stylesheet" href="css/parkingManagement.css">
+</head>
+<body>
+<div class="complaint_user_list">
+    <div class="row" style="margin: 10px">
+        <button class="btn btn-xs">切换</button>
+        <button class="btn btn-xs">切换</button>
+        <button class="btn btn-md col-md-offset-10" ui-sref="index.propertyService.carHome.collectFees">
+            <span class="glyphicon glyphicon-remove"  aria-hidden="true"></span>
+        </button>
+
+    </div>
+
+    <div class="row" style="padding:20px 20px 0">
+    <!--右侧面板1-->
+    <div class="col-lg-4 col-md-4 col-sm-6">
+        <div class="panel">
+
+            <div class="panel_title">
+                <span class="panel_title_left">车辆信息</span>
+                <span class="panel_title_right">
+                    <li class="dropdown pull-right">
+                        <a href="#" id="mycarport" class="dropdown-toggle btn-lg"
+                           data-toggle="dropdown"><span class="glyphicon glyphicon-menu-down" aria-hidden="true"></span>
+                        </a>
+                        <ul class="dropdown-menu" role="menu" aria-labelledby="mycarport">
+                            <li><a href="#change" tabindex="-1" data-toggle="modal"
+                                   data-target="#modal_record">
+                                历史记录</a>
+                            </li>
+                            <li><a href="#fees" tabindex="-1" data-toggle="modal"
+                                   data-target="#modal_remove">
+                                车辆移除</a>
+                            </li>
+                            <li><a href="#fees" tabindex="-1" data-toggle="modal"
+                                   data-target="#modal_edit">
+                                信息编辑</a>
+                            </li>
+                        </ul>
+                    </li>
+
+
+  <!-- 模态框（Modal）历史记录 -->
+    <div class="modal fade" id="modal_record" tabindex="-1" role="dialog"
+         aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close"
+                            data-dismiss="modal" aria-hidden="true">
+                        &times;
+                    </button>
+                    <h4 class="modal-title" id="myModalTitle">
+                        历史记录
+                    </h4>
+                </div>
+                <div class="modal-body" id="carport_change" style="line-height:50px;height: 300px;">
+                    <table class="table table-bordered text-center">
+                        <tr>
+                            <td>序号</td>
+                            <td>车牌号</td>
+                            <td>行驶证号</td>
+                            <td>车辆颜色</td>
+                            <td>车辆品牌</td>
+                            <td>车辆型号</td>
+                            <td>经办人</td>
+                        </tr>
+
+                        <tr>
+                            <td>1</td>
+                            <td>粤B334455</td>
+                            <td>A0394</td>
+                            <td>黑色</td>
+                            <td>奥迪</td>
+                            <td>奥迪A6</td>
+                            <td>刘丽萍</td>
+                        </tr>
+
+                        <tr>
+                            <td>2</td>
+                            <td>粤B334455</td>
+                            <td>A0394</td>
+                            <td>黑色</td>
+                            <td>奥迪</td>
+                            <td>奥迪A6</td>
+                            <td>刘丽萍</td>
+                        </tr>
+                    </table>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" data-dismiss="modal">
+                        提交
+                    </button>
+                    <button type="button" class="btn btn-default"
+                            data-dismiss="modal">关闭
+                    </button>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal -->
+    </div>
+    <!-- 模态框（Modal）end -->
+
+
+
+                </span>
+            </div>
+
+            <div class="panel_info">
+
+                <table style="margin:20px auto">
+                    <tr>
+                        <td rowspan="5"><img src="images/staffHome/carport/car.jpg" class="car_Img"/></td>
+                        <td>车牌号码：</td>
+                        <td>{{item.carNum}}</td>
+
+                    </tr>
+                    <tr>
+                        <td>车辆品牌：</td>
+                        <td>{{item.carBrand}}</td>
+                    </tr>
+                    <tr>
+                        <td>车辆类型：</td>
+                        <td>{{item.carType}}</td>
+
+                    </tr>
+                    <tr>
+                        <td>车辆颜色：</td>
+                        <td>{{item.carColor}}</td>
+                    </tr>
+                </table>
+
+            </div>
+        </div>
+    </div>
+    <!--右侧面板1结束-->
+
+
+    <!--右侧面板2-->
+    <div class="col-lg-4 col-md-4 col-sm-6">
+        <div class="panel">
+            <div class="panel_title">
+                <span class="panel_title_left">添加车辆</span>
+                <span class="panel_title_right">
+                    <li class="dropdown pull-right">
+                        <a href="#" id="mycarport" class="dropdown-toggle btn-lg"
+                           data-toggle="dropdown"><span class="glyphicon glyphicon-menu-down" aria-hidden="true"></span>
+                        </a>
+                        <ul class="dropdown-menu" role="menu" aria-labelledby="mycarport">
+                            <li><a href="#change" tabindex="-1" data-toggle="modal"
+                                   data-target="#modal_record">
+                                历史记录</a>
+                            </li>
+                            <li><a href="#fees" tabindex="-1" data-toggle="modal"
+                                   data-target="#modal_remove">
+                                车辆移除</a>
+                            </li>
+                            <li><a href="#fees" tabindex="-1" data-toggle="modal"
+                                   data-target="#modal_edit">
+                                信息编辑</a>
+                            </li>
+                        </ul>
+                    </li>
+
+
+  <!-- 模态框（Modal）产权变更 -->
+    <div class="modal fade" id="modal_record" tabindex="-1" role="dialog"
+         aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close"
+                            data-dismiss="modal" aria-hidden="true">
+                        &times;
+                    </button>
+                    <h4 class="modal-title" id="myModalTitle">
+                        历史记录
+                    </h4>
+                </div>
+                <div class="modal-body" id="carport_change" style="line-height:50px;height: 300px;">
+                    <table class="table table-bordered text-center">
+                        <tr>
+                            <td>序号</td>
+                            <td>车牌号</td>
+                            <td>行驶证号</td>
+                            <td>车辆颜色</td>
+                            <td>车辆品牌</td>
+                            <td>车辆型号</td>
+                            <td>经办人</td>
+                        </tr>
+
+                        <tr>
+                            <td>1</td>
+                            <td>粤B334455</td>
+                            <td>A0394</td>
+                            <td>黑色</td>
+                            <td>奥迪</td>
+                            <td>奥迪A6</td>
+                            <td>刘丽萍</td>
+                        </tr>
+
+                        <tr>
+                            <td>2</td>
+                            <td>粤B334455</td>
+                            <td>A0394</td>
+                            <td>黑色</td>
+                            <td>奥迪</td>
+                            <td>奥迪A6</td>
+                            <td>刘丽萍</td>
+                        </tr>
+                    </table>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" data-dismiss="modal">
+                        提交
+                    </button>
+                    <button type="button" class="btn btn-default"
+                            data-dismiss="modal">关闭
+                    </button>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal -->
+    </div>
+    <!-- 模态框（Modal）end -->
+
+
+
+                </span>
+            </div>
+            <div class="panel_info">
+
+                <table style="margin:20px auto">
+                    <tr>
+                        <td rowspan="5">
+                            <!-- 触发模态框 -->
+                            <img src="images/staffHome/carport/addCar.png" class="car_Img" data-toggle="modal"
+                                 data-target="#myModal_carport" />
+                            <!-- 模态框（Modal） -->
+                            <div class="modal fade" id="myModal_carport" tabindex="-1" role="dialog"
+                                 aria-labelledby="myModalLabel" aria-hidden="true">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <button type="button" class="close"
+                                                    data-dismiss="modal" aria-hidden="true">
+                                                &times;
+                                            </button>
+                                            <h4 class="modal-title" id="myModalLabel">
+                                                添加车位
+                                            </h4>
+                                        </div>
+                                        <div class="modal-body" style="height:400px;line-height:40px;">
+
+                                            <!--table-->
+                                            <table class="text-center" style="margin: 0px auto;">
+
+                                                <tr>
+                                                    <td  width="100px;">车牌号码</td>
+                                                    <td><input type="text" class="form-control input-sm"/></td>
+                                                    <td width="100px;">车辆颜色</td>
+                                                    <td><input type="text" class="form-control input-sm"/></td>
+                                                </tr>
+
+                                                <tr>
+                                                    <td width="100px;">车辆类型</td>
+                                                    <td><input type="text" class="form-control input-sm"/></td>
+                                                    <td width="100px;">注册登记日期</td>
+                                                    <td><input type="datetime-local" class="form-control input-sm"/></td>
+                                                </tr>
+                                                <tr>
+                                                    <td width="100px;">车辆品牌</td>
+                                                    <td><input type="text" class="form-control input-sm"/></td>
+                                                    <td width="100px;">发证日期</td>
+                                                    <td><input type="text" class="form-control input-sm"/></td>
+                                                </tr>
+
+                                                <tr>
+                                                    <td width="100px;">车辆型号</td>
+                                                    <td><input type="text" class="form-control input-sm"/></td>
+                                                    <td width="100px;">车辆所有人</td>
+                                                    <td><input type="text" class="form-control input-sm"/></td>
+                                                </tr>
+
+                                                <tr>
+                                                    <td width="100px;">发动机号码</td>
+                                                    <td><input type="text" class="form-control input-sm"/></td>
+                                                    <td width="100px;">交易类型</td>
+                                                    <td><input type="text" class="form-control input-sm"/></td>
+                                                </tr>
+
+                                                <tr>
+                                                    <td width="100px;">车辆识别代号</td>
+                                                    <td><input type="text" class="form-control input-sm"/></td>
+                                                    <td width="100px;">住址</td>
+                                                    <td><input type="text" class="form-control input-sm"/></td>
+                                                </tr>
+
+                                                <tr>
+                                                    <td width="100px;">核定载客</td>
+                                                    <td><input type="text" class="form-control input-sm"/></td>
+                                                    <td width="100px;">理赔信息</td>
+                                                    <td><input type="text" class="form-control input-sm"/></td>
+                                                </tr>
+
+                                                <tr>
+                                                    <td width="100px;">登记人</td>
+                                                    <td><input type="text" class="form-control input-sm"/></td>
+                                                    <td width="100px;">登记时间</td>
+                                                    <td><input type="datetime-local" class="form-control input-sm"/></td>
+                                                </tr>
+
+
+                                                <tr>
+                                                    <td width="100px;">行驶证号</td>
+                                                    <td><input type="text" class="form-control input-sm"/></td>
+                                                    <td width="100px;">上传附件</td>
+                                                    <td><input type="file" class="form-control input-sm"/></td>
+                                                </tr>
+
+
+                                            </table>
+                                            <!--table end-->
+                                        </div>
+                                        <div class="modal-footer">
+
+                                            <button type="button" class="btn btn-primary" data-dismiss="modal">
+                                                添加
+                                            </button>
+
+                                            <button type="button" class="btn btn-default"
+                                                    data-dismiss="modal">关闭
+                                            </button>
+                                        </div>
+                                    </div><!-- /.modal-content -->
+                                </div><!-- /.modal -->
+                            </div>
+                            <!-- 模态框（Modal）end -->
+
+
+
+                        </td>
+                        <td>车库编号：</td>
+                        <td></td>
+                        <td>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>车库位置：</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>车位编码：</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>项目名称：</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>宗地号：</td>
+                        <td></td>
+                    </tr>
+                </table>
+
+            </div>
+        </div>
+    </div>
+    <!--右侧面板2结束-->
+
+
+
+    <!--我的停车卡-->
+    <div id="myTabContent" class="tab-content">
+        <!--产权变更-->
+        <div class="tab-pane fade" id="change">
+            <table>
+                <tr>
+                    <td>登记人：</td>
+                    <td><input type="text" class=""/></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+            </table>
+        </div>
+        <!--产权变更 end-->
+
+        <!--缴费-->
+        <div class="tab-pane fade" id="fees">
+
+        </div>
+        <!--缴费 end-->
+    </div>
+    <!--我的停车卡 end-->
+</div>
+</div>
+</body>
+</html>

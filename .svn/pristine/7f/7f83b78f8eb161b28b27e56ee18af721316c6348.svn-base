@@ -1,0 +1,566 @@
+package com.flf.service.impl;
+
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.UUID;
+
+import org.apache.cxf.binding.corba.wsdl.Array;
+
+import com.alibaba.fastjson.JSON;
+import com.flf.entity.Account;
+import com.flf.entity.AdvancePaymentsDetails;
+import com.flf.entity.AreaTypeNew;
+import com.flf.entity.AssetAccount;
+import com.flf.entity.Bill;
+import com.flf.entity.BuildingStructureNew;
+import com.flf.entity.Constant;
+import com.flf.entity.ElectronicBilling;
+import com.flf.entity.HouseNew;
+import com.flf.entity.NewLease;
+import com.flf.entity.PaymentDetails;
+import com.flf.entity.PersonBuildingNew;
+import com.flf.entity.PersonCustNew;
+import com.flf.entity.Project;
+import com.flf.entity.StallNew;
+import com.flf.entity.StoreNew;
+import com.flf.mapper.AccountMapper;
+import com.flf.mapper.AdvancePaymentsDetailsMapper;
+import com.flf.mapper.AreaTypeNewMapper;
+import com.flf.mapper.AssetAccountMapper;
+import com.flf.mapper.BillMapper;
+import com.flf.mapper.BuildingStructureNewMapper;
+import com.flf.mapper.ConstantMapper;
+import com.flf.mapper.ElectronicBillingMapper;
+import com.flf.mapper.HouseNewMapper;
+import com.flf.mapper.NewLeaseMapper;
+import com.flf.mapper.PaymentDetailsMapper;
+import com.flf.mapper.PersonBuildingNewMapper;
+import com.flf.mapper.PersonCustNewMapper;
+import com.flf.mapper.ProjectMapper;
+import com.flf.mapper.StallNewMapper;
+import com.flf.mapper.StoreNewMapper;
+import com.flf.service.PaymsService;
+import com.flf.util.Tools;
+
+public class PaymsServiceImpl implements PaymsService {
+	
+	private PersonCustNewMapper personCustNewMapper;
+	
+	private PersonBuildingNewMapper personBuildingNewMapper;
+	
+	private BuildingStructureNewMapper buildingStructureNewMapper;
+	
+	private AreaTypeNewMapper areaTypeNewMapper;
+	
+	private HouseNewMapper houseNewMapper;
+	
+	private StoreNewMapper storeNewMapper;
+	
+	private StallNewMapper stallNewMapper;
+	
+	private ConstantMapper constantMapper;
+	
+	private NewLeaseMapper newLeaseMapper;
+	
+	private AccountMapper accountMapper;
+	
+	private AssetAccountMapper assetAccountMapper;
+	
+	private ProjectMapper projectMapper;
+	
+	private AdvancePaymentsDetailsMapper advancePaymentsDetailsMapper;
+	
+	private PaymentDetailsMapper paymentDetailsMapper;
+	
+	private ElectronicBillingMapper electronicBillingMapper;
+	
+	private BillMapper billMapper;
+
+	@Override
+	public String getPersonCustByPerson(String name, String cardNum,
+			String phoneNum) {
+		if(Tools.notEmpty(name) && Tools.notEmpty(phoneNum) && Tools.notEmpty(cardNum)){
+			PersonCustNew custNew = personCustNewMapper.getPersonCustNewbyNameAndCardAndNum(name, cardNum, phoneNum);
+			if(custNew!=null){
+				return custNew.getCustId();
+			}
+		}
+		return null;
+	}
+	
+	@Override
+	public List<PersonBuildingNew> listBuildingByCustId(String custId){
+		List<PersonBuildingNew> list = null;
+		if(custId != null && custId != ""){
+			list = new ArrayList<PersonBuildingNew>();
+			list = personBuildingNewMapper.listBuildingByCustId(custId);
+		}
+		return list;			
+	}
+	
+	@Override
+	public BuildingStructureNew getBuildingStructureNewById(String id){
+
+		BuildingStructureNew bsn = null;
+		
+		//当传入的id不为空时，查询对应建筑结构
+		if(id != null && id != ""){
+			bsn = new BuildingStructureNew();
+			bsn = buildingStructureNewMapper.getBuildingStructureNewbyId(id);
+			
+			if(bsn != null){
+				
+				//查询所有面积类型并放入map
+				List<AreaTypeNew> atList = new ArrayList<AreaTypeNew>();
+				atList = areaTypeNewMapper.listAllAreaTypeNew();
+				Map<String, String> atMap = new HashMap<String, String>();
+				for(AreaTypeNew at : atList){
+					atMap.put(at.getAreaTypeCode(), at.getId());
+				}
+				
+				//当建筑结构的areaId不为空时，查询对应的住宅/商铺/车位，并放入对应的对象，生成建筑面积
+				if((bsn.getAreaId() != null && bsn.getAreaId() != "") || (bsn.getBuildingType() != null && bsn.getBuildingType() != "")){
+					
+					if(bsn.getBuildingType().toString().equals("住宅") ){
+						HouseNew hn = new HouseNew();
+						hn = houseNewMapper.getHouseNewByBuildingStructId(bsn.getId());
+						bsn.setHouse(hn);
+						bsn.setBuildingArea(hn.getHouseArea());
+					}else if(bsn.getBuildingType().toString().equals("商业") ){
+						StoreNew store = new StoreNew();
+						store = storeNewMapper.getStoreNewByBuildingStructureId(bsn.getId());
+						bsn.setStore(store);
+						bsn.setBuildingArea(store.getBuildingArea());
+					}else if(bsn.getBuildingType().toString().equals("车位") ){
+						StallNew stall = new StallNew();
+						stall = stallNewMapper.listStallByBuildingStructureId(bsn.getId());
+						bsn.setStall(stall);
+					}
+				}
+				
+				//查询此建筑结构关联的业主
+				List<PersonBuildingNew> pbList = new ArrayList<PersonBuildingNew>();
+				pbList = personBuildingNewMapper.getAllPersonBuildings(bsn.getId());
+				List<PersonCustNew> pcList = new ArrayList<PersonCustNew>();
+				PersonCustNew personCust = null;
+				if(pbList != null && pbList.size() > 0){
+					for(PersonBuildingNew pbn : pbList){
+						personCust = new PersonCustNew();
+						personCust = personCustNewMapper.getPersonCustById(pbn.getCustId());
+						pcList.add(personCust);
+					}				
+					bsn.setPersonCusts(pcList);
+				}
+				
+				//获取水电物业费单价
+				List<Constant> constantList = new ArrayList<Constant>();
+				constantList = constantMapper.listConstantForPay();
+				bsn.setConstantList(constantList);
+				
+			}
+			
+		}
+		return bsn;
+	}
+	
+	@Override
+	public NewLease getNewLeaseByleasePersonIdAndHouseId(String leasePersonId, String houseId){
+		NewLease newLease = new NewLease();
+		HouseNew houseNew = houseNewMapper.getHouseNewByBuildingStructId(houseId);
+		if(houseNew != null){
+			newLease = newLeaseMapper.getNewLeaseByleasePersonIdAndHouseId(leasePersonId, houseNew.getId());			
+		}
+		return newLease;
+	}
+	
+	@Override
+	public Account getAccountByCustId(String custId, String projectId){
+		
+		//定义个人客户
+		Account account = null;
+		
+		//判断传入参数是否为空
+		if(custId != null && projectId != null){
+			
+			account = new Account();
+			account = accountMapper.getAccountByCustId(custId);
+			
+			//查询关联的资产账户、押金账户
+			if(account != null){
+
+				List<AssetAccount> assetAccountList = new ArrayList<AssetAccount>();
+				List<AssetAccount> aaList = new ArrayList<AssetAccount>();
+				
+				assetAccountList = assetAccountMapper.listAssetAccountByCustId(account.getAccountId());
+				
+				if(assetAccountList != null && assetAccountList.size() > 0){
+					
+					double num = 0;
+					for(AssetAccount aa : assetAccountList){
+					
+						if(aa.getAssetAccountType() == 1){
+							aaList.add(aa);
+						}else if(aa.getProjectId().toString().equals(projectId)){
+							aaList.add(aa);
+						}
+						num = num + aa.getAssetAccountBalance();
+						
+					}
+					account.setTotalBalance(account.getDisposableBalance() + num);
+					
+					account.setAssetAccountList(aaList);
+				}
+			}
+		}
+		return account;
+	}
+	
+	@Override
+	public List<Project> listProjectByCustId(String custId){
+		
+		List<Project> projectList = null;
+		if(custId != null && custId != ""){
+			
+			List<String> projectIdList = new ArrayList<String>();
+			projectIdList = buildingStructureNewMapper.listProjectIdByCustId(custId);
+			if(projectIdList != null && projectIdList.size() > 0){
+				projectList = new ArrayList<Project>();
+				Project project = null;
+				for(String s : projectIdList){
+					project = new Project();
+					project = projectMapper.getProject(s);
+					projectList.add(project);
+				}
+			}
+		}
+		
+		return projectList;
+	}
+	
+	@Override
+	public List<PaymentDetails> getPaymentTypeByPaymentDetailsList(List<PaymentDetails> paymentDetails){
+		for (PaymentDetails paymentDetails2 : paymentDetails) {
+			//交易类型
+			int tmp = 0;
+			//现金
+			if(paymentDetails2.getCashSum()!=null && paymentDetails2.getCashSum()!=0){
+				paymentDetails2.setSum(paymentDetails2.getCashSum());
+				//现金
+				paymentDetails2.setPaymentType(0);
+				tmp++;
+				//刷卡交易
+			}else if(paymentDetails2.getCreditCardSum()!=null && paymentDetails2.getCreditCardSum()!=0){
+				if(tmp!=0){
+					paymentDetails2.setSum(paymentDetails2.getCreditCardSum()+paymentDetails2.getCreditCardSum());
+					//混合
+					paymentDetails2.setPaymentType(8);
+				}else{
+					paymentDetails2.setSum(paymentDetails2.getCreditCardSum());
+					//刷卡
+					paymentDetails2.setPaymentType(1);
+				}
+				tmp++;
+				//微信交易
+			}else if(paymentDetails2.getWechatSum()!=null && paymentDetails2.getWechatSum()!=0){
+				if(tmp!=0){
+					paymentDetails2.setSum(paymentDetails2.getWechatSum()+paymentDetails2.getCreditCardSum());
+					//混合
+					paymentDetails2.setPaymentType(8);
+				}else{
+					paymentDetails2.setSum(paymentDetails2.getWechatSum());
+					//微信
+					paymentDetails2.setPaymentType(2);
+				}
+				tmp++;
+				//预付款
+			}else if(paymentDetails2.getChargeSum()!=null && paymentDetails2.getChargeSum()!=0){
+				if(tmp!=0){
+					paymentDetails2.setSum(paymentDetails2.getChargeSum()+paymentDetails2.getSum());
+					//混合
+					paymentDetails2.setPaymentType(8);
+				}else{
+					paymentDetails2.setSum(paymentDetails2.getChargeSum());
+					//预付款
+					paymentDetails2.setPaymentType(3);
+				}
+			}
+		}
+		return paymentDetails;
+	}
+	
+	@Override
+	public AssetAccount listAssetAccountByHouseIdAndCustId(String buildingId, String custId,String assetAccountId) {
+		AssetAccount assetAccounts = new AssetAccount();
+		List<AdvancePaymentsDetails> advancePaymentsDetails = new ArrayList<>();
+		if(buildingId != null && !buildingId.equals("")){
+			//获取资产账户和收支记录
+			assetAccounts = assetAccountMapper.listAssetAccountByBuildingId(buildingId);
+			//获取支付明细
+			advancePaymentsDetails = advancePaymentsDetailsMapper.listAdvancePaymentDetailByBuildingId(buildingId);
+		}else if(assetAccountId!=null){
+			//获取资产账户和收支记录 (押金目前只有充值记录)
+			assetAccounts = assetAccountMapper.getAssetAccountById(assetAccountId);
+		}
+		
+		assetAccounts.setPaymentDetails(getPaymentTypeByPaymentDetailsList(assetAccounts.getPaymentDetails()));
+		
+		//遍历将支付明细加入到list
+		for (AdvancePaymentsDetails advancePaymentsDetails2 : advancePaymentsDetails) {
+			PaymentDetails pd = new PaymentDetails();
+			//支付类型
+			pd.setPaymentType(advancePaymentsDetails2.getPaymentType());
+			//交易金额
+			pd.setSum(advancePaymentsDetails2.getTransactionAmount());
+			pd.setCiName("账户充值");
+			//交易时间
+			if(advancePaymentsDetails2.getTransactionDate()!=null){
+				pd.setTransactionDate(advancePaymentsDetails2.getTransactionDate());
+			}
+			//交易状态
+			pd.setIsOutIn(advancePaymentsDetails2.getIsOutIn());
+			
+			pd.setAdvancePaymentsDetailsId(advancePaymentsDetails2.getAdvancePaymentsDetailsId());
+			
+			assetAccounts.getPaymentDetails().add(pd);
+		}
+		
+		return assetAccounts;
+	}
+	
+	@Override
+	public ElectronicBilling listElectronicBillingByHouseIdAndCustId(String houseId, String custId) {
+		ElectronicBilling e = electronicBillingMapper.getElectronicBillingByBuildingId(houseId);
+		if(e==null){
+			return e;
+		}
+		Bill bill = new Bill();
+		bill.setBillDate(e.getBillDate());
+		bill.setElectronicBillingId(e.getElectronicBillingId());
+		List<Bill> bills = billMapper.listPageBillsByelectronicBillingIdThisMonth(bill);
+		if(bills!=null && bills.size()!=0){
+			if(e.getBills()==null){
+				e.setBills(new ArrayList<Bill>());
+			}
+			e.getBills().addAll(bills);
+		}
+		return e;
+	}
+	
+	@Override
+	public List<Bill> listBillByElectronicBillingId(String electronicBillingId) {
+		ElectronicBilling e = electronicBillingMapper.getElectronicBillingById(electronicBillingId);
+		List<Bill> bills = new ArrayList<>();
+		if(e != null && e.getElectronicBillingId()!=null && e.getBillDate()!=null){
+			bills = billMapper.listBillByElectronicBillingId(e.getElectronicBillingId());
+		}
+		return bills;
+	}
+	
+	@Override
+	public int updateBillByPaymentDetailsJson(String paymentDetailsJson) {
+		PaymentDetails paymentDetails = JSON.parseObject(paymentDetailsJson, PaymentDetails.class);
+		Bill bill = billMapper.getBillById(paymentDetails.getBillId());
+		Double sum = bill.getOverdue()+bill.getLastOweSum()+bill.getCurrentOweSum();
+		if(paymentDetails.getWechatSum() - bill.getBillingSum() == 0){
+			bill.setBillingSum(0.0);
+			bill.setOverdue(0);
+			bill.setLastOweSum(0);
+			bill.setCurrentOweSum(0);
+			int bm = billMapper.updateBill(bill);
+			
+			paymentDetails.setPaymentDetailsId(UUID.randomUUID().toString());
+			paymentDetails.setTransactionAmount(paymentDetails.getWechatSum());
+			paymentDetails.setTransactionDate(new Date());
+			paymentDetails.setNote("微信接口");
+			paymentDetails.setPaymentNum(paymentDetails.getOutTradeNo());
+			paymentDetailsMapper.insertPaymentDetails(paymentDetails);
+			if(bm >0){
+				return 1;
+			}
+		}
+		//批量支付
+		/*for (Bill bill : paymentDetails.getBills()) {
+			sum = bill.getOverdue()+bill.getLastOweSum()+bill.getCurrentOweSum();
+			if(paymentDetails.getWechatSum() == sum){
+				bill.setOverdue(0);
+				bill.setLastOweSum(0);
+				bill.setCurrentOweSum(0);
+			}else{
+				return 0;
+			}
+		}
+		if(paymentDetails.getBills()!=null && paymentDetails.getBills().size()!=0){
+			//批量跟新
+			int bm = billMapper.updateBillList(paymentDetails.getBills());
+			if(bm>0){
+				return 1;
+			}
+		}*/
+		return 0;
+	}
+	
+	@Override
+	public PaymentDetails getPaymentDetailsByPaymentDetailsId(String paymentDetailsId, String advancePaymentsDetailsId) {
+		List<PaymentDetails> paymentDetails = new ArrayList<>();
+		if(paymentDetailsId!=null && !paymentDetailsId.equals("")){
+			paymentDetails.add(paymentDetailsMapper.getPaymentDetailsById(paymentDetailsId));
+			paymentDetails = getPaymentTypeByPaymentDetailsList(paymentDetails);
+		}else{
+			//预付款
+			AdvancePaymentsDetails advancePaymentsDetails = new AdvancePaymentsDetails();
+			advancePaymentsDetails = advancePaymentsDetailsMapper.getAdvancePaymentDetailByAdvancePaymentsDetailsId(advancePaymentsDetailsId);
+			
+			PaymentDetails pd = new PaymentDetails();
+			//支付类型
+			pd.setPaymentType(advancePaymentsDetails.getPaymentType());
+			//交易金额
+			pd.setSum(advancePaymentsDetails.getTransactionAmount());
+			pd.setCiName("账户充值");
+			//交易时间
+			if(advancePaymentsDetails.getTransactionDate()!=null){
+				pd.setTransactionDate(advancePaymentsDetails.getTransactionDate());
+			}
+			//交易状态
+			pd.setIsOutIn(advancePaymentsDetails.getIsOutIn());
+			
+			pd.setAdvancePaymentsDetailsId(advancePaymentsDetails.getAdvancePaymentsDetailsId());
+			
+			paymentDetails.add(pd);
+		}
+		return paymentDetails.get(0);
+	}
+
+	public PersonCustNewMapper getPersonCustNewMapper() {
+		return personCustNewMapper;
+	}
+
+	public void setPersonCustNewMapper(PersonCustNewMapper personCustNewMapper) {
+		this.personCustNewMapper = personCustNewMapper;
+	}
+
+	public PersonBuildingNewMapper getPersonBuildingNewMapper() {
+		return personBuildingNewMapper;
+	}
+
+	public void setPersonBuildingNewMapper(
+			PersonBuildingNewMapper personBuildingNewMapper) {
+		this.personBuildingNewMapper = personBuildingNewMapper;
+	}
+
+	public BuildingStructureNewMapper getBuildingStructureNewMapper() {
+		return buildingStructureNewMapper;
+	}
+
+	public void setBuildingStructureNewMapper(
+			BuildingStructureNewMapper buildingStructureNewMapper) {
+		this.buildingStructureNewMapper = buildingStructureNewMapper;
+	}
+
+	public AreaTypeNewMapper getAreaTypeNewMapper() {
+		return areaTypeNewMapper;
+	}
+
+	public void setAreaTypeNewMapper(AreaTypeNewMapper areaTypeNewMapper) {
+		this.areaTypeNewMapper = areaTypeNewMapper;
+	}
+
+	public HouseNewMapper getHouseNewMapper() {
+		return houseNewMapper;
+	}
+
+	public void setHouseNewMapper(HouseNewMapper houseNewMapper) {
+		this.houseNewMapper = houseNewMapper;
+	}
+
+	public StoreNewMapper getStoreNewMapper() {
+		return storeNewMapper;
+	}
+
+	public void setStoreNewMapper(StoreNewMapper storeNewMapper) {
+		this.storeNewMapper = storeNewMapper;
+	}
+
+	public StallNewMapper getStallNewMapper() {
+		return stallNewMapper;
+	}
+
+	public void setStallNewMapper(StallNewMapper stallNewMapper) {
+		this.stallNewMapper = stallNewMapper;
+	}
+
+	public ConstantMapper getConstantMapper() {
+		return constantMapper;
+	}
+
+	public void setConstantMapper(ConstantMapper constantMapper) {
+		this.constantMapper = constantMapper;
+	}
+
+	public NewLeaseMapper getNewLeaseMapper() {
+		return newLeaseMapper;
+	}
+
+	public void setNewLeaseMapper(NewLeaseMapper newLeaseMapper) {
+		this.newLeaseMapper = newLeaseMapper;
+	}
+
+	public AccountMapper getAccountMapper() {
+		return accountMapper;
+	}
+
+	public void setAccountMapper(AccountMapper accountMapper) {
+		this.accountMapper = accountMapper;
+	}
+
+	public AssetAccountMapper getAssetAccountMapper() {
+		return assetAccountMapper;
+	}
+
+	public void setAssetAccountMapper(AssetAccountMapper assetAccountMapper) {
+		this.assetAccountMapper = assetAccountMapper;
+	}
+
+	public ProjectMapper getProjectMapper() {
+		return projectMapper;
+	}
+
+	public void setProjectMapper(ProjectMapper projectMapper) {
+		this.projectMapper = projectMapper;
+	}
+
+	public AdvancePaymentsDetailsMapper getAdvancePaymentsDetailsMapper() {
+		return advancePaymentsDetailsMapper;
+	}
+
+	public void setAdvancePaymentsDetailsMapper(AdvancePaymentsDetailsMapper advancePaymentsDetailsMapper) {
+		this.advancePaymentsDetailsMapper = advancePaymentsDetailsMapper;
+	}
+
+	public PaymentDetailsMapper getPaymentDetailsMapper() {
+		return paymentDetailsMapper;
+	}
+
+	public void setPaymentDetailsMapper(PaymentDetailsMapper paymentDetailsMapper) {
+		this.paymentDetailsMapper = paymentDetailsMapper;
+	}
+
+	public ElectronicBillingMapper getElectronicBillingMapper() {
+		return electronicBillingMapper;
+	}
+
+	public void setElectronicBillingMapper(ElectronicBillingMapper electronicBillingMapper) {
+		this.electronicBillingMapper = electronicBillingMapper;
+	}
+
+	public BillMapper getBillMapper() {
+		return billMapper;
+	}
+
+	public void setBillMapper(BillMapper billMapper) {
+		this.billMapper = billMapper;
+	}
+
+}

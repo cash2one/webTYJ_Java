@@ -1,0 +1,405 @@
+package com.flf.service;
+
+import java.util.List;
+
+import javax.jws.WebService;
+import javax.ws.rs.Consumes;
+import javax.ws.rs.DELETE;
+import javax.ws.rs.GET;
+import javax.ws.rs.POST;
+import javax.ws.rs.PUT;
+import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
+import javax.ws.rs.Produces;
+import javax.ws.rs.core.MediaType;
+
+import com.flf.entity.AfterSale;
+import com.flf.entity.PageRestful;
+import com.flf.entity.Staff;
+import com.flf.entity.Tasks;
+@WebService
+@Path("/Tasks")
+/**
+ * 任务表
+ * 创建人：邵政
+ * 创建时间：2015/6/23
+ */
+public interface TasksService {
+
+	
+	/**
+	 * 查询所有任务信息
+	 * @return
+	 */
+	@GET
+	@Path("/listAllTasks")
+	@Produces(MediaType.APPLICATION_JSON)
+	List<Tasks> listAllTasks();
+	
+	/**
+	 * 通过Id查询任务信息
+	 * @param serverId
+	 * @return
+	 */
+	@GET
+	@Path("/getTasksbyId/{taskId}")
+	@Produces(MediaType.APPLICATION_JSON)
+	Tasks getTasksbyId(@PathParam("taskId") String taskId);
+	
+	/**
+	 * 添加任务信息
+	 * @param tasks
+	 */
+	@POST
+	@Path("/insertTasks")
+	@Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+	public void insertTasks(Tasks tasks);
+	
+	/**
+	 * 添加多个任务信息
+	 * @param tasks
+	 */
+	@POST
+	@Path("/insertTasksList")
+	@Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+	public void insertTasksList(Tasks tasks);
+	
+	/**
+	 * 添加多个任务信息
+	 * @param tasks
+	 */
+	@POST
+	@Path("/insertTasksAll")
+	@Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+	public void insertTasksAll(Tasks tasks);
+	
+	/**
+	 * 修改任务信息
+	 * @param tasks
+	 */
+	@PUT
+	@Path("/updateTasks")
+	@Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+	public void updateTasks(Tasks tasks);
+	
+	/**
+	 * 删除任务信息
+	 * @param serverId
+	 */
+	@DELETE
+	@Path("/deleteTasks/{taskId}")
+	public void deleteTasks(@PathParam("taskId") String taskId);
+	
+	
+	/**
+	 * 通过服务请求Id查询任务信息
+	 * @param serverId
+	 * @return
+	 */
+	@GET
+	@Path("/getTasksbyServiceRequestId/{serviceRequestId}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public List<Tasks> getTasksbyServiceRequestId(@PathParam("serviceRequestId") String serviceRequestId);
+	
+	/**
+	 *修改任务状态
+	 * 0.关闭 1.重启 2.已完成   3.已接受 4.未接受  5.转出   6.提交完成  7.处理中 
+	 * 8.合并9.转专项  10.转集中处理(这三个特殊处理),11指派
+	 * @param taskId
+	 */
+	@PUT
+	@Path("/changeTasksState")
+	@Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+	public String changeTaskState(Tasks tasks);
+	
+	/**
+	 * 根据任务id修改任务装态
+	 * @param tasksId
+	 * @param tasksState
+	 */
+	@GET
+	@Path("/changeTasksStateById/{taskId}/{tasksState}/{Type}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public void changeTasksStateById(@PathParam("taskId")String tasksId, 
+			@PathParam("tasksState")String tasksState, @PathParam("Type")String Type);
+	
+	/**
+	 * 根据任务类型和服务请求id查询任务
+	 * @param taskType
+	 * @return
+	 */
+	@GET
+	@Path("/getTasksbyTaskTypeAndServiceId/{tasksType}/{serviceId}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public List<Tasks> getTasksbyTaskTypeAndServiceId(@PathParam("tasksType")String tasksType ,@PathParam("serviceId")String serviceId);
+/**
+ * 根据服务请求Id查询任务（分页）
+ * @param tasks
+ * @return
+ */
+	
+	@POST
+  	@Path("/listPageTasksbyServiceRequestId")
+  	@Produces(MediaType.APPLICATION_JSON)
+    PageRestful listPageTasksbyServiceRequestId(Tasks tasks);
+	/**
+	 * 通过服务请求Id查询质检任务信息
+	 * @param serverId
+	 * @return
+	 */
+	@GET
+	@Path("/getDepartTasksbyServiceRequestId/{serviceRequestId}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public List<Tasks> getDepartTasksbyServiceRequestId(@PathParam("serviceRequestId") String serviceRequestId);
+	
+	/**
+	 * 通过任务id获取部门质检任务信息
+	 * @param taskId
+	 * @return
+	 */
+	@GET
+	@Path("/getDepartTasksbyTaskId/{taskId}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Tasks getDepartTasksbyTaskId(@PathParam("taskId") String taskId);
+	
+	/**
+	 * 通过登录id获取任务个数
+	 * @param loginId
+	 * @return
+	 */
+	@GET
+	@Path("/getTaskCount/{loginId}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public String getTaskCount(@PathParam("loginId")String loginId);
+	
+	
+	/**
+	 * 通过任务类型获取任务池中相应任务个数
+	 * @param taskType
+	 * @return
+	 */
+	@GET
+	@Path("/getTaskPoolsCountBytaskType/{taskType}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public String getTaskPoolsCountBytaskType(@PathParam("taskType")String taskType);
+	
+	/**
+	 * 通过登录人id和状态获取任务信息
+	 *  state1：3  state2:4   获取待处理任务信息
+	 *  state1：7  state2:'' 获取正在处理任务信息
+	 *  state1：2  state2:0	获取历史任务信息
+	 * @return
+	 */
+	@GET
+	@Path("/getTasksbyState/{loginId}/{state1}/{state2}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public List<Tasks> getTasksbyState(@PathParam("loginId")String loginId,
+			@PathParam("state1")String state1,@PathParam("state2")String state2);
+	
+	/**
+	 * 通过staffid和状态获取任务信息
+	 * @author zhuqi
+	 * @param loginId
+	 * @param state1
+	 * @param state2
+	 * @return
+	 */
+	public String getWebTasksbyState(String loginId,String state1,String state2);
+	
+
+	@POST
+  	@Path("/listPageTasksbyState")
+  	@Produces(MediaType.APPLICATION_JSON)
+    PageRestful listPageTasksbyState(Tasks tasks);
+	
+	/**
+	 * 通过从属id获取任务信息
+	 * @param projectId
+	 * @return
+	 */
+	@GET
+	@Path("/getTasksbyProjectId/{projectId}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public List<Tasks> getTasksbyProjectId(@PathParam("projectId") String projectId);
+	
+	/**
+	 * 根据从属id和类型获取历史任务信息
+	 * 1.专项   2.集中处理
+	 * @return
+	 */
+	@GET
+	@Path("/getTaskbySubordinateIdAndType1/{type}/{projectId}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public List<Tasks> getTaskbySubordinateIdAndType1(@PathParam("type")String type ,@PathParam("projectId")String projectId);
+	
+	/**
+	 * 根据从属id和类型获取历史任务信息分页
+	 * 1.专项   2.集中处理
+	 * @return
+	 */
+	@POST
+	@Path("/listPageTaskbySubordinateIdAndType1")
+	@Produces(MediaType.APPLICATION_JSON)
+	public PageRestful listPageTaskbySubordinateIdAndType1(Tasks tasks);
+	
+	/**
+	 * 根据从属id和类型获取进行中的任务信息
+	 * 1.专项   2.集中处理
+	 * @return
+	 */
+	@GET
+	@Path("/getTaskbySubordinateIdAndType2/{type}/{projectId}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public List<Tasks> getTaskbySubordinateIdAndType2(@PathParam("type")String type ,@PathParam("projectId")String projectId);
+	
+	/**
+	 * 根据从属id和类型获取进行中的任务信息分页
+	 * 1.专项   2.集中处理
+	 * @return
+	 */
+	@POST
+	@Path("/listPageTaskbySubordinateIdAndType2")
+	@Produces(MediaType.APPLICATION_JSON)
+	public PageRestful listPageTaskbySubordinateIdAndType2(Tasks tasks);
+	
+	/**
+	 * 根据任务类型获取进行中的任务
+	 * @param state
+	 * @param type
+	 * @return
+	 */
+	@GET
+	@Path("/getGoingTaskbyStateAndType/{type}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public List<Tasks> getGoingTaskbyStateAndType(@PathParam("type")String type);
+	
+	/**
+	 * 根据任务类型获取历史的任务
+	 * @param state
+	 * @param type
+	 * @return
+	 */
+	@GET
+	@Path("/getHistoryTaskbyStateAndType/{type}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public List<Tasks> getHistoryTaskbyStateAndType(@PathParam("type")String type);
+	
+	/**
+	 * 根据任务类型获取任务(分页)
+	 * @param type
+	 * @return
+	 */
+	@POST
+  	@Path("/listPageTasksByType")
+  	@Produces(MediaType.APPLICATION_JSON)
+	public PageRestful listPageTasksByType(Tasks tasks);
+	
+	/**
+	 * 从售后管理接受数据生成服务请求
+	 * @param afterSale
+	 */
+	@PUT
+	@Path("/createTasksFromAfterSale")
+	@Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+	public void createTasksFromAfterSale(AfterSale afterSale);
+	
+	/**
+	 * 根据员工id获取任务信息
+	 * 2015-8-25
+	 * @param staffId
+	 * @return
+	 */
+	@GET
+	@Path("/getTasksbyStaffId/{staffId}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public List<Tasks> getTasksbyStaffId(@PathParam("staffId") String staffId);
+	
+	
+	@GET
+	@Path("/getTasksbyAddressIdAndType/{type}/{addressId}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public List<Tasks> getTasksbyAddressIdAndType(@PathParam("type")String type,
+			@PathParam("addressId")String addressId);
+	
+	@POST
+  	@Path("/listPageTasksbyStateRestful")
+  	@Produces(MediaType.APPLICATION_JSON)
+    PageRestful listPageTasksbyStateRestful(Tasks tasks);
+	
+	/**
+	 * 将id集合中的任务状态修改为指定状态
+	 */
+	@POST
+  	@Path("/changeTasksStateByIds")
+  	@Produces(MediaType.APPLICATION_JSON)
+	String changeTasksStateByIds(Tasks tasks);
+	
+	/**
+	 * 根据服务请求id获取任务信息 （分页）
+	 */
+	@POST
+  	@Path("/listPageGetTasksbyServiceRequestId")
+  	@Produces(MediaType.APPLICATION_JSON)
+	PageRestful listPageGetTasksbyServiceRequestId(Tasks tasks);
+	
+	/**
+	 * 在服务请求下添加任务信息
+	 * @param tasks
+	 */
+	@POST
+	@Path("/insertTasksRes")
+	@Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+	public void insertTasksRes(Tasks tasks);
+	
+	/**
+	 * 获取没有任务接受和转出的任务
+	 * @return
+	 */
+	@GET
+	@Path("/getTasksbyUserIdAndState")
+	@Produces(MediaType.APPLICATION_JSON)
+	List<Tasks> getTasksbyUserIdAndState();
+	
+	/**
+	 * 根据物业app的登录名获取正在处理的任务
+	 * @param loginName
+	 * @return
+	 */
+	String getTasksByLoginName(String loginName, String taskState);
+	
+	/**
+	 * 查询任务池中的任务列表
+	 * @return
+	 */
+	String getTasksPool();
+	
+	/**
+	 * 根据任务id获取任务详情
+	 * @param tasksId
+	 * @return
+	 */
+	String getTasksInfoByTasksId(String tasksId);
+	
+	/**
+	 * 任务接受
+	 * @param loginName
+	 * @param tasksId
+	 * @return
+	 */
+	String acceptTasks(String loginName, String tasksId);
+	
+	/**
+	 * 通过巡检任务Id 查询巡检任务信息  杨升权 7.26
+	 * @param taskId
+	 * @return
+	 */
+	@GET
+	@Path("/getInspectionTasksbyId/{taskId}")
+	@Produces(MediaType.APPLICATION_JSON)
+	java.util.List<Tasks> getInspectionTasksbyId(@PathParam("taskId") String taskId);
+		
+}
+
+
+
+

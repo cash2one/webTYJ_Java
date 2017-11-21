@@ -1,0 +1,119 @@
+<!--
+author:王志刚
+createTime:2015/5/21
+pageName:外部专业线---部门检查结果表
+jsPath: controllers/externalProfession/departChecktable
+-->
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>外部专业线部门检查结果表</title>
+</head>
+<body>
+<div class="complaint_user_list" style="margin: 10px 10px;">
+    <div class="row" style="margin-top: 10px">
+        <div class="col-md-2">
+            <img src="images/company/3506.png" style="width: 80px;height: 75px;margin-left: 30px">
+        </div>
+        <div class="col-md-10">
+            <div class="row">
+                <div class="col-md-4">质检活动名称：清洁质检001</div>
+                <div class="col-md-4">质检活动级别：部门质检</div>
+                <div class="col-md-4">质检活动创建时间：2014-04-07</div>
+            </div>
+            <div class="row">
+                <div class="col-md-4">质检活动周期：月检</div>
+                <div class="col-md-4">质检活动标准：<a href="#">清洁质检标准表</a></div>
+                <div class="col-md-4">创建人：张三三</div>
+            </div>
+            <div class="row">
+                <div class="col-md-4">质检活动对象：园林部</div>
+                <div class="col-md-4">质检活动：4月8号</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="complaint_user_list" style="margin: 10px 10px;">
+    <table border="1" style="width: 90% ;margin:20px auto;text-align: center">
+        <tr>
+            <td style="width: 10%">序号</td>
+            <td style="width: 15%">内容</td>
+            <td style="width: 15%">1日</td>
+            <td style="width: 15%">2日</td>
+            <td style="width: 15%">3日</td>
+            <td style="width: 15%">....</td>
+        </tr>
+
+        <tr>
+            <td>1</td>
+            <td>张三</td>
+            <td>75</td>
+            <td>78</td>
+            <td>89</td>
+            <td></td>
+        </tr>
+
+        <tr>
+            <td>2</td>
+            <td>张三</td>
+            <td>75</td>
+            <td>78</td>
+            <td>89</td>
+            <td></td>
+        </tr>
+
+        <tr>
+            <td>3</td>
+            <td>张三</td>
+            <td>75</td>
+            <td>78</td>
+            <td>89</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>4</td>
+            <td>张三</td>
+            <td>75</td>
+            <td>78</td>
+            <td>89</td>
+            <td></td>
+        </tr>
+
+        <tr>
+            <td>5</td>
+            <td>张三</td>
+            <td>75</td>
+            <td>78</td>
+            <td>89</td>
+            <td></td>
+        </tr>
+
+        <tr>
+            <td>6</td>
+            <td>张三</td>
+            <td>75</td>
+            <td>78</td>
+            <td>89</td>
+            <td></td>
+        </tr>
+
+        <tr>
+            <td>平均分</td>
+            <td></td>
+            <td>80</td>
+            <td>76</td>
+            <td>75</td>
+            <td></td>
+        </tr>
+
+
+
+    </table>
+    <div class="row">
+        <div ui-view></div>
+    </div>
+</div>
+</body>
+</html>

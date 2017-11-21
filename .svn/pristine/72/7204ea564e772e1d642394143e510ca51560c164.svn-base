@@ -1,0 +1,776 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>外部专业线</title>
+    <link rel="stylesheet" href="css/internalPro.css">
+</head>
+<body>
+<div id="pm" class="container-fluid">
+    <div class="row">
+        <div class="col-md-3" style="height: 120px;">
+            <div class="col-md-4">
+                <a ui-sref="index.externalProfession.meterReadingManagement.newActivities">
+                    <img src="images/taoyuanju/6.png" class="img-rounded" style="margin-top: 15px;margin-left:-18px">
+                </a>
+            </div>
+            <div class="col-md-8" style="margin-top: 5px">
+                <h4 style="font-weight: bold">抄表管理</h4>
+                前台和CC进行咨询服
+                务时可以查询FAQ解答
+                客户问题。
+            </div>
+        </div>
+
+        <div class="col-md-3" style="height: 120px">
+            <div class="col-md-4">
+                <a ui-sref="index.externalProfession.lostArticles"><img src="images/taoyuanju/5.png" class="img-rounded" style="margin-top: 15px;margin-left:-18px"></a>
+            </div>
+            <div class="col-md-8" style="margin-top: 5px">
+                <h4 style="font-weight: bold">遗失物品</h4>
+                前台和CC进行咨询服
+                务时可以查询FAQ解答
+                客户问题。
+            </div>
+        </div>
+
+        <div class="col-md-3" style="height: 120px;">
+            <div class="col-md-4">
+                <a ui-sref="index.externalProfession.individualCustomerManagement.newCustomers">
+                    <img src="images/taoyuanju/10.png" class="img-rounded" style="margin-top: 15px;margin-left:-18px">
+                </a>
+            </div>
+            <div class="col-md-8" style="margin-top: 5px">
+                <h4 style="font-weight: bold">个人客户管理</h4>
+                前台和CC进行咨询服
+                务时可以查询FAQ解答
+                客户问题。
+            </div>
+        </div>
+
+        <div class="col-md-3" style="height: 120px;">
+            <div class="col-md-4">
+                <a ui-sref="index.externalProfession.enterpriseCustomerManagement.enterpriseCustomerManagementAdd">
+                    <img src="images/taoyuanju/2.png" class="img-rounded" style="margin-top: 15px;margin-left:-18px"></a>
+            </div>
+            <div class="col-md-8" style="margin-top: 5px">
+                <h4 style="font-weight: bold">企业客户管理</h4>
+                前台和CC进行咨询服
+                务时可以查询FAQ解答
+                客户问题。
+            </div>
+        </div>
+
+        <div class="col-md-3" style="height: 120px;">
+            <div class="col-md-4">
+
+                <a ui-sref="index.externalProfession.VIPcustomer"><img src="images/taoyuanju/13.png" class="img-rounded" style="margin-top: 15px;margin-left:-18px"></a>
+            </div>
+            <div class="col-md-8" style="margin-top: 5px">
+                <h4 style="font-weight: bold">VIP客户管理</h4>
+                前台和CC进行咨询服
+                务时可以查询FAQ解答
+                客户问题。
+            </div>
+        </div>
+
+        <div class="col-md-3" style="height: 120px;">
+            <div class="col-md-4">
+                <a ui-sref="index.externalProfession.communityAnnouncement">
+                    <img src="images/taoyuanju/22.png" class="img-rounded" style="margin-top: 15px;margin-left:-18px">
+                </a>
+            </div>
+            <div class="col-md-8" style="margin-top: 5px">
+                <h4 style="font-weight: bold">小区公告</h4>
+                前台和CC进行咨询服
+                务时可以查询FAQ解答
+                客户问题。
+            </div>
+        </div>
+
+        <div class="col-md-3" style="height: 120px;">
+            <div class="col-md-4">
+                <a ui-sref="index.externalProfession.FAQ"><img src="images/taoyuanju/11.png" class="img-rounded" style="margin-top: 15px;margin-left:-18px"></a></div>
+            <div class="col-md-8" style="margin-top: 5px">
+                <h4 style="font-weight: bold">FAQ</h4>
+                前台和CC进行咨询服
+                务时可以查询FAQ解答
+                客户问题。
+            </div>
+        </div>
+
+        <div class="col-md-3" style="height: 120px;">
+            <div class="col-md-4">
+                <a ui-sref="index.externalProfession.importantClient"><img src="images/taoyuanju/14.png" class="img-rounded" style="margin-top: 15px;margin-left:-18px"></a>
+            </div>
+            <div class="col-md-8" style="margin-top: 5px">
+                <h4 style="font-weight: bold">重点客户</h4>
+                前台和CC进行咨询服
+                务时可以查询FAQ解答
+                客户问题。
+            </div>
+        </div>
+
+        <div class="col-md-3" style="height: 120px;">
+            <div class="col-md-4"> <a ui-sref="index.externalProfession.institution"><img src="images/taoyuanju/12.png" class="img-rounded" style="margin-top: 15px;margin-left:-18px"></a></div>
+            <div class="col-md-8" style="margin-top: 5px">
+                <h4 style="font-weight: bold">规章制度</h4>
+                前台和CC进行咨询服
+                务时可以查询FAQ解答
+                客户问题。
+            </div>
+        </div>
+
+        <div class="col-md-3" style="height: 120px">
+            <div class="col-md-4">
+                <a ui-sref="index.externalProfession.internalAnnouncement">
+                    <img src="images/taoyuanju/3.png" class="img-rounded" style="margin-top: 15px;margin-left:-18px">
+                </a>
+            </div>
+            <div class="col-md-8" style="margin-top: 5px">
+                <h4 style="font-weight: bold">内部公告</h4>
+                前台和CC进行咨询服
+                务时可以查询FAQ解答
+                客户问题。
+            </div>
+        </div>
+
+        <div class="col-md-3" style="height: 120px">
+            <div class="col-md-4"><a ui-sref="index.externalProfession.servicerequestinquiry"><img src="images/taoyuanju/11.png" class="img-rounded" style="margin-top: 15px;margin-left:-18px"></a></div>
+            <div class="col-md-8" style="margin-top: 5px">
+                <h4 style="font-weight: bold">服务请求查询</h4>
+                前台和CC进行咨询服
+                务时可以查询FAQ解答
+                客户问题。
+            </div>
+        </div>
+
+        <!--<div class="col-md-3" style="height: 120px">-->
+            <!--<div class="col-md-4">-->
+                <!--<a ui-sref="index.externalProfession.serviceRequestDatil.allWorkOrders">-->
+                    <!--<img src="images/taoyuanju/2.png" class="img-rounded" style="margin-top: 15px;margin-left:-18px">-->
+                <!--</a>-->
+
+            <!--</div>-->
+            <!--<div class="col-md-8" style="margin-top: 5px">-->
+                <!--<h4 style="font-weight: bold">服务请求详情</h4>-->
+                <!--前台和CC进行咨询服-->
+                <!--务时可以查询FAQ解答-->
+                <!--客户问题。-->
+            <!--</div>-->
+        <!--</div>-->
+
+        <div class="col-md-3" style="height: 120px">
+            <div class="col-md-4">
+                <a ui-sref="index.externalProfession.queryTask">
+                    <img src="images/taoyuanju/3.png" class="img-rounded" style="margin-top: 15px;margin-left:-18px">
+                </a>
+            </div>
+            <div class="col-md-8" style="margin-top: 5px">
+                <h4 style="font-weight: bold">所有任务查询</h4>
+                查询所有工单信息
+                务时可以查询FAQ解答
+                客户问题。
+            </div>
+        </div>
+
+        <div class="col-md-3" style="height: 120px">
+            <div class="col-md-4">
+                <a ui-sref="index.externalProfession.inquiry">
+                    <img src="images/taoyuanju/3.png" class="img-rounded" style="margin-top: 15px;margin-left:-18px">
+                </a>
+            </div>
+            <div class="col-md-8" style="margin-top: 5px">
+                <h4 style="font-weight: bold">所有工单查询</h4>
+                查询所有工单信息
+                务时可以查询FAQ解答
+                客户问题。
+            </div>
+        </div>
+
+        <div class="col-md-3" style="height: 120px;">
+            <div class="col-md-4"><a  ui-sref="index.externalProfession.compensation"><img src="images/taoyuanju/12.png" class="img-rounded" style="margin-top: 15px;margin-left:-18px"></a></div>
+            <div class="col-md-8" style="margin-top: 5px">
+                <h4 style="font-weight: bold">向业主索赔</h4>
+                前台和CC进行咨询服
+                务时可以查询FAQ解答
+                客户问题。
+            </div>
+        </div>
+
+        <div class="col-md-3" style="height: 120px;">
+            <div class="col-md-4">
+                <a ui-sref="index.externalProfession.majorIssuesSet.cleaning"><img src="images/taoyuanju/1.png" class="img-rounded" style="margin-top: 15px;margin-left:-18px"></a></div>
+            <div class="col-md-8" style="margin-top: 5px">
+                <h4 style="font-weight: bold">重大事项设置</h4>
+                前台和CC进行咨询服
+                务时可以查询FAQ解答
+                客户问题。
+            </div>
+        </div>
+
+        <div class="col-md-3" style="height: 120px">
+            <div class="col-md-4">
+                <a ui-sref="index.externalProfession.majorMatter">
+                    <img src="images/taoyuanju/2.png" class="img-rounded" style="margin-top: 15px;margin-left:-18px">
+                </a>
+            </div>
+            <div class="col-md-8" style="margin-top: 5px">
+                <h4 style="font-weight: bold">重大事项详情</h4>
+                前台和CC进行咨询服
+                务时可以查询FAQ解答
+                客户问题。
+            </div>
+        </div>
+
+        <div class="col-md-3" style="height: 120px">
+            <div class="col-md-4">
+                <a ui-sref="index.externalProfession.allentraceCard">
+                    <img src="images/taoyuanju/3.png" class="img-rounded" style="margin-top: 15px;margin-left:-18px">
+                </a>
+            </div>
+            <div class="col-md-8" style="margin-top: 5px">
+                <h4 style="font-weight: bold">门禁卡查询</h4>
+                查询所有工单信息
+                务时可以查询FAQ解答
+                客户问题。
+            </div>
+        </div>
+
+        <div class="col-md-3" style="height: 120px;">
+            <div class="col-md-4">
+                <a ui-sref="index.externalProfession.allParkingCard">
+                    <img src="images/taoyuanju/7.png" class="img-rounded" style="margin-top: 15px;margin-left:-18px">
+                </a>
+            </div>
+            <div class="col-md-8" style="margin-top: 5px">
+                <h4 style="font-weight: bold">停车卡查询</h4>
+                前台和CC进行咨询服
+                务时可以查询FAQ解答
+                客户问题。
+            </div>
+        </div>
+
+        <div class="col-md-3" style="height: 120px;">
+            <div class="col-md-4">
+                <a ui-sref="index.externalProfession.allVehicles">
+                    <img src="images/taoyuanju/1.png" class="img-rounded" style="margin-top: 15px;margin-left:-18px"></a>
+            </div>
+            <div class="col-md-8" style="margin-top: 5px">
+                <h4 style="font-weight: bold">小区车辆</h4>
+                前台和CC进行咨询服
+                务时可以查询FAQ解答
+                客户问题。
+            </div>
+        </div>
+
+        <div class="col-md-3" style="height: 120px;">
+            <div class="col-md-4">
+                <a ui-sref="index.externalProfession.allarticleRelease">
+                    <img src="images/taoyuanju/1.png" class="img-rounded" style="margin-top: 15px;margin-left:-18px"></a>
+            </div>
+            <div class="col-md-8" style="margin-top: 5px">
+                <h4 style="font-weight: bold">小区放行条</h4>
+                前台和CC进行咨询服
+                务时可以查询FAQ解答
+                客户问题。
+            </div>
+        </div>
+
+        <div class="col-md-3" style="height: 120px;">
+            <div class="col-md-4">
+                <a ui-sref="index.externalProfession.allPets">
+                    <img src="images/taoyuanju/8.png" class="img-rounded" style="margin-top: 15px;margin-left:-18px">
+                </a>
+            </div>
+            <div class="col-md-8" style="margin-top: 5px">
+                <h4 style="font-weight: bold">小区宠物</h4>
+                前台和CC进行咨询服
+                务时可以查询FAQ解答
+                客户问题。
+            </div>
+        </div>
+
+        <div class="col-md-3" style="height: 120px;">
+            <div class="col-md-4">
+                <a ui-sref="index.externalProfession.allOwnersLease"><img src="images/taoyuanju/3.png" class="img-rounded" style="margin-top: 15px;margin-left:-18px"></a>
+            </div>
+            <div class="col-md-8" style="margin-top: 5px">
+                <h4 style="font-weight: bold">小区租赁</h4>
+                前台和CC进行咨询服
+                务时可以查询FAQ解答
+                客户问题。
+            </div>
+        </div>
+
+        <div class="col-md-3" style="height: 120px;">
+            <div class="col-md-4">
+                <a ui-sref="index.externalProfession.repairBom"><img src="images/taoyuanju/1.png" class="img-rounded" style="margin-top: 15px;margin-left:-18px"></a></div>
+            <div class="col-md-8" style="margin-top: 5px">
+                <h4 style="font-weight: bold">维修BOM单</h4>
+                前台和CC进行咨询服
+                务时可以查询FAQ解答
+                客户问题。
+            </div>
+        </div>
+
+        <div class="col-md-3" style="height: 120px;">
+            <div class="col-md-4">
+                <a ui-sref="index.externalProfession.changeOfTitle">
+                    <img src="images/taoyuanju/1.png" class="img-rounded" style="margin-top: 15px;margin-left:-18px"></a>
+            </div>
+            <div class="col-md-8" style="margin-top: 5px">
+                <h4 style="font-weight: bold">产权变更</h4>
+                前台和CC进行咨询服
+                务时可以查询FAQ解答
+                客户问题。
+            </div>
+        </div>
+
+        <!--<div class="col-md-3" style="height: 120px;">-->
+            <!--<div class="col-md-4">-->
+                <!--<a ui-sref="index.externalProfession.qualityInspectionManagement.allActivities.dayActivity">-->
+                    <!--<img src="images/taoyuanju/1.png" class="img-rounded" style="margin-top: 15px;margin-left:-18px"></a>-->
+            <!--</div>-->
+            <!--<div class="col-md-8" style="margin-top: 5px">-->
+                <!--<h4 style="font-weight: bold">部门质检活动管理</h4>-->
+                <!--前台和CC进行咨询服-->
+                <!--务时可以查询FAQ解答-->
+                <!--客户问题。-->
+            <!--</div>-->
+        <!--</div>-->
+
+        <div class="col-md-3" style="height: 120px;">
+            <div class="col-md-4">
+                <a ui-sref="index.externalProfession.departmentQualityManagementServiceRequest.allDepartmentQualityManagementServiceRequest.dayActivity">
+                    <img src="images/taoyuanju/1.png" class="img-rounded" style="margin-top: 15px;margin-left:-18px"></a>
+            </div>
+            <div class="col-md-8" style="margin-top: 5px">
+                <h4 style="font-weight: bold">部门质检管理(服务请求)</h4>
+                前台和CC进行咨询服
+                务时可以查询FAQ解答
+                客户问题。
+            </div>
+        </div>
+
+        <!--<div class="col-md-3" style="height: 120px;">-->
+            <!--<div class="col-md-4">-->
+                <!--<a ui-sref="index.externalProfession.departmentServiceRequestForDetails">-->
+                    <!--<img src="images/taoyuanju/1.png" class="img-rounded" style="margin-top: 15px;margin-left:-18px"></a>-->
+            <!--</div>-->
+            <!--<div class="col-md-8" style="margin-top: 5px">-->
+                <!--<h4 style="font-weight: bold">部门质检服务请求详情</h4>-->
+                <!--前台和CC进行咨询服-->
+                <!--务时可以查询FAQ解答-->
+                <!--客户问题。-->
+            <!--</div>-->
+        <!--</div>-->
+
+        <!--<div class="col-md-3" style="height: 120px;">-->
+            <!--<div class="col-md-4">-->
+                <!--<a ui-sref="index.externalProfession.newServiceRequest">-->
+                    <!--<img src="images/taoyuanju/1.png" class="img-rounded" style="margin-top: 15px;margin-left:-18px"></a>-->
+            <!--</div>-->
+            <!--<div class="col-md-8" style="margin-top: 5px">-->
+                <!--<h4 style="font-weight: bold">新增质检服务请求</h4>-->
+                <!--前台和CC进行咨询服-->
+                <!--务时可以查询FAQ解答-->
+                <!--客户问题。-->
+            <!--</div>-->
+        <!--</div>-->
+        <!--<div class="col-md-3" style="height: 120px;">-->
+            <!--<div class="col-md-4">-->
+                <!--<a ui-sref="index.externalProfession.qualityActivityDetails">-->
+                    <!--<img src="images/taoyuanju/28.png" class="img-rounded" style="margin-top: 15px;margin-left:-18px"></a>-->
+            <!--</div>-->
+            <!--<div class="col-md-8" style="margin-top: 5px">-->
+                <!--<h4 style="font-weight: bold">部门质检活动详情</h4>-->
+                <!--前台和CC进行咨询服-->
+                <!--务时可以查询FAQ解答-->
+                <!--客户问题。-->
+            <!--</div>-->
+        <!--</div>-->
+
+
+        <!--<div class="col-md-3" style="height: 120px;">-->
+            <!--<div class="col-md-4">-->
+                <!--<a ui-sref="index.externalProfession.qualityinspectiontaskdetails">-->
+                    <!--<img src="images/taoyuanju/22.png" class="img-rounded" style="margin-top: 15px;margin-left:-18px"></a>-->
+            <!--</div>-->
+            <!--<div class="col-md-8" style="margin-top: 5px">-->
+                <!--<h4 style="font-weight: bold">部门质检任务详情</h4>-->
+                <!--前台和CC进行咨询服-->
+                <!--务时可以查询FAQ解答-->
+                <!--客户问题。-->
+            <!--</div>-->
+        <!--</div>-->
+
+        <!--<div class="col-md-3" style="height: 120px;">-->
+            <!--<div class="col-md-4">-->
+                <!--<a ui-sref="index.externalProfession.workingSingleDetail">-->
+                    <!--<img src="images/taoyuanju/1.png" class="img-rounded" style="margin-top: 15px;margin-left:-18px"></a>-->
+            <!--</div>-->
+            <!--<div class="col-md-8" style="margin-top: 5px">-->
+                <!--<h4 style="font-weight: bold">工单详情</h4>-->
+                <!--前台和CC进行咨询服-->
+                <!--务时可以查询FAQ解答-->
+                <!--客户问题。-->
+            <!--</div>-->
+        <!--</div>-->
+
+        <!--<div class="col-md-3" style="height: 120px;">-->
+            <!--<div class="col-md-4">-->
+                <!--<a ui-sref="index.externalProfession.personalScoreDetails">-->
+                    <!--<img src="images/taoyuanju/27.png" class="img-rounded" style="margin-top: 15px;margin-left:-18px"></a>-->
+            <!--</div>-->
+            <!--<div class="col-md-8" style="margin-top: 5px">-->
+                <!--<h4 style="font-weight: bold">个人评分详情</h4>-->
+                <!--前台和CC进行咨询服-->
+                <!--务时可以查询FAQ解答-->
+                <!--客户问题。-->
+            <!--</div>-->
+        <!--</div>-->
+
+        <!--<div class="col-md-3" style="height: 120px;">-->
+            <!--<div class="col-md-4">-->
+                <!--<a ui-sref="index.externalProfession.qualityinspectionactivity">-->
+                    <!--<img src="images/taoyuanju/21.png" class="img-rounded" style="margin-top: 15px;margin-left:-18px"></a>-->
+            <!--</div>-->
+            <!--<div class="col-md-8" style="margin-top: 5px">-->
+                <!--<h4 style="font-weight: bold">新增部门质检活动</h4>-->
+                <!--前台和CC进行咨询服-->
+                <!--务时可以查询FAQ解答-->
+                <!--客户问题。-->
+            <!--</div>-->
+        <!--</div>-->
+
+        <!--<div class="col-md-3" style="height: 120px;">-->
+            <!--<div class="col-md-4">-->
+                <!--<a ui-sref="index.externalProfession.newTemplate">-->
+                    <!--<img src="images/taoyuanju/1.png" class="img-rounded" style="margin-top: 15px;margin-left:-18px"></a>-->
+            <!--</div>-->
+            <!--<div class="col-md-8" style="margin-top: 5px">-->
+                <!--<h4 style="font-weight: bold">新建部门质检模板</h4>-->
+                <!--前台和CC进行咨询服-->
+                <!--务时可以查询FAQ解答-->
+                <!--客户问题。-->
+            <!--</div>-->
+        <!--</div>-->
+
+        <!--<div class="col-md-3" style="height: 120px;">-->
+            <!--<div class="col-md-4">-->
+                <!--<a ui-sref="index.externalProfession.departmentOfInspection.cleaning.cleaningAdd">-->
+                    <!--<img src="images/taoyuanju/1.png" class="img-rounded" style="margin-top: 15px;margin-left:-18px"></a>-->
+            <!--</div>-->
+            <!--<div class="col-md-8" style="margin-top: 5px">-->
+                <!--<h4 style="font-weight: bold">部门检（配）</h4>-->
+                <!--前台和CC进行咨询服-->
+                <!--务时可以查询FAQ解答-->
+                <!--客户问题。-->
+            <!--</div>-->
+        <!--</div>-->
+
+        <!--<div class="col-md-3" style="height: 120px;">-->
+            <!--<div class="col-md-4">-->
+                <!--<a ui-sref="index.externalProfession.allocationInspectionDepartment.allocationDepartmentAdd">-->
+                    <!--<img src="images/taoyuanju/1.png" class="img-rounded" style="margin-top: 15px;margin-left:-18px"></a>-->
+            <!--</div>-->
+            <!--<div class="col-md-8" style="margin-top: 5px">-->
+                <!--<h4 style="font-weight: bold">配置部门检</h4>-->
+                <!--前台和CC进行咨询服-->
+                <!--务时可以查询FAQ解答-->
+                <!--客户问题。-->
+            <!--</div>-->
+        <!--</div>-->
+
+        <!--<div class="col-md-3" style="height: 120px">-->
+            <!--<div class="col-md-4">-->
+                <!--<a ui-sref="index.externalProfession.departmentCheck.plan.page1">-->
+                    <!--<img src="images/taoyuanju/3.png" class="img-rounded" style="margin-top: 15px;margin-left:-18px">-->
+                <!--</a>-->
+            <!--</div>-->
+            <!--<div class="col-md-8" style="margin-top: 5px">-->
+                <!--<h4 style="font-weight: bold">部门检(查)</h4>-->
+                <!--查询所有工单信息-->
+                <!--务时可以查询FAQ解答-->
+                <!--客户问题。-->
+            <!--</div>-->
+        <!--</div>-->
+
+        <!--<div class="col-md-3" style="height: 120px;">-->
+            <!--<div class="col-md-4">-->
+                <!--<a ui-sref="index.externalProfession.addDepartmentQuality">-->
+                    <!--<img src="images/taoyuanju/1.png" class="img-rounded" style="margin-top: 15px;margin-left:-18px"></a>-->
+            <!--</div>-->
+            <!--<div class="col-md-8" style="margin-top: 5px">-->
+                <!--<h4 style="font-weight: bold">添加部门质量检查标准</h4>-->
+                <!--前台和CC进行咨询服-->
+                <!--务时可以查询FAQ解答-->
+                <!--客户问题。-->
+            <!--</div>-->
+        <!--</div>-->
+
+        <!--<div class="col-md-3" style="height: 120px;">-->
+            <!--<div class="col-md-4">-->
+                <!--<a ui-sref="index.externalProfession.addQuality">-->
+                    <!--<img src="images/taoyuanju/1.png" class="img-rounded" style="margin-top: 15px;margin-left:-18px"></a>-->
+            <!--</div>-->
+            <!--<div class="col-md-8" style="margin-top: 5px">-->
+                <!--<h4 style="font-weight: bold">添加质检标准</h4>-->
+                <!--前台和CC进行咨询服-->
+                <!--务时可以查询FAQ解答-->
+                <!--客户问题。-->
+            <!--</div>-->
+        <!--</div>-->
+
+        <!--<div class="col-md-3" style="height: 120px;">-->
+            <!--<div class="col-md-4">-->
+                <!--<a ui-sref="index.externalProfession.qualityInspection">-->
+                    <!--<img src="images/taoyuanju/1.png" class="img-rounded" style="margin-top: 15px;margin-left:-18px"></a>-->
+            <!--</div>-->
+            <!--<div class="col-md-8" style="margin-top: 5px">-->
+                <!--<h4 style="font-weight: bold">质量检查V2</h4>-->
+                <!--前台和CC进行咨询服-->
+                <!--务时可以查询FAQ解答-->
+                <!--客户问题。-->
+            <!--</div>-->
+        <!--</div>-->
+
+        <div class="col-md-3" style="height: 120px;">
+            <div class="col-md-4">
+                <img src="images/taoyuanju/9.png" class="img-rounded" style="margin-top: 15px;margin-left:-18px">
+            </div>
+            <div class="col-md-8" style="margin-top: 5px">
+                <h4 style="font-weight: bold">公司战略与绩效管理</h4>
+                前台和CC进行咨询服
+                务时可以查询FAQ解答
+                客户问题。
+            </div>
+        </div>
+
+        <!--<div class="col-md-3" style="height: 120px;">-->
+            <!--<div class="col-md-4">-->
+                <!--<a ui-sref="index.externalProfession.qualityScoremark">-->
+                    <!--<img src="images/taoyuanju/22.png" class="img-rounded" style="margin-top: 15px;margin-left:-18px"></a>-->
+            <!--</div>-->
+            <!--<div class="col-md-8" style="margin-top: 5px">-->
+                <!--<h4 style="font-weight: bold">部门质检活动评分标准表新建</h4>-->
+                <!--前台和CC进行咨询服-->
+                <!--务时可以查询FAQ解答-->
+                <!--客户问题。-->
+            <!--</div>-->
+        <!--</div>-->
+
+
+
+        <!--<div class="col-md-3" style="height: 120px;">-->
+            <!--<div class="col-md-4">-->
+                <!--<a ui-sref="index.externalProfession.departChecktable">-->
+                    <!--<img src="images/taoyuanju/27.png" class="img-rounded" style="margin-top: 15px;margin-left:-18px"></a>-->
+            <!--</div>-->
+            <!--<div class="col-md-8" style="margin-top: 5px">-->
+                <!--<h4 style="font-weight: bold">部门检查结果表</h4>-->
+                <!--前台和CC进行咨询服-->
+                <!--务时可以查询FAQ解答-->
+                <!--客户问题。-->
+            <!--</div>-->
+        <!--</div>-->
+
+        <!--<div class="col-md-3" style="height: 120px;">-->
+            <!--<div class="col-md-4">-->
+                <!--<a ui-sref="index.externalProfession.departmentQualityTemplet.allActivity">-->
+                    <!--<img src="images/taoyuanju/1.png" class="img-rounded" style="margin-top: 15px;margin-left:-18px">-->
+                <!--</a>-->
+            <!--</div>-->
+            <!--<div class="col-md-8" style="margin-top: 5px">-->
+                <!--<h4 style="font-weight: bold">部门质检模板新增和查看v3</h4>-->
+                <!--前台和CC进行咨询服-->
+                <!--务时可以查询FAQ解答-->
+                <!--客户问题。-->
+            <!--</div>-->
+        <!--</div>-->
+
+        <div class="col-md-3" style="height: 120px;">
+            <div class="col-md-4">
+                <a ui-sref="index.externalProfession.allWaitingTask">
+                    <img src="images/taoyuanju/1.png" class="img-rounded" style="margin-top: 15px;margin-left:-18px">
+                </a>
+            </div>
+            <div class="col-md-8" style="margin-top: 5px">
+                <h4 style="font-weight: bold">全部待完成任务</h4>
+                前台和CC进行咨询服
+                务时可以查询FAQ解答
+                客户问题。
+            </div>
+        </div>
+
+        <div class="col-md-3" style="height: 120px;">
+            <div class="col-md-4">
+                <a ui-sref="index.externalProfession.taskDetails.quote">
+                    <img src="images/taoyuanju/1.png" class="img-rounded" style="margin-top: 15px;margin-left:-18px"></a>
+            </div>
+            <div class="col-md-8" style="margin-top: 5px">
+                <h4 style="font-weight: bold">任务详情</h4>
+                前台和CC进行咨询服
+                务时可以查询FAQ解答
+                客户问题。
+            </div>
+        </div>
+
+
+        <!--<div class="col-md-3" style="height: 120px;">-->
+            <!--<div class="col-md-4">-->
+                <!--<a ui-sref="index.externalProfession.templateDetails">-->
+                    <!--<img src="images/taoyuanju/21.png" class="img-rounded" style="margin-top: 15px;margin-left:-18px"></a>-->
+            <!--</div>-->
+            <!--<div class="col-md-8" style="margin-top: 5px">-->
+                <!--<h4 style="font-weight: bold">模板详情</h4>-->
+                <!--前台和CC进行咨询服-->
+                <!--务时可以查询FAQ解答-->
+                <!--客户问题。-->
+            <!--</div>-->
+        <!--</div>-->
+
+
+
+        <!--<div class="col-md-3" style="height: 120px;">-->
+            <!--<div class="col-md-4">-->
+                <!--<a ui-sref="index.externalProfession.personalCheckdetails">-->
+                    <!--<img src="images/taoyuanju/27.png" class="img-rounded" style="margin-top: 15px;margin-left:-18px"></a>-->
+            <!--</div>-->
+            <!--<div class="col-md-8" style="margin-top: 5px">-->
+                <!--<h4 style="font-weight: bold">个人检查详情</h4>-->
+                <!--前台和CC进行咨询服-->
+                <!--务时可以查询FAQ解答-->
+                <!--客户问题。-->
+            <!--</div>-->
+        <!--</div>-->
+
+        <div class="col-md-3" style="height: 120px;">
+            <div class="col-md-4">
+                <a ui-sref="index.externalProfession.qervicerequestreturnvisit">
+                    <img src="images/taoyuanju/25.png" class="img-rounded" style="margin-top: 15px;margin-left:-18px"></a>
+            </div>
+            <div class="col-md-8" style="margin-top: 5px">
+                <h4 style="font-weight: bold">服务请求回访</h4>
+                前台和CC进行咨询服
+                务时可以查询FAQ解答
+                客户问题。
+            </div>
+        </div>
+
+        <!--<div class="col-md-3" style="height: 120px;">-->
+            <!--<div class="col-md-4">-->
+                <!--<a ui-sref="index.externalProfession.departmentInspectionActivitiesV4">-->
+                    <!--<img src="images/taoyuanju/25.png" class="img-rounded" style="margin-top: 15px;margin-left:-18px"></a>-->
+            <!--</div>-->
+            <!--<div class="col-md-8" style="margin-top: 5px">-->
+                <!--<h4 style="font-weight: bold">部门质检活动新建V4</h4>-->
+                <!--前台和CC进行咨询服-->
+                <!--务时可以查询FAQ解答-->
+                <!--客户问题。-->
+            <!--</div>-->
+        <!--</div>-->
+
+        <!--<div class="col-md-3" style="height: 120px;">-->
+            <!--<div class="col-md-4">-->
+                <!--<a ui-sref="index.externalProfession.departmentOfQualityInspectionAllActivities">-->
+                    <!--<img src="images/taoyuanju/25.png" class="img-rounded" style="margin-top: 15px;margin-left:-18px"></a>-->
+            <!--</div>-->
+            <!--<div class="col-md-8" style="margin-top: 5px">-->
+                <!--<h4 style="font-weight: bold">部门质检全部活动查看V3</h4>-->
+                <!--前台和CC进行咨询服-->
+                <!--务时可以查询FAQ解答-->
+                <!--客户问题。-->
+            <!--</div>-->
+        <!--</div>-->
+
+        <!--<div class="col-md-3" style="height: 120px;">-->
+            <!--<div class="col-md-4">-->
+                <!--<a ui-sref="index.externalProfession.qualityManagement">-->
+                    <!--<img src="images/taoyuanju/1.png" class="img-rounded" style="margin-top: 15px;margin-left:-18px"></a>-->
+            <!--</div>-->
+            <!--<div class="col-md-8" style="margin-top: 5px">-->
+                <!--<h4 style="font-weight: bold">质检管理</h4>-->
+                <!--前台和CC进行咨询服-->
+                <!--务时可以查询FAQ解答-->
+                <!--客户问题。-->
+            <!--</div>-->
+        <!--</div>-->
+
+        <!--<div class="col-md-3" style="height: 120px;">-->
+            <!--<div class="col-md-4">-->
+                <!--<a ui-sref="index.externalProfession.departmentInspectionV3">-->
+                    <!--<img src="images/taoyuanju/1.png" class="img-rounded" style="margin-top: 15px;margin-left:-18px"></a>-->
+            <!--</div>-->
+            <!--<div class="col-md-8" style="margin-top: 5px">-->
+                <!--<h4 style="font-weight: bold">部门质检活动新建V3</h4>-->
+                <!--前台和CC进行咨询服-->
+                <!--务时可以查询FAQ解答-->
+                <!--客户问题。-->
+            <!--</div>-->
+        <!--</div>-->
+
+        <!--<div class="col-md-3" style="height: 120px;">-->
+            <!--<div class="col-md-4">-->
+                <!--<a ui-sref="index.externalProfession.personalScoreRecord.page1">-->
+                    <!--<img src="images/taoyuanju/1.png" class="img-rounded" style="margin-top: 15px;margin-left:-18px"></a>-->
+            <!--</div>-->
+            <!--<div class="col-md-8" style="margin-top: 5px">-->
+                <!--<h4 style="font-weight: bold">个人评分记录表</h4>-->
+                <!--前台和CC进行咨询服-->
+                <!--务时可以查询FAQ解答-->
+                <!--客户问题。-->
+            <!--</div>-->
+        <!--</div>-->
+
+        <!--<div class="col-md-3" style="height: 120px;">-->
+            <!--<div class="col-md-4">-->
+                <!--<a ui-sref="index.externalProfession.personalCheckdetails">-->
+                    <!--<img src="images/taoyuanju/27.png" class="img-rounded" style="margin-top: 15px;margin-left:-18px"></a>-->
+            <!--</div>-->
+            <!--<div class="col-md-8" style="margin-top: 5px">-->
+                <!--<h4 style="font-weight: bold">个人检查详情</h4>-->
+                <!--前台和CC进行咨询服-->
+                <!--务时可以查询FAQ解答-->
+                <!--客户问题。-->
+            <!--</div>-->
+        <!--</div>-->
+
+        <div class="col-md-3" style="height: 120px;">
+            <div class="col-md-4">
+                <a ui-sref="index.externalProfession.messageManagement">
+                    <img src="images/taoyuanju/27.png" class="img-rounded" style="margin-top: 15px;margin-left:-18px"></a>
+            </div>
+            <div class="col-md-8" style="margin-top: 5px">
+                <h4 style="font-weight: bold">消息管理</h4>
+                前台和CC进行咨询服
+                务时可以查询FAQ解答
+                客户问题。
+            </div>
+        </div>
+
+        <div class="col-md-3" style="height: 120px;">
+            <div class="col-md-4">
+                <a ui-sref="index.externalProfession.accounting">
+                    <img src="images/taoyuanju/27.png" class="img-rounded" style="margin-top: 15px;margin-left:-18px"></a>
+            </div>
+            <div class="col-md-8" style="margin-top: 5px">
+                <h4 style="font-weight: bold">计费管理</h4>
+                前台和CC进行咨询服
+                务时可以查询FAQ解答
+                客户问题。
+            </div>
+        </div>
+
+    </div>
+    <div class="row" style="margin-top: 29px;text-align: center">
+        <div class="doted">
+            <span class="dot_Check"></span>
+            <span class="dot_unChecked"></span>
+            <span class="dot_unChecked"></span>
+        </div>
+    </div>
+</div>
+</body>
+</html>

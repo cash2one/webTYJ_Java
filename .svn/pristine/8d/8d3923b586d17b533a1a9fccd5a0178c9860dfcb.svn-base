@@ -1,0 +1,867 @@
+package com.flf.service.impl;
+
+import java.io.FileOutputStream;
+import java.io.OutputStream;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.UUID;
+
+import javax.crypto.CipherInputStream;
+import javax.swing.JOptionPane;
+
+import com.flf.entity.Bill;
+import com.flf.entity.BillExport;
+import com.flf.entity.Billing;
+import com.flf.entity.BuildingBilling;
+import com.flf.entity.ChargeItemBilling;
+import com.flf.entity.ChargeItemNew;
+import com.flf.entity.ElectronicBilling;
+import com.flf.entity.PageRestful;
+import com.flf.entity.ProjectBilling;
+import com.flf.mapper.BillMapper;
+import com.flf.mapper.BillingMapper;
+import com.flf.mapper.BuildingBillingMapper;
+import com.flf.mapper.BuildingStructureNewMapper;
+import com.flf.mapper.ChargeItemBillingMapper;
+import com.flf.mapper.ChargeItemNewMapper;
+import com.flf.mapper.ElectronicBillingMapper;
+import com.flf.mapper.ProjectBillingMapper;
+import com.flf.mapper.ProjectMapper;
+import com.flf.service.BillService;
+import com.flf.util.ExportExcel;
+
+public class BillServiceImpl implements BillService {
+
+	private BillMapper billMapper;
+
+	private ChargeItemNewMapper chargeItemNewMapper;// 收费项目
+
+	private ProjectMapper projectMapper;
+
+	private ElectronicBillingMapper electronicBillingMapper;
+
+	private BuildingBillingMapper buildingBillingMapper;
+
+	private ChargeItemBillingMapper chargeItemBillingMapper;
+
+	private ProjectBillingMapper projectBillingMapper;
+
+	private BuildingStructureNewMapper buildingStructureNewMapper;
+
+	public BuildingStructureNewMapper getBuildingStructureNewMapper() {
+		return buildingStructureNewMapper;
+	}
+
+	public void setBuildingStructureNewMapper(BuildingStructureNewMapper buildingStructureNewMapper) {
+		this.buildingStructureNewMapper = buildingStructureNewMapper;
+	}
+
+	public ProjectBillingMapper getProjectBillingMapper() {
+		return projectBillingMapper;
+	}
+
+	public void setProjectBillingMapper(ProjectBillingMapper projectBillingMapper) {
+		this.projectBillingMapper = projectBillingMapper;
+	}
+
+	public ChargeItemBillingMapper getChargeItemBillingMapper() {
+		return chargeItemBillingMapper;
+	}
+
+	public void setChargeItemBillingMapper(ChargeItemBillingMapper chargeItemBillingMapper) {
+		this.chargeItemBillingMapper = chargeItemBillingMapper;
+	}
+
+	public BuildingBillingMapper getBuildingBillingMapper() {
+		return buildingBillingMapper;
+	}
+
+	public void setBuildingBillingMapper(BuildingBillingMapper buildingBillingMapper) {
+		this.buildingBillingMapper = buildingBillingMapper;
+	}
+
+	public ElectronicBillingMapper getElectronicBillingMapper() {
+		return electronicBillingMapper;
+	}
+
+	public void setElectronicBillingMapper(ElectronicBillingMapper electronicBillingMapper) {
+		this.electronicBillingMapper = electronicBillingMapper;
+	}
+
+	public ProjectMapper getProjectMapper() {
+		return projectMapper;
+	}
+
+	public void setProjectMapper(ProjectMapper projectMapper) {
+		this.projectMapper = projectMapper;
+	}
+
+	public ChargeItemNewMapper getChargeItemNewMapper() {
+		return chargeItemNewMapper;
+	}
+
+	public void setChargeItemNewMapper(ChargeItemNewMapper chargeItemNewMapper) {
+		this.chargeItemNewMapper = chargeItemNewMapper;
+	}
+
+	public BillingMapper getBillingMapper() {
+		return billingMapper;
+	}
+
+	public void setBillingMapper(BillingMapper billingMapper) {
+		this.billingMapper = billingMapper;
+	}
+
+	private BillingMapper billingMapper;
+
+	public BillMapper getBillMapper() {
+		return billMapper;
+	}
+
+	public void setBillMapper(BillMapper billMapper) {
+		this.billMapper = billMapper;
+	}
+
+	@Override
+	public void AddBill(Bill bill) {
+		// TODO Auto-generated method stub
+
+		List<Billing> bList = billingMapper.getBillingByProjectId(bill.getProjectId());
+		for (int i = 0; i < bList.size(); i++) {
+			bill.setBillId(bList.get(i).getBillId());
+			billMapper.insertBill(bill);
+		}
+	}
+
+	@Override
+	public PageRestful listPageBill(Bill bill) {
+
+		// TODO Auto-generated method stub
+		PageRestful pageRestful = new PageRestful();
+		List<Bill> bills = billMapper.listPageBill(bill);
+		bills.add(0, null);
+		pageRestful.setBills(bills);
+		pageRestful.setPage(bill.getPage());
+		return pageRestful;
+	}
+
+	/* 获取客户资产下的建筑结构的账单 */
+	@Override
+	public List<Bill> getBillsByCustId(String custId) {
+		// TODO Auto-generated method stub
+		List<Bill> bills = new ArrayList<Bill>();
+		List<String> buildingIds = billMapper.getAllBuildingIdOfCust(custId);// 获取所有账户下建筑结构Id
+		if (buildingIds != null && !buildingIds.isEmpty()) {
+			for (String bId : buildingIds) {
+				Bill bill = billMapper.getBillByBuildingId(bId);
+				bills.add(bill);
+			}
+		}
+		return bills;
+	}
+
+	@Override
+	public PageRestful listPageBillsByelectronicBillingIdThisMonth(Bill bill) {
+		// TODO Auto-generated method stub
+		PageRestful pageRestful = new PageRestful();
+		List<Bill> bills = billMapper.listPageBillsByelectronicBillingIdThisMonth(bill);
+		bills.add(0, null);
+		pageRestful.setBills(bills);
+		pageRestful.setPage(bill.getPage());
+		return pageRestful;
+	}
+
+	@Override
+	public PageRestful listPageBillsByelectronicBillingIdLastMonth(Bill bill) {
+		// TODO Auto-generated method stub
+		PageRestful pageRestful = new PageRestful();
+		List<Bill> bills = billMapper.listPageBillsByelectronicBillingIdLastMonth(bill);
+		bills.add(0, null);
+		pageRestful.setBills(bills);
+		pageRestful.setPage(bill.getPage());
+		return pageRestful;
+	}
+
+	@Override
+	public List<Bill> getBillsByProjectIdAndDate(Bill bill) {
+		return null;
+//		// TODO Auto-generated method stub
+//		List<Bill> bills = new ArrayList<Bill>();
+//		// 收费项目：水费，电费，物业管理费，停车费，车位管理费，其他
+//		String[] chargeItemNames = { "水费", "电费", "物业管理费", "停车费", "车位管理费" };
+//		// 根据项目id与日期获取应收款单
+//		String projectId = bill.getProjectId();// 获取项目id
+//		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+//		Date billDate = bill.getBillDate();
+//		String billdate = sdf.format(billDate);// 获取日期
+//		double totalBillingSum = 0;// 所有收费项目应收金额合计
+//		double totalCollectSum = 0;// 所有收费项目实收金额合计
+//		double totalNoCollectSum = 0;// 所有收费项目未收金额合计
+//		for (String name : chargeItemNames) {
+//			// Map<String, Object> map = new HashMap<String,
+//			// Object>();//统计后的父级应收款表
+//			ChargeItemNew chargeItemNew = chargeItemNewMapper.getChargeItemNewByProjectIdAndNameThis(projectId, name,
+//					billdate);// 获取收费项目父级对象
+//			if (chargeItemNew != null) {// 存在该父级收费项目
+//				String parentId = chargeItemNew.getCiId();// 获取收费项目父级对象id
+//				List<String> subIds = chargeItemNewMapper.getChargeItemNewIdsByParentId(parentId);// 获取父级项目下的子项目id
+//				/* 根据子收费项目id统计应收款，并将其赋值给父级应收款表 */
+//				Bill parentBill = billMapper.getBillByChargeItemId(parentId);// 获取父级对象
+//				/* 获取实收金额，并累加到实收金额合计 */
+//				Double collectSum = parentBill.getCollectSum();
+//				totalCollectSum += (collectSum == null ? 0 : collectSum);
+//				Double noCollectSum = parentBill.getNoCollectSum();
+//				totalNoCollectSum += (noCollectSum == null ? 0 : noCollectSum);
+//				double billingSum = 0;// 统计应收款应收金额(收款报表)
+//				// double
+//				List<Billing> billings = billingMapper.getBillingsBySubChargeItemIds(subIds);
+//				if (billings != null) {
+//					for (Billing bi : billings) {
+//						if (bi != null) {
+//							Double collectSumSub = bi.getCurrentSum();
+//							billingSum += (collectSumSub == null ? 0 : collectSumSub);
+//						}
+//					}
+//				}
+//				parentBill.setBillingSum(billingSum);// 赋值给父级应收款表
+//				parentBill.setChargeItemName(chargeItemNew.getCiName());// 设定收费项目名称
+//				totalBillingSum += billingSum;// 统计所有项目总实收金额
+//				billMapper.updateBill(parentBill);// 更新数据库
+//				parentBill.setChargeItemType(name);
+//				bills.add(parentBill);
+//			} else {// 如果无该父级收费项信息
+//				Bill bill2 = new Bill();
+//				bill2.setChargeItemType(name);
+//				bills.add(bill2);
+//			}
+//		}
+//		Bill bill3 = new Bill();
+//		bill3.setChargeItemName("合计");
+//		bill3.setBillingSum(totalBillingSum);// 总应收金额
+//		bill3.setCollectSum(totalCollectSum);// 总实收金额
+//		bill3.setCollectSum(totalNoCollectSum);// 总未收金额
+//		bills.add(bill3);
+//		return bills;
+	}
+
+	@Override
+	public List<Billing> getSubBillsForSubChargeItem(Bill bill) {
+		return null;
+//		// TODO Auto-generated method stub
+//		List<Billing> billings = new ArrayList<Billing>();
+//		String parentId = bill.getChargeItemId();// 获取收费项目父级id
+//		// List<ChargeItemNew> subItems =
+//		// chargeItemNewMapper.getChargeItemNewByIds(parentId);//获取父级收费项目下的子项目
+//		List<String> subIds = chargeItemNewMapper.getChargeItemNewIdsByParentId(parentId);// 获取父级收费项目下的子项目id
+//		billings = billingMapper.getBillingsBySubChargeItemIds(subIds);
+//		return billings;
+	}
+
+	@Override
+	public void UpdateRefund(Bill bill) {
+		// TODO Auto-generated method stub
+		billMapper.updateRefund(bill);
+	}
+
+	@Override
+	public void UpdateImpact(Bill bill) {
+		// TODO Auto-generated method stub
+		billMapper.updateImpact(bill);
+	}
+
+	@Override
+	public List<Bill> getOwe(Bill bill) {
+		return null;
+//		// TODO Auto-generated method stub
+//		List<Bill> bills = new ArrayList<Bill>();
+//		// 收费项目：水费，电费，物业管理费，停车费，车位管理费，其他
+//		String[] chargeItemNames = { "水费", "电费", "物业管理费", "停车费", "车位管理费" };
+//		// 根据项目id与日期获取应收款单
+//		String projectId = bill.getProjectId();// 获取项目id
+//		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+//		Date billDate = bill.getBillDate();
+//		String billdate = sdf.format(billDate);// 获取日期
+//		double totalSum = 0;// 所有收费项目欠费金额合计
+//		for (String name : chargeItemNames) {
+//			// Map<String, Object> map = new HashMap<String,
+//			// Object>();//统计后的父级应收款表
+//			ChargeItemNew chargeItemNew = chargeItemNewMapper.getChargeItemNewByProjectIdAndNameThis(projectId, name,
+//					billdate);// 获取收费项目父级对象
+//			if (chargeItemNew != null) {// 存在该父级收费项目
+//				String parentId = chargeItemNew.getCiId();// 获取收费项目父级对象id
+//				List<String> subIds = chargeItemNewMapper.getChargeItemNewIdsByParentId(parentId);// 获取父级项目下的子项目id
+//				/* 根据子收费项目id统计应收款，并将其赋值给父级应收款表 */
+//				Bill parentBill = billMapper.getBillByChargeItemId(parentId);// 获取父级对象
+//				double noCollectSum = 0;// 统计应收款欠款金额
+//
+//				for (String sId : subIds) {
+//					Bill b = billMapper.getBillByChargeItemId(sId);// 获取收费子项目id对应应收款对象
+//					if (b != null) {
+//						Double noCollectSumSub = b.getNoCollectSum();// 获取欠款金额
+//						noCollectSum += (noCollectSumSub == null ? 0 : noCollectSumSub);// 累加欠款金额
+//					}
+//				}
+//				parentBill.setNoCollectSum(noCollectSum);// 赋值给父级应收款表
+//				parentBill.setChargeItemName(chargeItemNew.getCiName());// 设定收费项目名称
+//				totalSum += noCollectSum;// 统计所有项目总欠款金额
+//				billMapper.updateBill(parentBill);// 更新数据库
+//				parentBill.setChargeItemType(name);
+//				bills.add(parentBill);
+//			} else {// 如果无该父级收费项信息
+//				Bill bill2 = new Bill();
+//				bill2.setChargeItemType(name);
+//				bills.add(bill2);
+//			}
+//		}
+//		Bill bill3 = new Bill();
+//		bill3.setChargeItemName("合计");
+//		bill3.setNoCollectSum(totalSum);
+//		;
+//		bills.add(bill3);
+//		return bills;
+	}
+
+	@Override
+	public List<Bill> getCollectFee(Bill bill) {
+		return null;
+//		// TODO Auto-generated method stub
+//		List<Bill> bills = new ArrayList<Bill>();
+//		// 收费项目：水费，电费，物业管理费，停车费，车位管理费，其他
+//		String[] chargeItemNames = { "水费", "电费", "物业管理费", "停车费", "车位管理费" };
+//		// 根据项目id与日期获取应收款单
+//		String projectId = bill.getProjectId();// 获取项目id
+//		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+//		Date billDate = bill.getBillDate();
+//		String billdate = sdf.format(billDate);// 获取日期
+//		double totalSum = 0;// 所有收费项目欠费金额合计
+//		double totalSum1 = 0;// 所有收费项目实收费金额合计
+//		for (String name : chargeItemNames) {
+//			// Map<String, Object> map = new HashMap<String,
+//			// Object>();//统计后的父级应收款表
+//			ChargeItemNew chargeItemNew = chargeItemNewMapper.getChargeItemNewByProjectIdAndNameThis(projectId, name,
+//					billdate);// 获取收费项目父级对象
+//			if (chargeItemNew != null) {// 存在该父级收费项目
+//				String parentId = chargeItemNew.getCiId();// 获取收费项目父级对象id
+//				List<String> subIds = chargeItemNewMapper.getChargeItemNewIdsByParentId(parentId);// 获取父级项目下的子项目id
+//				/* 根据子收费项目id统计应收款，并将其赋值给父级应收款表 */
+//				Bill parentBill = billMapper.getBillByChargeItemId(parentId);// 获取父级对象
+//				double noCollectSum = 0;// 统计应收款欠款金额
+//				double collectSum = 0;// 统计应收款欠款金额
+//				for (String sId : subIds) {
+//					Bill b = billMapper.getBillByChargeItemId(sId);// 获取收费子项目id对应应收款对象
+//					if (b != null) {
+//						Double noCollectSumSub = b.getNoCollectSum();// 获取欠款金额
+//						noCollectSum += (noCollectSumSub == null ? 0 : noCollectSumSub);// 累加欠款金额
+//
+//						Double collectSumSub = b.getCollectSum();// 获取欠款金额
+//						collectSum += (collectSumSub == null ? 0 : collectSumSub);// 累加欠款金额
+//					}
+//				}
+//				parentBill.setNoCollectSum(noCollectSum);// 赋值给父级应收款表
+//				parentBill.setCollectSum(collectSum);// 赋值给父级应收款表
+//				parentBill.setChargeItemName(chargeItemNew.getCiName());// 设定收费项目名称
+//				totalSum += noCollectSum;// 统计所有项目总欠款金额
+//				totalSum1 += collectSum;
+//				billMapper.updateBill(parentBill);// 更新数据库
+//				parentBill.setChargeItemType(name);
+//				bills.add(parentBill);
+//			} else {// 如果无该父级收费项信息
+//				Bill bill2 = new Bill();
+//				bill2.setChargeItemType(name);
+//				bills.add(bill2);
+//			}
+//		}
+//		Bill bill3 = new Bill();
+//		bill3.setChargeItemName("合计");
+//		bill3.setNoCollectSum(totalSum);
+//		bill3.setCollectSum(totalSum1);
+//		bills.add(bill3);
+//		return bills;
+	}
+
+	@Override
+	public void exportExcelFile(BillExport billExport) {
+		// TODO Auto-generated method stub
+		ExportExcel<BillExport> ex = new ExportExcel<BillExport>();
+		String[] headers = { "创建时间", "未缴费", "已缴费" };
+
+		List<BillExport> dataset = new ArrayList<BillExport>();
+
+		dataset.add(billExport);
+		try {
+			OutputStream out = new FileOutputStream("E://收缴率.xls");
+			ex.exportExcel(headers, dataset, out);
+			out.close();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		JOptionPane.showMessageDialog(null, "导出成功!");
+		System.out.println("excel导出成功！");
+	}
+
+	@Override
+	public void AddBillRes(String id) {
+		String ids[] = id.split("split");
+		List<ChargeItemBilling> chargeItemBilling = new ArrayList<ChargeItemBilling>();// 收费项目集合
+		List<BuildingBilling> buildingBilling = new ArrayList<BuildingBilling>();// 收费项目集合
+		List<Billing> billing = new ArrayList<Billing>();// 收费项目集合
+
+		// 根据项目计费id获取收费项目计费信息
+		for (String projectBillingId : ids) {
+			chargeItemBilling = chargeItemBillingMapper.getChargeItemBillingbyProjectBillingId(projectBillingId);
+			// 判断是否计费过
+			if (projectBillingMapper.getProjectBillingById(projectBillingId).getIsPosting().equals("0")) {
+				continue;
+			}
+
+			// 根据收费项目计费id获取建筑计费信息
+			for (ChargeItemBilling cib : chargeItemBilling) {
+				// 判断是否计费过
+				if (cib.getBillingType() == 0) {
+					continue;
+				}
+				buildingBilling = buildingBillingMapper
+						.listBuildingBillingByChargeItemBillingId(cib.getChargeItemBillingId());
+
+				// 根据建筑计费id获取计费信息
+				for (BuildingBilling bb : buildingBilling) {
+					// 判断是否计费过
+					if (bb.getBillingState() == 0) {
+						continue;
+					}
+					billing = billingMapper.listBillingByBuildingbillingId(bb.getBuildingBillingId());
+					String electronicBillingId = UUID.randomUUID().toString();// 生成电子账单id
+
+					// 定义电子账单的各项数据，方便累加
+					double lastOverdueCount = 0;// 上期滞纳金
+					double currentOverdueCount = 0;// 本期滞纳金
+					double billingSumCount = 0;// 总金额
+					double collectSumCount = 0;// 已交金额
+					double noCollectSumCount = 0;// 未交金额
+					double currentSumCount = 0;// 本期金额
+					double lastSumCount = 0;// 上期金额
+					double currentOweSumCount = 0;// 本期欠款金额
+					double lastOweSumCount = 0;// 上期欠款金额
+
+					// 根据计费信息生成应收款信息
+					for (Billing b : billing) {
+						// 判断是否计费过
+						if (b.getBillingState() == 0) {
+							continue;
+						}
+
+						Bill bill = new Bill();
+						bill.setBillId(UUID.randomUUID().toString());// 主键
+						bill.setBillDate(new Date());// 账单时间
+						bill.setBillState((byte) 0);
+						bill.setElectronicBillingId(electronicBillingId);// 电子账单id
+						bill.setBuildingBillingId(b.getBuildingBillingId());// 建筑收费信息Id
+						// 生成编号
+						String maxBillNum = billMapper.getMaxBillNum();
+						if (maxBillNum != null && !maxBillNum.equals("")) {
+							bill.setBillNum("00" + (Integer.parseInt(maxBillNum) + 1));
+						} else {
+							bill.setBillNum("001");
+						}
+						bill.setProjectId(b.getProjectId());// 项目id
+						bill.setProjectName(cib.getProjectName());// 项目名称
+						bill.setBuildingId(b.getBuildingId());// 建筑结构id
+						bill.setFullName(buildingStructureNewMapper.getFullNameById(b.getBuildingId()));// 房屋名称
+						bill.setChargeItemId(cib.getChargeItemId());// 收费项目id
+						bill.setChargeItemName(b.getChargeItemName());// 收费项目名称
+						bill.setCurrentSum(b.getCurrentSum());// 本期金额
+						bill.setCurrentOweSum(bill.getCurrentSum());// 本期欠款金额初始值为本期金额
+
+						// 根据收费项目id和建筑id和时间获取上期数据
+						Bill lastBill = billMapper.getLastBill(bill);
+						if (lastBill != null) {
+							bill.setLastSum(lastBill.getNoCollectSum());// 上期金额为上期数据的未收金额
+
+							bill.setLastOweSum(lastBill.getCurrentOweSum());// 上期欠款金额为上期数据的本期欠款金额
+
+							// 上期滞纳金为上个月的本期滞纳金+上个月的上期滞纳金
+							bill.setLastOverdue(lastBill.getCurrentOverdue() + lastBill.getLastOverdue());
+
+							// 本期滞纳金为本月根据（上期未收金额+本期滞纳金）*滞纳金系数得出
+							bill.setCurrentOverdue((lastBill.getNoCollectSum() + lastBill.getCurrentOverdue()) * 0.001);
+
+							bill.setCollectSum(0.0);// 实收金额
+
+							// 未收金额初始为上期未收加本期金额
+							bill.setNoCollectSum(lastBill.getNoCollectSum() + bill.getCurrentSum());
+
+						}
+						// 账单金额为本期金额加上期金额加本期滞纳金
+						bill.setBillingSum(bill.getCurrentSum() + bill.getLastSum() + bill.getCurrentOverdue());
+						billMapper.insertBill(bill);
+						// 累加各项金额
+						if (bill.getLastOverdue() != 0) {
+							lastOverdueCount += bill.getLastOverdue();
+						}
+						currentOverdueCount += bill.getCurrentOverdue();
+						billingSumCount += bill.getBillingSum();
+						collectSumCount += bill.getCollectSum();
+						noCollectSumCount += bill.getNoCollectSum();
+						currentSumCount += bill.getCurrentSum();
+						lastSumCount += bill.getLastSum();
+						currentOweSumCount += bill.getCurrentOweSum();
+						lastOweSumCount += bill.getLastOweSum();
+
+						// 更改计费信息计费状态
+						Billing bi = new Billing();
+						bi.setBillingId(b.getBillingId());
+						bi.setBillingState(0);
+						bi.setBillId(bill.getBillId());
+						billingMapper.updateBilling(bi);
+					}
+					// 更改建筑计费计费状态
+					BuildingBilling bub = new BuildingBilling();
+					bub.setBuildingBillingId(bb.getBuildingBillingId());
+					bub.setBillingState(0);
+					buildingBillingMapper.updateBuildingBilling(bub);
+
+					ElectronicBilling electronicBilling = new ElectronicBilling();// 电子账单
+					electronicBilling.setElectronicBillingId(electronicBillingId);
+					electronicBilling.setBillDate(new Date());
+					// 添加编号
+					String s = electronicBillingMapper.getMaxElectronicBillingNum();
+					int ElectronicBillingNum = 1;
+					if (s != null) {
+						ElectronicBillingNum = Integer.parseInt(s) + 1;
+					}
+					electronicBilling.setElectronicBillingNum("00" + ElectronicBillingNum + "");
+					electronicBilling.setBuildingId(bb.getBuildingId());
+
+					electronicBilling.setLastOverdue(lastOverdueCount);
+					electronicBilling.setCurrentOverdue(currentOverdueCount);
+					electronicBilling.setBillingSum(billingSumCount);
+					electronicBilling.setCurrentSum(currentSumCount);
+					electronicBilling.setLastSum(lastSumCount);
+					electronicBilling.setCollectSum(collectSumCount);
+					electronicBilling.setNoCollectSum(noCollectSumCount);
+					electronicBilling.setCurrentOweSum(currentOweSumCount);
+					electronicBilling.setLastOweSum(lastOweSumCount);
+					electronicBillingMapper.insertElectronicBilling(electronicBilling);
+				}
+				// 更改收费项目计费计费状态
+				ChargeItemBilling cb = new ChargeItemBilling();
+				cb.setChargeItemBillingId(cib.getChargeItemBillingId());
+				cb.setBillingType(0);
+				chargeItemBillingMapper.updateChargeItemBilling(cb);
+			}
+			// 更改项目计费计费状态
+			ProjectBilling pb = new ProjectBilling();
+			pb.setProjectBillingId(projectBillingId);
+			pb.setIsPosting("0");
+			projectBillingMapper.updateProjectBilling(pb);
+		}
+	}
+
+	@Override
+	public void AddBillForChargeItemBilling(String id) {
+		String ids[] = id.split("split");
+		List<BuildingBilling> buildingBilling = new ArrayList<BuildingBilling>();// 收费项目集合
+		List<Billing> billing = new ArrayList<Billing>();// 收费项目集合
+		String projectBillingId = "";
+		
+		// 根据id获取收费项目计费信息
+		for (String charItemBillingId : ids) {
+			ChargeItemBilling cib = chargeItemBillingMapper.getChargeItemBillingById(charItemBillingId);
+			if(projectBillingId.equals("")){
+				projectBillingId = cib.getProjectBillingId();
+			}
+			// 判断是否计费过
+			if (cib.getBillingType() == 0) {
+				continue;
+			}
+			buildingBilling = buildingBillingMapper
+					.listBuildingBillingByChargeItemBillingId(cib.getChargeItemBillingId());
+
+			// 根据建筑计费id获取计费信息
+			for (BuildingBilling bb : buildingBilling) {
+				// 判断是否计费过
+				if (bb.getBillingState() == 0) {
+					continue;
+				}
+				billing = billingMapper.listBillingByBuildingbillingId(bb.getBuildingBillingId());
+				String electronicBillingId = UUID.randomUUID().toString();// 生成电子账单id
+
+				// 定义电子账单的各项数据，方便累加
+				double lastOverdueCount = 0;// 上期滞纳金
+				double currentOverdueCount = 0;// 本期滞纳金
+				double billingSumCount = 0;// 总金额
+				double collectSumCount = 0;// 已交金额
+				double noCollectSumCount = 0;// 未交金额
+				double currentSumCount = 0;// 本期金额
+				double lastSumCount = 0;// 上期金额
+				double currentOweSumCount = 0;// 本期欠款金额
+				double lastOweSumCount = 0;// 上期欠款金额
+
+				// 根据计费信息生成应收款信息
+				for (Billing b : billing) {
+					// 判断是否计费过
+					if (b.getBillingState() == 0) {
+						continue;
+					}
+
+					Bill bill = new Bill();
+					bill.setBillId(UUID.randomUUID().toString());// 主键
+					bill.setBillDate(new Date());// 账单时间
+					bill.setBillState((byte) 0);
+					bill.setElectronicBillingId(electronicBillingId);// 电子账单id
+					bill.setBuildingBillingId(b.getBuildingBillingId());// 建筑收费信息Id
+					// 生成编号
+					String maxBillNum = billMapper.getMaxBillNum();
+					if (maxBillNum != null && !maxBillNum.equals("")) {
+						bill.setBillNum("00" + (Integer.parseInt(maxBillNum) + 1));
+					} else {
+						bill.setBillNum("001");
+					}
+					bill.setProjectId(b.getProjectId());// 项目id
+					bill.setProjectName(cib.getProjectName());// 项目名称
+					bill.setBuildingId(b.getBuildingId());// 建筑结构id
+					bill.setFullName(buildingStructureNewMapper.getFullNameById(b.getBuildingId()));// 房屋名称
+					bill.setChargeItemId(cib.getChargeItemId());// 收费项目id
+					bill.setChargeItemName(b.getChargeItemName());// 收费项目名称
+					bill.setCurrentSum(b.getCurrentSum());// 本期金额
+					bill.setCurrentOweSum(bill.getCurrentSum());// 本期欠款金额初始值为本期金额
+
+					// 根据收费项目id和建筑id和时间获取上期数据
+					Bill lastBill = billMapper.getLastBill(bill);
+					if (lastBill != null) {
+						bill.setLastSum(lastBill.getNoCollectSum());// 上期金额为上期数据的未收金额
+
+						bill.setLastOweSum(lastBill.getCurrentOweSum());// 上期欠款金额为上期数据的本期欠款金额
+
+						// 上期滞纳金为上个月的本期滞纳金+上个月的上期滞纳金
+						bill.setLastOverdue(lastBill.getCurrentOverdue() + lastBill.getLastOverdue());
+
+						// 本期滞纳金为本月根据（上期未收金额+本期滞纳金）*滞纳金系数得出
+						bill.setCurrentOverdue((lastBill.getNoCollectSum() + lastBill.getCurrentOverdue()) * 0.001);
+
+						bill.setCollectSum(0.0);// 实收金额
+
+						// 未收金额初始为上期未收加本期金额
+						bill.setNoCollectSum(lastBill.getNoCollectSum() + bill.getCurrentSum());
+
+					}
+					// 账单金额为本期金额加上期金额加本期滞纳金
+					bill.setBillingSum(bill.getCurrentSum() + bill.getLastSum() + bill.getCurrentOverdue());
+					billMapper.insertBill(bill);
+					// 累加各项金额
+					if (bill.getLastOverdue() != 0) {
+						lastOverdueCount += bill.getLastOverdue();
+					}
+					currentOverdueCount += bill.getCurrentOverdue();
+					billingSumCount += bill.getBillingSum();
+					collectSumCount += bill.getCollectSum();
+					noCollectSumCount += bill.getNoCollectSum();
+					currentSumCount += bill.getCurrentSum();
+					lastSumCount += bill.getLastSum();
+					currentOweSumCount += bill.getCurrentOweSum();
+					lastOweSumCount += bill.getLastOweSum();
+					
+					// 更改计费信息计费状态
+					Billing bi = new Billing();
+					bi.setBillingId(b.getBillingId());
+					bi.setBillingState(0);
+					bi.setBillId(bill.getBillId());
+					billingMapper.updateBilling(bi);
+				}
+				// 更改建筑计费计费状态
+				BuildingBilling bub = new BuildingBilling();
+				bub.setBuildingBillingId(bb.getBuildingBillingId());
+				bub.setBillingState(0);
+				buildingBillingMapper.updateBuildingBilling(bub);
+
+				ElectronicBilling electronicBilling = new ElectronicBilling();// 电子账单
+				electronicBilling.setElectronicBillingId(electronicBillingId);
+				electronicBilling.setBillDate(new Date());
+				// 添加编号
+				String s = electronicBillingMapper.getMaxElectronicBillingNum();
+				int ElectronicBillingNum = 1;
+				if (s != null) {
+					ElectronicBillingNum = Integer.parseInt(s) + 1;
+				}
+				electronicBilling.setElectronicBillingNum("00" + ElectronicBillingNum + "");
+				electronicBilling.setBuildingId(bb.getBuildingId());
+
+				electronicBilling.setLastOverdue(lastOverdueCount);
+				electronicBilling.setCurrentOverdue(currentOverdueCount);
+				electronicBilling.setBillingSum(billingSumCount);
+				electronicBilling.setCurrentSum(currentSumCount);
+				electronicBilling.setLastSum(lastSumCount);
+				electronicBilling.setCollectSum(collectSumCount);
+				electronicBilling.setNoCollectSum(noCollectSumCount);
+				electronicBilling.setCurrentOweSum(currentOweSumCount);
+				electronicBilling.setLastOweSum(lastOweSumCount);
+				electronicBillingMapper.insertElectronicBilling(electronicBilling);
+			}
+			// 更改收费项目计费计费状态
+			ChargeItemBilling cb = new ChargeItemBilling();
+			cb.setChargeItemBillingId(cib.getChargeItemBillingId());
+			cb.setBillingType(0);
+			chargeItemBillingMapper.updateChargeItemBilling(cb);
+		}
+		if(!projectBillingId.equals("")){
+			//当所有收费项目计费信息计费以后，它的上级的计费状态也更改
+			int i = chargeItemBillingMapper.getChargeItemBillingNoPostingbyProjectBillingId(projectBillingId).size();
+			if(i==0){
+				projectBillingMapper.updateProjectBillingByProjectBillingId(projectBillingId);
+			}
+		}
+	}
+
+	@Override
+	public void AddBillForBuildingBilling(String id) {
+		String ids[] = id.split("split");
+		List<Billing> billing = new ArrayList<Billing>();// 收费项目集合
+		String chargeItemBillingId = "";
+		
+		// 根据id获取建筑计费信息
+		for (String bid : ids) {
+			BuildingBilling bb = buildingBillingMapper.getBuildingBillingById(bid);
+			if(chargeItemBillingId.equals("")){
+				chargeItemBillingId = bb.getChargeItemBillingId();
+			}
+			// 判断是否计费过
+			if (bb.getBillingState() == 0) {
+				continue;
+			}
+			billing = billingMapper.listBillingByBuildingbillingId(bb.getBuildingBillingId());
+			String electronicBillingId = UUID.randomUUID().toString();// 生成电子账单id
+
+			// 定义电子账单的各项数据，方便累加
+			double lastOverdueCount = 0;// 上期滞纳金
+			double currentOverdueCount = 0;// 本期滞纳金
+			double billingSumCount = 0;// 总金额
+			double collectSumCount = 0;// 已交金额
+			double noCollectSumCount = 0;// 未交金额
+			double currentSumCount = 0;// 本期金额
+			double lastSumCount = 0;// 上期金额
+			double currentOweSumCount = 0;// 本期欠款金额
+			double lastOweSumCount = 0;// 上期欠款金额
+
+			// 根据计费信息生成应收款信息
+			for (Billing b : billing) {
+				// 判断是否计费过
+				if (b.getBillingState() == 0) {
+					continue;
+				}
+
+				Bill bill = new Bill();
+				bill.setBillId(UUID.randomUUID().toString());// 主键
+				bill.setBillDate(new Date());// 账单时间
+				bill.setBillState((byte) 0);
+				bill.setElectronicBillingId(electronicBillingId);// 电子账单id
+				bill.setBuildingBillingId(b.getBuildingBillingId());// 建筑收费信息Id
+				// 生成编号
+				String maxBillNum = billMapper.getMaxBillNum();
+				if (maxBillNum != null && !maxBillNum.equals("")) {
+					bill.setBillNum("00" + (Integer.parseInt(maxBillNum) + 1));
+				} else {
+					bill.setBillNum("001");
+				}
+				bill.setProjectId(b.getProjectId());// 项目id
+				bill.setProjectName(projectMapper.getProject(b.getProjectId()).getProjectName());// 项目名称
+				bill.setBuildingId(b.getBuildingId());// 建筑结构id
+				bill.setFullName(buildingStructureNewMapper.getFullNameById(b.getBuildingId()));// 房屋名称
+				bill.setChargeItemId(bb.getChargeItemId());// 收费项目id
+				bill.setChargeItemName(b.getChargeItemName());// 收费项目名称
+				bill.setCurrentSum(b.getCurrentSum());// 本期金额
+				bill.setCurrentOweSum(bill.getCurrentSum());// 本期欠款金额初始值为本期金额
+
+				// 根据收费项目id和建筑id和时间获取上期数据
+				Bill lastBill = billMapper.getLastBill(bill);
+				if (lastBill != null) {
+					bill.setLastSum(lastBill.getNoCollectSum());// 上期金额为上期数据的未收金额
+
+					bill.setLastOweSum(lastBill.getCurrentOweSum());// 上期欠款金额为上期数据的本期欠款金额
+
+					// 上期滞纳金为上个月的本期滞纳金+上个月的上期滞纳金
+					bill.setLastOverdue(lastBill.getCurrentOverdue() + lastBill.getLastOverdue());
+
+					// 本期滞纳金为本月根据（上期未收金额+本期滞纳金）*滞纳金系数得出
+					bill.setCurrentOverdue((lastBill.getNoCollectSum() + lastBill.getCurrentOverdue()) * 0.001);
+
+					bill.setCollectSum(0.0);// 实收金额
+
+					// 未收金额初始为上期未收加本期金额
+					bill.setNoCollectSum(lastBill.getNoCollectSum() + bill.getCurrentSum());
+
+				}
+				// 账单金额为本期金额加上期金额加本期滞纳金
+				bill.setBillingSum(bill.getCurrentSum() + bill.getLastSum() + bill.getCurrentOverdue());
+				billMapper.insertBill(bill);
+				// 累加各项金额
+				if (bill.getLastOverdue() != 0) {
+					lastOverdueCount += bill.getLastOverdue();
+				}
+				currentOverdueCount += bill.getCurrentOverdue();
+				billingSumCount += bill.getBillingSum();
+				collectSumCount += bill.getCollectSum();
+				noCollectSumCount += bill.getNoCollectSum();
+				currentSumCount += bill.getCurrentSum();
+				lastSumCount += bill.getLastSum();
+				currentOweSumCount += bill.getCurrentOweSum();
+				lastOweSumCount += bill.getLastOweSum();
+				
+				// 更改计费信息计费状态
+				Billing bi = new Billing();
+				bi.setBillingId(b.getBillingId());
+				bi.setBillingState(0);
+				bi.setBillId(bill.getBillId());
+				billingMapper.updateBilling(bi);
+			}
+			// 更改建筑计费计费状态
+			BuildingBilling bub = new BuildingBilling();
+			bub.setBuildingBillingId(bb.getBuildingBillingId());
+			bub.setBillingState(0);
+			buildingBillingMapper.updateBuildingBilling(bub);
+
+			ElectronicBilling electronicBilling = new ElectronicBilling();// 电子账单
+			electronicBilling.setElectronicBillingId(electronicBillingId);
+			electronicBilling.setBillDate(new Date());
+			// 添加编号
+			String s = electronicBillingMapper.getMaxElectronicBillingNum();
+			int ElectronicBillingNum = 1;
+			if (s != null) {
+				ElectronicBillingNum = Integer.parseInt(s) + 1;
+			}
+			electronicBilling.setElectronicBillingNum("00" + ElectronicBillingNum + "");
+			electronicBilling.setBuildingId(bb.getBuildingId());
+
+			electronicBilling.setLastOverdue(lastOverdueCount);
+			electronicBilling.setCurrentOverdue(currentOverdueCount);
+			electronicBilling.setBillingSum(billingSumCount);
+			electronicBilling.setCurrentSum(currentSumCount);
+			electronicBilling.setLastSum(lastSumCount);
+			electronicBilling.setCollectSum(collectSumCount);
+			electronicBilling.setNoCollectSum(noCollectSumCount);
+			electronicBilling.setCurrentOweSum(currentOweSumCount);
+			electronicBilling.setLastOweSum(lastOweSumCount);
+			electronicBillingMapper.insertElectronicBilling(electronicBilling);
+		}
+		if (!chargeItemBillingId.equals("")) {
+			if (buildingBillingMapper.listBuildingBillingNoPostingByChargeItemBillingId(chargeItemBillingId)
+					.size() == 0) {
+				chargeItemBillingMapper.updateChargeItemBillingById(chargeItemBillingId);
+				ChargeItemBilling cib = chargeItemBillingMapper.getChargeItemBillingById(chargeItemBillingId);
+				if (chargeItemBillingMapper.getChargeItemBillingNoPostingbyProjectBillingId(cib.getProjectBillingId())
+						.size() == 0) {
+					projectBillingMapper.updateProjectBillingByProjectBillingId(cib.getProjectBillingId());
+				}
+			}
+		}
+	}
+
+	@Override
+	public void updateBill(Bill bill) {
+		// TODO Auto-generated method stub
+		billMapper.updateBill(bill);
+	}
+
+}

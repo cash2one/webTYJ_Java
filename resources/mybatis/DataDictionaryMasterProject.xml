@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.flf.mapper.DataDictionaryMasterProjectMapper" >
+  <resultMap id="BaseResultMap" type="com.flf.entity.DataDictionaryMasterProject" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="master_id" property="masterId" jdbcType="VARCHAR" />
+    <result column="project_id" property="projectId" jdbcType="VARCHAR" />
+  </resultMap>
+  
+  <resultMap id="ResultMapWithProject" type="com.flf.entity.DataDictionaryMasterProject" extends="BaseResultMap">
+  	<result column="master_name" property="masterName" jdbcType="VARCHAR" />
+    <result column="status" property="status" jdbcType="VARCHAR" />
+    <result column="description" property="description" jdbcType="VARCHAR" />
+    <association property="project" column="project_id" javaType="Project" select="com.flf.mapper.ProjectMapper.getProject" />
+  	<association property="dataDictionaryMaster" javaType="DataDictionaryMaster" column="master_id" select="com.flf.mapper.DataDictionaryMasterMapper.selectByPrimaryKey" />
+  </resultMap>
+   
+  
+  <sql id="Base_Column_List" >
+    id, master_id, project_id
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from data_dictionary_master_project
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from data_dictionary_master_project
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.flf.entity.DataDictionaryMasterProject" >
+    insert into data_dictionary_master_project (id, master_id, project_id
+      )
+    values (#{id,jdbcType=VARCHAR}, #{masterId,jdbcType=VARCHAR}, #{projectId,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.flf.entity.DataDictionaryMasterProject" >
+    insert into data_dictionary_master_project
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="masterId != null" >
+        master_id,
+      </if>
+      <if test="projectId != null" >
+        project_id,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="masterId != null" >
+        #{masterId,jdbcType=VARCHAR},
+      </if>
+      <if test="projectId != null" >
+        #{projectId,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.flf.entity.DataDictionaryMasterProject" >
+    update data_dictionary_master_project
+    <set >
+      <if test="MasterId != null" >
+        master_id = #{masterId,jdbcType=VARCHAR},
+      </if>
+      <if test="projectId != null" >
+        project_id = #{projectId,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.flf.entity.DataDictionaryMasterProject" >
+    update data_dictionary_master_project
+    set master_id = #{masterId,jdbcType=VARCHAR},
+      project_id = #{projectId,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  
+  <!-- 根据数据字典从表id查询关联的项目 -->
+  <select id="getProjectByMaster" parameterType="com.flf.entity.DataDictionaryMasterProject" resultMap="ResultMapWithProject">
+  	select mproject.id,mproject.project_id,masters.* from data_dictionary_master_project mproject join data_dictionary_master masters on mproject.project_id = #{projectId,jdbcType=VARCHAR} and
+  	 mproject.master_id = masters.master_id  
+  	 <if test="masterName != null and masterName != ''"> and masters.master_name like CONCAT(CONCAT('%',#{masterName}),'%')</if>
+  	 <if test="description != null and description != ''"> and masters.description like CONCAT(CONCAT('%',#{description}),'%')</if>
+  </select>
+  
+  <!-- 根据数据字典从表id分页查询关联的项目 -->
+  <select id="listPageProjectByMaster" parameterType="com.flf.entity.DataDictionaryMasterProject" resultMap="ResultMapWithProject">
+  	select mproject.id,mproject.project_id,masters.* from data_dictionary_master_project mproject join data_dictionary_master masters on mproject.project_id = #{projectId,jdbcType=VARCHAR} and
+  	 mproject.master_id = masters.master_id  
+  	 <if test="masterName != null and masterName != ''"> and masters.master_name like CONCAT(CONCAT('%',#{masterName}),'%')</if>
+  	 <if test="description != null and description != ''"> and masters.description like CONCAT(CONCAT('%',#{description}),'%')</if>
+  </select>
+  
+  <select id="listCountByProjectId" parameterType="java.lang.String" resultMap="ResultMapWithProject">
+  	SELECT * FROM data_dictionary_master_project WHERE project_id = #{0}
+  </select>
+  <!-- 查询masterId是否等于默认 -->
+  <select id="getCountByMasterId" parameterType="java.lang.String" resultType="int">
+  	SELECT COUNT(ddmp.master_id) FROM data_dictionary_master_project ddmp JOIN t_project p ON p.state = '5' 
+  	WHERE p.project_id = ddmp.project_id AND ddmp.master_id = #{0}
+  </select>
+  <!-- 查询所有默认的masterId -->
+  <select id="listAllMasterId" resultMap="BaseResultMap">
+  	SELECT ddmp.* FROM data_dictionary_master_project ddmp JOIN t_project p ON p.state = '5' 
+  	WHERE p.project_id = ddmp.project_id
+  </select>
+  
+    <!-- 查询所有默认属性 -->
+    <select id="listAllMasterState" resultMap="ResultMapWithProject" parameterType="Map">
+    SELECT ddmp.master_id FROM data_dictionary_master_project ddmp 
+    LEFT JOIN t_project p ON p.state = '5' 
+    LEFT JOIN data_dictionary_master ddm ON 
+    <trim prefixOverrides="and">
+		<if test="masterName != null">
+    		ddm.master_name like CONCAT(CONCAT('%',#{masterName}),'%')
+		</if>
+		<if test="description != null">
+			and ddm.description like CONCAT(CONCAT('%',#{description}),'%')
+		</if>
+    </trim>
+    WHERE p.project_id = ddmp.project_id AND ddm.master_id = ddmp.master_id
+    </select>
+    
+   <!--  查询项目属性 zhuqi 2016.03.15 -->
+    <select id="listMasterByProjectId" resultMap="ResultMapWithProject" parameterType="HashMap">
+    SELECT ddmp.master_id FROM data_dictionary_master_project ddmp 
+	LEFT JOIN t_project p ON p.project_id = #{projectId}
+	RIGHT JOIN  data_dictionary_master ddm ON 
+	<trim prefixOverrides="and">
+		<if test="masterName != null">
+			ddm.master_name like CONCAT(CONCAT('%',#{masterName}),'%')
+		</if>
+		<if test="description != null">
+			and ddm.description like CONCAT(CONCAT('%',#{description}),'%')
+		</if> 
+	</trim>
+	WHERE p.project_id = ddmp.project_id AND ddmp.master_id = ddm.master_id
+    </select>
+  
+  
+</mapper>

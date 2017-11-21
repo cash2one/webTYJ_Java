@@ -1,0 +1,85 @@
+'use strict';
+define(['tyjApp',
+    'controllers/externalProfession/serviceRequestDatil/allWorkOrders',
+    'controllers/externalProfession/serviceRequestDatil/cleaning',
+    'controllers/externalProfession/serviceRequestDatil/maintain',
+    'controllers/externalProfession/serviceRequestDatil/park',
+    'controllers/externalProfession/serviceRequestDatil/security',
+    'controllers/externalProfession/serviceRequestDatil/complaint',
+    'controllers/externalProfession/serviceRequestDatil/visit',
+    'controllers/externalProfession/serviceRequestDatil/compensation',
+    'controllers/externalProfession/serviceRequestDatil/cleanQuery',
+    'controllers/externalProfession/serviceRequestDatil/addTask'
+],function(module){
+    module.controller("serviceRequestDatilCtrl",function($scope){
+        $scope.serviceRequestDatil={
+           /**用户信息**/
+            userList:[
+                {serviceRequestId:'201020201',project:'桃源居',unit:'3单元',
+                    description:'vip客户',userName:'周润发',area:'3区',
+                    floor:'5层',userId:'098',serviceType:'前台',building:'3',roomNumber:'502',
+                    address:'桃源居3区3栋502',telphone:'13456544323'
+                }
+            ],
+            /**标题**/
+            titleList:[
+                {title:'维修',title1:'清洁',title2:'园林',title3:'安保',title4:'投诉'}
+            ],
+            /**清洁信息**/
+            cleaningList:[
+                {taskOrder:'001',taskSource:'前台',taskState:'处理中',
+                    remindNumber:'5',project:'桃源居',area:'1区',building:'3',
+                    unit:'4单元',roomNumber:'502',requestType:'清洁',
+                    classification:'室内维修',Professional:'入室开荒',isVisit:'是',
+                    visitPhone:'13456544323',priority:'高 ',isPublicArea:'是',
+                    chargePersonNumber:'00001',chargePerson:'张晓丽',
+                    handleNumber:'000011',handlePerson:'李紫燕'
+                }
+            ],
+            /**维修信息**/
+            maintainList:[
+                {taskOrder:'001',taskSource:'前台',taskState:'处理中',
+                    remindNumber:'5',project:'桃源居',area:'1区',building:'3',
+                    unit:'4单元',roomNumber:'502',requestType:'维修',
+                    classification:'室内维修',Professional:'电缆',isVisit:'是',
+                    visitPhone:'13456544323',priority:'高 ',isPublicArea:'是',
+                    chargePersonNumber:'000013',chargePerson:'王凯',
+                    handleNumber:'000031',handlePerson:'张晓静'
+                }
+            ],
+            /**园林信息**/
+            parkList:[
+                {taskOrder:'001',taskSource:'前台',taskState:'处理中',
+                    remindNumber:'5',project:'桃源居',area:'1区',building:'3',
+                    unit:'4单元',roomNumber:'502',requestType:'园林',
+                    classification:'室内',Professional:'园艺',isVisit:'是',
+                    visitPhone:'13456544323',priority:'高 ',isPublicArea:'是',
+                    chargePersonNumber:'000041',chargePerson:'董晓提',
+                    handleNumber:'000015',handlePerson:'赵国强'
+                }
+            ],
+            /**安保信息**/
+            securityList:[
+                {taskOrder:'001',taskSource:'前台',taskState:'处理中',
+                    remindNumber:'5',project:'桃源居',area:'1区',building:'3',
+                    unit:'4单元',roomNumber:'502',requestType:'安保',
+                    classification:'室内维修',Professional:'入室开荒',isVisit:'是',
+                    visitPhone:'13456544323',priority:'高 ',isPublicArea:'是',
+                    chargePersonNumber:'00041',chargePerson:'张刚',
+                    handleNumber:'000015',handlePerson:'李小亮'
+                }
+            ],
+            /**投诉信息**/
+            complaintList:[
+                {taskOrder:'001',taskSource:'前台',taskState:'处理中',
+                    remindNumber:'5',project:'桃源居',area:'1区',building:'3',
+                    unit:'4单元',roomNumber:'502',requestType:'投诉',
+                    classification:'清洁',Professional:'',isVisit:'是',
+                    visitPhone:'13456544323',priority:'高 ',isPublicArea:'是',
+                    chargePersonNumber:'00221',chargePerson:'小东',
+                    handleNumber:'000331',handlePerson:'张小康'
+                }
+            ]
+        };
+    });
+});

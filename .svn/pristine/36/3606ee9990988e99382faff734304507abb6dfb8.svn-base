@@ -1,0 +1,86 @@
+<!--
+作者：陶勇超
+创建日期：2015/5/21
+名称：部门质检全部活动查看V3
+JS路径：  'controllers/externalProfession/departmentOfQualityInspectionAllActivities',
+-->
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>部门质检全部活动查看V3</title>
+</head>
+<body>
+<div class="complaint_user_list" style="margin: 10px 10px;">
+    <div  style="margin-top: 10px">
+    <div style="border: 1px solid ;width: 150px;height: 80px;margin: 15px 20px" >
+     <div style="margin-top: 25px;margin-left: 10px">
+         <span style="font-size: 30px;">全部活动</span>
+     </div>
+    </div>
+<div class="col-md-12">
+    <div class="row" style="margin-left: 160px;margin-top: -90px">
+        <div class="col-md-3">质检活动名称：清洁质检001</div>
+        <div class="col-md-3">质检活动级别：部门质检</div>
+        <div class="col-md-4">质检活动创建时间：2014-04-07</div>
+    </div>
+    <div class="row" style="margin-left: 160px;margin-top: -80px">
+        <div class="col-md-3">质检活动周期：月检</div>
+        <div class="col-md-3">质检活动标准：<a href="#">清洁质检标准表</a></div>
+        <div class="col-md-4">创建人：张三三</div>
+    </div>
+    <div class="row" style="margin-left: 160px;margin-top: -80px">
+        <div class="col-md-3">质检活动对象：园林部</div>
+        <div class="col-md-3">质检活动：4月8号</div>
+        <div class="col-md-4">描述：XXXXXXXXXXXXXXXXXXXXXXXXX</div>
+    </div>
+
+</div>
+    </div>
+</div>
+<div class="complaint_user_list" style="margin: 10px 10px;border: 1px solid;height: 600px">
+<div class="panel" style="margin-top: 10px;width: 300px;height: 150px;margin-left: 10px">
+
+    <div style="border: 1px solid; width: 80px;height: 80px;margin: 15px 20px">
+        <div style="margin-top: 25px;margin-left: 10px">
+            <span style="font-size: 30px;">活动</span>
+        </div>
+
+
+    </div>
+
+    <div  style="margin-left: 110px;margin-top: -90px">
+        <div >质检时间：2014-04-07</div>
+    </div>
+</div>
+    <div class="panel" style="margin-top: 10px;width: 300px;height: 150px; margin-top: -165px;margin-left: 320px">
+
+        <div style="border: 1px solid; width: 80px;height: 80px;margin: 15px 20px">
+            <div style="margin-top: 25px;margin-left: 10px">
+                <span style="font-size: 30px;">活动</span>
+            </div>
+
+
+        </div>
+
+        <div style="margin-left: 110px;margin-top: -90px">
+            <div >质检时间：2014-04-07</div>
+        </div>
+    </div>
+    <div class="panel" style="margin-top: 10px;width: 300px;height: 150px;margin-top: -165px;margin-left: 640px">
+
+        <div style="border: 1px solid; width: 80px;height: 80px;margin: 15px 20px">
+            <div style="margin-top: 25px;margin-left: 10px">
+                <span style="font-size: 30px;">活动</span>
+            </div>
+
+
+        </div>
+
+        <div  style="margin-left: 110px;margin-top: -90px">
+            <div >质检时间：2014-04-07</div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.flf.mapper.UrgeTaskRecordsMapper" >
+  <resultMap id="BaseResultMap" type="UrgeTaskRecords" >
+    <id column="record_id" property="recordId" jdbcType="VARCHAR" />
+    <result column="task_id" property="taskId" jdbcType="VARCHAR" />
+    <result column="operator_id" property="operatorId" jdbcType="VARCHAR" />
+    <result column="urge_time" property="urgeTime" jdbcType="TIMESTAMP" />
+    <result column="urge_remarks" property="urgeRemarks" jdbcType="VARCHAR" />
+  </resultMap>
+  
+  <resultMap type="UrgeTaskRecords" id="resultUrgeTaskRecordsMap" extends="BaseResultMap">
+  	<association property="staff" column="operator_id" javaType="Staff" select="com.flf.mapper.StaffMapper.selectByid"></association>
+  </resultMap>
+  
+  <select id="getUrgeTaskRecordsbyTaskId" parameterType="String" resultMap="resultUrgeTaskRecordsMap">
+  select * from ts_urge_task_records where task_id = #{0}
+  </select>
+  
+  <select id="getUrgeTaskRecordsCount" parameterType="String" resultMap="resultUrgeTaskRecordsMap">
+  select count(task_id) from ts_urge_task_records where task_id = #{0}
+  </select>
+  
+ <select id="getUrgeTaskRidicule" parameterType="String" resultMap="resultUrgeTaskRecordsMap">
+  select urge_ridicule from ts_urge_task_ridicule where urge_sum = #{0}
+  </select>
+  
+  <select id="listPageUrgeTaskRecordsRestful" parameterType="UrgeTaskRecords" resultMap="resultUrgeTaskRecordsMap">
+  select * from ts_urge_task_records where task_id=#{taskId,jdbcType=VARCHAR} order by urge_time desc
+  </select>
+  
+  <insert id="insertUrgeTaskRecords" parameterType="UrgeTaskRecords" >      
+    insert into ts_urge_task_records (record_id,task_id,operator_id,urge_time,urge_remarks)
+    values (UUID(), #{taskId,jdbcType=VARCHAR},#{operatorId,jdbcType=VARCHAR},#{urgeTime,jdbcType=TIMESTAMP},
+    #{urgeRemarks,jdbcType=VARCHAR})
+  </insert>
+</mapper>

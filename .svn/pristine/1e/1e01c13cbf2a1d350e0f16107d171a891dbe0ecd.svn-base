@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.flf.mapper.SubCompanyMapper">
+	<resultMap type="SubCompany" id="BaseResultMap">
+		<id column="subCompany_id" property="subCompanyId" jdbcType="VARCHAR"/>
+		<result column="subCompany_name" property="subCompanyName" jdbcType="VARCHAR"/>
+		<result column="company_id" property="companyId" jdbcType="VARCHAR"/>
+		<result column="create_person_id" property="createPersonId" jdbcType="VARCHAR"/>
+		<result column="create_time" property="createTime" jdbcType="TIMESTAMP"/>
+		<result column="modified_person_id" property="modifiedPersonId" jdbcType="VARCHAR"/>
+		<result column="modified_time" property="modifiedTime" jdbcType="TIMESTAMP"/>
+		
+		<result column="project_id" property="projectId" jdbcType="VARCHAR"/>
+		<result column="project_name" property="projectName" jdbcType="VARCHAR"/>
+	</resultMap>
+	
+	<!-- 根据id查询 -->
+	<select id="getSubCompanyById" parameterType="String" resultMap="BaseResultMap">
+		select a.SubCompany_id,a.subCompany_name,a.company_id,
+			a.create_person_id,a.create_time,a.modified_person_id,
+			a.modified_time
+		from tc_subcompany as a
+		where SubCompany_id = #{0}
+	</select>
+	<!-- 根据id查询 -->
+	<select id="getSubCompanyByCompanyId" parameterType="String" resultMap="BaseResultMap">
+		select a.subCompany_id,a.subCompany_name,a.company_id,
+			a.create_person_id,a.create_time,a.modified_person_id,
+			a.modified_time
+		from tc_subcompany as a
+		where company_id = #{companyId}
+	</select>
+	
+	<!-- 根据子公司名称查询 -->
+	<select id="getSubCompanyByName" parameterType="String" resultMap="BaseResultMap">
+		select a.SubCompany_id,a.subCompany_name,a.company_id,
+			a.create_person_id,a.create_time,a.modified_person_id,
+			a.modified_time
+		from tc_subcompany as a
+		where subCompany_name like CONCAT('%',CONCAT(#{0},'%'))
+	</select>
+	
+	<!-- 查询所有子公司信息	分页 
+	禅道BUG 161
+	修改人：陶勇超
+	2016年1月6日 10:35:52
+	 -->
+	<select id="listPageAllSubCompanys" resultMap="BaseResultMap" parameterType="SubCompany">
+		select a.SubCompany_id,a.subCompany_name,a.company_id,
+			a.create_person_id,a.create_time,a.modified_person_id,
+			a.modified_time
+		from tc_subcompany as a
+		where company_id=#{companyId}
+		<if test="subCompanyName != null and subCompanyName != ''">
+			and subCompany_name like CONCAT('%',CONCAT(#{subCompanyName,jdbcType=VARCHAR},'%'))
+		</if>
+		order by a.modified_time desc
+	</select>
+	
+	<!-- 添加 -->
+	<insert id="insertSubCompany" parameterType="SubCompany">
+		insert into tc_subcompany (SubCompany_id,subCompany_name,company_id,
+			create_person_id,create_time,modified_person_id,
+			modified_time
+		) values(#{subCompanyId,jdbcType=VARCHAR},#{subCompanyName,jdbcType=VARCHAR},#{companyId,jdbcType=VARCHAR},
+			#{createPersonId,jdbcType=VARCHAR},#{createTime,jdbcType=TIMESTAMP},#{modifiedPersonId,jdbcType=VARCHAR},
+			#{modifiedTime,jdbcType=TIMESTAMP}
+		) 
+	</insert>
+	
+	<!-- 删除 -->
+	<delete id="deleteSubCompany" parameterType="String">
+		delete from tc_subcompany
+		where SubCompany_id=#{0}
+	</delete>
+	
+	<!-- 修改 -->
+	<update id="updateSubCompany" parameterType="SubCompany">
+		update tc_subcompany
+		<set>
+			<if test="subCompanyName != null and subCompanyName != ''">
+				subCompany_name = #{subCompanyName,jdbcType=VARCHAR},
+			</if>
+			<if test="companyId !=null and companyId != ''">
+				company_id = #{companyId,jdbcType=VARCHAR},
+			</if>
+			<if test="createPersonId != null and createPersonId != ''">
+				create_person_id = #{createPersonId,jdbcType=VARCHAR},
+			</if>
+			<if test="createTime != null">
+				create_time = #{createTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="modifiedPersonId !=null and modifiedPersonId != ''">
+				modified_person_id = #{modifiedPersonId,jdbcType=VARCHAR},
+			</if>
+			<if test="modifiedTime != null">
+				modified_time = #{modifiedTime,jdbcType=TIMESTAMP}
+			</if>
+		</set>
+		where SubCompany_id = #{subCompanyId,jdbcType=VARCHAR}
+	</update>
+	
+	<!-- 查询所有的数据  -->
+<!-- 	<select id="getAllSubCompany" resultMap="BaseResultMap">
+	  	select tcs.subCompany_id,tcs.company_id,tcs.subCompany_name,tspr.project_id,tp.project_name
+	  	from tc_subcompany tcs ,t_project tp,tc_subCompany_project_relation tspr
+	  	where tp.project_id=tspr.project_id
+	  	and tcs.subCompany_id=tspr.subCompany_id
+	</select> -->
+	
+	<select id="getAllSubCompany" resultMap="BaseResultMap">
+	  	select tcs.subCompany_id,tcs.company_id,tcs.subCompany_name
+	  	from tc_subcompany tcs
+	</select>
+	
+	<!-- 根据id查询 相关的数据 -->
+	<select id="getAllSubCompanyData"  parameterType="String" resultMap="BaseResultMap">
+	  	select tcs.subCompany_id,tcs.subCompany_name,tp.project_name
+	  	from tc_subcompany tcs,tc_subCompany_project_relation tpr,t_project tp
+	  	where tcs.subCompany_id=tpr.subCompany_id and tp.project_id=tpr.project_id
+	</select>
+</mapper>

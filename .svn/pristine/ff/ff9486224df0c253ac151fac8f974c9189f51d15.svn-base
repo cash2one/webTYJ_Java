@@ -1,0 +1,198 @@
+<!--
+    作者:彭婷婷
+    页面名称:房型初始化---新增户型
+    js路径:js/controllers/internalProfession/initialization/houseAdd
+-->
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+<div class="order">
+    <div class="row">
+        <div style="width:97%; margin:0 auto; background:#f0f0f0; -moz-border-radius:7px; -webkit-border-radius:7px; border-radius:7px; border:1px solid #bbb; padding-bottom:15px; height:450px; ">
+            <div class="media-left">
+                <div style="width:300px ;height: auto;margin:20px 0px 10px 10px" >
+                    <img src="images/staffHome/u526.jpg" width="300px" height="350px">
+                </div>
+
+                <ul class="list-inline" style="text-align: center">
+                    <li>上传户型图</li>
+                    <li><button>上传</button></li>
+                </ul>
+            </div>
+            <div class="media-right">
+                <div style="width:720px ;height:auto;">
+                    <table style="text-align: center;margin:20px;width: 95%;height:50px ;">
+                        <tr>
+                            <td>所属项目:</td>
+                            <td>
+                                <select class="form-control">
+                                    <option>01</option>
+                                    <option>02</option>
+                                    <option>03</option>
+                                    <option>04</option>
+                                    <option>05</option>
+                                </select>
+                            </td>
+                            <td>房型编号：</td><td><input type="text"></td>
+                            <td>户型名称：</td><td><input type="text"></td>
+                        </tr>
+                    </table>
+                    <div class="media-left">
+                        <table class="table-bordered" style="text-align: center;margin:10px;width:450px;">
+                            <tr>
+                                <td>编号</td>
+                                <td>名称</td>
+                                <td>规格</td>
+                                <td>数量/面积</td>
+                            </tr>
+                            <tr>
+                                <td style="text-align: left">01</td>
+                                <td>卧室</td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td>0101</td>
+                                <td>地板</td>
+                                <td>20X50</td>
+                                <td>20㎡</td>
+                            </tr>
+                            <tr>
+                                <td style="text-align: center">0102</td>
+                                <td>屏蔽双绞线</td>
+                                <td>cat.6</td>
+                                <td>15米</td>
+                            </tr>
+                            <tr>
+                                <td>0103</td>
+                                <td>插座</td>
+                                <td>电话+网络</td>
+                                <td>1</td>
+                            </tr>
+                            <tr>
+                                <td style="text-align: right">010301</td>
+                                <td>双口面板</td>
+                                <td>8X8cm</td>
+                                <td>1</td>
+                            </tr>
+                            <tr>
+                                <td style="text-align: right">010302</td>
+                                <td>电话模块</td>
+                                <td></td>
+                                <td>1</td>
+                            </tr>
+                            <tr>
+                                <td style="text-align: right">010303</td>
+                                <td>网络模块</td>
+                                <td>cat.6</td>
+                                <td>1</td>
+                            </tr>
+                            <tr>
+                                <td style="text-align: left">02</td>
+                                <td>厨房</td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td>0201</td>
+                                <td>水龙头</td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td>0202</td>
+                                <td>橱柜</td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td>0203</td>
+                                <td>吊灯</td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                        </table>
+                    </div>
+                    <div class="media-right">
+                        <p style="text-align: center">专业资产属性维护</p>
+                        <table class="table-bordered" style="text-align: center;margin:10px;width: 200px">
+                            <tr>
+                                <td>资产名称</td>
+                                <td>地板</td>
+                            </tr>
+                            <tr>
+                                <td>资产编码</td>
+                                <td>009DB</td>
+                            </tr>
+                            <tr>
+                                <td>品牌</td>
+                                <td>
+                                    <select class="form-control">
+                                        <option></option>
+                                    </select>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>供应商</td>
+                                <td>
+                                    <select class="form-control">
+                                        <option></option>
+                                    </select>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>型号</td>
+                                <td>
+                                    <select class="form-control">
+                                        <option></option>
+                                    </select>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>规格</td>
+                                <td>
+                                    <select class="form-control">
+                                        <option></option>
+                                    </select>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>上级名称</td>
+                                <td>卧室</td>
+                            </tr>
+                            <tr>
+                                <td>上级编码</td>
+                                <td>01</td>
+                            </tr>
+                            <tr>
+                                <td>面积</td>
+                                <td>20平方米</td>
+                            </tr>
+                            <tr>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                        </table>
+                </div>
+            </div>
+        </div>
+            <div class="row">
+                    <button style="margin-left: 550px">保存</button>
+            </div>
+        <div class="clear"></div>
+    </div>
+</div>
+</div>
+</body>
+</html>

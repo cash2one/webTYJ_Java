@@ -1,0 +1,52 @@
+package com.flf.mapper;
+
+import com.flf.entity.ChargeItemBilling;
+
+import java.util.List;
+import java.util.Map;
+
+import org.apache.ibatis.annotations.Param;
+
+public interface ChargeItemBillingMapper {
+	/*查询所有的收费项目计费信息*/
+	List<ChargeItemBilling> listAllChargeItemBilling();
+	/*分页查询收费项目计费信息*/
+    List<ChargeItemBilling> listPageChargeItemBilling(ChargeItemBilling ChargeItemBilling);
+    /*根据id查询收费项目计费信息*/
+    ChargeItemBilling getChargeItemBillingById(String ChargeItemBillingId);
+    /*删除收费项目计费信息*/
+    int deleteChargeItemBilling(Map map);
+    /*新增收费项目计费信息*/
+    int insertChargeItemBilling(ChargeItemBilling ChargeItemBilling);
+    /*修改收费项目计费信息*/
+    int updateChargeItemBilling(ChargeItemBilling ChargeItemBilling);
+    
+    /*根据id修改收费项目计费信息的计费状态*/
+    int updateChargeItemBillingById(String chargeItemBillingId);
+    
+    /*根据项目id查询收费项目计费信息*/
+    List<ChargeItemBilling> getChargeItemBillingbyProjectId(String projectId);
+    
+    /*根据项目计费id查询收费项目计费信息*/
+    List<ChargeItemBilling> getChargeItemBillingbyProjectBillingId(String projectBillingId);
+
+    /*根据项目计费id查询没有计费过的收费项目计费信息*/
+    List<ChargeItemBilling> getChargeItemBillingNoPostingbyProjectBillingId(String projectBillingId);
+    
+    /*根据id查询收费项目计费信息*/
+    ChargeItemBilling getChargeItemBillingByKey(String projectBillingId);
+    
+    /*根据项目计费表id查询项目的一级收费项目详情*/
+    List<ChargeItemBilling> listPageChargeItemBillingListbyId(ChargeItemBilling chargeItemBilling);
+
+    /***根据id查询数据***/
+    ChargeItemBilling selectIds(ChargeItemBilling ChargeItemBilling);
+    
+    /**
+     * 根据项目计费ID重新计算项目计费金额
+     * @param String 项目计费ID
+     * */
+    double getProjectBillingNum(String projectBillingId);
+    //批量插入收费项目计费表
+	int insertList(List<ChargeItemBilling> chargeItemBillingListAll);
+}

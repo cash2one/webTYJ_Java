@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.flf.mapper.DepartmentOrdersMapper" >
+  <resultMap id="BaseResultMap" type="DepartmentOrders" >
+    <id column="order_id" property="orderId" jdbcType="VARCHAR" />
+    <result column="order_type" property="orderType" jdbcType="VARCHAR" />
+    <result column="order_state" property="orderState" jdbcType="TINYINT" />
+    <result column="task_id" property="tasksId" jdbcType="VARCHAR" />
+    <result column="service_request_id" property="serviceRequestId" jdbcType="VARCHAR" />
+    <result column="order_writer" property="orderWriter" jdbcType="VARCHAR" />
+    <result column="finish_time" property="finishTime" jdbcType="TIMESTAMP" />
+    <result column="remarks" property="remarks" jdbcType="VARCHAR" />
+    <result column="close_time" property="closeTime" jdbcType="TIMESTAMP" />
+    <result column="close_person_id" property="closePersonId" jdbcType="VARCHAR" />
+    <result column="close_remarks" property="closeRemarks" jdbcType="VARCHAR" />
+  </resultMap>
+  
+  <resultMap type="DepartmentOrders" id="resultDepartmentOrdersMap" extends="BaseResultMap">
+  	<collection property="departmentRecordsList" column="order_id" ofType="DepartmentRecords" select="com.flf.mapper.DepartmentRecordsMapper.getDepartmentRecordsbyOrderId"></collection>
+  	<collection property="annexs" column="order_id" ofType="Annex" select="com.flf.mapper.AnnexMapper.getAnnexbyRelationId"></collection>
+  </resultMap>
+  
+  <select id="getDepartmentOrdersbyId" parameterType="String" resultMap="resultDepartmentOrdersMap">
+  	select * from ts_department_orders where order_id=#{0}
+  </select>
+  
+  <select id="getDepartmentOrdersbyTaskId" parameterType="String" resultMap="resultDepartmentOrdersMap">
+  	select * from ts_department_orders where task_id = #{0}
+  </select>
+  
+  <insert id="insertDepartmentOrders" parameterType="DepartmentOrders" >      
+      insert into ts_department_orders (order_id,order_type,order_state,task_id,service_request_id,order_writer,finish_time,remarks,close_time,close_person_id,close_remarks)
+    values (UUID(), #{orderType,jdbcType=TINYINT}, #{orderState,jdbcType=TINYINT}, #{tasksId,jdbcType=VARCHAR},#{serviceRequestId,jdbcType=VARCHAR},
+    #{orderWriter,jdbcType=VARCHAR},#{finishTime,jdbcType=TIMESTAMP},#{remarks,jdbcType=VARCHAR},#{closeTime,jdbcType=TIMESTAMP},#{closePersonId,jdbcType=VARCHAR},#{closeRemarks,jdbcType=VARCHAR})
+  </insert>
+  
+  <insert id="insertDepartmentOrdersUUID" parameterType="DepartmentOrders" >      
+      insert into ts_department_orders (order_id,order_type,order_state,task_id,service_request_id,order_writer,finish_time,remarks,close_time,close_person_id,close_remarks)
+    values (#{orderId,jdbcType=VARCHAR}, #{orderType,jdbcType=TINYINT}, #{orderState,jdbcType=TINYINT}, #{tasksId,jdbcType=VARCHAR},#{serviceRequestId,jdbcType=VARCHAR},
+    #{orderWriter,jdbcType=VARCHAR},#{finishTime,jdbcType=TIMESTAMP},#{remarks,jdbcType=VARCHAR},#{closeTime,jdbcType=TIMESTAMP},#{closePersonId,jdbcType=VARCHAR},#{closeRemarks,jdbcType=VARCHAR})
+  </insert>
+  
+  <update id="updateDepartmentOrders" parameterType="DepartmentOrders">
+  	update ts_department_orders 
+  	set order_type = #{orderType,jdbcType=TINYINT},
+  	order_state = #{orderState,jdbcType=TINYINT},
+  	task_id = #{tasksId,jdbcType=VARCHAR},
+  	service_request_id = #{serviceRequestId,jdbcType=VARCHAR},
+  	order_writer = #{orderWriter,jdbcType=VARCHAR},
+  	finish_time = #{finishTime,jdbcType=TIMESTAMP},
+  	remarks = #{remarks,jdbcType=VARCHAR},
+  	close_time = #{closeTime,jdbcType=TIMESTAMP},
+  	close_person_id = #{closePersonId,jdbcType=VARCHAR},
+  	close_remarks = #{closeRemarks,jdbcType=VARCHAR}
+  	where order_id = #{orderId,jdbcType=VARCHAR}
+  </update>
+</mapper>

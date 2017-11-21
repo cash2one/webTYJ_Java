@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.flf.mapper.CompensateMethodsMapper" >
+  <resultMap id="BaseResultMap" type="CompensateMethods" >
+    <id column="compensate_method_id" property="compensateMethodId" jdbcType="VARCHAR" />
+    <result column="task_id" property="taskId" jdbcType="VARCHAR" />
+    <result column="order_id" property="orderId" jdbcType="VARCHAR" />
+    <result column="customer_id" property="customerId" jdbcType="VARCHAR" />
+    <result column="compensate_sum" property="compensateSum" jdbcType="DOUBLE" />
+    <result column="compensate_means" property="compensateMeans" jdbcType="TINYINT" />
+    <result column="compensate_cycle" property="compensateCycle" jdbcType="VARCHAR" />
+    <result column="compensate_start_time" property="compensateStartTime" jdbcType="TIMESTAMP" />
+    <result column="compensate_end_time" property="compensateEndTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  
+ <delete id="deleteCompensateMethods" parameterType="String">
+  delete from ts_compensate_methods where compensate_method_id=#{0}
+  </delete>
+  
+  <select id="listPageCompensateMethods" parameterType="CompensateMethods" resultMap="BaseResultMap">
+  select * from ts_compensate_methods 
+  </select>
+  
+  <select id="listAllCompensateMethods"  resultMap="BaseResultMap" >
+  select * from ts_compensate_methods 
+  </select>
+  
+  <select id="getCompensateMethodsbyId" parameterType="String" resultMap="BaseResultMap">
+  select * from ts_compensate_methods where compensate_method_id=#{0}
+  </select>
+  
+  <select id="getCompensateMethodsbyOrderId" parameterType="String" resultMap="BaseResultMap">
+  select * from ts_compensate_methods where order_id=#{0}
+  </select>
+  
+  <insert id="insertCompensateMethods" parameterType="CompensateMethods" >
+  insert into ts_compensate_methods (
+  compensate_method_id ,task_id,order_id,
+  customer_id,compensate_sum,compensate_means,
+  compensate_cycle,compensate_start_time,compensate_end_time)      
+  values (
+  UUID(), #{taskId,jdbcType=VARCHAR}, #{orderId,jdbcType=VARCHAR}, 
+  #{customerId,jdbcType=VARCHAR}, #{compensateSum,jdbcType=DOUBLE}, #{compensateMeans,jdbcType=TINYINT}, 
+  #{compensateCycle,jdbcType=VARCHAR}, #{compensateStartTime,jdbcType=TIMESTAMP}, #{compensateEndTime,jdbcType=TIMESTAMP}
+  )
+  </insert>
+ 
+  <update id="updateCompensateMethods" parameterType="CompensateMethods" >
+    update ts_compensate_methods
+    set task_id = #{taskId,jdbcType=VARCHAR},
+      order_id = #{orderId,jdbcType=VARCHAR},
+      customer_id = #{customerId,jdbcType=VARCHAR},
+      compensate_sum = #{compensateSum,jdbcType=DOUBLE},
+      compensate_means = #{compensateMeans,jdbcType=TINYINT},
+      compensate_cycle = #{compensateCycle,jdbcType=VARCHAR},
+      compensate_start_time = #{compensateStartTime,jdbcType=TIMESTAMP},
+      compensate_end_time = #{compensateEndTime,jdbcType=TIMESTAMP}
+    where compensate_method_id = #{compensateMethodId,jdbcType=VARCHAR}
+  </update>
+</mapper>

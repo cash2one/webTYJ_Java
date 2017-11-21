@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.flf.mapper.LogMapper" >
+  <resultMap id="BaseResultMap" type="Log" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="relevance_id" property="relevanceId" jdbcType="VARCHAR" />
+    <result column="thing" property="thing" jdbcType="VARCHAR" />
+    <result column="service" property="service" jdbcType="VARCHAR" />
+    <result column="staff" property="staff" jdbcType="VARCHAR" />
+    <result column="site" property="site" jdbcType="VARCHAR" />
+    <result column="operation" property="operation" jdbcType="VARCHAR" />
+    <result column="time" property="time" jdbcType="TIMESTAMP" />
+    <result column="table" property="table" jdbcType="VARCHAR" />
+    <result column="log_type_id" property="logTypeId" jdbcType="VARCHAR" />
+  </resultMap>
+  
+  <insert id="insertLog" parameterType="Log" >
+    insert into t_log (id, relevance_id, `thing`, 
+      `service`, `staff`, `site`, 
+      `operation`, `time`, `table`,log_type_id
+      )
+    values (UUID(), #{relevanceId,jdbcType=VARCHAR}, #{thing,jdbcType=VARCHAR}, 
+      #{service,jdbcType=VARCHAR}, #{staff,jdbcType=VARCHAR}, #{site,jdbcType=VARCHAR},    
+      #{operation,jdbcType=VARCHAR},#{time,jdbcType=DATE}, #{table,jdbcType=VARCHAR},#{logTypeId,jdbcType=VARCHAR}
+      )
+  </insert>
+  
+<!--   多条件查询日志表信息 -->
+  <select id="listPageLog" parameterType="SearchLog" resultMap="BaseResultMap">
+      select l.* from t_log l 
+      inner join t_log_type t on l.log_type_id=t.log_type_id
+      where 1=1 
+      <if test="logTypeName != null">
+         and log_type_name = #{logTypeName}
+      </if>
+      <if test="time != null">
+          and `time` = #{time}
+      </if>
+  </select>
+  
+  <!--   多条件查询水表日志表信息 -->
+   <select id="listPageWaterLog" parameterType="SearchLog" resultMap="BaseResultMap">
+      select l.* ,t.log_type_name from t_log l 
+      inner join t_log_type t on l.log_type_id=t.log_type_id
+      where t.log_type_name="水表抄表" and l.log_type_id=t.log_type_id
+      <if test="time != null">
+          and time = #{time}
+      </if>
+       <if test="thing != null and thing !=''">
+          and thing like CONCAT('%',#{thing,jdbcType=VARCHAR},'%')
+      </if>
+      order by time desc
+  </select>
+  
+<!--   多条件查询电表日志表信息 -->
+  <select id="listPageElectricityLog" parameterType="SearchLog" resultMap="BaseResultMap">
+      select l.* ,t.log_type_name from t_log l 
+      inner join t_log_type t on l.log_type_id=t.log_type_id
+      where t.log_type_name="电表抄表" and l.log_type_id=t.log_type_id
+      <if test="time != null">
+          and time = #{time}
+      </if>
+       <if test="thing != null and thing !=''">
+          and thing like CONCAT('%',#{thing,jdbcType=VARCHAR},'%')
+      </if>
+      order by time desc
+  </select>
+</mapper>

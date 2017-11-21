@@ -1,0 +1,732 @@
+package com.flf.quartz;
+
+import java.math.BigDecimal;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.List;
+import java.util.Locale;
+import java.util.UUID;
+
+import org.apache.commons.lang.StringUtils;
+import org.quartz.JobExecutionContext;
+import org.quartz.JobExecutionException;
+import org.quartz.SchedulerException;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.quartz.QuartzJobBean;
+import com.flf.entity.Bill;
+import com.flf.entity.BillingRecord;
+import com.flf.entity.ChargeItemNew;
+import com.flf.entity.DataDictionarySlave;
+import com.flf.mapper.BillMapper;
+import com.flf.mapper.BillingRecordMapper;
+import com.flf.mapper.DataDictionarySlaveMapper;
+import com.flf.service.BillService;
+
+public class MyJob extends QuartzJobBean{
+	
+	SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+	@Autowired
+	private BillMapper billMapper;//账单表
+	@Autowired
+	private DataDictionarySlaveMapper dataDictionarySlaveMapper;//字典从表
+	@Autowired
+	private BillService billService;
+	@Autowired
+	private BillingRecordMapper billingRecordMapper;//计费记录id
+	
+	@Override
+	protected void executeInternal(JobExecutionContext arg0) throws JobExecutionException {
+		// TODO Auto-generated method stub
+		
+	}
+	
+	public void quartMethod() {
+		// 打印当前时间
+		String time = new SimpleDateFormat("MMM d，yyyy KK:mm:ss a", Locale.ENGLISH).format(System.currentTimeMillis());
+		System.out.println("time:" + time);
+	}
+
+	// 自动计费
+	/*public void charging() throws Exception {
+		int billingNum = 0;
+		int buildingBillingNum = 0;
+		int chargeItemBillingNum = 0;
+		int projectBillingListAllNum = 0;
+		int billNum = 0;
+		int electronicBillingNum = 0;
+
+		// 公式计算工具类对象
+		CalculatorUtils cu = new CalculatorUtils();
+		// 最终要插入到数据库的计费信息
+		List<Billing> billingListAll = new ArrayList<Billing>();
+		// 最终要插入到数据库的应收款信息
+		List<Bill> billListAll = new ArrayList<Bill>();
+		// 最终要插入到数据库的建筑收费项目计费信息
+		List<BuildingBilling> buildingBillingListAll = new ArrayList<BuildingBilling>();
+		// 最终要插入到数据库的收费项目计费信息
+		List<ChargeItemBilling> chargeItemBillingListAll = new ArrayList<ChargeItemBilling>();
+		// 最终要插入到数据库的项目计费信息
+		List<ProjectBilling> projectBillingListAll = new ArrayList<ProjectBilling>();
+		// 最终要插入到数据库的电子账单信息
+		List<ElectronicBilling> electronicBillingListAll = new ArrayList<ElectronicBilling>();
+		// 根据建筑ID统计电子账单信息
+		Map<String, List<Bill>> mapForElectronicMap = new HashMap<String, List<Bill>>();
+
+		// 获取所有开启了收费的项目
+		List<Project> projectList = projectMapper.listPageProjectByIsUseSystem();
+		if (projectList != null && projectList.size() > 0) {
+			for (Project project : projectList) {
+				String projectId = project.getProjectId();
+				List<DataDictionarySlave> dictionaryList = dataDictionarySlaveMapper.getDropboxList("conditionusetype",
+						projectId);
+				// 根据建筑结构ID和父级收费项目统计建筑收费项目信息，其中key是由建筑结构ID和父级收费项目ID组成
+				Map<String, List<Billing>> mapForBuildingBillingMap = new HashMap<String, List<Billing>>();
+				// 根据父级收费项目ID收费项目计费信息
+				Map<String, List<BuildingBilling>> mapForChargeItemBillingMap = new HashMap<String, List<BuildingBilling>>();
+				// 用于存放某个项目下的所有收费项目计费信息，只需要List存放，因为map中的key就是项目ID
+				List<ChargeItemBilling> listForProjectBilling = new ArrayList<ChargeItemBilling>();
+
+				// 获取项目的方案列表
+				List<Scheme> schemeList = schemeMapper.getSchemeByProjectId(project.getProjectId());
+				if (schemeList != null && schemeList.size() > 0) {
+					for (Scheme scheme : schemeList) {
+						// 判断需要计费的方案方案的生效时间和失效时间
+						Date schemeStartDate = scheme.getStartDate();
+						Date schemeEndDate = scheme.getEndDate();
+
+						// 获取上个月的最后一天
+						Calendar calendar = Calendar.getInstance();
+						int month = calendar.get(Calendar.MONTH);
+						calendar.set(Calendar.MONTH, month - 1);
+						calendar.set(Calendar.DAY_OF_MONTH, calendar.getActualMaximum(Calendar.DAY_OF_MONTH));
+						// 获取上个月的第一天
+						Calendar calendarOther = Calendar.getInstance();
+						int monthOther = calendarOther.get(Calendar.MONTH);
+						calendarOther.set(Calendar.MONTH, monthOther - 1);
+						calendarOther.set(Calendar.DAY_OF_MONTH, calendarOther.getActualMinimum(Calendar.DAY_OF_MONTH));
+						*//**
+						 * 1、上个月的最后一天大于方案的生效时间 2、上个月的最后一天小于方案的失效时间
+						 * 或者上个月的最后一天大于方案的失效时间但是属于同一个年月份
+						 *//*
+						boolean startBoolean = schemeStartDate.getTime() < calendar.getTime().getTime();
+						boolean endBoolean = calendar.getTime().getTime() < schemeEndDate.getTime();
+						boolean endBooleanSpecial = calendar.getTime().getTime() > schemeEndDate.getTime();
+						// 用于年月对比
+						Calendar calendarForCompare = Calendar.getInstance();
+						calendarForCompare.setTime(schemeEndDate);
+						boolean endForYearAndMonth = calendar.get(Calendar.YEAR) == calendarForCompare
+								.get(Calendar.YEAR)
+								&& calendar.get(Calendar.MONTH) == calendarForCompare.get(Calendar.MONTH);
+						if (startBoolean && (endBoolean || (endBooleanSpecial && endForYearAndMonth))) {
+							// 获取方案下的常量列表，匹配公式信息，查找是水费、电费、物业费、车位费等
+							List<Constant> constantList = constantMapper.listConstantBySchemeId(scheme.getSchemeId());
+							// 获取方案收费项目关系列表
+							List<SchemeRelation> schemeRelationList = schemeRelationMapper
+									.getSchemeRelationBySchemeId(scheme.getSchemeId());
+							if (schemeRelationList != null && schemeRelationList.size() > 0) {
+								for (SchemeRelation schemeRelation : schemeRelationList) {
+									String cinId = schemeRelation.getChargeItemId();
+									if (StringUtils.isNotEmpty(cinId)) {
+										// 获取该收费项目下的收费项目详情列表
+										List<ChargeItemNew> cinList = chargeItemNewMapper.getChargeItemNewByIds(cinId);
+										if (cinList != null && cinList.size() > 0) {
+											// 遍历收费项目列表
+											for (ChargeItemNew chargeItemNew : cinList) {
+												// 根据收费子项目获取收费项目公式和建筑的关联信息
+												List<SchemeDatails> sdList = schemeDatailsMapper
+														.getSchemeDatailsByChargeItemId(chargeItemNew.getCiId());
+
+												// 获取建筑Id,用于查询对应建筑是否有历史计费记录
+												String buildingStructureId = null;
+
+												// 遍历方案公式项目收费关系列表，查找符合条件的信息，生成对应的建筑收费项目计费信息
+												for (SchemeDatails schemeDatails : sdList) {
+													*//**
+													 * 此处需要获取该建筑的水电抄表信息，
+													 * 在获取水电抄表信息之前要确定该收费项目时哪种收费类型
+													 * 是水费还是电费
+													 *//*
+													// 保存计费类型
+													String chargeType = "";
+													// 遍历收费项目公式列表，获取该收费项目下的所有公式，选择符合要求的条件，找到对应公式用来计算
+													String formulaId = schemeDatails.getFormulaId();
+													// 获取公式信息，用于判断条件类型
+													Formula formula = formulaMapper.getFormulaById(formulaId);
+													String formulaExspression = formula.getFormulaExpression();
+													if (StringUtils.isNotEmpty(formulaExspression)) {
+														for (Constant constant : constantList) {
+															if (formulaExspression
+																	.indexOf(constant.getConstantName()) > -1) {
+																chargeType = constant.getCommonValue();
+																break;
+															}
+														}
+													}
+													List<Condition> conditionList = conditionMapper
+															.getConditionByFormulaId(formulaId);
+													byte conditionUseType = formula.getConditionUseType();// 全部1
+																											// 任何2
+
+													Map<String, Object> map = cerateBill(chargeType, conditionUseType,
+															calendarForCompare, buildingStructureId, conditionList,
+															constantList, dictionaryList, formulaExspression, cu,
+															calendarOther, endBoolean, endBooleanSpecial,
+															endForYearAndMonth, schemeStartDate, schemeEndDate,
+															chargeItemNew, schemeDatails, project);
+													// 建筑结构收费项目计费ID还未生成,此时拼接key,组成为建筑结构ID和父级收费项目ID
+													if (map.get("billing") != null) {
+														String bbKey = buildingStructureId + "|"
+																+ chargeItemNew.getCiId();
+														List<Billing> billingListNew = new ArrayList<Billing>();
+														if (mapForBuildingBillingMap.containsKey(bbKey)) {
+															billingListNew = mapForBuildingBillingMap.get(bbKey);
+														}
+														billingListNew.add((Billing) map.get("billing"));
+														mapForBuildingBillingMap.put(bbKey, billingListNew);
+													}
+													if (map.get("bill") != null) {
+														// 判断map中是否有对应建筑ID的主键
+														List<Bill> billNewList = new ArrayList<Bill>();
+														if (mapForElectronicMap.containsKey(buildingStructureId)) {
+															billNewList = mapForElectronicMap.get(buildingStructureId);
+														}
+														billNewList.add((Bill) map.get("bill"));
+														mapForElectronicMap.put(buildingStructureId, billNewList);
+													}
+												}
+											}
+										}
+									}
+								}
+							}
+						}
+					}
+				}
+				// 循环mapForBuildingBillingMap用来生成建筑收费项目计费信息
+				if (mapForBuildingBillingMap.keySet().size() > 0) {
+					for (String bbMapKey : mapForBuildingBillingMap.keySet()) {
+						List<Billing> list = mapForBuildingBillingMap.get(bbMapKey);
+						if (list != null && list.size() > 0) {
+							BuildingBilling bb = new BuildingBilling();
+							String bbNewId = UUID.randomUUID().toString();
+							Date bbStartDate = list.get(0).getBillingStartTime();
+							Date bbEndDate = list.get(0).getBillingEndTime();
+							int bbState = list.get(0).getBillingState();
+							String ciId = bbMapKey.split("|")[1];
+							String buildingStructureId = bbMapKey.split("|")[0];
+							double currentBBMoney = 0d;
+							double lastBBMoney = 0d;
+							double currentSumMoney = 0d;
+							for (Billing billing : list) {
+								billing.setBuildingBillingId(bbNewId);
+								billingListAll.add(billing);
+								currentBBMoney += billing.getCurrentSum();
+								lastBBMoney += billing.getLastSum();
+								currentSumMoney += billing.getBillingBalance();
+							}
+							bb.setBillingBalance(currentSumMoney);
+							bb.setBillingEndTime(bbEndDate);
+							bb.setBillingStartTime(bbStartDate);
+							bb.setBillingState(bbState);
+							bb.setBuildingBillingId(bbNewId);
+							bb.setBuildingId(buildingStructureId);
+							bb.setChargeItemId(ciId);
+							ChargeItemNew cin = chargeItemNewMapper.getChargeItemNewById(ciId);
+							bb.setChargeItemName(cin.getCiName());
+							bb.setCurrentSum(currentBBMoney);
+							bb.setLastSum(lastBBMoney);
+							// 此处未保存项目计费Id
+							// 判断在map中是否存在父级收费项目Id
+							List<BuildingBilling> chargeItemBillingNewList = new ArrayList<BuildingBilling>();
+							if (mapForChargeItemBillingMap.containsKey(ciId)) {
+								chargeItemBillingNewList = mapForChargeItemBillingMap.get(ciId);
+							}
+							chargeItemBillingNewList.add(bb);
+							mapForChargeItemBillingMap.put(ciId, chargeItemBillingNewList);
+						}
+					}
+				}
+
+				// 循环mapForChargeItemBillingMap计算根据父级收费项目统计收费项目计费信息
+				if (mapForChargeItemBillingMap.keySet().size() > 0) {
+					for (String cibMapKey : mapForChargeItemBillingMap.keySet()) {
+						List<BuildingBilling> list = mapForChargeItemBillingMap.get(cibMapKey);
+						if (list != null && list.size() > 0) {
+							ChargeItemBilling cib = new ChargeItemBilling();
+							String cibId = UUID.randomUUID().toString();
+							double currentMoney = 0d;// 本期金额
+							double preMoney = 0d;// 上期金额
+							double sumMoney = 0d;// 总金额
+							Date bbStartDate = list.get(0).getBillingStartTime();
+							Date bbEndDate = list.get(0).getBillingEndTime();
+							int bbState = list.get(0).getBillingState();
+							for (BuildingBilling buildingBilling : list) {
+								buildingBilling.setChargeItemBillingId(cibId);
+								buildingBillingListAll.add(buildingBilling);
+								currentMoney += buildingBilling.getCurrentSum();
+								preMoney += buildingBilling.getLastSum();
+								sumMoney += buildingBilling.getBillingBalance();
+							}
+							// 填充收费计费项目实体信息
+							ChargeItemNew cin = chargeItemNewMapper.getChargeItemNewById(cibMapKey);
+							cib.setBillingEndTime(bbEndDate);
+							cib.setBillingStartTime(bbStartDate);
+							cib.setBillingType(bbState);
+							cib.setChargeItemBillingId(cibId);
+							cib.setChargeItemId(cibMapKey);
+							cib.setChargeItemName(cin.getCiName());
+							cib.setCurrentSum(currentMoney);
+							cib.setLastSum(preMoney);
+							cib.setProjectId(project.getProjectId());
+							cib.setProjectName(project.getProjectName());
+							cib.setSum(sumMoney);
+
+							listForProjectBilling.add(cib);// 用于统计
+							chargeItemBillingListAll.add(cib);// 用于数据库插入操作
+						}
+					}
+				}
+
+				if (listForProjectBilling.size() > 0) {
+					ProjectBilling pbNew = new ProjectBilling();
+					String pbNewId = UUID.randomUUID().toString();
+					double preExpireMoney = 0d;// 上期金额
+					double thisExpireMoney = 0d;// 本期金额
+					double sumMoney = 0d;// 总金额
+					Date startDate = listForProjectBilling.get(0).getBillingStartTime();
+					Date endDate = listForProjectBilling.get(0).getBillingEndTime();
+					for (ChargeItemBilling cib : listForProjectBilling) {
+						cib.setProjectBillingId(pbNewId);
+						preExpireMoney += cib.getLastSum();
+						thisExpireMoney += cib.getCurrentSum();
+						sumMoney += cib.getSum();
+					}
+					pbNew.setBillingEndTime(endDate);
+					pbNew.setBillingStartTime(startDate);
+					pbNew.setCurrentSum(thisExpireMoney);
+					pbNew.setLastSum(preExpireMoney);
+					pbNew.setSum(sumMoney);
+					pbNew.setProjectBillingId(pbNewId);
+					pbNew.setProjectId(projectId);
+					pbNew.setIsPosting("2");
+					int year = startDate.getYear();
+					int month = startDate.getMonth() == 0 ? 1 : startDate.getMonth() + 1;
+					pbNew.setMonth(year + "-" + (month > 9 ? month + "" : "0" + month));
+					projectBillingListAll.add(pbNew);
+				}
+			}
+		}
+		if (mapForElectronicMap.keySet().size() > 0) {
+			for (String electronicMapKey : mapForElectronicMap.keySet()) {
+				String bulidingStructureId = electronicMapKey;
+				BuildingStructureNew bsn = buildingStructureNewMapper.getBuildingStructureNewbyId(bulidingStructureId);
+				List<Bill> list = mapForElectronicMap.get(electronicMapKey);
+				if (list != null && list.size() > 0) {
+					ElectronicBilling eb = new ElectronicBilling();
+					String ebId = UUID.randomUUID().toString();
+					double overdue = 0d;// 滯納金
+					double billingSum = 0d;// 总金额
+					double collectSum = 0d;// 已交金额
+					double noCollectSum = 0d;// 未交金额
+					double currentSum = 0d;// 本期金额
+					double lastSum = 0d;// 上期金额
+					double currentOweSum = 0d;// 本期欠款金额
+					double lastOweSum = 0d;// 上期欠款金额
+					for (Bill bill : list) {
+						bill.setElectronicBillingId(ebId);
+						billListAll.add(bill);
+						overdue += bill.getOverdue();
+						billingSum += bill.getBillingSum();
+						collectSum += bill.getCollectSum();
+						noCollectSum += bill.getNoCollectSum();
+						currentSum += bill.getCurrentSum();
+						lastSum += bill.getLastSum();
+						currentOweSum += bill.getCurrentOweSum();
+						lastOweSum += bill.getLastOweSum();
+					}
+					eb.setBillDate(new Date());
+					eb.setBillingSum(billingSum);
+					eb.setBuildingId(bulidingStructureId);
+					eb.setCollectSum(collectSum);
+					eb.setCurrentOweSum(currentOweSum);
+					eb.setCurrentSum(currentSum);
+					eb.setElectronicBillingId(ebId);
+					eb.setElectronicBillingNum(sdf.format(new Date()));
+					eb.setFullName(bsn.getFullName());
+					eb.setLastOweSum(lastOweSum);
+					eb.setLastSum(lastSum);
+					eb.setNoCollectSum(noCollectSum);
+					eb.setOverdue(overdue);
+					electronicBillingListAll.add(eb);
+				}
+			}
+		}
+
+		// 开始执行数据库插入操作
+
+		// 插入计费表
+		if (billingListAll.size() > 0) {
+			billingNum = billingMapper.insertList(billingListAll);
+		}
+		// 插入建筑收费项目计费表
+		if (buildingBillingListAll.size() > 0) {
+			buildingBillingNum = buildingBillingMapper.insertList(buildingBillingListAll);
+		}
+		// 插入收费项目计费表
+		if (chargeItemBillingListAll.size() > 0) {
+			chargeItemBillingNum = chargeItemBillingMapper.insertList(chargeItemBillingListAll);
+		}
+		// 插入项目计费表
+		if (projectBillingListAll.size() > 0) {
+			projectBillingListAllNum = projectBillingMapper.insertList(projectBillingListAll);
+		}
+		// 插入应收款表
+		if (billListAll.size() > 0) {
+			billNum = billMapper.insertList(billListAll);
+		}
+		// 插入电子账单表
+		if (electronicBillingListAll.size() > 0) {
+			electronicBillingNum = electronicBillingMapper.insertList(electronicBillingListAll);
+		}
+		System.out.println("导入计费表记录" + billingNum + "条\n" + "导入建筑收费项目计费表记录" + buildingBillingNum + "条\n" + "导入收费项目计费表记录"
+				+ chargeItemBillingNum + "条\n" + "导入项目计费表记录" + projectBillingListAllNum + "条\n" + "导入应收款表记录" + billNum
+				+ "条\n" + "导入电子账单表记录" + electronicBillingNum + "条");
+	}
+*/
+	//违约金生成方法
+	public void chargeOverdue() {
+		Bill bean = new Bill();
+		bean.setType("2");
+		List<Bill> buildList = billMapper.queryByBillState(bean);//查询生成的账单表中的有效账单的building_id
+		if(buildList.size()>0){
+			for(Bill bill : buildList){
+				bill.setEndDate(new Date());
+				billService.deduction(bill);
+			}
+		}
+		bean.setEndDate(new Date());
+		bean.setType("1");
+		List<Bill> list = billMapper.queryByBillState(bean); //查询bill表中所有违约收费项目
+		DataDictionarySlave dataDictionarySlave = new DataDictionarySlave();
+    	if(list.size()>0){
+    		for(Bill bill : list){
+    			dataDictionarySlave.setProjectId(bill.getProjectId());
+    			//根据项目id关联查询项目违约系数
+    			DataDictionarySlave dataDictionarySlaves = dataDictionarySlaveMapper.queryByPro(dataDictionarySlave);
+    			double num = 0.0;
+    			double overdue = 0.0;
+    			if(dataDictionarySlaves != null && StringUtils.isNotBlank(dataDictionarySlaves.getDescription())){
+    				//获取定义的违约系数
+    				num = Double.parseDouble(dataDictionarySlaves.getDescription());
+    				overdue=(bill.getLastOweSum()+bill.getOverdue()) * num + bill.getOverdue();
+    			}else{
+    				overdue=bill.getOverdue();
+    			}
+    			bill.setOverdue(overdue);
+    			billMapper.updateBill(bill);
+    			//保存计费记录
+    			BillingRecord record =new BillingRecord();
+    			record.setBillingRecordId(UUID.randomUUID().toString());
+    			record.setProjectId(bill.getProjectId());
+    			record.setBuildingId(bill.getBuildingId());
+    			record.setChargeTypeDetailsId(bill.getChargeTypeDetailsId());
+    			BigDecimal bd = new BigDecimal((bill.getLastOweSum()+bill.getOverdue()) * num);
+    			record.setAmount(bd);
+    			record.setBillingTime(sdf.format(new Date()));
+    			record.setCreateTime(sdf.format(new Date()));
+    			billingRecordMapper.insert(record);
+    		}
+    	}
+	}
+
+	// 手动计费
+	public void personCharge(List<ChargeItemNew> list, String projectBillingId) {
+
+	}
+
+	// 重新计费
+	public void resetCharge(List<String> projectBillingIds) {
+
+	}
+	
+
+	/*public Map<String, Object> cerateBill(String chargeType, byte conditionUseType, Calendar calendar,
+			String buildingStructureId, List<Condition> conditionList, List<Constant> constantList,
+			List<DataDictionarySlave> dictionaryList, String formulaExspression, CalculatorUtils cu,
+			Calendar calendarOther, boolean endBoolean, boolean endBooleanSpecial, boolean endForYearAndMonth,
+			Date schemeStartDate, Date schemeEndDate, ChargeItemNew chargeItemNew, SchemeDatails schemeDatails,
+			Project project) throws Exception {
+		Map<String, Object> map = new HashMap<String, Object>();
+		boolean isFormulaMatch = true;
+		double realValue = 0d;
+		if ("w".equals(chargeType) || "wp".equals(chargeType)) {
+			WaterMeterOrderRecords wmor = waterMeterOrderRecordsMapper
+					.getWaterMeterOrderRecordsByBuildingId(buildingStructureId);
+			realValue = wmor.getWaterMeterReading() - wmor.getWaterLastReading();
+		}
+		if ("e".equals(chargeType) || "ep".equals(chargeType)) {
+			Map<String, Object> mapSearch = new HashMap<String, Object>();
+			mapSearch.put("buildingStructureId", buildingStructureId);
+			mapSearch.put("month", calendar.getTime());
+			List<ElectricityMeterReadingData> list = electricityMeterReadingDataMapper
+					.getElectricityMeterReadingbyId(mapSearch);
+			if (list != null && list.size() > 0)
+				realValue = list.get(0).getReading() - list.get(0).getLastMonthReading();
+		}
+		BuildingStructureNew bsn = buildingStructureNewMapper.getBuildingStructureNewbyId(buildingStructureId);
+		if ("pmf".equals(chargeType) || "cmf".equals(chargeType)) {
+			realValue = bsn.getBuildingArea();
+		}
+		if (conditionUseType == 1) {
+			for (Condition condition : conditionList) {
+				String conditionExpression = condition.getConditionExpression();
+				String conditionusetype = "";
+				for (DataDictionarySlave dataDictionarySlave : dictionaryList) {
+					if (conditionExpression.indexOf(dataDictionarySlave.getSlaveName()) > -1) {
+						conditionusetype = dataDictionarySlave.getSlaveName();
+						break;
+					}
+				}
+				double standardValue = 0d;
+				standardValue = Double.valueOf(conditionExpression.split(conditionusetype)[1]);
+				String conditionusetypeMatch = "";
+				double calculateValue = realValue - standardValue;
+				if (calculateValue > 0) {
+					conditionusetypeMatch = ">";
+				}
+				if (calculateValue >= 0) {
+					conditionusetypeMatch = ">=";
+				}
+				if (calculateValue < 0) {
+					conditionusetypeMatch = "<";
+				}
+				if (calculateValue <= 0) {
+					conditionusetypeMatch = "<=";
+				}
+				if (!conditionusetype.equals(conditionusetypeMatch)) {
+					isFormulaMatch = false;
+					break;
+				}
+			}
+		}
+		if (conditionUseType == 2) {
+			boolean isAnyMatch = false;
+			for (Condition condition : conditionList) {
+				String conditionExpression = condition.getConditionExpression();
+				String conditionusetype = "";
+				for (DataDictionarySlave dataDictionarySlave : dictionaryList) {
+					if (conditionExpression.indexOf(dataDictionarySlave.getSlaveName()) > -1) {
+						conditionusetype = dataDictionarySlave.getSlaveName();
+						break;
+					}
+				}
+				double standardValue = 0d;
+				standardValue = Double.valueOf(conditionExpression.split(conditionusetype)[1]);
+				String conditionusetypeMatch = "";
+				double calculateValue = realValue - standardValue;
+				if (calculateValue > 0) {
+					conditionusetypeMatch = ">";
+				}
+				if (calculateValue >= 0) {
+					conditionusetypeMatch = ">=";
+				}
+				if (calculateValue < 0) {
+					conditionusetypeMatch = "<";
+				}
+				if (calculateValue <= 0) {
+					conditionusetypeMatch = "<=";
+				}
+				if (conditionusetype.equals(conditionusetypeMatch)) {
+					isAnyMatch = true;
+					break;
+				}
+			}
+			if (!isAnyMatch) {
+				isFormulaMatch = false;
+			}
+		}
+		// 公式匹配则进行计算
+		if (isFormulaMatch) {
+			// 通过公式计算本期金额,先将字符串替换为实际的数值，然后调用公式计算工具类的方法
+			double currentBillingMoney = 0d;
+			for (Constant constant : constantList) {
+				if (formulaExspression.indexOf(constant.getConstantName()) > -1) {
+					formulaExspression.replace(constant.getConstantName(), realValue + "");
+					break;
+				}
+			}
+			currentBillingMoney = cu.analysis(formulaExspression);
+			Bill bill = new Bill();// 应收款实体
+			Billing billing = new Billing();// 计费实体
+			String billId = UUID.randomUUID().toString();
+			String billingId = UUID.randomUUID().toString();
+			Date chargeStartDate = null;
+			Date chargeEndDate = null;
+			double preBillingMoney = 0d;// 上期计费金额
+
+			*//**
+			 * 根据建筑ID和对应的收费子项目查询应收款记录，如果没有记录则上期金额为0，
+			 * 如果有记录，则查询最近的应收款记录，获取未收金额作为该条计费记录的上期金额
+			 *//*
+			Map<String, String> mapForBill = new HashMap<String, String>();
+			List<Bill> billList = billMapper.getBillBySearchMap(mapForBill);
+			if (billList != null && billList.size() > 0) {
+				preBillingMoney = billList.get(0).getNoCollectSum();// 获取未收金额
+				// 如果存在记录则证明之前已经有计费记录存在
+				// 计费开始时间是一个月的第一天
+				chargeStartDate = calendarOther.getTime();
+				// 如果失效日期不在计费的结束时间则取上个月的最后一天
+				if (endBoolean) {
+					chargeEndDate = calendar.getTime();
+				}
+				// 如果失效日期和计费结束时间在同一个月则取失效日期
+				if (endBooleanSpecial && endForYearAndMonth) {
+					chargeEndDate = schemeEndDate;
+				}
+			} else {
+				chargeStartDate = schemeStartDate;
+				chargeEndDate = calendar.getTime();
+			}
+			String cinName = chargeItemNew.getCiName();
+			buildingStructureId = schemeDatails.getBuildingId();
+			String fullName = "未知";
+			if (bsn != null)
+				fullName = bsn.getFullName();
+			// 获取满足条件的公式，用来计算收费项目的费用
+			// 计费金额
+			double currentMoneySum = 0d;
+			// 计费金额为
+			currentMoneySum = currentBillingMoney + preBillingMoney;
+			// 设置计费表实体值
+			billing.setBillId(billId);
+			billing.setBillingId(billingId);
+			billing.setCurrentSum(currentBillingMoney);
+			billing.setLastSum(preBillingMoney);
+			billing.setBillingStartTime(chargeStartDate);
+			billing.setBillingEndTime(chargeEndDate);
+			billing.setBillingBalance(currentMoneySum);// 计费金额
+			billing.setSchemeDatailsId(schemeDatails.getSchemeDatailsId());
+			billing.setChargeItemName(cinName);
+			billing.setBuildingId(buildingStructureId);
+			billing.setBillingState(0);
+			billing.setProjectId(project.getProjectId());
+			billing.setFullName(fullName);
+			billing.setProjectName(project.getProjectName());
+			billing.setIsDepositDeduct((byte) 0);// 默认为不是押金扣款
+
+			map.put("billing", billing);
+			bill.setBillDate(new Date());
+			byte assetAccountType = 0;
+			AssetAccount aa = assetAccountMapper.getAssetAccountByBuildingStructureId(buildingStructureId);
+			if (aa != null) {
+				assetAccountType = aa.getAssetAccountType();
+			}
+			// 设置应收款实体值
+			bill.setBillId(billId);
+			bill.setAssetType(assetAccountType);
+			bill.setBillNum(sdf.format(new Date()));
+			bill.setBillingSum(currentMoneySum);
+			// 建筑收费项目计费ID此时尚未生成
+			double billingSum = 0d;
+			billingSum = currentBillingMoney + preBillingMoney + preBillingMoney / 100;// 滞纳金规则尚不清楚
+			bill.setBillingSum(billingSum);
+			bill.setBillState((byte) 1);// 默认为未抵消
+			bill.setChargeItemId(chargeItemNew.getCiId());
+			bill.setProjectId(project.getProjectId());
+			bill.setBuildingId(buildingStructureId);
+			bill.setFullName(fullName);
+			bill.setChargeItemName(chargeItemNew.getCiName());
+			bill.setProjectName(project.getProjectName());
+			// 实收金额
+			bill.setCollectSum(0d);// 初始默认没有交费
+			// 未收金额
+			bill.setNoCollectSum(billingSum);
+			// 滞纳金
+			bill.setOverdue(preBillingMoney / 100);
+			// 电子账单ID此处尚未生成
+			// 本期欠款累计金额(未确定)
+			bill.setCumulativeAmountOfArrears(currentBillingMoney + preBillingMoney);
+			// 本期金额
+			bill.setCurrentSum(currentBillingMoney);
+			// 上期金额
+			bill.setLastSum(preBillingMoney);
+			// 本期欠款金额
+			bill.setCurrentOweSum(currentBillingMoney);
+			// 上期欠款金额
+			bill.setCurrentSum(preBillingMoney);
+			map.put("bill", bill);
+		}
+		return map;
+	}*/
+
+	// 初始化调度任务
+	public void initSchedulerTask() throws SchedulerException, ParseException {
+
+//		String group = Scheduler.DEFAULT_GROUP;
+//		String triggerGroup = "DEFAULT";
+//		// 获取系统当前时间
+//		Calendar c = Calendar.getInstance();
+//		int year = c.get(Calendar.YEAR);
+//		int month = c.get(Calendar.MONTH);
+//		List<Project> projectList = projectMapper.listPageProjectByIsUseSystem();
+//		for (Project project : projectList) {
+//			// 获取项目的方案列表
+//			List<Scheme> schemeList = schemeMapper.getSchemeByProjectId(project.getProjectId());
+//			if (schemeList != null && schemeList.size() > 0) {
+//				for (Scheme scheme : schemeList) {
+//					// 根据失效时间决定定时器是否关闭
+//					// 获取方案收费项目关系列表
+//					List<SchemeRelation> schemeRelationList = schemeRelationMapper.getSchemeRelationBySchemeId(scheme.getSchemeId());
+//					Date schemeEndDate = scheme.getEndDate();
+//					Calendar cOther = Calendar.getInstance();
+//					cOther.setTime(schemeEndDate);
+//					int yearOther = cOther.get(Calendar.YEAR);
+//					int monthOther = cOther.get(Calendar.MONTH);
+//					for(SchemeRelation schemeRelation : schemeRelationList) {
+//						String jobName = "job_" + schemeRelation.getChargeItemId();
+//						JobDetail jobDetail = scheduler.getJobDetail(jobName, group);
+//						String triggerName = "trigger_" + schemeRelation.getChargeItemId();
+//						// 如果间隔大于一个月，则将定时器任务清除
+//						if (month - monthOther > 1 || (year - yearOther > 0 && Math.abs(month - monthOther) >= 10)
+//								|| year - yearOther > 1) {
+//							//删除定时器
+//							if (jobDetail != null) {
+//								scheduler.pauseTrigger(jobName, triggerGroup);// 停止触发器  
+//								scheduler.unscheduleJob(jobName, triggerGroup);// 移除触发器  
+//								scheduler.deleteJob(jobName, group);// 删除任务 
+//							}
+//						}else{
+//							ChargeItemNew cin = chargeItemNewMapper.getChargeItemNewById(schemeRelation.getChargeItemId());
+//							Date billingDate = cin.getBillingDate();
+//							Calendar calendar = Calendar.getInstance();
+//							calendar.setTime(billingDate);
+//							int day = calendar.get(Calendar.DAY_OF_MONTH);
+//							String cronExpression = "0 0 0 " + day + " * ?";
+//							/**
+//							 * 如果不存在则新建该生成器
+//							 * 如果存在该定时器，则判断计费项目的计费规则表达式和之前的规则是否一致，不一致则替换表达式
+//							 */
+//							if (jobDetail == null) {
+//								JobDetail jobDetailNew = new JobDetail(jobName, group, ChargeItemJob.class);
+//								// 触发器
+//								CronTrigger trigger = new CronTrigger(triggerName, triggerGroup);// 触发器名,触发器
+//								trigger.setCronExpression(cronExpression);
+//								scheduler.scheduleJob(jobDetailNew, trigger);
+//							} else {
+//								//更改定时器的表达式
+//								CronTrigger triggerOld = (CronTrigger) scheduler.getTrigger(triggerName, triggerGroup);
+//								String oldExpreesion = triggerOld.getCronExpression();
+//								if (triggerOld != null && !oldExpreesion.equalsIgnoreCase(cronExpression)) {
+//									triggerOld.setCronExpression(cronExpression);
+//									scheduler.resumeTrigger(triggerName, triggerGroup);
+//								}
+//							}
+//						}
+//					}
+//				}
+//			}
+//		}
+	}
+
+}

@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.flf.mapper.DecorateAnnexMapper" >
+  <resultMap id="BaseResultMap" type="DecorateAnnex" >
+    <id column="record_id" property="recordId" jdbcType="VARCHAR" />
+    <result column="apply_id" property="applyId" jdbcType="VARCHAR" />
+    <result column="drawing_type1" property="drawingType1" jdbcType="TINYINT" />
+    <result column="drawing_type2" property="drawingType2" jdbcType="TINYINT" />
+    <result column="annex_address" property="annexAddress" jdbcType="VARCHAR" />
+    <result column="annex_name" property="annexName" jdbcType="VARCHAR" />
+  </resultMap>
+  
+ <delete id="deleteDecorateAnnex" parameterType="String">
+  delete from ts_decorate_annex where record_id=#{0}
+  </delete>
+  
+  <select id="listAllDecorateAnnex"  resultMap="BaseResultMap" >
+ 	 select * from ts_decorate_annex 
+  </select>
+  
+  <select id="getDecorateAnnexbyId" parameterType="String" resultMap="BaseResultMap">
+  	select * from ts_decorate_annex where record_id=#{0}
+  </select>
+  
+  <select id="getDecorateAnnexbyApplyId" parameterType="String" resultMap="BaseResultMap">
+  	select * from ts_decorate_annex where apply_id=#{0}
+  </select>
+  
+  <insert id="insertDecorateAnnex" parameterType="DecorateAnnex" >      
+      insert into ts_decorate_annex (record_id, apply_id,drawing_type1,drawing_type2,annex_address,annex_name)
+    values (UUID(), #{applyId,jdbcType=VARCHAR}, #{drawingType1,jdbcType=TINYINT}, #{drawingType2,jdbcType=TINYINT}, #{annexAddress,jdbcType=VARCHAR}
+    , #{annexName,jdbcType=VARCHAR})
+  </insert>
+ 
+  <update id="updateDecorateAnnex" parameterType="DecorateAnnex" >
+    update ts_decorate_annex
+    set apply_id = #{applyId,jdbcType=VARCHAR},
+      drawing_type1 = #{drawingType1,jdbcType=TINYINT},
+      drawing_type2 = #{drawingType2,jdbcType=TINYINT},
+      annex_address = #{annexAddress,jdbcType=VARCHAR},
+      annex_name = #{annexName,jdbcType=VARCHAR},
+    where record_id = #{recordId,jdbcType=VARCHAR}
+  </update>
+</mapper>

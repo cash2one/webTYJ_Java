@@ -1,0 +1,102 @@
+package com.flf.mapper;
+
+import java.util.List;
+import java.util.Map;
+
+import com.flf.entity.Bill;
+import com.flf.entity.Search;
+
+
+public interface BillMapper {
+	/*查询所有的账单信息*/
+	List<Bill> listAllBill();
+	/*分页查询账单信息*/
+    List<Bill> listPageBill(Bill bill);
+    /*根据id查询账单信息*/
+    Bill getBillById(String billId);
+    /*删除账单信息*/
+    int deleteBill(String billId);
+    /*新增账单信息*/
+    int insertBill(Bill bill);
+    /*修改账单信息*/
+    int updateBill(Bill bill);
+    /*条件查询账单信息*/
+    List<Bill> listSearchBill(Search search);
+    /*根据建筑结构Id获取账单信息*/
+    Bill getBillByBuildingId(String buildingId);
+    /*获取用户所有资产建筑id*/
+    List<String> getAllBuildingIdOfCust(String custId);
+    /*根据电子账单id和建筑结构id获取上期未结清累计金额(非当月，即历史)*/
+    Double getNoCollectSumByElectronicBillIdAndBuildingId(String electronicBillId,String buildingId);
+    /*根据电子账单id和建筑结构id获取滞纳金总金额(非当月，即历史)*/
+    Double getOverdueByElectronicBillIdAndBuildingId(String electronicBillId,String buildingId);
+    /*根据电子账单id获取账单信息(当月)*/
+    List<Bill> getBillsByelectronicBillingIdThisMonth(String electronicBillingId,String currentDate);
+    List<Bill> listPageBillsByelectronicBillingIdThisMonth(Bill bill);//当月账单分页
+    /*根据电子账单id获取账单信息(非当月)*/
+    List<Bill> getBillsByelectronicBillingIdLastMonth(String electronicBillingId,String currentDate);
+    List<Bill> listPageBillsByelectronicBillingIdLastMonth(Bill bill);//历史账单分页
+    /*获取上月的未收金额，即为本月累计欠款金chargeItemId,chargeItemId,date*/
+    Double getNoCollectSumOfLastMonth(Bill bill);
+
+    /*系统报表应收款报表
+     * 根据收费项目id获取应收款对象*/
+    Bill getBillByChargeItemId(String chargeItemId);
+     /*退款操作*/
+    int updateRefund(Bill bill);
+    /*冲正操作*/
+    int updateImpact(Bill bill);
+
+    //批量插入应收款
+  	int insertList(List<Bill> billListAll);
+	List<Bill> getBillBySearchMap(Map<String, String> mapForBill);
+    
+    /**
+     * 根据电子账单获取最新账单
+     * @author zhuqi 2016.04.15
+     * @param electronicBillingId
+     * @return
+     */
+    List<Bill>getBillLsitByElectronicBillingId(String electronicBillingId);
+    /**
+     * 获取最大应收款编号 
+     * 陈浪 2016.4.19
+     * @return String
+     */
+    String getMaxBillNum ();
+    
+    /**
+     * 获取上期应收款
+     * 陈浪 2016-04-19 20:21:28
+     */
+    Bill getLastBill(Bill bill);
+    
+    /**
+     * 根据电子账单id获取所有账单
+     * @author zhuqi 2016.04.29
+     * @param electronicBillingId
+     * @return list
+     */
+    List<Bill> listBillByElectronicBillingId(String electronicBillingId);
+    
+    /**
+     * 批量跟新bill
+     * @author zhuqi 2016.05.03
+     * @param bill
+     * @return int 
+     */
+    int updateBillList(List<Bill> bill);
+    /**
+     * 根据项目Id查询所有初始状态和回盘失败的账单
+     * @author maogaofei 2016.05.30
+     * @param projectId 项目ID
+     * @return
+     */
+    List<Bill> listBillByProjectId(String projectId);
+    
+    /**
+     * 通过ID将账单表的状态改为托收中
+     * @param billId
+     */
+    void updateBillState(String billId);
+}

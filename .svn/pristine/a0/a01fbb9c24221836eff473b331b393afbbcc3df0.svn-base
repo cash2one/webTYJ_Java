@@ -1,0 +1,59 @@
+<!--
+    createName:彭婷婷
+    pageName:内部专线线合同初始化
+    jsPath:js/controllers/internalProfession/contractInitialization
+    updateName：王志刚
+    lastTime：2015/6/4
+-->
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>合同初始化</title>
+</head>
+<body>
+        <!--合同列表-->
+        <div class="col-lg-1 col-md-1 col-sm-6">
+            <div class="row">
+                <div class="contract_list">
+                    <div class="contract_list_title">
+                        新增合同
+                    </div>
+                    <!--合同列表合同模板1-->
+                    <div class="contract">
+                        合同编号1
+                    </div>
+                    <!--合同列表合同模板1-->
+                    <!--合同列表合同模板2-->
+                    <div class="contract">
+                        合同编号2
+                    </div>
+                    <!--合同列表合同模板2-->
+                    <!--合同列表合同模板3-->
+                    <div class="contract">
+                        合同编号3
+                    </div>
+                    <!--合同列表合同模板3-->
+                </div>
+            </div>
+        </div>
+        <!--合同列表结束-->
+
+        <!--右侧内容-->
+        <div class="col-lg-11 col-md-11 col-sm-6">
+            <div class="row contractpadding_1">
+                <div class="contract_panner">
+                    <!--新增合同及合同查询tab页切换-->
+                    <div class="rouw">
+                        <div class="listtitle">
+                            <a ui-sref="index.internalProfession.contractInitialization.addContractone">新增合同</a>
+                            <a ui-sref="index.internalProfession.contractInitialization.contractCheck" class="this" >合同查询</a>
+                        </div>
+                    </div>
+                    <div ui-view></div>
+                </div>
+            </div>
+        </div>
+        <!--右侧内容结束-->
+</body>
+</html>

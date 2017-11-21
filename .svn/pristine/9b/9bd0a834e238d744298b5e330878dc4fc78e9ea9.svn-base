@@ -1,0 +1,30 @@
+package com.flf.service.impl;
+
+import java.util.List;
+
+import com.flf.entity.BankDeposit;
+import com.flf.mapper.BankDepositMapper;
+import com.flf.service.BankDepositService;
+
+public class BankDepositServiceImpl implements BankDepositService{
+
+	private BankDepositMapper bankDepositMapper;
+	
+	public BankDepositMapper getBankDepositMapper() {
+		return bankDepositMapper;
+	}
+	public void setBankDepositMapper(BankDepositMapper bankDepositMapper) {
+		this.bankDepositMapper = bankDepositMapper;
+	}
+	@Override
+	public List<BankDeposit> getBankDepositByIdRest(String accountRecordId) {
+		// TODO Auto-generated method stub
+		return bankDepositMapper.getBankDepositById(accountRecordId);
+	}
+	@Override
+	public void insertBankDeposit(BankDeposit bankDeposit) {
+		// TODO Auto-generated method stub
+		bankDepositMapper.insertBankDeposit(bankDeposit);
+	}
+
+}

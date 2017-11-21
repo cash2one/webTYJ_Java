@@ -1,0 +1,384 @@
+package com.flf.entity;
+
+import java.util.Date;
+import java.util.List;
+import javax.xml.bind.annotation.XmlRootElement;
+
+import org.springframework.format.annotation.DateTimeFormat;
+@XmlRootElement(name = "Bill") //账单表
+public class Bill {
+    private String billId; // 账单id    
+
+	private Byte assetType; // 建筑资产类型
+
+    private String billNum; //账单编号
+
+    private String buildingBillingId;//建筑收费项目计费id
+
+    private double billingSum;//账单金额
+
+    private @DateTimeFormat(pattern="yyyy-MM-dd ") Date billDate;//账单时间
+
+    private int billState; //账单状态（默认为null,托收后变为0，回盘失败变更为1，回盘成功变更为2）
+    
+    private String chargeItemId;//收费项目id	
+    
+    private String projectId;//    项目id
+    
+    private String buildingId;//建筑结构id
+    
+    private String fullName;//房屋全名   
+  
+	private String chargeTypeName;//收费项目名称
+    
+    private String projectName;//项目名称
+
+    private double collectSum;//实收金额
+
+    private double noCollectSum;//未收金额
+    
+    private double overdue;//滯納金
+
+	private double lastOverdue;//上期滞纳金
+    
+    private double currentOverdue;//本期滞纳金
+    
+    private String chargeTypeId;//收费项目ID
+    private String chargeTypeDetails;//收费明细
+    private String chargeTypeDetailsName;//收费项目详情的名字
+    private String chargeTypeDetailsId;//收费明细的ID
+    private String  custName;//客户姓名
+    private String   cardNum; //客户编号
+    private double totalCurrentOweSum;//总的本期应收余额
+    private double totalCurrentSum;//总的本期应收金额
+    private double totalOverdue;//总的违约金
+    private double totalLastOweSum;//总的上期未结清的金额
+  
+	public String getChargeTypeDetailsName() {
+		return chargeTypeDetailsName;
+	}
+	public void setChargeTypeDetailsName(String chargeTypeDetailsName) {
+		this.chargeTypeDetailsName = chargeTypeDetailsName;
+	}
+	public double getTotalCurrentOweSum() {
+		return totalCurrentOweSum;
+	}
+	public void setTotalCurrentOweSum(double totalCurrentOweSum) {
+		this.totalCurrentOweSum = totalCurrentOweSum;
+	}
+	public double getTotalCurrentSum() {
+		return totalCurrentSum;
+	}
+	public void setTotalCurrentSum(double totalCurrentSum) {
+		this.totalCurrentSum = totalCurrentSum;
+	}
+	public double getTotalOverdue() {
+		return totalOverdue;
+	}
+	public void setTotalOverdue(double totalOverdue) {
+		this.totalOverdue = totalOverdue;
+	}
+	public double getTotalLastOweSum() {
+		return totalLastOweSum;
+	}
+	public void setTotalLastOweSum(double totalLastOweSum) {
+		this.totalLastOweSum = totalLastOweSum;
+	}
+	public String getChargeTypeName() {
+		return chargeTypeName;
+	}
+	public void setChargeTypeName(String chargeTypeName) {
+		this.chargeTypeName = chargeTypeName;
+	}
+	public String getChargeTypeId() {
+		return chargeTypeId;
+	}
+	public void setChargeTypeId(String chargeTypeId) {
+		this.chargeTypeId = chargeTypeId;
+	}
+	public String getChargeTypeDetails() {
+		return chargeTypeDetails;
+	}
+	public void setChargeTypeDetails(String chargeTypeDetails) {
+		this.chargeTypeDetails = chargeTypeDetails;
+	}
+	public String getChargeTypeDetailsId() {
+		return chargeTypeDetailsId;
+	}
+	public void setChargeTypeDetailsId(String chargeTypeDetailsId) {
+		this.chargeTypeDetailsId = chargeTypeDetailsId;
+	}
+	public String getCustName() {
+		return custName;
+	}
+	public void setCustName(String custName) {
+		this.custName = custName;
+	}
+	public String getCardNum() {
+		return cardNum;
+	}
+	public void setCardNum(String cardNum) {
+		this.cardNum = cardNum;
+	}
+
+	public double getLastOverdue() {
+		return lastOverdue;
+	}
+	public void setLastOverdue(double lastOverdue) {
+		this.lastOverdue = lastOverdue;
+	}
+	public double getCurrentOverdue() {
+		return currentOverdue;
+	}
+	public void setCurrentOverdue(double currentOverdue) {
+		this.currentOverdue = currentOverdue;
+	}
+
+	private String electronicBillingId;//电子账单id
+	
+	private double cumulativeAmountOfArrears;//本期欠款累计金额（显示用）
+	
+	private String chargeItemType;//**收费项类型,"水费","电费","物业管理费","停车费","车位管理费"
+	
+	/**
+	 * 根据优先级计算电子账单
+	 */
+	private double generalBalance;
+	private double disposableBalance;
+	private Integer chargeTypePriority;
+	
+	public double getGeneralBalance() {
+		return generalBalance;
+	}
+	public void setGeneralBalance(double generalBalance) {
+		this.generalBalance = generalBalance;
+	}
+	public double getDisposableBalance() {
+		return disposableBalance;
+	}
+	public void setDisposableBalance(double disposableBalance) {
+		this.disposableBalance = disposableBalance;
+	}
+
+	public Integer getChargeTypePriority() {
+		return chargeTypePriority;
+	}
+	public void setChargeTypePriority(Integer chargeTypePriority) {
+		this.chargeTypePriority = chargeTypePriority;
+	}
+
+	private ElectronicBilling electronicBilling;//电子账单	
+	
+	private List<Bill> bills;//账单列表
+	
+	private double currentSum;//本期金额(新增字段--2015/12/29)
+	
+    private double lastSum;//上期金额(新增字段--2015/12/29)
+	
+	private double currentOweSum; //本期欠款金额(新增字段--2015/12/29)
+	
+	private double lastOweSum;//上期欠款金额(新增字段--2015/12/29)
+	
+	public double getCurrentSum() {
+		return currentSum;
+	}
+	public void setCurrentSum(double currentSum) {
+		this.currentSum = currentSum;
+	}
+	public double getLastSum() {
+		return lastSum;
+	}
+	public void setLastSum(double lastSum) {
+		this.lastSum = lastSum;
+	}
+	public double getCurrentOweSum() {
+		return currentOweSum;
+	}
+	public void setCurrentOweSum(double currentOweSum) {
+		this.currentOweSum = currentOweSum;
+	}
+	public double getLastOweSum() {
+		return lastOweSum;
+	}
+	public void setLastOweSum(double lastOweSum) {
+		this.lastOweSum = lastOweSum;
+	}
+	
+    public List<Bill> getBills() {
+		return bills;
+	}
+	public void setBills(List<Bill> bills) {
+		this.bills = bills;
+	}
+	public ElectronicBilling getElectronicBilling() {
+		return electronicBilling;
+	}
+	public void setElectronicBilling(ElectronicBilling electronicBilling) {
+		this.electronicBilling = electronicBilling;
+	}
+	public String getChargeItemType() {
+		return chargeItemType;
+	}
+
+	private Page page;
+    
+    
+    private List<Project>  project; //关联项目表
+    
+  	public List<Project> getProject() {
+  		return project;
+  	}
+  	public void setProject(List<Project> project) {
+  		this.project = project;
+  	}
+	public void setChargeItemType(String chargeItemType) {
+		this.chargeItemType = chargeItemType;
+	}
+	public double getCumulativeAmountOfArrears() {
+		return cumulativeAmountOfArrears;
+	}
+	public void setCumulativeAmountOfArrears(double cumulativeAmountOfArrears) {
+		this.cumulativeAmountOfArrears = cumulativeAmountOfArrears;
+	}
+	public Page getPage() {
+		if(this.page==null){
+			this.page=new Page();
+		}
+		return page;
+	}
+	public void setPage(Page page) {
+		this.page = page;
+	}
+    public String getElectronicBillingId() {
+		return electronicBillingId;
+	}
+
+	public void setElectronicBillingId(String electronicBillingId) {
+		this.electronicBillingId = electronicBillingId;
+	}
+
+	public String getBillId() {
+		return billId;
+	}
+
+	public void setBillId(String billId) {
+		this.billId = billId;
+	}
+
+	public Byte getAssetType() {
+		return assetType;
+	}
+
+	public void setAssetType(Byte assetType) {
+		this.assetType = assetType;
+	}
+
+	public String getBillNum() {
+		return billNum;
+	}
+
+	public void setBillNum(String billNum) {
+		this.billNum = billNum;
+	}
+
+	public String getBuildingBillingId() {
+		return buildingBillingId;
+	}
+
+	public void setBuildingBillingId(String buildingBillingId) {
+		this.buildingBillingId = buildingBillingId;
+	}
+
+	public Double getBillingSum() {
+		return billingSum;
+	}
+
+	public void setBillingSum(Double billingSum) {
+		this.billingSum = billingSum;
+	}
+
+	public Date getBillDate() {
+		return billDate;
+	}
+
+	public void setBillDate(Date billDate) {
+		this.billDate = billDate;
+	}
+
+	public int getBillState() {
+		return billState;
+	}
+
+	public void setBillState(int billState) {
+		this.billState = billState;
+	}
+
+	public String getChargeItemId() {
+		return chargeItemId;
+	}
+
+	public void setChargeItemId(String chargeItemId) {
+		this.chargeItemId = chargeItemId;
+	}
+
+	public String getProjectId() {
+		return projectId;
+	}
+
+	public void setProjectId(String projectId) {
+		this.projectId = projectId;
+	}
+
+	public String getBuildingId() {
+		return buildingId;
+	}
+
+	public void setBuildingId(String buildingId) {
+		this.buildingId = buildingId;
+	}
+
+	public String getFullName() {
+		return fullName;
+	}
+
+	public void setFullName(String fullName) {
+		this.fullName = fullName;
+	}
+
+
+
+	public String getProjectName() {
+		return projectName;
+	}
+
+	public void setProjectName(String projectName) {
+		this.projectName = projectName;
+	}
+
+	public double getCollectSum() {
+		return collectSum;
+	}
+
+	public void setCollectSum(double collectSum) {
+		this.collectSum = collectSum;
+	}
+
+	public double getNoCollectSum() {
+		return noCollectSum;
+	}
+
+	public void setNoCollectSum(double noCollectSum) {
+		this.noCollectSum = noCollectSum;
+	}
+
+	public double getOverdue() {
+		return overdue;
+	}
+
+	public void setOverdue(double overdue) {
+		this.overdue = overdue;
+	}
+
+  
+    
+}

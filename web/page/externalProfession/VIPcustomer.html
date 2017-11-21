@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>VIP客户管理</title>
+</head>
+<body>
+<div class="row" style="height: 532px">
+    <div class="table_list">
+        <h4 style="text-align: center"><strong>VIP客户管理</strong></h4>
+        <div class="search_style"><form>
+            <input type="text"   class="search_style_input"  placeholder="请输入搜索条件" />
+            <button type="submit" class="search_style_button">查找</button>
+        </form>
+        </div>
+        <div class="button_group">
+            <a  href="#addvipCustomer" data-toggle="modal" ng-click="GetPersonCust(0)">增加</a>
+            
+            <!-- 模态框（Modal）增加信息 -->
+            
+            <div class="modal fade" id="addvipCustomer" tabindex="-1" role="dialog"
+                 aria-labelledby="myModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content" >
+                        <div class="modal-header">
+                            <button type="button" class="close"
+                                    data-dismiss="modal" aria-hidden="true">
+                                &times;
+                            </button>
+                            <h4 class="modal-title" id="ImpClient">
+                            
+                            	增加VIP客户
+                            </h4>
+                        </div>
+
+                        <div class="modal-body">
+                            <div>
+                                <form>
+                                    <table class="text-center" style="margin: 0px auto;">
+
+                                        <tr>
+                                            <td  class="text-right">姓名</td>
+                                            <td><input type="text" class="input-sm form-control" ng-model="personCust.name"></td>
+                                            <td class="text-right">VIP号</td>
+                                            <td><input type="text" class="input-sm form-control" ng-model="personCust.vipNum"></td>
+                                        </tr>
+
+                                        <tr>
+                                            <td class="text-right">VIP类型</td>
+                                            
+                                           <td><select class="input-sm form-control" ng-model="personCust.vipType">
+		                            			<option value="☆">☆</option>
+		                            			<option value="☆☆">☆☆</option>
+		                            			<option value="☆☆☆">☆☆☆</option>
+		                            			<option value="☆☆☆☆">☆☆☆☆</option>
+		                            			<option value="☆☆☆☆☆">☆☆☆☆☆</option>
+                            		       </select></td>
+                                            <td width=class="text-right">住址</td>
+                                            <td><input type="text" class="input-sm form-control" ng-model="personCust.nativePlace"></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="text-right">联系方式</td>
+                                           <td><input type="text" class="input-sm form-control" ng-model="personCust.phoneNum"></td>
+                                            <td class="text-right">vip服务开始日期</td>
+                                            <td><input type="text" class="input-sm form-control" ng-model="personCust.vipBegintime"></td>
+                                        </tr>
+
+                                        <tr>
+                                            <td class="text-right">vip服务到期日期</td>
+                                            <td><input type="text" class="input-sm form-control" ng-model="personCust.vipEndintime"></td>
+                                            <td class="text-right">专属停车位</td>
+                                            <td><input type="text" class="input-sm form-control" ng-model="personCust.privateStopcar"></td>
+                                        </tr>
+
+                                        <tr>
+                                            <td class="text-right">家政服务</td>
+                                            <td><input type="text" class="input-sm form-control" ng-model="personCust.homemaking"></td>
+                                            <td class="text-right">贵宾宠物</td>
+                                            <td><input type="text" class="input-sm form-control" ng-model="personCust.presonPet"></td>
+                                        </tr>
+
+                                        <tr>
+                                            <td class="text-right">上门维修服务</td>
+                                            <td><input type="text" class="input-sm form-control" ng-model="personCust.mainteen"></td>
+                                        </tr>
+
+                                    </table>
+                                </form>
+                            </div>
+                        </div>
+
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default"  data-dismiss="modal">关闭
+                            </button>
+                             <button type="button" class="btn btn-primary" ng-click="AddOrUpdatePersonCust(0)">
+                                	确认增加
+                            </button>
+                            
+                            <button type="button" class="btn btn-sm btn-default">
+                                <span class="glyphicon glyphicon-ok"></span>提交
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+             <!-- 模态框（Modal）增加信息 -->
+
+            <a href="#" class="delete" ng-click="deletePersonCust()">删除</a>
+
+        </div>
+        <table width="100%" border="0" cellpadding="0" cellspacing="0" class="table_style">
+            <tr>
+                <td width="50" align="center" valign="middle" class="table_style_toptd">&nbsp</td>
+                <td align="center" valign="middle" class="table_style_toptd">姓名</td>
+                <td align="center" valign="middle" class="table_style_toptd">VIP号</td>
+                <td align="center" valign="middle" class="table_style_toptd">VIP类型</td>
+                <td align="center" valign="middle" class="table_style_toptd">住址</td>
+                <td align="center" valign="middle" class="table_style_toptd">联系方式</td>
+                <td align="center" valign="middle" class="table_style_toptd">VIP服务开始日期</td>
+                <td align="center" valign="middle" class="table_style_toptd">VIP服务到期日期</td>
+                <td align="center" valign="middle" class="table_style_toptd">专属停车位</td>
+                <td align="center" valign="middle" class="table_style_toptd">家政服务</td>
+                <td align="center" valign="middle" class="table_style_toptd">上门维修服务</td>
+                <td align="center" valign="middle" class="table_style_toptd">贵宾宠物</td>
+                <td width="50" align="center" valign="middle" class="table_style_toptd">操作</td>
+            </tr>
+            
+            <tr ng-repeat="items in searchPaginator.object.personCusts" ng-show="items.custId!=null">
+                <td width="50" align="center" valign="middle"><input type="checkbox" ng-model="items.value"  name="checkbox2" id="checkbox"></td>
+                <td align="center" valign="middle">{{items.name}}</td>
+                <td align="center" valign="middle">{{items.vipNum}}</td>
+                <td align="center" valign="middle">{{items.vipType}}</td>
+                <td align="center" valign="middle">{{items.nativePlace}}</td>
+                <td align="center" valign="middle">{{items.phoneNum}}</td>
+                <td align="center" valign="middle">{{items.vipBegintime| date:"yyyy-MM-dd"}}</td>
+                <td align="center" valign="middle">{{items.vipEndintime| date:"yyyy-MM-dd"}}</td>
+                <td align="center" valign="middle">{{items.privateStopcar}}</td>
+                <td align="center" valign="middle">{{items.homemaking}}</td>
+                <td align="center" valign="middle">{{items.mainteen}}</td>
+                <td align="center" valign="middle">{{items.presonPet}}</td>
+                <td width="50" align="center" valign="middle"><a href="#updatevipCustome" ng-click="GetPersonCust(items.custId)"  data-toggle="modal">修改</a>
+            </tr>
+            
+            
+           
+
+                               
+
+
+         
+        </table>
+        
+	<div class="pagination">
+                    <a href="#" ng-show="searchPaginator.hasPrevious()" ng-click="searchPaginator.previous()">上一页</a>
+                    <a href="#" ng-repeat="i in searchPaginator.pages"  ng-click="searchPaginator.go(i)" class="number">{{i}}</a>
+                    <a href="#" ng-show="searchPaginator.hasNext()" ng-click="searchPaginator.next()">下一页</a>
+    </div>
+</div>
+
+<!-- 模态框（Modal）修改信息 -->
+    <div class="modal fade" id="updatevipCustome" tabindex="-1" role="dialog"
+         aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close"
+                            data-dismiss="modal" aria-hidden="true">
+                        &times; 
+                    </button>
+                    <h4 class="modal-title" id="updatevipCustome">
+                        	修改信息
+                    </h4>
+                
+                
+                </td>
+        <div class="modal-body">
+                            <div>
+                                <form>
+                                    <table class="text-center" style="margin: 0px auto;">
+
+                                        <tr>
+                                            <td  class="text-right">姓名</td>
+                                            <td><input type="text" class="input-sm form-control" ng-model="personCust.name"></td>
+                                            <td class="text-right">VIP号</td>
+                                            <td><input type="text" class="input-sm form-control" ng-model="personCust.vipNum"></td>
+                                        </tr>
+
+                                        <tr>
+                                            <td class="text-right">VIP类型</td>
+                                            
+                                           <td><select class="input-sm form-control" ng-model="personCust.vipType">
+		                            			<option value="☆">☆</option>
+		                            			<option value="☆☆">☆☆</option>
+		                            			<option value="☆☆☆">☆☆☆</option>
+		                            			<option value="☆☆☆☆">☆☆☆☆</option>
+		                            			<option value="☆☆☆☆☆">☆☆☆☆☆</option>
+                            		       </select></td>
+                                            <td width=class="text-right">住址</td>
+                                            <td><input type="text" class="input-sm form-control" ng-model="personCust.nativePlace"></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="text-right">联系方式</td>
+                                           <td><input type="text" class="input-sm form-control" ng-model="personCust.phoneNum"></td>
+                                            <td class="text-right">vip服务开始日期</td>
+                                            <td><input type="text" class="input-sm form-control" ng-model="personCust.vipBegintime"></td>
+                                        </tr>
+
+                                        <tr>
+                                            <td class="text-right">vip服务到期日期</td>
+                                            <td><input type="text" class="input-sm form-control" ng-model="personCust.vipEndintime"></td>
+                                            <td class="text-right">专属停车位</td>
+                                            <td><input type="text" class="input-sm form-control" ng-model="personCust.privateStopcar"></td>
+                                        </tr>
+
+                                        <tr>
+                                            <td class="text-right">家政服务</td>
+                                            <td><input type="text" class="input-sm form-control" ng-model="personCust.homemaking"></td>
+                                            <td class="text-right">贵宾宠物</td>
+                                            <td><input type="text" class="input-sm form-control" ng-model="personCust.presonPet"></td>
+                                        </tr>
+
+                                        <tr>
+                                            <td class="text-right">上门维修服务</td>
+                                            <td><input type="text" class="input-sm form-control" ng-model="personCust.mainteen"></td>
+                                        </tr>
+
+                                    </table>
+                                </form>
+                            </div>
+                        </div>
+                        
+                          <div class="modal-footer">
+                    <button type="button" class="btn btn-default"
+                            data-dismiss="modal">关闭
+                    </button>
+                    <button type="button" class="btn btn-primary" ng-click="AddOrUpdatePersonCust(personCust.custId)">
+                       	 确认修改
+                    </button>
+                </div>
+
+        
+    </div>
+</div>
+</div>
+</div>
+    </div>
+</body>
+</html>

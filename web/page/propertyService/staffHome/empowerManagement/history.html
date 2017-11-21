@@ -1,0 +1,110 @@
+<!--
+    作者:彭婷婷
+    页面名称:授权管理--历史记录
+    js路径:js/controllers/propertyService/staffHome/empowerManagement/history
+-->
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>历史记录</title>
+</head>
+<body ng-controller="historyCtrl">
+<div class="container" style="margin:20px;width: 97%;height: 260px">
+    <div class="pull-right">
+        <img src="images/propertyService/u459.png" style="width: 20px;height: 20px">
+        <a class="btn btn-xs" ui-sref="index.propertyService.staffHome.empowerManagement.empower" >新增授权信息</a>
+    </div>
+    <table class="table-bordered" style="width: 100%;text-align: center">
+        <tr style="background-color: #00FF66;">
+        
+            <td>授权人</td>
+            <td>授权类型</td>
+            <td>入伙</td>
+            <td>装修</td>
+            <td>车辆登记</td>
+            <td>门禁卡</td>
+            <td>停车卡</td>
+            <td>车位管理</td>
+            <td>产权变更</td>
+            <td>放行条</td>
+            <td>租赁</td>
+            <td>宠物登记</td>
+            <td>房屋编号</td>
+            <td>授权时间</td>
+            <td>截止时间</td>
+        </tr>
+        <tr ng-repeat="authorization in authorizations" ng-show="authorization.authorizationId!=null">
+            <td>{{authorization.personCustNew.name}}</td>   
+            
+             <td ng-switch on="authorization.authorizationType">
+                 	    <span ng-switch-when="1">委托书</span>
+                 	    <span ng-switch-when="2">电话</span>
+                 	    <span ng-switch-when="3">电子授权</span>              	                                                             	   
+                        </td>
+            <td ng-switch on="authorization.partnership">
+                 	    <span ng-switch-when="1"><span class="glyphicon glyphicon-ok" aria-hidden="true"></span></span>
+                 	    <span ng-switch-when="0"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></span>
+                 	     <!--  <span ng-switch-when=' '><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></span>    -->            	                                                             	   
+                        </td>
+             <td ng-switch on="authorization.decorate">
+                 	    <span ng-switch-when="1"><span class="glyphicon glyphicon-ok" aria-hidden="true"></span></span>
+                 	    <span ng-switch-when="0"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></span>               	                                                             	   
+                        </td>
+            <td ng-switch on="authorization.vehicle">
+                 	    <span ng-switch-when="1"><span class="glyphicon glyphicon-ok" aria-hidden="true"></span></span>
+                 	    <span ng-switch-when="0"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></span>               	                                                             	   
+                        </td>
+             <td ng-switch on="authorization.accessCard">
+                 	    <span ng-switch-when="1"><span class="glyphicon glyphicon-ok" aria-hidden="true"></span></span>
+                 	    <span ng-switch-when="0"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></span>               	                                                             	   
+                        </td>
+             <td ng-switch on="authorization.parkingCard">
+                 	    <span ng-switch-when="1"><span class="glyphicon glyphicon-ok" aria-hidden="true"></span></span>
+                 	    <span ng-switch-when="0"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></span>               	                                                             	   
+                        </td>
+            <td ng-switch on="authorization.carportManage">
+                 	    <span ng-switch-when="1"><span class="glyphicon glyphicon-ok" aria-hidden="true"></span></span>
+                 	    <span ng-switch-when="0"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></span>               	                                                             	   
+                        </td>
+             <td ng-switch on="authorization.ropertyChanges">
+                 	    <span ng-switch-when="1"><span class="glyphicon glyphicon-ok" aria-hidden="true"></span></span>
+                 	    <span ng-switch-when="0"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></span>               	                                                             	   
+                        </td>
+             <td ng-switch on="authorization.articleRelease">
+                 	    <span ng-switch-when="1"><span class="glyphicon glyphicon-ok" aria-hidden="true"></span></span>
+                 	    <span ng-switch-when="0"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></span>               	                                                             	   
+                        </td>
+             <td ng-switch on="authorization.lease">
+                 	    <span ng-switch-when="1"><span class="glyphicon glyphicon-ok" aria-hidden="true"></span></span>
+                 	    <span ng-switch-when="0"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></span>               	                                                             	   
+                        </td>
+            <td ng-switch on="authorization.parkingCard">
+                 	    <span ng-switch-when="1"><span class="glyphicon glyphicon-ok" aria-hidden="true"></span></span>
+                 	    <span ng-switch-when="0"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></span>               	                                                             	   
+                        </td>
+            <td>{{authorization.house.houseNum}}</td>
+            <td>{{authorization.staDate|date:"yyyy-MM-dd"}}</td>
+            <td>{{authorization.endDate|date:"yyyy-MM-dd"}}</td>
+        </tr>
+      <!--   <tr>
+            <td>林心如</td>
+            <td>电话</td>
+            <td><span class="glyphicon glyphicon-ok" aria-hidden="true"></span></td>
+            <td><span class="glyphicon glyphicon-ok" aria-hidden="true"></span></td>
+            <td><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></td>
+            <td><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></td>
+            <td><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></td>
+            <td><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></td>
+            <td><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></td>
+            <td><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></td>
+            <td><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></td>
+            <td><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></td>
+            <td>09876、876453</td>
+            <td>2015/4/30</td>
+            <td>2015/5/15</td>
+        </tr> -->
+    </table>
+</div>
+</body>
+</html>

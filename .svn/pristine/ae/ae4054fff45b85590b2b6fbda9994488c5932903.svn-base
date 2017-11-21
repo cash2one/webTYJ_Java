@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.flf.mapper.InspectionConfigurationMapper" >
+  <resultMap id="BaseResultMap" type="com.flf.entity.InspectionConfiguration" >
+    <id column="reord_id" property="reordId" jdbcType="VARCHAR" />
+    <result column="service_request_id" property="serviceRequestId" jdbcType="VARCHAR" />
+    <result column="principal_id" property="principalId" jdbcType="VARCHAR" />
+    <result column="inspection_property_id" property="inspectionPropertyId" jdbcType="VARCHAR" />
+    <result column="inspection_ plan_id" property="inspectionPlanId" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    reord_id, service_request_id, principal_id, inspection_property_id, "inspection_ plan_id"
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from ts_inspection_configuration
+    where reord_id = #{reordId,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from ts_inspection_configuration
+    where reord_id = #{reordId,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.flf.entity.InspectionConfiguration" >
+    insert into ts_inspection_configuration (reord_id, service_request_id, principal_id, 
+      inspection_property_id, "inspection_ plan_id")
+    values (#{reordId,jdbcType=VARCHAR}, #{serviceRequestId,jdbcType=VARCHAR}, #{principalId,jdbcType=VARCHAR}, 
+      #{inspectionPropertyId,jdbcType=VARCHAR}, #{inspectionPlanId,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.flf.entity.InspectionConfiguration" >
+    insert into ts_inspection_configuration
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="reordId != null" >
+        reord_id,
+      </if>
+      <if test="serviceRequestId != null" >
+        service_request_id,
+      </if>
+      <if test="principalId != null" >
+        principal_id,
+      </if>
+      <if test="inspectionPropertyId != null" >
+        inspection_property_id,
+      </if>
+      <if test="inspectionPlanId != null" >
+        "inspection_ plan_id",
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="reordId != null" >
+        #{reordId,jdbcType=VARCHAR},
+      </if>
+      <if test="serviceRequestId != null" >
+        #{serviceRequestId,jdbcType=VARCHAR},
+      </if>
+      <if test="principalId != null" >
+        #{principalId,jdbcType=VARCHAR},
+      </if>
+      <if test="inspectionPropertyId != null" >
+        #{inspectionPropertyId,jdbcType=VARCHAR},
+      </if>
+      <if test="inspectionPlanId != null" >
+        #{inspectionPlanId,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.flf.entity.InspectionConfiguration" >
+    update ts_inspection_configuration
+    <set >
+      <if test="serviceRequestId != null" >
+        service_request_id = #{serviceRequestId,jdbcType=VARCHAR},
+      </if>
+      <if test="principalId != null" >
+        principal_id = #{principalId,jdbcType=VARCHAR},
+      </if>
+      <if test="inspectionPropertyId != null" >
+        inspection_property_id = #{inspectionPropertyId,jdbcType=VARCHAR},
+      </if>
+      <if test="inspectionPlanId != null" >
+        "inspection_ plan_id" = #{inspectionPlanId,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where reord_id = #{reordId,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.flf.entity.InspectionConfiguration" >
+    update ts_inspection_configuration
+    set service_request_id = #{serviceRequestId,jdbcType=VARCHAR},
+      principal_id = #{principalId,jdbcType=VARCHAR},
+      inspection_property_id = #{inspectionPropertyId,jdbcType=VARCHAR},
+      "inspection_ plan_id" = #{inspectionPlanId,jdbcType=VARCHAR}
+    where reord_id = #{reordId,jdbcType=VARCHAR}
+  </update>
+</mapper>

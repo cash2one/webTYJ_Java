@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.flf.mapper.PraiseOrdersMapper">
+	<resultMap type="PraiseOrders" id="BaseResultMap">
+		<id column="order_id" property="orderId" jdbcType="VARCHAR"/>
+		<result column="order_type" property="orderType" jdbcType="INTEGER"/>
+		<result column="order_state" property="orderState" jdbcType="INTEGER"/>
+		<result column="task_id" property="taskId" jdbcType="VARCHAR"/>
+		<result column="service_request_id" property="serviceRequestId" jdbcType="VARCHAR"/>
+		<result column="operator_id" property="operatorId" jdbcType="VARCHAR"/>
+		<result column="finish_time" property="finishTime" jdbcType="VARCHAR"/>
+		<result column="praise_object_id" property="praiseObjectId" jdbcType="VARCHAR"/>
+		<result column="praise_object_name" property="praiseObjectName" jdbcType="VARCHAR"/>
+		<result column="remarks" property="remarks" jdbcType="VARCHAR"/>
+		<result column="close_time" property="closeTime" jdbcType="VARCHAR"/>
+		<result column="close_person_id" property="closePersonId" jdbcType="VARCHAR"/>
+		<result column="close_remarks" property="closeRemarks" jdbcType="VARCHAR"/>
+		<collection property="praiseStaffs" column="order_id" ofType="PraiseStaff" select="com.flf.mapper.PraiseStaffMapper.getPraiseStaffbyOrderId"></collection>
+	</resultMap>
+	
+	<resultMap type="PraiseOrders" id="resultPraiseOrdersMap" extends="BaseResultMap">
+    	<association property="staff" column="operator_id" javaType="Staff" select="com.flf.mapper.StaffMapper.selectByid"></association>
+  	<collection property="annexs" column="order_id" ofType="Annex" select="com.flf.mapper.AnnexMapper.getAnnexbyRelationId"></collection>
+  </resultMap>
+	
+	<!-- 接口方法 -->
+	<select id="listAllPraiseOrder" resultMap="BaseResultMap">
+		select * from ts_praise_orders
+	</select>
+	
+	<select id="getPraiseOrderById" resultMap="resultPraiseOrdersMap" parameterType="String">
+		select * from ts_praise_orders
+		where order_id = #{0}
+	</select>
+	
+	<delete id="deletePraiseOrder" parameterType="String">
+		delete from ts_praise_orders
+		where order_id = #{0}
+	</delete>
+	
+	<insert id="insertPraiseOrder" parameterType="PraiseOrders">
+		insert into ts_praise_orders (order_id,order_type,order_state,task_id,
+			service_request_id,operator_id,finish_time,praise_object_id,praise_object_name,
+			remarks,close_time,close_person_id,close_remarks)
+		values (#{orderId,jdbcType=VARCHAR},
+				#{orderType,jdbcType=INTEGER},
+				#{orderState,jdbcType=INTEGER},
+				#{taskId,jdbcType=VARCHAR},
+				#{serviceRequestId,jdbcType=VARCHAR},
+				#{operatorId,jdbcType=VARCHAR},
+				#{finishTime,jdbcType=VARCHAR},
+				#{praiseObjectId,jdbcType=VARCHAR},
+				#{praiseObjectName,jdbcType=VARCHAR},
+				#{remarks,jdbcType=VARCHAR},
+				#{closeTime,jdbcType=VARCHAR},
+				#{closePersonId,jdbcType=VARCHAR},
+				#{closeRemarks,jdbcType=VARCHAR})
+	</insert>
+	
+	
+	
+	<update id="updatePraiseOrder" parameterType="PraiseOrders">
+		update ts_praise_orders
+		set
+			order_type = #{orderType,jdbcType=INTEGER},
+			order_state = #{orderState,jdbcType=INTEGER},
+			task_id = #{taskId,jdbcType=VARCHAR},
+			service_request_id = #{serviceRequestId,jdbcType=VARCHAR},
+			operator_id = #{operatorId,jdbcType=VARCHAR},
+			finish_time = #{finishTime,jdbcType=VARCHAR},
+			praise_object_id = #{praiseObjectId,jdbcType=VARCHAR},
+			praise_object_name = #{praiseObjectName,jdbcType=VARCHAR},
+			remarks = #{remarks,jdbcType=VARCHAR},
+			close_time = #{closeTime,jdbcType=VARCHAR},
+			close_person_id = #{closePersonId,jdbcType=VARCHAR},
+			close_remarks = #{closeRemarks,jdbcType=VARCHAR}
+		where 
+			order_id = #{orderId,jdbcType=VARCHAR}
+	</update>
+</mapper>

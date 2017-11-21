@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>停车卡</title>
+
+</head>
+<body ng-controller="parkingCtrl">
+<div class="complaint_user_list">
+    <div class="row" style="margin: 10px">
+        <button class="btn btn-xs">切换</button>
+        <button class="btn btn-xs">切换</button>
+        <button class="btn btn-md col-md-offset-10" ui-sref="index.propertyService.carHome.collectFees">
+            <span class="glyphicon glyphicon-remove"  aria-hidden="true"></span>
+        </button>
+
+    </div>
+<div class="row" style="padding:10px 20px 0;height:392px;">
+    <div class="row">
+        <!--pannel-->
+
+        <div class="col-md-3" style="border: 1px solid gray;margin-left: 15px;">
+            <div>
+                <p>车牌号：</p>
+                <p> 停车位置：</p>
+                <p> 状态：</p>
+            </div>
+        </div>
+
+        <div class="col-md-1"></div>
+        <div class="col-md-3" style="border: 1px solid gray">
+            <div>
+                <p>车牌号：</p>
+                <p> 停车位置：</p>
+                <p> 状态：</p>
+            </div>
+        </div>
+        <!--pannel-->
+    </div>
+
+    <div class="row" style="margin-top: 8px;margin-left:3px;">
+        <div class="col-md-3">状态：<select><option>已完成</option><option>待收费</option></select></div>
+        <div class="col-md-3">编号：1-142692953</div>
+        <div class="col-md-3">创建人：李佳佳</div>
+        <div class="col-md-3">创建时间：2014/3/28下午12:24:55</div>
+    </div>
+
+    <div class="row" style="margin-top: 5px;margin-left:3px;">
+        <div class="col-md-3">行驶证：<select><option>以提供</option></select></div>
+        <div class="col-md-3">工本费：20元</div>
+        <div class="col-md-3">车牌号：<input type="text" placeholder="鄂BNV321" class="input-sm"></div>
+        <div class="col-md-3">停车位置：<input type="text" placeholder="A区02号" class="input-sm"></div>
+    </div>
+
+    <div class="row" style="margin-left:5px;">
+        <div class="col-md-12"><p>备注：</p><textarea rows="4" class="form-control" ng-model="vm.textarea"></textarea></div>
+    </div>
+
+    <div class="row" style="margin-top:20px;margin-bottom: 10px">
+        <div class="col-md-8 col-md-offset-3">
+            <div class="col-md-4">
+                <button class="btn btn-sm btn-default">提交</button>
+            </div>
+            <div class="col-md-4">
+                <button class="btn btn-sm btn-default">取消</button>
+            </div>
+            <div class="col-md-4">
+                <button class="btn btn-sm btn-default">打印</button>
+            </div>
+        </div>
+    </div>
+</div>
+    </div>
+</body>
+<html>

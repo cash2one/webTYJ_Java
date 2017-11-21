@@ -1,0 +1,117 @@
+<!--
+    作者:彭婷婷
+    页面名称:入伙初始化--入伙排班
+    js路径:js/controllers/internalProfession/joinGangInstitution/institutionNext04
+-->
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>入伙初始化的3</title>
+</head>
+<body  ng-controller="institutionNext04Ctrl">
+<!--入伙初始化的3-->
+<div class="container" style="margin:5px;width:99%;">
+    <div class="complaint_user_list">
+        <div class="row pull-right" style="margin: 5px;">
+            <button style="height: 30px;width: 120px" ui-sref="index.internalProfession.joinGangInstitution.historyActivity">完成</button>
+        </div>
+        <table style="width: 60%;margin:50px auto;"class="table-bordered">
+            <tr>
+                <td width="100px"><strong>入伙活动日程</strong></td>
+                <td style="background:#61cd6e">5月1日</td>
+                <td style="background:#80fadf">5月2日</td>
+                <td style="background:#fabf2e">5月3日</td>
+                <td style="text-align: center"><span class="glyphicon glyphicon-plus" ></span></td>
+            </tr>
+
+            <tr>
+                <td style="background:#c3c0b9">桃源居1期</td>
+                <td style="text-align: center"><span class="glyphicon glyphicon-ok" ></span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+
+            <tr>
+                <td style="background:#c3c0b9;text-align: center">1栋</td>
+                <td style="text-align: center"><span class="glyphicon glyphicon-ok" ></span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+
+            <tr>
+                <td style="background:#c3c0b9"><p class="pull-right">1单元</p></td>
+                <td style="text-align: center"><span class="glyphicon glyphicon-ok" ></span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td style="background:#c3c0b9"><p class="pull-right"></p></td>
+                <td style="text-align: center"><span class="glyphicon glyphicon-ok" ></span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+
+            <tr>
+                <td style="background:#c3c0b9">桃源居2期</td>
+                <td></td>
+                <td style="text-align: center"><span class="glyphicon glyphicon-ok" ></span></td>
+                <td></td>
+                <td></td>
+            </tr>
+
+            <tr>
+                <td style="background:#c3c0b9;text-align: center">2栋</td>
+                <td></td>
+                <td style="text-align: center"><span class="glyphicon glyphicon-ok" ></span></td>
+                <td></td>
+                <td></td>
+            </tr>
+
+            <tr>
+                <td style="background:#c3c0b9"><p class="pull-right">1单元</p></td>
+                <td></td>
+                <td style="text-align: center"><span class="glyphicon glyphicon-ok" ></span></td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td style="background:#c3c0b9"><p class="pull-right">2单元</p></td>
+                <td></td>
+                <td style="text-align: center"><span class="glyphicon glyphicon-ok" ></span></td>
+                <td></td>
+                <td></td>
+            </tr>
+
+            <tr>
+                <td style="background:#c3c0b9;text-align: center">3栋</td>
+                <td></td>
+                <td></td>
+                <td style="text-align: center"><span class="glyphicon glyphicon-ok" ></span></td>
+                <td></td>
+            </tr>
+
+            <tr>
+                <td style="background:#c3c0b9"><p class="pull-right">1单元</p></td>
+                <td></td>
+                <td></td>
+                <td style="text-align: center"><span class="glyphicon glyphicon-ok" ></span></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td style="background:#c3c0b9"><p class="pull-right">2单元</p></td>
+                <td></td>
+                <td></td>
+                <td style="text-align: center"><span class="glyphicon glyphicon-ok" ></span></td>
+                <td></td>
+            </tr>
+
+        </table>
+    </div>
+</div>
+</body>
+</html>

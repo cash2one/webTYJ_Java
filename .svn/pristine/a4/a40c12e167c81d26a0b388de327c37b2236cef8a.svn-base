@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>外部专业线全部待完成任务</title>
+</head>
+<body>
+
+<div class="complaint_user_list" style="margin: 10px 10px;">
+    <div class="row" style="margin-top: 10px">
+        <div class="col-md-2">
+            <img src="images/company/3507.png" style="width: 120px;height: 75px;margin-left: 30px">
+        </div>
+        <div class="col-md-10">
+            <div class="row">
+                <div class="col-md-4">质检活动名称：清洁质检001</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="complaint_user_list" style="margin: 10px 10px;height: 400px">
+    <div class="col-lg-4 col-md-4 col-sm-6" style="width: 260px" >
+        <div class="program_panel">
+            <div class="program_panel_info">
+                <div class="col-md-3" style="margin-left: -10px" >
+                    <div style="width: 50px;height: 50px;background-color: #ffffff;margin-top: 10px;padding: 5px">
+                        <h4>任务</h4>
+                    </div>
+                </div>
+                <div class="col-md-8">
+                    <p>质检时间：2015-04-08</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="col-lg-4 col-md-4 col-sm-6" style="width: 260px" >
+        <div class="program_panel">
+            <div class="program_panel_info">
+                <div class="col-md-3" style="margin-left: -10px" >
+                    <div style="width: 50px;height: 50px;background-color: #ffffff;margin-top: 10px;padding: 5px">
+                        <h4>任务</h4>
+                    </div>
+                </div>
+                <div class="col-md-8">
+                    <p>质检时间：2015-04-08</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="col-lg-4 col-md-4 col-sm-6" style="width: 260px" >
+        <div class="program_panel">
+            <div class="program_panel_info">
+                <div class="col-md-3" style="margin-left: -10px" >
+                    <div style="width: 50px;height: 50px;background-color: #ffffff;margin-top: 10px;padding: 5px">
+                        <h4>任务</h4>
+                    </div>
+                </div>
+                <div class="col-md-8">
+                    <p>质检时间：2015-04-08</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-4 col-md-4 col-sm-6" style="width: 260px" >
+        <div class="program_panel">
+            <div class="program_panel_info">
+                <div class="col-md-3" style="margin-left: -10px" >
+                    <div style="width: 50px;height: 50px;background-color: #ffffff;margin-top: 10px;padding: 5px">
+                        <h4>任务</h4>
+                    </div>
+                </div>
+                <div class="col-md-8">
+                    <p>质检时间：2015-04-08</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-lg-4 col-md-4 col-sm-6" style="width: 260px" >
+        <div class="program_panel">
+            <div class="program_panel_info">
+                <div class="col-md-3" style="margin-left: -10px" >
+                    <div style="width: 50px;height: 50px;background-color: #ffffff;margin-top: 10px;padding: 5px">
+                        <h4>任务</h4>
+                    </div>
+                </div>
+                <div class="col-md-8">
+                    <p>质检时间：2015-04-08</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-4 col-md-4 col-sm-6" style="width: 260px" >
+        <div class="program_panel">
+            <div class="program_panel_info">
+                <div class="col-md-3" style="margin-left: -10px" >
+                    <div style="width: 50px;height: 50px;background-color: #ffffff;margin-top: 10px;padding: 5px">
+                        <h4>任务</h4>
+                    </div>
+                </div>
+                <div class="col-md-8">
+                    <p>质检时间：2015-04-08</p>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+</div>
+</body>
+</html>

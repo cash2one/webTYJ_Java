@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>内部专业线里的【重点客户】</title>
+</head>
+<body >
+<<div class="row" style="height: 532px">
+    <div class="table_list">
+        <h4 style="text-align: center"><strong>重点客户</strong></h4>
+        <div class="search_style"><form>
+            <input type="text"   class="search_style_input" ng-model="PersonCust.name" placeholder="请输入搜索条件" />
+            <button type="submit" class="search_style_button" ng-click="searchPaginator._load()">查找</button>
+        </form>
+        </div>
+        <div class="button_group">
+            <a href="#addImpClinet" data-toggle="modal" ng-click="GetPersonCust(0)">增加</a>
+            <a href="#" class="delete" ng-click="deletePersonCust()">删除</a>
+        </div>
+        <table width="100%" border="0" cellpadding="0" cellspacing="0" class="table_style">
+            <tr>
+                <td width="50" align="center" valign="middle" class="table_style_toptd">&nbsp;</td>
+                <td align="center" valign="middle" class="table_style_toptd">姓名</td>
+                <td align="center" valign="middle" class="table_style_toptd">性别</td>
+                <td align="center" valign="middle" class="table_style_toptd">编号</td>
+                <td align="center" valign="middle" class="table_style_toptd">年龄</td>
+                <td align="center" valign="middle" class="table_style_toptd">楼栋</td>
+                <td align="center" valign="middle" class="table_style_toptd">级别</td>
+                <td align="center" valign="middle" class="table_style_toptd">被投诉次数</td>
+                <td align="center" valign="middle" class="table_style_toptd">本月处理事件数</td>
+                <td align="center" valign="middle" class="table_style_toptd">亲和度</td>
+                <td width="50" align="center" valign="middle" class="table_style_toptd">邻里纠纷</td>
+                <td width="50" align="center" valign="middle" class="table_style_toptd">操作</td>
+            </tr>
+ 			<tr ng-repeat="items in searchPaginator.object.personCusts" ng-show="items.custId!=null">
+                <td width="50" align="center" valign="middle"><input type="checkbox" ng-model="items.value"  name="checkbox2" id="checkbox"></td>
+                <td align="center" valign="middle">{{items.name}}</td>
+                <td align="center" valign="middle">{{items.sex}}</td>
+                <td align="center" valign="middle">{{items.custCode}}</td>
+                <td align="center" valign="middle">{{items.age}}岁</td>
+                <td align="center" valign="middle">{{items.building}}</td>
+                <td align="center" valign="middle">{{items.custLevel}}</td>
+                <td align="center" valign="middle">{{items.complaintCount}}次</td>
+                <td align="center" valign="middle">{{items.handleEventCount}}件</td>
+                <td align="center" valign="middle">{{items.affinity}}</td>
+                <td align="center" valign="middle">{{items.neighborhoodDispute}}</td>
+                <td width="50" align="center" valign="middle"><a href="#updateImpClinet" ng-click="GetPersonCust(items.custId)"  data-toggle="modal">修改</a>
+            </tr>
+          
+<!--             <tr>
+                <td width="50" align="center" valign="middle"><input type="checkbox" name="checkbox3" id="checkbox3"></td>
+                <td align="center" valign="middle">胜七</td>
+                <td align="center" valign="middle">女</td>
+                <td align="center" valign="middle">555</td>
+                <td align="center" valign="middle">45岁</td>
+                <td align="center" valign="middle">A5栋101</td>
+                <td align="center" valign="middle">☆☆☆☆☆</td>
+                <td align="center" valign="middle">1次</td>
+                <td align="center" valign="middle">3件</td>
+                <td align="center" valign="middle">泼辣</td>
+                <td align="center" valign="middle">有</td>
+                <td width="50" align="center" valign="middle"><a href="#">修改</a></td>
+            </tr>
+            <tr>
+                <td width="50" align="center" valign="middle"><input type="checkbox" name="checkbox4" id="checkbox4"></td>
+                <td align="center" valign="middle">王老吉</td>
+                <td align="center" valign="middle">男</td>
+                <td align="center" valign="middle">365</td>
+                <td align="center" valign="middle">65岁</td>
+                <td align="center" valign="middle">B3栋609</td>
+                <td align="center" valign="middle">☆</td>
+                <td align="center" valign="middle">0次</td>
+                <td align="center" valign="middle">3次</td>
+                <td align="center" valign="middle">温和</td>
+                <td align="center" valign="middle">无</td>
+                <td width="50" align="center" valign="middle"><a href="#">修改</a></td>
+            </tr>
+            <tr>
+                <td width="50" align="center" valign="middle"><input type="checkbox" name="checkbox5" id="checkbox5"></td>
+                <td align="center" valign="middle">啊西边</td>
+                <td align="center" valign="middle">女</td>
+                <td align="center" valign="middle">369</td>
+                <td align="center" valign="middle">36岁</td>
+                <td align="center" valign="middle">B1栋609</td>
+                <td align="center" valign="middle">☆☆☆</td>
+                <td align="center" valign="middle">0次</td>
+                <td align="center" valign="middle">2次</td>
+                <td align="center" valign="middle">温和</td>
+                <td align="center" valign="middle">无</td>
+                <td width="50" align="center" valign="middle"><a href="#">修改</a></td>
+            </tr>
+            <tr>
+                <td width="50" align="center" valign="middle"><input type="checkbox" name="checkbox6" id="checkbox6"></td>
+                <td align="center" valign="middle">龙太子</td>
+                <td align="center" valign="middle">男</td>
+                <td align="center" valign="middle">859</td>
+                <td align="center" valign="middle">33岁</td>
+                <td align="center" valign="middle">C1栋209</td>
+                <td align="center" valign="middle">☆☆☆</td>
+                <td align="center" valign="middle">2次</td>
+                <td align="center" valign="middle">2次</td>
+                <td align="center" valign="middle">易冲动</td>
+                <td align="center" valign="middle">有</td>
+                <td width="50" align="center" valign="middle"><a href="#">修改</a></td>
+            </tr>
+            <tr>
+                <td width="50" align="center" valign="middle"><input type="checkbox" name="checkbox7" id="checkbox7"></td>
+                <td align="center" valign="middle">飞燕女</td>
+                <td align="center" valign="middle">女</td>
+                <td align="center" valign="middle">574</td>
+                <td align="center" valign="middle">29岁</td>
+                <td align="center" valign="middle">B2栋609</td>
+                <td align="center" valign="middle">☆☆</td>
+                <td align="center" valign="middle">0次</td>
+                <td align="center" valign="middle">3次</td>
+                <td align="center" valign="middle">易生气</td>
+                <td align="center" valign="middle">无</td>
+                <td width="50" align="center" valign="middle"><a href="#">修改</a></td>
+            </tr>
+            <tr>
+                <td width="50" align="center" valign="middle"><input type="checkbox" name="checkbox8" id="checkbox8"></td>
+                <td align="center" valign="middle">英女侠</td>
+                <td align="center" valign="middle">女</td>
+                <td align="center" valign="middle">159</td>
+                <td align="center" valign="middle">38岁</td>
+                <td align="center" valign="middle">A1栋309</td>
+                <td align="center" valign="middle">☆☆☆</td>
+                <td align="center" valign="middle">0次</td>
+                <td align="center" valign="middle">1次</td>
+                <td align="center" valign="middle">刁钻</td>
+                <td align="center" valign="middle">无</td>
+                <td width="50" align="center" valign="middle"><a href="#">修改</a></td>
+            </tr>
+            <tr>
+                <td width="50" align="center" valign="middle"><input type="checkbox" name="checkbox9" id="checkbox9"></td>
+                <td align="center" valign="middle">木木</td>
+                <td align="center" valign="middle">男</td>
+                <td align="center" valign="middle">919</td>
+                <td align="center" valign="middle">36岁</td>
+                <td align="center" valign="middle">D栋402</td>
+                <td align="center" valign="middle">☆</td>
+                <td align="center" valign="middle">0次</td>
+                <td align="center" valign="middle">0次</td>
+                <td align="center" valign="middle">温和</td>
+                <td align="center" valign="middle">无</td>
+                <td width="50" align="center" valign="middle"><a href="#">修改</a></td>
+            </tr>
+            <tr>
+                <td width="50" align="center" valign="middle"><input type="checkbox" name="checkbox10" id="checkbox10"></td>
+                <td align="center" valign="middle">神天兵</td>
+                <td align="center" valign="middle">男</td>
+                <td align="center" valign="middle">469</td>
+                <td align="center" valign="middle">36岁</td>
+                <td align="center" valign="middle">B3栋609</td>
+                <td align="center" valign="middle">☆☆</td>
+                <td align="center" valign="middle">0次</td>
+                <td align="center" valign="middle">2次</td>
+                <td align="center" valign="middle">易激动</td>
+                <td align="center" valign="middle">无</td>
+                <td width="50" align="center" valign="middle"><a href="#">修改</a></td>
+            </tr> -->
+        </table>
+
+        <div ng-include="searchPaginator.templateUrl"></div>
+  
+    <!--分页-->
+    <div class="pagination">
+        <a href="#" ng-show="searchPaginator.hasPrevious()" ng-click="searchPaginator.previous()">上一页</a>
+        <a href="#" ng-repeat="i in searchPaginator.pages"  ng-click="searchPaginator.go(i)" class="number">{{i}}</a>
+        <a href="#" ng-show="searchPaginator.hasNext()" ng-click="searchPaginator.next()">下一页</a>
+    </div>
+    <!--分页 end-->
+
+    </div>
+
+    <!-- 模态框（Modal）增加信息 -->
+    <div class="modal fade" id="addImpClinet" tabindex="-1" role="dialog"
+         aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close"
+                            data-dismiss="modal" aria-hidden="true">
+                        &times;
+                    </button>
+                    <h4 class="modal-title" id="ImpClient" >
+                        增加信息
+                    </h4>
+                </div>
+                <div class="modal-body">
+
+                    <table>
+                        <tbody>
+                        <tr style="height: 40px">
+                            <td class="text-right">姓名：</td>
+                            <td><input type="text" class="input-sm form-control" ng-model="personCust.name">
+
+                            </td>
+                            <td class="text-right">&nbsp;&nbsp;性别：</td>
+                            <td><input type="text" class="input-sm form-control" ng-model="personCust.sex"></td>
+                        </tr>
+
+                        <tr>
+                            <td class="text-right">&nbsp;&nbsp;编号：</td>
+                            <td><input type="text" class="input-sm form-control" ng-model="personCust.custCode"></td>
+                            <td class="text-right">出生日期：</td>
+                            <td><input type="text" class="input-sm form-control" ng-model="personCust.birthday"></td>
+                        </tr>
+
+                        <tr style="height: 40px">
+                            <td class="text-right">&nbsp;&nbsp;楼栋：</td>
+                            <td><input type="text" class="input-sm form-control" ng-model="personCust.building"></td>
+                            <td class="text-right">&nbsp;&nbsp;级别：</td>
+                            <td><!-- <input type="text" class="input-sm form-control" ng-model="personCust.custLevel"> -->
+                                <select class="input-sm form-control" ng-model="personCust.custLevel">
+                                    <option value="☆">☆</option>
+                                    <option value="☆☆">☆☆</option>
+                                    <option value="☆☆☆">☆☆☆</option>
+                                    <option value="☆☆☆☆">☆☆☆☆</option>
+                                    <option value="☆☆☆☆☆">☆☆☆☆☆</option>
+                                </select>
+                            </td>
+                        </tr>
+
+                        <tr style="height: 40px">
+                            <td class="text-right">被投诉次数：</td>
+                            <td><input type="text" class="input-sm form-control" ng-model="personCust.complaintCount"></td>
+                            <td class="text-right">本月处理事件次数：</td>
+                            <td><input type="text" class="input-sm form-control" ng-model="personCust.handleEventCount"></td>
+                        </tr>
+
+                        <tr>
+                            <td class="text-right">&nbsp;&nbsp;亲和度：</td>
+                            <td><input type="text" class="input-sm form-control" ng-model="personCust.affinity"></td>
+                            <td class="text-right">邻里纠纷：</td>
+                            <td><input type="text" class="input-sm form-control" ng-model="personCust.neighborhoodDispute"></td>
+                        </tr>
+
+                        </tbody></table>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default"
+                            data-dismiss="modal">关闭
+                    </button>
+                    <button type="button" class="btn btn-primary" ng-click="AddOrUpdatePersonCust(0)">
+                        确认增加
+                    </button>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal -->
+    </div>
+    <!-- 模态框（Modal）增加信息 -->
+
+    <!-- 模态框（Modal）修改信息 -->
+    <div class="modal fade" id="updateImpClinet" tabindex="-1" role="dialog"
+         aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close"
+                            data-dismiss="modal" aria-hidden="true">
+                        &times;
+                    </button>
+                    <h4 class="modal-title" id="updateImpClient">
+                        	修改信息
+                    </h4>
+                </div>
+                <div class="modal-body">
+
+                    <table>
+                        <tbody>
+                        <tr style="height: 40px">
+                            <td class="text-right">姓名：</td>
+                            <td><input type="text" class="input-sm form-control" ng-model="personCust.name">
+                            	<input type="hidden" class="input-sm form-control" ng-model="personCust.custId">	
+                            </td>
+                            <td class="text-right">&nbsp;&nbsp;性别：</td>
+                            <td><input type="text" class="input-sm form-control" ng-model="personCust.sex"></td>
+                        </tr>
+
+                        <tr>
+                            <td class="text-right">&nbsp;&nbsp;编号：</td>
+                            <td><input type="text" class="input-sm form-control" ng-model="personCust.custCode"></td>
+                            <td class="text-right">出生日期：</td>
+                            <td><input type="text" class="input-sm form-control" ng-model="personCust.birthday "></td>
+                        </tr>
+
+                        <tr style="height: 40px">
+                            <td class="text-right">&nbsp;&nbsp;楼栋：</td>
+                            <td><input type="text" class="input-sm form-control" ng-model="personCust.building"></td>
+                            <td class="text-right">&nbsp;&nbsp;级别：</td>
+                            <td><!-- <input type="text" class="input-sm form-control" ng-model="personCust.custLevel"> -->
+                            		<select class="input-sm form-control" ng-model="personCust.custLevel">
+                            			<option value="☆">☆</option>
+                            			<option value="☆☆">☆☆</option>
+                            			<option value="☆☆☆">☆☆☆</option>
+                            			<option value="☆☆☆☆">☆☆☆☆</option>
+                            			<option value="☆☆☆☆☆">☆☆☆☆☆</option>
+                            		</select>
+                            </td>
+                        </tr>
+
+                        <tr style="height: 40px">
+                            <td class="text-right">被投诉次数：</td>
+                            <td><input type="text" class="input-sm form-control" ng-model="personCust.complaintCount"></td>
+                            <td class="text-right">本月处理事件次数：</td>
+                            <td><input type="text" class="input-sm form-control" ng-model="personCust.handleEventCount"></td>
+                        </tr>
+
+                        <tr>
+                            <td class="text-right">&nbsp;&nbsp;亲和度：</td>
+                            <td><input type="text" class="input-sm form-control" ng-model="personCust.affinity"></td>
+                            <td class="text-right">邻里纠纷：</td>
+                            <td><input type="text" class="input-sm form-control" ng-model="personCust.neighborhoodDispute"></td>
+                        </tr>
+
+                        </tbody></table>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default"
+                            data-dismiss="modal">关闭
+                    </button>
+                    <button type="button" class="btn btn-primary" ng-click="AddOrUpdatePersonCust(personCust.custId)">
+                       	 确认修改
+                    </button>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal -->
+    </div>
+    <!-- 模态框（Modal）修改信息 -->
+
+</div>
+</body>
+</html>

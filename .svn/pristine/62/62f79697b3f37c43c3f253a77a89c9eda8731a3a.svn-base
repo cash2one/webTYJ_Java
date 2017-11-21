@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>查询资产</title>
+</head>
+<body ng-controller="queryPropertyCtrl">
+<div style="margin-top: 2%;margin-left: 4%;">
+    <span>选择专业：</span>&nbsp;&nbsp;&nbsp;
+    <input type="checkbox" id="ch" onclick="check()">强电</label>&nbsp;&nbsp;&nbsp;
+    <input type="checkbox"  onclick="check()">弱电</label>&nbsp;&nbsp;&nbsp;
+    <input type="checkbox"  onclick="check()">家私</label>&nbsp;&nbsp;&nbsp;
+    <input type="checkbox"  onclick="check()">设备</label>&nbsp;&nbsp;&nbsp;
+    <input type="checkbox"  onclick="check()">装修</label>&nbsp;&nbsp;&nbsp;
+    <input type="checkbox"  onclick="check()">土木</label>&nbsp;&nbsp;&nbsp;
+    <input type="checkbox"  onclick="check()">防水</label>&nbsp;&nbsp;&nbsp;
+    <input type="checkbox"  onclick="check()">给水</label>&nbsp;&nbsp;&nbsp;
+    <input type="checkbox"  onclick="check()">排水</label>&nbsp;&nbsp;&nbsp;
+    <input type="checkbox"  onclick="check()">消防</label>&nbsp;&nbsp;&nbsp;
+</div>
+<div style="margin-top: 2%;margin-left: 4%;width: 60%;height: 423px">
+    <table class="table table-bordered" style=";background-color:#ffffff">
+        <tr align="center">
+            <td>专业</td>
+            <td>产品名称</td>
+            <td>规格</td>
+            <td>型号</td>
+            <td>产地</td>
+            <td>创建人</td>
+            <td>创建时间</td>
+        </tr>
+    </table>
+</div>
+</body>
+</html>

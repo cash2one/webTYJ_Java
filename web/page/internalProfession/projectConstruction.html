@@ -1,0 +1,1111 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>项目建筑初始化</title>
+</head>
+<body ng-controller="projectConstructionCtrl">
+<div id="myTabContent"  class="tab-content">
+    <div id="divOne" class="tab-pane fade in active" >
+        <!--右侧内容-->
+        <div class="col-lg-12 col-md-12 col-sm-6">
+            <div class="row architecturepadding">
+                <div class="contract_panner">
+                    <!--合同内容模板列表-->
+                    <div class="row">
+                        <!--专业类型选择表格-->
+                        <div class="col-lg-3 col-md-3 col-sm-6">
+                            <div class="row architecture_padding">
+                                <div class="architecture_list">
+                                    <ul>
+                                        <li class="lithis">建筑列表：
+                                            <div class="professional_list_title_span">
+                                                新增建筑 <a href="#createModal" data-toggle="modal" ><input type="button"  class="added_button" value="新增"></a>
+                                            </div>
+                                            <div class="clear"></div>
+                                        </li>
+
+                                        <a href="#neworlostModal" data-toggle="modal" >
+                                            <li><span class="taarea5">1栋</span>
+                                            <div class="professional_list_title">
+                                                <input type="button"  class="delate_button" value="册除">
+                                            </div>
+                                            <div class="clear"></div>
+                                           </li>
+                                         </a>
+
+                                        <li><span class="taarea5">2栋</span>
+                                            <div class="professional_list_title">
+                                                <input type="button"  class="delate_button" value="册除">
+                                            </div>
+                                            <div class="clear"></div>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        <!--专业类型选择表格结束->
+                        <!--面积属性列表-->
+
+                        <!--使用模态框弹出建筑名称信息-->
+                        <div class="modal fade" id="neworlostModal" role="dialog" aria-label="myModalLabel" aria-hidden="true">
+                            <div class="modal-dialog" style="width:90%">
+                                <div class="modal-content">
+                                    <div class="modal-header" style="height: 50px">
+                                        建筑名称录入
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+
+                                    <div class="modal-body">
+                                            <div class="row scope-padding">
+                                                <div class="architecture_table_border">
+                                                    <div class="architecture_table_title">
+                                                        <span class="architecture_span_left">建筑名称：1栋</span>
+                                                        <span class="architecture_span_right">建筑总面积：</span>
+                                                    </div>
+                                                    <table width="100%" >
+                                                        <tr>
+                                                            <td  width="30%" height="42px" align="center" valign="middle" >
+                                                                <span >面积属性</span>
+                                                            </td>
+                                                            <td  width="20%" height="42px" align="center" valign="middle" >
+                                                                <span >建筑面积</span>
+                                                            </td>
+                                                            <td  width="20%" height="42px" align="center" valign="middle">
+                                                                <span >实用率</span>
+                                                            </td>
+                                                            <td  width="20%" height="42px" align="center" valign="middle">
+                                                                <span >套内面积</span>
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td class="taarea5"  width="30%" height="42px">
+
+                                                            </td>
+                                                            <td  width="20%" height="42px" align="center" valign="middle">
+
+                                                            </td>
+                                                            <td  width="20%" height="42px" align="center" valign="middle">
+
+                                                            </td>
+                                                            <td  width="20%" height="42px" align="center" valign="middle">
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td class="taarea5"  height="42px">
+
+                                                            </td>
+                                                            <td  height="42px" align="center" valign="middle">
+
+                                                            </td>
+                                                            <td  height="42px" align="center" valign="middle">
+
+                                                            </td>
+                                                            <td  height="42px" align="center" valign="middle">
+
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td class="taarea5"   height="42px">
+
+                                                            </td>
+                                                            <td   height="42px" align="center" valign="middle">
+                                                                <span class="red"></span>
+                                                            </td>
+                                                            <td   height="42px" align="center" valign="middle">
+
+                                                            </td>
+                                                            <td   height="42px" align="center" valign="middle">
+                                                            </td>
+                                                        </tr>
+                                                    </table>
+                                                </div>
+                                                <!--<input type="button"  class="authorizationb" value="保存">-->
+                                                <!--<input type="button"  class="authorization_save" value="下一步">-->
+                                                <!--<button type="button"  style="margin-left: 500px;margin-top: 20px" class="btn bg-primary">保存</button> <a href="#divTwo" data-toggle="tab" class="btn" ><button type="button" style="margin-left: 20px;margin-top: 20px" class="btn bg-primary">下一步</button></a>-->
+                                            </div>
+                                    </div>
+                                    <div class="modal-footer">
+                                    <button type="button" class="btn bg-primary" data-dismiss="modal" aria-label="Close">取消</button>
+                                    <button type="button" class="btn bg-primary">保存</button>
+                                        <a href="#divTwo" data-toggle="tab" class="btn" ><button type="button" class="btn bg-primary" data-dismiss="modal">下一步</button></a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal fade" id="createModal" role="dialog" aria-label="myModalLabel" aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header" style="height: 50px">
+                                        新增建筑
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+
+                                    <div class="modal-body">
+                                        <div class="row scope-padding">
+                                            <div class="architecture_table_border">
+                                            <div class="architecture_table_title">
+                                                <span class="architecture_span_left">建筑名称：<input  type="text" style="margin-top: -15px" ng-model="addProjectBuild.buildingName" /></span>
+                                                <span class="architecture_span_right"><input type="button"  class="added_button" value="新增"></span>
+                                            </div>
+                                            <table width="100%" >
+                                                <tr>
+                                                    <td  width="30%" height="42px" align="center" valign="middle" >
+                                                        <span >面积属性</span>
+                                                    </td>
+                                                    <td  width="20%" height="42px" align="center" valign="middle" >
+                                                        <span >建筑面积</span>
+                                                    </td>
+                                                    <td  width="20%" height="42px" align="center" valign="middle">
+                                                        <span >实用率</span>
+                                                    </td>
+                                                    <td  width="20%" height="42px" align="center" valign="middle">
+                                                        <span >套内面积</span>
+                                                    </td>
+                                                    <td>
+                                                        操作
+                                                    </td>
+                                                </tr>
+                                                <tr>
+
+                                                    <td class="taarea5"  width="30%" height="42px">
+                                                        <!--<select  style="width:200px"  ng-options="s.id as s.areaTypeName for s in areaTypes" ng-model="areaTypeName">-->
+                                                        <!--</select>-->
+                                                    </td>
+
+                                                    <td  width="20%" height="42px" align="center" valign="middle" >
+
+                                                    </td>
+                                                    <td  width="20%" height="42px" align="center" valign="middle">
+                                                        <!--实用率录入-->
+
+                                                    </td>
+                                                    <td  width="20%" height="42px" align="center" valign="middle">
+                                                        <!--套内面积数据录入-->
+                                                    </td>
+                                                    <td  width="20%" height="42px" align="center" valign="middle">
+                                                        <a href="#">修改</a><a href="#">删除</a>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="taarea5"  height="42px">
+                                                    </td>
+                                                    <td  height="42px" align="center" valign="middle">
+
+                                                    </td>
+                                                    <td  height="42px" align="center" valign="middle">
+
+                                                    </td>
+                                                    <td  height="42px" align="center" valign="middle">
+
+                                                    </td>
+                                                    <td  width="20%" height="42px" align="center" valign="middle">
+                                                        <a href="#">修改</a><a href="#">删除</a>
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                        </div>
+
+                                            <div class="architecture_table_border">
+                                                <table width="100%" >
+                                                    <tr>
+                                                        <td  width="30%" height="42px" align="center" valign="middle" >
+                                                            <span >面积属性</span>
+                                                        </td>
+                                                        <td  width="20%" height="42px" align="center" valign="middle" >
+                                                            <span >建筑面积</span>
+                                                        </td>
+                                                        <td  width="20%" height="42px" align="center" valign="middle">
+                                                            <span >实用率</span>
+                                                        </td>
+                                                        <td  width="20%" height="42px" align="center" valign="middle">
+                                                            <span >套内面积</span>
+                                                        </td>
+                                                        <td width="20%" height="42px" align="center" valign="middle">
+                                                            操作
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="taarea5"  width="30%" height="42px">
+                                                            <select  style="width:100px">
+                                                            </select>
+                                                        </td>
+
+                                                        <td  width="20%" height="42px" align="center" valign="middle" >
+                                                            <input type="text" style="width: 50px">
+
+                                                        </td>
+                                                        <td  width="20%" height="42px" align="center" valign="middle">
+                                                            <!--实用率录入--><input type="text" style="width: 50px">
+
+                                                        </td>
+                                                        <td  width="20%" height="42px" align="center" valign="middle">
+                                                            <!--套内面积数据录入--><input type="text" style="width: 50px">
+                                                        </td>
+                                                        <td  width="20%" height="42px" align="center" valign="middle">
+                                                            <button type="button">保存</button>
+                                                        </td>
+                                                    </tr>
+                                                </table>
+                                                </div>
+
+
+                                            <!--<input type="button"  class="authorizationb" value="保存">-->
+                                            <!--<input type="button"  class="authorization_save" value="下一步">-->
+                                            <!--<button type="button"  style="margin-left: 500px;margin-top: 20px" class="btn bg-primary">保存</button> <a href="#divTwo" data-toggle="tab" class="btn" ><button type="button" style="margin-left: 20px;margin-top: 20px" class="btn bg-primary">下一步</button></a>-->
+                                        </div>
+
+
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn bg-primary" data-dismiss="modal" aria-label="Close">取消</button>
+                                        <button type="button" class="btn bg-primary" data-dismiss="modal" ng-click="addProject()">保存</button>
+                                        <a href="#divTwo" data-toggle="tab" class="btn" ><button type="button" class="btn bg-primary" data-dismiss="modal">下一步</button></a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!--面积属性列表结束-->
+                    </div>
+                </div>
+                <!--合同内容模表结束-->
+            </div>
+        </div><!--右侧内容结束-->
+    </div>
+
+    <div id="divTwo" class="container tab-pane fade">
+        <!--面积属性列表-->
+        <div class="col-lg-12 col-md-12 col-sm-6">
+            <div class="row create-padding">
+                <div class="create_table_border">
+                    <div class="architecture_table_title">
+                        <span class="architecture_span_left">创建建筑结构：</span>
+                    </div>
+                    <div class="floor_list">
+                        <ul>
+                            <li class="font-left">1栋
+                                <div class="professional_list_title">
+                                    <input type="button"  class="added_button" value="新增">
+                                    <input type="button"  class="delate_button" value="册除">
+                                </div>
+                            </li>
+                            <ul>
+                                <li>1层
+                                    <div class="professional_list_title">
+                                        <input type="button"  class="added_button" value="新增">
+                                        <input type="button"  class="delate_button" value="册除">
+                                    </div>
+                                </li>
+                            </ul>
+                            <li>2栋
+                                <div class="professional_list_title">
+                                    <input type="button"  class="added_button" value="新增">
+                                    <input type="button"  class="delate_button" value="册除">
+                                </div>
+                            </li>
+
+                       </ul>
+                    </div>
+                </div>
+
+                <button type="button"  style="margin-left: 500px;margin-top: 20px" class="btn bg-primary">保存</button><a href="#divThree" data-toggle="tab" class="btn" ><button type="button" style="margin-left: 20px;margin-top: 20px" class="btn bg-primary">下一步</button></a><a href="#divOne" data-toggle="tab" class="btn" ><button type="button" style="margin-top: 20px" class="btn bg-primary">上一步</button></a>
+            </div>
+        </div>
+        <!--面积属性列表结束-->
+
+    </div>
+
+    <div id="divThree" class="container tab-pane fade">
+        <!--面积属性列表-->
+        <div class="col-lg-9 col-md-9 col-sm-6">
+            <div class="row scope-padding">
+                <div class="architecture_table_border">
+                    <div class="architecture_table_title">
+                        <span class="architecture_span_left">住宅面积资产：</span>
+                    </div>
+                    <div class="residential_list">
+                        <table width="100%" >
+                            <tr>
+                                <td  width="18%" height="32px" align="center" valign="middle" >
+                                    <span >区域名称</span>
+                                </td>
+                                <td  width="14%" height="32px" align="center" valign="middle" >
+                                    <span >属性</span>
+                                </td>
+                                <td  width="18%" height="32px" align="center" valign="middle">
+                                    <span >资产编号</span>
+                                </td>
+                                <td  width="18%" height="32px" align="center" valign="middle">
+                                    <span >房屋编号</span>
+                                </td>
+                                <td  width="18%" height="32px" align="center" valign="middle">
+                                    <span >房屋户型</span>
+                                </td>
+                                <td  width="18%" height="32px" align="center" valign="middle">
+                                    <span >套内面积</span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td  width="18%" height="42px" align="left" valign="middle" >
+                                    <span class="taarea3" >1栋</span>
+                                </td>
+                                <td  width="14%" height="32px" align="center" valign="middle" >
+                                    <span ></span>
+                                </td>
+                                <td  width="18%" height="32px" align="center" valign="middle">
+                                    <span ></span>
+                                </td>
+                                <td  width="18%" height="32px" align="center" valign="middle">
+                                    <span ></span>
+                                </td>
+                                <td  width="18%" height="32px" align="center" valign="middle">
+                                    <span ></span>
+                                </td>
+                                <td  width="18%" height="32px" align="center" valign="middle">
+                                    <span ></span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td  width="18%" height="32px" align="left" valign="middle" >
+                                    <span class="taarea5" >1层</span>
+                                </td>
+                                <td  width="14%" height="32px" align="center" valign="middle" >
+                                    <span ></span>
+                                </td>
+                                <td  width="18%" height="32px" align="center" valign="middle">
+                                    <span ></span>
+                                </td>
+                                <td  width="18%" height="32px" align="center" valign="middle">
+                                    <span ></span>
+                                </td>
+                                <td  width="18%" height="32px" align="center" valign="middle">
+                                    <span ></span>
+                                </td>
+                                <td  width="18%" height="32px" align="center" valign="middle">
+                                    <span ></span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td  width="18%" height="32px" align="left" valign="middle" >
+                                    <span  class="taarea15" >101</span>
+                                </td>
+                                <td  width="14%" height="32px" align="center" valign="middle" >
+                                    <span >住宅</span>
+                                </td>
+                                <td  width="18%" height="32px" align="center" valign="middle">
+                                    <span ></span>
+                                </td>
+                                <td  width="18%" height="32px" align="center" valign="middle">
+                                    <span ></span>
+                                </td>
+                                <td  width="18%" height="32px" align="center" valign="middle">
+                                    <span ></span>
+                                </td>
+                                <td  width="18%" height="32px" align="center" valign="middle">
+                                    <span ></span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td  width="18%" height="32px" align="left" valign="middle" >
+                                    <span   class="taarea15">102</span>
+                                </td>
+                                <td  width="14%" height="32px" align="center" valign="middle" >
+                                    <span >住宅</span>
+                                </td>
+                                <td  width="18%" height="32px" align="center" valign="middle">
+                                    <span ></span>
+                                </td>
+                                <td  width="18%" height="32px" align="center" valign="middle">
+                                    <span ></span>
+                                </td>
+                                <td  width="18%" height="32px" align="center" valign="middle">
+                                    <span ></span>
+                                </td>
+                                <td  width="18%" height="32px" align="center" valign="middle">
+                                    <span ></span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td  width="18%" height="32px" align="left" valign="middle" >
+                                    <span class="taarea15">103</span>
+                                </td>
+                                <td  width="14%" height="32px" align="center" valign="middle" >
+                                    <span >住宅</span>
+                                </td>
+                                <td  width="18%" height="32px" align="center" valign="middle">
+                                    <span ></span>
+                                </td>
+                                <td  width="18%" height="32px" align="center" valign="middle">
+                                    <span ></span>
+                                </td>
+                                <td  width="18%" height="32px" align="center" valign="middle">
+                                    <span ></span>
+                                </td>
+                                <td  width="18%" height="32px" align="center" valign="middle">
+                                    <span ></span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td  width="18%" height="32px" align="left" valign="middle" >
+                                    <span class="taarea15">104</span>
+                                </td>
+                                <td  width="14%" height="32px" align="center" valign="middle" >
+                                    <span >住宅</span>
+                                </td>
+                                <td  width="18%" height="32px" align="center" valign="middle">
+                                    <span ></span>
+                                </td>
+                                <td  width="18%" height="32px" align="center" valign="middle">
+                                    <span ></span>
+                                </td>
+                                <td  width="18%" height="32px" align="center" valign="middle">
+                                    <span ></span>
+                                </td>
+                                <td  width="18%" height="32px" align="center" valign="middle">
+                                    <span ></span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td  width="18%" height="32px" align="left" valign="middle" >
+                                    <span class="taarea3">A座</span>
+                                </td>
+                                <td  width="14%" height="32px" align="center" valign="middle" >
+                                    <span ></span>
+                                </td>
+                                <td  width="18%" height="32px" align="center" valign="middle">
+                                    <span ></span>
+                                </td>
+                                <td  width="18%" height="32px" align="center" valign="middle">
+                                    <span ></span>
+                                </td>
+                                <td  width="18%" height="32px" align="center" valign="middle">
+                                    <span ></span>
+                                </td>
+                                <td  width="18%" height="32px" align="center" valign="middle">
+                                    <span ></span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td  width="18%" height="32px" align="left" valign="middle" >
+                                    <span class="taarea5" >1层</span>
+                                </td>
+                                <td  width="14%" height="32px" align="center" valign="middle" >
+                                    <span ></span>
+                                </td>
+                                <td  width="18%" height="32px" align="center" valign="middle">
+                                    <span ></span>
+                                </td>
+                                <td  width="18%" height="32px" align="center" valign="middle">
+                                    <span ></span>
+                                </td>
+                                <td  width="18%" height="32px" align="center" valign="middle">
+                                    <span ></span>
+                                </td>
+                                <td  width="18%" height="32px" align="center" valign="middle">
+                                    <span ></span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td  width="18%" height="32px" align="left" valign="middle" >
+                                    <span  class="taarea15" >101</span>
+                                </td>
+                                <td  width="14%" height="32px" align="center" valign="middle" >
+                                    <span >住宅</span>
+                                </td>
+                                <td  width="18%" height="32px" align="center" valign="middle">
+                                    <span ></span>
+                                </td>
+                                <td  width="18%" height="32px" align="center" valign="middle">
+                                    <span ></span>
+                                </td>
+                                <td  width="18%" height="32px" align="center" valign="middle">
+                                    <span ></span>
+                                </td>
+                                <td  width="18%" height="32px" align="center" valign="middle">
+                                    <span ></span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td  width="18%" height="32px" align="left" valign="middle" >
+                                    <span   class="taarea15">102</span>
+                                </td>
+                                <td  width="14%" height="32px" align="center" valign="middle" >
+                                    <span >住宅</span>
+                                </td>
+                                <td  width="18%" height="32px" align="center" valign="middle">
+                                    <span ></span>
+                                </td>
+                                <td  width="18%" height="32px" align="center" valign="middle">
+                                    <span ></span>
+                                </td>
+                                <td  width="18%" height="32px" align="center" valign="middle">
+                                    <span ></span>
+                                </td>
+                                <td  width="18%" height="32px" align="center" valign="middle">
+                                    <span ></span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td  width="18%" height="32px" align="left" valign="middle" >
+                                    <span class="taarea15">103</span>
+                                </td>
+                                <td  width="14%" height="32px" align="center" valign="middle" >
+                                    <span >住宅</span>
+                                </td>
+                                <td  width="18%" height="32px" align="center" valign="middle">
+                                    <span ></span>
+                                </td>
+                                <td  width="18%" height="32px" align="center" valign="middle">
+                                    <span ></span>
+                                </td>
+                                <td  width="18%" height="32px" align="center" valign="middle">
+                                    <span ></span>
+                                </td>
+                                <td  width="18%" height="32px" align="center" valign="middle">
+                                    <span ></span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td  width="18%" height="32px" align="left" valign="middle" >
+                                    <span class="taarea15">104</span>
+                                </td>
+                                <td  width="14%" height="32px" align="center" valign="middle" >
+                                    <span >住宅</span>
+                                </td>
+                                <td  width="18%" height="32px" align="center" valign="middle">
+                                    <span ></span>
+                                </td>
+                                <td  width="18%" height="32px" align="center" valign="middle">
+                                    <span ></span>
+                                </td>
+                                <td  width="18%" height="32px" align="center" valign="middle">
+                                    <span ></span>
+                                </td>
+                                <td  width="18%" height="32px" align="center" valign="middle">
+                                    <span ></span>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="row scope-padding">
+                <div class="architecture_table_border">
+                    <div class="architecture_table_title">
+                        <span class="architecture_span_left">导入数据：</span>
+                        <input type="button"  class="import_botton" value="导入">
+                    </div>
+                    <div class="residential_list">
+                        <table width="100%" >
+                            <tr>
+                                <td  width="18%" height="32px" align="center" valign="middle" >
+                                    <span >区域名称</span>
+                                </td>
+                                <td  width="14%" height="32px" align="center" valign="middle" >
+                                    <span >属性</span>
+                                </td>
+                                <td  width="18%" height="32px" align="center" valign="middle">
+                                    <span >资产编号</span>
+                                </td>
+                                <td  width="18%" height="32px" align="center" valign="middle">
+                                    <span >房屋编号</span>
+                                </td>
+                                <td  width="18%" height="32px" align="center" valign="middle">
+                                    <span >房屋户型</span>
+                                </td>
+                                <td  width="18%" height="32px" align="center" valign="middle">
+                                    <span >套内面积</span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td  width="18%" height="32px" align="center" valign="middle" >
+                                    <span ></span>
+                                </td>
+                                <td  width="14%" height="32px" align="center" valign="middle" >
+                                    <span ></span>
+                                </td>
+                                <td  width="18%" height="32px" align="center" valign="middle">
+                                    <span ></span>
+                                </td>
+                                <td  width="18%" height="32px" align="center" valign="middle">
+                                    <span ></span>
+                                </td>
+                                <td  width="18%" height="32px" align="center" valign="middle">
+                                    <span ></span>
+                                </td>
+                                <td  width="18%" height="32px" align="center" valign="middle">
+                                    <span ></span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td  width="18%" height="32px" align="center" valign="middle" >
+                                    <span ></span>
+                                </td>
+                                <td  width="14%" height="32px" align="center" valign="middle" >
+                                    <span ></span>
+                                </td>
+                                <td  width="18%" height="32px" align="center" valign="middle">
+                                    <span ></span>
+                                </td>
+                                <td  width="18%" height="32px" align="center" valign="middle">
+                                    <span ></span>
+                                </td>
+                                <td  width="18%" height="32px" align="center" valign="middle">
+                                    <span ></span>
+                                </td>
+                                <td  width="18%" height="32px" align="center" valign="middle">
+                                    <span ></span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td  width="18%" height="32px" align="center" valign="middle" >
+                                    <span ></span>
+                                </td>
+                                <td  width="14%" height="32px" align="center" valign="middle" >
+                                    <span ></span>
+                                </td>
+                                <td  width="18%" height="32px" align="center" valign="middle">
+                                    <span ></span>
+                                </td>
+                                <td  width="18%" height="32px" align="center" valign="middle">
+                                    <span ></span>
+                                </td>
+                                <td  width="18%" height="32px" align="center" valign="middle">
+                                    <span ></span>
+                                </td>
+                                <td  width="18%" height="32px" align="center" valign="middle">
+                                    <span ></span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td  width="18%" height="32px" align="center" valign="middle" >
+                                    <span ></span>
+                                </td>
+                                <td  width="14%" height="32px" align="center" valign="middle" >
+                                    <span ></span>
+                                </td>
+                                <td  width="18%" height="32px" align="center" valign="middle">
+                                    <span ></span>
+                                </td>
+                                <td  width="18%" height="32px" align="center" valign="middle">
+                                    <span ></span>
+                                </td>
+                                <td  width="18%" height="32px" align="center" valign="middle">
+                                    <span ></span>
+                                </td>
+                                <td  width="18%" height="32px" align="center" valign="middle">
+                                    <span ></span>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <button type="button"  style="margin-left: 500px;margin-top: 20px" class="btn bg-primary">保存</button><a href="#divFour" data-toggle="tab" class="btn" ><button type="button" style="margin-left: 20px;margin-top: 20px" class="btn bg-primary">下一步</button></a><a href="#divTwo" data-toggle="tab" class="btn" ><button type="button" style="margin-top: 20px" class="btn bg-primary">上一步</button></a>
+        </div>
+        <!--面积属性列表结束-->
+
+    </div>
+
+    <div id="divFour" class="container tab-pane fade">
+        <!--面积属性列表-->
+        <div class="col-lg-9 col-md-9 col-sm-6">
+            <div class="row scope-padding">
+                <div class="architecture_table_border">
+                    <div class="architecture_table_title">
+                        <span class="architecture_span_left">住宅面积资产：</span>
+                    </div>
+                    <div class="residential_list">
+                        <table width="100%" >
+                            <tr>
+                                <td  width="18%" height="32px" align="center" valign="middle" >
+                                    <span >区域名称</span>
+                                </td>
+                                <td  width="14%" height="32px" align="center" valign="middle" >
+                                    <span >属性</span>
+                                </td>
+                                <td  width="18%" height="32px" align="center" valign="middle">
+                                    <span >资产编号</span>
+                                </td>
+                                <td  width="18%" height="32px" align="center" valign="middle">
+                                    <span >房屋编号</span>
+                                </td>
+                                <td  width="18%" height="32px" align="center" valign="middle">
+                                    <span >房屋户型</span>
+                                </td>
+                                <td  width="18%" height="32px" align="center" valign="middle">
+                                    <span >套内面积</span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td  width="18%" height="42px" align="left" valign="middle" >
+                                    <span class="taarea3" >A座</span>
+                                </td>
+                                <td  width="14%" height="32px" align="center" valign="middle" >
+                                    <span ></span>
+                                </td>
+                                <td  width="18%" height="32px" align="center" valign="middle">
+                                    <span ></span>
+                                </td>
+                                <td  width="18%" height="32px" align="center" valign="middle">
+                                    <span ></span>
+                                </td>
+                                <td  width="18%" height="32px" align="center" valign="middle">
+                                    <span ></span>
+                                </td>
+                                <td  width="18%" height="32px" align="center" valign="middle">
+                                    <span ></span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td  width="18%" height="32px" align="left" valign="middle" >
+                                    <span class="taarea5" >1层</span>
+                                </td>
+                                <td  width="14%" height="32px" align="center" valign="middle" >
+                                    <span ></span>
+                                </td>
+                                <td  width="18%" height="32px" align="center" valign="middle">
+                                    <span ></span>
+                                </td>
+                                <td  width="18%" height="32px" align="center" valign="middle">
+                                    <span ></span>
+                                </td>
+                                <td  width="18%" height="32px" align="center" valign="middle">
+                                    <span ></span>
+                                </td>
+                                <td  width="18%" height="32px" align="center" valign="middle">
+                                    <span ></span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td  width="18%" height="32px" align="left" valign="middle" >
+                                    <span  class="taarea15" >101</span>
+                                </td>
+                                <td  width="14%" height="32px" align="center" valign="middle" >
+                                    <span >车位</span>
+                                </td>
+                                <td  width="18%" height="32px" align="center" valign="middle">
+                                    <span ></span>
+                                </td>
+                                <td  width="18%" height="32px" align="center" valign="middle">
+                                    <span ></span>
+                                </td>
+                                <td  width="18%" height="32px" align="center" valign="middle">
+                                    <span ></span>
+                                </td>
+                                <td  width="18%" height="32px" align="center" valign="middle">
+                                    <span ></span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td  width="18%" height="32px" align="left" valign="middle" >
+                                    <span   class="taarea15">102</span>
+                                </td>
+                                <td  width="14%" height="32px" align="center" valign="middle" >
+                                    <span >车位</span>
+                                </td>
+                                <td  width="18%" height="32px" align="center" valign="middle">
+                                    <span ></span>
+                                </td>
+                                <td  width="18%" height="32px" align="center" valign="middle">
+                                    <span ></span>
+                                </td>
+                                <td  width="18%" height="32px" align="center" valign="middle">
+                                    <span ></span>
+                                </td>
+                                <td  width="18%" height="32px" align="center" valign="middle">
+                                    <span ></span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td  width="18%" height="32px" align="left" valign="middle" >
+                                    <span class="taarea15">103</span>
+                                </td>
+                                <td  width="14%" height="32px" align="center" valign="middle" >
+                                    <span >车位</span>
+                                </td>
+                                <td  width="18%" height="32px" align="center" valign="middle">
+                                    <span ></span>
+                                </td>
+                                <td  width="18%" height="32px" align="center" valign="middle">
+                                    <span ></span>
+                                </td>
+                                <td  width="18%" height="32px" align="center" valign="middle">
+                                    <span ></span>
+                                </td>
+                                <td  width="18%" height="32px" align="center" valign="middle">
+                                    <span ></span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td  width="18%" height="32px" align="left" valign="middle" >
+                                    <span class="taarea15">104</span>
+                                </td>
+                                <td  width="14%" height="32px" align="center" valign="middle" >
+                                    <span >车位</span>
+                                </td>
+                                <td  width="18%" height="32px" align="center" valign="middle">
+                                    <span ></span>
+                                </td>
+                                <td  width="18%" height="32px" align="center" valign="middle">
+                                    <span ></span>
+                                </td>
+                                <td  width="18%" height="32px" align="center" valign="middle">
+                                    <span ></span>
+                                </td>
+                                <td  width="18%" height="32px" align="center" valign="middle">
+                                    <span ></span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td  width="18%" height="32px" align="left" valign="middle" >
+                                    <span class="taarea3">A座</span>
+                                </td>
+                                <td  width="14%" height="32px" align="center" valign="middle" >
+                                    <span ></span>
+                                </td>
+                                <td  width="18%" height="32px" align="center" valign="middle">
+                                    <span ></span>
+                                </td>
+                                <td  width="18%" height="32px" align="center" valign="middle">
+                                    <span ></span>
+                                </td>
+                                <td  width="18%" height="32px" align="center" valign="middle">
+                                    <span ></span>
+                                </td>
+                                <td  width="18%" height="32px" align="center" valign="middle">
+                                    <span ></span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td  width="18%" height="32px" align="left" valign="middle" >
+                                    <span class="taarea5" >1层</span>
+                                </td>
+                                <td  width="14%" height="32px" align="center" valign="middle" >
+                                    <span ></span>
+                                </td>
+                                <td  width="18%" height="32px" align="center" valign="middle">
+                                    <span ></span>
+                                </td>
+                                <td  width="18%" height="32px" align="center" valign="middle">
+                                    <span ></span>
+                                </td>
+                                <td  width="18%" height="32px" align="center" valign="middle">
+                                    <span ></span>
+                                </td>
+                                <td  width="18%" height="32px" align="center" valign="middle">
+                                    <span ></span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td  width="18%" height="32px" align="left" valign="middle" >
+                                    <span  class="taarea15" >101</span>
+                                </td>
+                                <td  width="14%" height="32px" align="center" valign="middle" >
+                                    <span >车位</span>
+                                </td>
+                                <td  width="18%" height="32px" align="center" valign="middle">
+                                    <span ></span>
+                                </td>
+                                <td  width="18%" height="32px" align="center" valign="middle">
+                                    <span ></span>
+                                </td>
+                                <td  width="18%" height="32px" align="center" valign="middle">
+                                    <span ></span>
+                                </td>
+                                <td  width="18%" height="32px" align="center" valign="middle">
+                                    <span ></span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td  width="18%" height="32px" align="left" valign="middle" >
+                                    <span   class="taarea15">102</span>
+                                </td>
+                                <td  width="14%" height="32px" align="center" valign="middle" >
+                                    <span >车位</span>
+                                </td>
+                                <td  width="18%" height="32px" align="center" valign="middle">
+                                    <span ></span>
+                                </td>
+                                <td  width="18%" height="32px" align="center" valign="middle">
+                                    <span ></span>
+                                </td>
+                                <td  width="18%" height="32px" align="center" valign="middle">
+                                    <span ></span>
+                                </td>
+                                <td  width="18%" height="32px" align="center" valign="middle">
+                                    <span ></span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td  width="18%" height="32px" align="left" valign="middle" >
+                                    <span class="taarea15">103</span>
+                                </td>
+                                <td  width="14%" height="32px" align="center" valign="middle" >
+                                    <span >车位</span>
+                                </td>
+                                <td  width="18%" height="32px" align="center" valign="middle">
+                                    <span ></span>
+                                </td>
+                                <td  width="18%" height="32px" align="center" valign="middle">
+                                    <span ></span>
+                                </td>
+                                <td  width="18%" height="32px" align="center" valign="middle">
+                                    <span ></span>
+                                </td>
+                                <td  width="18%" height="32px" align="center" valign="middle">
+                                    <span ></span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td  width="18%" height="32px" align="left" valign="middle" >
+                                    <span class="taarea15">104</span>
+                                </td>
+                                <td  width="14%" height="32px" align="center" valign="middle" >
+                                    <span >车位</span>
+                                </td>
+                                <td  width="18%" height="32px" align="center" valign="middle">
+                                    <span ></span>
+                                </td>
+                                <td  width="18%" height="32px" align="center" valign="middle">
+                                    <span ></span>
+                                </td>
+                                <td  width="18%" height="32px" align="center" valign="middle">
+                                    <span ></span>
+                                </td>
+                                <td  width="18%" height="32px" align="center" valign="middle">
+                                    <span ></span>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="row scope-padding">
+                <div class="architecture_table_border">
+                    <div class="architecture_table_title">
+                        <span class="architecture_span_left">导入数据：</span>
+                        <input type="button"  class="import_botton" value="导入">
+                    </div>
+                    <div class="residential_list">
+                        <table width="100%" >
+                            <tr>
+                                <td  width="18%" height="32px" align="center" valign="middle" >
+                                    <span >区域名称</span>
+                                </td>
+                                <td  width="14%" height="32px" align="center" valign="middle" >
+                                    <span >属性</span>
+                                </td>
+                                <td  width="18%" height="32px" align="center" valign="middle">
+                                    <span >资产编号</span>
+                                </td>
+                                <td  width="18%" height="32px" align="center" valign="middle">
+                                    <span >房屋编号</span>
+                                </td>
+                                <td  width="18%" height="32px" align="center" valign="middle">
+                                    <span >房屋户型</span>
+                                </td>
+                                <td  width="18%" height="32px" align="center" valign="middle">
+                                    <span >套内面积</span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td  width="18%" height="32px" align="center" valign="middle" >
+                                    <span ></span>
+                                </td>
+                                <td  width="14%" height="32px" align="center" valign="middle" >
+                                    <span ></span>
+                                </td>
+                                <td  width="18%" height="32px" align="center" valign="middle">
+                                    <span ></span>
+                                </td>
+                                <td  width="18%" height="32px" align="center" valign="middle">
+                                    <span ></span>
+                                </td>
+                                <td  width="18%" height="32px" align="center" valign="middle">
+                                    <span ></span>
+                                </td>
+                                <td  width="18%" height="32px" align="center" valign="middle">
+                                    <span ></span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td  width="18%" height="32px" align="center" valign="middle" >
+                                    <span ></span>
+                                </td>
+                                <td  width="14%" height="32px" align="center" valign="middle" >
+                                    <span ></span>
+                                </td>
+                                <td  width="18%" height="32px" align="center" valign="middle">
+                                    <span ></span>
+                                </td>
+                                <td  width="18%" height="32px" align="center" valign="middle">
+                                    <span ></span>
+                                </td>
+                                <td  width="18%" height="32px" align="center" valign="middle">
+                                    <span ></span>
+                                </td>
+                                <td  width="18%" height="32px" align="center" valign="middle">
+                                    <span ></span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td  width="18%" height="32px" align="center" valign="middle" >
+                                    <span ></span>
+                                </td>
+                                <td  width="14%" height="32px" align="center" valign="middle" >
+                                    <span ></span>
+                                </td>
+                                <td  width="18%" height="32px" align="center" valign="middle">
+                                    <span ></span>
+                                </td>
+                                <td  width="18%" height="32px" align="center" valign="middle">
+                                    <span ></span>
+                                </td>
+                                <td  width="18%" height="32px" align="center" valign="middle">
+                                    <span ></span>
+                                </td>
+                                <td  width="18%" height="32px" align="center" valign="middle">
+                                    <span ></span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td  width="18%" height="32px" align="center" valign="middle" >
+                                    <span ></span>
+                                </td>
+                                <td  width="14%" height="32px" align="center" valign="middle" >
+                                    <span ></span>
+                                </td>
+                                <td  width="18%" height="32px" align="center" valign="middle">
+                                    <span ></span>
+                                </td>
+                                <td  width="18%" height="32px" align="center" valign="middle">
+                                    <span ></span>
+                                </td>
+                                <td  width="18%" height="32px" align="center" valign="middle">
+                                    <span ></span>
+                                </td>
+                                <td  width="18%" height="32px" align="center" valign="middle">
+                                    <span ></span>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <button type="button"  style="margin-left: 500px;margin-top: 20px" class="btn bg-primary">保存</button><a href="#" data-toggle="tab" class="btn" ><button type="button" style="margin-left: 20px;margin-top: 20px" class="btn bg-primary">下一步</button></a><a href="#divTwo" data-toggle="tab" class="btn" ><button type="button" style="margin-top: 20px" class="btn bg-primary">上一步</button></a>
+        </div>
+        <!--面积属性列表结束-->
+
+    </div>
+
+
+</div>
+</body>
+</html>

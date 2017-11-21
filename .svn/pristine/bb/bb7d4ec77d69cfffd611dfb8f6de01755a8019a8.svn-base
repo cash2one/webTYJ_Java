@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.flf.mapper.ChargeItemNewBuildingMapper" >
+  <resultMap id="BaseResultMap" type="com.flf.entity.ChargeItemNewBuilding" >
+    <id column="charge_item_new_building_id" property="chargeItemNewBuildingId" jdbcType="VARCHAR" />
+    <result column="charge_item_new_id" property="chargeItemNewId" jdbcType="VARCHAR" />
+    <result column="building_id" property="buildingId" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    charge_item_new_building_id, charge_item_new_id, building_id
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from tc_charge_item_new_building
+    where charge_item_new_building_id = #{chargeItemNewBuildingId,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from tc_charge_item_new_building
+    where charge_item_new_building_id = #{chargeItemNewBuildingId,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.flf.entity.ChargeItemNewBuilding" >
+    insert into tc_charge_item_new_building (charge_item_new_building_id, charge_item_new_id, 
+      building_id)
+    values (#{chargeItemNewBuildingId,jdbcType=VARCHAR}, #{chargeItemNewId,jdbcType=VARCHAR}, 
+      #{buildingId,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.flf.entity.ChargeItemNewBuilding" >
+    insert into tc_charge_item_new_building
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="chargeItemNewBuildingId != null" >
+        charge_item_new_building_id,
+      </if>
+      <if test="chargeItemNewId != null" >
+        charge_item_new_id,
+      </if>
+      <if test="buildingId != null" >
+        building_id,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="chargeItemNewBuildingId != null" >
+        #{chargeItemNewBuildingId,jdbcType=VARCHAR},
+      </if>
+      <if test="chargeItemNewId != null" >
+        #{chargeItemNewId,jdbcType=VARCHAR},
+      </if>
+      <if test="buildingId != null" >
+        #{buildingId,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.flf.entity.ChargeItemNewBuilding" >
+    update tc_charge_item_new_building
+    <set >
+      <if test="chargeItemNewId != null" >
+        charge_item_new_id = #{chargeItemNewId,jdbcType=VARCHAR},
+      </if>
+      <if test="buildingId != null" >
+        building_id = #{buildingId,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where charge_item_new_building_id = #{chargeItemNewBuildingId,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.flf.entity.ChargeItemNewBuilding" >
+    update tc_charge_item_new_building
+    set charge_item_new_id = #{chargeItemNewId,jdbcType=VARCHAR},
+      building_id = #{buildingId,jdbcType=VARCHAR}
+    where charge_item_new_building_id = #{chargeItemNewBuildingId,jdbcType=VARCHAR}
+  </update>
+  <select id="listAllChargeItemNewBuilding" parameterType="com.flf.entity.ChargeItemNewBuilding" resultMap="BaseResultMap">
+  	select * from tc_charge_item_new_building where 1=1
+  	<if test="chargeItemNewId != null" >
+  	 	and charge_item_new_id = #{chargeItemNewId}
+  	</if>
+  </select>
+  
+   <insert id="insertBatch" useGeneratedKeys="true" parameterType="java.util.List">  
+     insert into tc_charge_item_new_building (charge_item_new_building_id,charge_item_new_id,building_id)   
+     values  
+     <foreach collection="list" item="item" index="index" separator="," >  
+         (#{item.chargeItemNewBuildingId},#{item.chargeItemNewId},#{item.buildingId})  
+     </foreach>  
+   </insert>  
+   
+   <select id="getTotalArea" resultMap="BaseResultMap" parameterType="java.util.List" >
+   		select SUM(building_area) from tc_building_structure where id in(
+   		<foreach collection="list" item="item" index="index" separator="," >  
+         #{item.id}
+     	</foreach>  
+     	)  
+   </select>
+  
+</mapper>

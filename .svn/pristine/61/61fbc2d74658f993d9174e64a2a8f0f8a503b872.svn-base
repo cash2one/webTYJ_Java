@@ -1,0 +1,814 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD SQL Map Config 3.0//EN"  
+	"http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+	<typeAliases>
+        <typeAlias type="com.flf.entity.UnionpayCounterofferTotal" alias="UnionpayCounterofferTotal"/>
+	    <typeAlias type="com.flf.entity.UnionpayCounterofferDetai" alias="UnionpayCounterofferDetai"/>
+	    <typeAlias type="com.flf.entity.UnionpayCollectionDetail" alias="UnionpayCollectionDetail"/>
+        <typeAlias type="com.flf.entity.UnionpayCollectionTotall" alias="UnionpayCollectionTotall"/>
+		<typeAlias type="com.flf.entity.Info" alias="Info" />
+		<typeAlias type="com.flf.entity.Menu" alias="Menu" />
+		<typeAlias type="com.flf.entity.User" alias="User" />
+		<typeAlias type="com.flf.entity.Role" alias="Role" />
+		<typeAlias type="com.flf.entity.Page" alias="Page" />
+		<typeAlias type="com.flf.entity.GiftArticle" alias="GiftArticle" />
+		<typeAlias type="com.flf.entity.Gift" alias="Gift" />
+		<typeAlias type="com.flf.entity.IntakeActivity" alias="IntakeActivity" />
+		<typeAlias type="com.flf.entity.IntakeActivityRelation"
+			alias="IntakeActivityRelation" />
+		<typeAlias type="com.flf.entity.IntakeGiftRelation" alias="IntakeGiftRelation" />
+		<!-- 项目计费表-->
+		<typeAlias type="com.flf.entity.ProjectBilling" alias="ProjectBilling" />
+		<!-- 收费类型项目计费表 -->
+		<typeAlias type="com.flf.entity.ChargeTypeProjectBilling" alias="ChargeTypeProjectBilling" />
+		<!-- 收费类型建筑计费表-->
+		<typeAlias type="com.flf.entity.ChargeTypeBuildingBilling" alias="ChargeTypeBuildingBilling" />
+		<!-- 收费类型详情建筑计费表-->
+		<typeAlias type="com.flf.entity.ChargeTypeDetailsBuildingBilling" alias="ChargeTypeDetailsBuildingBilling" />
+		<!-- 计费记录表-->
+		<typeAlias type="com.flf.entity.BillingRecord" alias="BillingRecord" />
+		<!-- 账单表 -->
+		<typeAlias type="com.flf.entity.Bill" alias="Bill" />
+		<!-- 收支明细表 -->
+		<typeAlias type="com.flf.entity.PaymentDetails" alias="PaymentDetails" />
+		<!-- 账单收支明细关系表 -->
+		<typeAlias type="com.flf.entity.BillPaymentRelation" alias="BillPaymentRelation" />
+		<!-- 资产账户表 -->
+		<typeAlias type="com.flf.entity.AssetAccount" alias="AssetAccount" />
+		<!-- 账户关系表 -->
+		<typeAlias type="com.flf.entity.AccountRelation" alias="AccountRelation" />
+		<!-- 账户表 -->
+		<typeAlias type="com.flf.entity.Account" alias="Account" />
+		<!-- 计费方案下收费项目 -->
+		<typeAlias type="com.flf.entity.ChargeItemNew" alias="ChargeItemNew" />
+		<!-- 收费项目详情 -->
+		<typeAlias type="com.flf.entity.ChargeItemNewDetails" alias="ChargeItemNewDetails" />
+		<!-- 收费项目建筑关系表 -->
+		<typeAlias type="com.flf.entity.ChargeItemNewBuilding" alias="ChargeItemNewBuilding" />
+		<!-- 收费类型表 -->
+		<typeAlias type="com.flf.entity.ChargeType" alias="ChargeType"/>
+		<!-- 收费类型详情表 -->
+		<typeAlias type="com.flf.entity.ChargeTypeDetails" alias="ChargeTypeDetails"/>
+		<!-- 条件表 -->
+		<typeAlias type="com.flf.entity.Condition" alias="Condition" />
+		<!-- 常量表 -->
+		<typeAlias type="com.flf.entity.Constant" alias="Constant" />
+		<!-- 公式表 -->
+		<typeAlias type="com.flf.entity.Formula" alias="Formula" />
+		<!-- 方案表 -->
+		<typeAlias type="com.flf.entity.Scheme" alias="Scheme" />
+		<!-- 方案详情关系表 -->
+		<typeAlias type="com.flf.entity.SchemeDatails" alias="SchemeDatails" />
+		<!-- 交账记录表 -->
+		<typeAlias type="com.flf.entity.AccountRecord" alias="AccountRecord" />
+		<!-- 预收款明细表 -->
+		<typeAlias type="com.flf.entity.AdvancePaymentsDetails" alias="AdvancePaymentsDetails" />
+		<!-- 资产账户表 -->
+		<typeAlias type="com.flf.entity.AssetAccountDetail" alias="AssetAccountDetail" />
+		<!-- 抄表投诉 -->
+		<typeAlias type="com.flf.entity.MeterReadingComplaints"
+			alias="MeterReadingComplaints" />
+		<!-- 抄表计划 -->
+		<typeAlias type="com.flf.entity.MeterReadingProgram" alias="MeterReadingProgram" />
+		<!-- 抄表数据 -->
+		<typeAlias type="com.flf.entity.MeterReadingData" alias="MeterReadingData" />
+		<!-- 水表类型 -->
+		<typeAlias type="com.flf.entity.WaterMeterTypes" alias="WaterMeterTypes" />
+		<!-- 水表建筑工单关联-->
+		<typeAlias type="com.flf.entity.WaterBuildingOrder" alias="WaterBuildingOrder" />
+		<!-- 水表 -->
+		<typeAlias type="com.flf.entity.WaterMeter" alias="WaterMeter" />
+		<!-- 水表使用记录 -->
+		<typeAlias type="com.flf.entity.WaterMeterRecords" alias="WaterMeterRecords" />
+		<!-- 抄表计划关系表 -->
+		<typeAlias type="com.flf.entity.WaterMeterProject" alias="WaterMeterProject" />
+	    <!-- 抄表计划与建筑关系表 -->
+		<typeAlias type="com.flf.entity.PlanLinkBuildingStructure" alias="PlanLinkBuildingStructure" />
+		<!-- 抄表执行结果表 -->
+		<typeAlias type="com.flf.entity.MeterReadingResults" alias="MeterReadingResults" />
+        <!-- 修正数据 -->
+		<typeAlias type="com.flf.entity.CorrectedReading" alias="CorrectedReading" />
+		<!-- 电表抄表投诉 -->
+		<typeAlias type="com.flf.entity.ElectricityMeterReadingComplaints"
+			alias="ElectricityMeterReadingComplaints" />
+		<!-- 电表抄表计划 -->
+		<typeAlias type="com.flf.entity.ElectricityMeterReadingProgram"
+			alias="ElectricityMeterReadingProgram" />
+		<!-- 电表抄表数据 -->
+		<typeAlias type="com.flf.entity.ElectricityMeterReadingData"
+			alias="ElectricityMeterReadingData" />
+		<!-- 电表类型 -->
+		<typeAlias type="com.flf.entity.ElectricityMeterTypes"
+			alias="ElectricityMeterTypes" />
+		<!-- 电表 -->
+		<typeAlias type="com.flf.entity.ElectricityMeter" alias="ElectricityMeter" />
+		<!-- 电表使用记录 -->
+		<typeAlias type="com.flf.entity.ElectricityMeterRecords"
+			alias="ElectricityMeterRecords" />
+		<!-- 电表抄表计划关系表 -->
+		<typeAlias type="com.flf.entity.ElectricityMeterProject"
+			alias="ElectricityMeterProject" />
+			<!-- 失效单 -->
+		<typeAlias type="com.flf.entity.ClosedOrders"
+			alias="ClosedOrders" />
+		<typeAlias type="com.flf.entity.ArchitectureNew" alias="ArchitectureNew" />
+		<typeAlias type="com.flf.entity.AreaNew" alias="AreaNew" />
+		<typeAlias type="com.flf.entity.AreaTypeNew" alias="AreaTypeNew" />
+		<typeAlias type="com.flf.entity.BuildingNew" alias="BuildingNew" />
+		<typeAlias type="com.flf.request.Tree" alias="Tree" />
+		<typeAlias type="com.flf.entity.BuildingStructureNew" alias="BuildingStructureNew" />
+		<typeAlias type="com.flf.entity.Sipmanage" alias="Sipmanage" />
+		<typeAlias type="com.flf.entity.HouseNew" alias="HouseNew" />
+		<typeAlias type="com.flf.entity.EnterpriseCustNew" alias="EnterpriseCustNew" />
+		<typeAlias type="com.flf.entity.PersonCustNew" alias="PersonCustNew" />
+		<typeAlias type="com.flf.entity.PersonBuildingNew" alias="PersonBuildingNew" />
+		<typeAlias type="com.flf.entity.PooledNew" alias="PooledNew" />
+		<typeAlias type="com.flf.entity.PersonEmphasis" alias="PersonEmphasis" />
+		<typeAlias type="com.flf.entity.PersonVip" alias="PersonVip" />
+		<typeAlias type="com.flf.entity.RegionNew" alias="RegionNew" />
+		<typeAlias type="com.flf.entity.StoreNew" alias="StoreNew" />
+		<typeAlias type="com.flf.entity.StallNew" alias="StallNew" />
+		<typeAlias type="com.flf.entity.Hillock" alias="Hillock" />
+		<typeAlias type="com.flf.entity.PostType" alias="PostType" />
+		<typeAlias type="com.flf.entity.SchedulingLog" alias="SchedulingLog" />
+		<typeAlias type="com.flf.entity.ServiceRequest" alias="ServiceRequest" />
+		<typeAlias type="com.flf.entity.ServiceRequestJournal"
+			alias="ServiceRequestJournal" />
+		<typeAlias type="com.flf.entity.Tasks" alias="Tasks" />
+		<typeAlias type="com.flf.entity.ServiceObjectRecords" alias="ServiceObjectRecords" />
+		<typeAlias type="com.flf.entity.TasksJournal" alias="TasksJournal" />
+		<typeAlias type="com.flf.entity.QuoteOrders" alias="QuoteOrders" />
+		<typeAlias type="com.flf.entity.DisposeOrder" alias="DisposeOrder" />
+		<typeAlias type="com.flf.entity.LogType" alias="LogType" />
+		<typeAlias type="com.flf.entity.Log" alias="Log" />
+		<typeAlias type="com.flf.entity.ComponentProperty" alias="ComponentProperty" />
+		<typeAlias type="com.flf.entity.ComponentStructure" alias="ComponentStructure" />
+		<typeAlias type="com.flf.entity.Search" alias="Search" />
+		<typeAlias type="com.flf.entity.Staff" alias="Staff" />
+		<typeAlias type="com.flf.entity.Teamwork" alias="Teamwork" />
+		<typeAlias type="com.flf.entity.Teamworkstaff" alias="Teamworkstaff" />
+		<typeAlias type="com.flf.entity.TeamworkStaffAdd" alias="TeamworkStaffAdd" />
+		<typeAlias type="com.flf.entity.TeamworkStaffRole" alias="TeamworkStaffRole" />
+		<typeAlias type="com.flf.entity.Post" alias="Post" />
+		<typeAlias type="com.flf.entity.Prepare" alias="Prepare" />
+		<typeAlias type="com.flf.entity.Project" alias="Project" />
+		<typeAlias type="com.flf.entity.SpecialtyInfo" alias="SpecialtyInfo" />
+		<typeAlias type="com.flf.entity.Classes" alias="Classes" />
+		<typeAlias type="com.flf.entity.ClassesType" alias="ClassesType" />
+		<typeAlias type="com.flf.entity.Division" alias="Division" />
+		<typeAlias type="com.flf.entity.Scheduling" alias="Scheduling" />
+		<typeAlias type="com.flf.entity.SearchCar" alias="SearchCar" />
+		<typeAlias type="com.flf.entity.SearchNews" alias="SearchNews" />
+		<typeAlias type="com.flf.entity.News" alias="News" />
+		<typeAlias type="com.flf.entity.ChangeTitle" alias="ChangeTitle" />
+		<typeAlias type="com.flf.entity.Intake" alias="Intake" />
+		<typeAlias type="com.flf.entity.Entrance" alias="Entrance" />
+		<typeAlias type="com.flf.entity.ArticleRelease" alias="ArticleRelease" />
+		<typeAlias type="com.flf.entity.SearchPersonAndEnterprise"
+			alias="SearchPersonAndEnterprise" />
+		<typeAlias type="com.flf.entity.Faq" alias="Faq" />
+		<typeAlias type="com.flf.entity.Communtitnotice" alias="Communtitnotice" />
+		<typeAlias type="com.flf.entity.Inform" alias="Inform" />
+		<typeAlias type="com.flf.entity.Rules" alias="Rules" />
+		<typeAlias type="com.flf.entity.Corporatenews" alias="Corporatenews" />
+		<typeAlias type="com.flf.entity.SearchCar" alias="SearchCar" />
+		<typeAlias type="com.flf.entity.SearchNews" alias="SearchNews" />
+		<typeAlias type="com.flf.entity.News" alias="News" />
+		<typeAlias type="com.flf.entity.ChangeTitle" alias="ChangeTitle" />
+		<typeAlias type="com.flf.entity.Intake" alias="Intake" />
+		<typeAlias type="com.flf.entity.Entrance" alias="Entrance" />
+		<typeAlias type="com.flf.entity.ArticleRelease" alias="ArticleRelease" />
+		<typeAlias type="com.flf.entity.Items" alias="Items" />
+		<typeAlias type="com.flf.entity.Authorization" alias="Authorization" />
+		<typeAlias type="com.flf.entity.NewLease" alias="NewLease" />
+		<typeAlias type="com.flf.entity.Caraccesscard" alias="Caraccesscard" />
+		<typeAlias type="com.flf.entity.CarInfo" alias="CarInfo" />
+		<typeAlias type="com.flf.entity.PetRegistration" alias="PetRegistration" />
+		<typeAlias type="com.flf.entity.BuildingComponent" alias="BuildingComponent" />
+		<typeAlias type="com.flf.entity.Functional" alias="Functional" />
+		<typeAlias type="com.flf.entity.CassetRepository" alias="CassetRepository" />
+		<typeAlias type="com.flf.entity.CarInfo" alias="CarInfo" />
+		<typeAlias type="com.flf.entity.PetRegistration" alias="PetRegistration" />
+		<typeAlias type="com.flf.entity.TenementPact" alias="TenementPact" />
+		<typeAlias type="com.flf.entity.SearchPact" alias="SearchPact" />
+		<typeAlias type="com.flf.entity.AcceptanceOrders" alias="AcceptanceOrders" />
+		<typeAlias type="com.flf.entity.CheckOrders" alias="CheckOrders" />
+		<typeAlias type="com.flf.entity.CompensateOwner" alias="CompensateOwner" />
+		<typeAlias type="com.flf.entity.TasksMerge" alias="TasksMerge" />
+		<typeAlias type="com.flf.entity.QuoteItemRecords" alias="QuoteItemRecords" />
+		<typeAlias type="com.flf.entity.DisposeInformationRecords" alias="DisposeInformationRecords" />
+		<typeAlias type="com.flf.entity.CheckItemRecords" alias="CheckItemRecords" />
+		<typeAlias type="com.flf.entity.SettleAccountsItemRecords" alias="SettleAccountsItemRecords" />
+		<typeAlias type="com.flf.entity.SettleAccountsOrders" alias="SettleAccountsOrders" />
+		<typeAlias type="com.flf.entity.TaskTurnSpecialRecords" alias="TaskTurnSpecialRecords" />
+		<typeAlias type="com.flf.entity.CentralizedProcessingRecords" alias="CentralizedProcessingRecords" />
+		<typeAlias type="com.flf.entity.ScoreCriteria" alias="ScoreCriteria" />
+		<typeAlias type="com.flf.entity.ScoreCriteriaItems" alias="ScoreCriteriaItems" />
+		<typeAlias type="com.flf.entity.ScoreSubitemItems" alias="ScoreSubitemItems" />
+		<typeAlias type="com.flf.entity.FrequencyRecord" alias="FrequencyRecord" />
+		<typeAlias type="com.flf.entity.DepartmentOrders" alias="DepartmentOrders" />
+		<typeAlias type="com.flf.entity.DepartmentRecords" alias="DepartmentRecords" />
+		<typeAlias type="com.flf.entity.CentralizedTreatmentProjectsJournal" alias="CentralizedTreatmentProjectsJournal" />
+		<typeAlias type="com.flf.entity.CentralizedTreatmentProjects" alias="CentralizedTreatmentProjects" />
+		<typeAlias type="com.flf.entity.SpecialRepairProjectJournal" alias="SpecialRepairProjectJournal" />
+		<typeAlias type="com.flf.entity.SpecialRepairProject" alias="SpecialRepairProject" />
+		<typeAlias type="com.flf.entity.Annex" alias="Annex" />
+		<typeAlias type="com.flf.entity.OrganizationStructure" alias="OrganizationStructure" />
+		<typeAlias type="com.flf.entity.InspectorRecord" alias="InspectorRecord" />
+		<typeAlias type="com.flf.entity.InspectorOrder" alias="InspectorOrder" />
+		<typeAlias type="com.flf.entity.TenementInsurance" alias="TenementInsurance" />
+		<typeAlias type="com.flf.entity.WaterMeterOrderRecords" alias="WaterMeterOrderRecords" />
+		<typeAlias type="com.flf.entity.WaterMeterOrders" alias="WaterMeterOrders" />
+		<typeAlias type="com.flf.entity.MeterReadingOrders" alias="MeterReadingOrders" />
+		<typeAlias type="com.flf.entity.MeterReadingRecords" alias="MeterReadingRecords" />
+		<typeAlias type="com.flf.entity.ClaimToCustomerRethods" alias="ClaimToCustomerRethods" />
+		<typeAlias type="com.flf.entity.ClaimToCustomerOrders" alias="ClaimToCustomerOrders" />
+		<typeAlias type="com.flf.entity.ImportantEventType" alias="ImportantEventType" />
+		<typeAlias type="com.flf.entity.HandleMechanism" alias="HandleMechanism" />
+		<typeAlias type="com.flf.entity.CompensateMethods" alias="CompensateMethods" />
+		<typeAlias type="com.flf.entity.CompensateObject" alias="CompensateObject" />
+		<typeAlias type="com.flf.entity.PropertyType" alias="PropertyType" />
+		<typeAlias type="com.flf.entity.Property" alias="Property" />
+		<typeAlias type="com.flf.entity.ContractPropertyStructure"
+			alias="ContractPropertyStructure" />
+		<typeAlias type="com.flf.entity.OrderAttachment" alias="OrderAttachment" />
+		<typeAlias type="com.flf.entity.Contract" alias="Contract" />
+		<typeAlias type="com.flf.entity.SearchLog" alias="SearchLog" />
+		<typeAlias type="com.flf.entity.SearchMeter" alias="SearchMeter" />
+		<typeAlias type="com.flf.request.PropertyResult" alias="PropertyResult" />
+		<typeAlias type="com.flf.entity.ChargeItem" alias="ChargeItem" />
+		<typeAlias type="com.flf.entity.HouseArticle" alias="HouseArticle" />
+		<!-- 验房管理 -->
+		<typeAlias type="com.flf.entity.AcceptanceHouse" alias="AcceptanceHouse" />
+		<typeAlias type="com.flf.entity.AcceptanceHouseRelation" alias="AcceptanceHouseRelation" />
+	    <!-- 投诉工单 -->
+	    <typeAlias type="com.flf.entity.ComplaintOrders" alias="ComplaintOrders" />
+	        <typeAlias type="com.flf.entity.AfterSaleQuery" alias="AfterSaleQuery" />
+		<typeAlias type="com.flf.entity.TeamPermissions" alias="TeamPermissions" />
+		<typeAlias type="com.flf.entity.CorePosition" alias="CorePosition" />
+		<typeAlias type="com.flf.entity.BuildingStructureSearch"
+			alias="BuildingStructureSearch" />
+		<typeAlias type="com.flf.entity.Lost" alias="Lost" />
+		<typeAlias type="com.flf.request.ProjectResult" alias="ProjectResult" />
+		<typeAlias type="com.flf.entity.AfterSale" alias="AfterSale" />
+		<typeAlias type="com.flf.entity.AfterSaleProcess" alias="AfterSaleProcess" />
+		<typeAlias type="com.flf.entity.ReturnVisitOrders" alias="ReturnVisitOrders" />
+		<typeAlias type="com.flf.entity.AppealOrders" alias="AppealOrders" /> 
+	    <typeAlias type="com.flf.entity.ConsultationOrders" alias="ConsultationOrders" />
+	    <typeAlias type="com.flf.entity.FixedParkingOrders" alias="FixedParkingOrders" />
+		<typeAlias type="com.flf.entity.RenovationCheckOrders" alias="RenovationCheckOrders" />
+		<typeAlias type="com.flf.entity.RenovationCheckRecords" alias="RenovationCheckRecords" />
+		<typeAlias type="com.flf.entity.RenovationInspectionOrders" alias="RenovationInspectionOrders" />
+		<typeAlias type="com.flf.entity.RenovationInspectionRecords" alias="RenovationInspectionRecords" />
+		<typeAlias type="com.flf.entity.RenovationAcceptanceOrders" alias="RenovationAcceptanceOrders" />
+		<typeAlias type="com.flf.entity.RenovationAcceptanceRecords" alias="RenovationAcceptanceRecords" />	
+	    <typeAlias type="com.flf.entity.ImportantEventTypeJournal" alias="ImportantEventTypeJournal" />
+		<typeAlias type="com.flf.entity.LetterRecords" alias="LetterRecords" />
+		<!-- 业主装修申请 -->
+		<typeAlias type="com.flf.entity.OwnerRenovationApply" alias="OwnerRenovationApply"/>
+		<typeAlias type="com.flf.entity.DecorateAnnex" alias="DecorateAnnex" />
+		<typeAlias type="com.flf.entity.DecorateComponentRecords" alias="DecorateComponentRecords" />
+		<typeAlias type="com.flf.entity.DecorateAssociatedRecords" alias="DecorateAssociatedRecords" />
+		<typeAlias type="com.flf.entity.DecoratePersonnelAssociated" alias="DecoratePersonnelAssociated" />
+		<typeAlias type="com.flf.entity.DecoreateDiscloseInformation" alias="DecoreateDiscloseInformation" />
+		<typeAlias type="com.flf.entity.DecoreateServiceRequestAssociated" alias="DecoreateServiceRequestAssociated" />
+         <!-- 装修施工备案证 -->
+		<typeAlias type="com.flf.entity.ConstructionRecordCard" alias="ConstructionRecordCard" />
+		<!-- 表扬表 -->
+		<typeAlias type="com.flf.entity.PraiseOrders" alias="PraiseOrders"/>
+		<!-- 表扬员工关联表 -->
+		<typeAlias type="com.flf.entity.PraiseStaff" alias="PraiseStaff"/>
+		<!-- 延时 -->
+		<typeAlias type="com.flf.entity.ApplicationDelayRecords" alias="ApplicationDelayRecords"/>
+		<!-- VIP客户项目专员关联 -->
+		<typeAlias type="com.flf.entity.VipProjectStaff" alias="VipProjectStaff" />
+		<!-- 催办记录表 -->
+		<typeAlias type="com.flf.entity.UrgeTaskRecords" alias="UrgeTaskRecords" />
+		<!-- 施工核查工单 -->
+		<typeAlias type="com.flf.entity.ConstructionCheckRecords" alias="ConstructionCheckRecords" />
+		<typeAlias type="com.flf.entity.ConstructionCheckOrders" alias="ConstructionCheckOrders" />
+		<!-- 施工巡检工单 -->
+		<typeAlias type="com.flf.entity.ConstructionInspectionRecords" alias="ConstructionInspectionRecords" />
+		<typeAlias type="com.flf.entity.ConstructionInspectionOrders" alias="ConstructionInspectionOrders" />
+		<!-- 施工验收工单 -->
+		<typeAlias type="com.flf.entity.ConstructionAcceptanceRecords" alias="ConstructionAcceptanceRecords" />
+		<typeAlias type="com.flf.entity.ConstructionAcceptanceOrders" alias="ConstructionAcceptanceOrders" />
+		<!-- 施工申请 -->
+ 		<typeAlias type="com.flf.entity.OwnerConstructionApply" alias="OwnerConstructionApply" />
+	     <typeAlias type="com.flf.entity.ConstructionAnnex" alias="ConstructionAnnex" />
+		<typeAlias type="com.flf.entity.ConstructionComponentRecords" alias="ConstructionComponentRecords" />
+		<typeAlias type="com.flf.entity.ConstructionAssociatedRecord" alias="ConstructionAssociatedRecord" />
+		<typeAlias type="com.flf.entity.ConstructionPersonnelAssociated" alias="ConstructionPersonnelAssociated" />
+		<typeAlias type="com.flf.entity.ConstructionDiscloseInformation" alias="ConstructionDiscloseInformation" />
+		<typeAlias type="com.flf.entity.ConstructionServiceRequestAssociated" alias="ConstructionServiceRequestAssociated" />
+		<typeAlias type="com.flf.request.CassetRepositoryReault" alias="CassetRepositoryReault" />
+        <typeAlias type="com.flf.entity.CollectionManage" alias="CollectionManage" />
+		<typeAlias type="com.flf.entity.FinancialGroupTotal" alias="FinancialGroupTotal" />
+		<!-- 计费收费  方案收费项目关联表 -->
+		<typeAlias type="com.flf.entity.SchemeRelation" alias="SchemeRelation" />
+		<!-- 电子账单 -->
+		<typeAlias type="com.flf.entity.ElectronicBilling" alias="ElectronicBilling"/>
+		<!-- 收款记录表 -->
+		<typeAlias type="com.flf.entity.PaymentRecords" alias="PaymentRecords"/>
+		<!-- 押金付款表 -->
+		<typeAlias type="com.flf.entity.DepositDeduct" alias="DepositDeduct"/>
+		<!-- 财务人员表 -->
+		<typeAlias type="com.flf.entity.FinancialStaff" alias="FinancialStaff"/>
+		<!-- 金融联明细表 -->
+		<typeAlias type="com.flf.entity.FinancialGroupDetail" alias="FinancialGroupDetail"/>
+		<!-- 金融联回盘总结表 -->
+		<typeAlias type="com.flf.entity.FinancialCounterofferTotal" alias="FinancialCounterofferTotal"/>
+		<!-- 金融联回盘明细表 -->
+		<typeAlias type="com.flf.entity.FinancialCounterofferDetail" alias="FinancialCounterofferDetail"/>
+		<!-- 金融联银行行别表 -->
+		<typeAlias type="com.flf.entity.FinancialBankNum" alias="FinancialBankNum"/>
+		<!--产品表  -->
+		<typeAlias type="com.flf.entity.Product" alias="Product" />
+		<!-- 产品初始化固定车位-->
+		<typeAlias type="com.flf.request.FixedParkingSpace" alias="fixedParkingSpace" />
+		<!-- 面积划分表 -->
+		<typeAlias type="com.flf.entity.AreaDivision" alias="AreaDivision" />
+		<!-- 服务项目表 -->
+		<typeAlias type="com.flf.entity.ServiceProject" alias="ServiceProject" />
+		<!-- 系统设置用户表 -->
+		<typeAlias type="com.flf.entity.TUser" alias="TUser" />
+		<!-- 系统设置角色表 -->
+		<typeAlias type="com.flf.entity.TRole" alias="TRole" />
+		<!-- 系统设置用户角色关联表 -->
+		<typeAlias type="com.flf.entity.TUserRole" alias="TUserRole" />
+		<!-- 系统设置功能权限表 -->
+		<typeAlias type="com.flf.entity.HrPermissions" alias="HrPermissions"/>
+		<!-- 系统设置操作权限表 -->
+		<typeAlias type="com.flf.entity.HrAuthority" alias="HrAuthority"/>
+		<!-- 系统设置角色权限关联表 -->
+		<typeAlias type="com.flf.entity.TUserPermissions" alias="TUserPermissions"/>
+		<!-- 系统设置数据字典主表 -->
+		<typeAlias type="com.flf.entity.DataDictionaryMaster" alias="DataDictionaryMaster" />
+		<!-- 系统设置数据字典从表 -->
+		<typeAlias type="com.flf.entity.DataDictionarySlave" alias="DataDictionarySlave" />
+		<!-- 系统设置数据字典主表和项目关联表 -->
+		<typeAlias type="com.flf.entity.DataDictionaryMasterProject" alias="DataDictionaryMasterProject" />
+		<!-- 子公司 -->
+		<typeAlias type="com.flf.entity.SubCompany" alias="SubCompany"/>
+		<!-- 子公司、项目关系表 -->
+		<typeAlias type="com.flf.entity.SubCompanyProjectRelation" alias="SubCompanyProjectRelation"/>
+	    <!-- 宗地表 -->
+		<typeAlias type="com.flf.entity.Parcel" alias="Parcel" />
+		<!-- 操作权限表 -->
+		<typeAlias type="com.flf.entity.Action" alias="Action" />
+		<!-- 服务请求FAQS -->
+		<typeAlias type="com.flf.entity.Faqs" alias="Faqs"/>
+		<!-- 服务请求FAQS类型 -->
+		<typeAlias type="com.flf.entity.FaqTypes" alias="FaqTypes"/>
+		<!-- 服务请求FAQ日志 -->
+		<typeAlias type="com.flf.entity.FaqJournals" alias="FaqJournals" />
+		<!-- 装修巡检方案表 -->
+		<typeAlias type="com.flf.entity.DecorationInspectionPlans" alias="DecorationInspectionPlans" />
+		<!-- 执行次数和时间 -->
+		<typeAlias type="com.flf.entity.ExecutionTimeRecords" alias="ExecutionTimeRecords" />
+		<!-- 维修单 -->
+		<typeAlias type="com.flf.entity.RepairOrders" alias="RepairOrders"/>
+		<!-- 维修单关联材料消耗记录 -->
+		<typeAlias type="com.flf.entity.ActualConsumptionRecords" alias="ActualConsumptionRecords" />
+		<!--巡检方案  -->
+		<typeAlias type="com.flf.entity.InspectionPlan" alias="InspectionPlan"/>
+		<typeAlias type="com.flf.entity.InspectionPropertyCheckItem" alias="InspectionPropertyCheckItem"/>
+		<typeAlias type="com.flf.entity.PendingApproval" alias="PendingApproval"/>
+		<!-- 授权项目表 -->
+		<typeAlias type="com.flf.entity.AuthorizationProject" alias="AuthorizationProject"/>		
+		<!-- 授权项目类型表 -->
+		<typeAlias type="com.flf.entity.AuthorizationProjectType" alias="AuthorizationProjectType"/>
+	     <!-- 公司表 -->
+		<typeAlias type="com.flf.entity.Company" alias="Company"/>
+		<!-- 岗位权限表 -->
+		<typeAlias type="com.flf.entity.PostAuthority" alias="PostAuthority"/>
+		<!-- 公司表 -->
+		<typeAlias type="com.flf.entity.UserPost" alias="UserPost"/> 
+		<!-- 遗失物品表 -->
+		<typeAlias type="com.flf.entity.TcArticle" alias="TcArticle"/> 
+		<!-- 遗失物品关联表 -->
+		<typeAlias type="com.flf.entity.TcArticleState" alias="TcArticleState"/> 
+		<!-- 领取遗失物品表 -->
+		<typeAlias type="com.flf.entity.TcArticleGet" alias="TcArticleGet"/> 
+		<!-- 领取遗失物品表 -->
+		<typeAlias type="com.flf.entity.ProductBs" alias="ProductBs"/> 	 
+		<!-- 租赁合同表 -->
+		<typeAlias type="com.flf.entity.LeaseContract" alias="LeaseContract"/> 
+		<!--  重大事项类型日志记录表-->
+		<typeAlias type="com.flf.entity.ImportantEventTypeJournal" alias="ImportantEventTypeJournal"/> 
+		<!-- 项目完成情况记录表 -->
+		<typeAlias type="com.flf.entity.ProjectCompletion" alias="ProjectCompletion" />
+		<typeAlias type="com.flf.entity.WaterLoss" alias="WaterLoss" />
+		<typeAlias type="com.flf.entity.ElectricityLoss" alias="ElectricityLoss" />
+		<!-- 固定车位表 -->
+		<typeAlias type="com.flf.entity.ProductFixedparkingspace" alias="ProductFixedparkingspace"/>
+		<typeAlias type="com.flf.entity.ProductFixedparkingspaceChild" alias="ProductFixedparkingspaceChild"/>	
+		
+		<!-- 工作流表 -->
+		<typeAlias type="com.flf.entity.WorkFlow" alias="WorkFlow" />
+		
+		<!-- 好友表 -->
+		<typeAlias type="com.flf.entity.Friends" alias="Friends" />
+    </typeAliases>
+
+	<plugins>
+		<plugin interceptor="com.flf.plugin.PagePlugin">
+			<property name="dialect" value="mysql" />
+			<property name="pageSqlId" value=".*listPage.*" />
+		</plugin>
+	</plugins>
+
+	<mappers>
+		<mapper resource="mybatis/User.xml" />
+		<mapper resource="mybatis/Role.xml" />
+		<mapper resource="mybatis/Menu.xml" />
+		<mapper resource="mybatis/Info.xml" />
+		<!-- 项目计费表-->
+		<mapper resource="mybatis/ProjectBillingMapper.xml" />
+		<!-- 收费类型项目计费表 -->
+		<mapper resource="mybatis/ChargeTypeProjectBillingMapper.xml" />
+		<!-- 收费类型建筑计费表-->
+		<mapper resource="mybatis/ChargeTypeBuildingBillingMapper.xml" />
+		<!-- 收费类型详情建筑计费表-->
+		<mapper resource="mybatis/ChargeTypeDetailsBuildingBillingMapper.xml" />
+		<!-- 计费记录表-->
+		<mapper resource="mybatis/BillingRecordMapper.xml" />
+		<!-- 抄表投诉 -->
+		<mapper resource="mybatis/MeterReadingComplaints.xml" />
+		<!-- 抄表计划 -->
+		<mapper resource="mybatis/MeterReadingProgram.xml" />
+		<!-- 抄表数据 -->
+		<mapper resource="mybatis/MeterReadingData.xml" />
+		<!-- 水表类型 -->
+		<mapper resource="mybatis/WaterMeterTypes.xml" />
+		<!-- 水表 -->
+		<mapper resource="mybatis/WaterBuildingOrder.xml" />
+		<!-- 水表建筑工单关联-->
+		<mapper resource="mybatis/WaterMeter.xml" />
+		<!-- 水表使用记录 -->
+		<mapper resource="mybatis/WaterMeterRecords.xml" />
+		<!-- 水表计划关系表 -->
+		<mapper resource="mybatis/WaterMeterProject.xml" />
+	   	<!-- 水表计划与建筑关系表 -->
+		<mapper resource="mybatis/PlanLinkBuildingStructure.xml" />
+        <!-- 抄表执行结果表 -->
+		<mapper resource="mybatis/MeterReadingResults.xml" />
+		<!-- 电表抄表投诉 -->
+		<mapper resource="mybatis/ElectricityMeterReadingComplaints.xml" />
+		<!-- 电表抄表计划 -->
+		<mapper resource="mybatis/ElectricityMeterReadingProgram.xml" />
+		<!-- 电表抄表数据 -->
+		<mapper resource="mybatis/ElectricityMeterReadingData.xml" />
+		<!-- 电表类型 -->
+		<mapper resource="mybatis/ElectricityMeterTypes.xml" />
+		<!-- 电表 -->
+		<mapper resource="mybatis/ElectricityMeter.xml" />
+		<!-- 电表使用记录 -->
+		<mapper resource="mybatis/ElectricityMeterRecords.xml" />
+		<!-- 电表计划关系表 -->
+		<mapper resource="mybatis/ElectricityMeterProject.xml" />
+		<mapper resource="mybatis/ArchitectureNew.xml" />
+		<mapper resource="mybatis/AreaNew.xml" />
+		<mapper resource="mybatis/AreaTypeNew.xml" />
+		<mapper resource="mybatis/BuildingNew.xml" />
+		<mapper resource="mybatis/BuildingStructureNew.xml" />
+		<mapper resource="mybatis/HouseNew.xml" />
+		<mapper resource="mybatis/RegionNew.xml" />
+		<mapper resource="mybatis/PersonCustNew.xml" />
+		<mapper resource="mybatis/PersonEmphasis.xml" />
+		<mapper resource="mybatis/PersonBuildingNew.xml" />
+		<mapper resource="mybatis/PooledNew.xml" />
+		<mapper resource="mybatis/PersonVip.xml" />
+		<mapper resource="mybatis/EnterpriseCustNew.xml" />
+		<mapper resource="mybatis/StoreNew.xml" />
+		<mapper resource="mybatis/StallNew.xml" />
+		<mapper resource="mybatis/Hillock.xml" />
+		<mapper resource="mybatis/PostType.xml" />
+		<mapper resource="mybatis/SchedulingLog.xml" />
+		<mapper resource="mybatis/ServiceRequest.xml" />
+		<mapper resource="mybatis/ServiceRequestJournal.xml" />
+		<mapper resource="mybatis/Tasks.xml" />
+		<mapper resource="mybatis/ServiceObjectRecords.xml" />
+		<mapper resource="mybatis/TasksJournal.xml" />
+		<mapper resource="mybatis/QuoteOrders.xml" />
+		<mapper resource="mybatis/DisposeOrder.xml" />
+		<mapper resource="mybatis/LogType.xml" />
+		<mapper resource="mybatis/Log.xml" />
+		<mapper resource="mybatis/ComponentProperty.xml" />
+		<mapper resource="mybatis/ComponentStructure.xml" />
+		<mapper resource="mybatis/Staff.xml" />
+		<mapper resource="mybatis/Teamworkstaff.xml" />
+		<mapper resource="mybatis/TeamworkStaffAddMapper.xml" />
+		<mapper resource="mybatis/TeamworkStaffRole.xml" />
+		<mapper resource="mybatis/Teamwork.xml" />
+		<mapper resource="mybatis/Post.xml" />
+		<mapper resource="mybatis/Prepare.xml" />
+		<mapper resource="mybatis/Project.xml" />
+		<mapper resource="mybatis/SpecialtyInfo.xml" />
+		<mapper resource="mybatis/Classes.xml" />
+		<mapper resource="mybatis/ClassesType.xml" />
+		<mapper resource="mybatis/Division.xml" />
+		<mapper resource="mybatis/Scheduling.xml" />
+		<mapper resource="mybatis/News.xml" />
+		<mapper resource="mybatis/Communtitnotice.xml" />
+		<mapper resource="mybatis/Inform.xml" />
+		<mapper resource="mybatis/Rules.xml" />
+		<mapper resource="mybatis/Corporatenews.xml" />
+		<mapper resource="mybatis/News.xml" />
+		<mapper resource="mybatis/Intake.xml" />
+		<mapper resource="mybatis/ChangeTitle.xml" />
+		<mapper resource="mybatis/Entrance.xml" />
+		<mapper resource="mybatis/ArticleRelease.xml" />
+		<mapper resource="mybatis/Items.xml" />
+		<mapper resource="mybatis/Authorization.xml" />
+		<mapper resource="mybatis/NewLease.xml" />
+		<mapper resource="mybatis/Caraccesscard.xml" />
+		<mapper resource="mybatis/CarInfo.xml" />
+		<mapper resource="mybatis/PetRegistration.xml" />
+		<mapper resource="mybatis/TenementPact.xml" />
+		<mapper resource="mybatis/Faq.xml" />
+		<mapper resource="mybatis/BuildingComponent.xml" />
+		<mapper resource="mybatis/Functional.xml" />
+		<mapper resource="mybatis/CassetRepository.xml" />
+		<mapper resource="mybatis/AcceptanceOrders.xml" />
+		<mapper resource="mybatis/CompensateOwner.xml" />
+		<mapper resource="mybatis/CheckOrders.xml" />
+		<mapper resource="mybatis/TasksMerge.xml" />
+		<mapper resource="mybatis/QuoteItemRecords.xml" />
+		<mapper resource="mybatis/DisposeInformationRecords.xml" />
+		<mapper resource="mybatis/CheckItemRecords.xml" />
+		<mapper resource="mybatis/SettleAccountsItemRecords.xml" />
+		<mapper resource="mybatis/SettleAccountsOrders.xml" />
+		<mapper resource="mybatis/TaskTurnSpecialRecords.xml" />
+		<mapper resource="mybatis/CentralizedProcessingRecords.xml" />
+		<mapper resource="mybatis/ScoreSubitemItems.xml" />
+		<mapper resource="mybatis/ScoreCriteriaItems.xml" />
+		<mapper resource="mybatis/ScoreCriteria.xml" />
+		<mapper resource="mybatis/FrequencyRecord.xml" />
+		<mapper resource="mybatis/DepartmentOrders.xml" />
+		<mapper resource="mybatis/DepartmentRecords.xml" />
+		<mapper resource="mybatis/CentralizedTreatmentProjectsJournal.xml" />
+		<mapper resource="mybatis/CentralizedTreatmentProjects.xml" />
+		<mapper resource="mybatis/SpecialRepairProjectJournal.xml" />
+		<mapper resource="mybatis/SpecialRepairProject.xml" />
+		<mapper resource="mybatis/Annex.xml" />
+		<mapper resource="mybatis/OrganizationStructure.xml" />
+		<mapper resource="mybatis/InspectorRecord.xml" />
+		<mapper resource="mybatis/InspectorOrder.xml" />
+		<mapper resource="mybatis/TenementInsurance.xml" />
+		<mapper resource="mybatis/WaterMeterOrderRecords.xml"/>
+		<mapper resource="mybatis/WaterMeterOrders.xml"/>
+		<mapper resource="mybatis/MeterReadingOrders.xml"/>
+		<mapper resource="mybatis/MeterReadingRecords.xml"/>
+		<mapper resource="mybatis/ClaimToCustomerRethods.xml"/>
+		<mapper resource="mybatis/ClaimToCustomerOrders.xml"/>
+		<mapper resource="mybatis/ImportantEventType.xml"/>
+		<mapper resource="mybatis/HandleMechanism.xml"/>
+		<!--<mapper resource="mybatis/AcceptanceInformationRecords.xml" /> -->
+		<mapper resource="mybatis/CompensateMethods.xml" />
+		<mapper resource="mybatis/CompensateObject.xml" />
+		<mapper resource="mybatis/Property.xml" />
+		<mapper resource="mybatis/PropertyType.xml" />
+		<mapper resource="mybatis/ContractPropertyStructure.xml" />
+		<mapper resource="mybatis/OrderAttachment.xml" />
+		<mapper resource="mybatis/Contract.xml" />
+		<mapper resource="mybatis/ChargeItem.xml" />
+		<mapper resource="mybatis/HouseArticle.xml" />
+		<!-- 验房管理 -->
+		<mapper resource="mybatis/AcceptanceHouse.xml" />
+		<mapper resource="mybatis/AcceptanceHouseRelation.xml" />
+		<mapper resource="mybatis/GiftArticle.xml" />
+		<mapper resource="mybatis/Gift.xml" />
+		<mapper resource="mybatis/IntakeActivity.xml" />
+		<mapper resource="mybatis/IntakeActivityRelation.xml" />
+		<mapper resource="mybatis/IntakeGiftRelation.xml" />
+		<mapper resource="mybatis/CorePosition.xml" />
+		<mapper resource="mybatis/TeamPermissions.xml" />
+		<mapper resource="mybatis/Lost.xml" />
+		<!-- 售后管理 -->
+		<mapper resource="mybatis/AfterSale.xml" />
+		<!-- 售后处理-->
+		<mapper resource="mybatis/AfterSaleProcess.xml" />
+		<!-- 售后管理查询 -->
+		<mapper resource="mybatis/AfterSaleQuery.xml" />
+		<!-- 计费方案下收费项目 -->
+		<mapper resource="mybatis/ChargeItemNewMapper.xml" />
+		<!-- 收费项目详情表 -->
+		<mapper resource="mybatis/ChargeItemNewDetailsMapper.xml" />
+		<!-- 收费项目建筑关系表 -->
+		<mapper resource="mybatis/ChargeItemNewBuildingMapper.xml" />
+		<!-- 收费类型表 -->
+		<mapper resource="mybatis/ChargeTypeMapper.xml"/>
+		<!-- 收费类型详情表 -->
+		<mapper resource="mybatis/ChargeTypeDetailsMapper.xml"/>
+		<!-- 条件表 -->
+		<mapper resource="mybatis/Condition.xml" />
+		<!-- 常量表 -->
+		<mapper resource="mybatis/ConstantMapper.xml" />
+		<!-- 公式表 -->
+		<mapper resource="mybatis/FormulaMapper.xml" />
+		<!-- 计费方案表 -->
+		<mapper resource="mybatis/SchemeMapper.xml" />
+		<!-- 方案详情关系表 -->
+		<mapper resource="mybatis/SchemeDatails.xml" />
+		<!-- 账单表 -->
+		<mapper resource="mybatis/Bill.xml" />
+		<!-- 收支明细表 -->
+		<mapper resource="mybatis/PaymentDetails.xml" />
+		<!-- 账单收支明细关系表 -->
+		<mapper resource="mybatis/BillPaymentRelation.xml" />
+		<!-- 资产账户表 -->
+		<mapper resource="mybatis/AssetAccount.xml" />
+		<!-- 账户关系表 -->
+		<mapper resource="mybatis/AccountRelation.xml" />
+		<!-- 账户表 -->
+		<mapper resource="mybatis/Account.xml" />
+		<mapper resource="mybatis/ReturnVisitOrders.xml" />
+		<mapper resource="mybatis/AppealOrders.xml"/>
+		<!-- 投诉工单 -->
+		<mapper resource="mybatis/ComplaintOrders.xml" />
+		<!-- 咨询工单 -->
+		<mapper resource="mybatis/ConsultationOrders.xml" />
+		<!-- 固定车位工单 -->
+		<mapper resource="mybatis/FixedParkingOrders.xml" />
+		<mapper resource="mybatis/RenovationCheckOrders.xml" />
+		<mapper resource="mybatis/RenovationCheckRecords.xml" />
+		<mapper resource="mybatis/RenovationInspectionOrders.xml" />
+		<mapper resource="mybatis/RenovationInspectionRecords.xml" />
+		<mapper resource="mybatis/RenovationAcceptanceOrders.xml" />
+		<mapper resource="mybatis/RenovationAcceptanceRecords.xml" />
+		<mapper resource="mybatis/ImportantEventTypeJournal.xml" />
+		<mapper resource="mybatis/LetterRecords.xml" />
+		<!-- 业主装修申请 -->
+		<mapper resource="mybatis/OwnerRenovationApply.xml" />
+		<mapper resource="mybatis/DecorateAnnex.xml" />
+		<mapper resource="mybatis/DecorateComponentRecords.xml" />
+		<mapper resource="mybatis/DecorateAssociatedRecords.xml" />
+		<mapper resource="mybatis/DecoratePersonnelAssociated.xml" />
+		<mapper resource="mybatis/DecoreateDiscloseInformation.xml" />
+		<mapper resource="mybatis/DecoreateServiceRequestAssociated.xml" /> 
+		<!-- 装修施工备案证 -->
+		<mapper resource="mybatis/ConstructionRecordCard.xml" />
+		<!-- 表扬表 -->
+		<mapper resource="mybatis/PraiseOrders.xml"/>
+		<!-- 表扬员工关联表 -->
+		<mapper resource="mybatis/PraiseStaff.xml"/>
+		<!-- 延时 -->
+		<mapper resource="mybatis/ApplicationDelayRecords.xml"/>
+		<!-- VIP客户项目专员关联 -->
+		<mapper resource="mybatis/VipProjectStaff.xml"/>
+		<!-- 催办记录表-->
+		<mapper resource="mybatis/UrgeTaskRecords.xml"/>
+		<!-- 施工核查工单-->
+		<mapper resource="mybatis/ConstructionCheckRecords.xml"/>
+		<mapper resource="mybatis/ConstructionCheckOrders.xml"/>
+		<!-- 施工巡检工单 -->
+		<mapper resource="mybatis/ConstructionInspectionRecords.xml"/>
+		<mapper resource="mybatis/ConstructionInspectionOrders.xml"/>
+		<!-- 施工验收工单 -->
+		<mapper resource="mybatis/ConstructionAcceptanceRecords.xml"/>
+		<mapper resource="mybatis/ConstructionAcceptanceOrders.xml"/>
+		<!-- 施工申请 -->
+		<mapper resource="mybatis/OwnerConstructionApply.xml" />
+		<mapper resource="mybatis/ConstructionAnnex.xml" />
+		<mapper resource="mybatis/ConstructionComponentRecords.xml" />
+		<mapper resource="mybatis/ConstructionAssociatedRecord.xml" />
+		<mapper resource="mybatis/ConstructionPersonnelAssociated.xml" />
+		<mapper resource="mybatis/ConstructionDiscloseInformation.xml" />
+		<mapper resource="mybatis/ConstructionServiceRequestAssociated.xml" /> 
+		<mapper resource="mybatis/CollectionManage.xml" /> 
+		<mapper resource="mybatis/FinancialGroupTotal.xml" /> 
+		<mapper resource="mybatis/UnionpayCollectionTotall.xml"/>
+		<mapper resource="mybatis/UnionpayCollectionDetail.xml"/>
+		<mapper resource="mybatis/UnionpayCounterofferDetai.xml"/>
+		<mapper resource="mybatis/UnionpayCounterofferTotal.xml"/>
+		<!-- 失效单 -->
+        <mapper resource="mybatis/ClosedOrders.xml" />
+		<!-- 方案收费项目关联表 -->
+		<mapper resource="mybatis/SchemeRelation.xml" />
+		<!-- 银行存单表 -->
+		<mapper resource="mybatis/BankDeposit.xml" />
+		<!-- 交账记录表-->
+		<mapper resource="mybatis/AccountRecord.xml" />
+		<!-- 电子账单 -->
+		<mapper resource="mybatis/ElectronicBilling.xml" />
+		<!-- 预收款明细表 -->
+		<mapper resource="mybatis/AdvancePaymentsDetails.xml"/>
+		<!-- 押金付款表 -->
+		<mapper resource="mybatis/DepositDeduct.xml"/>
+		<!-- 收款记录表 -->
+		<mapper resource="mybatis/PaymentRecords.xml"/>
+		<mapper resource="mybatis/FinancialStaff.xml"/>
+		<!-- 金融联明细表 -->
+		<mapper resource="mybatis/FinancialGroupDetail.xml"/>
+		<mapper resource="mybatis/AssetAccountDetail.xml"/>
+		<!-- 金融联回盘总结表 -->
+		<mapper resource="mybatis/FinancialCounterofferTotal.xml"/>
+		<!-- 金融联回盘明细表 -->
+		<mapper resource="mybatis/FinancialCounterofferDetail.xml"/>
+		<!-- 金融联银行行别表 -->
+		<mapper resource="mybatis/FinancialBankNum.xml"/>
+		<!-- 产品表  -->
+		<mapper resource="mybatis/Product.xml"/>
+		<!-- 面积划分表 -->
+		<mapper resource="mybatis/AreaDivision.xml" />
+		<!-- 服务项目表 -->
+		<mapper resource="mybatis/ServiceProject.xml" />
+		<!-- 系统设置用户表 -->
+		<mapper resource="mybatis/TUser.xml" />
+		<!-- 系统设置角色表 -->
+		<mapper resource="mybatis/TRole.xml" />
+		<!-- 系统设置用户角色关联表 -->
+		<mapper resource="mybatis/TUserRole.xml" />
+		<!-- 系统设置数据字典主表 -->
+		<mapper resource="mybatis/DataDictionaryMaster.xml" />
+		<!-- 系统设置数据字典从表 -->
+		<mapper resource="mybatis/DataDictionarySlave.xml" />
+		<!-- 系统设置数据字典主表项目关联表 -->
+		<mapper resource="mybatis/DataDictionaryMasterProject.xml"/>
+		<!-- 系统设置功能权限表 -->
+		<mapper resource="mybatis/HrPermissions.xml"/>
+		<!-- 系统设置操作权限表 -->
+		<mapper resource="mybatis/HrAuthority.xml"/>
+		<!-- 系统设置角色权限关联表 -->
+		<mapper resource="mybatis/TUserPermissions.xml"/>
+		<!-- 项目管理宗地 -->
+		<mapper resource="mybatis/Parcel.xml" />
+		<!-- 子公司 -->
+		<mapper resource="mybatis/SubCompany.xml"/>
+		<!-- 子公司、项目关系表 -->
+		<mapper resource="mybatis/SubCompanyProjectRelation.xml"/>
+		<!-- 操作权限 -->
+		<mapper resource="mybatis/Action.xml"/>
+		<!-- 服务请求FAQ -->
+		<mapper resource="mybatis/Faqs.xml"/>
+		<!-- 服务请求FAQ类型 -->
+		<mapper resource="mybatis/FaqTypes.xml"/>
+		<!-- 服务请求FAQ日志 -->
+		<mapper resource="mybatis/FaqJournals.xml"/>
+		<!-- 装修巡检方案-->
+		<mapper resource="mybatis/DecorationInspectionPlans.xml"/>
+		<!-- 执行次数和时间-->
+		<mapper resource="mybatis/ExecutionTimeRecords.xml"/>
+		<!--巡检方案表  -->
+		<mapper resource="mybatis/InspectionPlan.xml"/>
+		<!--巡检配置信息表  -->
+		<mapper resource="mybatis/InspectionConfiguration.xml"/>
+		<!-- 巡检目标巡检项表 -->
+		<mapper resource="mybatis/InspectionPropertyCheckItem.xml"/>
+		<!-- 维修单 -->
+		<mapper resource="mybatis/RepairOrders.xml"/>
+		<!-- 实际耗费资源记录 -->
+		<mapper resource="mybatis/ActualConsumptionRecords.xml" />
+		<!-- 审核带代办表 -->
+		<mapper resource="mybatis/PendingApproval.xml" />
+		<!-- 授权项目表 -->
+		<mapper resource="mybatis/AuthorizationProject.xml" />
+		<!-- 授权项目类型表 -->
+		<mapper resource="mybatis/AuthorizationProjectType.xml" />
+		<!-- 公司表表 -->
+		<mapper resource="mybatis/Company.xml" />
+		<!--用户岗位表 -->
+	    <mapper resource="mybatis/UserPostMapper.xml" /> 
+		<!-- 岗位权限表 -->
+		<mapper resource="mybatis/PostAuthority.xml" />
+		<!-- 遗失物品表-->
+		<mapper resource="mybatis/TcArticleMapper.xml" />
+		<!-- 遗失物品关联表-->
+		<mapper resource="mybatis/TcArticleStateMapper.xml" />
+		<!-- 领取物品表-->
+		<mapper resource="mybatis/TcArticleGetMapper.xml" />
+		<!-- 租赁合同-->
+		<mapper resource="mybatis/LeaseContractMapper.xml" />
+		<!-- 建筑产品关联表-->
+		<mapper resource="mybatis/ProductBsMapper.xml" />
+		<!-- 修正数据-->
+		<mapper resource="mybatis/CorrectedReading.xml" />
+		<!--  重大事项类型日志记录表-->
+		<mapper resource="mybatis/ImportantEventTypeJournal.xml" />	
+		<!--  SIP信息-->
+		<mapper resource="mybatis/Sipmanage.xml" />	
+		<!-- 项目完成情况记录表 -->
+		<mapper resource="mybatis/ProjectCompletion.xml" />
+		<mapper resource="mybatis/WaterLossMapper.xml" />
+		<mapper resource="mybatis/ElectricityLossMapper.xml" />
+		<!-- 普通服务表 -->
+		<mapper resource="mybatis/ProductCommonserviceMapper.xml"/>
+		<!-- 固定车位表 -->
+		<mapper resource="mybatis/ProductFixedparkingspaceMapper.xml"/>
+		<mapper resource="mybatis/ProductFixedparkingspaceChildMapper.xml"/>
+		<!-- 工作流表 -->
+		<mapper resource="mybatis/WorkFlow.xml"/>	
+		<!-- 保险公司  -->
+		<mapper resource="mybatis/Insurance.xml" />
+		<!-- 巡检单  -->
+		<mapper resource="mybatis/InspectionOrder.xml" />
+		<!-- 巡检单信息记录  -->
+		<mapper resource="mybatis/InspectionRecords.xml" />
+		<!-- 好友  -->
+		<mapper resource="mybatis/FriendsMapper.xml" />
+		
+	</mappers>
+	
+</configuration>

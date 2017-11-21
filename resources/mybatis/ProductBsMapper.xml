@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.flf.mapper.ProductBsMapper" >
+  <resultMap id="BaseResultMap" type="com.flf.entity.ProductBs" >
+    <id column="product_bs_id" property="productBsId" jdbcType="VARCHAR" />
+    <result column="product_id" property="productId" jdbcType="VARCHAR" />
+    <result column="building_structure_id" property="buildingStructureId" jdbcType="VARCHAR" />
+    <result column="state" property="state" jdbcType="INTEGER" />
+     <association property="buildingStruct" column="building_structure_id" javaType="BuildingStructureNew" select="com.flf.mapper.BuildingStructureNewMapper.getBuildingStructureNewbyId" />
+    <association property="product" column="product_id" javaType="Product" select="com.flf.mapper.ProductMapper.getProductByProductId" />
+    <collection property="annexs" select="com.flf.mapper.AnnexMapper.getAnnexbyRelationId" ofType="Annex" column="product_bs_id">
+		<result column="annex_address" property="annexAddress" jdbcType="VARCHAR" />
+	</collection>
+  </resultMap>
+  
+  <sql id="Base_Column_List" >
+    product_bs_id, product_id, building_structure_id, state
+  </sql>
+
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from tc_product_bs
+    where product_bs_id = #{productBsId,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from tc_product_bs
+    where product_bs_id = #{productBsId,jdbcType=VARCHAR}
+  </delete>
+  
+  <insert id="insert" parameterType="com.flf.entity.ProductBs" >
+    insert into tc_product_bs (product_bs_id, product_id, building_structure_id, 
+      state)
+    values (#{productBsId,jdbcType=VARCHAR}, #{productId,jdbcType=VARCHAR}, #{buildingStructureId,jdbcType=VARCHAR}, 
+      #{state,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="com.flf.entity.ProductBs" >
+    insert into tc_product_bs
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="productBsId != null" >
+        product_bs_id,
+      </if>
+      <if test="productId != null" >
+        product_id,
+      </if>
+      <if test="buildingStructureId != null" >
+        building_structure_id,
+      </if>
+      <if test="state != null" >
+        state,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="productBsId != null" >
+        #{productBsId,jdbcType=VARCHAR},
+      </if>
+      <if test="productId != null" >
+        #{productId,jdbcType=VARCHAR},
+      </if>
+      <if test="buildingStructureId != null" >
+        #{buildingStructureId,jdbcType=VARCHAR},
+      </if>
+      <if test="state != null" >
+        #{state,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  
+  <update id="updateByPrimaryKeySelective" parameterType="com.flf.entity.ProductBs" >
+    update tc_product_bs
+    <set >
+      <if test="productId != null" >
+        product_id = #{productId,jdbcType=VARCHAR},
+      </if>
+      <if test="buildingStructureId != null" >
+        building_structure_id = #{buildingStructureId,jdbcType=VARCHAR},
+      </if>
+      <if test="state != null" >
+        state = #{state,jdbcType=INTEGER},
+      </if>
+    </set>
+    where product_bs_id = #{productBsId,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.flf.entity.ProductBs" >
+    update tc_product_bs
+    set product_id = #{productId,jdbcType=VARCHAR},
+      building_structure_id = #{buildingStructureId,jdbcType=VARCHAR},
+      state = #{state,jdbcType=INTEGER}
+    where product_bs_id = #{productBsId,jdbcType=VARCHAR}
+  </update>
+  
+  <select id="listPageProductBs" resultMap="BaseResultMap" parameterType="ProductBs">
+    SELECT a.* FROM (SELECT * FROM tc_product_bs WHERE 1=1 AND product_bs_id NOT IN (SELECT product_bs_id FROM t_lease_contract WHERE NOW() BETWEEN lease_start_date AND lease_end_date )) a 
+    INNER JOIN (select * from tc_product where 1=1 and product_type="0"
+     <if test="averagePriceA!= null and averagePriceB!= null" >
+       and average_price BETWEEN #{averagePriceA} and #{averagePriceB}
+      </if>
+    ) b ON a.product_id=b.product_id
+    INNER JOIN (select * from  tc_building_structure where 1=1
+    <if test="projectId!= null" >
+       and project_id=#{projectId}
+      </if>
+    <if test="buildingAreaA!= null and buildingAreaB!= null" >
+       and building_area BETWEEN #{buildingAreaA} and #{buildingAreaB}
+      </if>
+       <if test="buildingTypes!= null" >
+       and building_type =#{buildingTypes} 
+      </if>
+    ) c ON c.id=a.building_structure_id
+  </select>
+  
+  <!-- 查询所有有效的产品建筑关联数据  王洲   2015.12.25 -->
+  <select id="listAllProductBs" resultMap="BaseResultMap">
+  	select <include refid="Base_Column_List" /> from tc_product_bs where state = '0'
+  </select>
+  
+  <!-- 根据产品id查询所有有效数据	王洲		2015.12.26 -->
+  <select id="listAllProductBsByProductId" resultMap="BaseResultMap" parameterType="String">
+  	select <include refid="Base_Column_List" /> from tc_product_bs where product_id = #{0} and state = '0' 
+  </select>
+  
+  <!-- 根据建筑id查询所有有效数据	陈浪 2016-04-29 -->
+  <select id="listAllProductBsByBId" resultMap="BaseResultMap" parameterType="String">
+  	select <include refid="Base_Column_List" /> from tc_product_bs where building_structure_id = #{0} and state = '0'
+  </select>
+  
+  <!-- 根据productBsId改变数据的状态为失效  王洲  2015.12.26 -->
+  <update id="changeStateByProductBsId" parameterType="String">
+  	update tc_product_bs set state = 1 where product_bs_id = #{0}
+  </update>
+  
+  <!-- 根据productId改变数据的状态为失效  陈浪  2016-05-03  -->
+  <update id="changeStateByProductId" parameterType="String">
+  	update tc_product_bs set state = 1 where product_id = #{0}
+  </update>
+  
+  <delete id="deleteByProductId" parameterType="String">
+  	DELETE  from tc_product_bs where product_id=#{0}
+  </delete>
+  
+</mapper>

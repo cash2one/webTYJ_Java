@@ -1,0 +1,83 @@
+package com.flf.service.impl;
+
+import java.util.List;
+
+import javax.jws.WebService;
+
+
+import com.flf.entity.PageRestful;
+import com.flf.entity.Rules;
+import com.flf.mapper.RulesMapper;
+import com.flf.service.RulesService;
+
+@WebService
+public class RulesServiceImpl implements RulesService {
+	
+	private RulesMapper rulesMapper;
+	
+	public RulesMapper getRulesMapper() {
+		return rulesMapper;
+	}
+
+	public void setRulesMapper(RulesMapper rulesMapper) {
+		this.rulesMapper = rulesMapper;
+	}
+	
+
+	@Override
+	public List<Rules> listAllRules() {
+		// TODO Auto-generated method stub
+		return rulesMapper.listAllRules();
+	}
+
+	@Override
+	public Rules getRulesByIdRest(String id) {
+		// TODO Auto-generated method stub
+		return rulesMapper.getRulesById(id);
+	}
+
+	@Override
+	public void AddRules(Rules rules) {
+		// TODO Auto-generated method stub
+		rulesMapper.AddRules(rules);
+	}
+
+	@Override
+	public void UpdateRules(Rules rules) {
+		// TODO Auto-generated method stub
+		rulesMapper.UpdateRules(rules);
+	}
+
+	@Override
+	public void DeleteRulesById(String id) {
+		// TODO Auto-generated method stub
+		rulesMapper.DeleteRulesById(id);
+	}
+
+	/*
+	  * <p>Title: listPageRules</p>
+	  * <p>Description: </p>
+	  * @param rules
+	  * @return
+	  * @see com.flf.service.RulesService#listPageRules(com.flf.entity.Rules)
+	  */
+	
+	
+	@Override
+	public PageRestful listPageRules(Rules rules) {
+		// TODO Auto-generated method stub
+		PageRestful pageRestful=new PageRestful();
+		List<Rules> ruless = rulesMapper.listPageRules(rules);
+		ruless.add(0,null);
+		pageRestful.setRuless(ruless);
+		pageRestful.setPage(rules.getPage());
+		return pageRestful;
+	}
+
+	@Override
+	public List<Rules> listAllsRules() {
+		// TODO Auto-generated method stub
+		return rulesMapper.listAllsRules();
+	}
+
+}

@@ -1,0 +1,65 @@
+<!--创建人：李斌    日期：2015/5/6
+    页面名称：外部专业线的抄表管理的历史记录
+    JS路径：'controllers/externalProfession/meterReadingManagement/history01',
+    修改时间：2015/5/29
+    修改人：李斌
+-->
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>历史记录</title>
+</head>
+<body>
+<div style="padding:20px 30px 0">
+
+</div>
+<div style="padding:20px 30px 0">
+    <!--外部专业线的抄表管理的历史记录表格-->
+    <table class="table table-bordered text-center table-hover">
+        <!--循环显示js的历史记录-->
+        <tr ng-repeat="history in historys">
+            <td>{{history.name}}</td>
+            <td>{{history.meterType}}</td>
+            <td>{{history.startTime}}</td>
+            <td>{{history.taskProgress}}</td>
+            <td>{{history.taskName}}</td>
+            <td>{{history.fishTime}}</td>
+            <td><a style="cursor:pointer"
+                   data-toggle="modal" data-target="#modifyPet" ng-click="show(history.id)">{{history.check}}</a></td>
+        </tr>
+        <!--循环显示js的历史记录end-->
+    </table>
+    <!--外部专业线的抄表管理的历史记录表格end-->
+</div>
+
+
+<!--详情Modal-->
+<div class="modal fade" id="modifyPet" role="dialog" aria-label="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                详情
+            </div>
+            <div class="modal-body">
+                <table class="table table-hover">
+                    <tr>
+                        <td>活动负责人:{{name}}</td>
+                        <td>抄表类型:{{meterType}}</td>
+                        <td>任务下达时间:{{startTime}}</td>
+                    </tr>
+                    <tr>
+                        <td>任务进度:{{taskProgress}}</td>
+                        <td>任务发布人:{{taskName}}</td>
+                        <td>任务发布时间:{{fishTime}}</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

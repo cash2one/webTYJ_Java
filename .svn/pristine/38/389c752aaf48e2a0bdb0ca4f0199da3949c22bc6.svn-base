@@ -1,0 +1,70 @@
+package com.flf.service.impl;
+
+import java.util.Date;
+import java.util.List;
+
+import com.flf.entity.ApplicationDelayRecords;
+import com.flf.entity.PageRestful;
+import com.flf.entity.UrgeTaskRecords;
+import com.flf.mapper.UrgeTaskRecordsMapper;
+import com.flf.service.UrgeTaskRecordsService;
+import com.flf.util.Tools;
+
+public class UrgeTaskRecordsServiceImpl implements UrgeTaskRecordsService{
+
+	private UrgeTaskRecordsMapper urgeTaskRecordsMapper;
+	
+	public UrgeTaskRecordsMapper getUrgeTaskRecordsMapper() {
+		return urgeTaskRecordsMapper;
+	}
+
+	public void setUrgeTaskRecordsMapper(UrgeTaskRecordsMapper urgeTaskRecordsMapper) {
+		this.urgeTaskRecordsMapper = urgeTaskRecordsMapper;
+	}
+
+	@Override
+	public List<UrgeTaskRecords> getUrgeTaskRecordsbyTaskId(String taskId) {
+		if(Tools.notEmpty(taskId)){
+			return urgeTaskRecordsMapper.getUrgeTaskRecordsbyTaskId(taskId);
+		}
+		return null;
+	}
+
+	@Override
+	public void insertUrgeTaskRecords(UrgeTaskRecords urgeTaskRecords) {
+		urgeTaskRecords.setUrgeTime(new Date());
+		urgeTaskRecordsMapper.insertUrgeTaskRecords(urgeTaskRecords);
+	}
+
+	@Override
+	public int getUrgeTaskRecordsCount(String taskId) {
+		if(Tools.notEmpty(taskId)){
+			
+			return urgeTaskRecordsMapper.getUrgeTaskRecordsCount(taskId);	
+		}
+		return 0;
+	}
+
+	@Override
+	public PageRestful listPageUrgeTaskRecordsRestful(
+			UrgeTaskRecords urgeTaskRecords) {
+		PageRestful pageRestful = new PageRestful();
+		List<UrgeTaskRecords> recordList = urgeTaskRecordsMapper.listPageUrgeTaskRecordsRestful(urgeTaskRecords);
+		recordList.add(0,null);
+		pageRestful.setUrgeTaskRecords(recordList);
+		pageRestful.setPage(urgeTaskRecords.getPage());
+		return pageRestful;
+	}
+
+	@Override
+	public String getUrgeTaskRidicule(int urgeSum) {
+		
+			if(urgeSum !=0 && urgeSum>0){
+			
+				return urgeTaskRecordsMapper.getUrgeTaskRidicule(urgeSum);	
+			}
+		
+		return null;
+	}
+
+}

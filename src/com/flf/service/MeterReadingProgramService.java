@@ -1,0 +1,231 @@
+package com.flf.service;
+
+import java.io.InputStream;
+import java.util.Date;
+import java.util.List;
+
+import javax.jws.WebService;
+import javax.servlet.http.HttpServletRequest;
+import javax.ws.rs.Consumes;
+import javax.ws.rs.DELETE;
+import javax.ws.rs.GET;
+import javax.ws.rs.POST;
+import javax.ws.rs.PUT;
+import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
+import javax.ws.rs.Produces;
+import javax.ws.rs.core.MediaType;
+
+import com.flf.entity.MeterReadingProgram;
+import com.flf.entity.PageRestful;
+import com.flf.entity.SearchMeter;
+/* Created by Administrator on 2015/6/15. 
+author:尹磊
+修改时间：2015/6/15  修改人：尹磊 */
+@WebService
+@Path("/MeterReadingProgram")
+public interface MeterReadingProgramService {
+	
+	/**
+	 * 分页查询所有抄表计划信息
+	 * @return
+	 */
+	
+	/*@POST
+	@Path("/listPageMeterReadingProgram")
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+	PageRestful listPageMeterReadingProgram(MeterReadingProgram meterReadingProgram);
+
+*/
+	/**
+	 * 查询所有抄表计划信息
+	 * @return
+	 */
+	@GET
+	@Path("/listAllMeterReadingProgram")
+	@Produces(MediaType.APPLICATION_JSON)
+	List<MeterReadingProgram> listAllMeterReadingProgram();
+
+	
+	/**
+	 * 根据id查询所有抄表计划信息
+	 * @return
+	 */
+	@GET
+	@Path("/getMeterReadingProgrambyId/{meterReadingProgramId}")
+	@Produces(MediaType.APPLICATION_JSON)
+	MeterReadingProgram getUserByIdRest(@PathParam("meterReadingProgramId") String meterReadingProgramId);
+	
+	/**
+	 * 修改抄表数据信息 外层核实:根据选中的id,查询对应的抄表计划
+	 * @return
+	 */
+	@POST
+	@Path("/selectMeterChecked")
+	@Consumes({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
+	List<MeterReadingProgram> selectMeterChecked(String meterReadingProgramId);
+	
+	/**
+	 * 根据年月查询所有抄表计划信息
+	 * @return
+	 */
+	@GET
+	@Path("/listMeterReadingProgrambyDate/{date}")
+	@Produces(MediaType.APPLICATION_JSON)
+	List<MeterReadingProgram> listMeterReadingProgrambyDate(@PathParam("date") Date date);
+	
+	/**
+	 * 根据执行人查询所有抄表计划信息
+	 * @return
+	 */
+	@GET
+	@Path("/listMeterReadingProgrambyStaff/{currentExecutor}")
+	@Produces(MediaType.APPLICATION_JSON)
+	List<MeterReadingProgram> listMeterReadingProgrambyStaff(@PathParam("currentExecutor") String currentExecutor);
+	
+	
+	/**
+	 * 根据执行状态查询所有抄表计划信息
+	 * @return
+	 */
+	@GET
+	@Path("/listMeterReadingProgrambyState/{programExecutionStatus}")
+	@Produces(MediaType.APPLICATION_JSON)
+	List<MeterReadingProgram> listMeterReadingProgrambyState(@PathParam("programExecutionStatus") byte programExecutionStatus);
+	
+	/**
+	 * 根据执行团队查询所有抄表计划信息
+	 * @return
+	 */
+	@GET
+	@Path("/listMeterReadingProgrambyStaff/{executiveTeam}")
+	@Produces(MediaType.APPLICATION_JSON)
+	List<MeterReadingProgram> listMeterReadingProgrambyTeam(@PathParam("executiveTeam") String executiveTeam);
+	
+	
+	
+	/**
+	 * 根据抄表计划名称查询所有抄表计划信息
+	 * @return
+	 */
+	@GET
+	@Path("/listMeterReadingProgrambyName/{projectName}")
+	@Produces(MediaType.APPLICATION_JSON)
+	List<MeterReadingProgram> listMeterReadingProgrambyName(@PathParam("projectName") String projectName);
+	
+	
+	/**
+	 * 抄表计划多条件查询接口
+	 * @return
+	 */
+	@POST
+	@Path("/listMeterReadingProgram") 
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
+	PageRestful listPageMeterReadingProgram(SearchMeter searchMerter);
+
+	
+	/**
+	 * 新增抄表计划信息
+	 * @return
+	 */
+	@POST
+	@Path("/insertMeterReadingProgram")
+	@Consumes({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
+	void insertMeterReadingProgramrest(MeterReadingProgram meterReadingProgram);
+
+	
+	/**
+	 * 修改抄表计划信息
+	 * @return
+	 */
+	@POST
+	@Path("/updateMeterReadingProgram")
+	@Consumes({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
+	void updateMeterReadingProgramrest(MeterReadingProgram meterReadingProgram);
+
+	
+	/**
+	 * 删除抄表计划信息
+	 * @return
+	 */
+	@DELETE
+	@Path("/deleteMeterReadingProgram/{meterReadingProgramId}")
+	void deleteMeterReadingProgramrest(@PathParam("meterReadingProgramId") String meterReadingProgramId);
+
+	 /**
+     * 将需要进行EXCEL导入的数据先写入模板并导出到本地
+     */
+    InputStream exportMeterReadingFile();
+    
+
+	/**
+	 * 审核抄表计划
+	 * 陶勇超
+	 * 2015-12-29
+	 * @return
+	 */
+	@POST
+	@Path("/listPageMeterReadingProgramAll") 
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
+	PageRestful listPageMeterReadingProgramAll(MeterReadingProgram meterReadingProgram);
+	
+	/**
+	 * 审核抄表计划下抄表结果详情
+	 * 陶勇超
+	 * 2015-12-30
+	 * @return
+	 */
+	@POST
+	@Path("/listPageMeterReadingProgramById") 
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
+	PageRestful listPageMeterReadingProgramById(MeterReadingProgram meterReadingProgram);
+	
+	/**
+	 * 执行抄表计划
+	 * @param meterReadingProgramId
+	 * @return
+	 */
+	@POST
+	@Path("/implementProgram") 
+	@Produces(MediaType.APPLICATION_JSON)
+	String implementProgram(String meterReadingProgramId);
+	
+	/**
+	 * 抄表结果列表
+	 * @param searchMerter
+	 * @return
+	 */
+	@POST
+	@Path("/listMeterReadingResult") 
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
+	PageRestful listPageMeterReadingResult(SearchMeter searchMerter);
+
+	/**
+	 * 抄表计划导出数据
+	 * @param parameter
+	 * @return
+	 */
+	InputStream exportMeterReadingDataFile(HttpServletRequest request);
+
+	/**
+	 * 水损导出
+	 * @param request
+	 * @return
+	 */
+	InputStream exportWaterLossExcel(HttpServletRequest request);
+
+	/**
+	 * 获取抄表计划详情
+	 * @param meterReadingProgramId
+	 * @return
+	 */
+	@GET
+	@Path("/editData/{meterReadingProgramId}")
+	@Produces(MediaType.APPLICATION_JSON)
+	MeterReadingProgram editData(@PathParam("meterReadingProgramId") String meterReadingProgramId);
+}

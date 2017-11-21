@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+<div class="order">
+    <div class="row">
+        <div style="width:97%; margin:0 auto; background:#f0f0f0; -moz-border-radius:7px; -webkit-border-radius:7px; border-radius:7px; border:1px solid #bbb; padding-bottom:15px; height:500px; ">
+
+                <div class="media-left" style="width: 200px;">
+                    <h3 style="margin-left:30px ">部门检</h3>
+                    <table border="1" style="width: 100%;text-align: center;margin-left: 20px;margin-top: 30px">
+                        <tr><td><strong>任务</strong></td></tr>
+                        <tr><td><strong>D任务&nbsp;&nbsp;&nbsp;&nbsp;<i  style="color:red;">NEW</i></strong></td></tr>
+                        <tr><td><a ui-sref="index.externalProfession.departmentCheck.task.chooseTask">A任务</a></td></tr>
+                        <tr><td><a ui-sref="index.externalProfession.departmentCheck.task.chooseTask">B任务</a></td></tr>
+                        <tr><td>C任务</td></tr>
+                        <tr><td>&nbsp;</td></tr>
+                        <tr><td>&nbsp;</td></tr>
+                        <tr><td>&nbsp;</td></tr>
+                        <tr><td>&nbsp;</td></tr>
+                        <tr><td>&nbsp;</td></tr>
+                    </table>
+                </div>
+
+                <div class="media-right" style="width: 850px;">
+                    <div class="complaint_user1">
+                        <div style="margin-left: 10px">
+                            <div class="complaint_user_info_navigation">
+                                <a class="btn" ui-sref="index.externalProfession.departmentCheck.task.chooseTask">选择任务</a>
+                                <a class="btn" ui-sref="index.externalProfession.departmentCheck.task.makeTask">制定计划</a>
+                                <a class="btn" ui-sref="index.externalProfession.departmentCheck.task.chooseTeam">选择团队</a>
+                                <a class="btn" ui-sref="index.externalProfession.departmentCheck.task.finish">完成</a>
+                            </div>
+                            <div class="clear"></div>
+                        </div>
+                        <div class="row">
+                            <div ui-view></div>
+                        </div>
+                    </div>
+                </div>
+                  </div>
+        <div class="clear"></div>
+
+    </div>
+</div>
+</body>
+</html>

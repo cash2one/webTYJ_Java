@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.flf.mapper.DepartmentRecordsMapper" >
+  <resultMap id="BaseResultMap" type="DepartmentRecords" >
+    <id column="result_record_id" property="recordId" jdbcType="VARCHAR" />
+    <result column="order_id" property="orderId" jdbcType="VARCHAR" />
+    <result column="check_object_id" property="checkObjectId" jdbcType="VARCHAR" />
+    <result column="check_object_name" property="checkObjectName" jdbcType="VARCHAR" />
+    <result column="check_time" property="checkTime" jdbcType="TIMESTAMP" />
+    <result column="score" property="score" jdbcType="VARCHAR" />
+  </resultMap>
+  
+  <select id="getDepartmentRecordsbyId" parameterType="String" resultMap="BaseResultMap">
+  	select * from ts_department_records where result_record_id= #{0}
+  </select>
+  
+  <select id="getDepartmentRecordsbyOrderId" parameterType="String" resultMap="BaseResultMap">
+   select * from ts_department_records where order_id= #{0}
+  </select>
+  
+  <insert id="insertDepartmentRecords" parameterType="DepartmentRecords" >      
+      insert into ts_department_records (result_record_id, order_id,check_object_id, check_object_name, 
+      check_time,score)
+    values (UUID(), #{orderId,jdbcType=VARCHAR}, #{checkObjectId,jdbcType=VARCHAR}, #{checkObjectName,jdbcType=VARCHAR}, 
+      #{checkTime,jdbcType=TIMESTAMP},#{score,jdbcType=VARCHAR})
+  </insert>
+</mapper>

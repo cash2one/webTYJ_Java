@@ -1,0 +1,127 @@
+package com.flf.service;
+
+import java.util.List;
+
+import javax.jws.WebService;
+import javax.ws.rs.Consumes;
+import javax.ws.rs.DELETE;
+import javax.ws.rs.GET;
+import javax.ws.rs.POST;
+import javax.ws.rs.PUT;
+import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
+import javax.ws.rs.Produces;
+import javax.ws.rs.core.MediaType;
+
+import com.flf.entity.ArticleRelease;
+import com.flf.entity.PageRestful;
+import com.flf.entity.Search;
+
+
+@WebService
+@Path("/ArticleRelease")
+public interface ArticleReleaseService {
+
+	/**
+	 * 查询所有放行条信息
+	 * @return
+	 */
+	@POST
+	@Path("/listAllArticleRelease")
+	@Produces(MediaType.APPLICATION_JSON)
+	List<ArticleRelease> listAllArticleRelease(Search search);
+	/**
+	 * 按条件分页查询放行条信息
+	 * @return
+	 */
+	@POST
+	@Path("/listPageArticleReleaseByCondition")
+	@Produces(MediaType.APPLICATION_JSON)
+	PageRestful listPageArticleReleaseByCondition(Search search);
+	
+	/**
+	 * 根据放行条id查询放行条信息
+	 * @return
+	 */
+	@GET
+	@Path("/getArticleReleasebyId/{userid}")
+	@Produces(MediaType.APPLICATION_JSON)
+	ArticleRelease getUserByIdRest(@PathParam("userid") String id);
+	
+
+	/**
+	 * 根据办理人id查询放行条信息
+	 * @return
+	 */
+	@GET
+	@Path("/listAllArticleReleaseByPersonId/{personId}")
+	@Produces(MediaType.APPLICATION_JSON)
+	List<ArticleRelease> listAllArticleReleaseByPersonId(@PathParam("personId") String personId);
+
+	/**
+	 * 根据办理人id查询放行条信息分页
+	 * @param personId
+	 * @return
+	 */
+	@POST
+	@Path("/listPageArticleReleaseByPersonId")
+	@Produces(MediaType.APPLICATION_JSON)
+	PageRestful listPageArticleReleaseByPersonId(ArticleRelease articleRelease);
+	
+	
+	/**
+	 * 新增放行条信息
+	 * @return
+	 */
+	@POST
+	@Path("/insertArticleRelease")
+	@Consumes({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
+	void insertArticleReleaserest(ArticleRelease articleRelease);
+
+	
+	/**
+	 * 修改放行条信息
+	 * @return
+	 */
+	@PUT
+	@Path("/updateArticleRelease")
+	@Consumes({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
+	void updateArticleReleaserest(ArticleRelease articleRelease);
+
+	
+	/**
+	 * 删除放行条信息
+	 * @return
+	 */
+	@DELETE
+	@Path("/deleteArticleRelease/{id}")
+	void deleteArticleReleaserest(@PathParam("id") String id);
+	
+	@POST
+	@Path("/listPageArticleReleaseByContion")
+	@Produces(MediaType.APPLICATION_JSON)
+	PageRestful listPageArticleReleaseByContion(ArticleRelease articleRelease);
+	
+	/**
+	 * 移动端新增放行条
+	 * @param jsonStr
+	 * @return
+	 */
+	String addArticleRelease(String jsonStr);
+	
+	/**
+	 * 根据客户id集合查询放行条记录
+	 * @param custIdList
+	 * @return
+	 */
+	String getArticleReleaseByCustIdList(List<String> custIdList);
+	
+	/**
+	 * 家家客户端根据buildingStructureId查询放行条记录
+	 * @param buildingStructureId
+	 * @return
+	 */
+	String getArticleReleaseByBuildingStructure(String buildingStructureId);
+	
+	
+}

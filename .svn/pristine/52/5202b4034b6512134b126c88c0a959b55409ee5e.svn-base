@@ -1,0 +1,107 @@
+<!--
+    前端负责人：倪明
+    页面名称：左边页面
+    js路径：js/left.js
+    创建时间：2015/4/1
+    修改时间：2015/5/27
+-->
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="css/left.css"/>
+</head>
+<body>
+<div class="left">
+    <!--用户信息-->
+    <div class="user clear">
+        <div class="user_img"><img src="images/qqIcon.png"></div>
+        <div class="user_info">王凯<span class="user_number">9</span><br/><a href="#">修改资料</a></div>
+    </div>
+    <!--用户信息结束-->
+    <!--搜索框样式-->
+    <div class="search clear">
+        <form id="form1" name="form1" method="post" action="">
+            <input type="text" class="search_input" placeholder="搜索联系人">
+            <input name="" type="button" class="search_button">
+        </form>
+    </div>
+    <!--搜索框样式结束-->
+    <!--用户组样式-->
+    <div class="user_list clear">
+        <div class="user_list_btn">
+            <form id="form2" name="form2" method="post" action="">
+                <input name="" type="button" class="user_list_button_left" >
+                <input name="" type="button" class="user_list_button_right" >
+            </form>
+        </div>
+        <div class="user_panel_group"  >
+            <div class="user_group_name" >桃源居项目组(3人)</div>
+            <div class="user_group_user" >
+                <div class="user_group_user_list clear">
+                    <div class="user_group_user_list_img"><img src="images/a.png" width="37" height="35"></div>
+                    <div class="user_group_user_list_name">BitWorks<br/>项目总监</div>
+                </div>
+                <div class="user_group_user_list clear">
+                    <div class="user_group_user_list_img"><img src="images/a.png" width="37" height="35"></div>
+                    <div class="user_group_user_list_name">BitWorks<br/>项目总监</div>
+                </div>
+                <div class="user_group_user_list clear">
+                    <div class="user_group_user_list_img"><img src="images/a.png" width="37" height="35"></div>
+                    <div class="user_group_user_list_name">BitWorks<br/>项目总监</div>
+                </div>
+                <div class="user_group_user_list clear">
+                    <div class="user_group_user_list_img"><img src="images/a.png" width="37" height="35"></div>
+                    <div class="user_group_user_list_name">BitWorks<br/>项目总监</div>
+                </div>
+            </div>
+            <div class="user_group_name" >桃源居项目组(3人)</div>
+            <div class="user_group_user" >
+                <div class="user_group_user_list clear">
+                    <div class="user_group_user_list_img"><img src="images/a.png" width="37" height="35"></div>
+                    <div class="user_group_user_list_name">BitWorks<br/>项目总监</div>
+                </div>
+                <div class="user_group_user_list clear">
+                    <div class="user_group_user_list_img"><img src="images/a.png" width="37" height="35"></div>
+                    <div class="user_group_user_list_name">BitWorks<br/>项目总监</div>
+                </div>
+                <div class="user_group_user_list clear">
+                    <div class="user_group_user_list_img"><img src="images/a.png" width="37" height="35"></div>
+                    <div class="user_group_user_list_name">BitWorks<br/>项目总监</div>
+                </div>
+                <div class="user_group_user_list clear">
+                    <div class="user_group_user_list_img"><img src="images/a.png" width="37" height="35"></div>
+                    <div class="user_group_user_list_name">BitWorks<br/>项目总监</div>
+                </div>
+            </div>
+        </div>
+        <div class="user_panel_session" style=" display:none">
+            <div class="user_group_user" >
+                <div class="user_group_user_list clear">
+                    <div class="user_group_user_list_img"><img src="images/a.png" width="37" height="35"></div>
+                    <div class="user_group_user_list_name">BitWorks<br/>项目总监</div>
+                </div>
+                <div class="user_group_user_list clear">
+                    <div class="user_group_user_list_img"><img src="images/a.png" width="37" height="35"></div>
+                    <div class="user_group_user_list_name">BitWorks<br/>项目总监</div>
+                </div>
+                <div class="user_group_user_list clear">
+                    <div class="user_group_user_list_img"><img src="images/a.png" width="37" height="35"></div>
+                    <div class="user_group_user_list_name">BitWorks<br/>项目总监</div>
+                </div>
+                <div class="user_group_user_list clear">
+                    <div class="user_group_user_list_img"><img src="images/a.png" width="37" height="35"></div>
+                    <div class="user_group_user_list_name">BitWorks<br/>项目总监</div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--用户组样式结束-->
+    <!--左侧底部按钮-->
+    <div class="user_button">
+        <span class="left_email_button" aria-hidden="true"></span>
+        <span class="left_set_button" aria-hidden="true"></span>
+    </div>
+</div>
+</body>
+</html>

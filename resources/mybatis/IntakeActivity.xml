@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.flf.mapper.IntakeActivityMapper" >
+  <resultMap id="BaseResultMap" type="com.flf.entity.IntakeActivity" >
+    <result column="intake_activity_id" property="intakeActivityId" jdbcType="VARCHAR" />
+    <result column="start_date" property="startDate" jdbcType="DATE" />
+    <result column="end_date" property="endDate" jdbcType="DATE" />
+    <result column="management_fee_charging_time" property="managementFeeChargingTime" jdbcType="DATE" />
+    <result column="choose_to_prepay_fees_months" property="chooseToPrepayFeesMonths" jdbcType="INTEGER" />
+    <result column="take_one" property="takeOne" jdbcType="TINYINT" />
+    <result column="intake_amount" property="intakeAmount" jdbcType="INTEGER" />
+    <result column="staff_id" property="staffId" jdbcType="VARCHAR" />
+    <result column="project_name" property="projectName" jdbcType="VARCHAR" />
+    <result column="staff_name" property="staffName" jdbcType="VARCHAR" />
+  </resultMap>
+  
+  <select id="listPageIntakeActivity" parameterType="IntakeActivity" resultMap="BaseResultMap">
+		SELECT a.*,b.building_type,c.project_name,d.staff_name FROM t_intake_activity  a
+		LEFT JOIN t_intake_gift_relation e ON e.intake_id=a.intake_activity_id
+		LEFT JOIN tc_building_structure b ON e.building_structure_id=b.id
+		LEFT JOIN t_project c ON c.project_id=b.project_id
+		left join t_staff d on d.staff_id = a.staff_id
+		GROUP BY a.intake_activity_id
+	</select>
+ 
+  <insert id="insertIntakeActivity" parameterType="com.flf.entity.IntakeActivity" >
+    insert into t_intake_activity (intake_activity_id, start_date, end_date, 
+      management_fee_charging_time, choose_to_prepay_fees_months, 
+      take_one, intake_amount,staff_id)
+    values (#{intakeActivityId,jdbcType=VARCHAR}, #{startDate,jdbcType=DATE}, #{endDate,jdbcType=DATE}, 
+      #{managementFeeChargingTime,jdbcType=DATE}, #{chooseToPrepayFeesMonths,jdbcType=INTEGER}, 
+      #{takeOne,jdbcType=TINYINT}, #{intakeAmount,jdbcType=INTEGER},#{staffId})
+  </insert>
+ 
+  <update id="updateIntakeActivity" parameterType="IntakeActivity" >
+    update t_intake_activity
+    set       start_date = #{startDate,jdbcType=DATE},
+      		  end_date = #{endDate,jdbcType=DATE},
+      		  management_fee_charging_time = #{managementFeeChargingTime,jdbcType=DATE},
+      		  choose_to_prepay_fees_months = #{chooseToPrepayFeesMonths,jdbcType=INTEGER},
+     		  take_one = #{takeOne,jdbcType=TINYINT},
+     		  intake_amount = #{intakeAmount,jdbcType=INTEGER}
+     		  staff_id=#{staffId}
+    	   where intake_activity_id=#{intakeActivityId}
+  </update>
+</mapper>

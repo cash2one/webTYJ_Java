@@ -1,0 +1,108 @@
+<!--
+    页面名称：【内部专业线】内部服务请求
+    前端负责人：刘洋
+    js路径：js/controllers/internalProfession/majorAssetInitialization/ServiceRequest.js
+    创建时间：2015/4/29
+    修改日期：2015/5/28
+-->
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>内部服务请求(内部专业线)</title>
+</head>
+<body >
+<!--start-->
+<!--搜索-->
+<div  class="complaint_user_list row">
+    <div class="col-md-12">
+        <form  class="form-inline" style="margin-top: 15px;">
+            <div>
+                <label for="exampleInputEmail1">请求时间：</label>
+                <input type="date" class="form-control input-sm" id="exampleInputEmail1" style="width:150px;">——
+                <input type="date" class="form-control input-sm" id="exampleInputPassword1" style="width:150px;">
+               <!--复选框-->
+                <div class="checkbox" style="margin:0px 100px;">
+                    <span>处理状态：</span>
+                    <label>
+                        <input type="checkbox"> 全部
+                    </label>
+                    <label>
+                        <input type="checkbox" checked> 处理中
+                    </label>
+                    <label>
+                        <input type="checkbox"> 已完成
+                    </label>
+                </div>
+                <!--复选框 end-->
+                <button type="submit" class="btn btn-sm" style="background-color: #ffffff">搜索</button>
+            </div>
+        </form>
+    </div>
+</div>
+<!--搜索 end-->
+<!--显示信息-->
+<div  class="complaint_user_list row">
+    <div class="col-lg-4 col-md-4 col-sm-6" style="margin-top: 30px ">
+        <div  style="height: 150px;width: 150px;margin-left: 20px; background-color: #f0f0f0;border: 1px solid rgba(0, 0, 0, 0.99)">
+            <div class="panel_info" style="margin-top: 15px;">
+                <div style="padding: 5px" align="center">
+                    <a ui-sref="index.internalProfession.ServiceRequest.ServiceAdd">
+                    <img src="images/staffHome/addCar.png" style="width: 100px;height: 100px" ></a>
+                </div>
+            </div>
+        </div>
+        <!--业务办理下拉菜单-->
+        <div  style="height: 150px;width: 350px;margin-left: 200px;margin-top: -150px;border: 1px solid rgba(0, 0, 0, 0.99)">
+            <div style="float: right;">
+                <div >
+                    <ul>
+                        <li class="dropdown">
+                            <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-expanded="true">
+                                业务办理
+                                <span class="caret"></span>
+                            </button>
+                            <ul class="dropdown-menu pull-right" role="menu" aria-labelledby="dropdownMenu2"style="left: 95px;margin-top: -40px" >
+                                <li role="presentation">
+                                    <a href="#" tabindex="-1" data-toggle="tab">新建</a>
+                                </li>
+                                <li role="presentation">
+                                    <a href="#" tabindex="-1" data-toggle="tab">编辑</a>
+                                </li>
+                                <li role="presentation">
+                                    <a href="#" tabindex="-1" data-toggle="tab">拷贝</a>
+                                </li>
+                                <li role="presentation">
+                                    <a href="#" tabindex="-1" data-toggle="tab">重启</a>
+                                </li>
+                                <li role="presentation">
+                                    <a href="#" tabindex="-1" data-toggle="tab">关闭</a>
+                                </li>
+                                <li role="presentation">
+                                    <a href="#" tabindex="-1" data-toggle="tab">合并</a>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div style="margin-top: 20px;">
+                <div class="col-md-12">请求ID：1-1458866852</div>
+                <div class="col-md-12">请求时间：2015/5/10</div>
+                <div class="col-md-6">分类：XXX</div>
+                <div class="col-md-6">服务类型：前台</div>
+                <div class="col-md-6">客户ID：XXX</div>
+                <div class="col-md-6">客户名称：XXX</div>
+            </div>
+        </div>
+    </div>
+</div>
+<!--显示信息 end-->
+<!--添加服务请求-->
+<div class="row" style="padding:5px 10px 0">
+    <div ui-view></div>
+</div>
+<!--添加服务请求-->
+<!--end-->
+</body>
+</html>

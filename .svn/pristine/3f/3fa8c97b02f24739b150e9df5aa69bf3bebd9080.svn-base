@@ -1,0 +1,31 @@
+package com.flf.mapper;
+
+import java.util.List;
+
+import com.flf.entity.ElectronicBilling;
+
+public interface ElectronicBillingMapper {
+
+	List<ElectronicBilling> getAllElectronicBillings();//列出所有电子账单
+	void insertElectronicBilling(ElectronicBilling electronicBilling);//增加
+	void deleteElectronicBilling(ElectronicBilling electronicBilling);//删除
+	void updateElectronicBilling(ElectronicBilling electronicBilling);//修改
+	ElectronicBilling getElectronicBillingById(String electronicBillingId);//根据id查询
+	
+	List<ElectronicBilling> getElectronicBillingsByCustId(String CustId);//根据客户id获取电子账单
+	List<ElectronicBilling> QueryResultElectronicBillings(ElectronicBilling electronicBilling);//条件查询（账单时间，账单编号，收费对象，必须包含客户id）
+	
+	List<ElectronicBilling> listPageElectronicBilling(ElectronicBilling electronicBilling);//条件查询
+	//	获取最大编号
+	String getMaxElectronicBillingNum();
+	//批量插入电子账单信息
+	int insertList(List<ElectronicBilling> electronicBillingListAll);
+	
+	/**
+	 * 根据建筑id获取账户
+	 * @author zhuqi 2016.04.29
+	 * @param BuildingId
+	 * @return ElectronicBilling
+	 */
+	ElectronicBilling getElectronicBillingByBuildingId(String BuildingId);
+}

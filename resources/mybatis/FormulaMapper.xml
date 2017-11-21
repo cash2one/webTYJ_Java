@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.flf.mapper.FormulaMapper" >
+  <resultMap id="BaseResultMap" type="com.flf.entity.Formula" >
+    <id column="formula_id" property="formulaId" jdbcType="VARCHAR" />
+    <result column="formula_name" property="formulaName" jdbcType="VARCHAR" />
+    <result column="formula_expression" property="formulaExpression" jdbcType="VARCHAR" />
+    <result column="condition_name" property="conditionName" jdbcType="VARCHAR" />
+    <result column="condition_expression" property="conditionExpression" jdbcType="VARCHAR" />
+    <result column="charge_item_details_id" property="chargeItemDetailsId" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    formula_id, formula_name, formula_expression, condition_name, condition_expression, 
+    charge_item_details_id
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from tc_formula
+    where formula_id = #{formulaId,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from tc_formula
+    where formula_id = #{formulaId,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.flf.entity.Formula" >
+    insert into tc_formula (formula_id, formula_name, formula_expression, 
+      condition_name, condition_expression, charge_item_details_id
+      )
+    values (#{formulaId,jdbcType=VARCHAR}, #{formulaName,jdbcType=VARCHAR}, #{formulaExpression,jdbcType=VARCHAR}, 
+      #{conditionName,jdbcType=VARCHAR}, #{conditionExpression,jdbcType=VARCHAR}, #{chargeItemDetailsId,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.flf.entity.Formula" >
+    insert into tc_formula
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="formulaId != null" >
+        formula_id,
+      </if>
+      <if test="formulaName != null" >
+        formula_name,
+      </if>
+      <if test="formulaExpression != null" >
+        formula_expression,
+      </if>
+      <if test="conditionName != null" >
+        condition_name,
+      </if>
+      <if test="conditionExpression != null" >
+        condition_expression,
+      </if>
+      <if test="chargeItemDetailsId != null" >
+        charge_item_details_id,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="formulaId != null" >
+        #{formulaId,jdbcType=VARCHAR},
+      </if>
+      <if test="formulaName != null" >
+        #{formulaName,jdbcType=VARCHAR},
+      </if>
+      <if test="formulaExpression != null" >
+        #{formulaExpression,jdbcType=VARCHAR},
+      </if>
+      <if test="conditionName != null" >
+        #{conditionName,jdbcType=VARCHAR},
+      </if>
+      <if test="conditionExpression != null" >
+        #{conditionExpression,jdbcType=VARCHAR},
+      </if>
+      <if test="chargeItemDetailsId != null" >
+        #{chargeItemDetailsId,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.flf.entity.Formula" >
+    update tc_formula
+    <set >
+      <if test="formulaName != null" >
+        formula_name = #{formulaName,jdbcType=VARCHAR},
+      </if>
+      <if test="formulaExpression != null" >
+        formula_expression = #{formulaExpression,jdbcType=VARCHAR},
+      </if>
+      <if test="conditionName != null" >
+        condition_name = #{conditionName,jdbcType=VARCHAR},
+      </if>
+      <if test="conditionExpression != null" >
+        condition_expression = #{conditionExpression,jdbcType=VARCHAR},
+      </if>
+      <if test="chargeItemDetailsId != null" >
+        charge_item_details_id = #{chargeItemDetailsId,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where formula_id = #{formulaId,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.flf.entity.Formula" >
+    update tc_formula
+    set formula_name = #{formulaName,jdbcType=VARCHAR},
+      formula_expression = #{formulaExpression,jdbcType=VARCHAR},
+      condition_name = #{conditionName,jdbcType=VARCHAR},
+      condition_expression = #{conditionExpression,jdbcType=VARCHAR},
+      charge_item_details_id = #{chargeItemDetailsId,jdbcType=VARCHAR}
+    where formula_id = #{formulaId,jdbcType=VARCHAR}
+  </update>
+  <select id="listAllFormula" parameterType="com.flf.entity.Formula" resultMap="BaseResultMap">
+  	select * from tc_formula where 1=1
+  	<if test="chargeItemDetailsId != null" >
+  	 	and charge_item_details_id = #{chargeItemDetailsId}
+  	</if>
+  </select>
+  
+  <!-- 支付系统接口 获取到计费详情Id -->
+  <select id="getChargeItemDetailId" parameterType="map"  resultMap="BaseResultMap">
+	SELECT
+			a.charge_item_details_id
+	FROM
+	(
+	SELECT
+			details.charge_type_details_name,
+			details.charge_type_id,
+			tcInfo.charge_item_details_id
+	FROM
+	(
+	SELECT
+			tb.charge_type_details_id,
+			tb.charge_item_details_id
+	FROM
+			tc_charge_item_new_building tc,
+			tc_charge_item_new_details tb
+	<where>
+	   tc.charge_item_new_id = tb.charge_item_new_id
+	   <if test="buildingId != null and buildingId !=''" >
+             AND  tc.building_id= #{buildingId,jdbcType=VARCHAR}
+      </if>
+	</where>
+	) tcInfo,tc_charge_type_details details
+	WHERE
+	   		tcInfo.charge_type_details_id = details.charge_type_details_id
+	) a,tc_scheme schems
+	<where>
+	      a.charge_type_id = schems.charge_type_id
+	     <if test="projectId != null and projectId != ''">
+	     		AND schems.project_id =#{projectId,jdbcType=VARCHAR}
+	     </if>
+	     <if test="courrentTime != null and courrentTime != ''">
+	     		AND #{courrentTime,jdbcType=VARCHAR} >= schems.start_date AND (schems.end_date is null or schems.end_date > #{courrentTime,jdbcType=VARCHAR})
+	     </if>
+	     <if test="btjj != null and btjj != ''">
+	     		AND a.charge_type_details_name = #{btjj,jdbcType=VARCHAR}
+	     </if>
+	</where>
+  </select>
+  <!-- 根据计费项目详情Id 查询计费方式 -->
+  <select id="getFormularInfo" parameterType="map"  resultMap="BaseResultMap">
+          SELECT t.formula_id,t.formula_name,t.formula_expression,t.condition_name,t.condition_expression 
+              FROM tc_formula t
+              <where>
+                    <if test="chargeItemDetailsId != null and chargeItemDetailsId !=''">
+                             t.charge_item_details_id =#{chargeItemDetailsId,jdbcType=VARCHAR}
+                    </if>
+              </where>
+  </select>
+</mapper>

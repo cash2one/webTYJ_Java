@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>企业信息</title>
+    <link rel="stylesheet" href="css/enterprise.css"/>
+</head>
+<body>
+<!--右侧面板1-->
+<div class="col-lg-4 col-md-4 col-sm-6">
+    <div class="panel">
+        <div class="panel_title">
+            <span class="panel_title_left">项目信息</span>
+                <span class="panel_title_right"> <span class="zoom_button"></span><span
+                        class="close_button"></span></span>
+        </div>
+        <div class="panel_info">
+            <div class="dot">
+            </div>
+            <div class="panel_info clear">
+                <a href="javascript:void(0)" >项目名称<span class="pull-right">{{item.projectName}}</span></a><br/>
+                <a href="javascript:void(0)" >项目编号 <span class="pull-right">{{item.projectNumber}}</span></a><br/>
+                <a href="#">全地址 <span class="pull-right">{{item.address}}</span></a><br/>
+                <a href="#">公司 <span class="pull-right">{{item.company}}</span></a><br/>
+                <a href="#">概要 <span class="pull-right">{{item.outline}}</span></a><br/>
+                <span class="pull-right">详情<a href="#">>></a><br/><br/></span>
+            </div>
+        </div>
+    </div>
+</div>
+<!--右侧面板1结束-->
+<!--右侧面板2-->
+<div class="col-lg-4 col-md-4 col-sm-6">
+    <div class="panel">
+        <div class="panel_title">
+            <span class="panel_title_left">规章制度</span>
+                <span class="panel_title_right">
+                    <a ui-sref="index.externalProfession.institution"><span class="zoom_button"></span></a>
+                    <span class="close_button"></span>
+                </span>
+        </div>
+        <div class="panel_info">
+            <div class="dot"></div>
+            <div class="panel_info clear">
+                <a  href="#"class="panel_info clear" ng-repeat="item in Rules">{{item.title | limitTo:5}}...<span class="pull-right"> {{item.lastModtime | date:"yyyy-MM-dd"}}</span>    <br/></a>
+                <span class="pull-right">详情<a href="#"></a><br/><br/></span>
+            </div>
+        </div>
+    </div>
+</div>
+<!--右侧面板2结束-->
+<!--右侧面板3-->
+<div class="col-lg-4 col-md-4 col-sm-6">
+    <div class="panel">
+        <div class="panel_title">
+            <span class="panel_title_left">组织框架</span>
+                                <span class="panel_title_right">
+                                    <span class="zoom_button"></span>
+                                    <span class="close_button"></span>
+                                </span>
+        </div>
+        <div class="panel_info">
+            <div class="dot"></div>
+            <div class="panel_info clear panel_info_img">
+                <img src="images/zhuzhi.png" width="234" height="140">
+            </div>
+        </div>
+    </div>
+</div>
+<!--右侧面板3结束-->
+<!--右侧面板4-->
+<div class="col-lg-4 col-md-4 col-sm-6">
+    <div class="panel">
+        <div class="panel_title">
+            <span class="panel_title_left">企业新闻</span>
+                <span class="panel_title_right">
+                    <a ui-sref="index.internalProfession.enterpriseNews"><span class="zoom_button"></span></a>
+                    <span class="close_button"></span>
+                </span>
+        </div>
+        <div class="panel_info">
+            <div class="dot"></div>
+            <div class="panel_info clear" >
+                <a  href="#"class="panel_info clear" ng-repeat="item in Corporatenews">{{item.title | limitTo:5}}...<span class="pull-right"> {{item.creationTime | date:"yyyy-MM-dd"}}</span>    <br/></a>
+                <span class="pull-right">详情<a href="#"></a><br/><br/></span>
+            </div>
+        </div>
+    </div>
+</div>
+<!--右侧面板4结束-->
+<!--右侧面板5-->
+<div class="col-lg-4 col-md-4 col-sm-6">
+    <div class="panel">
+        <div class="panel_title">
+            <span class="panel_title_left">小区公告</span>
+                 <span class="panel_title_right">
+                    <a ui-sref="index.externalProfession.communityAnnouncement"><span class="zoom_button"></span></a>
+                    <span class="close_button"></span>
+                </span>
+        </div>
+        <div class="panel_info">
+            <div class="dot">
+
+            </div>
+
+            <a href="#" class="panel_info clear" ng-repeat="item in Communtitnotice"> {{item.title}}<span class="pull-right"> {{item.creationTime | date:"yyyy-MM-dd"}} </span><br/></a>
+
+            <!--
+                <a href="javascript:void(0)">标题 <span class="pull-right">{{item.title}}</span></a><br/>
+                <a href="javascript:void(0)">内容简要<span class="pull-right">{{item.briefContent}}</span></a><br/>
+                <a href="javascript:void(0)">创建人<span class="pull-right">{{item.founder}}</span></a><br/>
+                <a href="javascript:void(0)">创建时间<span class="pull-right">{{item.creationTime  | date:"yyyy-MM-dd"}}</span></a><br/>
+                <a href="javascript:void(0)">最后修改时间 <span class="pull-right">{{item.lastModificationTime  | date:"yyyy-MM-dd"}}</span></a><br/>-->
+            <span class="pull-right">详情<a href="#">>></a><br/><br/></span>
+
+        </div>
+    </div>
+</div>
+
+<!--右侧面板5结束-->
+<!--右侧面板6-->
+<div class="col-lg-4 col-md-4 col-sm-6">
+    <div class="panel">
+        <div class="panel_title">
+            <span class="panel_title_left">内部公告</span>
+                <span class="panel_title_right">
+                    <a ui-sref="index.externalProfession.internalAnnouncement"><span class="zoom_button"></span></a>
+                    <span class="close_button"></span>
+                </span>
+        </div>
+        <div class="panel_info">
+            <div class="dot"></div>
+            <div class="panel_info clear">
+                <a  href="#"class="panel_info clear" ng-repeat="item in Informs">{{item.inform}}<span class="pull-right">{{item.time | date:"yyyy-MM-dd"}}</span><br/></a>
+                <span class="pull-right">详情<a href="#">>></a><br/><br/></span>
+            </div>
+        </div>
+    </div>
+</div>
+<!--右侧面板6结束-->
+</body>
+</html>

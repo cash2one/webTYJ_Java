@@ -1,0 +1,224 @@
+package com.flf.entity;
+
+import java.util.Date;
+import java.util.List;
+
+import javax.xml.bind.annotation.XmlRootElement;
+
+import org.springframework.format.annotation.DateTimeFormat;
+
+@XmlRootElement(name="TenementInsurance")
+public class TenementInsurance {
+	
+	private String insuranceId;//物业保险id	
+	private String projectId;//项目id
+	private String enterpriseId;//保险公司id
+	private Double enterpriseMoney;//保险金额
+	@DateTimeFormat(pattern="yyyy-MM-dd")
+	private Date startTime;//开始时间
+	@DateTimeFormat(pattern="yyyy-MM-dd")
+	private Date endTime;//结束时间
+	private List<Annex> annexs ; //附件
+	private String projectName;//项目名称	
+	private String insuranceName;//保险公司名称
+	private String areaInsuranceCompanyId;//区域保险公司id
+	private Byte insuranceType;//保险类型
+	private Double premiumMoney;//保费金额
+	private Double settlingFee;//理赔金额
+	private String staffId;//责任人id
+	private String insuranceNum;//保险单号
+	private Double settlingFeeSum;//累计理赔
+	private Date minStaTime;//最小结束时间
+	private Date maxStaTime;//最大结束时间
+	private String alreadyExpire;//是否已经过期，是
+	private String notExpire;//是否已经过期，否
+	
+	private String state;//判断合同状态（查询用）
+	private String colors;//合同显示颜色（查询用）
+	private String staffName;//员工姓名（查询用）
+	
+	
+	private String insuranceCompanyName; //保险公司名称
+	private String areaCompanyName;//区域公司名称
+	
+	public String getStaffName() {
+		return staffName;
+	}
+	public void setStaffName(String staffName) {
+		this.staffName = staffName;
+	}
+
+
+	private Staff staff;
+	private Project project;
+	
+	public Staff getStaff() {
+		return staff;
+	}
+	public void setStaff(Staff staff) {
+		this.staff = staff;
+	}
+	public Project getProject() {
+		return project;
+	}
+	public void setProject(Project project) {
+		this.project = project;
+	}
+	
+	
+	private Page page;
+	
+	public String getState() {
+		return state;
+	}
+	public void setState(String state) {
+		this.state = state;
+	}
+	public String getColors() {
+		return colors;
+	}
+	public void setColors(String colors) {
+		this.colors = colors;
+	}
+	public Page getPage() {
+		return page;
+	}
+	public void setPage(Page page) {
+		this.page = page;
+	}
+	public String getAreaInsuranceCompanyId() {
+		return areaInsuranceCompanyId;
+	}
+	public void setAreaInsuranceCompanyId(String areaInsuranceCompanyId) {
+		this.areaInsuranceCompanyId = areaInsuranceCompanyId;
+	}
+	public Byte getInsuranceType() {
+		return insuranceType;
+	}
+	public void setInsuranceType(Byte insuranceType) {
+		this.insuranceType = insuranceType;
+	}
+	public Double getPremiumMoney() {
+		return premiumMoney;
+	}
+	public void setPremiumMoney(Double premiumMoney) {
+		this.premiumMoney = premiumMoney;
+	}
+	public Double getSettlingFee() {
+		return settlingFee;
+	}
+	public void setSettlingFee(Double settlingFee) {
+		this.settlingFee = settlingFee;
+	}
+	public String getStaffId() {
+		return staffId;
+	}
+	public void setStaffId(String staffId) {
+		this.staffId = staffId;
+	}
+	public String getInsuranceNum() {
+		return insuranceNum;
+	}
+	public void setInsuranceNum(String insuranceNum) {
+		this.insuranceNum = insuranceNum;
+	}
+	public Double getSettlingFeeSum() {
+		return settlingFeeSum;
+	}
+	public void setSettlingFeeSum(Double settlingFeeSum) {
+		this.settlingFeeSum = settlingFeeSum;
+	}
+
+	public Date getMinStaTime() {
+		return minStaTime;
+	}
+	public void setMinStaTime(Date minStaTime) {
+		this.minStaTime = minStaTime;
+	}
+	public Date getMaxStaTime() {
+		return maxStaTime;
+	}
+	public void setMaxStaTime(Date maxStaTime) {
+		this.maxStaTime = maxStaTime;
+	}	
+	public String getProjectName() {
+		return projectName;
+	}
+	public void setProjectName(String projectName) {
+		this.projectName = projectName;
+	}
+	public String getInsuranceId() {
+		return insuranceId;
+	}
+	public void setInsuranceId(String insuranceId) {
+		this.insuranceId = insuranceId;
+	}
+	public String getInsuranceName() {
+		return insuranceName;
+	}
+	public void setInsuranceName(String insuranceName) {
+		this.insuranceName = insuranceName;
+	}
+	public String getProjectId() {
+		return projectId;
+	}
+	public void setProjectId(String projectId) {
+		this.projectId = projectId;
+	}
+	public String getEnterpriseId() {
+		return enterpriseId;
+	}
+	public void setEnterpriseId(String enterpriseId) {
+		this.enterpriseId = enterpriseId;
+	}
+	public Double getEnterpriseMoney() {
+		return enterpriseMoney;
+	}
+	public void setEnterpriseMoney(Double enterpriseMoney) {
+		this.enterpriseMoney = enterpriseMoney;
+	}
+	public Date getStartTime() {
+		return startTime;
+	}
+	public void setStartTime(Date startTime) {
+		this.startTime = startTime;
+	}
+	public Date getEndTime() {
+		return endTime;
+	}
+	public void setEndTime(Date endTime) {
+		this.endTime = endTime;
+	}
+	public List<Annex> getAnnexs() {
+		return annexs;
+	}
+	public void setAnnexs(List<Annex> annexs) {
+		this.annexs = annexs;
+	}
+	public String getAlreadyExpire() {
+		return alreadyExpire;
+	}
+	public void setAlreadyExpire(String alreadyExpire) {
+		this.alreadyExpire = alreadyExpire;
+	}
+	public String getNotExpire() {
+		return notExpire;
+	}
+	public void setNotExpire(String notExpire) {
+		this.notExpire = notExpire;
+	}
+	public String getInsuranceCompanyName() {
+		return insuranceCompanyName;
+	}
+	public void setInsuranceCompanyName(String insuranceCompanyName) {
+		this.insuranceCompanyName = insuranceCompanyName;
+	}
+	public String getAreaCompanyName() {
+		return areaCompanyName;
+	}
+	public void setAreaCompanyName(String areaCompanyName) {
+		this.areaCompanyName = areaCompanyName;
+	}
+	
+	
+}

@@ -1,0 +1,181 @@
+<!--
+    页面名称：【内部专业线】物业合同管理
+    前端负责人：刘洋
+    js路径：js/controllers/internalProfession/propertyManagementContract/propertyManagementContract.js
+    创建时间：2015/4/17
+    修改日期：2015/5/29
+    修改内容：增删改的页面代码和页面效果
+    修改人：钟加诚
+    修改内容：模态框数据传入，搜索功能
+-->
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>物业合同管理(内部专业线)</title>
+</head>
+<body ng-controller="contractCtrl">
+<div class="row" style="height: 532px">
+    <div class="table_list">
+        <h4 style="text-align: center"><strong>物业合同管理</strong></h4>
+        <div class="search_style">
+            <form>
+                <input type="text"   class="search_style_input"  placeholder="请输入搜索条件" ng-model="contractType">
+                <button type="submit" class="search_style_button" ng-click="change()">查找</button>
+            </form>
+        </div>
+        <div class="button_group">
+            <a  data-toggle="modal" data-target="#addVation" class="btn" ng-click="toAdd()">增加</a>
+            <a href="" class="delete" ng-model="vacationInfo.allChecked" ng-click="delete(item.allChecked)">删除</a>
+        </div>
+        <table width="100%" border="0" cellpadding="0" cellspacing="0" class="table_style text-center">
+            <tr>
+                <td>
+                    <input type="checkbox" ng-model="items.allChecked" ng-change="checkAll(items.allChecked)"/>全选
+                </td>
+                <td align="center" valign="middle" class="table_style_toptd">甲方</td>
+                <td align="center" valign="middle" class="table_style_toptd">乙方</td>
+                <td align="center" valign="middle" class="table_style_toptd">合同类型</td>
+                <td align="center" valign="middle" class="table_style_toptd">日期</td>
+                <td align="center" valign="middle" class="table_style_toptd">简述</td>
+                <td align="center" valign="middle" class="table_style_toptd">查看</td>
+                <td width="50" align="center" valign="middle" class="table_style_toptd" colspan="2">操作</td>
+            </tr>
+            <!-- track by $index |filter:filter|paging:page.index:page.size-->
+            <tr  ng-repeat="currentItem in itemsone" ng-show="currentItem.contractId!=null">
+                <td><input type="checkbox" ng-model="currentItem.$checked"/></td>
+                <td align="center" valign="middle">{{currentItem.firstParty}}</td>
+                <td align="center" valign="middle">{{currentItem.secondParty}}</td>
+                <td align="center" valign="middle">{{currentItem.contractType}}</td>
+                <td align="center" valign="middle">{{currentItem.dateStart|date:'yyyy-MM-dd'}}</td>
+                <td align="center" valign="middle">{{currentItem.sketch}}</td>
+                <td align="center" valign="middle">
+                    <a href="#" data-toggle="modal" data-target="#show" ng-click="show(currentItem.contractId)">详情</a>
+                </td>
+                <td><a class="btn  btn-sm" role="button" data-toggle="modal"
+                       data-target="#addVation"  ng-click="toUpdate($index)">
+                    <span class="glyphicon glyphicon-pencil"></span>修改</a>
+                </td>
+                <!--<td> </td>-->
+            </tr>
+        </table>
+        <!--分页-->
+        <!--<pagination total-items="items|filter:filter|size" ng-model="page.index" max-size="5"-->
+        <!--items-per-page="page.size"-->
+        <!--class="pagination-sm pull-right" boundary-links="true"></pagination>-->
+        <div class="pagination">
+            <a href="#" >上一页</a>
+            <a href="#" class="number">1</a>
+            <a href="#" class="number">2</a>
+            <a href="#" class="number">3</a>
+            <a href="#" class="number">4</a>
+            <a href="#" class="number">5</a>
+            <a href="#">下一页</a>
+        </div>
+        <!--分页 end-->
+    </div>
+</div>
+<!--添加-->
+<div class="modal fade" id="addVation" tabindex="-1" role="dialog"
+     aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close"
+                        data-dismiss="modal" aria-hidden="true">
+                    &times;
+                </button>
+                <h4 class="modal-title">
+                    修改添加信息
+                </h4>
+            </div>
+            <div class="modal-body" style="line-height:40px;">
+                <div>
+                    <form>
+                        <table class="text-center" style="margin: 0 auto;">
+                            <tr>
+                                <td width="100px;">甲方</td>
+                                <td><input type="text" class="form-control input-sm" ng-model="currentItem.firstParty"/></td>
+                            </tr>
+                            <tr>
+                                <td width="100px;">乙方</td>
+                                <td><input type="text" class="form-control input-sm" ng-model="currentItem.secondParty"/></td>
+                            </tr>
+                            <tr>
+                                <td width="100px;">合同类型</td>
+                                <td><input type="text" class="form-control input-sm" ng-model="currentItem.contractType"/></td>
+                            </tr>
+                            <tr>
+                                <td  width="100px;">日期</td>
+                                <td><input type="date" class="form-control input-sm" ng-model="currentItem.dateStart"/></td>
+                            </tr>
+                            <tr>
+                                <td width="100px;">描述</td>
+                                <td><input type="text" class="form-control input-sm" ng-model="currentItem.sketch"/></td>
+                            </tr>
+                        </table>
+                    </form>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-sm btn-default"
+                        ng-click="save()" data-dismiss="modal">
+                    <span class="glyphicon glyphicon-ok"></span>提交
+                </button>
+                <button type="button" class="btn btn-default btn-sm" aria-label="Left Align" data-dismiss="modal">
+                    <span class="glyphicon glyphicon-remove" aria-hidden="true">关闭</span>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+<!--添加 end-->
+<!--详情-->
+<div class="modal fade" id="show" tabindex="-1" role="dialog"
+     aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close"
+                        data-dismiss="modal" aria-hidden="true">
+                    &times;
+                </button>
+                <h4 class="modal-title">
+                    修改添加信息
+                </h4>
+            </div>
+            <div class="modal-body" style="line-height:40px;">
+                <div>
+                    <form>
+                        <table style="margin: 0 auto;">
+                            <tr>
+                                <td>甲方:</td>
+                                <td>{{firstParty}}</td>
+                                <td>乙方:</td>
+                                <td>{{secondParty}}</td>
+                            </tr>
+                            <tr>
+                                <td>合同类型:</td>
+                                <td>{{contractType}}</td>
+                                <td>日期:</td>
+                                <td>{{dateStart}}</td>
+                            </tr>
+                            <tr>
+                                <td>描述:</td>
+                                <td>{{sketch}}</td>
+                            </tr>
+                        </table>
+                    </form>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default btn-sm" aria-label="Left Align" data-dismiss="modal">
+                    <span class="glyphicon glyphicon-remove" aria-hidden="true">关闭</span>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+<!--详情 end-->
+</body>
+</html>

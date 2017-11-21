@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>房屋与合同初始化</title>
+</head>
+<body>
+<div class="complaint_user_list" style="margin-top: 10px">
+    <div>
+        <div class="complaint_user_info_navigation">
+            <a class="btn" ui-sref="index.internalProfession.relationshipInitialize.addProfessional">新增专业</a>
+            <a class="btn" ui-sref="index.internalProfession.relationshipInitialize.addProperty">新增资产</a>
+            <a class="btn" ui-sref="index.internalProfession.relationshipInitialize.queryProperty">查询资产</a>
+        </div>
+        <div class="clear"></div>
+    </div>
+    <div class="row" style="padding:5px 10px 0">
+        <div ui-view></div>
+    </div>
+</div>
+</body>
+</html>

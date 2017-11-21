@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.flf.mapper.AdvancePaymentsDetailsMapper">
+	<resultMap type="AdvancePaymentsDetails" id="BaseResultMap">
+		<id column="advance_payments_details_id" property="advancePaymentsDetailsId"
+			jdbcType="VARCHAR" />
+		<result column="is_out_in" property="isOutIn" jdbcType="TINYINT" />
+		<result column="asset_account_num" property="assetAccountNum"
+			jdbcType="VARCHAR" />
+		<result column="bill_id" property="billId" jdbcType="VARCHAR" />
+		<result column="payment_type" property="paymentType" jdbcType="TINYINT" />
+		<result column="transaction_amount" property="transactionAmount"
+			jdbcType="DOUBLE" />
+		<result column="transaction_date" property="transactionDate"
+			jdbcType="TIMESTAMP" />
+		<result column="account_balance" property="accountBalance"
+			jdbcType="DOUBLE" />
+		<result column="note" property="note" jdbcType="VARCHAR" />
+		<result column="asset_account_id" property="assetAccountId"
+			jdbcType="VARCHAR" />
+		<result column="refundable_deposit_amount" property="refundableDepositAmount"
+			jdbcType="DOUBLE" />
+		<result column="charge_type_id" property="chargeTypeId"
+			jdbcType="VARCHAR" />
+		<result column="charge_type_name" property="chargeTypeName"
+			jdbcType="VARCHAR" />
+		<result column="deposit_num" property="depositNum" jdbcType="VARCHAR" />
+	</resultMap>
+
+	<select id="getAdvancePaymentDetailByAssetAccountId" parameterType="String" resultMap="BaseResultMap">
+		select * from tc_advance_payments_details where asset_account_id = #{0}
+	</select>
+
+	<!-- 根据建筑id查询支出的预收款明细 zhuqi2016.04.29 -->
+	<select id="listAdvancePaymentDetailByBuildingId" parameterType="String" resultMap="BaseResultMap">
+		SELECT * FROM tc_advance_payments_details apd
+		JOIN tc_asset_account aa ON aa.building_id = #{0}
+		WHERE apd.asset_account_id = aa.asset_account_id and is_out_in = '1'
+	</select>
+
+	<select id="getAdvancePaymentDetailByAdvancePaymentsDetailsId" parameterType="java.lang.String" resultMap="BaseResultMap">
+		SELECT apd.*,ct.charge_type_name FROM tc_advance_payments_details apd, tc_charge_type ct WHERE apd.charge_type_id = ct.charge_type_id and 
+		apd.advance_payments_details_id = #{advancePaymentsDetailsId}
+	</select>
+
+	<select id="getAdvancePaymentDetailByDepositNum" parameterType="java.lang.String" resultMap="BaseResultMap">
+		select * from tc_advance_payments_details where deposit_num	= #{depositNum}
+	</select>
+
+	<select id="getAdvancePaymentDetailByAssetAccuontNum" parameterType="String" resultMap="BaseResultMap">
+		select * from tc_advance_payments_details where asset_account_num = #{0}
+	</select>
+	<!-- 分页查询 getAdvancePaymentDetailByAssetAccuontNum -->
+	<select id="listPageAdvancePaymentDetailByAssetAccuontNum" parameterType="AdvancePaymentsDetails" resultMap="BaseResultMap">
+		select * from tc_advance_payments_details where asset_account_num = #{assetAccountNum}
+	</select>
+
+	<select id="sumTransactionAmountByassetAccountId" parameterType="String" resultType="java.lang.Double">
+		select sum(transaction_amount) from tc_advance_payments_details where asset_account_id = #{0}
+	</select>
+	<select id="sumRefundableDepositAmountByassetAccountId" parameterType="String" resultType="java.lang.Double">
+		select sum(refundable_deposit_amount) from tc_advance_payments_details where asset_account_id = #{0}
+	</select>
+	<!-- 根据资产id分页查询 -->
+	<select id="listPageAdvancePaymentDetailByAssetAccountId" parameterType="AdvancePaymentsDetails" resultMap="BaseResultMap">
+		SELECT apd.*,tct.charge_type_name FROM tc_advance_payments_details apd LEFT
+		JOIN tc_charge_type tct ON apd.charge_type_id = tct.charge_type_id
+		WHERE apd.asset_account_id = #{assetAccountId} ORDER BY
+		apd.transaction_date DESC
+	</select>
+
+	<insert id="insertAdvancePaymentsDetails" parameterType="AdvancePaymentsDetails">
+		insert into tc_advance_payments_details (advance_payments_details_id,
+		is_out_in, asset_account_num,bill_id,
+		payment_type,transaction_amount,transaction_date,account_balance,note,asset_account_id,refundable_deposit_amount,charge_type_id,deposit_num)
+		values (#{advancePaymentsDetailsId,jdbcType=VARCHAR},
+		#{isOutIn,jdbcType=INTEGER}, #{assetAccountNum,jdbcType=VARCHAR},
+		#{billId,jdbcType=VARCHAR},#{paymentType,jdbcType=INTEGER},#{transactionAmount,jdbcType=DOUBLE},#{transactionDate,jdbcType=DOUBLE},
+		#{accountBalance,jdbcType=DOUBLE},#{note,jdbcType=VARCHAR},#{assetAccountId,jdbcType=VARCHAR},#{refundableDepositAmount,jdbcType=DOUBLE},
+		#{chargeTypeId,jdbcType=VARCHAR},#{depositNum,jdbcType=VARCHAR}
+		)
+	</insert>
+	<update id="updateAdvancePaymentsDetails" parameterType="AdvancePaymentsDetails">
+		update tc_advance_payments_details
+		<set>
+			<if test="isOutIn != null and isOutIn != ''">
+				is_out_in = #{isOutIn,jdbcType=INTEGER},
+			</if>
+			<if test="assetAccountNum != null and assetAccountNum != ''">
+				asset_account_num = #{assetAccountNum,jdbcType=VARCHAR},
+			</if>
+			<if test="billId != null and billId != ''">
+				bill_id = #{billId,jdbcType=VARCHAR},
+			</if>
+			<if test="paymentType != null and paymentType != ''">
+				payment_type = #{paymentType,jdbcType=INTEGER},
+			</if>
+			<if test="transactionAmount != null and transactionAmount != ''">
+				transaction_amount = #{transactionAmount,jdbcType=DOUBLE},
+			</if>
+			<if test="transactionDate != null and transactionDate != ''">
+				transaction_date = #{transactionDate,jdbcType=DOUBLE},
+			</if>
+			<if test="accountBalance != null and accountBalance != ''">
+				account_balance = #{accountBalance,jdbcType=DOUBLE},
+			</if>
+			<if test="note != null and note != ''">
+				note = #{note,jdbcType=VARCHAR},
+			</if>
+			<if test="assetAccountId != null and assetAccountId != ''">
+				asset_account_id = #{assetAccountId,jdbcType=VARCHAR},
+			</if>
+			<if test="refundableDepositAmount != null">
+				refundable_deposit_amount =	#{refundableDepositAmount,jdbcType=DOUBLE}
+			</if>
+		</set>
+		where advance_payments_details_id = #{advancePaymentsDetailsId,jdbcType=VARCHAR}
+	</update>
+
+	<select id="queryByBean" parameterType="AdvancePaymentsDetails"	resultMap="BaseResultMap">
+		select * from tc_advance_payments_details where 1=1
+		<if	test="advancePaymentsDetailsId != null and advancePaymentsDetailsId != ''">
+			and advance_payments_details_id = #{advancePaymentsDetailsId,jdbcType=VARCHAR}
+		</if>
+		<if test="depositNum != null and depositNum != ''">
+			and deposit_num = #{depositNum,jdbcType=VARCHAR}
+		</if>
+	</select>
+
+</mapper>

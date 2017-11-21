@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+1112
+<div id="myTabContent" class="tab-content">
+    <div  class="tab-pane fade in active">
+        <table>
+            <!--<tr>-->
+            <!--<td>任务ID：</td>-->
+            <!--<td>XXXXXX</td>-->
+            <!--<td style="text-align: right">客户：</td>-->
+            <!--<td>周润发</td>-->
+            <!--</tr>-->
+            <tr>
+                <td style="text-align: right">专业：</td>
+                <td><label><select><option>电</option><option>水</option><option>窗</option><option>门</option><option>信报箱</option><option>房屋主体</option><option>抄水电表</option><option>核实水电表</option><option>开关水电</option><option>电器</option><option>洁具</option><option>栏杆</option><option>火灾</option></select></label></td>
+                <td style="text-align: right">产品：</td>
+                <td><label><select><option>电表</option><option>配电箱</option><option>管线</option><option>开关插座</option><option>水管</option></select></label></td>
+            </tr>
+
+            <tr>
+                <td style="text-align: right">地址：</td>
+                <td>桃源居3区21栋301</td>
+                <td style="text-align: right">电话：</td>
+                <td>13012345678</td>
+            </tr>
+            <tr>
+                <td>上门时间：</td>
+                <td><span>4-30</span><span>12:00--15:00</span></td>
+                <td width="200px" style="text-align: right">预计完成时间：</td>
+                <td><input type="datetime-local" class="input-sm form-control" style="margin: 15px 0px;"></td>
+            </tr>
+        </table>
+        <table>
+            <tr>
+                <td>事由描述：</td>
+                <td><textarea class="form-control" style="width:450px" cols="3" placeholder="请输入内容"></textarea></td>
+            </tr>
+            <tr>
+                <td>负责人：</td>
+                <td><label><select><option>谢XXX</option></select></label></td>
+            </tr>
+        </table>
+    </div>
+
+</div>
+</body>
+</html>

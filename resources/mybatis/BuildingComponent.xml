@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.flf.mapper.BuildingComponentMapper" >
+  <resultMap id="BaseResultMap" type="BuildingComponent" >
+    <id column="component_id" property="componentId" jdbcType="VARCHAR" />
+    <result column="component_num" property="componentNum" jdbcType="VARCHAR" />
+    <result column="component_name" property="componentName" jdbcType="VARCHAR" />
+    <result column="component_type" property="componentType" jdbcType="VARCHAR" />
+    <result column="create_id" property="createId" jdbcType="VARCHAR" />
+    <result column="creater_date" property="createrDate" jdbcType="TIMESTAMP" />
+    <result column="update_id" property="updateId" jdbcType="VARCHAR" />
+    <result column="update_date" property="updateDate"  jdbcType="TIMESTAMP" />
+     <result column="sort_date" property="sortDate"  jdbcType="TIMESTAMP" />
+    <association property="createUser" column="create_id" javaType="TUser" select="com.flf.mapper.TUserMapper.selectByPrimaryKey" />
+    <association property="updateUser" column="update_id" javaType="TUser" select="com.flf.mapper.TUserMapper.selectByPrimaryKey" />
+  </resultMap>
+  
+  <resultMap type="BuildingComponent" id="ComponentPropertyResultMap" extends="BaseResultMap">
+  	<collection property="componentPropertys" column="component_id" select="com.flf.mapper.ComponentPropertyMapper.getComponentPropertyByComponentIdRest"></collection>
+  </resultMap>
+  
+  <!-- 返回map用于数据导出  王洲  2016.1.11 -->
+  <resultMap type="BuildingComponent" id="ResultMapForExport">
+  	<id column="component_id" property="componentId" jdbcType="VARCHAR" />
+  	<result column="component_num" property="componentNum" jdbcType="VARCHAR" />
+  	<result column="component_name" property="componentName" jdbcType="VARCHAR" />
+  	<result column="area_type_name" property="areaTypeName" jdbcType="VARCHAR" />
+  	<result column="functional_no" property="functionalNo" jdbcType="VARCHAR" />
+  	<result column="functional_name" property="functionalName" jdbcType="VARCHAR" />
+  	<result column="property_number" property="propertyNumber" jdbcType="VARCHAR" />
+  	<result column="property_area" property="propertyArea" jdbcType="VARCHAR" />
+  	<result column="property_number" property="propertyNumber" jdbcType="VARCHAR" />
+  	<result column="property_name" property="propertyName" jdbcType="VARCHAR" />
+  	<result column="property_specification" property="propertySpecification" jdbcType="VARCHAR" />
+  	<result column="property_type_number" property="propertyTypeNumber" jdbcType="VARCHAR" />
+  	<result column="property_type_name" property="propertyTypeName" jdbcType="VARCHAR" />
+  	<result column="property_type_numbers" property="propertyTypeNumbers" jdbcType="VARCHAR" />
+  	<result column="property_type_names" property="propertyTypeNames" jdbcType="VARCHAR" />
+  </resultMap>
+ 
+  <sql id="Base_Where_Clause">
+		<where>
+			<trim prefixOverrides="and">
+		        <if test="componentId != null and componentId !='' " > and a.component_id = #{componentId,jdbcType=VARCHAR}</if>
+			</trim>
+		</where>
+	</sql>
+ 
+ 
+   <select id="listPageBuildingComponentAll" resultMap="BaseResultMap" parameterType="BuildingComponent" >
+    select *
+    from tc_building_component where 1=1  order by  sort_date  DESC 
+  </select>
+ 
+  <select id="ListselectBuildingComponentAll" resultMap="BaseResultMap"  >
+    select *
+    from tc_building_component where 1=1 
+  </select>
+  
+  
+  <select id="selectBuildingComponentById" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select *
+    from tc_building_component where component_id = #{0}
+  </select>
+  <delete id="deleteBuildingComponent" parameterType="java.lang.String" >
+    delete from tc_building_component
+    where component_id = #{0}
+  </delete>
+  
+  <insert id="insertBuildingComponent" parameterType="BuildingComponent" >
+    insert into tc_building_component (component_id, component_num, component_name, 
+      component_type, create_id, creater_date, 
+      update_id, update_date,sort_date)
+    values (#{componentId,jdbcType=VARCHAR}, #{componentNum,jdbcType=VARCHAR}, #{componentName,jdbcType=VARCHAR}, 
+      #{componentType,jdbcType=VARCHAR}, #{createrName,jdbcType=VARCHAR}, #{createrDate,jdbcType=TIMESTAMP}, 
+      #{updateId,jdbcType=VARCHAR}, #{updateDate,jdbcType=TIMESTAMP},#{sortDate,jdbcType=TIMESTAMP})
+
+  </insert>
+  
+  <insert id="insertBuildingComponentUUID" parameterType="BuildingComponent" >
+    insert into tc_building_component (component_id, component_num, component_name, 
+      component_type, create_id, creater_date, 
+      update_id, update_date,sort_date)
+    values (#{componentId,jdbcType=VARCHAR}, #{componentNum,jdbcType=VARCHAR}, #{componentName,jdbcType=VARCHAR}, 
+      #{componentType,jdbcType=VARCHAR}, #{createId,jdbcType=VARCHAR}, #{createrDate,jdbcType=TIMESTAMP}, 
+      #{updateId,jdbcType=VARCHAR}, #{updateDate,jdbcType=TIMESTAMP},#{sortDate,jdbcType=TIMESTAMP})
+  </insert>
+  
+  
+
+  <update id="updateBuildingComponent" parameterType="BuildingComponent" >
+    update tc_building_component
+    set component_num = #{componentNum,jdbcType=VARCHAR},
+      component_name = #{componentName,jdbcType=VARCHAR},
+      component_type = #{componentType,jdbcType=VARCHAR},
+      update_id = #{updateId,jdbcType=VARCHAR},
+      update_date = #{updateDate,jdbcType=TIMESTAMP},
+      sort_date = #{sortDate,jdbcType=TIMESTAMP}
+    where component_id = #{componentId,jdbcType=VARCHAR} 
+  </update>
+  
+  <!-- 查询数据用于数据导出  王洲  2016.1.11 -->
+  <select id="selectDataForExport" resultMap="ResultMapForExport">
+  	select a.component_id,a.component_num,a.component_name,
+  	b.area_type_name,
+  	c.property_number,c.property_area,
+  	d.functional_no,d.functional_name,
+  	e.property_number,e.property_name,e.property_specification,
+  	f.property_type_number as property_type_number,f.property_type_name as property_type_name,
+  	g.property_type_number as property_type_numbers,g.property_type_name as property_type_names 
+  	from tc_building_component a left join tc_area_type b on a.component_type = b.id 
+  	left join tc_component_property c on a.component_id = c.component_id 
+  	left join tc_functional d on c.functional_id = d.functional_id 
+  	left join t_property e on c.property_id = e.property_id 
+  	left join t_property_type f on e.property_type_id = f.property_type_id 
+  	left join t_property_type g on f.parent_id = g.property_type_id
+  	<include refid="Base_Where_Clause" />
+  </select>
+  
+    <!-- 根据条件查询 朱琪2016.02.29 -->
+  <select id="findDataByName" resultMap="BaseResultMap" parameterType="BuildingComponent">
+  	select * from tc_building_component
+  	<trim prefix="where" prefixOverrides="and | or">
+  		<if test="componentName != null and componentName != ''">
+  		component_name = #{componentName}
+  		</if>
+  	</trim>
+  </select>
+  
+   <select id="selectComCode" resultType="String">
+ 		select max(component_num+0) from tc_building_component
+ 	</select>
+ 	
+ 	<select id="getBuildingComponentBybuildingStructureId" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    SELECT bc.* FROM tc_casset_repository AS cr
+   	LEFT JOIN tc_building_component AS bc ON bc.component_id=cr.building_component_id
+   	WHERE cr.building_structure_id=#{0}
+  </select>
+ 	
+</mapper>

@@ -1,0 +1,34 @@
+<!--
+author:王志刚
+pageName:外部专业线个人客户管理页面
+jsPath: 'controllers/externalProfession/individualCustomerManagement'
+-->
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>个人客户管理</title>
+</head>
+<body>
+<div class="row">
+    <div class="complaint_user_list" style="margin-top: 15px;">
+
+        <!--导航-->
+        <div style="padding:5px 10px 0">
+            <div class="complaint_user_info_navigation">
+                <a class="btn" ui-sref="index.externalProfession.individualCustomerManagement.newCustomers">新增客户</a>
+                <a class="btn" ui-sref="index.externalProfession.individualCustomerManagement.queryCustomers">查询客户</a>
+            </div>
+            <div class="clear"></div>
+        </div>
+        <!--导航 end-->
+
+        <!--模板-->
+        <div class="row" style="padding:5px 10px 0">
+            <div ui-view></div>
+        </div>
+        <!--模板 end-->
+    </div>
+</div>
+</body>
+</html>

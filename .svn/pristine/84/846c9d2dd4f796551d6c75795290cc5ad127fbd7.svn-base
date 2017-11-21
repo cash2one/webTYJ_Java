@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+    <style>
+        .col-md-2 p{border: 1px solid #797979;margin: 5px 20px;width:90px;padding: 5px 35px}
+        .ed{height: 336px;border: 1px solid #797979;margin: 5px 5px;background-color: #ffffff}
+        .dd{padding-left: 50px}
+        .fe{height: 400px;border: 1px solid #797979;background-color: #ffffff}
+        #qp{border: 1px solid #797979;margin: 5px 60px;width:90px;padding: 5px 20px;background-color: #ffffff}
+        #qpp{border: 1px solid #797979;margin: 5px 60px;width:90px;padding: 5px 20px;background-color: #ffffff}
+        #qppp{border: 1px solid #797979;margin: 5px 60px;width:90px;padding: 5px 20px;background-color: #ffffff}
+    </style>
+</head>
+<body>
+<div style="margin: 50px 30px">
+    <div class="col-md-1">选择项目：</div>
+    
+    
+    <div class="col-md-9"><select ng-model="search.projectId" ng-options="p.id as p.name for p in projects" ng-change="getStage(search.projectId)"></select></div>
+    <div class="col-md-2" align="right"><button  type="button" style="width: 90px">下一步</button></div>
+
+    <div class="col-md-2 fe" >
+    <span ng-repeat="items2 in stage">
+        <p ng-repeat="items3 in items2.building">{{items3.building}}</p>
+    </span>
+        <!-- <p>9栋</p>
+        <p>10栋</p>
+        <p>11栋</p>
+        <p>12栋</p>
+        <p>13栋</p> -->
+
+        <p id="qp">移动到1区</p>
+        <p id="qpp">移动到2区</p>
+        <p id="qppp">移动到3区</p>
+    </div>
+   <!--  <div class="col-md-3">区名称：<input type="text" ng-model="addArea.areaName"></div>
+    <div class="col-md-7"><button  type="button" style="width: 90px" >新增的区</button></div> -->
+    <div class="col-md-2" ng-repeat="items in area" ng-show="items.id!=null">
+        <span class="dd"  >{{items.areaName}}</span>
+        <div  class=" ed" >
+            <p ng-repeat="items1 in items.building" ng-show="items1.id!=null">{{items1.building}}</p>           
+        </div>
+    </div>
+    <!-- <div class="col-md-2">
+        <span class="dd">二区</span>
+        <div  class="ed">
+            <p>5栋</p>
+            <p>6栋</p>
+        </div>
+    </div>
+    <div class="col-md-2">
+        <span class="dd">三区</span>
+        <div  class="ed">
+            <p>7栋</p>
+        </div>
+    </div> -->
+</div>
+</body>
+</html>

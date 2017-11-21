@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.flf.mapper.PostMapper" >
+  <resultMap id="BaseResultMap" type="Post" >
+    <id column="post_id" property="postId" jdbcType="VARCHAR" />
+    <result column="professional_line_id" property="professionalLineId" jdbcType="VARCHAR" />
+    <result column="name_of_custom" property="nameOfCustom" jdbcType="VARCHAR" />
+    <result column="is_core_post" property="isCorePost" jdbcType="TINYINT" />
+    <result column="project_id" property="projectId" jdbcType="VARCHAR" />
+    <result column="post_num" property="postNum" jdbcType="VARCHAR" />
+    <result column="state" property="state" jdbcType="TINYINT" />
+    <result column="permissions_name" property="permissionsName" jdbcType="TINYINT" />
+    <result column="action_name" property="actionName" jdbcType="TINYINT" />
+    <result column="status" property="status" jdbcType="TINYINT" />
+    <result column="prepare_id" property="prepareId" jdbcType="VARCHAR" />
+  </resultMap>
+  
+  <resultMap id="specialtyInfoResultMap" type="Post" >
+    <id column="post_id" property="postId" jdbcType="VARCHAR" />
+    <result column="professional_line_id" property="professionalLineId" jdbcType="VARCHAR" />
+    <result column="name_of_custom" property="nameOfCustom" jdbcType="VARCHAR" />
+    <result column="is_core_post" property="isCorePost" jdbcType="TINYINT" />
+    <result column="project_id" property="projectId" jdbcType="VARCHAR" />
+    <association property="specialtyInfo" javaType="SpecialtyInfo">
+  		<id column="specialty_id" property="specialtyId"/>
+		<result column="specialty_name" property="specialtyName"/>
+		<result column="specialty_describle" property="specialtyDescrible"/>	
+		<result column="instance_id " property="instanceId"/>	
+		<result column="state" property="state"/>		
+		<result column="willOptions " property="will_options"/>		
+  	</association>
+  </resultMap>
+  
+  <select id="listPostAll" resultMap="BaseResultMap">
+    select * from t_post
+  </select>
+  
+  <select id="listPostsByProjectIdAndSpecialtyId" parameterType="String" resultMap="BaseResultMap">
+  	SELECT b.*,c.project_id,c.prepare_id FROM t_specialty_info a 
+  	LEFT JOIN t_post b ON a.specialty_id=b.professional_line_id 
+  	LEFT JOIN t_prepare c ON b.post_id=c.post_id
+	WHERE a.specialty_id=#{1} AND c.project_id=#{0} AND b.is_core_post = 0
+  </select>
+ 
+  <select id="getPostById" resultMap="BaseResultMap" parameterType="String" >
+    select * from t_post
+    where post_id = #{postId}
+  </select>
+  
+  <select id="getPostBySpecialtyId" resultMap="BaseResultMap" parameterType="String" >
+    select * from t_post
+    where professional_line_id = #{professionalLineId}
+  </select>
+  
+  <select id="getPostByName" resultMap="BaseResultMap" parameterType="String" >
+    select * from t_post
+    where name_of_custom = #{postName}
+  </select>
+  
+  
+  <select id="listPostsBystaffId" parameterType="String" resultMap="specialtyInfoResultMap">
+  	SELECT b.*,c.* FROM t_post a LEFT JOIN t_teamwork_staff b ON a.post_id=b.post_id left join t_specialty_info c on a.professional_line_id=c.specialty_id WHERE b.staff_id=#{0} AND a.is_core_post=1
+  </select>
+  
+  <!-- 修改SQL查询，只查询开启的专业线下的核心岗位  王洲  2016.02.24 -->
+  <select id="listPostbyState" resultMap="BaseResultMap" >
+    select a.* from t_post a 
+    left join t_specialty_info b 
+    on a.professional_line_id = b.specialty_id 
+    where a.is_core_post = 1 and a.state = 1 and b.state = 1 
+    order by a.post_id desc
+  </select>
+  
+  <delete id="deletePost" parameterType="java.lang.String" >
+    delete from t_post
+    where post_id = #{0}
+  </delete>
+  
+  <insert id="insertPost" parameterType="Post" >
+    insert into t_post (post_id, professional_line_id, name_of_custom, 
+      is_core_post, project_id)
+    values (UUID(), #{professionalLineId,jdbcType=VARCHAR}, #{nameOfCustom,jdbcType=VARCHAR}, 
+      #{isCorePost,jdbcType=TINYINT}, #{projectId,jdbcType=VARCHAR})
+  </insert>
+  
+  <update id="updatePost" parameterType="Post" >
+    update t_post
+    <set>
+        <if test="professionalLineId != null and professionalLineId != '' ">
+            professional_line_id = #{professionalLineId,jdbcType=VARCHAR},
+        </if>
+        <if test="nameOfCustom != null and nameOfCustom != '' ">
+           name_of_custom = #{nameOfCustom,jdbcType=VARCHAR},
+        </if>
+        <if test="isCorePost != null and isCorePost != '' ">
+           is_core_post = #{isCorePost,jdbcType=TINYINT},
+        </if>
+        <if test="projectId != null and projectId != '' ">
+            project_id = #{projectId,jdbcType=VARCHAR},
+        </if>
+        <if test="state != null or state != '' ">
+            state = #{state}
+        </if>     
+    </set> 
+      <if test="postIds != null and postIds != '' ">
+          where post_id in <foreach collection="postIds" open="(" separator="," close=")" item="item">#{item}</foreach>
+      </if>
+      <if test="postIds == null">
+          where post_id = #{postId,jdbcType=VARCHAR}
+      </if>
+    
+  </update>
+  
+  <update id="updatePostReverse" parameterType="Post" >
+    update t_post set state=0
+      <if test="postIds != null and postIds != '' ">
+          where post_id not in <foreach collection="postIds" open="(" separator="," close=")" item="item">#{item}</foreach>
+      </if>
+      <if test="postIds == null">
+          where post_id = #{postId,jdbcType=VARCHAR}
+      </if>
+    
+  </update>
+  
+   <update id="updatePostByState"  parameterType="Post" >
+    update t_post 
+     <set>
+        <if test="state != null or state != '' ">
+            state = #{state}
+        </if>  
+        </set>  
+      where post_id = #{postId,jdbcType=VARCHAR}
+  </update>
+  
+  <resultMap type="Post" id="AllResultMap">
+        <result column="permissions_name" property="permissionsName" jdbcType="VARCHAR" />
+		<result column="status" property="status" jdbcType="TINYINT" />
+		<collection property="hrPermissionsList" column="staff_id" ofType="Teamworkstaff" select="com.flf.mapper.TeamworkstaffMapper.getStaffPostById">
+		</collection>
+		
+     </resultMap>
+  
+  <!-- 查询岗位所具有的操作权限和功能权限 -->
+  <select id="selectActionPermissions" parameterType="String" resultMap="BaseResultMap">
+<!--   	select hp.permissions_name,a.action_name
+  	from t_post p,t_user_permissions up,hr_permissions hp,tc_action a
+  	where p.post_id=up.role_id and hp.permissions_id=up.permissions_id 
+  	and	up.anthorty_id=a.action_id and p.post_id=#{0} -->
+    
+    select hp.permissions_name,ta.action_name,hp.status
+    from hr_permissions hp,tc_action ta,tc_post_authority pa
+    where pa.role_id=hp.permissions_id  
+    and hp.permissions_id=ta.role_id 
+    and pa.post_id = #{postId,jdbcType=VARCHAR}
+  </select>
+  
+  <select id="getPostByStaffId" parameterType="String" resultMap="BaseResultMap">
+  	select a.* from t_post a left join t_teamwork_staff b on a.post_id = b.post_id where b.staff_id = #{staffId}
+  </select>
+  
+	<select id="listCorePostByStaffId" parameterType="String" resultMap="BaseResultMap">
+		select a.* from t_post a left join t_core_position b on a.post_id = b.post_id left join t_staff c on b.staff_id = c.staff_id 
+		where a.state = 1 and c.staff_id = #{0}
+	</select>
+	
+	<!-- 查询用户团队管理的岗位 -->
+	<select id="listTeamPostByStaffId" parameterType="String" resultMap="BaseResultMap">
+		SELECT * FROM t_post WHERE professional_line_id IN 
+		(SELECT professional_line_id FROM t_post a 
+		LEFT JOIN t_core_position b ON a.post_id = b.post_id 
+		WHERE b.staff_id = #{0})
+		AND is_core_post = 0 and state = '1'
+	</select>
+	
+</mapper>

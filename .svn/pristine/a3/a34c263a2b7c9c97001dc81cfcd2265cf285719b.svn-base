@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>个人（入伙）</title>
+
+    <link rel="stylesheet" href="css/partnership.css">
+</head>
+<body ng-controller="personalCtrl">
+<div class="row" style="margin: 35px auto;">
+    <div class="col-md-3 personal" align="center">
+        <a href="#"><img src="images/company/u223.png" style="width: 100px;height:90px;"/></a>
+    </div>
+    <div class="col-md-3 personal">
+        <div class="imgP">
+            <a href="#"><img src="images/personnel/zrf.jpg" style="width:60px;height:90px;"/></a>
+        </div>
+        <div class="imgInfo">
+            <p>姓名：周润发</p>
+            <p>编号：V009</p>
+            <p>
+                <img src="images/personnel/VIP.jpg" class="imgIcon"/>&nbsp;&nbsp;&nbsp;
+                <img src="images/personnel/u0.jpg" class="imgDrill"/>
+            </p>
+        </div>
+    </div>
+
+    <div class="col-md-3 personal">
+        <div class="imgP">
+            <a href="#"><img src="images/company/u537.png" style="width:60px;height:90px;"/></a>
+        </div>
+        <div class="imgInfo">
+            <p>姓名：范冰冰</p>
+            <p>编号：V009</p>
+            <p>
+                <img src="images/personnel/VIP.jpg" class="imgIcon"/>&nbsp;&nbsp;&nbsp;
+                <img src="images/personnel/u0.jpg" class="imgDrill"/>
+            </p>
+        </div>
+    </div>
+
+    <div class="col-md-3 personal">
+        <div class="imgP">
+            <a href="#"><img src="images/company/u211.jpg" style="width:60px;height:90px;"/></a>
+        </div>
+        <div class="imgInfo">
+            <p>姓名：林心如</p>
+            <p>编号：V009</p>
+            <p>
+                <img src="images/personnel/VIP.jpg" class="imgIcon"/>&nbsp;&nbsp;&nbsp;
+                <img src="images/personnel/u0.jpg" class="imgDrill"/>
+            </p>
+        </div>
+    </div>
+
+</div>
+</body>
+</html>

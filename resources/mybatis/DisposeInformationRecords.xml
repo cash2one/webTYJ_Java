@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.flf.mapper.DisposeInformationRecordsMapper" >
+  <resultMap id="BaseResultMap" type="DisposeInformationRecords" >
+    <id column="record_id" property="recordId" jdbcType="VARCHAR" />
+    <result column="order_id" property="orderId" jdbcType="VARCHAR" />
+    <result column="check_item_type" property="checkItemType" jdbcType="TINYINT" />
+    <result column="check_item_name" property="checkItemName" jdbcType="VARCHAR" />
+    <result column="check_item_result" property="checkItemResult" jdbcType="VARCHAR" />
+  </resultMap>
+  
+ <delete id="deleteDisposeInformationRecords" parameterType="String">
+  delete from ts_dispose_information_records where record_id=#{0}
+  </delete>
+  
+  <select id="listPageDisposeInformationRecords" parameterType="DisposeInformationRecords" resultMap="BaseResultMap">
+  	select * from ts_dispose_information_records 
+  </select>
+  
+  <select id="getDisposeInformationRecordsbyOrderId" parameterType="String" resultMap="BaseResultMap">
+  	select * from ts_dispose_information_records where order_id = #{0}
+  </select>
+  
+  <select id="listAllDisposeInformationRecords"  resultMap="BaseResultMap" >
+ 	 select * from ts_dispose_information_records 
+  </select>
+  
+  <select id="getDisposeInformationRecordsbyId" parameterType="String" resultMap="BaseResultMap">
+  	select * from ts_dispose_information_records where record_id=#{0}
+  </select>
+  
+  <insert id="insertDisposeInformationRecords" parameterType="DisposeInformationRecords" >      
+      insert into ts_dispose_information_records (record_id, order_id,check_item_type, check_item_name, 
+      check_item_result)
+    values (UUID(), #{orderId,jdbcType=VARCHAR}, #{checkItemType,jdbcType=TINYINT}, #{checkItemName,jdbcType=VARCHAR}, 
+      #{checkItemResult,jdbcType=VARCHAR})
+  </insert>
+ 
+  <update id="updateDisposeInformationRecords" parameterType="DisposeInformationRecords" >
+    update ts_dispose_information_records
+    set order_id = #{orderId,jdbcType=VARCHAR},
+    	check_item_type = #{checkItemType,jdbcType=TINYINT},
+      check_item_name = #{checkItemName,jdbcType=VARCHAR},
+      check_item_result = #{checkItemResult,jdbcType=VARCHAR}
+    where record_id = #{recordId,jdbcType=VARCHAR}
+  </update>
+</mapper>

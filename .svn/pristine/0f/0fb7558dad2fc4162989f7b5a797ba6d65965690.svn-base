@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.flf.mapper.InformMapper" >
+    <resultMap id="BaseResultMap" type="Inform" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="inform" property="inform" jdbcType="VARCHAR" />
+    <result column="time" property="time" jdbcType="DATE" />
+    <result column="content" property="content" jdbcType="VARCHAR" />
+    <result column="writer" property="writer" jdbcType="VARCHAR" />
+    <result column="abstracts" property="abstracts" jdbcType="VARCHAR" />
+    <result column="department" property="department" jdbcType="VARCHAR" />
+    <result column="project" property="project" jdbcType="VARCHAR" />
+  </resultMap>
+  
+  <delete id="deleteInform" parameterType="String">
+  delete from t_inform where id=#{0}
+  </delete>
+  
+  <select id="listPageInform" parameterType="Inform" resultMap="BaseResultMap">
+  select * from t_inform  ORDER BY time DESC
+  </select>
+
+  
+  <select id="listAllInform" resultMap="BaseResultMap">
+     select * from t_inform  ORDER BY time DESC  LIMIT 5
+  </select>
+  
+   
+  <select id="listAllsInform" resultMap="BaseResultMap">
+     select * from t_inform  ORDER BY time DESC
+  </select>
+  
+  <select id="listAllsinformByUserId" resultMap="BaseResultMap" parameterType="String">
+      SELECT c.* FROM t_user a JOIN t_project b JOIN t_inform c ON a.`company_id`=b.`company` AND b.`project_name`=c.`project`
+      WHERE a.`user_id`=#{0}
+      order by time desc
+  </select>
+  
+  <select id="getInformById" parameterType="String" resultMap="BaseResultMap">
+  select * from t_inform where id=#{0}
+  </select>
+  
+  <insert id="insertInform" parameterType="Inform">
+    insert into t_inform (inform, time, 
+      content)
+    values ( #{inform}, #{time}, 
+      #{content})
+  </insert>
+  
+  <update id="updateInform" parameterType="Inform" >
+      update t_inform
+    set inform = #{inform},
+      time = #{time},
+      content = #{content},
+      writer = #{writer},
+      abstracts = #{abstracts},
+      department = #{department},
+      project = #{project}
+      where id = #{id}
+  </update>
+  
+  <delete id="deleteInforms" parameterType="String">
+  delete from t_inform where id=#{0}
+  </delete>
+  
+  <select id="getInformByIds" parameterType="String" resultMap="BaseResultMap">
+  select * from t_inform where id=#{0}
+  </select>
+  
+  <!-- 发布内部公告 -->
+  <insert id="insertInforms" parameterType="Inform">
+    insert into t_inform (inform, time, 
+      content,writer,abstracts,department,project)
+    values (#{inform}, #{time}, 
+      #{content},#{writer},#{abstracts},#{department},#{project})
+  </insert>
+  
+  <update id="updateInforms" parameterType="Inform" >
+      update t_inform
+    set inform = #{inform},
+      time = #{time},
+      content = #{content}
+      where id = #{id}
+  </update>
+</mapper>

@@ -1,0 +1,183 @@
+package com.flf.entity;
+
+import javax.xml.bind.annotation.XmlRootElement;
+
+/**
+ * 计费方案表
+ * @author maogaofei
+ * @date 2016年6月29日 下午2:49:08
+ */
+@XmlRootElement(name = "Scheme")
+public class Scheme {
+    private String schemeId;//方案id
+
+    private String schemeName;//方案名称
+
+    private String schemeStatus;//使用状态  01-待启用、启用中  02-失效
+
+    private String startDate;//生效时间
+
+    private String endDate;//失效时间
+
+    private String projectId;//项目ID
+
+    private String chargeTypeId;//收费类型ID
+
+    private String chargeSet;//计费设置01-自动 02-手动
+
+    private String chargeFre;//计费频率
+
+    private String chargeTime;//自动计费时间
+
+    private String createUser;//创建人
+
+    private String createTime;//创建时间
+
+    private String updateUser;//修改人
+
+    private String updateTime;//修改时间
+    
+    /*自定义属性,数据库中无对应字段*/
+	private String chargeTypeName;//收费类型名称
+	
+	private String projectName;//项目名称
+	
+	private String status;//使用状态
+	/*自定义属性,数据库中无对应字段*/
+
+    public String getSchemeId() {
+        return schemeId;
+    }
+
+    public String getStatus() {
+		return status;
+	}
+
+	public void setStatus(String status) {
+		this.status = status;
+	}
+
+	public String getChargeTypeName() {
+		return chargeTypeName;
+	}
+
+	public void setChargeTypeName(String chargeTypeName) {
+		this.chargeTypeName = chargeTypeName;
+	}
+
+	public void setSchemeId(String schemeId) {
+        this.schemeId = schemeId == null ? null : schemeId.trim();
+    }
+
+    public String getSchemeName() {
+        return schemeName;
+    }
+
+    public void setSchemeName(String schemeName) {
+        this.schemeName = schemeName == null ? null : schemeName.trim();
+    }
+
+    public String getSchemeStatus() {
+        return schemeStatus;
+    }
+
+    public void setSchemeStatus(String schemeStatus) {
+        this.schemeStatus = schemeStatus == null ? null : schemeStatus.trim();
+    }
+
+    public String getStartDate() {
+        return startDate;
+    }
+
+    public void setStartDate(String startDate) {
+        this.startDate = startDate == null ? null : startDate.trim();
+    }
+
+    public String getEndDate() {
+        return endDate;
+    }
+
+    public void setEndDate(String endDate) {
+        this.endDate = endDate == null ? null : endDate.trim();
+    }
+
+    public String getProjectId() {
+        return projectId;
+    }
+
+    public void setProjectId(String projectId) {
+        this.projectId = projectId == null ? null : projectId.trim();
+    }
+
+    public String getProjectName() {
+        return projectName;
+    }
+
+    public void setProjectName(String projectName) {
+        this.projectName = projectName == null ? null : projectName.trim();
+    }
+
+    public String getChargeTypeId() {
+        return chargeTypeId;
+    }
+
+    public void setChargeTypeId(String chargeTypeId) {
+        this.chargeTypeId = chargeTypeId == null ? null : chargeTypeId.trim();
+    }
+
+    public String getChargeSet() {
+        return chargeSet;
+    }
+
+    public void setChargeSet(String chargeSet) {
+        this.chargeSet = chargeSet == null ? null : chargeSet.trim();
+    }
+
+    public String getChargeFre() {
+        return chargeFre;
+    }
+
+    public void setChargeFre(String chargeFre) {
+        this.chargeFre = chargeFre == null ? null : chargeFre.trim();
+    }
+
+    public String getChargeTime() {
+        return chargeTime;
+    }
+
+    public void setChargeTime(String chargeTime) {
+        this.chargeTime = chargeTime == null ? null : chargeTime.trim();
+    }
+
+    public String getCreateUser() {
+        return createUser;
+    }
+
+    public void setCreateUser(String createUser) {
+        this.createUser = createUser == null ? null : createUser.trim();
+    }
+
+    public String getCreateTime() {
+        return createTime;
+    }
+
+    public void setCreateTime(String createTime) {
+        this.createTime = createTime == null ? null : createTime.trim();
+    }
+
+    public String getUpdateUser() {
+        return updateUser;
+    }
+
+    public void setUpdateUser(String updateUser) {
+        this.updateUser = updateUser == null ? null : updateUser.trim();
+    }
+
+    public String getUpdateTime() {
+        return updateTime;
+    }
+
+    public void setUpdateTime(String updateTime) {
+        this.updateTime = updateTime == null ? null : updateTime.trim();
+    }
+}

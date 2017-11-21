@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>我的团队(项目经理)</title>
+</head>
+<body>
+<div class="order">
+    <div class="row">
+        <div style="width:97%; margin:0 auto; background:#f0f0f0; -moz-border-radius:7px; -webkit-border-radius:7px; border-radius:7px; border:1px solid #bbb; padding-bottom:15px; height:auto; ">
+            <div style="border: 1px solid #000000;width: 95%;margin: 20px auto">
+                <div class="row" style="margin: 10px 0px 0px 10px" ng-repeat="items in teamworkstaffs">
+                    <div class="col-md-12" >
+                        <p>我的团队成员</p>
+                    </div>
+                    <div class="col-md-1" ng-repeat="items1 in items.teamworkstaffs">
+                        <img style="width: 60px;height: 60px;" src="images/staffHome/u116.jpg">
+                        <p style="text-align: center">{{items1.staff.staffName}}</p>
+                    </div>                   
+                </div>
+            </div>
+            <!--上部分结束-->
+            <div style="border: 1px solid #000000;width: 75%;margin: 20px;">
+                <table class="table-bordered" style="width:100%;text-align: center">
+                    <tr style="background: #46c8fa">
+                        <td>序号</td>
+                        <td>项目名称</td>
+                        <td>清洁</td>
+                        <td>园林</td>
+                        <td>安保</td>
+                        <td>维修</td>
+                        <td>消防</td>
+                    </tr>
+
+                    <tr>
+                        <td style="background: snow">1</td>
+                        <td style="background: snow">深圳宝安桃源居</td>
+                        <td style="background: #7b846b">2</td>
+                        <td style="background: #7b846b">2</td>
+                        <td style="background: snow">2</td>
+                        <td style="background: #7b846b">2</td>
+                        <td style="background: #7b846b">2</td>
+                    </tr>
+
+                    <tr>
+                        <td style="background: #f2fa9b">2</td>
+                        <td style="background: #f2fa9b">深圳宝安桃源商务大厦</td>
+                        <td style="background: #7b846b">2</td>
+                        <td style="background: #7b846b">2</td>
+                        <td style="background: #7b846b">2</td>
+                        <td style="background: #f2fa9b">2</td>
+                        <td style="background: #f2fa9b">2</td>
+                    </tr>
+
+                    <tr>
+                        <td style="background: snow">3</td>
+                        <td style="background: snow">深圳龙岗桃源居</td>
+                        <td style="background: #7b846b">2</td>
+                        <td style="background: #7b846b">2</td>
+                        <td style="background: snow">2</td>
+                        <td style="background: #7b846b">2</td>
+                        <td style="background: #7b846b">2</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+
+        <div class="clear"></div>
+    </div>
+</div>
+</div>
+</body>
+</html>

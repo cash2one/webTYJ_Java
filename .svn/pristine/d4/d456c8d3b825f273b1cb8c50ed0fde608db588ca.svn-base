@@ -1,0 +1,503 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.flf.mapper.ElectricityMeterReadingDataMapper" >
+  <resultMap id="BaseResultMap" type="com.flf.entity.ElectricityMeterReadingData" >
+    <id column="electricity_meter_reading_data_id" property="electricityMeterReadingDataId" jdbcType="VARCHAR" />
+    <result column="electricity_meter_record_id" property="electricityMeterRecordId" jdbcType="VARCHAR" />
+    <result column="last_month_reading" property="lastMonthReading" jdbcType="DOUBLE" />
+    <result column="reading" property="reading" jdbcType="DOUBLE" />
+    <result column="meter_reading_people" property="meterReadingPeople" jdbcType="VARCHAR" />
+    <result column="meter_reading_state" property="meterReadingState" jdbcType="TINYINT" />
+    <result column="meter_reading_date" property="meterReadingDate" jdbcType="DATE" />
+    <result column="reading_state" property="readingState" jdbcType="TINYINT" />
+    <result column="note" property="note" jdbcType="VARCHAR" />
+    <result column="audit_state" property="auditState" jdbcType="TINYINT" />
+    <result column="audit_people" property="auditPeople" jdbcType="VARCHAR" />
+    <result column="correction" property="correction" jdbcType="DOUBLE" />
+    <result column="reason" property="reason" jdbcType="VARCHAR" />
+    <result column="electricity_damage" property="electricityDamage" jdbcType="DOUBLE" />
+    <result column="abnormal_state" property="abnormalState" jdbcType="TINYINT" />
+    <result column="electricity_meter_reading_program_id" property="electricityMeterReadingProgramId" jdbcType="VARCHAR" />
+    <result column="teamwork_id" property="teamworkId" jdbcType="VARCHAR" />
+    <result column="full_name" property="fullName" jdbcType="VARCHAR" />
+    <result column="dosage" property="dosage" jdbcType="DOUBLE" />
+    <result column="compared_same" property="comparedSame" jdbcType="DOUBLE" />
+    <result column="sequential" property="sequential" jdbcType="DOUBLE" />
+    <result column="electricity_meter_num" property="electricityMeterNum" jdbcType="DOUBLE" />
+    <result column="electricity_meter_id" property="electricityMeterId" jdbcType="VARCHAR" />
+    <result column="building_structure_id" property="buildingStructureId" jdbcType="VARCHAR" />
+    <result column="specified_date" property="specifiedDate" jdbcType="DATE" />
+    <result column="meter_executive_id" property="meterExecutiveId" jdbcType="VARCHAR" />
+    <result column="corrected_reading_id" property="correctedReadingId" jdbcType="VARCHAR" />
+    <result column="surplus" property="surplus" jdbcType="DOUBLE" />
+    <result column="verification_record" property="verificationRecord" jdbcType="TINYINT" />
+    <result column="abnormal_state" property="abnormalState" jdbcType="VARCHAR" />
+    <result column="consumption" property="consumption" jdbcType="DOUBLE" />
+    <result column="loop_num" property="loopNum" jdbcType="DOUBLE" />
+  </resultMap>
+  <resultMap type="ElectricityMeterReadingData" id="resultMeterReadingDataMap" extends="BaseResultMap">
+      <association property="ElectricityMeterRecords" column="electricity_meter_record_id" select="com.flf.mapper.ElectricityMeterRecordsMapper.getElectricityMeterRecordsbyIds" ></association>
+  </resultMap>
+  
+  <resultMap type="ElectricityMeterReadingData" id="resultMeterReadingDataMap12" extends="BaseResultMap">
+      <association property="staffExecutor" column="meter_reading_people" javaType="Staff" select="com.flf.mapper.StaffMapper.getStaffNamebyId"></association>
+  </resultMap>
+  
+   <!--   修改抄表信息 重抄任务-->
+  <update id="updateVerification">
+    update te_electricity_meter_reading_data
+    set  verification_record=3
+     where electricity_meter_reading_data_id in 
+     <foreach collection="list" open="(" close=")" separator="," item="item">
+     	#{item}
+     </foreach>
+  </update>
+  
+   <!--   修改抄表信息 驳回-->
+  <update id="updateMeterReject">
+    update te_electricity_meter_reading_data
+    set  verification_record=0
+     where electricity_meter_reading_data_id in 
+     <foreach collection="list" open="(" close=")" separator="," item="item">
+     	#{item}
+     </foreach>
+  </update>
+  
+  <!-- 根据核实记录状态查询重抄列表所有信息 -->
+   <select id="listPageMeterRecoedDateList2" parameterType="com.flf.entity.ElectricityMeterReadingData" resultMap="BaseResultMap">
+  	select a.*,d.electricity_meter_num,c.full_name from te_electricity_meter_reading_data a
+	join te_electricity_meter_records b on a.electricity_meter_record_id=b.electricity_meter_records_id
+	join tc_building_structure c on b.building_structure_id=c.id
+	join te_electricity_meter d on b.electricity_meter_id=d.electricity_meter_id
+	where a.verification_record='2'
+	<if test="fullName!='' and fullName!=null">
+	and c.full_name like "%"#{fullName}"%" 
+	</if>
+	<if test="electricityMeterNum!='' and electricityMeterNum!=null">
+	and d.electricity_meter_num like "%"#{electricityMeterNum}"%"
+	</if>
+	order by a.abnormal_state desc
+  </select>
+  
+     <!--   修改抄表信息 添加重抄任务-->
+  <update id="updateMeterRecoed">
+    update te_electricity_meter_reading_data
+    set  verification_record=2
+     where electricity_meter_reading_data_id in 
+     <foreach collection="list" open="(" close=")" separator="," item="item">
+     	#{item}
+     </foreach>
+  </update>
+	  
+   <!--   修改抄表信息 里层核实 -->
+  <update id="updateMeterChecked">
+    update te_electricity_meter_reading_data
+    set  verification_record=1
+     where electricity_meter_reading_data_id in
+     <foreach collection="list" open="(" close=")" separator="," item="item">
+     	#{item}
+     </foreach>
+  </update>
+  
+   <!--根据电表使用记录id和记录时间查询电表抄表数据  -->
+  <select id="selectByWaterMeterRecordIdAndDate" resultMap="BaseResultMap">
+  	select * from te_electricity_meter_reading_data
+  	where electricity_meter_record_id=#{0}
+  	and  YEAR(specified_date)=YEAR(#{1}) AND MONTH(specified_date) = MONTH(#{1})
+  </select>
+  
+   <resultMap type="ElectricityMeterReadingData" id="reportElectricityMeterReadingDataMap" extends="BaseResultMap">
+    <result column="electricity_meter_described" property="electricityMeterDescribed" jdbcType="VARCHAR" />
+    <result column="project_name" property="projectName" jdbcType="VARCHAR" />
+  </resultMap>
+
+  <!-- 根据抄表数据id查询抄表数据信息 -->
+   <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+  	select * from te_electricity_meter_reading_data where electricity_meter_reading_data_id=#{0} 
+  </select>
+  
+  <!-- 查询抄表结果的具体详情 -->
+   <select id="listPageMeterRecoedDateList" parameterType="com.flf.entity.ElectricityMeterReadingData" resultMap="resultMeterReadingDataMap12">
+  	select a.*,d.electricity_meter_num,c.full_name from te_electricity_meter_reading_data a
+	join te_electricity_meter_records b on a.electricity_meter_record_id=b.electricity_meter_records_id
+	join tc_building_structure c on b.building_structure_id=c.id
+	join te_electricity_meter d on b.electricity_meter_id=d.electricity_meter_id
+	where a.electricity_meter_reading_program_id=#{electricityMeterReadingProgramId} 
+	<if test="fullName!='' and fullName!=null">
+	and c.full_name like "%"#{fullName}"%" 
+	</if>
+	<if test="electricityMeterNum!='' and electricityMeterNum!=null">
+	and d.electricity_meter_num like "%"#{electricityMeterNum}"%"
+	</if>
+	order by a.abnormal_state desc
+  </select>
+  
+  <resultMap type="ElectricityMeterReadingData" id="reportMeterReadingDataMap" extends="BaseResultMap">
+    <result column="electricity_meter_described" property="electricityMeterDescribed" jdbcType="VARCHAR" />
+    <result column="project_name" property="projectName" jdbcType="VARCHAR" />
+  </resultMap>
+  
+  
+  <!--根据抄表计划id查询抄表记录 -->
+  <select id="selectMeterReadingDateByMeterReadingProgramId" parameterType="java.lang.String" resultMap="BaseResultMap">
+  	select a.electricity_meter_reading_data_id,a.meter_reading_people,d.electricity_meter_num,c.full_name,a.last_month_reading,a.reading from te_electricity_meter_reading_data a
+	join te_electricity_meter_records b on a.electricity_meter_record_id=b.electricity_meter_records_id
+	join tc_building_structure c on b.building_structure_id=c.id
+	join te_electricity_meter d on b.electricity_meter_id=d.electricity_meter_id
+	where a.electricity_meter_reading_program_id=#{0}
+  </select>
+  
+  <!--根据抄表计划id删除抄表数据表记录  -->
+  <delete id="deleteByReadingProgramId" parameterType="java.lang.String">
+  	delete from te_electricity_meter_reading_data where electricity_meter_reading_program_id=#{0}
+  </delete>
+  
+  <!-- 根据水表使用记录id查询上个月的读数 -->
+  <select id="selectLastMonthReading" parameterType="java.lang.String" resultMap="BaseResultMap">
+  	select reading from te_electricity_meter_reading_data 
+	where electricity_meter_record_id=#{0}
+	order by specified_date desc
+	limit 0,1
+  </select>
+    
+  <select id="selectMeterReadingDateByProgramId" parameterType="java.lang.String" resultMap="BaseResultMap">
+  	select * from te_electricity_meter_reading_data
+  	where electricity_meter_reading_program_id=#{0}
+  </select>
+  
+  <select id="listPageElectricityMeterReadingData" parameterType="ElectricityMeterReadingData" resultMap="BaseResultMap">
+  		SELECT * FROM te_electricity_meter_reading_data 
+   <trim prefix="where" prefixOverrides="and">
+  	  <if test="electricityMeterRecordId != null" >
+        electricity_meter_record_id = #{electricityMeterRecordId,jdbcType=VARCHAR},
+      </if>
+      <if test="lastMonthReading != null" >
+        and last_month_reading = #{lastMonthReading,jdbcType=DOUBLE}
+      </if>
+      <if test="reading != null" >
+        and reading = #{reading,jdbcType=DOUBLE}
+      </if>
+      <if test="meterReadingPeople != null" >
+        and meter_reading_people = #{meterReadingPeople,jdbcType=VARCHAR}
+      </if>
+      <if test="meterReadingState != null" >
+        and meter_reading_state = #{meterReadingState,jdbcType=TINYINT}
+      </if>
+      <if test="meterReadingDate != null" >
+        and meter_reading_date = #{meterReadingDate,jdbcType=DATE}
+      </if>
+      <if test="readingState != null" >
+        and reading_state = #{readingState,jdbcType=TINYINT}
+      </if>
+      <if test="note != null" >
+        and note = #{note,jdbcType=VARCHAR}
+      </if>
+      <if test="auditState != null" >
+        and audit_state = #{auditState,jdbcType=TINYINT}
+      </if>
+      <if test="auditPeople != null" >
+        and audit_people = #{auditPeople,jdbcType=VARCHAR}
+      </if>
+      <if test="correction != null" >
+        and correction = #{correction,jdbcType=DOUBLE}
+      </if>
+      <if test="reason != null" >
+        and reason = #{reason,jdbcType=VARCHAR}
+      </if>
+      <if test="electricityDamage != null" >
+        and electricity_damage = #{electricityDamage,jdbcType=DOUBLE}
+      </if>
+      <if test="abnormalState != null" >
+        and abnormal_state = #{abnormalState,jdbcType=TINYINT}
+      </if>
+      <if test="electricityMeterReadingProgramId != null" >
+        and electricity_meter_reading_program_id = #{electricityMeterReadingProgramId,jdbcType=VARCHAR}
+      </if>
+      <if test="teamworkId != null" >
+        and teamwork_id = #{teamworkId,jdbcType=VARCHAR}
+      </if>
+      <if test="buildingStructureId != null">
+      	and building_structure_id = #{buildingStructureId,jdbcType=VARCHAR}
+      </if>
+  	</trim>
+  </select>
+  
+<!-- 分页查询抄表数据 -->
+  <select id="listPageElectricityMeterReadingDataBySearchMeter" parameterType="SearchMeter" resultMap="BaseResultMap">
+       select a.*,f.electricity_meter_num,e.full_name,b.project_name from te_electricity_meter_reading_data a 
+      inner join te_electricity_meter_reading_program b on a.electricity_meter_reading_program_id=b.electricity_meter_reading_program_id
+      inner join te_electricity_meter_records d on a.electricity_meter_record_id=d.electricity_meter_records_id
+      inner join tc_building_structure e on e.id =  a.building_structure_id
+      inner join te_electricity_meter f on f.electricity_meter_id =d.electricity_meter_id
+      where 1=1
+      <if test="meterReadingDate != null and meterReadingDate != '' ">
+          and YEAR(meter_reading_date) =YEAR(#{meterReadingDate})  AND MONTH(meter_reading_date) = MONTH(#{meterReadingDate})
+      </if>
+      <if test="electricityMeterNum !=null and electricityMeterNum != '' ">
+          and f.electricity_meter_num = #{electricityMeterNum}
+      </if>
+      <if test="readingState != null and readingState!=''">	
+          and a.reading_state =#{readingState}
+      </if>
+      <if test="fullName != null and fullName !='' ">
+          and e.full_name like CONCAT('%',#{fullName},'%')
+      </if>
+      <if test="projectName != null and projectName != '' ">
+          and b.project_name =#{projectName}
+      </if>
+      <if test="electricityMeterReadingProgramId != null and electricityMeterReadingProgramId !=''">
+          and a.electricity_meter_reading_program_id = #{electricityMeterReadingProgramId}
+      </if>
+      <if test="electricityMeterRecordsId !=null and electricityMeterRecordsId !='' ">
+          and c.electricity_meter_records_id =#{electricityMeterRecordsId}
+      </if>
+      <if test="year != 0">
+          and YEAR(meter_reading_date) = #{year}
+      </if>
+      <if test="electricityMeterReadingProgramIds != null and electricityMeterReadingProgramIds !=''">
+          and a.electricity_meter_reading_program_id in <foreach collection="electricityMeterReadingProgramIds" open="(" close=")" separator="," item="item">#{item}</foreach>
+      </if>
+  </select>	
+  
+  <!-- 查询抄表数据 -->
+  <select id="listAllElectricityMeterReadingData" resultMap="BaseResultMap">
+      select * from te_electricity_meter_reading_data 
+  </select>
+  
+  <!-- 根据id查询抄表数据 -->
+  <select id="getElectricityMeterReadingDatabyId" parameterType="String" resultMap="BaseResultMap">
+      select * from te_electricity_meter_reading_data where electricity_meter_reading_data_id=#{electricityMeterReadingDataId}
+  </select>
+  
+   <!-- 根据日期查询抄表数据信息 -->
+  <select id="listElectricityMeterReadingDatebyDate" parameterType="Date" resultMap="BaseResultMap">
+      select * from te_electricity_meter_reading_data where YEAR(meter_reading_date)=YEAR(#{0}) AND MONTH(meter_reading_date) =MONTH(#{0})
+  </select>
+  
+  <!-- 根据计划名称查询抄表数据信息 -->
+  <select id="listElectricityMeterReadingDatebyName" parameterType="String" resultMap="BaseResultMap">
+       SELECT * FROM te_electricity_meter_reading_data WHERE meter_reading_program_id IN (SELECT electricity_meter_reading_program_id FROM te_electricity_meter_reading_program WHERE project_name=#{0})
+  </select>
+  
+   <!-- 根据电表使用记录id查询抄表数据信息 -->
+  <select id="listElectricityMeterReadingDatabyId" parameterType="String" resultMap="BaseResultMap">
+      select * from te_electricity_meter_reading_data where electricity_meter_record_id=#{0}
+  </select>
+  
+  <!-- 删除抄表数据 -->
+  <delete id="deleteElectricityMeterReadingData" parameterType="String" >
+      delete from te_electricity_meter_reading_data where electricity_meter_reading_data_id=#{electricityMeterReadingDataId}
+  </delete>
+  
+  <!-- 新增抄表数据 -->
+  <insert id="insertElectricityMeterReadingData" parameterType="com.flf.entity.ElectricityMeterReadingData" >
+    insert into te_electricity_meter_reading_data (electricity_meter_reading_data_id, electricity_meter_record_id, 
+      last_month_reading, reading, meter_reading_people, 
+      meter_reading_state, meter_reading_date, reading_state, 
+      note, audit_state, audit_people, 
+      correction, reason, electricity_damage, 
+      abnormal_state, electricity_meter_reading_program_id, 
+      teamwork_id,building_structure_id,
+      meter_executive_id,corrected_reading_id,surplus,verification_record,specified_date
+      )
+    values (UUID(), #{electricityMeterRecordId,jdbcType=VARCHAR}, 
+      #{lastMonthReading,jdbcType=DOUBLE}, #{reading,jdbcType=DOUBLE}, #{meterReadingPeople,jdbcType=VARCHAR}, 
+      #{meterReadingState,jdbcType=TINYINT}, #{meterReadingDate,jdbcType=DATE}, #{readingState,jdbcType=TINYINT}, 
+      #{note,jdbcType=VARCHAR}, #{auditState,jdbcType=TINYINT}, #{auditPeople,jdbcType=VARCHAR}, 
+      #{correction,jdbcType=DOUBLE}, #{reason,jdbcType=VARCHAR}, #{electricityDamage,jdbcType=DOUBLE}, 
+      #{abnormalState,jdbcType=TINYINT}, #{electricityMeterReadingProgramId,jdbcType=VARCHAR}, 
+      #{teamworkId,jdbcType=VARCHAR},#{buildingStructureId},#{meterExecutiveId,jdbcType=VARCHAR},
+      #{correctedReadingId,jdbcType=VARCHAR},  #{surplus,jdbcType=DOUBLE},#{verificationRecord,jdbcType=TINYINT},#{specifiedDate,jdbcType=DATE}
+      )
+  </insert>
+  
+  <!-- 修改抄表数据 -->
+  <update id="updateElectricityMeterReadingData" parameterType="com.flf.entity.ElectricityMeterReadingData" >
+    update te_electricity_meter_reading_data
+    <set >
+      <if test="electricityMeterRecordId != null" >
+        electricity_meter_record_id = #{electricityMeterRecordId,jdbcType=VARCHAR},
+      </if>
+      <if test="lastMonthReading != null" >
+        last_month_reading = #{lastMonthReading,jdbcType=DOUBLE},
+      </if>
+      <if test="reading != null" >
+        reading = #{reading,jdbcType=DOUBLE},
+      </if>
+      <if test="meterReadingPeople != null" >
+        meter_reading_people = #{meterReadingPeople,jdbcType=VARCHAR},
+      </if>
+      <if test="meterReadingState != null" >
+        meter_reading_state = #{meterReadingState,jdbcType=TINYINT},
+      </if>
+      <if test="meterReadingDate != null" >
+        meter_reading_date = #{meterReadingDate,jdbcType=DATE},
+      </if>
+      <if test="readingState != null" >
+        reading_state = #{readingState,jdbcType=TINYINT},
+      </if>
+      <if test="note != null" >
+        note = #{note,jdbcType=VARCHAR},
+      </if>
+      <if test="auditState != null" >
+        audit_state = #{auditState,jdbcType=TINYINT},
+      </if>
+      <if test="auditPeople != null" >
+        audit_people = #{auditPeople,jdbcType=VARCHAR},
+      </if>
+      <if test="correction != null" >
+        correction = #{correction,jdbcType=DOUBLE},
+      </if>
+      <if test="reason != null" >
+        reason = #{reason,jdbcType=VARCHAR},
+      </if>
+      <if test="electricityDamage != null" >
+        electricity_damage = #{electricityDamage,jdbcType=DOUBLE},
+      </if>
+      <if test="abnormalState != null" >
+        abnormal_state = #{abnormalState,jdbcType=TINYINT},
+      </if>
+      <if test="electricityMeterReadingProgramId != null" >
+        electricity_meter_reading_program_id = #{electricityMeterReadingProgramId,jdbcType=VARCHAR},
+      </if>
+      <if test="teamworkId != null" >
+        teamwork_id = #{teamworkId,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="electricityMeterReadingDataIds != null">
+      where electricity_meter_reading_data_id in <foreach collection="electricityMeterReadingDataIds" open="(" close=")" separator="," item="item">#{item}</foreach>
+      </if> 
+      <if test="electricityMeterReadingDataIds == null or electricityMeterReadingDataIds =='' ">
+          where electricity_meter_rezading_data_id =  #{electricityMeterReadingDataId}
+      </if>
+  </update>
+  
+  <!-- 根据建筑结构id查询电表读数 -->
+   <select id="getElectricityMeterReadingbyId" parameterType="java.util.Map" resultMap="BaseResultMap">
+      select emrd.reading,emrd.last_month_reading 
+      from te_electricity_meter_reading_data emrd
+      where emrd.building_structure_id=#{buildingStructureId,jdbcType=VARCHAR} and meter_reading_date &gt;= #{month,jdbcType=DATE} group by meter_reading_date desc
+  </select>
+  
+  <!-- 根据建筑结构id查询电表读数 -->
+   <select id="listElectricityMeterReadingDatabyBuildingId" parameterType="String" resultMap="BaseResultMap">
+      	SELECT b.reading,
+		b.meter_reading_date,
+		d.electricity_meter_num,
+		d.electricity_meter_id
+		FROM
+		(select * from ts_tasks WHERE address_id=#{0} limit 0,1) a
+		INNER JOIN te_electricity_meter_reading_data b ON a.address_id = b.building_structure_id
+		INNER JOIN te_electricity_meter_records c ON b.electricity_meter_record_id = c.electricity_meter_records_id
+		INNER JOIN te_electricity_meter d ON c.electricity_meter_id = d.electricity_meter_id
+
+  </select>
+    <select id="selectByElectricityMeterRecordIdAndDate" resultMap="BaseResultMap">
+  	select * from te_electricity_meter_reading_data
+  	where electricity_meter_record_id=#{0}
+  	and  YEAR(specified_date)=YEAR(#{1}) AND MONTH(specified_date) = MONTH(#{1})
+  </select>
+ 
+ <select id="listPageElectricityMeterRecordAll" parameterType="com.flf.entity.ElectricityMeterReadingData" resultMap="BaseResultMap">
+  	SELECT a.*,d.electricity_meter_num,b.electricity_meter_described,f.project_name FROM te_electricity_meter_reading_data a
+LEFT	JOIN te_electricity_meter_records b ON a.electricity_meter_record_id=b.electricity_meter_records_id
+LEFT	JOIN tc_building_structure c ON b.building_structure_id=c.id
+LEFT	JOIN te_electricity_meter d ON b.electricity_meter_id=d.electricity_meter_id
+LEFT	JOIN te_electricity_meter_project e ON e.electricity_meter_records_id=b.electricity_meter_records_id
+LEFT	JOIN te_electricity_meter_reading_program f ON e.reading_program_id=f.electricity_meter_reading_program_id
+      where 1=1 and f.electricity_meter_reading_program_id is not null
+      <if test="electricityMeterNum !=null and electricityMeterNum !=''">
+          and d.electricity_meter_num  LIKE CONCAT('%',#{electricityMeterNum},'%')
+      </if>
+      group by f.project_name
+  </select>
+  
+   <update id="updateByPrimaryKeySelective" parameterType="com.flf.entity.ElectricityMeterReadingData" >
+    update te_electricity_meter_reading_data
+    <set >
+      <if test="electricityMeterRecordId != null" >
+        electricity_meter_record_id = #{electricityMeterRecordId,jdbcType=VARCHAR},
+      </if>
+      <if test="lastMonthReading != null" >
+        last_month_reading = #{lastMonthReading,jdbcType=DOUBLE},
+      </if>
+      <if test="reading != null" >
+        reading = #{reading,jdbcType=DOUBLE},
+      </if>
+      <if test="meterReadingPeople != null" >
+        meter_reading_people = #{meterReadingPeople,jdbcType=VARCHAR},
+      </if>
+      <if test="meterReadingState != null" >
+        meter_reading_state = #{meterReadingState,jdbcType=TINYINT},
+      </if>
+      <if test="meterReadingDate != null" >
+        meter_reading_date = #{meterReadingDate,jdbcType=DATE},
+      </if>
+      <if test="readingState != null" >
+        reading_state = #{readingState,jdbcType=TINYINT},
+      </if>
+      <if test="note != null" >
+        note = #{note,jdbcType=VARCHAR},
+      </if>
+      <if test="auditState != null" >
+        audit_state = #{auditState,jdbcType=TINYINT},
+      </if>
+      <if test="auditPeople != null" >
+        audit_people = #{auditPeople,jdbcType=VARCHAR},
+      </if>
+      <if test="correction != null" >
+        correction = #{correction,jdbcType=DOUBLE},
+      </if>
+      <if test="reason != null" >
+        reason = #{reason,jdbcType=VARCHAR},
+      </if>
+      <if test="electricityDamage != null" >
+        electricity_damage = #{electricityDamage,jdbcType=DOUBLE},
+      </if>
+      <if test="abnormalState != null" >
+        abnormal_state = #{abnormalState,jdbcType=TINYINT},
+      </if>
+      <if test="electricityMeterReadingProgramId != null" >
+        electricity_meter_reading_program_id = #{electricityMeterReadingProgramId,jdbcType=VARCHAR},
+      </if>
+      <if test="teamworkId != null" >
+        teamwork_id = #{teamworkId,jdbcType=VARCHAR},
+      </if>
+      <if test="meterExecutiveId != null" >
+        meter_executive_id = #{meterExecutiveId,jdbcType=VARCHAR},
+      </if>
+      <if test="correctedReadingId != null" >
+        corrected_reading_id = #{correctedReadingId,jdbcType=VARCHAR},
+      </if>
+      <if test="surplus != null" >
+        surplus = #{surplus,jdbcType=DOUBLE},
+      </if>
+      <if test="specifiedDate != null" >
+        specified_date = #{specifiedDate,jdbcType=DATE},
+      </if>
+      <if test="verificationRecord != null" >
+        verification_record = #{verificationRecord,jdbcType=TINYINT},
+      </if>
+      <if test="buildingStructureId != null" >
+        building_structure_id = #{buildingStructureId,jdbcType=VARBINARY},
+      </if>
+      <if test="consumption != null" >
+        consumption = #{consumption,jdbcType=DOUBLE},
+      </if>
+      <if test="loopNum != null" >
+        loop_num = #{loopNum,jdbcType=DOUBLE},
+      </if>
+    </set>
+    where electricity_meter_reading_data_id = #{electricityMeterReadingDataId,jdbcType=VARCHAR}
+  </update>
+  
+    <select id="listAllElectricityMeterReadingData1"  resultMap="reportElectricityMeterReadingDataMap">
+  	SELECT a.*,d.electricity_meter_num,b.electricity_meter_described,f.project_name FROM te_electricity_meter_reading_data a
+LEFT	JOIN te_electricity_meter_records b ON a.electricity_meter_record_id=b.electricity_meter_records_id
+LEFT	JOIN tc_building_structure c ON b.building_structure_id=c.id
+LEFT	JOIN te_electricity_meter d ON b.electricity_meter_id=d.electricity_meter_id
+LEFT	JOIN te_electricity_meter_project e ON e.electricity_meter_records_id=b.electricity_meter_records_id
+LEFT	JOIN te_electricity_meter_reading_program f ON e.reading_program_id=f.electricity_meter_reading_program_id
+  </select>
+  
+</mapper>

@@ -1,0 +1,448 @@
+package com.flf.service.impl;
+
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.UUID;
+
+
+import com.flf.entity.AccountRecord;
+import com.flf.entity.BankDeposit;
+import com.flf.entity.PageRestful;
+import com.flf.entity.PaymentDetails;
+import com.flf.entity.PaymentRecords;
+import com.flf.mapper.AccountRecordMapper;
+import com.flf.mapper.BankDepositMapper;
+import com.flf.mapper.FinancialStaffMapper;
+import com.flf.mapper.PaymentDetailsMapper;
+import com.flf.mapper.PaymentRecordsMapper;
+import com.flf.service.AccountRecordService;
+
+public class AccountRecordServiceImpl implements AccountRecordService{
+	
+	private AccountRecordMapper accountRecordMapper;
+	
+	private BankDepositMapper bankDepositMapper;
+	
+	private FinancialStaffMapper financialStaffMapper;
+
+	private PaymentRecordsMapper paymentRecordsMapper ;
+	
+	private PaymentDetailsMapper paymentDetailsMapper;
+
+	public PaymentDetailsMapper getPaymentDetailsMapper() {
+		return paymentDetailsMapper;
+	}
+
+	public void setPaymentDetailsMapper(PaymentDetailsMapper paymentDetailsMapper) {
+		this.paymentDetailsMapper = paymentDetailsMapper;
+	}
+
+	public PaymentRecordsMapper getPaymentRecordsMapper() {
+		return paymentRecordsMapper;
+	}
+
+	public void setPaymentRecordsMapper(PaymentRecordsMapper paymentRecordsMapper) {
+		this.paymentRecordsMapper = paymentRecordsMapper;
+	}
+
+	public FinancialStaffMapper getFinancialStaffMapper() {
+		return financialStaffMapper;
+	}
+
+	public void setFinancialStaffMapper(FinancialStaffMapper financialStaffMapper) {
+		this.financialStaffMapper = financialStaffMapper;
+	}
+
+	public BankDepositMapper getBankDepositMapper() {
+		return bankDepositMapper;
+	}
+
+	public void setBankDepositMapper(BankDepositMapper bankDepositMapper) {
+		this.bankDepositMapper = bankDepositMapper;
+	}
+
+	public AccountRecordMapper getAccountRecordMapper() {
+		return accountRecordMapper;
+	}
+
+	public void setAccountRecordMapper(AccountRecordMapper accountRecordMapper) {
+		this.accountRecordMapper = accountRecordMapper;
+	}
+	//条件分页查询
+	@Override
+	public PageRestful listPageAccountRecordRes(AccountRecord accountRecord) {
+		// TODO Auto-generated method stub
+		PageRestful pageRestful=new PageRestful();
+		List<AccountRecord> accountRecords = accountRecordMapper.listPageAccountRecord(accountRecord);
+		accountRecords.add(0, null);
+		pageRestful.setAccountRecords(accountRecords);
+		pageRestful.setPage(accountRecord.getPage());
+		return pageRestful;
+	}
+	
+	//确认收账
+	/*@Override
+	public void UpdateAccountState(AccountRecord accountRecord) {
+		// TODO Auto-generated method stub
+		accountRecordMapper.updateAccountState(accountRecord);
+		
+	}*/
+	
+	//确认收账
+	@Override
+	public void UpdateAccountState(AccountRecord accountRecord) {
+		// TODO Auto-generated method stub 
+		List<AccountRecord> accountRecordList=accountRecord.getAccountRecordList();		
+		for(int i=0;i<accountRecordList.size();i++){			
+			accountRecord.setAccountState("2");
+			accountRecord.setAccountRecordId(accountRecordList.get(i).getAccountRecordId());
+			Integer n=accountRecordMapper.updateAccountState(accountRecord);
+			if(n>0){
+				PaymentRecords paymentRecords=new PaymentRecords();
+				paymentRecords.setPaymentRecordsId(UUID.randomUUID().toString());
+				paymentRecords.setCashSum(accountRecordList.get(i).getCashSum());	//现金金额
+				paymentRecords.setCreditCardSum(accountRecordList.get(i).getCreditCardSum());//刷卡金额
+				paymentRecords.setWechatSum(accountRecordList.get(i).getWechatSum());//微信金额
+				paymentRecords.setTotalSum(accountRecordList.get(i).getTotalSum());//总金额
+				paymentRecords.setFinancialStaffId(accountRecordList.get(i).getStaffId());//财务人员id
+				paymentRecordsMapper.insertPaymentRecord(paymentRecords);
+			}
+		}
+	}
+
+	
+	
+	//新增（交账） 用于收款台 财务人员交账（适用于收银组长，出纳交账）   2015-12-25 彭婷婷
+	@Override
+	public void insertAccountRecord(AccountRecord accountRecord) {
+		// TODO Auto-generated method stub		
+		
+		List<AccountRecord> accountRecordList=accountRecord.getAccountRecordList();			
+		for(int i=0;i<accountRecordList.size();i++){
+			AccountRecord account=new AccountRecord();
+			String id=accountRecordList.get(i).getAccountRecordId();
+			account.setAccountRecordId(id);
+			account.setAccountState("1");
+			accountRecordMapper.updateAccountState(account);
+			if(accountRecord.getbList() != null && accountRecord.getbList().size() > 0){
+				for(BankDeposit ahr : accountRecord.getbList()){
+					ahr.setBankDepositId(UUID.randomUUID().toString());
+					ahr.setAccountRecordId(id);
+					bankDepositMapper.insertBankDeposit(ahr);
+				}
+			}
+			
+		}		
+		accountRecord.setAccountRecordId(UUID.randomUUID().toString());		
+		accountRecord.setAccountTime(new Date());
+		accountRecord.setAccountState("0");//将状态设置为待交账
+		accountRecordMapper.insertAccountRecord(accountRecord);
+		
+		if(accountRecord.getbList() != null && accountRecord.getbList().size() > 0){
+			for(BankDeposit ahr : accountRecord.getbList()){
+				ahr.setBankDepositId(UUID.randomUUID().toString());
+				ahr.setAccountRecordId(accountRecord.getAccountRecordId());
+				bankDepositMapper.insertBankDeposit(ahr);
+			}
+		}
+	}
+	@Override
+	public AccountRecord getAccountRecord(String accountRecordId) {
+		// TODO Auto-generated method stub
+		return accountRecordMapper.getAccountRecordById(accountRecordId);
+	}
+
+	@Override
+	public List<AccountRecord> getAccountRecordListById(String financialStaffId) {
+		// TODO Auto-generated method stub
+		return accountRecordMapper.getAccountRecordListById(financialStaffId);
+	}
+
+	//退回
+	@Override
+	public void UpdateAccountState1(AccountRecord accountRecord) {
+		// TODO Auto-generated method stub
+		accountRecordMapper.updateAccountState1(accountRecord);
+	}
+
+	
+	//修改
+	@Override
+	public void Update(AccountRecord accountRecord) {
+		// TODO Auto-generated method stub
+		accountRecordMapper.update(accountRecord);
+	}
+	
+	@Override
+	public PageRestful listPageAccountRecordUnFinish(AccountRecord accountRecord){
+		PageRestful pageRestful=new PageRestful();
+		List<AccountRecord> accountRecords = accountRecordMapper.listPageAccountRecordUnFinish(accountRecord);
+		accountRecords.add(0, null);
+		pageRestful.setAccountRecords(accountRecords);
+		pageRestful.setPage(accountRecord.getPage());
+		return pageRestful;
+	}
+
+
+	@Override
+	public PageRestful listPageByState(AccountRecord accountRecord) {
+		// TODO Auto-generated method stub
+		PageRestful pageRestful=new PageRestful();
+		List<AccountRecord> accountRecords = accountRecordMapper.listPageByState(accountRecord);
+		accountRecords.add(0, null);
+		pageRestful.setAccountRecords(accountRecords);
+		pageRestful.setPage(accountRecord.getPage());
+		return pageRestful;
+	}
+	
+	//新增（交账） 用于收款台 财务人员交账（适用于收银员交账）   2015-12-25 彭婷婷
+	@Override
+	public void insertAccountRecordRes(AccountRecord accountRecord) {
+		// TODO Auto-generated method stub
+		//存放parentId,付款详情id
+		accountRecord.setAccountRecordId(UUID.randomUUID().toString());		
+		accountRecord.setAccountTime(new Date());
+		accountRecord.setAccountState("0");//将状态设置为待交账
+		String batchNum=Long.toString(System.currentTimeMillis());		
+		if(accountRecord.getAccountType()==1){//结算
+			String parentIds=accountRecord.getParentId();
+			accountRecord.setBatchNum(batchNum);//设置批次号
+			accountRecord.setParentId(null);
+			Integer n=accountRecordMapper.insertAccountRecord(accountRecord);
+			if(n>0){
+				String[] s = parentIds.split(",");
+				for(int j = 0; j < s.length; j++){//将支付明细表中的数据加上批次号
+					String id=s[j];
+					PaymentDetails paymentDetails=new PaymentDetails();
+					paymentDetails.setRefundState(1);//已交账
+					paymentDetails.setBatchNum(batchNum);//批次号
+					paymentDetails.setPaymentDetailsId(id);
+					paymentDetails.setAccountRecordId(accountRecord.getAccountRecordId());//关联交账记录的id
+					paymentDetailsMapper.updatePaymentDetails(paymentDetails);
+				}
+				List<String> listParentId=new ArrayList<String>();//存放收款员交账记录的id
+				//将现金交账的数据加上批次号
+				List<AccountRecord> list=accountRecordMapper.selectAccountRecordById(accountRecord.getFinancialStaffId());
+				for(int i=0;i<list.size();i++){
+					listParentId.add(list.get(i).getAccountRecordId());
+					AccountRecord a=accountRecordMapper.getAccountRecordById(list.get(i).getAccountRecordId());
+					if(a.getBatchNum()==null){
+						a.setBatchNum(batchNum);
+					}					
+					accountRecordMapper.update(a);
+				}
+			}
+			
+		}else{
+			accountRecordMapper.insertAccountRecord(accountRecord);//现金结算
+		}
+		
+	}
+	
+	
+	// 数据退回    用于在上级未收账之前自己将数据撤回	 	
+	@Override
+	public void UpdateAccountStateRes(AccountRecord accountRecord) {
+		List<BankDeposit> deposits=new ArrayList<BankDeposit>();
+		if(accountRecord.getBackPerosn()!=null){
+			if(accountRecord.getBackPerosn().equals("1")||accountRecord.getBackPerosn().equals("2")){
+				 deposits=bankDepositMapper.getBankDepositById(accountRecord.getAccountRecordId());
+			}
+		}
+		List<AccountRecord> accountRecordList=accountRecord.getAccountRecordList();
+		for(int i=0;i<accountRecordList.size();i++){
+			//将交账生成的数据 状态改为已取消
+			accountRecord.setAccountRecordId(accountRecordList.get(i).getAccountRecordId());
+			accountRecord.setAccountState("3");
+			Integer m=accountRecordMapper.updateAccountState(accountRecord);
+			Integer n=0;
+			if(accountRecord.getBackPerosn()!=null){
+				if(accountRecord.getBackPerosn().equals("1")||accountRecord.getBackPerosn().equals("2")){
+					 deposits=bankDepositMapper.getBankDepositById(accountRecord.getAccountRecordId());
+				}
+			}
+			
+			//同时将之前交账的数据状态也改为 已取消,
+			AccountRecord account=null;
+			//收银组长退回到收款员
+			if(accountRecordList.get(i).getParentId()==null){
+				//修改当前数据为已退回
+				accountRecordList.get(i).setAccountState("3");
+				accountRecordMapper.update(accountRecordList.get(i));
+			//退回到收款记录
+				List <PaymentDetails> pds=paymentDetailsMapper.getPaymentDetailsByAccountId(accountRecordList.get(i).getAccountRecordId());
+				for(int j=0;j<pds.size();j++){
+					pds.get(j).setAccountRecordId(null);
+					pds.get(j).setBatchNum(null);
+					paymentDetailsMapper.updatePaymentDetails(pds.get(j));
+				}
+				
+				
+			} else{
+			String[] s = accountRecordList.get(i).getParentId().split(",");
+				for(int j = 0; j < s.length; j++){
+					//把父级状态也该为取消
+					String id=s[j];
+				    account=accountRecordMapper.getAccountRecordById(id);//得到之前交账的数据 				
+					account.setAccountState("3");
+					n=accountRecordMapper.updateAccountState(account);
+					if(m>0){
+						if(j==s.length-1){
+							accountRecord.setAccountRecordId(UUID.randomUUID().toString());
+							accountRecord.setAccountTime(new Date());
+							accountRecord.setAccountState("2");//将状态设置为待收账
+//							String personId=accountRecordList.get(i).getFinancialStaffId();
+//							if(accountRecord.getBackState().equals("0")){//本人退回						
+							accountRecord.setFinancialStaffId(account.getFinancialStaffId());//设置交账人id;
+//							}else{						
+//								accountRecord.setFinancialStaffId(accountRecordList.get(i).getStaffId());//设置交账人id;
+//							}
+							//accountRecord.setStaffId(personId);//设置收账人id					
+							accountRecord.setAccountTotalNum(1);//交账笔数l
+							accountRecord.setCashSum(account.getCashSum());//现金金额
+							accountRecord.setCreditCardSum(account.getCreditCardSum());//刷卡金额
+							accountRecord.setWechatSum(account.getWechatSum());//微信金额
+							accountRecord.setRefundSum(account.getRefundSum());//退款金额
+							accountRecord.setTotalSum(account.getTotalSum());//总金额
+							accountRecord.setParentId(accountRecordList.get(i).getAccountRecordId());
+							accountRecordMapper.insertAccountRecord(accountRecord);
+							for(int k=0;k<deposits.size();k++){
+								BankDeposit bankDeposit=new BankDeposit();
+								bankDeposit.setAccountRecordId(accountRecord.getAccountRecordId());
+								bankDeposit.setBankDepositNum(deposits.get(k).getBankDepositNum());
+								bankDeposit.setBankDepositId(UUID.randomUUID().toString());
+								bankDeposit.setSum(deposits.get(k).getSum());
+								bankDepositMapper.insertBankDeposit(bankDeposit);
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+	
+	
+	
+	//查询现金交账的数据
+	@Override
+	public List<AccountRecord> selectAccountRecordById(String financialStaffId) {
+		// TODO Auto-generated method stub
+		return accountRecordMapper.selectAccountRecordById(financialStaffId);
+	}
+	
+	//收银员回退
+	public void backAccountRecordDataRes(AccountRecord accountRecord) {
+		List<AccountRecord> accountRmd=new 	ArrayList<AccountRecord>();//存放现金交账
+		List<AccountRecord> account=new ArrayList<AccountRecord>();//存放结算
+		List<String> pays=new ArrayList<String>();//存放交账记录id
+		for(int i=0;i<accountRecord.getAccountRecordList().size();i++){
+			AccountRecord  ar=accountRecord.getAccountRecordList().get(i);
+			if(String.valueOf(ar.getAccountType()).equals("0")){
+				accountRmd.add(ar);
+			}else{
+				account.add(ar);
+			}
+		}
+		//AccountRecord a=accountRecordMapper.getAccountRecordById(accountRecord.getAccountRecordList());
+		//1.如果是现金结算，查询id，直接修改数据状态
+		for(int i=0;i<accountRmd.size();i++){
+			AccountRecord  a=accountRmd.get(i);
+			if(a.getBatchNum()!=null&&!a.getBatchNum().equals("")){
+				a.setAccountState("3");
+				//a.setFinancialStaffId(accountRecord.getFinancialStaffId());
+				a.setBatchNum(null);
+				accountRecordMapper.update(a);
+			}
+		}
+		
+	//结算
+		for(int i=0;i<account.size();i++){
+			//通过批次号查询
+			List<AccountRecord> accountRecords=accountRecordMapper.getAccountRecordByBatchNum(account.get(i).getBatchNum());
+			for(int j=0;j<accountRecords.size();j++){
+				accountRecords.get(j).setBatchNum(null);
+				accountRecords.get(j).setFinancialStaffId(accountRecord.getFinancialStaffId());
+				accountRecords.get(j).setAccountState("3");
+				accountRecordMapper.update(accountRecords.get(i));
+				pays.add(accountRecords.get(i).getAccountRecordId());
+				}
+			}
+		
+	//把付款详情去掉批次号
+			for(int i=0;i<pays.size();i++){
+				List <PaymentDetails> paymentDetails=paymentDetailsMapper.getPaymentDetailsByAccountId(pays.get(i));
+				for(int j=0;j<paymentDetails.size();j++){
+					paymentDetails.get(j).setAccountRecordId(null);
+					paymentDetails.get(j).setBatchNum(null);
+					paymentDetailsMapper.updatePaymentDetails(paymentDetails.get(j));
+				}
+			}
+		
+		// TODO Auto-generated method stub
+//		List<AccountRecord> accountRecordList=accountRecord.getAccountRecordList();
+//		for(int i=0;i<accountRecordList.size();i++){
+//			//将交账生成的数据 状态改为已取消
+//			accountRecord.setAccountRecordId(accountRecordList.get(i).getAccountRecordId());
+//			accountRecord.setAccountState("3");
+//			Integer m=accountRecordMapper.updateAccountState(accountRecord);
+//			String personId=accountRecordList.get(i).getFinancialStaffId();//操作人id
+//			//将现金交账的数据的数据批次号取消
+//			List<AccountRecord> list=accountRecordMapper.selectARById(personId);
+//			for(int j=0;j<list.size();j++){
+//				AccountRecord a=accountRecordMapper.getAccountRecordById(list.get(j).getAccountRecordId());
+//				if(a.getBatchNum().equals(accountRecordList.get(i).getBatchNum())){
+//					a.setBatchNum(null);
+//				}								
+//				accountRecordMapper.update(a);
+//			}
+//			
+//			//同时将支付明细表的数据的批次号取消
+//			if(m>0 && accountRecordList.get(i).getAccountType()==1){
+//				PaymentDetails paymentDetails=null;
+//				String[] s = accountRecordList.get(i).getParentId().split(",");
+//				for(int j = 0; j < s.length; j++){
+//					String id=s[j];					
+//					paymentDetails=paymentDetailsMapper.getPaymentDetailsById(id);//得到之前交账的数据 				
+//					paymentDetails.setBatchNum(null);//将批次号取消
+//					paymentDetails.setFinancialStaffId(personId);
+//					paymentDetailsMapper.updatePaymentDetails(paymentDetails);
+//				}
+//			}
+//			
+//			
+//		}
+	}
+	
+	
+	@Override
+	public List<AccountRecord> selectARById(String financialStaffId) {
+		// TODO Auto-generated method stub
+		return accountRecordMapper.selectARById(financialStaffId);
+	}
+
+	
+	
+	@Override
+	public PageRestful listPagePostIdRecordRes(AccountRecord accountRecord) {
+		PageRestful pageRestful=new PageRestful();
+		List<AccountRecord>accountRecords= accountRecordMapper.listPagePostIdRecordRes(accountRecord);
+		accountRecords.add(0, null);
+		pageRestful.setAccountRecords(accountRecords);
+		pageRestful.setPage(accountRecord.getPage());
+		return pageRestful;
+	}
+	public  PageRestful listPageAccountRecordUnFinishTest(AccountRecord accountRecord){
+		PageRestful pageRestful=new PageRestful();
+		List<AccountRecord>accountRecords= accountRecordMapper.listPageAccountRecordUnFinishTest(accountRecord);
+		accountRecords.add(0, null);
+		pageRestful.setAccountRecords(accountRecords);
+		pageRestful.setPage(accountRecord.getPage());
+		return pageRestful;
+	}
+	
+	public List<AccountRecord>selectARByStaffAndState(AccountRecord accountRecord){
+		return accountRecordMapper.selectARByStaffAndState(accountRecord);
+	}
+	
+}

@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.flf.mapper.InspectionPropertyCheckItemMapper" >
+  <resultMap id="BaseResultMap" type="com.flf.entity.InspectionPropertyCheckItem" >
+    <id column="inspection_check_item_id" property="inspectionCheckItemId" jdbcType="VARCHAR" />
+    <result column="inspection_plan_id" property="inspectionPlanId" jdbcType="VARCHAR" />
+    <result column="num" property="num" jdbcType="VARCHAR" />
+    <result column="check_item_name" property="checkItemName" jdbcType="VARCHAR" />
+    <result column="check_item_unit" property="checkItemUnit" jdbcType="VARCHAR" />
+    <result column="check_item_reference" property="checkItemReference" jdbcType="VARCHAR" />
+    <result column="input_type" property="inputType" jdbcType="TINYINT" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    inspection_check_item_id,inspection_plan_id, num, check_item_name, check_item_unit, 
+    check_item_reference, input_type
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from ts_inspection_property_check_item
+    where inspection_check_item_id = #{inspectionCheckItemId,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from ts_inspection_property_check_item
+    where inspection_check_item_id = #{inspectionCheckItemId,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.flf.entity.InspectionPropertyCheckItem" >
+    insert into ts_inspection_property_check_item (inspection_check_item_id, inspection_plan_id, 
+      num, check_item_name, check_item_unit, 
+      check_item_reference, input_type)
+    values (#{inspectionCheckItemId,jdbcType=VARCHAR}, #{inspectionPlanId,jdbcType=VARCHAR}, 
+      #{num,jdbcType=VARCHAR}, #{checkItemName,jdbcType=VARCHAR}, #{checkItemUnit,jdbcType=VARCHAR}, 
+      #{checkItemReference,jdbcType=VARCHAR}, #{inputType,jdbcType=TINYINT})
+  </insert>
+  <insert id="insertSelective" parameterType="com.flf.entity.InspectionPropertyCheckItem" >
+    insert into ts_inspection_property_check_item
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="inspectionCheckItemId != null" >
+        inspection_check_item_id,
+      </if>
+      <if test="inspectionPlanId != null" >
+        inspection_plan_id,
+      </if>
+      <if test="num != null" >
+        num,
+      </if>
+      <if test="checkItemName != null" >
+        check_item_name,
+      </if>
+      <if test="checkItemUnit != null" >
+        check_item_unit,
+      </if>
+      <if test="checkItemReference != null" >
+        check_item_reference,
+      </if>
+      <if test="inputType != null" >
+        input_type,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="inspectionCheckItemId != null" >
+        #{inspectionCheckItemId,jdbcType=VARCHAR},
+      </if>
+      <if test="inspectionPlanId != null" >
+        #{inspectionPlanId,jdbcType=VARCHAR},
+      </if>
+      <if test="num != null" >
+        #{num,jdbcType=VARCHAR},
+      </if>
+      <if test="checkItemName != null" >
+        #{checkItemName,jdbcType=VARCHAR},
+      </if>
+      <if test="checkItemUnit != null" >
+        #{checkItemUnit,jdbcType=VARCHAR},
+      </if>
+      <if test="checkItemReference != null" >
+        #{checkItemReference,jdbcType=VARCHAR},
+      </if>
+      <if test="inputType != null" >
+        #{inputType,jdbcType=TINYINT},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.flf.entity.InspectionPropertyCheckItem" >
+    update ts_inspection_property_check_item
+    <set >
+      <if test="inspectionPlanId != null" >
+        inspection_plan_id = #{inspectionPlanId,jdbcType=VARCHAR},
+      </if>
+      <if test="num != null" >
+        num = #{num,jdbcType=VARCHAR},
+      </if>
+      <if test="checkItemName != null" >
+        check_item_name = #{checkItemName,jdbcType=VARCHAR},
+      </if>
+      <if test="checkItemUnit != null" >
+        check_item_unit = #{checkItemUnit,jdbcType=VARCHAR},
+      </if>
+      <if test="checkItemReference != null" >
+        check_item_reference = #{checkItemReference,jdbcType=VARCHAR},
+      </if>
+      <if test="inputType != null" >
+        input_type = #{inputType,jdbcType=TINYINT},
+      </if>
+    </set>
+    where inspection_check_item_id = #{inspectionCheckItemId,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.flf.entity.InspectionPropertyCheckItem" >
+    update ts_inspection_property_check_item
+    set inspection_plan_id = #{inspectionPlanId,jdbcType=VARCHAR},
+      num = #{num,jdbcType=VARCHAR},
+      check_item_name = #{checkItemName,jdbcType=VARCHAR},
+      check_item_unit = #{checkItemUnit,jdbcType=VARCHAR},
+      check_item_reference = #{checkItemReference,jdbcType=VARCHAR},
+      input_type = #{inputType,jdbcType=TINYINT}
+    where inspection_check_item_id = #{inspectionCheckItemId,jdbcType=VARCHAR}
+  </update>
+  
+  <!--  -->
+   <select id="selectInspectionPropertyCheckItem" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from ts_inspection_property_check_item
+    where inspection_plan_id = #{inspectionPlanId,jdbcType=VARCHAR}
+  </select>
+</mapper>

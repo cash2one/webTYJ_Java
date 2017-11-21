@@ -1,0 +1,233 @@
+package com.flf.service.impl;
+
+import java.util.Date;
+import java.util.List;
+import java.util.UUID;
+
+import org.springframework.format.annotation.DateTimeFormat;
+
+import com.flf.entity.Billing;
+import com.flf.entity.BuildingBilling;
+import com.flf.entity.ChargeItemBilling;
+import com.flf.entity.ChargeItemNew;
+import com.flf.entity.Constant;
+import com.flf.entity.Formula;
+import com.flf.entity.MeterReadingData;
+import com.flf.entity.PageRestful;
+import com.flf.entity.ProjectBilling;
+import com.flf.entity.SchemeDatails;
+import com.flf.mapper.ChargeItemNewMapper;
+import com.flf.mapper.ConstantMapper;
+import com.flf.mapper.FormulaMapper;
+import com.flf.mapper.MeterReadingDataMapper;
+import com.flf.mapper.ProjectBillingMapper;
+import com.flf.mapper.SchemeDatailsMapper;
+import com.flf.service.ProjectBillingService;
+
+public class ProjectBillingServiceImpl implements ProjectBillingService{
+	
+	private ProjectBillingMapper projectBillingMapper;
+	
+	private ChargeItemNewMapper chargeItemNewMapper;
+	
+	private SchemeDatailsMapper schemeDatailsMapper;
+	
+	private MeterReadingDataMapper meterReadingDataMapper;
+	
+	private FormulaMapper formulaMapper;
+	
+	private ConstantMapper constantMapper;
+
+	public ConstantMapper getConstantMapper() {
+		return constantMapper;
+	}
+
+	public void setConstantMapper(ConstantMapper constantMapper) {
+		this.constantMapper = constantMapper;
+	}
+
+	public FormulaMapper getFormulaMapper() {
+		return formulaMapper;
+	}
+
+	public void setFormulaMapper(FormulaMapper formulaMapper) {
+		this.formulaMapper = formulaMapper;
+	}
+
+	public MeterReadingDataMapper getMeterReadingDataMapper() {
+		return meterReadingDataMapper;
+	}
+
+	public void setMeterReadingDataMapper(
+			MeterReadingDataMapper meterReadingDataMapper) {
+		this.meterReadingDataMapper = meterReadingDataMapper;
+	}
+
+	public SchemeDatailsMapper getSchemeDatailsMapper() {
+		return schemeDatailsMapper;
+	}
+
+	public void setSchemeDatailsMapper(SchemeDatailsMapper schemeDatailsMapper) {
+		this.schemeDatailsMapper = schemeDatailsMapper;
+	}
+
+	public ChargeItemNewMapper getChargeItemNewMapper() {
+		return chargeItemNewMapper;
+	}
+
+	public void setChargeItemNewMapper(ChargeItemNewMapper chargeItemNewMapper) {
+		this.chargeItemNewMapper = chargeItemNewMapper;
+	}
+
+	public ProjectBillingMapper getProjectBillingMapper() {
+		return projectBillingMapper;
+	}
+
+	public void setProjectBillingMapper(ProjectBillingMapper projectBillingMapper) {
+		this.projectBillingMapper = projectBillingMapper;
+	}
+
+	/**
+	 * 根据条件分页查询
+	 */
+	@Override
+	public PageRestful listPageProjectBiling(ProjectBilling projectBilling) {
+		// TODO Auto-generated method stub
+		PageRestful pageRestful=new PageRestful();
+		List<ProjectBilling> projectBillingList=projectBillingMapper.listPageProjectBiling(projectBilling);
+		projectBillingList.add(0,null);
+		pageRestful.setProjectBillings(projectBillingList);
+		pageRestful.setPage(projectBilling.getPage());
+		return pageRestful;
+	}
+
+	@Override
+	public void updateProjectBilling(ProjectBilling projectBilling) {
+		String id=projectBilling.getProjectBillingId();
+		String ids[]=id.split("split");
+		for(String s:ids){
+			projectBilling.setIsPosting("0");
+			projectBilling.setProjectBillingId(s);
+			projectBillingMapper.updateProjectBilling(projectBilling);
+		}
+	}
+
+	@Override
+	public void insertProjectBillingRestful(ProjectBilling projectBilling) {
+//		// TODO Auto-generated method stub
+//		List<String> projectIdList=projectBilling.getProjectIdList();//得到选中的项目id集合
+//		List<ChargeItemNew> chargeItemIdList=projectBilling.getChargeItemNewList();//得到选中的一级收费项目id集合	
+//		List<ChargeItemNew> list=null;//项目所对应的一级收费项目
+//		List<SchemeDatails> schemeDatailsList=schemeDatailsMapper.listAllSchemeDatails();//查询所有的方案公式收费项目关系信息
+//		List<ChargeItemNew> chargeList=null;//根据一级收费id查询的二级收费项目
+//		String buildId=null;//建筑结构id
+//		String formulaId=null;//公式id
+//		MeterReadingData meterReadingData=null;//水量
+//		List<Constant> constant=null;//常量
+//		List<Formula> formula=null;//公式
+//		Billing billing=new Billing();//计费表
+//		Double total=0.0;//总金额
+//		Double currentSum=0.0;//当前计算的金额
+//		ChargeItemBilling chargeItemBilling=new ChargeItemBilling();//收费项目计费表
+//		BuildingBilling buildingBilling=new BuildingBilling();//建筑收费项目
+//		for(int i=0;i<projectIdList.size();i++){
+//			//查询项目下开启的有方案的一级收费项目
+//			list=chargeItemNewMapper.getChargeItemNewByProjectId(projectIdList.get(i));
+//			for(int j=0;j<list.size();j++){
+//				for(int m=0;m<chargeItemIdList.size();m++){
+//					//比较选中的一级收费项目和项目下的收费项目是否相等
+//					if(list.get(j).getCiId().equals(chargeItemIdList.get(m))){
+//						//查询一级收费项目下的二级收费项目列表
+//						chargeList=chargeItemNewMapper.getChargeItemNewByIds(list.get(j).getCiId().toString());
+//						for(int a=0;a<chargeList.size();a++){
+//							for(int b=0;b<schemeDatailsList.size();b++){
+//								//根据方案id查询常量
+//								constant=constantMapper.listConstantBySchemeId(schemeDatailsList.get(b).getSchemeId());
+//								//比较一级收费项目下的二级收费项目和方案公式收费项目里的二级收费项目是否相等
+//								if(chargeList.get(a).getCiId().toString().equals(schemeDatailsList.get(b).getChargeItemId())){
+//									buildId=schemeDatailsList.get(b).getBuildingId();//得到建筑结构id
+//									formulaId=schemeDatailsList.get(b).getFormulaId();//得到公式id
+//									//根据公式id查询公式及条件表
+//									formula=formulaMapper.getFormulaByIds(formulaId);
+//									//根据建筑结构id查水用量
+//									meterReadingData=meterReadingDataMapper.getMeterReadings(buildId);
+//									for(int s=0;s<formula.size();s++){
+//										//条件判断
+//										if(formula.get(s).getConditionList().size()>0){
+//											for(int q=0;q<formula.get(s).getConditionList().size();q++){
+//												
+//											}
+//										}
+//										//得到计算的公式
+//										String formulaExpression=formula.get(s).getFormulaExpression();
+//										currentSum=0.0;
+//										
+//										//计费表
+//										
+//										
+//										//项目计费
+//										java.util.Date currTime = new java.util.Date();
+//										String month = String.valueOf(currTime.getYear())+"-"+String.valueOf(currTime.getMonth()+1);//月
+//										projectBilling.setProjectBillingId(UUID.randomUUID().toString()); //项目计费id
+//										projectBilling.setProjectId(projectIdList.get(i));//项目id
+//										projectBilling.setBillingStartTime(new Date()); //计费开始时间
+//										projectBilling.setBillingEndTime(new Date());//计费结束时间
+//									    projectBilling.setSum(currentSum);// 总金额
+//									    projectBilling.setIsPosting("2");//是否过账(2已计费)
+//									    projectBilling.setMonth(month);// 月份  
+//									    
+//									    //收费项目计费表
+//								/*	    chargeItemBilling.setChargeItemBillingId(UUID.randomUUID().toString()); //收费项目计费id
+//									    chargeItemBilling.setProjectBillingId(projectBilling.getProjectBillingId()); //项目计费id
+//									    chargeItemBilling.setProjectName(projectName);//项目名称
+//
+//									    chargeItemBilling.setChargeItemName(); // 收费项目名称
+//									    
+//									    chargeItemBilling.setBillingStartTime();// 计费开始日期
+//									    
+//									    chargeItemBilling.setBillingEndTime();// 计费结束日期
+//
+//									    chargeItemBilling.setSum(); //总金额
+//
+//									    chargeItemBilling.setBillingType(); //计费状态（0已完成1已取消）
+//									    
+//									    chargeItemBilling.setProjectId(); //项目id
+//									    
+//									    chargeItemBilling.setChargeItemId(); //收费项目id 
+//									    
+//									    //建筑收费项目
+//									    
+//									    buildingBilling.setBuildingBillingId(UUID.randomUUID().toString());//建筑收费项目计费id
+//									    
+//										private @DateTimeFormat(pattern="yyyy-MM-dd ") Date billingStartTimeDate;//计费开始时间
+//										private double currentSum;//本期金额
+//										private double lastSum;//上期金额
+//										private @DateTimeFormat(pattern="yyyy-MM-dd ") Date billingEndTimeDate;//计费结束时间
+//										private double billingBalance;//计费金额
+//										private String chargeItemName;//收费项目名称
+//										private int billingState;//计费状态（0已完成1已取消）
+//										private String chargeItemBillingId;//收费项目计费id
+//										private String buildingId;//建筑结构id
+//										private String chargeItemId;//收费项目id
+//										
+//										*/
+//										
+//									}
+//								}
+//							}
+//							 
+//
+//							
+//							
+//						}
+//					}
+//				}
+//			}
+//			
+//		}
+		
+		
+		
+		
+	}
+}

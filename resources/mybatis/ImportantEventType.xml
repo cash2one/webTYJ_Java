@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.flf.mapper.ImportantEventTypeMapper" >
+  <resultMap id="BaseResultMap" type="ImportantEventType" >
+    <id column="important_event_type_id" property="eventTypeId" jdbcType="VARCHAR" />
+    <result column="important_event_num" property="eventNum" jdbcType="VARCHAR" />
+    <result column="important_event_type_name" property="eventTypeName" jdbcType="VARCHAR" />
+    <result column="state" property="state" jdbcType="TINYINT" />
+    <result column="establish_id" property="createPersonId" jdbcType="VARCHAR" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="remarks" property="remarks" jdbcType="VARCHAR" />
+  </resultMap>
+  
+  <resultMap type="ImportantEventType" id="resultImportantEventTypeMap" extends="BaseResultMap">
+  	<association property="staff" column="operator_id" javaType="Staff" select="com.flf.mapper.StaffMapper.selectByid"></association>
+  	<collection property="handleMechanismArr" column="important_event_type_id" ofType="HandleMechanism" select="com.flf.mapper.HandleMechanismMapper.getHandleMechanismbyEventTypeId"></collection>
+  </resultMap>
+  
+  <select id="getImportantEventTypebyId" parameterType="String" resultMap="resultImportantEventTypeMap">
+  	select * from ts_important_event_type where important_event_type_id=#{0}
+  </select>
+  
+  <select id="getAllImportantEventType" resultMap="resultImportantEventTypeMap">
+  	select * from ts_important_event_type
+  </select>
+  
+  <insert id="insertImportantEventType" parameterType="ImportantEventType" >      
+      insert into ts_important_event_type(important_event_type_id,important_event_num,important_event_type_name,state,establish_id,create_time,remarks)
+    values (UUID(),#{eventNum,jdbcType=VARCHAR},#{eventTypeName,jdbcType=VARCHAR},#{state,jdbcType=TINYINT},
+    #{createPersonId,jdbcType=VARCHAR},#{createTime,jdbcType=TIMESTAMP},#{remarks,jdbcType=VARCHAR})
+  </insert>
+  
+  <insert id="insertImportantEventTypeUUID" parameterType="ImportantEventType" >      
+      insert into ts_important_event_type(important_event_type_id,important_event_num,important_event_type_name,state,establish_id,create_time,remarks)
+    values (#{eventTypeId,jdbcType=VARCHAR},#{eventNum,jdbcType=VARCHAR},#{eventTypeName,jdbcType=VARCHAR},#{state,jdbcType=TINYINT},
+    #{createPersonId,jdbcType=VARCHAR},#{createTime,jdbcType=TIMESTAMP},#{remarks,jdbcType=VARCHAR})
+  </insert>
+  
+  <update id="updateImportantEventType" parameterType="ImportantEventType">
+  	update ts_important_event_type 
+  	set important_event_num = #{eventNum,jdbcType=VARCHAR},
+  	important_event_type_name = #{eventTypeName,jdbcType=VARCHAR},
+  	state = #{state,jdbcType=TINYINT},
+  	establish_id = #{createPersonId,jdbcType=VARCHAR},
+  	create_time = #{createTime,jdbcType=TIMESTAMP},
+  	remarks = #{remarks,jdbcType=VARCHAR}
+  	where important_event_type_id = #{eventTypeId,jdbcType=VARCHAR}
+  </update>
+  
+   <select id="listPageImportantEventType" parameterType="ImportantEventType" resultMap="resultImportantEventTypeMap">
+  	select * from ts_important_event_type order by create_time desc
+  </select>
+  
+  <!-- 查询所有的重大事项类型     -->
+  <select id="getAllImportantEventTypes" resultMap="BaseResultMap">
+  		select important_event_type_id,important_event_type_name
+  		from ts_important_event_type
+  </select>
+  
+
+</mapper>

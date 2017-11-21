@@ -1,0 +1,132 @@
+<!--创建人：王志刚
+    页面名称：外部专业线的所有任务查询
+    JS路径：'controllers/externalProfession/queryTask',
+    修改人：刘洋
+    最后修改时间：2015/5/29
+-->
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>外部专业线服务请求查询</title>
+    <style>
+        .col-md-12{
+            white-space: nowrap;
+            line-height: 30px;
+        }
+        .ed{
+            width:130px;height: 25px
+        }
+        .eed{
+            width:80px;height: 25px
+        }
+        .ade{
+            margin-left: 35px
+        }
+        .add{
+            height: 30px
+        }
+        .adda{
+            border: 1px solid #797979;margin: 0 5px;padding: 0 25px;height: 75px
+        }
+        .result{
+            border: 1px solid #797979;margin: 10px 10px;height: 105px;padding: 15px 0
+        }
+        .opp{
+            border: 1px solid #797979;margin: 10px 10px;height: 200px;padding: 10px 10px
+        }
+    </style>
+
+</head>
+<body  ng-controller="servicerequestinquiryCtrl">
+<div class="complaint_user_list">
+    <!--搜索-->
+    <div class="opp">
+        <div class="col-md-12">
+            <div class="col-md-1"><h5 style="margin-left: 28px">搜索：</h5></div>
+            <div class="col-md-8"><input style="height: 30px" type="text" class="form-control" ng-model="searchName"></div>
+            <div class="col-md-3"><button type="button" style="width: 90px;height: 30px" ng-click="searchTask()">搜索</button></div>
+        </div>
+        <div class="col-md-12" style="margin-top: 20px">
+            <div class="col-md-1"><h5>客户姓名：</h5></div>
+            <div class="col-md-2"><input type="text" class="form-control add" ng-model="customerName"></div>
+            <div class="col-md-1"><h5>联系电话：</h5></div>
+            <div class="col-md-3"><input type="text" class="form-control add" ng-model="customerPhone"></div>
+        </div>
+        <div class="col-md-12">
+            <!--<div class="col-md-1"><h5>请求类型：</h5></div>-->
+            <!--<div class="col-md-2"><select>-->
+                <!--<option>园林</option><option>维修</option><option>清洁</option><option>安保</option>-->
+            <!--</select></div>-->
+            <div class="col-md-1"><h5 style="margin-left: 13px">任务ID：</h5></div>
+            <div class="col-md-2"><input type="text" class="form-control add" ng-model="taskId"></div>
+            <div class="col-md-1"><h5>工单ID：</h5></div>
+            <div class="col-md-2"><input type="text" class="form-control add" ng-model="orderId"></div>
+        </div>
+        <div class="col-md-12">
+            <!--<div ng-repeat= "class in classes" class="col-md-2">-->
+                <!--{{class.selectName}}-->
+                <!--<select ng-model="selectedCollection[class.selectName]" ng-options="option for option in class.options" ></select>-->
+            <!--</div>-->
+
+            <div class="col-md-1"><h5>项目名称：</h5></div>
+            <div class="col-md-2">
+                <select ng-model="selectName" ng-options="o.title as o.title for o in projectName">
+                <option value="">请选择</option>
+                </select>
+            </div>
+            <div class="col-md-1"><h5 style="margin-left: 23px">区/期：</h5></div>
+            <div class="col-md-2">
+                <select ng-model="stageName" ng-options="o.title as o.title for o in stage">
+                    <option value="">请选择</option>
+                </select>
+            </div>
+            <div class="col-md-1"><h5 style="margin-left: 30px">栋：</h5></div>
+            <div class="col-md-1">
+                <select ng-model="building" ng-options="o.title as o.title for o in buildings">
+                    <option value="">请选择</option>
+                </select>
+            </div>
+            <div class="col-md-1"><h5 class="ade">单元：</h5></div>
+            <div class="col-md-1">
+                <select ng-model="unitName" ng-options="o.title as o.title for o in unit">
+                    <option value="">请选择</option>
+                </select>
+            </div>
+            <div class="col-md-1"><h5 class="ade">房号：</h5></div>
+            <div class="col-md-1">
+                <select ng-model="houseName" ng-options="o.title as o.title for o in houseNum">
+                    <option value="">请选择</option>
+                </select>
+            </div>
+        </div>
+    </div>
+    <!--搜索 end-->
+
+    <!--查询筛选-->
+    <div style="border: 1px solid #797979;margin: 10px 10px;height: 50px;padding: 10px 0">
+        <div class="col-md-12">
+            <div class="col-md-9">查询结果：</div>
+            <div class="col-md-1">排序：</div>
+            <div class="col-md-2"><select style="width:130px;height: 25px"><option>最近</option><option>最远</option><option>名称</option></select></div>
+        </div>
+    </div>
+    <!--查询筛选 end-->
+
+    <!--显示查询结果-->
+    <div class="result" ng-repeat="task in itemsone" ng-show="task.taskId!=null">
+        <div class="col-md-12">
+            <div class="col-md-1 adda"><h2>{{task.title}}</h2></div>
+            <div class="col-md-2">服务请求ID：{{task.taskId}} </div>
+            <div class="col-md-3">类型：{{task.taskType}} </div>
+            <div class="col-md-3">发起时间：{{task.startTime}}</div>
+            <div class="col-md-2">完成时间：{{task.fishTime}}</div>
+            <div class="col-md-2">客户姓名：{{task.userName}}</div>
+            <div class="col-md-3">服务地址：{{task.address}} </div>
+            <div class="col-md-2">联系电话：{{task.phone}}</div>
+        </div>
+    </div>
+    <!--显示查询结果 end-->
+</div>
+</body>
+</html>

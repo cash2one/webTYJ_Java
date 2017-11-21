@@ -1,0 +1,105 @@
+<!--
+    页面名称：任务详情【报价单】
+    负责人：刘洋
+    js路径：js/externalProfession/taskDetails/quote.js
+-->
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>报价单（任务详情）</title>
+    <style>
+        .current_ul li{width: 80px ;border:1px solid green}
+        .current_ul li{position: relative}
+        .current_ul li .card{display:none;position: absolute}
+        .current_ul li:hover .card{  display: inline-block;left:80px;top:0px;}
+    </style>
+</head>
+<body>
+<div class="complaint_user">
+    <div  style="height: 600px;width: 400px;margin: 20px;border: 1px solid rgba(0, 0, 0, 0.99)">
+        <!--标题-->
+        <div >
+            <span class="glyphicon glyphicon-envelope" aria-hidden="true" style="margin: 10px"></span>
+            <span>报价单</span>
+            <!--二级菜单 end-->
+            <ul class="pull-right">
+                <li class="dropdown">
+                    <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-expanded="true">
+                        菜单
+                        <span class="caret"></span>
+                    </button>
+                    <ul class="dropdown-menu pull-right current_ul" role="menu" aria-labelledby="dropdownMenu2"
+                        style="left:70px;margin-top: -38px;" >
+                        <!--<li role="presentation">-->
+                            <!--<a href="#" tabindex="-1" data-toggle="tab" class="card-wrapper">新建</a>-->
+                            <!--右边显示二级菜单-->
+                            <!--<div class="card" style="width:100px;padding: 0">-->
+                                <!--<ul  class='card-content' style="padding: 0">-->
+                                    <!--<li>委外维修</li>-->
+                                    <!--<li>报价单</li>-->
+                                    <!--<li>工单</li>-->
+                                    <!--<li>检测单</li>-->
+                                    <!--<li>保修单</li>-->
+                                    <!--<li>索赔单</li>-->
+                                    <!--<li>回复</li>-->
+                                    <!--<li>结算单</li>-->
+                                    <!--<li>验收单</li>-->
+                                    <!--<li>投诉单</li>-->
+                                    <!--<li>表扬单</li>-->
+                                    <!--<li>维修单</li>-->
+                                    <!--<li>投诉单</li>-->
+                                <!--</ul>-->
+                            <!--</div>-->
+                            <!--右边显示二级菜单 end-->
+                        <!--</li>-->
+                        <li role="presentation"><a href="#" tabindex="-1" data-toggle="tab">关闭</a></li>
+                        <li role="presentation"><a href="#" tabindex="-1" data-toggle="tab">打印</a></li><li role="presentation"><a href="#" tabindex="-1" data-toggle="tab">重启</a></li>
+                        <li role="presentation"><a href="#" tabindex="-1" data-toggle="tab">传阅</a></li>
+                    </ul>
+                </li>
+            </ul>
+            <!--二级菜单 end-->
+        </div>
+        <!--标题 end-->
+        <!--内容-->
+        <div>
+            <div class="row col-md-12" style="margin: 10px;">
+                <div class="col-md-6">关联任务：20012</div>
+                <div class="col-md-6">服务请求：Q1122</div>
+            </div>
+            <div class="row col-md-12" style="margin: 10px;">
+                <div class="col-md-6">工单ID：10020</div>
+                <div class="col-md-6">工单状态：已完成</div>
+            </div>
+            <div class="row col-md-12" style="margin: 10px;">
+                <div class="col-md-6">人工费：60元；</div>
+                <div class="col-md-6">物料费：50元；</div>
+            </div>
+            <div class="row col-md-12" style="margin: 10px;">
+                <div class="col-md-6">工具费：20元；</div>
+                <div class="col-md-6">措施费：0元；</div>
+            </div>
+            <div class="row col-md-12" style="margin: 10px;">
+                <div class="col-md-6">负责人工号：00010</div>
+                <div class="col-md-6">负责人：邹工</div>
+            </div>
+            <div class="row col-md-12" style="margin: 10px;">
+                <div class="col-md-6">处理人工号：1111</div>
+                <div class="col-md-6">处理人：李允浩</div>
+            </div>
+            <div class="col-md-12" style="margin: 10px;">
+                <div class="col-md-4">备注说明：</div>
+                <div class="col-md-7">
+                    <textarea></textarea>
+                </div>
+            </div>
+            <div class="row col-md-12" style="margin: 10px;">
+                <div class="col-md-6">业主签名：</div>
+            </div>
+        </div>
+        <!--内容end-->
+    </div>
+</div>
+</body>
+</html>

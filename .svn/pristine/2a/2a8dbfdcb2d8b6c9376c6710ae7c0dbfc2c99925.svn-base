@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.flf.mapper.ComponentStructureMapper" >
+  <resultMap id="BaseResultMap" type="ComponentStructure" >
+    <id column="component_structure_id" property="componentStructureId" jdbcType="VARCHAR" />
+    <result column="building_structure_id" property="buildingStructureId" jdbcType="VARCHAR" />
+    <result column="component_property_id" property="componentPropertyId" jdbcType="VARCHAR" />
+  </resultMap>
+  
+ 
+   <select id="ListPageComponentStructure" resultMap="BaseResultMap" parameterType="ComponentStructure" >
+    select * from tc_component_structure 
+  </select>
+  
+   <select id="ListComponentStructureAll" resultMap="BaseResultMap" >
+    select * from tc_component_structure 
+  </select>
+  
+  <select id="selectComponentStructureById" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select * from tc_component_structure where component_structure_id = #{0}
+  </select>
+  
+  <select id="getComponentStructurebyBuildingStructureId" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select * from tc_component_structure where building_structure_id = #{0}
+  </select>
+  
+  <delete id="deleteComponentStructure" parameterType="java.lang.String" >
+    delete from tc_component_structure
+    where component_structure_id = #{0}
+  </delete>
+ 
+  <insert id="insertComponentStructure" parameterType="ComponentStructure" >
+    insert into tc_component_structure (component_structure_id, building_structure_id, 
+      component_property_id)
+    values (UUID(), #{buildingStructureId,jdbcType=VARCHAR}, 
+      #{componentPropertyId,jdbcType=VARCHAR})
+  </insert>
+
+
+  <update id="updateComponentStructure" parameterType="ComponentStructure" >
+    update tc_component_structure
+    set building_structure_id = #{buildingStructureId,jdbcType=VARCHAR},
+      component_property_id = #{componentPropertyId,jdbcType=VARCHAR}
+    where component_structure_id = #{componentStructureId,jdbcType=VARCHAR}
+  </update>
+</mapper>

@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.flf.mapper.OrganizationStructureMapper" >
+  <resultMap id="BaseResultMap" type="OrganizationStructure" >
+    <id column="o_id" property="organizationId" jdbcType="VARCHAR" />
+    <result column="o_name" property="organizationName" jdbcType="VARCHAR" />
+    <result column="pid" property="parentsId" jdbcType="TINYINT" />
+    <result column="leader_name" property="leaderName" jdbcType="VARCHAR" />
+    <result column="leader_id" property="leaderId" jdbcType="VARCHAR" />
+  </resultMap>
+  
+  <select id="getAllOrganizationStructure" resultMap="BaseResultMap">
+  	select * from tc_organization_structure
+  </select>
+  
+  <select id="getOrganizationStructurebyId" resultMap="BaseResultMap">
+  	select * from tc_organization_structure where o_id=#{0}
+  </select>
+  
+  <delete id="deleteOrganizationStructure" parameterType="String">
+  	delete from tc_organization_structure where o_id = #{0}
+  </delete>
+  
+  <insert id="insertOrganizationStructure" parameterType="OrganizationStructure">
+  	insert into tc_organization_structure (o_id,o_name,pid,leader_name,leader_id)
+  	values(UUID(),#{organizationName,jdbcType=VARCHAR},#{parentsId,jdbcType=VARCHAR},#{leaderName,jdbcType=VARCHAR},#{leaderId,jdbcType=VARCHAR})
+  </insert>
+  
+  <insert id="insertOrganizationStructureUUID" parameterType="OrganizationStructure">
+  	insert into tc_organization_structure (o_id,o_name,pid,leader_name,leader_id)
+  	values(#{organizationId,jdbcType=VARCHAR},#{organizationName,jdbcType=VARCHAR},#{parentsId,jdbcType=VARCHAR},#{leaderName,jdbcType=VARCHAR},#{leaderId,jdbcType=VARCHAR})
+  </insert>
+  
+  <update id="updateOrganizationStructure" parameterType="OrganizationStructure">
+  	update tc_organization_structure 
+  	<set>
+  		<if test="organizationName!=null and organizationName!=''">
+  			o_name = #{organizationName,jdbcType=VARCHAR}
+  		</if>
+  		<if test="leaderName!=null and leaderName!=''">
+  			,leader_name = #{leaderName,jdbcType=VARCHAR}
+  		</if>
+  	</set>
+  	where o_id = #{organizationId,jdbcType=VARCHAR}
+  </update>
+</mapper>

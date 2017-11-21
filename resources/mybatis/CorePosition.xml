@@ -1,0 +1,193 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.flf.mapper.CorePositionMapper" >
+  <resultMap id="BaseResultMap" type="com.flf.entity.CorePosition" >
+    <id column="core_position_id" property="corePositionId" jdbcType="VARCHAR" />
+    <result column="staff_id" property="staffId" jdbcType="VARCHAR" />
+    <result column="post_id" property="postId" jdbcType="VARCHAR" />
+    <result column="state" property="state" jdbcType="TINYINT" />
+    <result column="staff_name" property="staffName" jdbcType="VARCHAR" />
+    <result column="name_of_custom" property="nameOfCustom" jdbcType="VARCHAR" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  
+  
+  <resultMap id="StaffResultMap" type="Staff" >
+    <id column="staff_id" property="staffId" jdbcType="VARCHAR" />
+    <result column="company_id" property="companyId" jdbcType="VARCHAR" />
+    <result column="staff_number" property="staffNumber" jdbcType="VARCHAR" />
+    <result column="first_name" property="firstName" jdbcType="VARCHAR" />
+    <result column="last_name" property="lastName" jdbcType="VARCHAR" />
+    <result column="first_name_spell" property="firstNameSpell" jdbcType="VARCHAR" />
+    <result column="last_name_spell" property="lastNameSpell" jdbcType="VARCHAR" />
+    <result column="sex" property="sex" jdbcType="INTEGER" />
+    <result column="native_place" property="nativePlace" jdbcType="VARCHAR" />
+    <result column="married" property="married" jdbcType="INTEGER" />
+    <result column="edu_lever" property="eduLever" jdbcType="INTEGER" />
+    <result column="landscape" property="landscape" jdbcType="INTEGER" />
+    <result column="birthday" property="birthday" jdbcType="DATE" />
+    <result column="hobby" property="hobby" jdbcType="VARCHAR" />
+    <result column="card_type" property="cardType" jdbcType="INTEGER" />
+    <result column="card_num" property="cardNum" jdbcType="VARCHAR" />
+    <result column="address" property="address" jdbcType="VARCHAR" />
+    <result column="telphone" property="telphone" jdbcType="VARCHAR" />
+    <result column="email" property="email" jdbcType="VARCHAR" />
+    <result column="QQ" property="qq" jdbcType="VARCHAR" />
+    <result column="position" property="position" jdbcType="INTEGER" />
+    <result column="division_id" property="divisionId" jdbcType="VARCHAR" />
+    <result column="divisionName" property="divisionname" jdbcType="VARCHAR" />
+    <result column="post_id" property="postId" jdbcType="VARCHAR" />
+    <result column="work_count" property="workCount" jdbcType="INTEGER" />
+    <result column="state" property="state" jdbcType="VARCHAR" />
+    <result column="staff_name" property="staffName" jdbcType="VARCHAR" />
+    <result column="team_work_id" property="teamworkId" jdbcType="VARCHAR" />
+     <result column="project_id" property="projectId" jdbcType="VARCHAR" />
+     <result column="instance_id" property="instanceId" jdbcType="VARCHAR" />  
+  </resultMap>
+  
+  <resultMap id="CorePositionResultMap" type="com.flf.entity.CorePosition" >
+    <id column="core_position_id" property="corePositionId" jdbcType="VARCHAR" />
+    <result column="staff_id" property="staffId" jdbcType="VARCHAR" />
+    <result column="post_id" property="postId" jdbcType="VARCHAR" />
+    <result column="state" property="state" jdbcType="TINYINT" />
+    <result column="staff_name" property="staffName" jdbcType="VARCHAR" />
+    <result column="name_of_custom" property="nameOfCustom" jdbcType="VARCHAR" />
+    <association property="staff" select="selectStaff" column="staff_id" javaType="Staff">
+        <id column="staff_id" property="staffId" jdbcType="VARCHAR" />
+    <result column="company_id" property="companyId" jdbcType="VARCHAR" />
+    <result column="staff_number" property="staffNumber" jdbcType="VARCHAR" />
+    <result column="first_name" property="firstName" jdbcType="VARCHAR" />
+    <result column="last_name" property="lastName" jdbcType="VARCHAR" />
+    <result column="first_name_spell" property="firstNameSpell" jdbcType="VARCHAR" />
+    <result column="last_name_spell" property="lastNameSpell" jdbcType="VARCHAR" />
+    <result column="sex" property="sex" jdbcType="INTEGER" />
+    <result column="native_place" property="nativePlace" jdbcType="VARCHAR" />
+    <result column="married" property="married" jdbcType="INTEGER" />
+    <result column="edu_lever" property="eduLever" jdbcType="INTEGER" />
+    <result column="landscape" property="landscape" jdbcType="INTEGER" />
+    <result column="birthday" property="birthday" jdbcType="DATE" />
+    <result column="hobby" property="hobby" jdbcType="VARCHAR" />
+    <result column="card_type" property="cardType" jdbcType="INTEGER" />
+    <result column="card_num" property="cardNum" jdbcType="VARCHAR" />
+    <result column="address" property="address" jdbcType="VARCHAR" />
+    <result column="telphone" property="telphone" jdbcType="VARCHAR" />
+    <result column="email" property="email" jdbcType="VARCHAR" />
+    <result column="QQ" property="qq" jdbcType="VARCHAR" />
+    <result column="position" property="position" jdbcType="INTEGER" />
+    <result column="division_id" property="divisionId" jdbcType="VARCHAR" />
+    <result column="divisionName" property="divisionname" jdbcType="VARCHAR" />
+    <result column="post_id" property="postId" jdbcType="VARCHAR" />
+    <result column="work_count" property="workCount" jdbcType="INTEGER" />
+    <result column="state" property="state" jdbcType="VARCHAR" />
+    <result column="staff_name" property="staffName" jdbcType="VARCHAR" />
+    <result column="team_work_id" property="teamworkId" jdbcType="VARCHAR" />
+     <result column="project_id" property="projectId" jdbcType="VARCHAR" />
+     <result column="instance_id" property="instanceId" jdbcType="VARCHAR" /> 
+    </association>
+  </resultMap>
+  
+  <select id="selectStaff" parameterType="String" resultMap="StaffResultMap">
+      select * from t_staff where staff_id =#{0}
+  </select>
+  
+  <!-- 查询所有项目经理 -->
+  <select id="listAllCorePosition" resultMap="BaseResultMap">
+      select a.*,b.staff_name,c.name_of_custom 
+      from t_core_position a
+      inner join t_staff b on a.staff_id = b.staff_id
+      inner join t_post c on a.post_id = c.post_id
+      where a.state=0 and b.state=1 and c.name_of_custom = '项目经理'
+  </select>
+  
+   <!-- 查询核心岗位专业线经理信息 -->
+  <select id="listCorePost" parameterType="CorePosition" resultMap="CorePositionResultMap">
+      select a.*,b.staff_name,c.name_of_custom 
+      from t_core_position a
+      inner join t_staff b on a.staff_id = b.staff_id
+      inner join t_post c on a.post_id = c.post_id
+      where a.state=1 and b.state=1 AND c.is_core_post = 1
+      <if test="postId != null">
+          and c.professional_line_id = #{postId}
+      </if>       
+  </select>
+  
+  
+  <insert id="insertCorePosition" parameterType="com.flf.entity.CorePosition" >
+    insert into t_core_position (core_position_id, staff_id, post_id, 
+      state,create_time)
+    values (#{corePositionId,jdbcType=VARCHAR}, #{staffId,jdbcType=VARCHAR}, #{postId,jdbcType=VARCHAR}, 
+      #{state,jdbcType=TINYINT},#{createTime,jdbcType=TIMESTAMP})
+  </insert>
+  
+  <select id="getCorePositionBystaffId"  parameterType="String"  resultMap="BaseResultMap">
+  		SELECT * FROM t_core_position WHERE staff_id=#{0}
+  </select>
+  
+  <update id="updateCorePosition" parameterType="com.flf.entity.CorePosition" >
+    update t_core_position
+    <set >
+      <if test="staffId != null" >
+        staff_id = #{staffId,jdbcType=VARCHAR},
+      </if>
+      <if test="postId != null" >
+        post_id = #{postId,jdbcType=VARCHAR},
+      </if>
+      <if test="state != null" >
+        state = #{state,jdbcType=TINYINT},
+      </if>
+    </set>
+    where core_position_id = #{corePositionId,jdbcType=VARCHAR}
+  </update>
+  
+  <!-- 分页查询所有的核心岗位信息  -->
+  <select id="listPageCorePosition"  parameterType="com.flf.entity.CorePosition" resultMap="BaseResultMap">
+  	 select a.*,b.staff_name,c.name_of_custom 
+      from t_core_position a
+      inner join t_staff b on a.staff_id = b.staff_id
+      inner join t_post c on a.post_id = c.post_id
+      where b.state=1     
+         <if test="postId!='' and postId!=null">
+  			and   a.post_id  like CONCAT('%',#{postId},'%')
+  		  </if>
+  </select>
+  
+  <!-- 查询所有的核心岗位信息 -->
+   <select id="listAllCorePositionRes" resultMap="BaseResultMap">
+  	 select a.*,b.staff_name,c.name_of_custom 
+      from t_core_position a
+      inner join t_staff b on a.staff_id = b.staff_id
+      inner join t_post c on a.post_id = c.post_id
+      where b.state=1 ORDER BY a.create_time desc
+  </select>
+  
+  
+  <!-- 查询所有的核心岗位信息模糊查询 -->
+   <select id="listAllCorePositionByCore"  resultMap="BaseResultMap"   parameterType="com.flf.entity.CorePosition" >
+  	   select a.*,b.staff_name,c.name_of_custom 
+      from t_core_position a
+      inner join t_staff b on a.staff_id = b.staff_id
+      inner join t_post c on a.post_id = c.post_id
+      where b.state=1 
+         <if test="staffName!='' and staffName!=null">
+  			and   b. staff_name  like CONCAT('%',#{staffName},'%')
+  		</if>
+  		<if test="staffNo!='' and staffNo!=null">
+  			 and   b. staff_no  like CONCAT('%',#{staffNo},'%')
+  		</if>
+  		<if test="telphone!='' and telphone!=null">
+  			and   b. telphone  like CONCAT('%',#{telphone},'%')
+  		</if>
+  		<if test="postId!='' and postId!=null">
+  			 and  a.post_id  like CONCAT('%',#{postId},'%')
+  		</if>
+      ORDER BY a.create_time desc
+  </select>
+  
+  <select id="getCorePositionbyId" parameterType="String" resultMap="BaseResultMap">
+  	select cp.*,s.staff_name from t_core_position cp left join t_staff s on cp.staff_id = s.staff_id where cp.core_position_id = #{corePositionId,jdbcType=VARCHAR} and s.state = 1
+  </select>
+ 
+   <delete id="deleteCorePositionRes" parameterType="String">
+		delete from t_core_position where core_position_id=#{0}
+	</delete>
+</mapper>

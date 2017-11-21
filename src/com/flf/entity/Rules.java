@@ -1,0 +1,113 @@
+package com.flf.entity;
+
+import java.util.Date;
+import java.util.List;
+
+import javax.xml.bind.annotation.XmlRootElement;
+
+import org.springframework.format.annotation.DateTimeFormat;
+
+@XmlRootElement(name = "Rules")
+
+public class Rules {//规章制度表
+	
+	private String id;//id
+	
+	private String title;//标题
+	
+	private String briefContent;//简要内容
+	
+	private String detailInfo;//详细信息
+	
+	private String recordCreater;//记录创建人
+	
+	private @DateTimeFormat(pattern="yyyy-MM-dd") Date createTime;//创建时间
+	
+	private String lastModifier;//最后修改人
+	
+	private @DateTimeFormat(pattern="yyyy-MM-dd") Date lastModtime;//最后修改时间
+	
+	private Page page;
+	
+	private List<Annex> annexs;   //附件表
+
+	public List<Annex> getAnnexs() {
+		return annexs;
+	}
+
+	public void setAnnexs(List<Annex> annexs) {
+		this.annexs = annexs;
+	}
+
+	public String getId() {
+		return id;
+	}
+
+	public void setId(String id) {
+		this.id = id;
+	}
+
+	public String getTitle() {
+		return title;
+	}
+
+	public void setTitle(String title) {
+		this.title = title;
+	}
+
+	public String getBriefContent() {
+		return briefContent;
+	}
+
+	public void setBriefContent(String briefContent) {
+		this.briefContent = briefContent;
+	}
+
+	public String getDetailInfo() {
+		return detailInfo;
+	}
+
+	public void setDetailInfo(String detailInfo) {
+		this.detailInfo = detailInfo;
+	}
+
+	public String getRecordCreater() {
+		return recordCreater;
+	}
+
+	public void setRecordCreater(String recordCreater) {
+		this.recordCreater = recordCreater;
+	}
+
+	public Date getCreateTime() {
+		return createTime;
+	}
+
+	public void setCreateTime(Date createTime) {
+		this.createTime = createTime;
+	}
+
+	public String getLastModifier() {
+		return lastModifier;
+	}
+
+	public void setLastModifier(String lastModifier) {
+		this.lastModifier = lastModifier;
+	}
+
+	public Date getLastModtime() {
+		return lastModtime;
+	}
+
+	public void setLastModtime(Date lastModtime) {
+		this.lastModtime = lastModtime;
+	}
+
+	public Page getPage() {
+		return page;
+	}
+
+	public void setPage(Page page) {
+		this.page = page;
+	}
+}

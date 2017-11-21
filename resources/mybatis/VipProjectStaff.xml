@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.flf.mapper.VipProjectStaffMapper" >
+  <resultMap id="BaseResultMap" type="VipProjectStaff" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="vip_id" property="vipId" jdbcType="VARCHAR" />
+    <result column="project_id" property="projectId" jdbcType="VARCHAR" />
+    <result column="staff_id" property="staffId" jdbcType="VARCHAR" />
+    <result column="project_name" property="projectName" jdbcType="VARCHAR" />
+    <result column="staff_name" property="staffName" jdbcType="VARCHAR" />
+  </resultMap>
+  
+  <!-- 插入记录 -->
+  <insert id="insertVipProjectStaff" parameterType="VipProjectStaff">
+  	insert into t_vip_project_staff (id,vip_id,project_id,staff_id) values (#{id},#{vipId},#{projectId},#{staffId})
+  </insert>
+  
+  <!-- 根据vipid查询是否已经关联表 -->
+  <select id="selectVipProStaffByVipid" parameterType="String" resultMap="BaseResultMap">
+  	select a.id,a.vip_id,a.project_id,a.staff_id,b.project_name,c.staff_name from t_vip_project_staff a
+  	left join t_project b on a.project_id = b.project_id
+  	left join t_staff c on a.staff_id = c.staff_id where a.vip_id = #{vipId}
+  </select>
+  
+  <!-- 根据Vipid删除VipProjectSatff表中的数据 -->
+  <delete id="deleteVipProStaffByVipid" parameterType="String">
+  	delete from t_vip_project_staff where vip_id = #{vipId}
+  </delete>
+  
+</mapper>

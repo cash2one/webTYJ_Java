@@ -1,0 +1,30 @@
+<!--
+    创建时间：2015/5/19
+    作者:钟加诚
+    修改者：钟加诚
+    修改时间：2015/6/1
+    页面名称:施工管理
+    js路径:js/controllers/internalProfession/customerServiceManagement
+-->
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>施工管理</title>
+</head>
+<body>
+
+<div class="complaint_user_list ">
+    <div style="padding:5px 10px 0">
+        <div class="complaint_user_info_navigation">
+            <a class="btn" ui-sref="index.internalProfession.constructionSupervision.licensing.constructApply">办理授权</a>
+            <a class="btn" ui-sref="index.internalProfession.constructionSupervision.historicRecords">历史记录</a>
+        </div>
+        <div class="clear"></div>
+    </div>
+    <div class="row" style="padding:5px 10px 0">
+        <div ui-view ></div>
+    </div>
+</div>
+</body>
+</html>

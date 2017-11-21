@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>工作台任务</title>
+</head>
+<body ng-controller="taskCtrl">
+
+<div class="row" style="padding:20px 30px 0">
+    <!--右侧面板1-->
+    <div class="table_list">
+        <h4 style="text-align: center"><strong>任务管理</strong></h4>
+        <div class="search_style"><form>
+            <input type="text"   class="search_style_input" ng-model="Order.commentsName"  placeholder="请输入搜索条件" />
+            <button type="submit" class="search_style_button" ng-click="searchPaginator._load()">查找</button>
+        </form>
+        </div>
+        <div class="button_group">
+            <a  data-toggle="modal" data-target="#myModal_service" class="btn">增加</a>
+            <div class="modal fade" id="myModal_service" tabindex="-1" role="dialog"
+                 aria-labelledby="myModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content" style="width: 700px">
+                        <div class="modal-header">
+                            <button type="button" class="close"
+                                    data-dismiss="modal" aria-hidden="true">
+                                &times;
+                            </button>
+                            <p>增加任务</p>
+                        </div>
+
+                        <div class="modal-body"style="line-height:40px;">
+                            <div>
+                                <form>
+                                    <table class="text-center" style="margin: 0px auto;">
+
+                                        <tr>
+                                            <td  width="100px;">任务名称</td>
+                                            <td><input type="text" class="form-control input-sm" ng-model="insertOrder.commentsName"/></td>
+                                        </tr>
+                                        <tr>
+                                            <td width="100px;">任务描述</td>
+                                            <td><input type="text" class="form-control input-sm" ng-model="insertOrder.commentsLong"/></td>
+                                        </tr>
+
+                                        <tr>
+                                            <td width="100px;">相关工单</td>
+                                            <td><input type="text" class="form-control input-sm" ng-model="insertOrder.oldWorkOrderId"/></td>
+                                        </tr>
+                                        <tr>
+                                            <td width="100px;">参与人</td>
+                                            <td><input type="text" class="form-control input-sm" ng-model="insertOrder.processerName"/></td>
+                                        </tr>
+                                        <tr>
+                                            <td width="100px;">时间日期</td>
+                                            <td><input type="datetime-local" class="form-control input-sm" ng-model="insertOrder.created"/></td>
+                                        </tr>
+                                    </table>
+                                </form>
+                            </div>
+                        </div>
+
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default btn-sm" aria-label="Left Align" data-dismiss="modal">
+                                <span class="glyphicon glyphicon-remove" aria-hidden="true">关闭</span>
+                            </button>
+                            <button type="button" class="btn btn-sm btn-default" ng-click="insert()">
+                                <span class="glyphicon glyphicon-ok"></span>提交
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <a href="#" class="delete" ng-click="remove()">删除</a>
+
+        </div>
+        <table width="100%" border="0" cellpadding="0" cellspacing="0" class="table_style">
+            <tr>
+                <td width="50" align="center" valign="middle" class="table_style_toptd">选项</td>
+                <td align="center" valign="middle" class="table_style_toptd">任务名称</td>
+                <td align="center" valign="middle" class="table_style_toptd">任务描述</td>
+                <td align="center" valign="middle" class="table_style_toptd">相关工单</td>
+                <td align="center" valign="middle" class="table_style_toptd">参与人</td>
+                <td align="center" valign="middle" class="table_style_toptd">时间</td>
+                <td width="50" align="center" valign="middle" class="table_style_toptd">操作</td>
+            </tr>
+            <tr ng-repeat="items in searchPaginator.object.orders" ng-show="items.workOrderId!=null">
+                <td width="50" align="center" valign="middle"><input type="checkbox" name="checkbox2" ng-model="items.checkbox" id="checkbox2"></td>
+                <td align="center" valign="middle">{{items.commentsName}}</td>
+                <td align="center" valign="middle">{{items.commentsLong}}</td>
+                <td align="center" valign="middle">{{items.oldWorkOrderId}}</td>
+                <td align="center" valign="middle">{{items.processerName}}</td>
+                <td align="center" valign="middle">{{items.created | date:"yyyy-MM-dd HH:mm:ss"}}</td>
+                <td width="50" align="center" valign="middle">
+                    <a  data-toggle="modal" data-target="#myModal_task"
+                        class="btn" ng-click="view(items.workOrderId)">修改</a>
+                </td>
+            </tr>
+            
+        </table>
+
+        <div class="pagination">
+                    <a href="#" ng-show="searchPaginator.hasPrevious()" ng-click="searchPaginator.previous()">上一页</a>
+                    <a href="#" ng-repeat="i in searchPaginator.pages"  ng-click="searchPaginator.go(i)" class="number">{{i}}</a>
+                    <a href="#" ng-show="searchPaginator.hasNext()" ng-click="searchPaginator.next()">下一页</a>
+    </div>
+    </div>
+</div>
+<div class="modal fade" id="myModal_task" tabindex="-1" role="dialog"
+     aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content" style="width: 700px">
+            <div class="modal-header">
+                <button type="button" class="close"
+                        data-dismiss="modal" aria-hidden="true">
+                    &times;
+                </button>
+                <p>修改任务</p>
+            </div>
+
+            <div class="modal-body"style="line-height:40px;">
+                <div>
+                    <form>
+                        <table class="text-center" style="margin: 0px auto;">
+
+                            <tr>
+                                <td  width="100px;">任务名称</td>
+                                <td><input type="text" class="form-control input-sm" ng-model="order.commentsName"/></td>
+                            </tr>
+                            <tr>
+                                <td width="100px;">任务描述</td>
+                                <td><input type="text" class="form-control input-sm" ng-model="order.commentsLong"/></td>
+                            </tr>
+
+                            <tr>
+                                <td width="100px;">相关工单</td>
+                                <td><input type="text" class="form-control input-sm" ng-model="order.oldWorkOrderId"/></td>
+                            </tr>
+                            <tr>
+                                <td width="100px;">参与人</td>
+                                <td><input type="text" class="form-control input-sm" ng-model="order.processerName"/></td>
+                            </tr>
+                            <tr>
+                                <td width="100px;">时间日期</td>
+                                <td><input type="text" class="form-control input-sm" ng-model="order.created"/></td>
+                            </tr>
+                        </table>
+                    </form>
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default btn-sm" aria-label="Left Align" data-dismiss="modal">
+                    <span class="glyphicon glyphicon-remove" aria-hidden="true">关闭</span>
+                </button>
+                <button type="button" class="btn btn-sm btn-default" ng-click="update()">
+                    <span class="glyphicon glyphicon-ok"></span>提交
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

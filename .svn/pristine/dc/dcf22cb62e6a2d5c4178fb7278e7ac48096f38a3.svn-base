@@ -1,0 +1,35 @@
+package com.flf.mapper;
+
+import java.util.List;
+
+import com.flf.entity.Constant;
+
+public interface ConstantMapper {
+	/*查询所有的常量信息*/
+	List<Constant> listAllConstant();
+	/*分页查询常量信息*/
+    List<Constant> listPageConstant(Constant constant);
+    /*根据id查询常量信息*/
+    Constant getConstantById(String constantId);
+    int deleteConstant(String constantId);
+    /*新增常量信息*/
+    int insertConstant(Constant constant);
+    /*修改常量信息*/
+    int updateConstant(Constant constant);
+    
+    /**
+     * 根据方案id查询所有常量信息
+     * @param schemeId
+     * @return list
+     */
+    List<Constant> listConstantBySchemeId(String schemeId);
+    
+    /**
+     * @TODO 查询是否有水费电费物业费
+     * @author wangzhou
+     * @date 2016.04.27
+     * @return list
+     */
+    List<Constant> listConstantForPay();
+    
+}

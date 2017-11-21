@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.flf.mapper.ClassesMapper" >
+  <resultMap id="BaseResultMap" type="Classes" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="post_id" property="postId" jdbcType="VARCHAR" />
+    <result column="classes_type_id" property="classesTypeId" jdbcType="VARCHAR" />
+     <result column="classes_type_name" property="classesTypeName" jdbcType="VARCHAR" />
+    <result column="classes_name" property="classesName" jdbcType="VARCHAR" />
+    <result column="start_time" property="startTime" jdbcType="VARCHAR" />
+    <result column="end_time" property="endTime" jdbcType="VARCHAR" />
+    <result column="headcount" property="headcount" jdbcType="INTEGER" />
+    <result column="state" property="state" jdbcType="INTEGER" />
+    <result column="usable" property="usable" jdbcType="INTEGER" />
+  </resultMap>
+  
+  <select id="listAllClasses" resultMap="BaseResultMap">
+    select * from t_classes
+  </select>
+  
+  <select id="getClassesById" resultMap="BaseResultMap" parameterType="String" >
+    select * from t_classes
+    where id = #{0}
+  </select>
+  
+  <select id="listClassesByPostIdAndOrderByPostTypeId" resultMap="BaseResultMap" parameterType="String">
+  	SELECT a.* FROM t_classes a 
+  	LEFT JOIN t_classes_type b ON a.classes_type_id=b.classes_type_id 
+  	WHERE a.post_id=#{0} and usable=1
+  	ORDER BY b.classes_type_id
+  </select>
+  
+  <insert id="insertClasses" parameterType="Classes" >
+    insert into t_classes (post_id,classes_type_id,classes_type_name, classes_name, 
+      start_time, end_time, headcount,state,usable
+      )
+    values (#{postId,jdbcType=VARCHAR},#{classesTypeId},#{classesTypeName}, #{classesName,jdbcType=VARCHAR}, 
+      #{startTime,jdbcType=VARCHAR}, #{endTime,jdbcType=VARCHAR}, #{headcount,jdbcType=INTEGER},#{state},#{usable}
+      )
+  </insert>
+  
+  <insert id="insertClassess">
+  	insert into t_classes (post_id,classes_type_id,classes_type_name,classes_name,start_time,end_time,headcount,state,usable)
+    values 
+	    <foreach collection="list" item="items" separator=",">
+	    	(#{items.postId},
+	    	#{items.classesTypeId},
+	    	#{items.classesTypeName},
+	    	#{items.classesName}, 
+	        #{items.startTime},
+	        #{items.endTime},
+	        <if test="items.headcount!=null">
+	        	#{items.headcount},
+	        </if>
+	        <if test="items.headcount==null">
+	        	0,
+	        </if>
+	        #{items.state},
+	        #{items.usable})
+	    </foreach> 
+  </insert>
+  
+ <update id="updateClasses" parameterType="Classes" >
+    update t_classes
+    set post_id = #{postId,jdbcType=VARCHAR},
+      classes_type_id=#{classesTypeId},
+      classes_type_name= #{classesTypeName},
+      classes_name = #{classesName,jdbcType=VARCHAR},
+      start_time = #{startTime,jdbcType=VARCHAR},
+      end_time = #{endTime,jdbcType=VARCHAR},
+      headcount = #{headcount,jdbcType=INTEGER},
+      state=#{state},
+      usable=#{usable}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  
+  <update id="updateClassesState" parameterType="Classes" >
+    update t_classes
+    set
+      state=#{state}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  
+  <delete id="deleteClasses" parameterType="String" >
+    delete from t_classes
+    where id = #{0}
+  </delete>
+</mapper>

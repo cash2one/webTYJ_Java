@@ -1,0 +1,98 @@
+package com.flf.entity;
+
+import java.util.Date;
+
+import javax.xml.bind.annotation.XmlRootElement;
+
+@XmlRootElement(name = "ProductCommonservice")// 
+public class ProductCommonservice {
+    private String commonserviceId;
+
+    private String commonserviceName;
+
+    private String productServicetype;
+
+    private String productUnit;
+
+    private String productPrice;
+
+    private String productBeginDate;
+
+    private String productEndDate;
+
+    private String productType;
+    
+    private String productCode;
+
+    public String getProductCode() {
+		return productCode;
+	}
+
+	public void setProductCode(String productCode) {
+		this.productCode = productCode;
+	}
+
+	public String getCommonserviceId() {
+        return commonserviceId;
+    }
+
+    public void setCommonserviceId(String commonserviceId) {
+        this.commonserviceId = commonserviceId;
+    }
+
+    public String getCommonserviceName() {
+        return commonserviceName;
+    }
+
+    public void setCommonserviceName(String commonserviceName) {
+        this.commonserviceName = commonserviceName;
+    }
+
+    public String getProductServicetype() {
+        return productServicetype;
+    }
+
+    public void setProductServicetype(String productServicetype) {
+        this.productServicetype = productServicetype;
+    }
+
+    public String getProductUnit() {
+        return productUnit;
+    }
+
+    public void setProductUnit(String productUnit) {
+        this.productUnit = productUnit;
+    }
+
+    public String getProductPrice() {
+        return productPrice;
+    }
+
+    public void setProductPrice(String productPrice) {
+        this.productPrice = productPrice;
+    }
+
+    public String getProductBeginDate() {
+        return productBeginDate;
+    }
+
+    public void setProductBeginDate(String productBeginDate) {
+        this.productBeginDate = productBeginDate;
+    }
+
+    public String getProductEndDate() {
+        return productEndDate;
+    }
+
+    public void setProductEndDate(String productEndDate) {
+        this.productEndDate = productEndDate;
+    }
+
+    public String getProductType() {
+        return productType;
+    }
+
+    public void setProductType(String productType) {
+        this.productType = productType;
+    }
+}

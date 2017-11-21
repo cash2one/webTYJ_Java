@@ -1,0 +1,390 @@
+<!--
+    作者:彭婷婷
+    页面名称:部门质检活动新建v3
+    js路径:js/controllers/externalProfession/departmentInspectionV3
+-->
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>质量检查V2</title>
+    <link rel="stylesheet" href="css/internalPro.css">
+    <style>
+        a,a:visited {color:#333;text-decoration:none;}
+        a:hover {color:#f60;}
+        .TreeWrap td {font:13px "Geneva","宋体", "Arial", "Helvetica",sans-serif;}
+        ul,li {margin:0;padding:0;list-style:none;}
+        h1,h2,h3,h4,h5,h6 {margin:0;padding:0;}
+        h1 {padding:5px;color:#900;font-size:16px;}
+        h1 small {font-size:11px;font-weight:normal;color:#660;}
+        .TreeWrap {padding:10px;}
+        .MenuBox2{margin-top: 8px;}
+        .MenuBox .titBox a,
+        .MenuBox .titBox a:visited,
+        .MenuBox2 .titBox a,
+        .MenuBox2 .titBox a:visited {margin-left:5px;color:#003;font-size:12px;display:block;}
+        .MenuBox2 .txtBox {display:none;}
+        .MenuBox .txtBox ul li {padding-left:35px;line-height:20px;}
+        .MenuBox .txtBox .num {color:#e00;}
+        .assertInfo p{line-height: 40px;}
+
+        .col-md-2 p{border: 1px solid #797979;margin: 5px;width:210px;padding: 5px 35px}
+        .ed{height: 336px;width:250px;border: 1px solid #797979;margin: 10px;background-color: #ffffff}
+        .ef{height: 336px;width:450px;border: 1px solid #797979;margin-left: 10px;background-color: #ffffff}
+        .em{height: 336px;width:50px;margin-left: 10px}
+
+        .ff{margin-left: 30px}
+        .fe{height: 450px;border: 1px solid #797979;background-color: #ffffff}
+        #qp{border: 1px solid #797979;margin: 5px 60px;width:90px;padding: 5px 20px;background-color: #ffffff}
+        #qpp{border: 1px solid #797979;margin: 5px 60px;width:90px;padding: 5px 20px;background-color: #ffffff}
+        #qppp{border: 1px solid #797979;margin: 5px 60px;width:90px;padding: 5px 20px;background-color: #ffffff}
+    </style>
+
+    <script type="text/javascript">
+        <!--
+        function ExChgClsName(Obj,NameA,NameB){
+            var Obj=document.getElementById(Obj)?document.getElementById(Obj):Obj;
+            Obj.className=Obj.className==NameA?NameB:NameA;
+        }
+        function showMenu(iNo){
+            ExChgClsName("Menu_"+iNo,"MenuBox","MenuBox2");
+        }
+        -->
+    </script>
+</head>
+<body>
+<div class="complaint_user_list" style="height: 300px">
+    <div style="padding:15px 1px">
+        <div class="col-lg-4 col-md-4 col-sm-6">
+            <div class="panel">
+                <div class="panel_title">
+                    <span class="panel_title_left">新增</span>
+                <span class="panel_title_right">
+                         <span class="zoom_button"></span>
+                         <span class="close_button"></span>
+                </span>
+                </div>
+                <div class="panel_info">
+                    <div class="media-left">
+                        <a class="col-xs-6 " href="#">
+                            <img style="width: 140px;height: 140px;margin-left: 60px;margin-top: 20px"  src="images/staffHome/addCar.png">
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-4 col-md-4 col-sm-6">
+            <div class="panel">
+                <div class="panel_title">
+                    <span class="panel_title_left">业务办理</span>
+                <span class="panel_title_right">
+                    <li class="dropdown pull-right">
+                        <a href="#" class="dropdown-toggle btn-lg" data-toggle="dropdown" role="button" aria-expanded="false">
+                            <span class="glyphicon glyphicon-menu-down"></span>
+                        </a>
+                        <ul class="dropdown-menu" role="menu">
+                            <li><a href="#">新建</a></li>
+                            <li><a href="#">编辑</a></li>
+                            <li><a href="#">拷贝</a></li>
+                            <li><a href="#">重启</a></li>
+                            <li><a href="#">关闭</a></li>
+                            <li><a href="#">合并</a></li>
+                            <li><a href="#">打印</a></li>
+                        </ul>
+                    </li>
+                </span>
+                </div>
+                <div class="panel_info" style="padding: 10px">
+                    <span> 质检ID：1-142692951</span></br>
+                    <spanp> 活动名称：消防安全器具检查</spanp></br>
+                    <span> 检查时间：2015/04/04</span></br>
+                    <spanp> 分类：日检</spanp></br>
+                    <span> 质检项目：消防</span></br>
+                    <spanp> 检查区域：桃源居1区</spanp>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="complaint_user_list" style="height:1500px">
+    <div class="row col-md-12" style="margin: 15px">
+        <div class="col-md-1" style="margin-top: 15px">类型</div>
+        <div class="col-md-1 doted"><span class="dot_Check"></span></div>
+        <div class="col-md-10">
+            质检活动类型：<select ui-sref-active="" style="width: 130px;height: 30px;margin-top: 10px">
+                             <option>绿化养护</option>
+                             <option>员工执勤</option>
+                         </select>
+            质检活动周期：<select ui-sref-active="" style="width: 130px;height: 30px;margin-top: 10px">
+                            <option>日检</option>
+                            <option>周检</option>
+                            <option>双周检</option>
+                            <option>月检</option>
+                        </select><br>
+            活动名称:<input type="text" style="margin-top: 10px">
+        </div>
+    </div>
+    <div class="row col-md-12" style="margin: 15px">
+        <div class="col-md-1" style="margin-top: 15px">区域</div>
+        <div class="col-md-1 doted"><span class="dot_unChecked"></span></div>
+        <div class="col-md-10">
+            <div class="col-md-4" style="border: 1px solid #000000">
+                <div class="TreeWrap">
+                    <div class="MenuBox" id="Menu_0">
+                        <div class="titBox">
+                            <h3 class="Fst">
+                                <a href="javascript:showMenu(0);">
+                                    <span class="glyphicon glyphicon-play" aria-hidden="true" style="margin-right:2px;"></span>
+                                    桃源居</a></h3>
+                        </div>
+                        <div class="txtBox">
+                            <ul>
+                                <li>
+                                    <div class="MenuBox" id="Menu_1">
+                                        <div class="titBox">
+                                            <h3 class="Fst">
+                                                <a href="javascript:showMenu(1);">
+                                                    <span class="glyphicon glyphicon-play" aria-hidden="true" style="margin-right:2px;"></span>
+                                                    一区</a></h3>
+                                        </div>
+
+                                        <div class="txtBox">
+                                            <ul>
+                                                <li>
+                                                    <div class="MenuBox" id="Menu_2">
+                                                        <div class="titBox">
+                                                            <h3 class="Fst">
+                                                                <a href="javascript:showMenu(2);">
+                                                                    <span class="glyphicon glyphicon-play" aria-hidden="true" style="margin-right:2px;"></span>
+                                                                   1栋</a>
+                                                            </h3>
+                                                            <div class="txtBox">
+                                                                <ul>
+                                                                    <li><a href="#xiancai" data-toggle="tab">101</a></li>
+                                                                    <li class="Lst"><a href="#xiancai" data-toggle="tab">102</a></li>
+                                                                </ul>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </li>
+                                                <li><a href="#xiancai" data-toggle="tab">2栋</a></li>
+                                                <li class="Lst"><a href="#xiancai" data-toggle="tab">3栋</a></li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </li>
+                           </ul>
+                        </div>
+                    </div><!--MenuBox-->
+                </div>
+            </div>
+            <div class="col-md-2" style="font-size:50px;height: 200px;text-align: center;padding-top:70px">
+                <span class="glyphicon glyphicon-transfer"></span>
+            </div>
+            <div class="col-md-4">
+                <table border="1" style="margin-top: 10px;text-align:center;width: 100px;height: 150px">
+                    <tr><td>&nbsp;</td></tr>
+                    <tr><td>桃源居1栋101</td></tr>
+                    <tr> <td>&nbsp;</td></tr>
+                </table>
+            </div>
+        </div>
+    </div>
+    <div class="row col-md-12" style="margin: 15px">
+        <div class="col-md-1" style="margin-top: 15px">时间</div>
+        <div class="col-md-1 doted"><span class="dot_unChecked"></span></div>
+        <div class="col-md-9" style="margin-top: 15px">
+            质检时间段：<input type="datetime-local" style="width: 150px">~<input type="datetime-local" style="width: 150px">
+         </div>
+    </div>
+    <div class="row col-md-12" style="margin: 15px">
+        <div class="col-md-1" style="margin-top: 15px">质检模式</div>
+        <div class="col-md-1 doted"><span class="dot_unChecked"></span></div>
+        <div class="col-md-9" style="margin-top: 15px">
+            质检模式：<select ui-sref-active="" style="width: 130px;height: 30px;margin-top: 10px">
+                            <option>交叉型</option>
+                            <option>树型</option>
+                        </select><br>
+            模式说明 ：<textarea rows="3" cols="50" style="margin-top: 20px;">树形：一个检查人，检查多个对象
+交叉：两队互相检查
+复数检查：多个质检执行人，检查一个被检查人
+                        </textarea>
+        </div>
+    </div>
+    <div class="row col-md-12" style="margin: 15px">
+        <div class="col-md-1" style="margin-top: 15px">团队</div>
+        <div class="col-md-1 doted"><span class="dot_unChecked"></span></div>
+        <div class="col-md-10" style="margin-top: 15px">
+            <div class="col-md-2">
+                <h4>选择</h4>
+                <div class="TreeWrap">
+                    <div class="MenuBox" id="Menu_3">
+                        <div class="titBox">
+                            <h3 class="Fst">
+                                <a href="javascript:showMenu(3);">
+                                    <span class="glyphicon glyphicon-play" aria-hidden="true" style="margin-right:2px;"></span>
+                                    园林</a></h3>
+                        </div>
+                        <div class="txtBox">
+                            <ul>
+                                <li><a href="#xiancai" data-toggle="tab">张三</a></li>
+                                <li><a href="#xiancai" data-toggle="tab">李四</a></li>
+                                <li class="Lst"><a href="#xiancai" data-toggle="tab">王五</a></li>
+                            </ul>
+                        </div>
+                    </div><!--MenuBox-->
+                    <div class="MenuBox2" id="Menu_4">
+                        <div class="titBox"><h3>
+                            <a href="javascript:showMenu(4);">
+                                <span class="glyphicon glyphicon-play" aria-hidden="true" style="margin-right:2px;"></span>
+                                清洁</a></h3>
+                        </div>
+                        <div class="txtBox">
+                            <ul>
+                                <li><a href="#xiancai" data-toggle="tab">张三</a></li>
+                                <li><a href="#xiancai" data-toggle="tab">李四</a></li>
+                                <li class="Lst"><a href="#xiancai" data-toggle="tab">王五</a></li>
+                            </ul>
+                        </div>
+                    </div><!--MenuBox-->
+                    <div class="MenuBox2" id="Menu_5">
+                        <div class="titBox"><h3><a href="javascript:showMenu(5);">
+                            <span class="glyphicon glyphicon-play" aria-hidden="true" style="margin-right:2px;"></span>
+                            维修</a></h3>
+                        </div>
+                        <div class="txtBox">
+                            <ul>
+                                <li><a href="#xiancai" data-toggle="tab">张三</a></li>
+                                <li><a href="#xiancai" data-toggle="tab">李四</a></li>
+                                <li class="Lst"><a href="#xiancai" data-toggle="tab">王五</a></li>
+                            </ul>
+                        </div>
+                    </div><!--MenuBox-->
+                    <div class="MenuBox2" id="Menu_6">
+                        <div class="titBox"><h3><a href="javascript:showMenu(6);">
+                            <span class="glyphicon glyphicon-play" aria-hidden="true" style="margin-right:2px;"></span>
+                            安保</a></h3>
+                        </div>
+                        <div class="txtBox">
+                            <ul>
+                                <li><a href="#xiancai" data-toggle="tab">张三</a></li>
+                                <li><a href="#xiancai" data-toggle="tab">李四</a></li>
+                                <li class="Lst"><a href="#xiancai" data-toggle="tab">王五</a></li>
+                            </ul>
+                        </div>
+                    </div><!--MenuBox-->
+                </div>
+            </div>
+            <div class="col-md-2" style="font-size:50px;height: 200px;text-align: center;padding-top:90px">
+                <span class="glyphicon glyphicon-transfer"></span>
+            </div>
+
+            <div class="col-md-4">
+                <h4>选定</h4>
+                <table border="1" style="margin-top: 10px;text-align:center;width: 100px;height: 150px">
+                    <tr><td>&nbsp;</td></tr>
+                    <tr><td>园林部</td></tr>
+                    <tr> <td>&nbsp;</td></tr>
+                </table>
+            </div>
+        </div>
+    </div>
+    <div class="row col-md-12" style="margin: 15px;">
+        <div class="col-md-1" style="margin-top: 15px">被质检团队</div>
+        <div class="col-md-1 doted"><span class="dot_unChecked"></span></div>
+        <div class="col-md-10" style="margin-top: 15px">
+            <div class="col-md-2">
+                <h4>选择</h4>
+                <div class="TreeWrap">
+                    <div class="MenuBox" id="Menu_7">
+                        <div class="titBox">
+                            <h3 class="Fst">
+                                <a href="javascript:showMenu(7);">
+                                    <span class="glyphicon glyphicon-play" aria-hidden="true" style="margin-right:2px;"></span>
+                                    园林</a></h3>
+                        </div>
+                        <div class="txtBox">
+                            <ul>
+                                <li><a href="#xiancai" data-toggle="tab">张三</a></li>
+                                <li><a href="#xiancai" data-toggle="tab">李四</a></li>
+                                <li class="Lst"><a href="#xiancai" data-toggle="tab">王五</a></li>
+                            </ul>
+                        </div>
+                    </div><!--MenuBox-->
+                    <div class="MenuBox2" id="Menu_8">
+                        <div class="titBox"><h3>
+                            <a href="javascript:showMenu(8);">
+                                <span class="glyphicon glyphicon-play" aria-hidden="true" style="margin-right:2px;"></span>
+                                清洁</a></h3>
+                        </div>
+                        <div class="txtBox">
+                            <ul>
+                                <li><a href="#xiancai" data-toggle="tab">张三</a></li>
+                                <li><a href="#xiancai" data-toggle="tab">李四</a></li>
+                                <li class="Lst"><a href="#xiancai" data-toggle="tab">王五</a></li>
+                            </ul>
+                        </div>
+                    </div><!--MenuBox-->
+                    <div class="MenuBox2" id="Menu_9">
+                        <div class="titBox"><h3><a href="javascript:showMenu(9);">
+                            <span class="glyphicon glyphicon-play" aria-hidden="true" style="margin-right:2px;"></span>
+                            维修</a></h3>
+                        </div>
+                        <div class="txtBox">
+                            <ul>
+                                <li><a href="#xiancai" data-toggle="tab">张三</a></li>
+                                <li><a href="#xiancai" data-toggle="tab">李四</a></li>
+                                <li class="Lst"><a href="#xiancai" data-toggle="tab">王五</a></li>
+                            </ul>
+                        </div>
+                    </div><!--MenuBox-->
+                    <div class="MenuBox2" id="Menu_10">
+                        <div class="titBox"><h3><a href="javascript:showMenu(10);">
+                            <span class="glyphicon glyphicon-play" aria-hidden="true" style="margin-right:2px;"></span>
+                            安保</a></h3>
+                        </div>
+                        <div class="txtBox">
+                            <ul>
+                                <li><a href="#xiancai" data-toggle="tab">张三</a></li>
+                                <li><a href="#xiancai" data-toggle="tab">李四</a></li>
+                                <li class="Lst"><a href="#xiancai" data-toggle="tab">王五</a></li>
+                            </ul>
+                        </div>
+                    </div><!--MenuBox-->
+                </div>
+            </div>
+            <div class="col-md-2" style="font-size:50px;height: 200px;text-align: center;padding-top:90px">
+                <span class="glyphicon glyphicon-transfer"></span>
+            </div>
+
+            <div class="col-md-4">
+                <h4>选定</h4>
+                <table border="1" style="margin-top: 10px;text-align:center;width: 100px;height: 150px">
+                    <tr><td>&nbsp;</td></tr>
+                    <tr><td>安保部-张三</td></tr>
+                    <tr> <td>&nbsp;</td></tr>
+                </table>
+            </div>
+        </div>
+    </div>
+    <div class="row col-md-12" style="margin: 15px;">
+        <div class="col-md-1" style="margin-top: 15px">质检评分标准</div>
+        <div class="col-md-1 doted"><span class="dot_unChecked"></span></div>
+        <div class="col-md-10" style="margin-top: 15px">
+            质检评分标准：<select style="width: 130px;height: 30px;margin-top: 10px">
+                                <option>翔恒园林清洁表1</option>
+                                <option>翔恒园林清洁表2</option>
+                         </select>
+        </div>
+    </div>
+    <div class="row col-md-12" style="margin: 15px">
+        <div class="col-md-1" style="margin-top: 15px">完成</div>
+        <div class="col-md-1 doted"><span class="dot_unChecked"></span></div>
+        <div class="col-md-10" style="margin-top: 15px">
+            <button class="btn btn-default" style="margin-left: 150px">取消</button>
+            <button class="btn btn-default" style="margin-left: 100px">提交</button>
+        </div>
+    </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,134 @@
+package com.flf.mapper;
+
+import java.util.List;
+
+import com.flf.entity.HouseGate;
+import com.flf.entity.HouseNew;
+import com.flf.entity.PersonCustNew;
+import com.flf.entity.Search;
+
+public interface HouseNewMapper {
+	List<HouseNew> listPageHouseNew(HouseNew house);
+	
+	List<HouseNew> listPageIntakeHouseByPersonCustId(HouseNew house);
+	
+	List<HouseNew> listAllHouseNew();
+	
+	HouseNew getHouseNewById(String id);
+	
+    int insertHouseNew(HouseNew house);
+    
+    int updateHouseNew(HouseNew house);
+
+    int deleteHouseNew(String id);
+    
+    List<HouseNew> listHouseByhouseGates(List<HouseGate> houseGates);
+    
+    HouseNew getHouseNewSipmanageByhouseId(String houseId);
+    
+    List<HouseNew> listHouseBypersonId(String personId);
+    
+    /**
+     * 开门验证
+     * @param buildingStructureId 房屋建筑结构id
+     * @param password 房屋密码
+     * @return
+     */
+    int openGateVerify(String buildingStructureId,String password);
+    
+
+    List<HouseNew> listSearchHouseNew(Search search);//物业服务搜索房屋信息
+
+    HouseNew listHouseByBuildingStructureId(String buildingStructureId);  //根据建筑结构查询住宅信息列表
+    
+    List<HouseNew> listAllHouseNewByPerson(PersonCustNew personCustNew);//通过人员信息查询房屋信息
+
+	List<HouseNew> listSearchHouseNewAu(Search search);//通过条件查询授权了的房屋信息
+
+	List<HouseNew> listHouseByPersonCustId(Search search);//根据客户id查询客户关联的房屋
+	
+	List<HouseNew> listPageHouseByPersonCustId(HouseNew house);//根据客户id分页查询客户关联的房屋
+	int joinGang(String houseId,int state);//入伙
+	
+	List<HouseNew> listHouseByName(String name);// 根据客户名称查询客户关联的房屋
+	
+	List<HouseNew> listHouseByEnterpriseName(String enterpriseName);// 根据企业名称查询客户关联的房屋
+
+	List<HouseNew> listHouseByenterpriseId(String enterpriseId);//根据企业公司id查询关联的房屋
+	
+	List<HouseNew> listPageAllHouseNewBySearch(Search search);//根据搜索条件分页查询房屋信息
+	
+	List<HouseNew> listPagelistHouseBySearchAu(Search search);//根据条件分页查询信息
+	
+	List<HouseNew> listPageByContion(HouseNew houseNew);//根据条件查询
+	
+	HouseNew listPageHouseByPersonCustId_one(String custId);
+	
+	/**
+	 * 根据项目id查询项目下的所有houseNew
+	 * @param projectId
+	 * @return
+	 */
+	List<HouseNew> listHouseNewByProjectId(String projectId);
+	
+	/**
+	 * 根据房屋id查询刚房屋现有业主的信息
+	 */
+	List<HouseNew> getAllCustNamesByStructId(String buildingStructId);
+	
+    /**
+     * 根据建筑结构id修改房产证信息
+     * @author xiaocong
+     * @date 上午10:23:25
+     * @Description:TODO
+     * @param buildingStructId
+     * @updateby
+     */
+	void updateHouse(String buildingStructId,String buildingCertificate);
+	
+	/**
+	 * 根据建筑结构id获取房屋信息
+	 * @param buildingStructId
+	 * @return
+	 */
+	HouseNew getHouseNewByBuildingStructId(String buildingStructId);
+	
+	int updateHousePasswordByhouseId(String houseId,String password);
+	
+	/**
+	 * 批量插入住宅信息
+	 * @param list
+	 * @return
+	 */
+	int insertList(List<HouseNew> list);
+
+	/**
+     * 根据parentId集合查询houseId集合
+     * @param parentIds
+     * @return
+     */
+	List<String> getHouseIdListByParentId(String[] split);
+	
+	/**
+	 * 根据项目id分页查询项目下的所有houseNew
+	 * @author wangzhou
+	 * @date 2016-03-24
+	 * @param projectId
+	 * @return
+	 */
+	List<HouseNew> listPageHouseNewByProjectId(HouseNew houseNew);
+
+	/**
+     * 根据客户id的集合查询关联的房屋
+     * @param custIds
+     * @return
+     */
+	List<HouseNew> listHouseByCustIds(List<String> custIds);
+	
+	/**
+	 * 根据houseId查询房屋信息，包含项目名
+	 * @param houseId
+	 * @return
+	 */
+	HouseNew getHouseNewAndProjectById(String id);
+}

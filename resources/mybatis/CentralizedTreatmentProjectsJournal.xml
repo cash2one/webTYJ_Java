@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.flf.mapper.CentralizedTreatmentProjectsJournalMapper" >
+  
+  <resultMap id="BaseResultMap" type="CentralizedTreatmentProjectsJournal" >
+    <id column="record_id" property="projectJournalId" jdbcType="VARCHAR" />
+    <result column="project_id" property="projectId" jdbcType="VARCHAR" />
+    <result column="operation_time" property="operationTime" jdbcType="TIMESTAMP" />
+    <result column="operation_person_id" property="operationPersonId" jdbcType="VARCHAR" />
+    <result column="change_state" property="changeState" jdbcType="TINYINT" />
+    <result column="remarks" property="remarks" jdbcType="DOUBLE" />
+  </resultMap>
+  
+  <select id="getCentralizedTreatmentProjectsJournalbyId" parameterType="String" resultMap="BaseResultMap">
+  select * from ts_centralized_treatment_projects_journal where record_id = #{0}
+  </select>
+  
+  <insert id="insertCentralizedTreatmentProjectsJournal" parameterType="CentralizedTreatmentProjectsJournal" >
+    insert into ts_centralized_treatment_projects_journal (record_id, project_id, operation_time,operation_person_id,change_state,remarks)
+    values (UUID(), #{projectId,jdbcType=VARCHAR}, #{operationTime,jdbcType=TIMESTAMP}, 
+      #{operationPersonId,jdbcType=VARCHAR},#{changeState,jdbcType=TINYINT}, #{remarks,jdbcType=DOUBLE})
+  </insert>
+</mapper>

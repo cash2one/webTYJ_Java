@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+11111112
+<div>
+<table style="line-height: 30px">
+<tr>
+<td style="white-space: nowrap;text-align: right">索赔任务ID：</td><td width="190">101101</td>
+</tr>
+<tr>
+<td style="white-space: nowrap;text-align: right">发起人：</td><td><input style="width: 90px" type="text" class="form-control input-sm" placeholder="张三"></td>
+<td style="white-space: nowrap;text-align: right">索赔金额：</td><td><input style="width: 100px" type="text" class="form-control input-sm" placeholder="10000"></td>
+</tr>
+<tr>
+<td style="text-align: right">相关联系人：</td><td><input style="width: 90px" type="text" class="form-control input-sm" placeholder="张四"></td>
+<td style="text-align: right">联系电话：</td><td><input style="width: 100px" type="text" class="form-control input-sm" placeholder="15327219111"></td>
+<td style="text-align: center"><button style="height: 30px;width: 90px">选择</button></td>
+</tr>
+</table>
+<table style="margin-left: 0px">
+<tr>
+<td>事由描述：</td>
+<td><textarea style="width:450px;" cols="3" placeholder="请输入内容"></textarea></td>
+</tr>
+<tr>
+<td>上传照片：</td>
+<td style="border: 1px solid lightgray;padding: 2px 2px"> <img src="images/workBench/u716.png" style="margin: 2px 2px"><img src="images/workBench/u716.png" style="margin: 2px 2px"><img src="images/workBench/u716.png" style="margin: 2px 2px"><img src="images/workBench/u716.png" style="margin: 2px 2px"></td>
+</tr>
+</table>
+</div>
+</div>
+</body>
+</html>

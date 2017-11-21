@@ -1,0 +1,55 @@
+package com.flf.service;
+
+import java.util.List;
+
+import javax.jws.WebService;
+import javax.ws.rs.GET;
+import javax.ws.rs.POST;
+import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
+import javax.ws.rs.Produces;
+import javax.ws.rs.core.MediaType;
+
+import com.flf.entity.ChargeTypeDetailsBuildingBilling;
+
+/**
+ * 收费类型详情建筑计费service
+ * @author maogaofei
+ * @date 2016年7月9日 下午2:45:41
+ */
+@WebService
+@Path("/ChargeTypeDetailsBuildingBilling")
+public interface ChargeTypeDetailsBuildingBillingService {
+	/**
+	 * 根据条件查询收费项目详情建筑计费列表
+	 * @author maogaofei
+	 * @date 2016年7月11日 上午11:05:19
+	 * @param chargeTypeDetailsBuildingBilling
+	 * @return
+	 */
+	@POST
+	@Path("/listAllChargeTypeDetailsBuildingBilling")
+	@PathParam(MediaType.APPLICATION_JSON)
+	public List<ChargeTypeDetailsBuildingBilling> listAllChargeTypeDetailsBuildingBilling(ChargeTypeDetailsBuildingBilling chargeTypeDetailsBuildingBilling);
+	
+	/**
+	 * 根据选择的计费方案手动计费
+	 * @author maogaofei
+	 * @date 2016年7月11日 下午3:48:08
+	 * @param schemeIds
+	 */
+	@GET
+	@Path("/manualBilling/{schemeIds}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public void manualBilling(@PathParam("schemeIds") String schemeIds);
+	/**
+	 * 根据选中的项目计费记录重新计费
+	 * @author maogaofei
+	 * @date 2016年7月12日 上午9:32:13
+	 * @param projectBillingIds
+	 */
+	@GET
+	@Path("/reBilling/{projectBillingIds}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public void reBilling(@PathParam("projectBillingIds") String projectBillingIds);
+}

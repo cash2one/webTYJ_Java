@@ -1,0 +1,237 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.flf.mapper.PropertyMapper" >
+  <resultMap id="BaseResultMap" type="Property" >
+    <id column="property_id" property="propertyId"  />
+    <result column="property_number" property="propertyNumber" jdbcType="VARCHAR" />
+    <result column="property_name" property="propertyName" jdbcType="VARCHAR" />
+    <result column="property_specification" property="propertySpecification" jdbcType="VARCHAR" />
+    <result column="expiration_date" property="expirationDate" jdbcType="DOUBLE" />
+    <result column="property_type_id" property="propertyTypeId"  />
+    <result column="brand" property="brand"  />
+    <result column="producing_area" property="producingArea"/>
+    <result column="manufacturer" property="manufacturer"  />
+    <result column="manufacturer_phone" property="manufacturerPhone"/>
+    <association property="propertytype" column="property_type_id" select="com.flf.mapper.PropertyTypeMapper.selectByPrimaryKey" />
+  </resultMap>
+  
+   <resultMap id="PropertyAndTypeResultMap" type="Property" extends="BaseResultMap">
+    <id column="property_type_id" property="propertyTypeId"  />
+    <result column="property_type_number" property="propertyTypeNumber" jdbcType="VARCHAR" />
+    <result column="property_type_name" property="propertyTypeName" jdbcType="VARCHAR" />
+    <result column="founder" property="founder" jdbcType="VARCHAR" />
+    <result column="founder_time" property="founderTime" jdbcType="DATE" />
+    <result column="parent_id" property="parentId" jdbcType="VARCHAR" />
+   	<result column="alias_property_type_name" property="propertyTypeName" jdbcType="VARCHAR" />
+	    
+  </resultMap>
+  
+	<resultMap type="Property" id="ResultMapWithPropertyType">
+		<id column="property_id" property="propertyId"  />
+   		<result column="property_number" property="propertyNumber" jdbcType="VARCHAR" />
+    	<result column="property_name" property="propertyName" jdbcType="VARCHAR" />
+    	<result column="property_specification" property="propertySpecification" jdbcType="VARCHAR" />
+    	<result column="expiration_date" property="expirationDate" jdbcType="DOUBLE" />
+    	<result column="property_type_id" property="propertyTypeId"  />
+    	<result column="brand" property="brand"  />
+    	<result column="producing_area" property="producingArea"/>
+    	<result column="manufacturer" property="manufacturer"  />
+    	<result column="manufacturer_phone" property="manufacturerPhone"/>
+    	<association property="propertytype" column="property_type_id" select="com.flf.mapper.PropertyTypeMapper.selectPropertyTypeByProperty" />
+	</resultMap>
+  
+   <select id="listProperty" resultMap="BaseResultMap" parameterType="Property">
+    select * from t_property where 1=1
+    <if test="propertyTypeId">
+    	property_type_id=#{propertyTypeId}
+    </if>
+  </select>
+  
+  <!-- 查询所有资产信息 -->
+  <select id="listPropertyAll" resultMap="BaseResultMap"  >
+    select *
+    from t_property where 1=1 
+  </select>
+  
+  <select id="getPropertyByparentIdRest" parameterType="String" resultMap="BaseResultMap">
+  	select * from t_property where property_type_id=#{propertyTypeId}
+  </select>
+  
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="String" >
+    select *
+    from t_property
+    where property_id = #{propertyId}
+  </select>
+  
+  <select id="listPropertyByParentPropertyType" parameterType="PropertyType" resultMap="BaseResultMap">
+  	select * from t_property
+  	where 1=1
+  	<if test="propertyTypeId!=null and propertyTypeId!=''">
+  		and property_type_id in (select property_type_id from t_property_type where parent_id=#{propertyTypeId})
+  	</if>
+  	<if test="propertyName!=null and propertyName!=''">
+  		and property_name like CONCAT('%',#{propertyName},'%')
+  	</if>
+  	<if test="brand!=null and brand!=''">
+  		and brand like CONCAT('%',#{brand},'%')
+  	</if>
+  	<if test="producingArea!=null and producingArea!=''">
+  		and producing_area like CONCAT('%',#{producingArea},'%')
+  	</if>
+  	<if test="manufacturer!=null and manufacturer!=''">
+  		and manufacturer like CONCAT('%',#{manufacturer},'%')
+  	</if>
+  	<if test="manufacturerPhone!=null and manufacturerPhone!=''">
+  		and manufacturer_phone like CONCAT('%',#{manufacturerPhone},'%')
+  	</if>
+  </select>
+  
+  <delete id="deleteByPrimaryKey" parameterType="String" >
+    delete from t_property
+    where property_id = #{propertyId}
+  </delete>
+  <!-- Bug 830 陈浪 2016年3月4日   新增创建时间字段 -->
+  <insert id="insert" parameterType="Property" >
+    insert into t_property (property_id, property_number, property_name, 
+      property_specification, expiration_date,property_type_id,brand,producing_area,manufacturer,manufacturer_phone
+      ,founder_time,company_id
+      )
+    values (#{propertyId},#{propertyNumber,jdbcType=VARCHAR}, #{propertyName,jdbcType=VARCHAR}, 
+      #{propertySpecification,jdbcType=VARCHAR}, #{expirationDate,jdbcType=DOUBLE},
+      #{propertyTypeId,jdbcType=VARCHAR},#{brand,jdbcType=VARCHAR},#{producingArea,,jdbcType=VARCHAR},
+      #{manufacturer,,jdbcType=VARCHAR},#{manufacturerPhone,,jdbcType=VARCHAR},now(),#{companyId,jdbcType=VARCHAR}
+      )
+  </insert> 
+
+  <update id="updateByPrimaryKeySelective" parameterType="Property" >
+    update t_property
+    <set >
+      <if test="propertyNumber != null" >
+        property_number = #{propertyNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="propertyName != null" >
+        property_name = #{propertyName,jdbcType=VARCHAR},
+      </if>
+      <if test="propertySpecification != null" >
+        property_specification = #{propertySpecification,jdbcType=VARCHAR},
+      </if>
+       <if test="expirationDate != null" >
+        expiration_date = #{expirationDate},
+      </if>
+      <if test="propertyTypeId != null" >
+        property_type_id = #{propertyTypeId,jdbcType=VARCHAR},
+      </if>
+      <if test="brand != null" >
+        brand=#{brand},
+      </if>
+      <if test="producingArea != null" >
+        producing_area=#{producingArea},
+      </if>
+      <if test="manufacturer != null" >
+        manufacturer=#{manufacturer},
+      </if>
+      <if test="manufacturerPhone != null" >
+        manufacturer_phone=#{manufacturerPhone}
+      </if>
+    </set>
+    where property_id = #{propertyId}
+  </update>
+
+  <update id="updateByPrimaryKey" parameterType="Property" >
+    update t_property
+    set property_number = #{propertyNumber,jdbcType=VARCHAR},
+      property_name = #{propertyName,jdbcType=VARCHAR},
+      property_specification = #{propertySpecification,jdbcType=VARCHAR},
+      expiration_date = #{expirationDate},
+	  property_type_id=#{propertyTypeId},
+	  brand=#{brand},
+	  producing_area=#{producingArea},
+	  manufacturer=#{manufacturer},
+	  manufacturer_phone=#{manufacturerPhone}
+    where property_id = #{propertyId}
+  </update>
+  
+  
+    <select id="selectDataByPrimaryKey" resultMap="BaseResultMap" parameterType="String" >
+    select *
+    from t_property
+    where property_type_id=#{propertyTypeId}
+  </select>
+  
+	<!-- 根据二级资产分类id查询此分类下已有多少资产，将返回的数据用在编号生成中  王洲  2016.1.22 -->
+	<select id="getCountByPropertyTypeId" parameterType="String" resultType="int">
+		select count(property_id) from t_property where property_type_id = #{0}
+	</select>
+	
+	<!-- 查询资产、专业、专业分类   朱琪2016.02.22 -->
+	<select id="listPageProperty" resultMap="ResultMapWithPropertyType" parameterType="Property">
+		select c.property_type_number propertytypeNumber,c.property_type_name propertytypename,
+		b.property_type_number propertytypeNumbers,b.property_type_name propertytypenames,a.* 
+		from t_property a left join t_property_type b on a.property_type_id = b.property_type_id
+		left join t_property_type c on b.parent_id = c.property_type_id
+		<where>
+			<if test="companyId != null and companyId != ''">
+				a.company_id =#{companyId,jdbcType=VARCHAR}
+			</if>		
+			<if test="propertytypename != null and propertytypename != ''">
+				and c.property_type_name like CONCAT('%',#{propertytypename,jdbcType=VARCHAR},'%')
+			</if>
+			<if test="propertytypenames != null and propertytypenames != ''">
+				and b.property_type_name like CONCAT('%',#{propertytypenames,jdbcType=VARCHAR},'%')
+			</if>
+			<if test="propertyName != null and propertyName != ''">
+				and property_name like CONCAT('%',#{propertyName,jdbcType=VARCHAR},'%')
+			</if>
+			<if test="producingArea != null and producingArea != ''">
+				and producing_area like CONCAT('%',#{producingArea,jdbcType=VARCHAR},'%')
+			</if>
+			<if test="brand != null and brand != ''">
+				and brand like CONCAT('%',#{brand,jdbcType=VARCHAR},'%') 
+			</if>
+			<if test="manufacturer != null and manufacturer != ''">
+				and manufacturer like CONCAT('%',#{manufacturer,jdbcType=VARCHAR},'%')
+			</if>
+		</where>
+		<!-- Bug 830 陈浪 2016年3月4日   新增根据时间排序 -->
+		order by a.founder_time desc
+	</select>
+	
+	<!-- 查询专业、专业分类 -->
+	<select id="listPropertyType" resultMap="ResultMapWithPropertyType" parameterType="Property">
+		SELECT b.property_type_number propertytypeNumber,b.property_type_name propertytypename,
+		a.property_type_number propertytypeNumbers,a.property_type_name propertytypenames
+		FROM t_property_type a  LEFT JOIN t_property_type b ON b.property_type_id = a.parent_id 
+		WHERE b.property_type_id = a.parent_id ORDER BY b.property_type_number
+	</select>
+	<!-- 根据资产信息查询资产  陈浪 2016.3.9-->
+	<select id="listPropertys" resultMap="ResultMapWithPropertyType" parameterType="Property">
+		select c.property_type_number propertytypeNumber,c.property_type_name propertytypename,
+		b.property_type_number propertytypeNumbers,b.property_type_name propertytypenames,a.* 
+		from t_property a left join t_property_type b on a.property_type_id = b.property_type_id
+		left join t_property_type c on b.parent_id = c.property_type_id
+		<where>
+			<if test="propertytypename != null and propertytypename != ''">
+				c.property_type_name like CONCAT('%',#{propertytypename,jdbcType=VARCHAR},'%')
+			</if>
+			<if test="propertytypenames != null and propertytypenames != ''">
+				b.property_type_name like CONCAT('%',#{propertytypenames,jdbcType=VARCHAR},'%')
+			</if>
+			<if test="propertyName != null and propertyName != ''">
+				property_name like CONCAT('%',#{propertyName,jdbcType=VARCHAR},'%')
+			</if>
+			<if test="producingArea != null and producingArea != ''">
+				producing_area like CONCAT('%',#{producingArea,jdbcType=VARCHAR},'%')
+			</if>
+			<if test="brand != null and brand != ''">
+				brand like CONCAT('%',#{brand,jdbcType=VARCHAR},'%') 
+			</if>
+			<if test="manufacturer != null and manufacturer != ''">
+				manufacturer like CONCAT('%',#{manufacturer,jdbcType=VARCHAR},'%')
+			</if>
+		</where>
+	</select>
+	
+	<delete id="deletePropertyByParentId" parameterType="String" >
+    	delete from t_property where property_type_id = #{propertyTypeId}
+  	</delete>
+</mapper>

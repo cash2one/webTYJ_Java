@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.flf.mapper.BillPaymentRelationMapper" >
+  <resultMap id="BaseResultMap" type="com.flf.entity.BillPaymentRelation" >
+    <id column="bill_payment_relation_id" property="billPaymentRelationId" jdbcType="VARCHAR" />
+    <result column="bill_id" property="billId" jdbcType="VARCHAR" />
+    <result column="payment_details_id" property="paymentDetailsId" jdbcType="VARCHAR" />
+  </resultMap>
+ 
+  <insert id="insertBillPaymentRelation" parameterType="com.flf.entity.BillPaymentRelation" >
+    insert into tc_bill_payment_relation (bill_payment_relation_id, bill_id, payment_details_id
+      )
+    values (#{billPaymentRelationId,jdbcType=VARCHAR}, #{billId,jdbcType=VARCHAR}, #{paymentDetailsId,jdbcType=VARCHAR}
+      )
+  </insert>
+  
+  <update id="updateBillPaymentRelation" parameterType="com.flf.entity.BillPaymentRelation" >
+    update tc_bill_payment_relation
+    <set >
+      <if test="billId != null" >
+        bill_id = #{billId,jdbcType=VARCHAR},
+      </if>
+      <if test="paymentDetailsId != null" >
+        payment_details_id = #{paymentDetailsId,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where bill_payment_relation_id = #{billPaymentRelationId,jdbcType=VARCHAR}
+  </update>
+  
+</mapper>

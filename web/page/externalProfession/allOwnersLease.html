@@ -1,0 +1,159 @@
+<!--
+创建时间：2015/6/1
+作者：陶勇超
+修改人：钟加诚
+修改内容：Js数据，查询和删选效果
+修改时间：2015/6/1
+名称：小区租赁
+JS路径： 'controllers/externalProfession/allOwnersLease',
+-->
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>全部租赁</title>
+</head>
+<body ng-controller="allOwnersLeaseCtrl">
+<div class="complaint_user_list" style="margin: 10px 10px;">
+    <div class="row"  style="margin-top:15px;height: 40px">
+        <div class="col-md-2" style="margin-left: 20px"><h5  style="margin-left:-5px">租客姓名：</h5></div>
+        <div class="col-md-2" style="margin-left: -60px"><input type="text" class="form-control" ng-model="rentere"></div>
+        <div class="col-md-1"><h5>合同号:</h5></div>
+        <div class="col-md-2"><input type="text" class="form-control" ng-model="contractIde"></div>
+        <div class="col-md-2"><h5>房屋编号:</h5></div>
+        <div class="col-md-2" style="margin-left: -60px"><input type="text" class="form-control" ng-model="homeIde"></div>
+        <div class="col-md-1">  <span class="glyphicon glyphicon-search btn btn-lg" aria-hidden="true" ng-click="change()"></span></div>
+    </div>
+
+    <div class="row" style="margin-top: 10px">
+        <div class="col-md-1" style="margin-top: 10px;font-size: larger"> <span style="margin-left: 20px;white-space: nowrap">筛选：</span></div>
+        <div class=" col-md-4 form-inline">
+                <label>
+                    <input type="radio" name="monthlyRent" value="1" ng-model="monthlyRent">
+                    1000元/月
+                </label>
+                <label>
+                    <input type="radio" name="monthlyRent" value="2" ng-model="monthlyRent">
+                    1500元/月
+                </label>
+            </div>
+    </div>
+</div>
+    <div class="complaint_user_list" style="margin: 10px 10px;height: auto">
+        <!--1-->
+    <div class="row">
+        <div class="col-md-12" style="padding-top:8px" ng-repeat="item in itemsone" ng-show="item.leaseId!=null">
+            <div class="col-md-2">
+                <a href="#" data-toggle="modal" data-target="#modifyPet" ng-click="show(item.leaseId)">
+                    <img src="images/company/u134.png" style="width: 110px;height: 65px;" >
+                </a>
+            </div>
+            <div class="col-md-10">
+                <div class="row" style="margin-left:-50px;padding-top:10px">
+                    <p class="col-md-3" style="font-size: larger">房屋编号：{{item.homeId}}</p>
+                    <p class="col-md-3" style="font-size: larger">合同号：{{item.contractId}}</p>
+                    <p class="col-md-3" style="font-size: larger">办理人：{{item.transactor}}</p>
+                    <p class="col-md-3" style="font-size: larger">租客姓名：{{item.renter}}</p>
+
+                </div>
+                <div class="row" style="margin-left:-50px;">
+                    <p class="col-md-3" style="font-size: larger">出租开始日期：{{item.hireBegin}}</p>
+                    <p class="col-md-3" style="font-size: larger">出租结束日期：{{item.hireFinish}}</p>
+                    <p class="col-md-3" style="font-size: larger">交费截止日期：{{item.payFinish}}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+        <!--1 end-->
+</div>
+    <div class="modal fade" id="modifyPet" role="dialog" aria-label="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header" style="background-color: white;height: 50px">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <a ui-sref="#"><span style="color: #000000">返回客户</span></a>
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="media-left" style="height:auto;width: 600px;">
+                        <table class="table-bordered" style="width:95%;text-align: center;margin: auto">
+                            <tr >
+                                <td style="width: 30%">房屋编号</td>
+                                <td>{{homeId}}</td>
+                            </tr>
+                            <tr>
+                                <td>户主姓名</td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td>租客姓名</td>
+                                <td>{{renter}}</td>
+                            </tr>
+                            <tr>
+                                <td>出租开始日期</td>
+                                <td>{{hireBegin}}</td>
+                            </tr>
+                            <tr>
+                                <td>出租结束日期</td>
+                                <td>{{hireFinish}}</td>
+                            </tr>
+                            <tr>
+                                <td>联系电话</td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td>联系地址</td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td>合同号</td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td>出租价格</td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td>是否递增</td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td>计费日前</td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td>缴费截止日期</td>
+                                <td>{{payFinish}}</td>
+                            </tr>
+                            <tr>
+                                <td>收款帐号</td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td>免租开始日期</td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td>免租结束日期</td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td>办理人</td>
+                                <td>{{transactor}}</td>
+                            </tr>
+                            <tr>
+                                <td>办理日前</td>
+                                <td>2015/05/15</td>
+                            <tr>
+                                <td>租客签字</td>
+                                <td></td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

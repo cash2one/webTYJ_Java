@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.flf.mapper.FinancialBankNumMapper" >
+    <resultMap id="BaseResultMap" type="FinancialBankNum" >
+    <id column="financial_bank_num_id" property="financialBankNumId" jdbcType="VARCHAR"/>
+    <result column="bank_num" property="bankNum" jdbcType="VARCHAR" />
+    <result column="unionpay_bank_num" property="unionpayBankNum" jdbcType="VARCHAR" />
+    <result column="bank_name" property="bankName"  jdbcType="VARCHAR" />
+    <result column="bank_name_seq" property="bankNameSeq" jdbcType="VARCHAR"/> 
+   </resultMap>
+   
+    <!-- 根据条件分页查询 -->
+    <select id="listPageFinancialBankNum" parameterType="FinancialBankNum"  resultMap="BaseResultMap">
+		select * from tc_financial_bank_num where 1=1 
+		 <if test="bankNum != null and bankNum != ''">
+	     	and bank_num = #{bankNum} 
+	     </if>
+	     <if test="unionpayBankNum != null and unionpayBankNum != ''">
+	     	and unionpay_bank_num = #{unionpayBankNum} 
+	     </if>
+	      ORDER BY bank_name_seq
+	</select>
+	
+	<!-- 根据条件查询所有 -->
+	 <select id="listAllFinancialBankNum" parameterType="FinancialBankNum"  resultMap="BaseResultMap">
+		select * from tc_financial_bank_num where 1=1 
+		 <if test="bankNum != null and bankNum != ''">
+	     	and bank_num = #{bankNum} 
+	     </if>
+	     <if test="unionpayBankNum != null and unionpayBankNum != ''">
+	     	and unionpay_bank_num = #{unionpayBankNum} 
+	     </if>
+	     <if test="bankName != null and bankName != ''">
+	     	and bank_name = #{bankName} 
+	     </if>
+	     <if test="bankNameSeq != null and bankNameSeq != ''">
+	     	and unionpay_bank_num is NOT null AND unionpay_bank_num != ""
+	     </if>
+	     <if test="bankNameSeq == null or bankNameSeq == ''">
+	     	and bank_num is NOT null AND bank_num != ""
+	     </if>
+	     ORDER BY bank_name_seq
+	</select>
+	
+	<!-- 新增 -->
+ 	<insert id="insertFinancialBankNum" parameterType="FinancialBankNum">
+ 		insert into tc_financial_bank_num(financial_bank_num_id,bank_num,unionpay_bank_num,bank_name,bank_name_seq)
+ 		values(#{financialBankNumId},#{bankNum},#{unionpayBankNum},#{bankName},#{bankNameSeq})
+ 	</insert>
+ 	
+ 	<!-- 删除 -->
+ 	<delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+	    delete from tc_financial_bank_num
+	    where financial_bank_num_id = #{0}
+	</delete>
+ 	
+ 	<!-- 修改 -->
+  	<update id="updateFinancialBankNum" parameterType="com.flf.entity.FinancialBankNum">
+  		update tc_financial_bank_num 
+  		<set>
+  			<if test="bankNum != null" >
+		       bank_num = #{bankNum},
+		    </if>
+		    <if test="bankName != null" >
+		       bank_name = #{bankName},
+		    </if>
+		    <if test="unionpayBankNum != null">
+		       unionpay_bank_num = #{unionpayBankNum},
+		     </if>
+		    <if test="bankNameSeq != null" >
+		       bank_name_seq = #{bankNameSeq},
+		    </if>
+  		</set>
+  		 where financial_bank_num_id = #{financialBankNumId}
+ 	</update>
+ 	
+	<!-- 根据ID查询对象 -->
+	<select id="getFinancialBankNumById" parameterType="String" resultMap="BaseResultMap">
+	  	select * from tc_financial_bank_num where 1=1 AND financial_bank_num_id = #{0}
+	</select> 
+	
+	<!-- 根据行别查询对象 -->
+	<select id="getFinancialBankNumByBankNum" parameterType="String" resultMap="BaseResultMap">
+	  	select * from tc_financial_bank_num where 1=1 AND bank_num = #{0}
+	</select> 
+	
+</mapper>

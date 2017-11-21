@@ -1,0 +1,208 @@
+package com.flf.service;
+
+import java.util.List;
+
+import javax.ws.rs.Consumes;
+import javax.ws.rs.GET;
+import javax.ws.rs.POST;
+import javax.ws.rs.PUT;
+import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
+import javax.ws.rs.Produces;
+import javax.ws.rs.core.MediaType;
+
+import com.flf.entity.CarInfo;
+import com.flf.entity.PageRestful;
+import com.flf.entity.Search;
+import com.flf.entity.SearchCar;
+
+@Path("/CarInfo")
+public interface CarInfoService {
+	List<CarInfo> listPageCarInfo(CarInfo carInfo);// 查询所有客户车辆信息（分页）
+
+	int addCarInfo(CarInfo carInfo);// 添加客户车辆信息
+
+	int updateCarInfo(CarInfo carInfo);// 修改客户车辆信息
+
+	@GET
+	@Path("/deleteCarInfoById/{carId}")
+	@Produces(MediaType.APPLICATION_JSON)
+	int deleteCarInfoById(@PathParam("carId")String carId);// 根据id删除客户车辆信息
+	
+	
+	/**
+	 * 查询所有车辆信息
+	 * 
+	 * @param 
+	 * @return
+	 */
+	@GET
+	@Path("/listAllCarInfo")
+	@Produces(MediaType.APPLICATION_JSON)
+	List<CarInfo> listAllCarInfo();// 查询所有客户车辆信息
+	
+	
+	/**
+	 * 分页查询所有车辆信息
+	 * 
+	 * @param 
+	 * @return
+	 */
+	@POST
+	@Path("/listPageCarInfo")
+	@Produces(MediaType.APPLICATION_JSON)
+	PageRestful listPageCarInfoRestful(CarInfo carInfo);// 查询所有客户车辆信息
+    
+	
+	/**
+	 * 根据车辆id查询车辆信息
+	 * 
+	 * @param custId
+	 * @return
+	 */
+	
+	
+	@GET
+	@Path("/getCarInfoById/{carId}")
+	@Produces(MediaType.APPLICATION_JSON)
+	CarInfo getCarInfoById(@PathParam("carId") String carId);// 根据id查询客户车辆信息
+    
+	/**
+	 * 增加车辆信息
+	 * 
+	 * @param carInfo
+	 * @return
+	 */
+	
+	
+	@POST
+	@Path("/AddCarInfo")
+	@Consumes({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
+	void insertCarInfo(CarInfo carInfo);// 添加客户车辆信息
+	/**
+	 * 修改车辆信息
+	 * 
+	 * @param custId
+	 * @return
+	 */
+	
+	@PUT
+	@Path("/UpdateCarInfo")
+	@Consumes({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
+	void updateCarInfoById(CarInfo carInfo);// 修改客户车辆信息
+    
+	
+	/**
+	 * 删除车辆信息
+ 	 * 通过deleteCar字段进行逻辑删除 
+	 * @param custId
+	 * @return
+	 */
+	@PUT
+	@Path("/deleteCarInfo")
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
+	void deleteCarInfo(CarInfo carInfo);// 根据id删除客户车辆信息
+
+	/**
+	 * 
+	 * 
+	 * @param cardId
+	 * @return
+	 */
+	/*@GET
+	@Path("/getChargeBycardIdRest/{cardId}")
+	@Produces(MediaType.APPLICATION_JSON)
+	CollectFees getChargeBycardIdRest(@PathParam("cardId") String cardId);
+*/
+	/**
+	 * 根据客户id查询车辆信息
+	 * 
+	 * @param custId
+	 * @return
+	 */
+	@GET
+	@Path("/getCarInfo/{personId}")
+	@Produces(MediaType.APPLICATION_JSON)
+	List<CarInfo> getCarInfo(@PathParam("personId") String personId);
+	
+	/**
+	 * 通过查询相关信息查询车辆信息
+	 * 创建by肖聪   2015/6/23
+	 */
+	
+	@POST
+	@Path("/getCarInfoByPerson")
+	@Produces(MediaType.APPLICATION_JSON)
+	List<SearchCar> getCarInfoByPerson(SearchCar searchCar);
+	
+	/**
+     * 根据搜索条件查询车辆信息
+     * @param Search
+     * @return
+     */
+    @POST
+  	@Path("/listSearchCarInfo")
+  	@Produces(MediaType.APPLICATION_JSON)
+    List<CarInfo> listSearchCarInfo(Search search);
+    
+    /**
+     * 根据搜索条件查询办理人和授权人车辆信息
+     * @param Search
+     * @return
+     */
+    @POST
+  	@Path("/listSearchCarInfoAu")
+  	@Produces(MediaType.APPLICATION_JSON)
+    List<CarInfo> listSearchCarInfoAu(Search search);
+    
+	/**
+	 * 通过客户id分页查询删除车辆信息
+	 * 
+	 * @param 
+	 * @return
+	 */
+	@POST
+	@Path("/listPageCarInfoByDelete")
+	@Produces(MediaType.APPLICATION_JSON)
+	PageRestful listPageCarInfoByDelete(CarInfo carInfo);
+	/**
+	 * 通过客户id分页查询车辆信息
+	 * 
+	 * @param 
+	 * @return
+	 */
+	@POST
+	@Path("/listPageCarInfoByTransactor")
+	@Produces(MediaType.APPLICATION_JSON)
+	PageRestful listPageCarInfoByTransactor(CarInfo carInfo);
+    
+	@POST
+	@Path("/listPageCarInfoByContion")
+	@Produces(MediaType.APPLICATION_JSON)
+	PageRestful listPageCarInfoByContion(CarInfo carInfo);
+	
+	/**
+	 * 2016-7-13 ylq
+	 * 根据 search传入条件，查询车辆信息。(房屋编号，人员姓名和车牌号。Like匹配)
+	 * @param search
+	 * @return PageRestful
+	 */
+	@POST
+	@Path("/listPageCarInfoBySearchItems")
+	@Produces(MediaType.APPLICATION_JSON)
+	PageRestful listPageCarInfoBySearchItems(Search search);
+	
+	/**
+	 * 删除车辆信息
+ 	 * 通过deleteCar字段进行逻辑删除 
+	 * @param custId
+	 * @return
+	 */
+	@POST
+	@Path("/updateCarInfoDeleteCarByCarId")
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
+	void updateCarInfoDeleteCarByCarId(CarInfo carInfo);// 根据id更改客户车辆删除状态
+	
+}

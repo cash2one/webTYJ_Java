@@ -1,0 +1,69 @@
+package com.flf.service;
+
+import java.util.List;
+
+import javax.jws.WebService;
+import javax.ws.rs.Consumes;
+import javax.ws.rs.GET;
+import javax.ws.rs.POST;
+import javax.ws.rs.PUT;
+import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
+import javax.ws.rs.Produces;
+import javax.ws.rs.core.MediaType;
+
+import com.flf.entity.AreaTypeNew;
+import com.flf.entity.ChargeItemBilling;
+import com.flf.entity.PageRestful;
+import com.flf.entity.ProjectBilling;
+import com.flf.entity.Staff;
+
+@WebService
+@Path("/ChargeItemBilling")
+public interface ChargeItemBillingService {
+	/**
+	 * 通过项目Id查询
+	 * @param orderId
+	 * @return
+	 */
+	@GET
+	@Path("/getChargeItemBillingbyProjectId/{id}")
+	@Produces(MediaType.APPLICATION_JSON)
+	List<ChargeItemBilling> getChargeItemBillingbyProjectIdRes(@PathParam("id") String id);
+	
+	/**
+	 * 根据项目计费表id查询项目的一级收费项目详情
+	 * 
+	 */
+	@POST
+	@Path("/listPageChargeItemBillingListbyId")
+	@Produces(MediaType.APPLICATION_JSON)
+	PageRestful listPageChargeItemBillingListbyIdRes(ChargeItemBilling chargeItemBilling);
+	
+	/**
+	 * 根据id查询数据集
+	 * @param chargeItemBilling
+	 * @return
+	 */
+	 @POST
+	 @Path("/selectIds")
+	 @Produces(MediaType.APPLICATION_JSON)
+	 ChargeItemBilling selectIdsRes(ChargeItemBilling chargeItemBilling);
+	 
+	 /**
+	  * 新增面积类型
+	  * @return
+	  */	
+	@POST
+	@Path("/insertChargeItemBilling")
+	@Consumes({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
+	void insertChargeItemBillingRestful(ChargeItemBilling chargeItemBilling);
+	
+	/**
+	 *修改
+	 */
+	@PUT
+	@Path("/updateChargeItemBilling")
+	@Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+	void updateChargeItemBilling(ChargeItemBilling chargeItemBilling);
+}

@@ -1,0 +1,361 @@
+<!--
+    pageName:【车辆登记记录】物业服务人员主页中车辆管理
+    Author:钟加诚
+   jsPath:js/controllers/propertyService/vehicleManagement/vehicleManagementCheck.js
+   最后修改时间：2015/5/28
+   修改人：李斌
+   修改时间：2015/6/3
+   -->
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>新增车辆</title>
+   <!--  <script>
+        function click_a(divDisplay)
+        {
+            if(document.getElementById(divDisplay).style.display != "block")
+            {
+                document.getElementById(divDisplay).style.display = "block";
+            }
+            else
+            {
+                document.getElementById(divDisplay).style.display = "none";
+            }
+        }
+    </script> -->
+</head>
+<body>
+<div class="complaint_user_list" style="margin-top: 20px;">
+    <div id="myTabContent" class="tab-content">
+        <div id="divOne_2" class="tab-pane fade in active">
+        <table class="table-bordered" style="width:80%;text-align: center;margin: 60px">
+            <tr>
+                <td>关联房屋地址</td>
+                <td ><input type="text" style="width: 200px" placeholder="房屋地址">{{houseone.houseAddress}}
+                    <a href="#divOne_1" data-toggle="tab"> <span class="glyphicon glyphicon-search btn btn-lg" aria-hidden="true" data-toggle="modal" data-target="#file" ng-click="selectHouseBycustId()"></span></span></a>
+                </td>
+                <td style="width: 40%" >车辆颜色</td>
+                <td ><input type="text" style="width: 290px" ng-model="addCarInfo.carColor"></td>
+
+            </tr>
+            <tr >
+                <td style="width: 40%" >车牌号码</td>
+                <td ><input type="text" style="width: 290px" ng-model="addCarInfo.carNum"></td>
+                <td>注册登记日期</td>
+                <td ><input type="text" style="width: 290px" ng-model="addCarInfo.regeditDate"></td>
+            </tr>
+            <tr>
+                <td>车辆类型</td>
+                <td ><input type="text" style="width: 290px" ng-model="addCarInfo.carType"></td>
+                <td>发证日期</td>
+                <td ><input type="text" style="width: 290px" ng-model="addCarInfo.certificationDate"></td>
+            </tr>
+            <tr>
+                <td>车辆品牌</td>
+                <td ><input type="text" style="width: 290px" ng-model="addCarInfo.carBrand"></td>
+                <td>车辆所有人</td>
+               <!--  <td ><input type="text" style="width: 290px" ng-model="addCarInfo.owner"></td> -->
+               <td><select ng-model="personBuildings.id" ng-options="p.id as p.custName+'  '+p.relation for p in personBuildings" ng-change="choicePerson(personBuildings.id)"></select></td>
+            </tr>
+            <tr>
+                <td>车辆型号</td>
+                <td ><input type="text" style="width: 290px" ng-model="addCarInfo.carStyle"></td>
+                <td>车辆识别代号</td>
+                <td ><input type="text" style="width: 290px" ng-model="addCarInfo.discriminateCode"></td>
+            </tr>
+            <tr>
+                <td>发动机号码</td>
+                <td ><input type="text" style="width: 290px" ng-model="addCarInfo.engineNum"></td>
+                <td>登记时间</td>
+                <td ><input type="text" style="width: 290px" ng-model="addCarInfo.recordDate"></td>
+            </tr>
+            <tr>
+                <td>行驶证号</td>
+                <td ><input type="text" style="width: 290px" ng-model="addCarInfo.drivingLicense"></td>
+                <td>登记人</td>
+                <td ><input type="text" style="width: 290px" ng-model="addCarInfo.registrant"></td>
+            </tr>
+            <tr>
+                <td>上传附件</td>
+                <td ><input type="text" style="width: 290px" value="上传文件"></td>
+            </tr>
+        </table>
+            <button style="margin-left: 250px;" ng-click="insertCar()">提交</button>
+            <button style="margin-left: 150px;" ng-click="resetAddCar()">取消</button>
+            <button style="margin-left: 150px;" ng-click="selectHouseone()">打印</button>
+        </div>
+   <div class="modal fade" id="file" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+            <div class="modal-dialog" style="width: 80%">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close"
+                                data-dismiss="modal" aria-hidden="true">
+                            &times;
+                        </button>
+                        <h4 class="modal-title" id="myModalfees">
+                            查询房屋
+                        </h4>
+                    </div>
+                    <div class="modal-body">
+                        <table>
+                            <tr>
+                                <td>姓名：</td>
+                                <td><label><input type="text" class="form-control input-sm toutou" ng-model="search.staffName"></label></td>
+                                <td>客户编号：</td>
+                                <td><label><input type="text" class="form-control input-sm toutou" ng-model="search.custCode"></label></td>
+                                <td>身份证号：</td>
+                                <td><label><input type="text" class="form-control input-sm toutou" ng-model="search.idNum"></label></td>
+                                <td style="padding-left: 10px">
+                                    <button class="btn-default" ng-click="selectHouse()">搜索</button>
+
+                                </td>
+                            </tr>
+                        </table>
+                        <div class="container" style="padding: 10px 10px 0;width: 97%;">
+                            <div class="media-right">
+                               <div class="row" ng-repeat="house in house" ng-show="house.id!=null">
+                                   
+                                        <div class="media">
+                                            <div class="media-left">
+                                                <a href="#" ng-click="choiceHouse(house.id)">
+                                                    <img src="images/propertyService/choiceHousing/u81.jpg" width="50px;" height="50px" style="margin-top: 5px;">
+                                                </a>
+                                            </div>
+                                            <div class="media-body">
+
+                                                <div class="row" >
+                         
+                                                    <div class="col-md-offset-9">
+                                                        <a href="#" data-toggle="modal" data-target="#showModal">
+                                                            <span class="glyphicon glyphicon-search btn" aria-hidden="true"></span>
+                                                        </a>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+						                            <div class="col-md-2">房屋地址:{{house.houseAddress}}</div>
+                                                    <div class="col-md-2">入伙状态:{{house.joinState}}</div>
+                                                    
+                                                    <div class="col-md-2">销售状态:{{house.marketState}}</div>
+                                                    <div class="col-md-2">竣工面积:{{house.houseArea}}</div>
+                                                    <div class="col-md-3">房屋户型:{{house.houseName}}</div>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    
+                                </div>
+
+    </div>
+</div>
+<div class="modal-footer">
+                   <button type="button" class="btn btn-primary" data-dismiss="modal" ng-click="selectPersonBuilding()">
+                       确认
+                   </button>
+                   <button type="button" class="btn btn-default"
+                           data-dismiss="modal" >取消
+                   </button>
+                   <button type="button" class="btn btn-default"
+                           data-dismiss="modal">打印
+                   </button>
+               </div>
+<!-- <div class="complaint_user_list" style="margin-top: 20px;">
+    <div id="myTabContent" class="tab-content">
+        <div id="divOne_2" class="tab-pane fade in active">
+        <table class="table-bordered" style="width:80%;text-align: center;margin: 60px">
+            <tr>
+                <td>关联房屋地址</td>
+                <td ><input type="text" style="width: 200px" placeholder="房屋地址" ng-blind="houseone.houseAddress">
+                    <a href="#divOne_1" data-toggle="tab"><span class="glyphicon glyphicon-search btn btn-sm" aria-hidden="true" style="margin-left: -60px"></span></a>
+                </td>
+                <td style="width: 40%" >车辆颜色</td>
+                <td ><input type="text" style="width: 290px" ng-model="addCarInfo.carColor"></td>
+
+            </tr>
+            <tr >
+                <td style="width: 40%" >车牌号码</td>
+                <td ><input type="text" style="width: 290px" ng-model="addCarInfo.carNum"></td>
+                <td>注册登记日期</td>
+                <td ><input type="text" style="width: 290px" ng-model="addCarInfo.regeditDate"></td>
+            </tr>
+            <tr>
+                <td>车辆类型</td>
+                <td ><input type="text" style="width: 290px" ng-model="addCarInfo.carType"></td>
+                <td>发证日期</td>
+                <td ><input type="text" style="width: 290px" ng-model="addCarInfo.certificationDate"></td>
+            </tr>
+            <tr>
+                <td>车辆品牌</td>
+                <td ><input type="text" style="width: 290px" ng-model="addCarInfo.carBrand"></td>
+                <td>车辆所有人</td>
+                <td ><input type="text" style="width: 290px" ng-model="addCarInfo.owner"></td>
+            </tr>
+            <tr>
+                <td>车辆型号</td>
+                <td ><input type="text" style="width: 290px" ng-model="addCarInfo.carStyle"></td>
+                <td>车辆识别代号</td>
+                <td ><input type="text" style="width: 290px" ng-model="addCarInfo.discriminateCode"></td>
+            </tr>
+            <tr>
+                <td>发动机号码</td>
+                <td ><input type="text" style="width: 290px" ng-model="addCarInfo.engineNum"></td>
+                <td>登记时间</td>
+                <td ><input type="text" style="width: 290px" ng-model="addCarInfo.recordDate"></td>
+            </tr>
+            <tr>
+                <td>行驶证号</td>
+                <td ><input type="text" style="width: 290px" ng-model="addCarInfo.drivingLicense"></td>
+                <td>登记人</td>
+                <td ><input type="text" style="width: 290px" ng-model="addCarInfo.registrant"></td>
+            </tr>
+            <tr>
+                <td>上传附件</td>
+                <td ><input type="text" style="width: 290px" value="上传文件"></td>
+            </tr>
+        </table>
+            <button style="margin-left: 250px;" ng-click="insertCar()">提交</button>
+            <button style="margin-left: 150px;" ng-click="resetAddCar()">取消</button>
+            <button style="margin-left: 150px;" ng-click="selectHouseone()">打印</button>
+        </div>
+
+        <div class="container tab-pane fade" style="padding: 10px 10px 0;width: 97%;" id="divOne_1">
+            <form id="form1" name="form1" method="post" action="">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="col-md-1">姓名:</div>
+                        <div class="col-md-2"><input type="text" ng-model="search.staffName"></div>
+                        <div class="col-md-1">客户编号:</div>
+                        <div class="col-md-2"><input type="text" ng-model="search.idNum"></div>
+                        <div class="col-md-1">身份证号:</div>
+                        <div class="col-md-2"><input type="text" ng-model="search.custCode"></div>
+                        <div class="col-md-1">筛选条件:</div>
+                        <div class="col-md-2">
+                            <input name="queryType" type="radio" disabled>人员&nbsp;&nbsp;&nbsp;&nbsp;
+                            <input name="queryType" type="radio" checked/>资产
+                        </div>
+                    </div>
+
+                    <div class="col-md-12" style="margin-top: 10px">
+                        <div class="col-md-1">资产类型:</div>
+                        <div class="col-md-2">
+                            <select name="" style="width: 80px" ng-model="search.houseName">
+                                <option>住宅</option>
+                                <option>商铺</option>
+                                <option>公共建筑</option>
+                            </select>
+                        </div>
+                        <div class="col-md-1">资产编号:</div>
+                        <div class="col-md-2"><input type="text" ng-model="search.houseNum"></div>
+                        <div class="col-md-1">房产证号:</div>
+                        <div class="col-md-2"><input type="text" ng-model="search.premisesPermit"></div>
+                        <div class="col-md-1">地址:</div>
+                        <div class="col-md-2"><input type="text" ng-model="search.houseAddress"></div>
+                    </div>
+                </div>
+                <table style="width:950px;margin-left: 20px;margin-top: 10px">
+                    <tr>
+                        <td>项目名称:</td>
+                        <td><select name="" style="width: 80px"></select></td>
+                        <td>期:</td>
+                        <td><select name="" style="width: 80px"></select></td>
+                        <td>区:</td>
+                        <td><select name="" style="width: 80px"></select></td>
+                        <td>楼栋号:</td>
+                        <td><select name="" style="width: 80px"></select></td>
+                        <td>单元:</td>
+                        <td><select name="" style="width: 80px"></select></td>
+                        <td>房号:</td>
+                        <td><select name="" style="width: 80px"></select></td>
+                    </tr>
+                </table>
+                <button class="btn btn-defualt" ng-click="selectHouse()">搜索房屋</button>
+            </form>
+
+            <div>
+                <div class="row" ng-repeat="house in house" ng-show="house.id!=null">
+                    <div class="media" >
+                        <div class="media-left">
+                            <a href="#" ng-click="choiceHouse(house.id)">
+                                <img src="images/propertyService/choiceHousing/u81.jpg" width="50px;" height="50px" style="margin-top: 5px;">
+                            </a>
+                        </div>
+                        <div class="media-body">
+                            <div class="row">
+                                <div class="col-md-4">房屋地址：{{house.houseAddress}}</div>
+                                <div class="col-md-offset-9">
+                                    <a href="#">
+                                        <span class="glyphicon glyphicon-search btn" aria-hidden="true"></span>
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-2">房屋编码：{{house.houseNum}}</div>
+                                <div class="col-md-2">入伙状态：{{house.joinState}}</div>
+                                <div class="col-md-2">销售状态:{{house.marketState}}</div>
+                                <div class="col-md-2">竣工面积:{{house.houseArea}}</div>
+                                <div class="col-md-3">房屋户型:{{house.houseName}}</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="media">
+                        <div class="media-left">
+                            <a href="#">
+                                <img src="images/propertyService/choiceHousing/u81.jpg" width="50px;" height="50px" style="margin-top: 5px;">
+                            </a>
+                        </div>
+                        <div class="media-body">
+                            <div class="row">
+                                <div class="col-md-4">房屋地址：桃源居3期7区2栋1单元702室</div>
+                                <div class="col-md-offset-9">
+                                    <a href="#">
+                                        <span class="glyphicon glyphicon-search btn" aria-hidden="true"></span>
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-2">房屋编码：00876</div>
+                                <div class="col-md-2">入伙状态：未入伙</div>
+                                <div class="col-md-2">销售状态:已销售</div>
+                                <div class="col-md-2">竣工面积:98</div>
+                                <div class="col-md-3">房屋户型:四房二厅二卫</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="media">
+                        <div class="media-left">
+                            <a href="#">
+                                <img src="images/propertyService/choiceHousing/u81.jpg" width="50px;" height="50px" style="margin-top: 5px;">
+                            </a>
+                        </div>
+                        <div class="media-body">
+                            <div class="row">
+                                <div class="col-md-4">房屋地址：桃源居3期7区2栋1单元702室</div>
+                                <div class="col-md-offset-9">
+                                    <a href="#">
+                                        <span class="glyphicon glyphicon-search btn" aria-hidden="true"></span>
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-2">房屋编码：00876</div>
+                                <div class="col-md-2">入伙状态：未入伙</div>
+                                <div class="col-md-2">销售状态:已销售</div>
+                                <div class="col-md-2">竣工面积:98</div>
+                                <div class="col-md-3">房屋户型:四房二厅二卫</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            <a href="#divOne_2" data-toggle="tab" class="btn" style="margin-left: 600px;border: 1px solid" ng-click="selectPersonBuilding()">确定</a>
+            </div>
+        </div>
+    </div>
+</div> -->
+</div>
+</div>
+</body>
+</html>

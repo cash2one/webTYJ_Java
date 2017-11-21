@@ -1,0 +1,47 @@
+package com.flf.mapper;
+
+import com.flf.entity.AreaNew;
+import com.flf.entity.BuildingNew;
+
+import java.util.List;
+public interface BuildingNewMapper {
+	List<BuildingNew> listPageBuildingNew(BuildingNew building);  //分页查询所有建筑面积信息
+	
+	List<BuildingNew> listAllBuildingNew(); //查询所有建筑面积信息
+	
+	BuildingNew getBuildingNewById(String id);//根据id查询建筑信息详情
+	
+    int insertBuildingNew(BuildingNew building);//添加建筑信息
+    
+    int updateBuildingNew(BuildingNew building);//修改建筑信息
+
+    int deleteBuildingNew(String id);//根据id删除建筑信息
+    
+    int insertBuildingNewUUID(BuildingNew building);  //java生成UUID添加建筑信息表
+    
+    BuildingNew BuildingAreaNewResultMap(String id);//根据建筑id查询建筑信息
+    
+    
+    List<BuildingNew> listBuildingNewByRegionId(String regionId); // 根据区域id查询建筑信息
+    
+    
+    List<BuildingNew> ListBuildingNewByprojectId(String projectId); //根据项目id查询未分区的建筑信息
+    
+    
+    int updateBuildingNewSetRegionId(BuildingNew building);//修改建筑所在区
+    
+    List<BuildingNew> ListBuildingNewprojectIdAll(String projectId); ////根据项目id查询建筑信息
+    
+    List<BuildingNew> listBuildingNewsByProjectIdAndRegionId(String projectId,String regionId);//根据项目Id和分区Id获取建筑信息
+    
+    int moveOutFromRegion(String buildingId);//将建筑Id为指定值得建筑移出分区
+    
+    int moveToRegion(String regionId,String buildingId);//将建筑移动到指定分区
+    
+    int cleanAllBuildingsInRegion(String regionId);//将所有在指定分区中的建筑清除其分区id
+    
+    int insertList(List<BuildingNew> list);//批量插入建筑信息
+
+	BuildingNew getBuildingNewByBuildingName(String buildingName);//根据区域和栋信息查看建筑是否已经存在
+	BuildingNew getBuildingNewByBuildingNameAndParcelId(String buildingName,String parcelId);//根据区域和栋信息,宗地号查看建筑是否已经存在
+}

@@ -1,0 +1,530 @@
+<!--
+     作者:彭婷婷
+    页面名称:内部专业线合同初始化----合同查询页面
+    js路径:js/controllers/internalProfession/contractInitialization/contractInquiry01
+    修改人:王志刚
+    修改时间  :2015/6/4
+    修改内容：合同查询页面样式修改
+-->
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>合同查询</title>
+</head>
+<body>
+<div class="searchtable_height">
+    <table width="100%">
+        <tr>
+            <td class="search_td_top"  height="50px" width="5%" bgcolor="dddddd">
+                序号
+            </td>
+            <td class="search_td_top"  height="50px"  width="10%">
+                办理人
+            </td>
+            <td class="search_td_top"  height="50px"  width="5%">
+                房屋编号
+            </td>
+            <td class="search_td_top"  height="50px"  width="10%">
+                业主
+            </td>
+            <td class="search_td_top"  height="50px"  width="20%">
+                房层地址
+            </td>
+            <td class="search_td_top"  height="50px"  width="10%">
+                经办人
+            </td>
+            <td class="search_td_top"  height="50px"  width="5%">
+                办理时间
+            </td>
+            <td class="search_td_top"  height="50px"  width="10%">
+                业务收户
+            </td>
+            <td class="search_td_top"  height="50px"  width="5%">
+                验房单号
+            </td>
+            <td class="search_td_top"  height="50px"  width="10%">
+                维修单号
+            </td>
+            <td class="search_td_top"  height="50px"  width="10%">
+                合同详情
+            </td>
+
+        </tr>
+        <tr>
+            <td colspan="10">  </td>
+        </tr>
+        <tr>
+            <td class="info_td"  height="42px" align="center" valign="middle" width="5%">
+                1
+            </td>
+            <td class="info_td"   height="42px" align="center" valign="middle" width="10%">
+                张三
+            </td>
+            <td class="info_td"  height="42px" align="center" valign="middle" width="5%">
+                1099727
+            </td>
+            <td  class="info_td"  height="42px" align="center" valign="middle" width="10%">
+                张三
+            </td>
+            <td class="info_td"  height="42px" align="center" valign="middle" width="20%">
+                桃园居一期一栋一单元一层1002室
+            </td>
+            <td class="info_td"  height="42px" align="center" valign="middle" width="10%">
+                李四
+            </td>
+            <td class="info_td"  height="42px" align="center" valign="middle" width="5%">
+                20150808
+            </td>
+            <td class="info_td"  height="42px" align="center" valign="middle" width="10%">
+                已收房
+            </td>
+            <td class="info_td"  height="42px" align="center" valign="middle" width="5%">
+                99000009
+            </td>
+            <td class="info_td"  height="42px" align="center" valign="middle" width="10%">
+                8800980
+            </td>
+            <td class="info_td"  height="42px" align="center" valign="middle" width="10%">
+                <a href="#neworlostModal" data-toggle="modal" >查看详情</a>
+            </td>
+        </tr>
+        <tr >
+            <td class="info_td"  height="42px" align="center" valign="middle" width="5%">
+                1
+            </td>
+            <td class="info_td"  height="42px" align="center" valign="middle" width="10%">
+                张三
+            </td>
+            <td class="info_td"  height="42px" align="center" valign="middle" width="5%">
+                1099727
+            </td>
+            <td class="info_td"  height="42px" align="center" valign="middle" width="10%">
+                张三
+            </td>
+            <td class="info_td"  height="42px" align="center" valign="middle" width="20%">
+                桃园居一期一栋一单元一层1002室
+            </td>
+            <td class="info_td"  height="42px" align="center" valign="middle" width="10%">
+                李四
+            </td>
+            <td class="info_td"  height="42px" align="center" valign="middle" width="5%">
+                20150808
+            </td>
+            <td class="info_td"  height="42px" align="center" valign="middle" width="10%">
+                已收房
+            </td>
+            <td  class="info_td" height="42px" align="center" valign="middle" width="5%">
+                99000009
+            </td>
+            <td class="info_td"  height="42px" align="center" valign="middle" width="10%">
+                8800980
+            </td>
+            <td class="info_td"  height="42px" align="center" valign="middle" width="10%">
+                <a href="#neworlostModal" data-toggle="modal" >查看详情</a>
+            </td>
+        </tr>
+        <tr>
+            <td  class="info_td" height="42px" align="center" valign="middle" width="5%">
+                1
+            </td>
+            <td class="info_td"  height="42px" align="center" valign="middle" width="10%">
+                张三
+            </td>
+            <td class="info_td"  height="42px" align="center" valign="middle" width="5%">
+                1099727
+            </td>
+            <td class="info_td"  height="42px" align="center" valign="middle" width="10%">
+                张三
+            </td>
+            <td class="info_td"  height="42px" align="center" valign="middle" width="20%">
+                桃园居一期一栋一单元一层1002室
+            </td>
+            <td class="info_td"  height="42px" align="center" valign="middle" width="10%">
+                李四
+            </td>
+            <td class="info_td"   height="42px" align="center" valign="middle" width="5%">
+                20150808
+            </td>
+            <td  class="info_td"  height="42px" align="center" valign="middle" width="10%">
+                已收房
+            </td>
+            <td class="info_td"   height="42px" align="center" valign="middle" width="5%">
+                99000009
+            </td>
+            <td class="info_td"   height="42px" align="center" valign="middle" width="10%">
+                8800980
+            </td>
+            <td class="info_td"   height="42px" align="center" valign="middle" width="10%">
+                <a href="#neworlostModal" data-toggle="modal" >查看详情</a>
+            </td>
+        </tr>
+        <tr>
+            <td class="info_td"   height="42px" align="center" valign="middle" width="5%">
+                1
+            </td>
+            <td  class="info_td"  height="42px" align="center" valign="middle" width="10%">
+                张三
+            </td>
+            <td  class="info_td"  height="42px" align="center" valign="middle" width="5%">
+                1099727
+            </td>
+            <td class="info_td"   height="42px" align="center" valign="middle" width="10%">
+                张三
+            </td>
+            <td class="info_td"   height="42px" align="center" valign="middle" width="20%">
+                桃园居一期一栋一单元一层1002室
+            </td>
+            <td class="info_td"   height="42px" align="center" valign="middle" width="10%">
+                李四
+            </td>
+            <td  class="info_td"  height="42px" align="center" valign="middle" width="5%">
+                20150808
+            </td>
+            <td  class="info_td"  height="42px" align="center" valign="middle" width="10%">
+                已收房
+            </td>
+            <td class="info_td"   height="42px" align="center" valign="middle" width="5%">
+                99000009
+            </td>
+            <td  class="info_td"   height="42px" align="center" valign="middle" width="10%">
+                8800980
+            </td>
+            <td  class="info_td"   height="42px" align="center" valign="middle" width="10%">
+                <a href="#neworlostModal" data-toggle="modal" >查看详情</a>
+            </td>
+        </tr>
+        <tr>
+            <td  class="info_td"  height="42px" align="center" valign="middle" width="5%">
+                1
+            </td>
+            <td  class="info_td"  height="42px" align="center" valign="middle" width="10%">
+                张三
+            </td>
+            <td  class="info_td"  height="42px" align="center" valign="middle" width="5%">
+                1099727
+            </td>
+            <td  class="info_td"  height="42px" align="center" valign="middle" width="10%">
+                张三
+            </td>
+            <td  class="info_td"  height="42px" align="center" valign="middle" width="20%">
+                桃园居一期一栋一单元一层1002室
+            </td>
+            <td  class="info_td"  height="42px" align="center" valign="middle" width="10%">
+                李四
+            </td>
+            <td  class="info_td"  height="42px" align="center" valign="middle" width="5%">
+                20150808
+            </td>
+            <td  class="info_td"  height="42px" align="center" valign="middle" width="10%">
+                已收房
+            </td>
+            <td  class="info_td"  height="42px" align="center" valign="middle" width="5%">
+                99000009
+            </td>
+            <td  class="info_td"  height="42px" align="center" valign="middle" width="10%">
+                8800980
+            </td>
+            <td  class="info_td"  height="42px" align="center" valign="middle" width="10%">
+                <a href="#neworlostModal" data-toggle="modal" >查看详情</a>
+            </td>
+        </tr>
+        <tr>
+            <td  class="info_td"  height="42px" align="center" valign="middle" width="5%">
+                1
+            </td>
+            <td  class="info_td"  height="42px" align="center" valign="middle" width="10%">
+                张三
+            </td>
+            <td class="info_td"   height="42px" align="center" valign="middle" width="5%">
+                1099727
+            </td>
+            <td  class="info_td"  height="42px" align="center" valign="middle" width="10%">
+                张三
+            </td>
+            <td  class="info_td"  height="42px" align="center" valign="middle" width="20%">
+                桃园居一期一栋一单元一层1002室
+            </td>
+            <td  class="info_td"   height="42px" align="center" valign="middle" width="10%">
+                李四
+            </td>
+            <td  class="info_td"   height="42px" align="center" valign="middle" width="5%">
+                20150808
+            </td>
+            <td  class="info_td"   height="42px" align="center" valign="middle" width="10%">
+                已收房
+            </td>
+            <td  class="info_td"   height="42px" align="center" valign="middle" width="5%">
+                99000009
+            </td>
+            <td  class="info_td"   height="42px" align="center" valign="middle" width="10%">
+                8800980
+            </td>
+            <td  class="info_td"   height="42px" align="center" valign="middle" width="10%">
+                <a href="#neworlostModal" data-toggle="modal" >查看详情</a>
+            </td>
+        </tr>
+        <tr>
+            <td  class="info_td"  height="42px" align="center" valign="middle" width="5%">
+                1
+            </td>
+            <td  class="info_td"   height="42px" align="center" valign="middle" width="10%">
+                张三
+            </td>
+            <td  class="info_td"   height="42px" align="center" valign="middle" width="5%">
+                1099727
+            </td>
+            <td  class="info_td"   height="42px" align="center" valign="middle" width="10%">
+                张三
+            </td>
+            <td  class="info_td"   height="42px" align="center" valign="middle" width="20%">
+                桃园居一期一栋一单元一层1002室
+            </td>
+            <td  class="info_td"   height="42px" align="center" valign="middle" width="10%">
+                李四
+            </td>
+            <td  class="info_td"   height="42px" align="center" valign="middle" width="5%">
+                20150808
+            </td>
+            <td  class="info_td"   height="42px" align="center" valign="middle" width="10%">
+                已收房
+            </td>
+            <td  class="info_td"   height="42px" align="center" valign="middle" width="5%">
+                99000009
+            </td>
+            <td  class="info_td"   height="42px" align="center" valign="middle" width="10%">
+                8800980
+            </td>
+            <td  class="info_td"   height="42px" align="center" valign="middle" width="10%">
+                <a href="#neworlostModal" data-toggle="modal" >查看详情</a>
+            </td>
+        </tr>
+        <tr>
+            <td  class="info_td"   height="42px" align="center" valign="middle" width="5%">
+                1
+            </td>
+            <td   class="info_td"  height="42px" align="center" valign="middle" width="10%">
+                张三
+            </td>
+            <td  class="info_td"   height="42px" align="center" valign="middle" width="5%">
+                1099727
+            </td>
+            <td  class="info_td"   height="42px" align="center" valign="middle" width="10%">
+                张三
+            </td>
+            <td  class="info_td"   height="42px" align="center" valign="middle" width="20%">
+                桃园居一期一栋一单元一层1002室
+            </td>
+            <td  class="info_td"   height="42px" align="center" valign="middle" width="10%">
+                李四
+            </td>
+            <td  class="info_td"   height="42px" align="center" valign="middle" width="5%">
+                20150808
+            </td>
+            <td class="info_td"    height="42px" align="center" valign="middle" width="10%">
+                已收房
+            </td>
+            <td  class="info_td"   height="42px" align="center" valign="middle" width="5%">
+                99000009
+            </td>
+            <td  class="info_td"   height="42px" align="center" valign="middle" width="10%">
+                8800980
+            </td>
+            <td  class="info_td"   height="42px" align="center" valign="middle" width="10%">
+                <a href="#neworlostModal" data-toggle="modal" >查看详情</a>
+            </td>
+        </tr>
+    </table>
+</div>
+
+<!--合同详情模态框开始-->
+<div class="modal fade" id="neworlostModal" role="dialog" aria-label="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog" style="width:90%">
+        <div class="modal-content">
+            <div class="modal-header" style="height: 50px">
+                合同详情
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+
+            <div class="modal-body">
+                <div class="row">
+                    <div class="row table-padding ">
+                        <div class="contract_newinfo">
+                            <table width="100%">
+                                <tr>
+                                    <td > 合同单号： </td>
+                                    <td>110488</td>
+                                    <td> 合同编号： </td>
+                                    <td>1155880</td>
+                                    <td> 合同类型： </td>
+                                    <td>施工合同一-豪庭装</td>
+                                    <td> 合同项目： </td>
+                                    <td>施工合同二-豪庭装</td>
+                                </tr>
+                                <tr>
+                                    <td> 合同甲方： </td>
+                                    <td colspan="3">桃园居物业管理中心</td>
+                                    <td> 合同甲方： </td>
+                                    <td colspan="3">桃园居物业管理中心</td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <!--创建合同编辑框结束-->
+                <div class="row">
+                    <!--专业类型选择表格-->
+                    <div class="col-lg-3 col-md-3 col-sm-6">
+                        <div class="professional_list">
+                            <div class="professional_list_title">
+                                已选择专业类型：
+                            </div>
+                            <div class="professional_height">
+                                <ul>
+                                    <li>强电  </li>
+                                    <ul>
+                                        <li>强电  </li>
+                                        <ul>
+                                            <li>强电  </li>
+                                        </ul>
+                                    </ul>
+                                    <li>强电  </li>
+                                    <li>强电  </li>
+                                    <li>强电  </li>
+                                    <li>强电  </li>
+                                    <li>强电  </li>
+                                    <li>强电  </li>
+                                    <li>强电  </li>
+                                    <li>强电  </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <!--专业类型选择表格结束-->
+                    <!--楼层勾选列表-->
+                    <div class="col-lg-5 col-md-5 col-sm-6">
+                        <div class="row scope-search-padding">
+                            <div class="contract_table">
+                                <span class="professional_list_title">选择施工范围</span>
+                                <table width="100%">
+                                    <tr>
+                                        <td class="tdtop" width="50%" height="42px">
+                                            区域
+                                        </td>
+                                    </tr>
+                                </table>
+                                <div class="table_search_height">
+                                    <table width="100%" >
+                                        <tr>
+                                            <td class="taarea5"  width="50%" height="42px">
+                                                1栋
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td class="taarea15" width="50%" height="42px">
+                                                A座
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td  class="taarea25" width="50%" height="42px">
+                                                1层
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td  class="taarea35" width="50%" height="42px">
+                                                1002室
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td  class="taarea35" width="50%" height="42px">
+                                                1002室
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td class="taarea5"  width="50%" height="42px">
+                                                1栋
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td class="taarea15" width="50%" height="42px">
+                                                A座
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td  class="taarea25" width="50%" height="42px">
+                                                1层
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td  class="taarea35" width="50%" height="42px">
+                                                1002室
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td  class="taarea35" width="50%" height="42px">
+                                                1002室
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!--楼层勾选列表结束-->
+
+                    <!--合同列表-->
+                    <div class="col-lg-4 col-md-4 col-sm-6">
+                        合同列表
+                        <div class="row contract_img_padding">
+                            <div class="contract_img_height">
+                                <div class="col-lg-6 col-md-6 col-sm-6">
+                                    <div class="contract_img_panner">
+                                        <img src="images/0602/upload.png">
+                                    </div>
+                                </div>
+                                <div class="col-lg-6 col-md-6 col-sm-6">
+                                    <div class="contract_img_panner">
+
+                                    </div>
+                                </div>
+                                <div class="col-lg-6 col-md-6 col-sm-6">
+                                    <div class="contract_img_panner">
+
+                                    </div>
+                                </div>
+                                <div class="col-lg-6 col-md-6 col-sm-6">
+                                    <div class="contract_img_panner">
+
+                                    </div>
+                                </div>
+                                <div class="col-lg-6 col-md-6 col-sm-6">
+                                    <div class="contract_img_panner">
+
+                                    </div>
+                                </div>
+                                <div class="col-lg-6 col-md-6 col-sm-6">
+                                    <div class="contract_img_panner">
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!--合同列表结束-->
+                    <input type="button"  class="authorizationb" value="修改">
+
+                </div>
+            </div>
+            <!--<div class="modal-footer">-->
+                <!--<button type="button" class="btn bg-primary" data-dismiss="modal" aria-label="Close">取消</button>-->
+                <!--<button type="button" class="btn bg-primary" data-dismiss="modal">提交</button>-->
+            <!--</div>-->
+        </div>
+    </div>
+</div>
+
+
+</body>
+</html>

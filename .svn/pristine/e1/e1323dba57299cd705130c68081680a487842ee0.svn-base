@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+    <script type="text/ng-template" id="top-personal">
+        <div ng-include="'page/propertyService/shopsHome/house/personal.html'" ng-controller="personalCtrl"></div>
+    </script>
+    <script type="text/ng-template" id="top-company">
+        <div ng-include="'page/propertyService/shopsHome/house/company.html'" ng-controller="companyCtrl"></div>
+    </script>
+</head>
+<body ng-controller="housingCtrl">
+<div class="complaint_user_list" style="padding:15px 1px;height: 300px">
+<!--添加入伙-->
+<div class="col-lg-4 col-md-4 col-sm-6">
+    <div class="panel" style="height: 250px;background-color: #f0f0f0">
+        <div class="panel_title">
+            <span class="panel_title_left">添加信息： </span>
+            <span class="panel_title_right"><span class="zoom_button"></span><span class="close_button"></span></span>
+        </div>
+        <div class="panel_info" style="margin-top: -20px">
+            <div class=" panel_info clear">
+                <div class="btn-group col-md-offset-11">
+                </div>
+            </div>
+            <div style="padding: 5px" align="center"><a href="#biaoqianye1" data-toggle="tab"><img class="glyphicon img3" ng-class="vm.collapsed?'glyphicon-chevron-up':'glyphicon-chevron-down'"
+                                                                                                   ng-click="vm.collapsed = !vm.collapsed" src="images/company/u1498.png" style="width: 200px;height: 150px" ></a> </div>
+        </div>
+    </div>
+</div>
+<!--添加入伙 end-->
+
+<div class="col-lg-8 col-md-8 col-sm-6 panel-collapse collapse" ng-class="{in: vm.collapsed}">
+    <div class="panel" style="height: 250px">
+        <div class="panel_title">
+            <div class="complaint_user_info_navigation" style="padding-top:5px;padding-left: 10px">
+                <a class="btn" ng-click="changeTemplate(0)">个人</a>
+                <a class="btn" ng-click="changeTemplate(1)">企业</a>
+            </div>
+            <input type="text" style="margin-top: 6px;width:250px;margin-left: 40px"   class="search_style_input"  placeholder="请输入搜索条件">
+        </div>
+        <div ng-include="currentTemplate" ></div>
+        <div style="margin-top: 150px;margin-left: 540px">
+            <button class="glyphicon" style="width: 50px;height: 30px" ng-click="vm.collapsed = !vm.collapsed">确认</button>
+            <button class="glyphicon" style="width: 50px;height: 30px" ng-click="vm.collapsed = !vm.collapsed">取消</button>
+        </div>
+    </div>
+</div>
+    </div>
+</body>
+</html>

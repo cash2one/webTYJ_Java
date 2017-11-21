@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.flf.mapper.PostTypeMapper" >
+  <resultMap id="BaseResultMap" type="PostType" >
+    <id column="post_type_id" property="postTypeId" jdbcType="INTEGER" />
+    <result column="post_type_name" property="postTypeName" jdbcType="VARCHAR" />
+    <result column="remark" property="remark" jdbcType="VARCHAR" />
+    <result column="division_id" property="divisionId" jdbcType="INTEGER" />
+  </resultMap>
+  
+  <select id="ListPostTypeAll" resultMap="BaseResultMap">
+  	select * from t_post_type		
+  </select>
+  
+    <select id="listPostTypeDivisionbyId" resultMap="BaseResultMap" parameterType="Integer">
+    
+  	select * from t_post_type where division_id=#{0}
+  </select>
+  
+  <select id="selectPostTypeById" resultMap="BaseResultMap" parameterType="Integer" >
+    select *
+    from t_post_type
+    where post_type_id = #{postTypeId,jdbcType=INTEGER}
+  </select>
+  
+  <delete id="deletePostTypeById" parameterType="Integer" >
+    delete from t_post_type
+    where post_type_id = #{postTypeId,jdbcType=INTEGER}
+  </delete>
+  
+  
+  <insert id="addPostType" parameterType="PostType" >
+    insert into t_post_type ( post_type_name, remark,division_id
+      )
+    values ( #{postTypeName}, #{remark,jdbcType=VARCHAR},#{divisionId,jdbcType=INTEGER}
+      )
+  </insert>
+  
+  <update id="updatePostTypeById" parameterType="PostType" >
+    update t_post_type
+   <set>
+   	<if test="divisionId!=null">
+   		division_id = #{divisionId,jdbcType=INTEGER}, 
+   	</if>
+   	<if test="postTypeName!=null">
+   	  post_type_name = #{postTypeName,jdbcType=VARCHAR},
+   	</if>
+   	<if test="remark!=null">
+   		remark = #{remark,jdbcType=VARCHAR}
+   	</if>
+   </set>
+    where post_type_id = #{postTypeId,jdbcType=INTEGER}
+  </update>
+</mapper>

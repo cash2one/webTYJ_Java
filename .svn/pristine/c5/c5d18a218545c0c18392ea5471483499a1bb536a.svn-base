@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.flf.mapper.DepositDeductMapper">
+	<resultMap type="DepositDeduct" id="BaseResultMap">
+		<id column="deposit_deduct_id" property="depositDeductId" jdbcType="VARCHAR"/>
+		<result column="deductions_date" property="deductionsDate" jdbcType="DATE"/>
+		<result column="deductions_sum" property="deductionsSum" jdbcType="DOUBLE"/>
+		<result column="deductions_name" property="deductionsName" jdbcType="VARCHAR"/>
+		<result column="bill_id" property="billId" jdbcType="VARCHAR"/>
+	</resultMap>
+	
+	<insert id="insertDepositDeduct" parameterType="DepositDeduct">
+		insert into tc_deposit_deduct (deposit_deduct_id,deductions_date,
+			deductions_sum,deductions_name,bill_id)
+		values (#{depositDeductId,jdbcType="VARCHAR"},#{deductionsDate,jdbcType="DATE"},
+				#{deductionsSum,jdbcType="DOUBLE"},#{deductionsName,jdbcType="VARCHAR"},
+				#{billId,jdbcType="VARCHAR"}
+		)
+	</insert>
+	
+	<select id="getDepositDeductsByAdvancePaymentId" parameterType="String" resultMap="BaseResultMap">
+		select a.* from tc_deposit_deduct a
+		left join tc_bill b on a.bill_id=b.bill_id
+		left join tc_bill_advance_payments_details_relation c on b.bill_id=c.bill_id
+		left join tc_advance_payments_details d on c.advance_payments_details_id=d.advance_payments_details_id
+		where d.advance_payments_details_id=#{0}
+	</select>
+	
+	<select id="countDeductionsSumByAdvancePaymentId" parameterType="String" resultType="java.lang.Double">
+		select sum(a.deductions_sum) from tc_deposit_deduct a
+		left join tc_bill b on a.bill_id=b.bill_id
+		left join tc_bill_advance_payments_details_relation c on b.bill_id=c.bill_id
+		left join tc_advance_payments_details d on c.advance_payments_details_id=d.advance_payments_details_id
+		where d.advance_payments_details_id=#{0}
+	</select>
+	
+	<update id="updateDepositDeduct" parameterType="DepositDeduct">
+		update tc_deposit_deduct
+			set
+				deposit_deduct_id=#{depositDeductId},
+				deductions_date=#{deductionsDate},
+				deductions_sum=#{deductionsSum},
+				deductions_name=#{deductionsName},
+				bill_id=#{billId}
+		where deposit_deduct_id=#{depositDeductId}
+	</update>
+	
+</mapper>

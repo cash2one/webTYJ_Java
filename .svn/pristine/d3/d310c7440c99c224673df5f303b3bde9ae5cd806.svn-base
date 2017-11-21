@@ -1,0 +1,175 @@
+<!--author:王志刚-->
+<!--页面名称：物业服务施工过程-->
+<!--js: 'controllers/propertyService/staffHome/decorate/workProgress'-->
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>施工过程</title>
+</head>
+<body ng-controller="workProgressCtrl">
+<div style="margin-top: 70px">
+
+    <table border="1" style="width: 90% ;margin:20px auto;text-align: center">
+            <tr>
+                <td>巡检人</td>
+                <td>巡检地址</td>
+                <td>业主</td>
+                <td>巡检时间</td>
+                <td>巡检结果</td>
+            </tr>
+<!-- author:gengxiaojiang -->
+<!-- 页面名称：动态的显示效果 -->
+<!-- 修改时间：2015年 6月1日 -->
+          <tr ng-repeat="myitem in Inspection">
+                <td style="text-align: center">{{myitem.inspectionPeople}}</th>
+                <td style="text-align: center">{{myitem.personCust.census}}</th>
+                <td>{{myitem.personCust.name}}</td>
+                <td>{{myitem.inspectionDate| date:"yyyy-MM-dd"}}</td>
+                <td><a href="#" ><span data-toggle="modal" data-target="#zhuangxiuModal">装修巡查记录表</span></a></td>
+            </tr>
+
+<!-- 
+        <tr>
+            <td  style="text-align: center">尹志平</th>
+            <td style="text-align: center">桃源居3期7区2栋1单元702室</th>
+            <td>周润发</td>
+            <td>2015/5/5</td>
+            <td><a href="#" ><span data-toggle="modal" data-target="#zhuangxiuModal">装修巡查记录表</span></a></td>
+        </tr>
+
+        <tr>
+            <td  style="text-align: center">尹志平</th>
+            <td style="text-align: center">桃源居3期7区2栋1单元702室</th>
+            <td>周润发</td>
+            <td>2015/5/5</td>
+            <td><a href="#" ><span data-toggle="modal" data-target="#zhuangxiuModal">装修巡查记录表</span></a></td>
+        </tr>
+
+        <tr>
+            <td  style="text-align: center">尹志平</th>
+            <td style="text-align: center">桃源居3期7区2栋1单元702室</th>
+            <td>周润发</td>
+            <td>2015/5/5</td>
+            <td><a href="#" ><span data-toggle="modal" data-target="#zhuangxiuModal">点击查看</span></a></td>
+        </tr>
+
+        <tr>
+            <td  style="text-align: center">尹志平</th>
+            <td style="text-align: center">桃源居3期7区2栋1单元702室</th>
+            <td>周润发</td>
+            <td>2015/5/5</td>
+            <td><a href="#" ><span data-toggle="modal" data-target="#zhuangxiuModal">点击查看</span></a></td>
+        </tr>
+
+        <tr>
+            <td  style="text-align: center">尹志平</th>
+            <td style="text-align: center">桃源居3期7区2栋1单元702室</th>
+            <td>周润发</td>
+            <td>2015/5/5</td>
+            <td><a href="#" ><span data-toggle="modal" data-target="#zhuangxiuModal">点击查看</span></a></td>
+        </tr>
+
+        <tr>
+            <td  style="text-align: center">尹志平</th>
+            <td style="text-align: center">桃源居3期7区2栋1单元702室</th>
+            <td>周润发</td>
+            <td>2015/5/5</td>
+            <td><a href="#" ><span data-toggle="modal" data-target="#zhuangxiuModal">点击查看</span></a></td>
+        </tr>
+         -->
+    </table>
+ 
+ <!-- 2015年6月1修改到此结束 -->
+
+
+    <div class="modal fade" id="zhuangxiuModal" role="dialog" aria-label="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header" style="background-color: #02a0e7;height: 50px">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <p>装修巡检记录表</p>
+                </div>
+
+                <div class="modal-body">
+                    <span style="margin-left: 25px">7区2 栋 1单元702室房</span> <span style="margin-left: 180px">编号：STR-KF010-1 </span>
+                    <table border="1" style="width: 90% ;margin:20px auto;text-align: center">
+                        <tr>
+                            <td>业主姓名</td>
+                            <td>周润发</td>
+                            <td>联系电话</td>
+                            <td>225555</td>
+                        </tr>
+
+                        <tr>
+                            <td>装修队负责人</td>
+                            <td>刘馨予</td>
+                            <td>联系电话</td>
+                            <td>225555</td>
+                        </tr>
+                        <tr>
+                            <td  colspan="4" >
+                                <span style="text-align: left">主要巡检内容:</span><br/>
+
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td>装修开始时间</td>
+                            <td>2015年5月20日</td>
+                            <td colspan="2">装修施工队名称:深圳宏达装修公司</td>
+                        </tr>
+
+                        <tr>
+                            <td>巡检内容</td>
+                            <td>是否正常施工</td>
+                            <td>备注</td>
+                            <td>是否发整改或违约通知</td>
+                        </tr>
+
+                        <tr>
+                            <td>1.拆墙</td>
+                            <td>√</td>
+                            <td>一切都按照正常施工在进行</td>
+                            <td rowspan="5">否</td>
+                        </tr>
+
+                        <tr>
+                            <td>2、电路安装、改造</td>
+                            <td>√</td>
+                            <td>一切都按照正常施工在进行</td>
+                        </tr>
+
+                        <tr>
+                            <td>3、给水管安装、改造</td>
+                            <td>√</td>
+                            <td>一切都按照正常施工在进行</td>
+                        </tr>
+
+                        <tr>
+                            <td>.....</td>
+                            <td>.....</td>
+                            <td>.....</td>
+                        </tr>
+
+                        <tr>
+                            <td>9、木工施工</td>
+                            <td>√</td>
+                            <td>一切都按照正常施工在进行</td>
+                        </tr>
+                    </table>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn bg-primary" data-dismiss="modal" aria-label="Close">取消</button>
+                    <button type="button" class="btn bg-primary">提交</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+</body>
+</html>

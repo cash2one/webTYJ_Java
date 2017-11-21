@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>质量检查V2</title>
+    <link rel="stylesheet" href="css/internalPro.css">
+    <style type="text/css">
+        ul,li,{margin:0;padding:0;}
+        ul{list-style:none;}
+        #root{margin:10px;width:200px;overflow:hidden;}
+        #root li{line-height:25px;}
+        #root li a{color:#666666;padding-left:5px;outline:none;blr:expression(this.onFocus=this.blur());}
+        #root .two{padding-left:20px;display:none;}
+    </style>
+</head>
+<body>
+<div class="complaint_user_list" style="height: 300px">
+    <div style="padding:15px 1px">
+        <div class="col-lg-4 col-md-4 col-sm-6">
+            <div class="panel">
+                <div class="panel_title">
+                    <span class="panel_title_left">新增</span>
+                <span class="panel_title_right">
+                         <span class="zoom_button"></span>
+                         <span class="close_button"></span>
+                </span>
+                </div>
+
+                <div class="panel_info">
+                    <div class="media-left">
+                        <a class="col-xs-6 " href="#">
+                            <img style="width: 140px;height: 140px;margin-left: 60px;margin-top: 20px"  src="images/staffHome/addCar.png">
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-4 col-md-4 col-sm-6">
+            <div class="panel">
+                <div class="panel_title">
+                    <span class="panel_title_left">业务办理</span>
+                <span class="panel_title_right">
+                    <li class="dropdown pull-right">
+                        <a href="#" class="dropdown-toggle btn-lg" data-toggle="dropdown" role="button" aria-expanded="false">
+                            <span class="glyphicon glyphicon-menu-down"></span>
+                        </a>
+                        <ul class="dropdown-menu" role="menu">
+                            <li><a href="#">新建</a></li>
+                            <li><a href="#">编辑</a></li>
+                            <li><a href="#">新建</a></li>
+                            <li><a href="#">编辑</a></li>
+                            <li><a href="#">新建</a></li>
+                            <li><a href="#">编辑</a></li>
+                        </ul>
+                    </li>
+                </span>
+                </div>
+                <div class="panel_info" style="padding: 10px">
+                   <span> 质检ID：1-142692951</span></br>
+                   <spanp> 活动名称：消防安全器具检查</spanp></br>
+                    <span> 检查时间：2015/04/04</span></br>
+                    <spanp> 分类：日检</spanp></br>
+                    <span> 质检项目：消防</span></br>
+                    <spanp> 检查区域：桃源居1区</spanp>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="complaint_user_list" style="height:1500px">
+    <div class="row col-md-12" style="margin: 15px">
+        <div class="col-md-1" style="margin-top: 15px">类型</div>
+        <div class="col-md-1 doted"><span class="dot_Check"></span></div>
+        <div class="col-md-10">
+            活动名称：<input type="text" style="width: 200px"></br>
+            质检类型：<select ui-sref-active="" style="width: 130px;height: 30px;margin-top: 10px"><option>绿化养护</option></select>
+        </div>
+    </div>
+    <div class="row col-md-12" style="margin: 15px">
+        <div class="col-md-1" style="margin-top: 15px">区域</div>
+        <div class="col-md-1 doted"><span class="dot_unChecked"></span></div>
+        <div class="col-md-10">
+            质检区域：<select ui-sref-active="" style="width: 130px;height: 30px;margin-top: 10px"><option>桃源居</option></select>
+            <select ui-sref-active="" style="width: 60px;height: 30px;margin: 10px"><option>一</option></select>区
+            <select ui-sref-active="" style="width: 60px;height: 30px;margin: 10px"><option>二</option></select>栋</br>
+            <span class="glyphicon glyphicon-plus-sign btn-lg" aria-hidden="true"></span>
+        </div>
+    </div>
+    <div class="row col-md-12" style="margin: 15px">
+        <div class="col-md-1" style="margin-top: 15px">时间</div>
+        <div class="col-md-1 doted"><span class="dot_unChecked"></span></div>
+        <div class="col-md-9" style="margin-top: 15px">
+            质检时间：<input type="text" style="width: 200px"></br>
+            <div style="margin-top: 10px">
+            <input type="checkbox">日检
+            <input type="checkbox">周检
+            <input type="checkbox">月检
+            <input type="checkbox">年检
+            </div>
+            活动时长：<select ui-sref-active="" style="width: 130px;height: 30px;margin-top: 10px"><option>12</option></select>时
+        </div>
+    </div>
+    <div class="row col-md-12" style="margin: 15px">
+        <div class="col-md-1" style="margin-top: 15px">团队</div>
+        <div class="col-md-1 doted"><span class="dot_unChecked"></span></div>
+        <div class="col-md-10" style="margin-top: 15px">
+                <div class="col-md-2">质检团队：</div>
+                <div class="col-md-3">
+                    <ul id="root">
+                        <li>
+                            <h4>选择</h4>
+                            <span>维修部</span><br>
+                            <label><a href="">
+                                <span class="glyphicon glyphicon-play" aria-hidden="true" style="margin-right:2px;"></span>
+                                园林部</a></label>
+                            <ul class="two">
+                                <li>
+                                    <label><a href="">张三</a></label>
+                                </li>
+                                <li>
+                                    <label><a href="">李四</a></label>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+                <div class="col-md-1" >
+                    <span class="glyphicon glyphicon-transfer btn-lg" aria-hidden="true" style="margin-top: 50px;margin-left: -30px"></span>
+                </div>
+                <div class="col-md-2" style="text-align: center">
+                    <h4>选定</h4>
+                    <table class="table table-bordered">
+                        <tr>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td>园林部-张三</td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                        </tr>
+                    </table>
+                </div>
+        </div>
+    </div>
+    <div class="row col-md-12" style="margin: 15px;">
+        <div class="col-md-1" style="margin-top: 15px">检察对象</div>
+        <div class="col-md-1 doted"><span class="dot_unChecked"></span></div>
+        <div class="col-md-10" style="margin-top: 15px">
+            <div class="col-md-2">检查对象：</div>
+            <div class="col-md-3">
+                <h4>选择</h4>
+                <span>维修部</span><br>
+                <span class="glyphicon glyphicon-play" aria-hidden="true" style="margin-right:2px;">园林部</span>
+                <ul>
+                    <li>张三</li>
+                    <li>李四</li>
+                </ul>
+            </div>
+            <div class="col-md-1" >
+                <span class="glyphicon glyphicon-transfer btn-lg" aria-hidden="true" style="margin-top: 50px;margin-left: -30px"></span>
+            </div>
+            <div class="col-md-2" style="text-align: center">
+                <h4>选定</h4>
+                <table class="table table-bordered">
+                    <tr>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>园林部-张三</td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+    <div class="row col-md-12" style="margin: 15px;">
+        <div class="col-md-1" style="margin-top: 15px">检查标准</div>
+        <div class="col-md-1 doted"><span class="dot_unChecked"></span></div>
+        <div class="col-md-10" style="margin-top: 15px">
+            <div class="col-md-2">检查标准：</div>
+            <div class="col-md-3">
+                <h4>选择</h4>
+                <span>园林养护</span><br>
+                <span class="glyphicon glyphicon-play" aria-hidden="true" style="margin-right:2px;">绿化养护</span>
+                <ul>
+                    <li>乔木养护标准</li>
+                    <li>草坪养护标准</li>
+                </ul>
+            </div>
+            <div class="col-md-1" >
+                <span class="glyphicon glyphicon-transfer btn-lg" aria-hidden="true" style="margin-top: 50px;margin-left: -30px"></span>
+            </div>
+            <div class="col-md-2" style="text-align: center">
+                <h4>选定</h4>
+                <table class="table table-bordered">
+                    <tr>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>乔木养护标准</td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+    <div class="row col-md-12" style="margin: 15px">
+        <div class="col-md-1" style="margin-top: 15px">完成</div>
+        <div class="col-md-1 doted"><span class="dot_unChecked"></span></div>
+        <div class="col-md-10" style="margin-top: 15px">
+            <button class="btn btn-default" style="margin-left: 150px">取消</button>
+            <button class="btn btn-default" style="margin-left: 100px">提交</button>
+        </div>
+    </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+<div class="container" style="padding: 10px 10px 0;width: 97%;">
+    <div class="col-md-12" style="border: 1px solid #000000;width:98%;margin: 10px">
+        <table class="complaint_user_info_userinfo" style="width: 100%">
+            <tr>
+                <td class="col-md-3"><strong>检查人:</strong>蔡正颜、谢超</td>
+                <td class="col-md-4"><strong>检查时间：</strong>2015-04-04 12:33</td>
+                <td class="col-md-3">&nbsp;</td>
+                <td class="col-md-2">&nbsp;</td>
+            </tr>
+
+            <tr>
+                <td class="col-md-3"><strong>完成质检项：</strong>5</td>
+                <td class="col-md-4"><strong>未完成质检：</strong>4</td>
+                <td class="col-md-3"><strong>总平均分：</strong>3.1</td>
+                <td class="col-md-2"></td>
+            </tr>
+
+            <tr>
+                <td colspan="4" class="col-md-12"><strong>质检清单： </strong></td>
+            </tr>
+
+            <tr>
+                <td colspan="4">
+                    <div class="container-fluid" style="margin-top: 20px">
+                        <div class="accordion" id="accordion2">
+                            <div class="accordion-group">
+                                <div class="accordion-heading">
+                                    <a class="accordion-toggle" data-toggle="collapse" data-
+                                       parent="#accordion2" href="#collapseOne">
+                                        <div class="row">
+                                            <div class="col-md-10">6区6栋垃圾桶</div>
+                                            <div class="col-md-1">已解决</div>
+                                            <div class="col-md-1"><i class="pull-right glyphicon glyphicon-chevron-right"></i></div>
+                                        </div>
+                                    </a>
+                                </div>
+                                <div id="collapseOne" class="accordion-body collapse"
+                                     style="height: 0px; ">
+                                    <div class="accordion-inner">
+                                        <div class="media-left" style="width: 700px">
+                                            <table>
+                                                <tr>
+                                                    <td>区域：桃源居6区6栋垃圾桶</td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                </tr>
+
+                                                <tr>
+                                                    <td>检查项目：垃圾桶</td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                </tr>
+
+                                                <tr>
+                                                    <td>评分:2分</td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                </tr>
+
+                                                <tr>
+                                                    <td>是否内部请求：是</td>
+                                                    <td>内部请求ID：1011</td>
+                                                    <td>状态:处理中</td>
+                                                    <td></td>
+                                                    <td></td>
+                                                </tr>
+                                                <tr>
+                                                    <td colspan="5">
+                                                        <ul class="list-inline">
+                                                            <li> 详情描述:</li>
+                                                            <li>
+                                                                <div style="margin-left: 60px">
+                                                                    描述描述描述描述描述描述描述描述描
+                                                                    述描述描述描述
+                                                                    描述描述描述描述描述描述描述描述描
+                                                                    述描述描述描述描述描述描述
+                                                                    描述描述描述描述描述描述描述描述描
+                                                                    述描述描述描述描述描述描述
+                                                                    描述描述描述描述描述描述描述描述描
+                                                                    述描述描述描述描述描述描述
+                                                                    描述描述描述描述描述描述描述描述描
+                                                                    述描述描述描述描述描述描述
+                                                                    描述描述描述描述描述描述描述描述描
+                                                                    述描述描述描述描述描述描述
+                                                                    描述描述描述描述描述描述描述描述描
+                                                                    述描述描述描述描述描述描述
+                                                                    描述描述描述描述描述描述描述描述描
+                                                                    述描述描述描述描述描述描述
+                                                                    描述描述描述描述描述描述描述描述描
+                                                                    述描述描述描述描述描述描述
+                                                                    描述描述描述描述描述描述描述描述描
+                                                                    述
+                                                                </div>
+                                                            </li>
+                                                        </ul>
+                                                    </td>
+                                                </tr>
+
+                                            </table>
+                                        </div>
+
+                                        <div class="media-right">
+                                            <div class="row">
+                                                <div class="col-md-12">照片：</div>
+                                                <div class="col-md-5" style="margin-left:30px;margin-top: 20px"><img src="images/u1557.png"></div>
+                                                <div class="col-md-5" style="margin-top:20px"><img src="images/u1557.png"></div>
+                                                <div class="col-md-5" style="margin-left:30px;margin-top: 10px"><img src="images/u1557.png"></div>
+                                                <div class="col-md-5" style="margin-top:10px"><img src="images/u1557.png"></div>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="accordion-group">
+                                <div class="accordion-heading">
+                                    <a class="accordion-toggle" data-toggle="collapse" data-
+                                       parent="#accordion2" href="#collapseTwo">
+                                        <div class="row">
+                                            <div class="col-md-10">  6区6栋楼道卫生</div>
+                                            <div class="col-md-1">已解决</div>
+                                            <div class="col-md-1"><i class="pull-right glyphicon glyphicon-chevron-right"></i></div>
+                                        </div>
+                                    </a>
+                                </div>
+                                <div id="collapseTwo" class="accordion-body collapse">
+                                    <div class="accordion-inner">
+                                        <div class="media-left" style="width: 700px">
+                                            <table>
+                                                <tr>
+                                                    <td>区域：桃源居6区6栋垃圾桶</td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                </tr>
+
+                                                <tr>
+                                                    <td>检查项目：垃圾桶</td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                </tr>
+
+                                                <tr>
+                                                    <td>评分:2分</td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                </tr>
+
+                                                <tr>
+                                                    <td>是否内部请求：是</td>
+                                                    <td>内部请求ID：1011</td>
+                                                    <td>状态:处理中</td>
+                                                    <td></td>
+                                                    <td></td>
+                                                </tr>
+                                                <tr>
+                                                    <td colspan="5">
+                                                        <ul class="list-inline">
+                                                            <li> 详情描述:</li>
+                                                            <li>
+                                                                <div style="margin-left: 60px">
+                                                                    描述描述描述描述描述描述描述描
+                                                                    述描述描述描述描述
+                                                                    描述描述描述描述描述描述描述描
+                                                                    述描述描述描述描述描述描述描述
+                                                                    描述描述描述描述描述描述描述描
+                                                                    述描述描述描述描述描述描述描述
+                                                                    描述描述描述描述描述描述描述描
+                                                                    述描述描述描述描述描述描述描述
+                                                                    描述描述描述描述描述描述描述描
+                                                                    述描述描述描述描述描述描述描述
+                                                                    描述描述描述描述描述描述描述描
+                                                                    述描述描述描述描述描述描述描述
+                                                                    描述描述描述描述描述描述描述描
+                                                                    述描述描述描述描述描述描述描述
+                                                                    描述描述描述描述描述描述描述描
+                                                                    述描述描述描述描述描述描述描述
+                                                                    描述描述描述描述描述描述描述描
+                                                                    述描述描述描述描述描述描述描述
+                                                                    描述描述描述描述描述描述描述描
+                                                                    述描述
+                                                                </div>
+                                                            </li>
+                                                        </ul>
+                                                    </td>
+                                                </tr>
+
+                                            </table>
+                                        </div>
+
+                                        <div class="media-right">
+                                            <div class="row">
+                                                <div class="col-md-12">照片：</div>
+                                                <div class="col-md-5" style="margin-left:30px;margin-top: 20px"><img src="images/u1557.png"></div>
+                                                <div class="col-md-5" style="margin-top:20px"><img src="images/u1557.png"></div>
+                                                <div class="col-md-5" style="margin-left:30px;margin-top: 10px"><img src="images/u1557.png"></div>
+                                                <div class="col-md-5" style="margin-top:10px"><img src="images/u1557.png"></div>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="accordion-group">
+                                <div class="accordion-heading">
+                                    <a class="accordion-toggle" data-toggle="collapse" data-
+                                       parent="#accordion2" href="#collapseThree">
+                                        <div class="row">
+                                            <div class="col-md-10">6区5栋绿化检查</div>
+                                            <div class="col-md-1">已解决</div>
+                                            <div class="col-md-1"><i class="pull-right glyphicon glyphicon-chevron-right"></i></div>
+                                        </div>
+                                    </a>
+                                </div>
+                                <div id="collapseThree" class="accordion-body collapse">
+                                    <div class="accordion-inner">
+                                        <div class="media-left" style="width: 700px">
+                                            <table>
+                                                <tr>
+                                                    <td>区域：桃源居6区6栋垃圾桶</td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                </tr>
+
+                                                <tr>
+                                                    <td>检查项目：垃圾桶</td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                </tr>
+
+                                                <tr>
+                                                    <td>评分:2分</td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                </tr>
+
+                                                <tr>
+                                                    <td>是否内部请求：是</td>
+                                                    <td>内部请求ID：1011</td>
+                                                    <td>状态:处理中</td>
+                                                    <td></td>
+                                                    <td></td>
+                                                </tr>
+                                                <tr>
+                                                    <td colspan="5">
+                                                        <ul class="list-inline">
+                                                            <li> 详情描述:</li>
+                                                            <li>
+                                                                <div style="margin-left: 60px">
+                                                                    描述描述描述描述描述描述描述描
+                                                                    述描述描述描述描述
+                                                                    描述描述描述描述描述描述描述描
+                                                                    述描述描述描述描述描述描述描述
+                                                                    描述描述描述描述描述描述描述描
+                                                                    述描述描述描述描述描述描述描述
+                                                                    描述描述描述描述描述描述描述描
+                                                                    述描述描述描述描述描述描述描述
+                                                                    描述描述描述描述描述描述描述描
+                                                                    述描述描述描述描述描述描述描述
+                                                                    描述描述描述描述描述描述描述描
+                                                                    述描述描述描述描述描述描述描述
+                                                                    描述描述描述描述描述描述描述描
+                                                                    述描述描述描述描述描述描述描述
+                                                                    描述描述描述描述描述描述描述描
+                                                                    述描述描述描述描述描述描述描述
+                                                                    描述描述描述描述描述描述描述描
+                                                                    述描述描述描述描述描述描述描述
+                                                                    描述描述描述描述描述描述描述描
+                                                                    述描述
+                                                                </div>
+                                                            </li>
+                                                        </ul>
+                                                    </td>
+                                                </tr>
+
+                                            </table>
+                                        </div>
+
+                                        <div class="media-right">
+                                            <div class="row">
+                                                <div class="col-md-12">照片：</div>
+                                                <div class="col-md-5" style="margin-left:30px;margin-top: 20px"><img src="images/u1557.png"></div>
+                                                <div class="col-md-5" style="margin-top:20px"><img src="images/u1557.png"></div>
+                                                <div class="col-md-5" style="margin-left:30px;margin-top: 10px"><img src="images/u1557.png"></div>
+                                                <div class="col-md-5" style="margin-top:10px"><img src="images/u1557.png"></div>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </td>
+            </tr>
+        </table>
+    </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>收费</title>
+
+    <script type="text/ng-template" id="top-vehicleManagement">
+        <div ng-include="'page/propertyService/carHome/vehicleManagement.html'" ng-controller="vehicleCtrl"></div>
+    </script>
+    <script type="text/ng-template" id="top-claimManagement">
+        <div ng-include="'page/propertyService/carHome/claimManagement.html'" ng-controller="claimCtrl"></div>
+    </script>
+
+</head>
+<body ng-controller="collectCtrl">
+<div class="complaint_user_list">
+<div class="row"  style="padding:20px 20px 0">
+
+    <div class="col-lg-4 col-md-4 col-sm-6">
+        <div class="panel">
+            <div class="panel_title">
+                <span class="panel_title_left">我的停车卡</span>
+                <span class="panel_title_right">
+                    <li class="dropdown pull-right">
+                        <a href="#" class="dropdown-toggle btn-lg" data-toggle="dropdown" role="button" aria-expanded="false"><span class="glyphicon glyphicon-menu-down"></span></a>
+                        <ul class="dropdown-menu" role="menu">
+                            <li><a href="#">换卡</a></li>
+                            <li><a href="#">续费</a></li>
+                            <li><a href="#">挂失补办</a></li>
+                            <li><a href="#">停用</a></li>
+                            <li><a href="#">退费</a></li>
+                        </ul>
+                    </li>
+                </span>
+            </div>
+            <div class="panel_info">
+                <div class="dot"></div>
+                <div class="panel_info ">
+                    <a class="col-xs-6">停车卡数量：<span>2张</span></a>
+                    <a class="col-xs-6">出入次数：<span>1362次 </span></a><a class="col-xs-6">累计充值：<span>5000</span></a>
+                    <a class="col-xs-6">卡片更换：<span>1次 </span></a><a class="col-xs-6">缴费次数：<span>12次</span></a>
+                    <a class="col-xs-6">车损次数：<span>无记录</span></a><a class="col-xs-6">违停次数：<span>7次</span></a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+
+
+
+    <div class="col-lg-4 col-md-4 col-sm-6">
+        <div class="panel">
+            <div class="panel_title">
+                <span class="panel_title_left">车辆信息</span>
+                <span class="panel_title_right">
+                    <li class="dropdown pull-right">
+                        <a href="#" class="dropdown-toggle btn-lg" data-toggle="dropdown" role="button" aria-expanded="false"><span class="glyphicon glyphicon-menu-down"></span></a>
+                        <ul class="dropdown-menu" role="menu">
+                            <li><a ui-sref="index.propertyService.carHome.vehicleManagement">信息编辑</a></li>
+                            <li><a href="#">车辆停用</a></li>
+                        </ul>
+                    </li>
+                </span>
+            </div>
+            <div class="panel_info">
+                <div class="dot"></div>
+                <div class="panel_info ">
+                    <div class="media-left"><a class="col-xs-6 "><img style="width: 90px;height: 70px;" src="images/staffHome/carport/cheliang.jpg"></a></div>
+                    <div class="media-right">车牌号码：粤B12345<br>车辆颜色：黑色<br>车辆型号：宝马740</div>
+                    <a class="col-xs-6">车辆所有人：周润发</a>
+                    <a class="col-xs-6">车辆类型：轿车</a>
+                    <a class="col-xs-12">交易类型：一手车</a>
+                    <a class="col-xs-12">行驶证号：3344556637</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+    <div class="col-lg-4 col-md-4 col-sm-6">
+        <div class="panel">
+            <div class="panel_title">
+                <span class="panel_title_left">我的车辆理赔</span>
+                <span class="panel_title_right">
+                    <li class="dropdown pull-right">
+                        <a href="#" class="dropdown-toggle btn-lg" data-toggle="dropdown" role="button" aria-expanded="false"><span class="glyphicon glyphicon-menu-down"></span></a>
+                        <ul class="dropdown-menu" role="menu">
+                            <li><a ui-sref="index.propertyService.carHome.claimManagement">理赔登记</a></li>
+                            <li><a href="#">信息修改</a></li>
+                            <li><a href="#">历史记录</a></li>
+                        </ul>
+                    </li>
+                </span>
+            </div>
+            <div class="panel_info">
+                <div class="dot"></div>
+                <div class="panel_info">
+                    <a class="col-xs-12">车牌号码：粤B12345</a>
+                    <a class="col-xs-12">发动机号码：00998172881727X</a>
+                    <a class="col-xs-12">车辆识别代号：882727471</a>
+                    <a class="col-xs-12">证件号码：420100199038911113</a><a class="col-xs-6">受益人：周润发</a>
+                    <a class="col-xs-6">理赔类型：刮花</a>
+                    <a class="col-xs-6">理赔险种：刮花</a>
+                    <a class="col-xs-6">理赔状态：已完成</a>
+                    <a class="col-xs-6" style="white-space: nowrap">出险日期:2015年2月27日</a><a class="col-xs-6" style="white-space: nowrap">完成日期:2015年3月11日</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-lg-4 col-md-4 col-sm-6">
+        <div class="panel">
+            <div class="panel_title">
+                <span class="panel_title_left">我的收费信息</span>
+                <span class="panel_title_right">
+                                    <span class="zoom_button"></span>
+                                    <span class="close_button"></span>
+                                </span>
+            </div>
+            <div class="panel_info">
+                <div class="dot"></div>
+                <div class="panel_info ">
+                    <a class="col-xs-12">收费编号：</a>
+                    <a class="col-xs-6">收费项目：<span></span></a><a class="col-xs-6">收费单价：<span></span></a>
+                    <a class="col-xs-6">计量单位：<span></span></a><a class="col-xs-6">收费金额：<span></span></a>
+                    <a class="col-xs-6">收款方式：<span></span></a><a class="col-xs-6">经办人：<span></span></a>
+                    <a class="col-xs-6">经办日期：<span></span></a><a class="col-xs-6">业务状态：<span></span></a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+</div>
+</div>
+</body>
+</html>

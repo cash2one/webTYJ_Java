@@ -1,0 +1,168 @@
+package com.flf.service.impl;
+
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.UUID;
+
+import com.flf.entity.Annex;
+import com.flf.entity.Bill;
+import com.flf.entity.QuoteItemRecords;
+import com.flf.entity.QuoteOrders;
+import com.flf.entity.SettleAccountsItemRecords;
+import com.flf.entity.SettleAccountsOrders;
+import com.flf.entity.TasksJournal;
+import com.flf.mapper.AnnexMapper;
+import com.flf.mapper.QuoteItemRecordsMapper;
+import com.flf.mapper.QuoteOrdersMapper;
+import com.flf.mapper.SettleAccountsItemRecordsMapper;
+import com.flf.mapper.SettleAccountsOrdersMapper;
+import com.flf.mapper.TasksJournalMapper;
+import com.flf.service.BillService;
+import com.flf.service.SettleAccountsOrdersService;
+
+public class SettleAccountsOrdersServiceImpl implements SettleAccountsOrdersService{
+
+	private SettleAccountsOrdersMapper settleAccountsOrdersMapper;
+	private SettleAccountsItemRecordsMapper settleAccountsItemRecordsMapper;
+	private TasksJournalMapper tasksJournalMapper;
+	private AnnexMapper annexMapper;
+	private BillService billService; 
+
+	public BillService getBillService() {
+		return billService;
+	}
+
+	public void setBillService(BillService billService) {
+		this.billService = billService;
+	}
+
+	public AnnexMapper getAnnexMapper() {
+		return annexMapper;
+	}
+
+	public void setAnnexMapper(AnnexMapper annexMapper) {
+		this.annexMapper = annexMapper;
+	}
+
+	public TasksJournalMapper getTasksJournalMapper() {
+		return tasksJournalMapper;
+	}
+
+	public void setTasksJournalMapper(TasksJournalMapper tasksJournalMapper) {
+		this.tasksJournalMapper = tasksJournalMapper;
+	}
+
+	public SettleAccountsOrdersMapper getSettleAccountsOrdersMapper() {
+		return settleAccountsOrdersMapper;
+	}
+
+	public void setSettleAccountsOrdersMapper(
+			SettleAccountsOrdersMapper settleAccountsOrdersMapper) {
+		this.settleAccountsOrdersMapper = settleAccountsOrdersMapper;
+	}
+
+	public SettleAccountsItemRecordsMapper getSettleAccountsItemRecordsMapper() {
+		return settleAccountsItemRecordsMapper;
+	}
+
+	public void setSettleAccountsItemRecordsMapper(
+			SettleAccountsItemRecordsMapper settleAccountsItemRecordsMapper) {
+		this.settleAccountsItemRecordsMapper = settleAccountsItemRecordsMapper;
+	}
+
+	@Override
+	public SettleAccountsOrders getSettleAccountsOrdersbyId(String orderId) {
+		// TODO Auto-generated method stub
+		return settleAccountsOrdersMapper.getSettleAccountsOrdersById(orderId);
+	}
+
+	/* (non-Javadoc)
+	 * @see com.flf.service.SettleAccountsOrdersService#insertSettleAccountsOrders(com.flf.entity.SettleAccountsOrders)
+	 */
+	@Override
+	public void insertSettleAccountsOrders(
+			SettleAccountsOrders settleAccountsOrders) {
+		// TODO Auto-generated method stub
+		String uuid = UUID.randomUUID().toString();
+		String date = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date());
+		
+		if(settleAccountsOrders != null){
+			List<Annex> annexList = settleAccountsOrders.getAnnexs();
+			List<SettleAccountsItemRecords> itemRecords = settleAccountsOrders.getSaiRecords();
+			
+			settleAccountsOrders.setOrderId(uuid);
+			settleAccountsOrders.setFinishTime(date);
+			int result = settleAccountsOrdersMapper.insertSettleAccountsOrdersUUID(settleAccountsOrders);
+			if(result > 0 && itemRecords!= null && itemRecords.size()>0){
+				for(SettleAccountsItemRecords accounttemRecords : itemRecords){
+					accounttemRecords.setOrderId(uuid);
+					settleAccountsItemRecordsMapper.insertSettleAccountsItemRecords(accounttemRecords);
+				}
+				//附件信息保存
+				if(annexList!=null && annexList.size()>0){
+					for(Annex annex :annexList){
+						annex.setRelationId(uuid.toString());
+						annex.setAnnexTime(date);
+						annexMapper.insertAnnex(annex);
+					}
+				}
+				
+				//生成账单
+				Bill bill = new Bill();
+				bill.setPersonCustNew(settleAccountsOrders.getPersonCustNew());
+				//金额
+				bill.setBillingSum(settleAccountsOrders.getAllTotal());
+				//建筑结构Id
+				bill.setBuildingId(settleAccountsOrders.getBuildingStructureId());
+				//收费项目名称
+				bill.setChargeTypeDetailsName("结算单");
+				billService.serviceRequestAddBill(bill);
+				
+				TasksJournal journal = new TasksJournal();
+				journal.setTaskId(settleAccountsOrders.getTaskId());
+				journal.setCreOrderId(uuid);
+				journal.setCreOrderType(settleAccountsOrders.getOrderType());
+				journal.setChangeOrderState(settleAccountsOrders.getOrderState());
+				journal.setOperatorId(settleAccountsOrders.getOperatorId());
+				journal.setRemarks(settleAccountsOrders.getRemarks());
+				journal.setOperationTime(date);
+				tasksJournalMapper.insertTasksJournal(journal);
+			}
+		}
+		return;
+	}
+
+	@Override
+	public void closeSettleAccountsOrdersState(
+			SettleAccountsOrders settleAccountsOrders) {
+		// TODO Auto-generated method stub
+		if(settleAccountsOrders != null){
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+			String date = sdf.format(new Date());
+			Integer orderState = settleAccountsOrders.getOrderState();
+			String closePersonId = settleAccountsOrders.getClosePerson();
+			if(orderState != null && closePersonId!= null){
+				settleAccountsOrders.setOrderState(0);
+				settleAccountsOrders.setCloseTime(date);
+				settleAccountsOrdersMapper.updateSettleAccountsOrders(settleAccountsOrders);
+			}
+		}
+		return;
+	}
+
+	@Override
+	public void updateSettleAccountsOrders(
+			SettleAccountsOrders settleAccountsOrders) {
+		// TODO Auto-generated method stub
+		settleAccountsOrdersMapper.updateSettleAccountsOrders(settleAccountsOrders);
+	}
+
+	@Override
+	public void insertTasksJournal(TasksJournal tasksJournal) {
+		// TODO Auto-generated method stub
+		
+	}
+
+}

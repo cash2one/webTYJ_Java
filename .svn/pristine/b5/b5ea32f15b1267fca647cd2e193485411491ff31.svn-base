@@ -1,0 +1,94 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html ng-app="divisionApp">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<link type="text/css" rel="stylesheet" href="/Home/css/main.css"/>
+<title>部门表</title>
+<script src="/Home/js/AngularJS/angular-1.2.3.js"></script>
+<script src="/Home/js/AngularJS/DivisionController.js"></script>
+</head>
+
+<body>
+<table width="100%" border="0" cellpadding="0" cellspacing="0" class="main_table" ng-controller="DivisionCtrl">
+			<tr class="main_head">
+				<th>id</th>
+				<th>部门名称</th>
+				<th colspan="2">操作</th>
+			</tr>
+		
+			<tr ng-repeat="items in divisions" class="main_head">	
+				<td>{{items.id}}</td>	
+				<td>{{items.divisionName}}</td>
+				<td><a href="#" ng-click="GetUser(items.id)" class="myBtn"><em>修改</em></a></td>
+				<td><a href="#" ng-click="deleteUser(items.id)" class="myBtn"><em>删除</em></a></td>
+			</tr>
+			
+		</table>
+	<div class="page_and_btn">
+		<div>
+			<a href="javascript:addDivision()" class="myBtn"><em>新增</em></a>
+		</div>
+	
+	</div>
+
+	<script type="text/javascript" src="/Home/js/jquery-1.5.1.min.js"></script>
+	<script type="text/javascript" src="/Home/js/datePicker/WdatePicker.js"></script>
+	<script type="text/javascript" src="/Home/js/lhgdialog/lhgdialog.min.js?t=self&s=areo_blue"></script>
+	<script type="text/javascript">
+		$(document).ready(function(){
+			$(".main_info:even").addClass("main_table_even");
+		});
+		
+		function deleteDivision(id)
+		{
+			if(confirm("确定要删除该记录？")){
+				var url = "/Home/Division/deleteDivision.html";
+				$.post(url,{id:id},function(data){
+					if(data=="success"){
+						document.location.reload();
+					}else
+					{
+						alert("删除失败！");
+					}
+				});
+			}
+		}
+		
+		function addDivision(){
+			//alert('aa00');
+			var dg = new $.dialog({
+				title:'新增部门',
+				id:'user_new',
+				width:700,
+				height:480,
+				iconTitle:false,
+				cover:true,
+				maxBtn:false,
+				xButton:true,
+				resize:false,
+				page:'Division/getDivisionbyId.html?id=0'
+				});
+    		dg.ShowDialog();
+		}
+		
+		function updateDivision(id){
+			var dg = new $.dialog({
+				title:'修改部门',
+				id:'user_new',
+				width:700,
+				height:480,
+				iconTitle:false,
+				cover:true,
+				maxBtn:false,
+				xButton:true,
+				resize:false,
+				page:'Division/getDivisionbyId.html?id='+id
+				});
+    		dg.ShowDialog();
+		}
+		
+</script>
+
+</body>
+</html>

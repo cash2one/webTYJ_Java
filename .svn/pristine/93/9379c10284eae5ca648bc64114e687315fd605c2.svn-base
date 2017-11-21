@@ -1,0 +1,29 @@
+package com.flf.service;
+
+import javax.jws.WebService;
+import javax.ws.rs.Consumes;
+import javax.ws.rs.POST;
+import javax.ws.rs.Path;
+import javax.ws.rs.core.MediaType;
+
+import com.flf.entity.Product;
+import com.flf.entity.ProductFixedparkingspace;
+/**
+ * 产品初始化-固定车位
+ * @author Hanyupeng
+ * @date 2016年7月14日15:46:03
+ */
+@WebService
+@Path("/ProductFixedparkingspace")
+public interface ProductFixedparkingspaceService {
+
+/**
+ * 测试前后链接
+ * @author hanyupeng
+ * @date 2016年7月14日16:31:52
+ */
+@POST
+@Path("/addPf")
+@Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+String addPf(ProductFixedparkingspace pf);
+}

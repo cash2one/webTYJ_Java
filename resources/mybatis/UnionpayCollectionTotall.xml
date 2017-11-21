@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="com.flf.mapper.UnionpayCollectionTotallMapper">
+
+	<resultMap id="BaseResultMap" type="UnionpayCollectionTotall">
+		<id column="unionpay_collection_totall_id" property="unionpayCollectionTotallId"
+			jdbcType="VARCHAR" />
+		<result column="project_id" property="projectId" jdbcType="VARCHAR" />
+		<result column="project_name" property="projectName" jdbcType="VARCHAR" />
+		<result column="merchants_num" property="merchantsNum"
+			jdbcType="VARCHAR" />
+		<result column="batch_num" property="batchNum" jdbcType="VARCHAR" />
+		<result column="total_sum" property="totalSum" jdbcType="BIGINT" />
+		<result column="create_time" property="createTime" jdbcType="DATE" />
+		<result column="total_trade_num" property="totalTradeNum"
+			jdbcType="INTEGER" />
+		<result column="collection_type" property="collectionType"
+			jdbcType="TINYINT" />
+
+		<result column="createDateString" property="createDateString"
+			jdbcType="VARCHAR" />
+		<association property="project" column="project_id"
+			javaType="Project" select="com.flf.mapper.ProjectMapper.getProject" />
+	</resultMap>
+
+	<!-- 获取该项目中最大的批次号 -->
+	<select id="getBatchNum" parameterType="String" resultType="int">
+		SELECT IFNULL(MAX(CAST(batch_num AS UNSIGNED)),0)+1 from
+		tc_unionpay_collection_totall
+		<if test="_parameter!=null and _parameter!=''">
+			where project_id = #{_parameter}
+		</if>
+	</select>
+
+	<select id="listPageUnionpay" parameterType="UnionpayCollectionTotall"
+		resultMap="BaseResultMap">
+		select * from tc_unionpay_collection_totall
+		where 1=1 
+		<if test="batchNum!=null and batchNum!= ''">
+			and batch_num = #{batchNum}
+		</if>
+		<if test="projectId != null and projectId != ''">
+			and project_id=#{projectId}
+		</if>
+		<if test="merchantsNum != null and merchantsNum != ''">
+			and merchants_num=#{merchantsNum}
+		</if>
+		<if test="createTime != null and createTime != ''">
+			and create_time = #{createTime}
+		</if>
+	</select>
+
+	<!-- 修改状态为已托收 -->
+	<update id="updateCollectionState" parameterType="java.lang.String">
+		UPDATE
+		tc_unionpay_collection_totall
+		SET collection_type=1
+		WHERE
+		unionpay_collection_totall_id=#{0}
+	</update>
+	<!-- 修改状态为已回盘 -->
+	<update id="updateCollectionStateTo" parameterType="UnionpayCollectionTotall">
+		UPDATE
+		tc_unionpay_collection_totall
+		<set>
+			<if
+				test="collectionType != null and collectionType != '' or collectionType == 0">
+				collection_type=#{collectionType}
+			</if>
+		</set>
+		WHERE unionpay_collection_totall_id=#{unionpayCollectionTotallId}
+	</update>
+
+	<delete id="deleteTotallById" parameterType="java.lang.String">
+		DELETE FROM
+		tc_unionpay_collection_totall
+		WHERE unionpay_collection_totall_id=#{0}
+	</delete>
+
+	<insert id="insertUnionpayCollectionTotall" parameterType="UnionpayCollectionTotall">
+		insert into tc_unionpay_collection_totall(
+		unionpay_collection_totall_id,
+		project_id,
+		project_name,
+		merchants_num,
+		batch_num,
+		total_sum,
+		create_time,
+		total_trade_num,
+		collection_type
+		)
+		values(
+		#{unionpayCollectionTotallId},
+		#{projectId},
+		#{projectName},
+		#{merchantsNum},
+		#{batchNum},
+		#{totalSum},
+		#{createTime},
+		#{totalTradeNum},
+		#{collectionType}
+		)
+	</insert>
+
+	<select id="listAllUnionpay" parameterType="String" resultMap="BaseResultMap">
+		select * from tc_unionpay_collection_totall where 1=1 AND
+		collection_type = 1
+		<if test="_parameter!=null and _parameter!=''">
+			AND project_id = #{_parameter}
+		</if>
+	</select>
+
+
+	<select id="getUnionpayCollectionTotallById" parameterType="String"
+		resultMap="BaseResultMap">
+		select * ,create_time as createDateString from
+		tc_unionpay_collection_totall
+		where
+		unionpay_collection_totall_id=#{0}
+	</select>
+	<!-- 查找银联已托收的历史记录 -->
+	<select id="listPageUnionpayCollectionTotall" parameterType="UnionpayCollectionTotall"
+		resultMap="BaseResultMap">
+		select * from tc_unionpay_collection_totall
+		where collection_type in(1,2) <!-- collection_type -->
+		<if test="projectId!=null and projectId!=''">
+			and project_id=#{projectId}
+		</if>
+		<if test="minStaTime!=null and maxStaTime==null">
+			and create_time &gt;= #{minStaTime}
+		</if>
+		<if test="minStaTime==null and maxStaTime!=null ">
+			and create_time &lt;= #{maxStaTime}
+		</if>
+		<if
+			test="minStaTime!=null and minStaTime!= '' and maxStaTime!=null and maxStaTime!=''">
+			and create_time between #{minStaTime} and #{maxStaTime}
+		</if>
+		ORDER BY create_time DESC
+	</select>
+	<!-- 根据项目id和状态查询是否有重复记录 -->
+	<select id="queryCount" parameterType="UnionpayCollectionTotall"
+		resultType="int">
+		select count(1) from tc_unionpay_collection_totall where 1=1
+		<if
+			test="collectionType != null and collectionType != '' or collectionType == 0">
+			and collection_type = #{collectionType}
+		</if>
+		<if test="projectId != null and projectId != ''">
+			and project_id=#{projectId}
+		</if>
+	</select>
+	<!-- 根据项目id和状态查询是type=0的记录并返回界面 -->
+	<select id="queryByIdAndType" parameterType="UnionpayCollectionTotall"
+		resultMap="BaseResultMap">
+		select * from tc_unionpay_collection_totall where 1=1
+		<if
+			test="collectionType!=null and collectionType!= ''  or collectionType == 0">
+			and collection_type = #{collectionType}
+		</if>
+		<if test="projectId != null and projectId != ''">
+			and project_id=#{projectId}
+		</if>
+	</select>
+
+</mapper>
+

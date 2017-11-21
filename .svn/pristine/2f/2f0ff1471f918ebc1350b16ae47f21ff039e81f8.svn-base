@@ -1,0 +1,90 @@
+<!--
+    页面名称：服务请求详情
+    创建人：彭婷婷
+    js路径：js/controllers/externalProfession/serviceRequestDatil.js
+    修改人：刘洋
+    修改日期：2015/6/10
+-->
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>服务请求详情</title>
+    <link rel="stylesheet" href="css/personnel.css">
+</head>
+<body>
+<div class="row">
+    <div class="complaint_user">
+        <div class="complaint_user_img"><img src="images/u1906.png" width="100" height="100"></div>
+        <div class="complaint_user_info">
+            <div class="complaint_user_info_button">
+                <span class="dot_Checked"></span><br>
+                <span class="dot_unCheck"></span><br>
+                         <span class="complaint_panel_info_navigation">
+         						    <ul>
+                                        <li><img src="images/propertyService/jiantoua.png" width="35" height="29">
+                                            <ul>
+                                                <li class="program_panel_info_navigation_top">新建</li>
+                                                <li>编辑</li>
+                                                <li>拷贝</li>
+                                                <li>重启</li>
+                                                <li>关闭</li>
+                                                <li>合并</li>
+                                                <li>打印</li>
+                                                <li>传阅</li>
+                                                <li>催单</li>
+                                                <li>日志</li>
+                                                <li class="program_panel_info_navigation_bottom">查看</li>
+                                            </ul>
+                                        </li>
+                                    </ul>
+                                 </span>
+
+            </div>
+            <div class="complaint_user_info_info" ng-repeat="user in serviceRequestDatil.userList">
+                <table class="complaint_user_info_userinfo">
+                    <tr>
+                        <td class="col-md-3">服务请求Id{{user.serviceRequestId}}</td>
+                        <td class="col-md-4">项目：{{user.project}}</td>
+                        <td class="col-md-3">单元：{{user.unit}}</td>
+                        <td class="col-md-2">描述：{{user.description}}</td>
+                    </tr>
+
+                    <tr>
+                        <td class="col-md-3">客户姓名：{{user.userName}}</td>
+                        <td class="col-md-3">区：{{user.area}}</td>
+                        <td class="col-md-2">层：{{user.floor}}</td>
+                    </tr>
+
+                    <tr>
+                        <td class="col-md-3">客户编号：{{user.userId}}</td>
+                        <td class="col-md-4">服务类型：{{user.serviceType}}</td>
+                        <td class="col-md-3">栋/座：{{user.building}}</td>
+                        <td class="col-md-2">房号：{{user.roomNumber}}</td>
+                    </tr>
+
+                </table>
+                <div class="clear"></div>
+            </div>
+
+            <div class="complaint_user_info_navigation">
+                <a class="btn" ui-sref="index.externalProfession.serviceRequestDatil.allWorkOrders">全部任务</a>
+                <a class="btn" ui-sref="index.externalProfession.serviceRequestDatil.cleaning">清洁</a>
+                <a class="btn" ui-sref="index.externalProfession.serviceRequestDatil.maintain">维修</a>
+                <a class="btn" ui-sref="index.externalProfession.serviceRequestDatil.park">园林</a>
+                <a class="btn" ui-sref="index.externalProfession.serviceRequestDatil.security">安保</a>
+                <a class="btn" ui-sref="index.externalProfession.serviceRequestDatil.complaint">投诉</a>
+                <a class="btn" ui-sref="index.externalProfession.serviceRequestDatil.compensation ">赔偿给业主</a>
+                <a class="btn" ui-sref="index.externalProfession.serviceRequestDatil.visit">回访</a>
+                <a ui-sref="index.externalProfession.serviceRequestDatil.cleanQuery.taskDetails"></a>
+            </div>
+        </div>
+        <div class="clear"></div>
+    </div>
+
+</div>
+<div class="row">
+    <div ui-view></div>
+</div>
+</body>
+</html>

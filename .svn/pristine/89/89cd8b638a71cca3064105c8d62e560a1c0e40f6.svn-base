@@ -1,0 +1,383 @@
+package com.flf.service.impl;
+
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import org.springframework.beans.factory.annotation.Autowired;
+
+import com.flf.entity.CentralizedProcessingRecords;
+import com.flf.entity.ServiceRequest;
+import com.flf.entity.Staff;
+import com.flf.entity.TaskTurnSpecialRecords;
+import com.flf.entity.Tasks;
+import com.flf.entity.TasksJournal;
+import com.flf.mapper.CentralizedProcessingRecordsMapper;
+import com.flf.mapper.ServiceRequestMapper;
+import com.flf.mapper.StaffMapper;
+import com.flf.mapper.TaskTurnSpecialRecordsMapper;
+import com.flf.mapper.TasksJournalMapper;
+import com.flf.mapper.TasksMapper;
+import com.flf.service.PropertyAppService;
+import com.flf.util.JsonUtil;
+import com.flf.util.JsonUtils;
+import com.flf.util.Tools;
+
+public class PropertyAppServiceImpl implements PropertyAppService{
+	
+	@Autowired
+	TasksMapper tasksMapper;
+	@Autowired
+	TaskTurnSpecialRecordsMapper taskTurnSpecialRecordsMapper;
+	@Autowired
+	TasksJournalMapper tasksJournalMapper;
+	@Autowired
+	CentralizedProcessingRecordsMapper centralizedProcessingRecordsMapper;
+	@Autowired
+	ServiceRequestMapper serviceRequestMapper;
+	@Autowired
+	StaffMapper staffMapper;
+
+	@Override
+	public String getTasksbyState2(String staffId, String state1, String state2) {
+		try {
+			List<Tasks> taskList = tasksMapper.getTasksbyLoginIdAndState(staffId, state1, state2);
+			Map map = new HashMap<>();
+			map.put("taskList", taskList);
+			map.put("size", taskList.size());
+			return JsonUtil.success(map, true);
+	    }
+	    catch (Exception e) {
+	        e.printStackTrace();
+	        return JsonUtil.failure("查询失败", false);
+	    } 
+	}
+	
+	@Override
+	public String getTasksByState(String staffId, String state) {
+		try {
+			Tasks tasks = new Tasks();
+			tasks.setPrincipal(staffId);
+			tasks.setTaskState(Integer.parseInt(state));
+			List<Tasks> taskList = tasksMapper.getTasksbyLoginId(tasks);
+			Map map = new HashMap<>();
+			map.put("taskList", taskList);
+			map.put("size", taskList.size());
+			return JsonUtil.success(map, true);
+	    }
+	    catch (Exception e) {
+	        e.printStackTrace();
+	        return JsonUtil.failure("查询失败", false);
+	    } 
+	}
+	
+	@Override
+	public String getTasksByStates(String staffId, String states){
+		try{
+			Map map = new HashMap<>();
+			map.put("staffId", staffId);
+			String state[];
+			state = states.split(",");
+			String stateTmp[] = states.split("，");
+			if(state.length<stateTmp.length){
+				state=stateTmp;
+			}
+			if(state.length==0){
+				return JsonUtil.failure("状态获取失败！", false);
+			}
+			for (int i = 0; i < state.length; i++) {
+				map.put("state"+i, Integer.parseInt(state[i]));
+			}
+			List<Tasks> taskList = tasksMapper.listTasksByMap(map);
+			Map map2 = new HashMap<>();
+			map2.put("taskList", taskList);
+			map2.put("size", taskList.size());
+			return JsonUtil.success(map2, true);
+		}catch(Exception e){
+			e.printStackTrace();
+			return JsonUtil.failure("查询失败", false);
+		}
+	}
+	@Override
+	public String listTasksByTypesStates(String staffId, String Types, String States){
+		try{
+			Map map = new HashMap<>();
+			String type[] = Types.split(",");
+			String typeTmp[] = type = Types.split("，");
+			if(type.length<typeTmp.length){
+				type=typeTmp;
+			}
+			if(type.length==0){
+				return JsonUtil.failure("任务类型获取失败！", false);
+			}
+			for (int i = 0; i < type.length; i++) {
+				map.put("type"+i, Integer.parseInt(type[i]));
+			}
+			String state[] = States.split(",");
+			String stateTmp[] = States.split("，");
+			if(state.length<stateTmp.length){
+				state=stateTmp;
+			}
+			if(state.length==0){
+				return JsonUtil.failure("任务状态获取失败！", false);
+			}
+			for (int i = 0; i < state.length; i++) {
+				map.put("state"+i, Integer.parseInt(state[i]));
+			}
+			if(staffId !=null && staffId != ""){
+				map.put("staffId", staffId);
+			}
+			List<Tasks> taskList = tasksMapper.listTasksByTypesStates(map);
+			Map map2 = new HashMap<>();
+			map2.put("taskList", taskList);
+			map2.put("size", taskList.size());
+			return JsonUtil.success(map2, true);
+		}catch(Exception e){
+			e.printStackTrace();
+			return JsonUtil.failure("查询失败", false);
+		}
+	}
+
+	@Override
+	public String listAllTasks() {
+		try{
+			List<Tasks> taskList = tasksMapper.listAllTasks();
+			Map map = new HashMap<>();
+			map.put("taskList", taskList);
+			map.put("size", taskList.size());
+			return JsonUtil.success(map, true);
+		}catch(Exception e){
+			e.printStackTrace();
+			return JsonUtil.failure("查询失败", false);
+		}
+	}
+
+	@Override
+	public String listTasksbyStateRestful() {
+		try{
+			List<Tasks> taskList = tasksMapper.listTasksbyStateRestful();
+			Map map = new HashMap<>();
+			map.put("taskList", taskList);
+			map.put("size", taskList.size());
+			return JsonUtil.success(map, true);
+		}catch(Exception e){
+			e.printStackTrace();
+			return JsonUtil.failure("查询失败", false);
+		}
+	}
+
+	@Override
+	public String getTasksbyStaffId(String staffId) {
+		try{
+ 			List<Tasks> taskList = tasksMapper.getTasksbyStaffId(staffId);
+			Map map = new HashMap<>();
+			map.put("taskList", taskList);
+			map.put("size", taskList.size());
+			return JsonUtil.success(map, true);
+		}catch(Exception e){
+			e.printStackTrace();
+			return JsonUtil.failure("查询失败", false);
+		}
+	}
+
+	@Override
+	public String acceptTasks(String staffId, String tasksId) {
+		try {
+			Tasks tasks = tasksMapper.getTasksbyId(tasksId);
+			if(tasks.getTaskState() == 7){
+				tasks.setTaskState(3);
+				tasksMapper.updateTasks(tasks);
+			} else {
+				tasks.setTaskState(3);
+				tasks.setPrincipal(staffId);
+				tasksMapper.updateTasks(tasks);
+			}
+			return JsonUtil.success("接受成功", true);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return JsonUtil.failure("接受失败", false);
+		}
+	}
+
+	@Override
+	public String changeTaskState(Tasks tasks) {
+		String date = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date());
+		if(tasks != null && Tools.notEmpty(tasks.getTaskId())){
+			Integer state = tasks.getTaskState();
+			Integer outType = tasks.getTaskOutType();
+			String staffName = tasks.getPrincipal();
+			if(tasks.getStaff()!=null){
+				if(tasks.getStaff().getStaffId()!=null&&!tasks.getStaff().getStaffId().equals("")){
+					tasks.setPrincipal(tasks.getStaff().getStaffId());
+				}
+			}
+			
+			if(state != null && state == 8 && tasks.getTurnSpecialRecordsId()!=null && !"".equals(tasks.getTurnSpecialRecordsId())){//合并
+				TaskTurnSpecialRecords tsr = new TaskTurnSpecialRecords();
+				tsr.setTaskId(tasks.getTaskId());
+				tsr.setTurnSpecialRecordsId(tasks.getTurnSpecialRecordsId());
+				Integer result = taskTurnSpecialRecordsMapper.insertTaskTurnSpecialRecords(tsr);
+				if(result>0){
+					TasksJournal journal = new TasksJournal();
+					journal.setTaskId(tasks.getTaskId());
+					journal.setOperatorId(tasks.getPrincipal());
+					journal.setOperationTime(date);
+					journal.setChangeState(state);
+					journal.setRemarks(tasks.getRemarks());
+					tasksJournalMapper.insertTasksJournal(journal);
+					return JsonUtil.success("操作成功!", true);
+				}
+			}else if(state != null && state == 9 && tasks.getTurnSpecialRecordsId()!=null && !"".equals(tasks.getTurnSpecialRecordsId())){//转专项
+				TaskTurnSpecialRecords ttsr = new TaskTurnSpecialRecords();
+				ttsr.setTaskId(tasks.getTaskId());
+				ttsr.setTurnSpecialRecordsId(tasks.getTurnSpecialRecordsId());
+				
+				tasks.setPrincipal(null);//
+				tasks.setSubordinateId(tasks.getTurnSpecialRecordsId());
+				tasks.setSubordinateType(1);
+				tasks.setSubordinateTime(new Date());
+				
+				if(tasksMapper.updateTasks(tasks)>0 && taskTurnSpecialRecordsMapper.insertTaskTurnSpecialRecords(ttsr) > 0){
+					TasksJournal journal = new TasksJournal();
+					journal.setTaskId(tasks.getTaskId());
+					journal.setOperatorId(tasks.getSubordinateOperation());
+					journal.setOperationTime(date);
+					journal.setChangeState(state);
+					journal.setRemarks(tasks.getRemarks());
+					tasksJournalMapper.insertTasksJournal(journal);
+					return JsonUtil.success("操作成功!", true);
+				}
+			}else if(state != null && state == 10 && tasks.getProjectId()!= null && !"".equals(tasks.getProjectId())){//转集中处理
+				CentralizedProcessingRecords cpr = new CentralizedProcessingRecords();
+				cpr.setTaskId(tasks.getTaskId());
+				cpr.setProjectId(tasks.getProjectId());
+				
+				tasks.setPrincipal(null);
+				tasks.setSubordinateId(tasks.getProjectId());
+				tasks.setSubordinateType(2);
+				tasks.setSubordinateTime(new Date());
+				
+				if(tasksMapper.updateTasks(tasks)>0 && centralizedProcessingRecordsMapper.insertCentralizedProcessingRecords(cpr)>0){
+					TasksJournal journal = new TasksJournal();
+					journal.setTaskId(tasks.getTaskId());
+					journal.setOperatorId(tasks.getSubordinateOperation());
+					journal.setOperationTime(date);
+					journal.setChangeState(state);
+					journal.setRemarks(tasks.getRemarks());
+					tasksJournalMapper.insertTasksJournal(journal);
+					return JsonUtil.success("操作成功!", true);
+				}
+			}else if(state !=null && state == 2){
+				tasks.setFinishTime(new Date());
+				if(tasksMapper.updateTasks(tasks)>0){
+					TasksJournal journal = new TasksJournal();
+					journal.setTaskId(tasks.getTaskId());
+					journal.setOperatorId(tasks.getPrincipal());
+					journal.setOperationTime(date);
+					journal.setChangeState(state);
+					journal.setRemarks(tasks.getRemarks());
+					tasksJournalMapper.insertTasksJournal(journal);
+					return JsonUtil.success("操作成功!", true);
+				}
+			}else{
+				if(tasksMapper.updateTasks(tasks)>0){
+					TasksJournal journal = new TasksJournal();
+					journal.setTaskId(tasks.getTaskId());
+					journal.setOperatorId(tasks.getPrincipal());
+					journal.setOperationTime(date);
+					journal.setChangeState(state);
+					journal.setRemarks(tasks.getRemarks());
+					journal.setTaskOutType(outType);
+					tasksJournalMapper.insertTasksJournal(journal);
+					
+					if(state !=null && state == 0){
+						List<Tasks> tasksList = new ArrayList<>();
+						tasksList = tasksMapper.getTasksbyServiceRequestId(tasks.getServerId());
+						int i = 0, j = 0;
+						for (; i < tasksList.size(); i++) {
+							//任务不等于已完成状态
+							if(tasksList.get(i).getTaskState()!=2&&tasksList.get(i).getTaskState()!=0){
+								break;
+							}
+							if(tasksList.get(i).getTaskState()==2){
+								j++;
+							}
+						}
+						//任务已是失效以及有完成的任务
+						if(i==tasksList.size()){
+							ServiceRequest serviceRequest = new ServiceRequest();
+							if(serviceRequest.getServiceRequestIds()==null){
+								serviceRequest.setServiceRequestIds(new ArrayList<String>());
+							}
+							serviceRequest.getServiceRequestIds().add(tasks.getServerId());
+							//有无完成任务
+							if(j==0){
+								serviceRequest.setServiceRequestState(0);//无需回访
+							}else{
+								serviceRequest.setServiceRequestState(1);//待回访
+							}
+							serviceRequestMapper.changeServiceRequestStateByIds(serviceRequest);
+						}
+					}
+					
+					return JsonUtil.success("操作成功!", true);
+				}
+			}
+		}
+		return JsonUtil.failure("任务不能为空!", true);
+	}
+	
+	@Override
+	public String getTasksJournalbyTasksId(String tasksId) {
+		try{
+			List<TasksJournal> JournaList = tasksJournalMapper.getTasksJournalbyTasksId(tasksId);
+			Map map = new HashMap<>();
+			map.put("JournaList", JournaList);
+			map.put("size", JournaList.size());
+			return JsonUtil.success(map, true);
+		}catch(Exception e){
+			e.printStackTrace();
+			return JsonUtil.failure("任务不能为空!", true);
+		}
+	}
+
+	@Override
+	public String getTasksByTypeState(String Type, String State) {
+		try{
+			Tasks tasks = new Tasks();
+			tasks.setTaskType(Integer.parseInt(Type));
+			tasks.setTaskState(Integer.parseInt(State));
+			List<Tasks> tasksList = tasksMapper.getTasksbyTaskAndServiceId(tasks);
+			Map map = new HashMap<>();
+			map.put("tastList", tasksList);
+			map.put("size", tasksList.size());
+			return JsonUtil.success(map, true);
+		}catch(Exception e){
+			e.printStackTrace();
+			return JsonUtil.failure("操作失败!", true);
+		}
+	}
+	
+	@Override
+	public String listStaffByAll(String all){
+		try{
+			Staff staff = new Staff();
+			staff.setStaffName(all);
+			staff.setTelphone(all);
+			staff.setStaffNo(all);
+			staff.setCardNum(all);
+			List<Staff> staffList = staffMapper.listStaffByAll(staff);
+			Map map = new HashMap<>();
+			map.put("staffList", staffList);
+			map.put("size", staffList.size());
+			return JsonUtil.success(map, true);
+		}catch(Exception e){
+			e.printStackTrace();
+			return JsonUtil.failure("操作失败!", true);
+		}
+	}
+
+}

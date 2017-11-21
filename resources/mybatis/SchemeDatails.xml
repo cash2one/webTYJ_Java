@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.flf.mapper.SchemeDatailsMapper" >
+  <resultMap id="BaseResultMap" type="SchemeDatails" >
+    <id column="scheme_datails_id" property="schemeDatailsId" jdbcType="VARCHAR" />
+    <result column="charge_item_id" property="chargeItemId" jdbcType="VARCHAR" />
+    <result column="charge_item_name" property="chargeItemName" jdbcType="VARCHAR" />
+    <result column="formula_id" property="formulaId" jdbcType="VARCHAR" />
+    <result column="formula_name" property="formulaName" jdbcType="VARCHAR" />
+    <result column="scheme_id" property="schemeId" jdbcType="VARCHAR" />
+    <result column="charging_frequency" property="chargingFrequency" jdbcType="VARCHAR" />
+    <result column="building_id" property="buildingId" jdbcType="VARCHAR" />
+    <result column="full_name" property="fullName" jdbcType="VARCHAR" />
+  </resultMap>
+  
+  <resultMap type="BuildingStructureNew" id="BuildingResultMap">
+  	<id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="full_name" property="fullName" jdbcType="VARCHAR" />
+    <result column="node_name" property="nodeName" jdbcType="VARCHAR" />
+    <result column="building_id" property="buildingId" jdbcType="VARCHAR" />
+    <result column="parent_id" property="parentId" jdbcType="VARCHAR" />
+    <result column="building_area" property="buildingArea" jdbcType="DOUBLE" />
+    <result column="commonality_area" property="commonalityArea" jdbcType="DOUBLE" />
+    <result column="inside_area" property="insideArea" jdbcType="DOUBLE" />
+    <result column="completion_area" property="completionArea" jdbcType="DOUBLE" />
+    <result column="utility_ratio" property="utilityRatio" jdbcType="DOUBLE" />
+    <result column="building_type" property="buildingType" jdbcType="VARCHAR" />
+    <result column="area_id" property="areaId" jdbcType="VARCHAR" />
+    <result column="project_id" property="projectId" jdbcType="VARCHAR" />
+    <result column="cust_id" property="custId" jdbcType="VARCHAR" />
+    <result column="is_binding_assets" property="isBindingAssets"  />
+    <result column="name" property="name"  />
+    <result column="card_type" property="cardType"  />
+    <result column="card_num" property="cardNum"  />
+    <result column="enterprise_name" property="enterpriseName"  />
+    <result column="office_phone" property="officePhone"  />
+  </resultMap>
+  
+  <insert id="insertSchemeDatails" parameterType="SchemeDatails" >
+    insert into tc_scheme_datails (scheme_datails_id, charge_item_id, charge_item_name, 
+      formula_id, formula_name, scheme_id, 
+      charging_frequency,building_id,full_name)
+    values (#{schemeDatailsId,jdbcType=VARCHAR}, #{chargeItemId,jdbcType=VARCHAR}, #{chargeItemName,jdbcType=VARCHAR}, 
+      #{formulaId,jdbcType=VARCHAR}, #{formulaName,jdbcType=VARCHAR}, #{schemeId,jdbcType=VARCHAR}, 
+      #{chargingFrequency,jdbcType=VARCHAR},#{buildingId,jdbcType=VARCHAR},#{fullName,jdbcType=VARCHAR})
+  </insert>
+ 
+  <update id="updateSchemeDatails" parameterType="SchemeDatails" >
+    update tc_scheme_datails
+    <set >
+      <if test="chargeItemId != null" >
+        charge_item_id = #{chargeItemId,jdbcType=VARCHAR},
+      </if>
+      <if test="chargeItemName != null" >
+        charge_item_name = #{chargeItemName,jdbcType=VARCHAR},
+      </if>
+      <if test="formulaId != null" >
+        formula_id = #{formulaId,jdbcType=VARCHAR},
+      </if>
+      <if test="formulaName != null" >
+        formula_name = #{formulaName,jdbcType=VARCHAR},
+      </if>
+      <if test="schemeId != null" >
+        scheme_id = #{schemeId,jdbcType=VARCHAR},
+      </if>
+      <if test="chargingFrequency != null" >
+        charging_frequency = #{chargingFrequency,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where scheme_datails_id = #{schemeDatailsId,jdbcType=VARCHAR}
+  </update>
+  
+  <!-- 根据方案id和二级收费项目id查询方案公式收费项目数据 -->
+  <select id="getSchemeDatailsBySchemeIdAndchargeItemId" parameterType="HashMap" resultMap="BaseResultMap">
+  	select * from tc_scheme_datails where 1=1
+  	<if test="schemeId != null and schemeId != ''">
+  	 and scheme_id = #{schemeId,jdbcType=VARCHAR} 
+  	</if>
+  	<if test="chargeItemId != null and chargeItemId != ''">
+  	 and charge_item_id = #{chargeItemId,jdbcType=VARCHAR}
+  	</if>
+  </select>
+  
+  <!-- 根据方案id查询方案公式收费项目关联表中对应的建筑结构id集合 -->
+  <select id="getBuildingIdBySchemeId" parameterType="String" resultType="String">
+  	select building_id from tc_scheme_datails where scheme_id = #{schemeId,jdbcType=VARCHAR}
+  </select>
+  
+  <select id="getSchemeDatailsByChargeItemId" parameterType="String" resultMap="BaseResultMap">
+  	select * from tc_scheme_datails where charge_item_id = #{chargeItemId,jdbcType=VARCHAR}
+  </select>
+  
+  <select id="getBuildingBySchemeId" parameterType="String" resultMap="BuildingResultMap">
+  	select * from tc_building_structure where id in 
+  	(select distinct building_id from tc_scheme_datails where scheme_id = #{schemeId,jdbcType=VARCHAR})
+  </select>
+  
+  <select id="getSchemeDatailsBySchemeId" parameterType="String"  resultMap="BaseResultMap">
+    	select building_id from tc_scheme_datails where scheme_id = #{schemeId,jdbcType=VARCHAR}
+  </select>
+  <!--根据方案id查询 -->
+  <select id="getSchemeDatailsResBySchemeId" parameterType="String"  resultMap="BaseResultMap">
+    	select * from tc_scheme_datails where scheme_id = #{schemeId,jdbcType=VARCHAR}
+  </select>  
+  <!--根据一级收费项目ID查询对应手动计费的方案公式收费项目集合 -->
+  <select id="getManualCharge" parameterType="java.util.Map"  resultMap="BaseResultMap">
+    	select sch.* from 
+		(SELECT
+			*
+		FROM
+			tc_scheme_datails
+		WHERE
+			scheme_id IN (
+				SELECT
+					scheme_id
+				FROM
+					tc_scheme
+				WHERE
+					project_id = #{projectId,jdbcType=VARCHAR}
+			)
+		) as sch
+		RIGHT JOIN (
+			select * from  tc_charge_item_new 
+			where parent_id =#{ciId,jdbcType=VARCHAR}
+		) as cha
+		on sch.charge_item_id=cha.ci_id group by sch.charge_item_name
+  </select> 
+  <!--根据一级收费项目ID查询对应手动计费的方案公式收费项目集合 -->
+  <select id="getDatailsByBuildingBillingId" parameterType="java.util.Map"  resultMap="BaseResultMap">
+    	select sch.* from tc_scheme_datails as sch
+		RIGHT JOIN (
+			select * from  tc_billing 
+			where building_billing_id =#{buildingBillingId,jdbcType=VARCHAR}
+		) as cha
+		on sch.scheme_datails_id=cha.scheme_datails_id group by sch.scheme_datails_id
+  </select>
+  <!--查询所有的信息  -->
+  <select id="listAllSchemeDatails"  resultMap="BaseResultMap">
+    	select sd.charge_item_id,sd.charge_item_name,sd.formula_id,sd.formula_name,sd.scheme_id,
+    	sd.building_id,sd.full_name
+    	from tc_scheme_datails  sd
+  </select>  
+</mapper>

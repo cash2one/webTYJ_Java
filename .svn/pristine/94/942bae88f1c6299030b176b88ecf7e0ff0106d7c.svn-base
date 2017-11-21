@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.flf.mapper.PaymentDetailsMapper" >
+  <resultMap id="BaseResultMap" type="com.flf.entity.PaymentDetails" >
+    <id column="payment_details_id" property="paymentDetailsId" jdbcType="VARCHAR" />  
+  <!--   <result column="payment_type" property="paymentType" jdbcType="TINYINT" /> -->
+    <result column="transaction_amount" property="transactionAmount" jdbcType="DOUBLE" />
+    <result column="transaction_date" property="transactionDate" jdbcType="TIMESTAMP" />
+    <result column="note" property="note" jdbcType="VARCHAR" />
+    <result column="financial_staff_id" property="financialStaffId" jdbcType="VARCHAR" />
+    <result column="financial_staff_name" property="financialStaffName" jdbcType="VARCHAR" />
+    <result column="person_id" property="personId" jdbcType="VARCHAR" />
+    <result column="person_name" property="personName" jdbcType="VARCHAR" />
+    <result column="refund_state" property="refundState" jdbcType="TINYINT" />
+    <result column="cash_sum" property="cashSum" jdbcType="DOUBLE" />
+    <result column="credit_card_sum" property="creditCardSum" jdbcType="DOUBLE" />
+    <result column="wechat_sum" property="wechatSum" jdbcType="DOUBLE" />
+    <result column="payment_num" property="paymentNum" jdbcType="VARCHAR" />
+    <result column="batch_num" property="batchNum" jdbcType="VARCHAR" />
+    <result column="staff_number" property="staffNumber" jdbcType="VARCHAR" />
+    <result column="account_record_id" property="accountRecordId" jdbcType="VARCHAR"/>
+    <result column="asset_account_id" property="assetAccountId" jdbcType="VARCHAR"/>
+    <result column="cust_id" property="custId" jdbcType="VARCHAR"/>
+    <result column="is_out_in" property="isOutIn" jdbcType="VARCHAR"/>
+    <result column="ci_name" property="ciName" jdbcType="VARCHAR"/>
+    <result column="out_trade_no" property="outTradeNo" jdbcType="VARCHAR"/>
+    <result column="charge_sum" property="chargeSum" jdbcType="DOUBLE" />
+  </resultMap>
+  <resultMap type="PaymentDetails" id="resultPaymentDetailsMap" extends="BaseResultMap">
+  <collection property="financialStaff" column="financial_staff_id" ofType="FinancialStaff" select="com.flf.mapper.FinancialStaffMapper.getFinancialStaffbyId"></collection>
+  
+  </resultMap>
+  <select id="listAllPaymentDetails" parameterType="String" resultMap="BaseResultMap">
+  select * from tc_payment_details where financial_staff_id=#{0} order by transaction_date desc
+  
+  </select>
+  <select id="getPaymentDetailsById" parameterType="String" resultMap="BaseResultMap">
+  select * from tc_payment_details  where payment_details_id=#{0} order by transaction_date desc
+  
+  </select>
+  <select id="getPaymentDetailsByAccountId" parameterType="String" resultMap="BaseResultMap">
+  select * from tc_payment_details  where account_record_id=#{0} 
+  </select>
+  
+  <!--   分页条件查询   使用模块：收款台历史记录  2015/12/22-->  
+  <select id="listPagePaymentDetails" parameterType="PaymentDetails" resultMap="BaseResultMap">
+   select pd.*,s.staff_number from tc_payment_details pd
+   INNER JOIN t_staff s ON pd.financial_staff_id=s.staff_id
+   where s.state=1
+   <if test="financialStaffId!='' and financialStaffId!=null">
+   	  and pd.financial_staff_id = #{financialStaffId}
+   </if>
+   <if test="paymentNum!='' and paymentNum!=null">
+      and pd.payment_num like CONCAT('%',#{paymentNum},'%')
+   </if>
+   <if test="batchNum!='' and batchNum!=null">
+      and pd.batch_num like CONCAT('%',#{batchNum},'%')
+   </if>
+   order by transaction_date desc
+  </select>
+  
+  <insert id="insertPaymentDetails" parameterType="com.flf.entity.PaymentDetails" >
+    insert into tc_payment_details (payment_details_id, transaction_amount, transaction_date, 
+      note, financial_staff_id, financial_staff_name, person_id, person_name, refund_state,
+      cash_sum,credit_card_sum,wechat_sum,charge_sum, payment_num,batch_num,
+      asset_account_id,ci_name,cust_id,is_out_in,out_trade_no
+      )
+    values (#{paymentDetailsId,jdbcType=VARCHAR}, #{transactionAmount,jdbcType=DOUBLE}, #{transactionDate,jdbcType=TIMESTAMP}, 
+      #{note,jdbcType=VARCHAR}, #{financialStaffId,jdbcType=VARCHAR}, #{financialStaffName,jdbcType=VARCHAR}, 
+      #{personId,jdbcType=VARCHAR}, #{personName,jdbcType=VARCHAR}, #{refundState,jdbcType=TINYINT}, #{cashSum,jdbcType=DOUBLE},
+      #{creditCardSum,jdbcType=DOUBLE}, #{wechatSum,jdbcType=DOUBLE}, #{chargeSum,jdbcType=DOUBLE}, #{paymentNum,jdbcType=VARCHAR}, #{batchNum,jdbcType=VARCHAR},
+      #{assetAccountId,jdbcType=VARCHAR},#{ciName,jdbcType=VARCHAR},#{custId,jdbcType=VARCHAR},#{isOutIn,jdbcType=VARCHAR},#{outTradeNo,jdbcType=VARCHAR}
+      )
+  </insert>
+ 
+  <update id="updatePaymentDetails" parameterType="com.flf.entity.PaymentDetails" >
+    update tc_payment_details
+    <set >
+      <if test="transactionAmount != null" >
+        transaction_amount = #{transactionAmount,jdbcType=DOUBLE},
+      </if>
+      <if test="transactionDate != null" >
+        transaction_date = #{transactionDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="note != null" >
+        note = #{note,jdbcType=VARCHAR},
+      </if>
+       <if test="refundState != null" >
+        refund_state = #{refundState,jdbcType=VARCHAR},
+      </if>
+      <if test="cashSum != null" >
+        cash_sum = #{cashSum,jdbcType=DOUBLE},
+      </if>
+       <if test="creditCardSum != null" >
+        credit_card_sum = #{creditCardSum,jdbcType=DOUBLE},
+      </if>
+       <if test="wechatSum != null" >
+        wechat_sum = #{wechatSum,jdbcType=DOUBLE},
+      </if>
+       <if test="chargeSum != null" >
+        charge_sum = #{chargeSum,jdbcType=DOUBLE},
+      </if>
+        <if test="paymentNum != null" >
+        payment_num = #{paymentNum,jdbcType=VARCHAR},
+      </if>
+       <if test="accountRecordId != null" >
+        account_record_id = #{accountRecordId,jdbcType=VARCHAR},
+      </if>
+      <if test="ciName != null" >
+        ci_name = #{ciName,jdbcType=VARCHAR},
+      </if>
+      <if test="custId != null" >
+        cust_id = #{custId,jdbcType=VARCHAR},
+      </if>
+      <if test="isOutIn != null" >
+        is_out_in = #{isOutIn,jdbcType=VARCHAR},
+      </if>
+      <if test="outTradeNo != null" >
+        out_trade_no = #{outTradeNo,jdbcType=VARCHAR},
+      </if>
+      
+        batch_num = #{batchNum,jdbcType=VARCHAR}
+    </set>
+    where payment_details_id = #{paymentDetailsId,jdbcType=VARCHAR}
+  </update>
+  
+  <!-- 根据收营员id查询该收银员 的收款记录 
+  	          用于 收款台收银员交账
+  	   2015/12/30彭婷婷  	          
+  -->
+   <select id="getPaymentDatilsByStaffId" parameterType="String" resultMap="BaseResultMap">
+   	select pd.*, ts.staff_no as staffNumber from tc_payment_details pd, t_staff ts where pd.batch_num is null and financial_staff_id=#{0}
+   	  and pd.financial_staff_id = ts.staff_id
+   </select>
+   
+   <!-- 分页查询 -->
+  <select id="listPageWithPaymentDetails" parameterType="com.flf.entity.PaymentDetails" resultMap="BaseResultMap">
+   	select pd.*, ts.staff_no as staffNumber from tc_payment_details pd, t_staff ts where pd.batch_num is null and financial_staff_id=#{financialStaffId,jdbcType=VARCHAR}
+   	  and pd.financial_staff_id = ts.staff_id
+  </select>
+  
+	<!-- 获取微信，现金，刷卡各自的和 -->
+	<select id="getPaymentDetailsSum" parameterType="String" resultMap="BaseResultMap">
+		select IFNULL(sum(cash_Sum),0) cashSum,IFNULL(sum(credit_Card_Sum),0) creditCardSum,IFNULL(sum(wechat_Sum),0) wechatSum from tc_payment_details where batch_num is null and financial_staff_id=#{0}
+	</select>
+   
+  <select id="listPaymentDatilsByAssetAccountId" parameterType="String" resultMap="BaseResultMap">
+  	SELECT * FROM tc_payment_details WHERE asset_account_id = #{0}
+  </select>
+  <select id="getPaymentNum" resultMap="BaseResultMap">
+	SELECT IFNULL(max(cast(right(payment_num,5) as SIGNED)),0)as payment_num
+	FROM tc_payment_details
+  </select>
+ 
+</mapper>

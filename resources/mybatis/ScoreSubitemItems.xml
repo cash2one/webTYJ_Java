@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.flf.mapper.ScoreSubitemItemsMapper" >
+  <resultMap id="BaseResultMap" type="ScoreSubitemItems" >
+    <id column="score_subitem_id" property="subitemId" jdbcType="VARCHAR" />
+    <result column="score_subitem_name" property="subitemName" jdbcType="VARCHAR" />
+    <result column="score_subitem_number" property="number" jdbcType="VARCHAR" />
+    <result column="scoring_criteria_item_id" property="criteriaItemId" jdbcType="VARCHAR" />
+    <result column="weight" property="weight" jdbcType="VARCHAR" />
+    <result column="score_1" property="score1" jdbcType="VARCHAR" />
+    <result column="score_2" property="score2" jdbcType="VARCHAR" />
+    <result column="score_3" property="score3" jdbcType="VARCHAR" />
+    <result column="score_4" property="score4" jdbcType="VARCHAR" />
+    <result column="score_5" property="score5" jdbcType="VARCHAR" />
+  </resultMap>
+  
+  <select id="getScoreSubitemItemsbyId" parameterType="String" resultMap="BaseResultMap">
+  select * from ts_score_subitem_items where score_subitem_id=#{0}
+  </select>
+  
+  <select id="getScoreSubitemItemsbyCriteriaItemId" parameterType="String" resultMap="BaseResultMap">
+  	select * from ts_score_subitem_items where scoring_criteria_item_id =#{0}
+  </select>
+  
+  <insert id="insertScoreSubitemItems" parameterType="ScoreSubitemItems" >      
+      insert into ts_score_subitem_items (score_subitem_id, score_subitem_name,score_subitem_number,scoring_criteria_item_id,weight,
+      score_1,score_2,score_3,score_4,score_5)
+    values (UUID(), #{subitemName,jdbcType=VARCHAR},#{number,jdbcType=VARCHAR}, #{criteriaItemId,jdbcType=VARCHAR}, 
+      #{weight,jdbcType=VARCHAR}, #{score1,jdbcType=VARCHAR}, #{score2,jdbcType=VARCHAR},#{score3,jdbcType=VARCHAR},
+      #{score4,jdbcType=VARCHAR},#{score5,jdbcType=VARCHAR})
+  </insert>
+  
+  <update id="updateScoreSubitemItems" parameterType="ScoreSubitemItems" >
+    update ts_score_subitem_items
+    set 
+    score_subitem_name = #{subitemName,jdbcType=VARCHAR},
+    score_subitem_number = #{number,jdbcType=VARCHAR},
+    scoring_criteria_item_id = #{criteriaItemId,jdbcType=VARCHAR},
+    weight = #{weight,jdbcType=VARCHAR},
+    score_1 = #{score1,jdbcType=VARCHAR},
+    score_2 = #{score2,jdbcType=VARCHAR},
+    score_3 = #{score3,jdbcType=VARCHAR},
+    score_4 = #{score4,jdbcType=VARCHAR},
+    score_5 = #{score5,jdbcType=VARCHAR}
+    where score_subitem_id = #{subitemId,jdbcType=VARCHAR}
+  </update>
+</mapper>

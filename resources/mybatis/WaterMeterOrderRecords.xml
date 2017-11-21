@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.flf.mapper.WaterMeterOrderRecordsMapper" >
+  <resultMap id="BaseResultMap" type="WaterMeterOrderRecords" >
+    <id column="record_id" property="recordId" jdbcType="VARCHAR" />
+    <result column="order_id" property="orderId" jdbcType="VARCHAR" />
+    <result column="water_meter_id" property="waterMeterId" jdbcType="VARCHAR" />
+    <result column="water_meter_reading" property="waterMeterReading" jdbcType="DOUBLE" />
+    <result column="water_meter_last_reading" property="waterLastReading" jdbcType="DOUBLE" />
+    <result column="building_structure_id" property="buildingStructureId" jdbcType="VARCHAR" />
+    <collection property="buildingStructureNew" column="building_structure_id" ofType="BuildingStructureNew" select="com.flf.mapper.BuildingStructureNewMapper.getBuildingStructureById"></collection>
+  </resultMap>
+  
+  <select id="getWaterMeterOrderRecordsbyId" parameterType="String" resultMap="BaseResultMap">
+  	select * from ts_water_meter_reading_records where record_id=#{0}
+  </select>
+  
+  <select id="getWaterMeterOrderRecordsByBuildingId" parameterType="String" resultMap="BaseResultMap">
+  	select * from ts_water_meter_reading_records wmrr,t_water_meter_records wmr where wmrr.water_meter_id = wmr.water_meter_id and wmr.building_structure_id=#{0}
+  </select>
+  
+  <update id="updateWaterMeterOrderRecords" parameterType="com.flf.entity.WaterMeterOrderRecords" >
+    update ts_water_meter_reading_records
+    <set >
+      <if test="orderId != null" >
+        order_id = #{orderId,jdbcType=VARCHAR},
+      </if>
+      <if test="waterMeterId != null" >
+        water_meter_id = #{waterMeterId,jdbcType=VARCHAR},
+      </if>
+      <if test="waterMeterReading != null" >
+        water_meter_reading = #{waterMeterReading},
+      </if>
+      <if test="waterLastReading != null" >
+        water_meter_last_reading = #{waterLastReading},
+      </if>
+      <if test="buildingStructureId != null" >
+        building_structure_id = #{buildingStructureId,jdbcType=TINYINT},
+      </if>
+    </set>
+    where record_id = #{recordId,jdbcType=VARCHAR}
+  </update>
+  
+  
+  <select id="getWaterMeterOrderRecordsbyOrderId" parameterType="String" resultMap="BaseResultMap">
+  	select * from ts_water_meter_reading_records where order_id=#{0}
+  </select>
+  
+  <insert id="insertWaterMeterOrderRecords" parameterType="WaterMeterOrderRecords" >      
+      insert into ts_water_meter_reading_records(record_id,order_id,water_meter_id,water_meter_reading,water_meter_last_reading, building_structure_id)
+    values (#{recordId,jdbcType=VARCHAR},#{orderId,jdbcType=VARCHAR}, #{waterMeterId,jdbcType=VARCHAR}, #{waterMeterReading,jdbcType=DOUBLE},#{waterLastReading,jdbcType=DOUBLE}, #{buildingStructureId,jdbcType=VARCHAR})
+  </insert>
+</mapper>

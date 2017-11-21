@@ -1,0 +1,207 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.flf.mapper.ServiceRequestMapper" >
+  <resultMap id="BaseResultMap" type="ServiceRequest" >
+    <id column="service_request_id" property="serviceRequestId" jdbcType="VARCHAR" />
+    <result column="request_time" property="requestTime" jdbcType="TIMESTAMP" />
+    <result column="request_source" property="requestSource" jdbcType="VARCHAR" />
+    <result column="service_request_name" property="serviceRequestName" jdbcType="VARCHAR" />
+    <result column="service_request_state" property="serviceRequestState" jdbcType="TINYINT" />
+    <result column="customer_id" property="customerId" jdbcType="VARCHAR" />
+    <result column="direction_type" property="directionType" jdbcType="TINYINT" />
+    <result column="service_request_type" property="serviceRequestType" jdbcType="TINYINT" />
+    <result column="quality_company_type" property="qualityCompanyType" jdbcType="TINYINT" />
+    <result column="review_id" property="reviewId" jdbcType="VARCHAR" />
+    <result column="important_event" property="importantEvent" jdbcType="TINYINT" />
+    <result column="important_event_type_id" property="importantEventTypeId" jdbcType="VARCHAR" />
+    <result column="writer_id" property="writerId" jdbcType="VARCHAR" />
+    <result column="remarks" property="remarks" jdbcType="VARCHAR" />
+    <result column="anxious" property="anxious" jdbcType="TINYINT" />
+    <result column="access_phone" property="accessPhone" jdbcType="VARCHAR" />
+    <association property="personCustNew" column="customer_id" javaType="PersonCustNew" select="com.flf.mapper.PersonCustNewMapper.getPersonCustNewById"></association>
+    <collection property="importantEventType" column="important_event_type_id" ofType="ImportantEventType" select="com.flf.mapper.ImportantEventTypeMapper.getImportantEventTypebyId"></collection>
+    <collection property="staff" column="writer_id" ofType="Staff" select="com.flf.mapper.StaffMapper.selectByid"></collection>
+  </resultMap>
+  
+  
+  <resultMap type="ServiceRequest" id="resultServiceRequestMap" extends="BaseResultMap">
+  	 
+  	<!-- <collection property="personCustNew" column="customer_id" javaType="PersonCustNew" select="com.flf.mapper.PersonCustNewMapper.getPersonCustNewById"></collection> -->
+  	<collection property="staff" column="review_id" select="com.flf.mapper.StaffMapper.selectByid"></collection>
+  </resultMap>
+ 
+<!--  <delete id="deleteServiceRequest" parameterType="String">
+  delete from ts_service_request where service_request_id = #{serviceRequestId,jdbcType=VARCHAR}
+  </delete> -->
+  
+<!--   <delete id="cancelEstablish">
+  delete from ts_service_request where writer_id = 'writer_id'
+  </delete> -->
+  
+  <select id="getServiceRequestbyQCType" parameterType="String" resultMap="BaseResultMap">
+  	select * from ts_service_request where quality_company_type =#{0}
+  </select>
+  
+  <select id="listPageServiceRequest" parameterType="ServiceRequest" resultMap="resultServiceRequestMap">
+  select * from ts_service_request 
+  </select>
+  
+  <select id="listAllServiceRequest"  resultMap="resultServiceRequestMap" >
+  select * from ts_service_request
+  </select>
+  
+  <select id="getServiceRequestbyId" parameterType="java.lang.String" resultMap="resultServiceRequestMap">
+  select * from ts_service_request where service_request_id=#{0}
+  </select>
+  
+  <select id="getServiceRequest" parameterType="java.lang.String" resultMap="BaseResultMap">
+  select * from ts_service_request where service_request_id=#{0}
+  </select>
+  
+  <select id="getServiceRequestbyCustomerId" parameterType="String" resultMap="resultServiceRequestMap">
+  select * from ts_service_request where customer_id=#{0} order by request_time desc
+  </select>
+  <!-- 根据客户Id分页查询 -->
+   <select id="listPageServiceRequestbyCustomerId" parameterType="String" resultMap="resultServiceRequestMap">
+  select * from ts_service_request where customer_id=#{customerId} 
+  <if test="remarks !='' and remarks !=null">
+  and remarks LIKE CONCAT('%',#{remarks},'%')
+  </if>
+  order by request_time desc
+  </select>
+  <select id="getServiceRequestbyCustomerIdAndDate" parameterType="java.lang.String" resultMap="BaseResultMap">
+  select * from ts_service_request where customer_id=#{0} and request_time > #{1}
+  </select>
+  
+  <select id="getServiceRequestByWriterId" parameterType="String" resultMap="resultServiceRequestMap">
+  select * from ts_service_request where writer_id = #{0}
+  </select>
+  
+  <select id="getServiceRequestbyState" parameterType="String" resultMap="BaseResultMap">
+  select * from ts_service_request where customer_id = #{0} and service_request_state = #{1} and request_time > #{2}
+  </select>
+  
+  <select id="getGoingServiceRequestbyStateAndType" parameterType="String" resultMap="resultServiceRequestMap">
+  select * from ts_service_request where service_request_type=#{0} and service_request_state not in (0,3)
+  </select>
+  
+  <select id="getHistoryServiceRequestbyStateAndTypes" parameterType="String" resultMap="BaseResultMap">
+  select * from ts_service_request where service_request_type=#{0} and service_request_state in (0,3)
+  </select>
+  <select id="getServiceRequestbyTypeAndCustomerId" parameterType="String" resultMap="BaseResultMap">
+  select * from ts_service_request where service_request_type=#{0} and customer_id=#{1} order by  request_time desc
+  </select>
+  
+  <select id="getAllServiceRequestsbyEventType" resultMap="BaseResultMap">
+  select * from ts_service_request where important_event_type_id is not null
+  </select>
+  
+  <select id="listPageAllServiceRequestsbyEventType" resultMap="BaseResultMap" parameterType="ServiceRequest">
+  select * from ts_service_request where important_event_type_id is not null order by  request_time desc
+  </select>
+  
+  <select id="listPageGoingServiceRequestsbyEventType" resultMap="BaseResultMap" parameterType="ServiceRequest">
+  select * from ts_service_request where service_request_state NOT IN (0,3) AND important_event_type_id is not null order by  request_time desc
+  </select>
+  
+  <select id="listPageHistoryServiceRequestsbyEventType" resultMap="BaseResultMap" parameterType="ServiceRequest">
+  select * from ts_service_request where service_request_state IN (0,3) AND important_event_type_id is not null order by  request_time desc
+  </select>
+  
+  <select id="getGoingEventSum" resultType="int" parameterType="ServiceRequest">
+  	select count(*) from ts_service_request where service_request_state NOT IN (0,3) AND important_event_type_id is not null order by  request_time desc
+  </select>
+  
+  <select id="getHistotyEventSum" resultType="int" parameterType="ServiceRequest">
+    select count(*) from ts_service_request where service_request_state IN (0,3) AND important_event_type_id is not null order by  request_time desc
+  </select>
+  
+  <!-- 根据服务请求类型分页查询 -->
+  <select id="listPageServiceRequestByType" resultMap="resultServiceRequestMap" parameterType="ServiceRequest">
+  	select sr.service_request_id,sr.request_time,sr.request_source,sr.service_request_name,sr.service_request_state,
+  		sr.customer_id,sr.direction_type,sr.service_request_type,sr.quality_company_type,sr.review_id,
+  		sr.important_event,sr.important_event_type_id,sr.writer_id,sr.remarks
+  	from ts_service_request as sr
+  	where sr.service_request_type = #{serviceRequestType,jdbcType=TINYINT}
+  	<if test="remarks != null and remarks != ''">
+  		and sr.remarks like CONCAT('%',CONCAT(#{remarks,jdbcType=VARCHAR},'%'))
+  	</if>
+  	order by sr.request_time desc
+  </select>
+  
+  <insert id="insertServiceRequestUUID" parameterType="ServiceRequest" >
+     insert into ts_service_request (service_request_id,request_time, request_source, service_request_name,
+      service_request_state, customer_id, direction_type, 
+      service_request_type , quality_company_type, review_id, important_event, 
+      important_event_type_id, writer_id, remarks, 
+      anxious, access_phone)
+    values (#{serviceRequestId,jdbcType=VARCHAR},NOW(), #{requestSource,jdbcType=VARCHAR},#{serviceRequestName,jdbcType=VARCHAR},
+      #{serviceRequestState,jdbcType=TINYINT}, #{customerId,jdbcType=VARCHAR}, #{directionType,jdbcType=TINYINT}, 
+      #{serviceRequestType,jdbcType=TINYINT},#{qualityCompanyType,jdbcType=TINYINT}, #{reviewId,jdbcType=VARCHAR}, #{importantEvent,jdbcType=TINYINT}, 
+      #{importantEventTypeId,jdbcType=TINYINT}, #{writerId,jdbcType=VARCHAR}, #{remarks,jdbcType=VARCHAR}, 
+      #{anxious,jdbcType=TINYINT}, #{accessPhone,jdbcType=VARCHAR})
+  </insert>
+  
+  <insert id="insertServiceRequest" parameterType="ServiceRequest" >
+     insert into ts_service_request (service_request_id,request_time, request_source, service_request_name,
+      service_request_state, customer_id, direction_type, 
+      service_request_type,quality_company_type, review_id, important_event, 
+      important_event_type_id, writer_id, remarks, 
+      anxious, access_phone)
+    values (UUID(), #{requestTime,jdbcType=TIMESTAMP}, #{requestSource,jdbcType=VARCHAR},#{serviceRequestName,jdbcType=VARCHAR}, 
+      #{serviceRequestState,jdbcType=TINYINT}, #{customerId,jdbcType=VARCHAR}, #{directionType,jdbcType=TINYINT}, 
+      #{serviceRequestType,jdbcType=TINYINT},#{qualityCompanyType,jdbcType=TINYINT}, #{reviewId,jdbcType=VARCHAR}, #{importantEvent,jdbcType=TINYINT}, 
+      #{importantEventTypeId,jdbcType=TINYINT}, #{writerId,jdbcType=VARCHAR}, #{remarks,jdbcType=VARCHAR}, 
+      #{anxious,jdbcType=TINYINT}, #{accessPhone,jdbcType=VARCHAR})
+  </insert>
+ 
+  <update id="updateServiceRequest" parameterType="ServiceRequest" >
+    update ts_service_request
+    set request_time = #{requestTime,jdbcType=DATE},
+      request_source = #{requestSource,jdbcType=VARCHAR},
+      service_request_name = #{serviceRequestName,jdbcType=VARCHAR},
+      service_request_state = #{serviceRequestState,jdbcType=TINYINT},
+      customer_id = #{customerId,jdbcType=VARCHAR},
+      direction_type = #{directionType,jdbcType=TINYINT},
+      service_request_type = #{serviceRequestType,jdbcType=TINYINT},
+      quality_company_type = #{qualityCompanyType,jdbcType=TINYINT},
+      review_id = #{reviewId,jdbcType=VARCHAR},
+      important_event = #{importantEvent,jdbcType=BIT},
+      important_event_type_id = #{importantEventTypeId,jdbcType=TINYINT},
+      writer_id = #{writerId,jdbcType=VARCHAR},
+      remarks = #{remarks,jdbcType=VARCHAR},
+      anxious = #{anxious,jdbcType=BIT},
+      access_phone = #{accessPhone,jdbcType=VARCHAR}
+    where service_request_id = #{serviceRequestId,jdbcType=VARCHAR}
+  </update>
+  <!-- 将id在集合中的服务请求的状态设置为失效 ,完成-->
+  <update id="changeServiceRequestStateByIds" parameterType="ServiceRequest">
+  	update ts_service_request
+  	set
+  		service_request_state = #{serviceRequestState,jdbcType=TINYINT}
+  	where service_request_id in
+  	<foreach collection="serviceRequestIds" item="id" index="index" open="(" close=")" separator=",">
+  		#{id}
+  	</foreach>
+  </update>
+  <update id="closeServiceRequest" parameterType="String" >
+  	update ts_service_request set service_request_state = 0 where service_request_id = #{0}
+  </update>
+  <select id="getServiceRequestbyDecoration" parameterType="String" resultMap="BaseResultMap">
+  	select * from ts_service_request where service_request_type=#{0} order by request_time desc
+  </select>
+ <!--  通过服务请求类型获取服务请求（分页） -->
+   <select id="listPageServiceRequestbyDecoration" parameterType="String" resultMap="BaseResultMap">
+  	select * from ts_service_request where service_request_type=#{serviceRequestType} 
+    <if test="remarks !='' and remarks !=null">
+     and remarks LIKE CONCAT('%',#{remarks},'%')
+    </if>
+  	order by request_time desc
+  </select>
+  
+  <!-- 分页 显示进行中的服务请求-->
+  <select id="listPageServiceRequestbyStateAndType"  parameterType="ServiceRequest" resultMap="BaseResultMap">
+ 		 select * from ts_service_request where service_request_type=#{serviceRequestType,jdbcType=VARCHAR}
+ 		 and service_request_state not in (0,3)
+  </select>
+</mapper>

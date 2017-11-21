@@ -1,0 +1,34 @@
+<!--
+    页面名称：检测单查看【任务详情】
+    负责人：刘洋
+    js路径：js/externalProfession/taskDetails/checkList.js
+-->
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>检测单查看（任务详情）</title>
+</head>
+<body>
+<div class="complaint_user">
+        <!--标题-->
+        <div style=" width:97%; margin:0 auto; background:#f0f0f0;padding-bottom:15px; height:auto;">
+            <div class="complaint_user_info_navigation" style="margin-top: 20px">
+                <a class="btn" style="margin-left: 200px" ui-sref="index.externalProfession.serviceRequestDatil.cleanQuery.taskDetails">任务详情</a>
+                <a class="btn" ui-sref="index.externalProfession.serviceRequestDatil.cleanQuery.quotationDetails">报价单详情</a>
+                <a class="btn" ui-sref="index.externalProfession.serviceRequestDatil.cleanQuery.handlingDetails">处理工单详情</a>
+                <a class="btn" ui-sref="index.externalProfession.serviceRequestDatil.cleanQuery.acceptanceDetails">验收工单详情</a>
+                <a class="btn" ui-sref="index.externalProfession.serviceRequestDatil.cleanQuery.settlementDetails">结算工单详情</a>
+                <a class="btn" ui-sref="index.externalProfession.serviceRequestDatil.cleanQuery.logDetails">日志</a>
+            </div>
+            <div class="clear"></div>
+            <div class="row">
+                <div ui-view></div>
+            </div>
+        </div>
+        <!--标题 end-->
+        <!--内容-->
+        <!--内容end-->
+</div>
+</body>
+</html>

@@ -1,0 +1,162 @@
+<!--创建人：李斌    日期：2015/5/6
+    页面名称：外部专业线的抄表管理的新增活动
+    JS路径： 'controllers/externalProfession/meterReadingManagement/newActivities',
+    修改时间：2015/5/29
+    修改人：李斌
+-->
+
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>新增活动</title>
+    <script>
+        function bgChange(obj){
+            obj.bgColor=obj.bgColor==""?"#FFC863":"";
+        }
+    </script>
+</head>
+<body>
+<div style="padding:15px 0 0" class="row" ng-controller="newActivitiesCtrl">
+    <div class="complaint_user_list">
+        <!--外部专业线的抄表管理的新增活动记录部分-->
+        <div class="row" style="margin: 20px">
+            <span>抄表开始日期：</span><input type="text">
+            <span>抄表结束日期：</span><input type="text">
+            <span>抄表类型：</span><select style="width: 80px;height: 25px">
+            <option>水表</option>
+            <option>电表</option></select>
+        <div class="pull-right" style="margin: 25px;">
+            <button style="height: 30px;width: 120px" ui-sref="index.externalProfession.meterReadingManagement.meterReading01">下一步</button></div>
+        </div>
+        <!--外部专业线的抄表管理的新增活动记录部分end-->
+
+        <!--外部专业线的抄表管理的新增活动创建团队部分-->
+        <table style="width:60%;height:300px;margin: 10px 85px 85px;">
+            <tr><td><h4>创建团队</h4></td></tr>
+            <tr>
+                <td colspan="2">
+                    负责人：
+                </td>
+                <td colspan="2">
+                    <span class="glyphicon glyphicon-plus" style="cursor:pointer "
+                          data-toggle="modal" data-target="#modifyPet"></span>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="4">
+                    <div class="media-left">
+                        <a href="#">
+                            <img style="width: 60px;height: 60px;" src="images/staffHome/u116.jpg">
+                        </a>
+                    </div>
+                    <div class="media-body">
+                        <p class="media-heading" style="margin-top: 5px"></p>
+                        张三<br>
+                        销售部
+                    </div>
+                </td>
+
+            </tr>
+            <tr>
+                <td colspan="2">
+                    团队成员：
+                </td>
+                <td colspan="2">
+                    <span class="glyphicon glyphicon-plus"  style=" cursor:pointer " data-toggle="modal" data-target="#personal"></span>
+                </td>
+            </tr>
+
+            <!--循环JS数据显示员工信息-->
+            <tr>
+                <td ng-repeat="item in peoplesItem">
+                    <div class="media-left">
+                        <a href="#">
+                            <img style="width: 60px;height: 60px;" src="images/staffHome/u116.jpg">
+                        </a>
+                    </div>
+                    <div class="media-body">
+                        <p class="media-heading" style="margin-top: 5px"></p>
+                        {{item.name}}<br>
+                        {{item.department}}
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td ng-repeat="item in  peoplesItem">
+                    <div class="media-left">
+                        <a href="#">
+                            <img style="width: 60px;height: 60px;" src="images/staffHome/u116.jpg">
+                        </a>
+                    </div>
+                    <div class="media-body">
+                        <p class="media-heading" style="margin-top: 5px"></p>
+                        {{item.name}}<br>
+                        {{item.department}}
+                    </div>
+                </td>
+            </tr>
+            <!--循环JS数据显示员工信息end-->
+        </table>
+        <!--外部专业线的抄表管理的新增活动创建团队部分end-->
+    </div>
+</div>
+
+<!--负责人添加Modal-->
+<div class="modal fade" id="modifyPet" role="dialog" aria-label="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                负责人添加
+            </div>
+            <div class="modal-body">
+                <table class="table table-bordered">
+                    <tr>
+                        <td>姓名</td>
+                        <td>部门</td>
+                        <td>手机号</td>
+                    </tr>
+                    <tr ng-repeat="item in  peoplesItem"  id="td1" onclick="bgChange(this)">
+                        <td>{{item.name}}</td>
+                        <td>{{item.department}}</td>
+                        <td>{{item.phone}}</td>
+                    </tr>
+                </table>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn bg-primary" data-dismiss="modal" aria-label="Close">确定</button>
+                <button type="button" class="btn bg-primary" data-dismiss="modal" aria-label="Close">取消</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!--组队成员添加modal-->
+<div class="modal fade" id="personal" role="dialog" aria-label="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                成员添加
+            </div>
+            <div class="modal-body">
+                <table class="table table-bordered">
+                    <tr>
+                        <td>姓名</td>
+                        <td>部门</td>
+                        <td>手机号</td>
+                    </tr>
+                    <tr ng-repeat="item in  peoplesItem"  id="td2" onclick="bgChange(this)">
+                        <td>{{item.name}}</td>
+                        <td>{{item.department}}</td>
+                        <td>{{item.phone}}</td>
+                    </tr>
+                </table>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn bg-primary" data-dismiss="modal" aria-label="Close">确定</button>
+                <button type="button" class="btn bg-primary" data-dismiss="modal" aria-label="Close">取消</button>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

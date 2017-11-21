@@ -1,0 +1,326 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.flf.mapper.ProjectMapper" >
+  <resultMap id="ResultProject" type="Project" >
+    <id column="project_id" property="projectId"/>
+    <result column="cust_id" property="custId"/>
+    <result column="project_number" property="projectNumber"/>
+    <result column="project_name" property="projectName"/>
+    <result column="stall_matching" property="stallMatching"/>
+    <result column="park_area" property="parkArea"/>
+    <result column="car_entri_num" property="carEntrinum"/>
+    <result column="person_entri_num" property="personEntrinum"/>
+    <result column="car_stall_num" property="carStallnum"/>
+    <result column="add_capacitance_area" property="addCapacitancearea"/>
+    <result column="capacitance_area" property="capacitanceArea"/>
+    <result column="private_stall_num" property="privateStallnum"/>
+    <result column="private_stall_sold" property="privateStallsold"/>
+    <result column="private_stall_unsold" property="privateStallunsold"/>
+    <result column="garage_num" property="garageNum"/>
+    <result column="garage_sold" property="garageSold"/>
+    <result column="garage_ubsold" property="garageUbsold"/>
+    <result column="project_total_area" property="projectTotalarea"/>
+    <result column="discount_price" property="discountPrice"/>
+    <result column="house_total_num" property="houseTotalnum"/>
+    <result column="build_area_num" property="buildAreanum"/>
+    <result column="build_unit_num" property="buildUnitnum"/>
+    <result column="build_build_num" property="buildBuildnum"/>
+    <result column="stall_num" property="stallNum"/>
+    <result column="underground_parking_spaces_total" property="undergroundParkingspacestotal"/>
+    <result column="ground_parking_space_total" property="groundParkingspacetotal"/>
+    <result column="greening_rate" property="greeningRate"/>
+    <result column="total_build_area" property="totalBuildarea"/>
+    <result column="basement_area" property="basementArea"/>
+    <result column="province" property="province"/>
+    <result column="full_address" property="fullAddress"/>
+    <result column="postcode" property="postcode"/>
+    <result column="street" property="street"/>
+    <result column="address" property="address"/>
+    <result column="post_code" property="postCode"/>
+    <result column="company" property="company"/>
+    <result column="outline" property="outline"/>
+    <result column="phone" property="phone"/>
+    <result column="parcel" property="parcel"/>
+    <result column="planning" property="planning"/>
+    <result column="instance_id" property="instanceId"/>
+    <result column="staff_id" property="staffId"/>
+    <result column="staff_name" property="staffName"/>
+    <result column="is_use_system" property="isUseSystem"/>
+    <result column="billing_type" property="billingType"/>
+    <result column="billing_date" property="billingDate"/>
+    <result column="civil_air_defence_area" property="civilAirDefenceArea"/>
+	<result column="means_payments" property="meansPayments" />
+	<result column="disabled_pay_function" property="disabledPayFunction" />
+	<result column="state" property="state" />
+	 <result column="sort_date" property="sortDate"  jdbcType="TIMESTAMP" />
+  </resultMap>
+  
+  <resultMap type="Project" id="ProjectWithRegionsMap" extends="ResultProject" >
+	<association property="companyDetail" column="company" javaType="Company" select="com.flf.mapper.CompanyMapper.getCompanyById"></association>
+	<association property="staff" column="staff_id" javaType="Staff" select="com.flf.mapper.StaffMapper.selectByid"></association>
+	<!-- <association property="afterSaleInfo" column="project_id" javaType="AfterSale" select="com.flf.mapper.AfterSaleMapper.getAfterSaleInfoByProjectId"></association> -->
+	<collection property="regionNews" column="project_id" ofType="RegionNew" select="com.flf.mapper.RegionNewMapper.getRegionNewprojectIdRest"></collection>
+  </resultMap>
+  
+  <!--  增加查询判断  王洲  20160223  -->
+  <select id="listAllProject" resultMap="ProjectWithRegionsMap">
+  		select a.*,b.staff_name from t_project a
+  		left join t_staff b on a.staff_id=b.staff_id where a.state != 5 AND a.state ='0' order by project_number
+  </select>
+  
+    <!--  增加查询判断  zhuqi 20160311  -->
+  <select id="listAllProjectByCompany" resultMap="ProjectWithRegionsMap" parameterType="String">
+  		select a.*,b.staff_name from t_project a
+  		left join t_staff b on a.staff_id=b.staff_id where a.state != 5 and company=#{0} order by project_number
+  </select>
+  
+  <select id="listAllPageProject" resultMap="ProjectWithRegionsMap">
+  		select a.*,b.staff_name from t_project a
+  		left join t_staff b on a.staff_id=b.staff_id LIMIT 0,6
+  </select>
+  
+   <select id="listPageProject" parameterType="Project" resultMap="ProjectWithRegionsMap">
+  	 select * from t_project where state=0
+      <if test="projectId != null and projectId != ''">
+      	and project_id = #{projectId,jdbcType=VARCHAR}
+      </if>
+      <if test="projectName != null and projectName != ''">
+      	and project_name like CONCAT(CONCAT('%',#{projectName}),'%')
+      </if>
+      <if test="isUseSystem != null and isUseSystem != ''">
+      	and is_use_system = #{isUseSystem}
+      </if>
+      <if test="company != null and company != ''">
+      	and company=#{company}
+      </if>
+      order by is_use_system ASC,sort_date DESC,state DESC , project_number
+  </select>
+  
+ 	<!-- 分页查询及默认项目 zhuqi 2016.03.14 -->
+     <select id="listPageProjectByState" parameterType="Project" resultMap="ProjectWithRegionsMap">
+  	 select * from t_project where state=0
+      <if test="projectId != null and projectId != ''">
+      	and project_id = #{projectId,jdbcType=VARCHAR}
+      </if>
+      <if test="projectName != null and projectName != ''">
+      	and project_name like CONCAT(CONCAT('%',#{projectName}),'%')
+      </if>
+      <if test="isUseSystem != null and isUseSystem != ''">
+      	and is_use_system = #{isUseSystem}
+      </if>
+      <if test="company != null and company != ''">
+      	and company=#{company}
+      </if>
+      OR state = '5'
+      order by state DESC , project_number
+  </select>
+  
+     <select id="listPageProjectByCompany" parameterType="Project" resultMap="ProjectWithRegionsMap">
+  	 select * from t_project where state=0
+      <if test="projectName != null and projectName != ''">
+      	and project_name like CONCAT(CONCAT('%',#{projectName}),'%')
+      </if>
+      <if test="company != null and company != ''">
+      	and company=#{company}
+      </if>
+      order by project_number
+  </select>
+  
+  <select id="listPageProjectAll" parameterType="Project" resultMap="ProjectWithRegionsMap">
+  	 select * from t_project where state!=5
+      <if test="projectId != null and projectId != ''">
+      	and project_id = #{projectId,jdbcType=VARCHAR}
+      </if>
+      <if test="projectName != null and projectName != ''">
+      	and project_name like CONCAT(CONCAT('%',#{projectName}),'%')
+      </if>
+      <if test="isUseSystem != null and isUseSystem != ''">
+      	and is_use_system = #{isUseSystem}
+      </if>
+      <if test="company != null and company != ''">
+      	and company=#{company}
+      </if>
+      order by sort_date DESC,state DESC , project_number
+  </select>
+
+  <select id="getProject"  resultMap="ProjectWithRegionsMap">
+  	select * from t_project where project_id=#{projectId}
+  </select>
+    <select id="getProjectByState"  resultMap="ProjectWithRegionsMap">
+  	select * from t_project where state=5
+  </select>
+  
+  <select id="listProjectBystaffId"  parameterType="String" resultMap="ResultProject">
+  	select * from t_project where staff_id=#{0}
+  </select>
+  
+  <select id="listProjectbyinstanceId" parameterType="String" resultMap="ResultProject">
+  	select * from t_project where instance_id=#{instanceId}
+  </select>
+  
+  <!-- 根据团队id查询项目信息 -->
+  <select id="getProjectbyteamworkId" parameterType="String" resultMap="ResultProject">
+  SELECT * FROM t_project p 
+  LEFT JOIN t_prepare r ON p.`project_id`=r.`project_id` 
+  LEFT JOIN t_teamwork_staff t ON r.`prepare_id`=t.`prepare_id` 
+  WHERE teamwork_id=#{0}
+  </select>
+
+  <insert id="insertProject" parameterType="Project" >
+  	insert into t_project(project_id,project_number,project_name,stall_matching,park_area,car_entri_num,person_entri_num,car_stall_num,add_capacitance_area,
+  	capacitance_area,private_stall_num,private_stall_sold,private_stall_unsold,garage_num,garage_sold,garage_ubsold,project_total_area,
+  	discount_price,house_total_num,build_area_num,build_unit_num,build_build_num,stall_num,underground_parking_spaces_total,
+  	ground_parking_space_total,greening_rate,total_build_area,basement_area,province,full_address,postcode,street,address,post_code,company,outline,phone,parcel,planning,staff_id,civil_air_defence_area,state,sort_date)
+  	value(#{projectId},#{projectNumber},#{projectName},#{stallMatching},#{parkArea},#{carEntrinum},#{personEntrinum},#{carStallnum},
+  	#{addCapacitancearea},#{capacitanceArea},#{privateStallnum},#{privateStallsold},#{privateStallunsold},#{garageNum},
+  	#{garageSold},#{garageUbsold},#{projectTotalarea},#{discountPrice},#{houseTotalnum},#{buildAreanum},#{buildUnitnum},
+  	#{buildBuildnum},#{stallNum},#{undergroundParkingspacestotal},#{groundParkingspacetotal},#{greeningRate},
+  	#{totalBuildarea},#{basementArea},#{province},#{fullAddress},#{postcode},#{street},#{address},#{postCode},#{company},#{outline},#{phone},#{parcel},#{planning},#{staffId},#{civilAirDefenceArea},#{state},#{sortDate,jdbcType=TIMESTAMP}) 	
+  </insert>
+
+  <update id="updateProject" parameterType="Project">
+  	update t_project
+  	set project_number=#{projectNumber},project_name=#{projectName},stall_matching=#{stallMatching},park_area=#{parkArea},
+  	car_entri_num=#{carEntrinum},person_entri_num=#{personEntrinum},car_stall_num=#{carStallnum},add_capacitance_area=#{addCapacitancearea},
+  	capacitance_area=#{capacitanceArea},private_stall_num=#{privateStallnum},private_stall_sold=#{privateStallsold},
+  	private_stall_unsold=#{privateStallunsold},garage_num=#{garageNum},garage_sold=#{garageSold},garage_ubsold=#{garageUbsold},
+  	project_total_area=#{projectTotalarea},discount_price=#{discountPrice},house_total_num=#{houseTotalnum},
+  	build_area_num=#{buildAreanum},build_unit_num=#{buildUnitnum},build_build_num=#{buildBuildnum},stall_num=#{stallNum},
+  	underground_parking_spaces_total=#{undergroundParkingspacestotal},ground_parking_space_total=#{groundParkingspacetotal},
+  	greening_rate=#{greeningRate},total_build_area=#{totalBuildarea},basement_area=#{basementArea},province=#{province},
+  	full_address=#{fullAddress},postcode=#{postcode},street=#{street},address=#{address},post_code=#{postCode},
+  	company=#{company},outline=#{outline},phone=#{phone},parcel=#{parcel},planning=#{planning},instance_id=#{instanceId},staff_id=#{staffId},means_payments=#{meansPayments},
+  	state=#{state}, sort_date = #{sortDate,jdbcType=TIMESTAMP}
+  	 where project_id=#{projectId}
+  </update>
+  
+  <update id="updateIsUseSystemByProjectId" parameterType="Project">
+  	update 
+  	t_project
+  	set 
+  	is_use_system=#{isUseSystem}
+ 	where project_id=#{projectId}
+  </update>
+  
+  <delete id="deleteProjectById" parameterType="String">
+  	delete from t_project
+  	where project_id=#{projectId}
+  </delete>
+  
+  <select id="getProjectJson" parameterType="String" resultMap="ResultProject">
+  	select * from t_project where project_id=#{projectId}
+  </select>
+
+  <insert id="insertProjectJson" parameterType="Project" >
+  	insert into t_project(project_id,project_number,project_name,stall_matching,park_area,car_entri_num,person_entri_num,car_stall_num,add_capacitance_area,
+  	capacitance_area,private_stall_num,private_stall_sold,private_stall_unsold,garage_num,garage_sold,garage_ubsold,project_total_area,
+  	discount_price,house_total_num,build_area_num,build_unit_num,build_build_num,stall_num,underground_parking_spaces_total,
+  	ground_parking_space_total,greening_rate,total_build_area,basement_area,province,full_address,postcode,street,address,post_code,company,outline,phone,parcel,planning,staff_id,means_payments,disabled_pay_function,state,sort_date)
+  	value(UUID(),#{projectNumber},#{projectName},#{stallMatching},#{parkArea},#{carEntrinum},#{personEntrinum},#{carStallnum},
+  	#{addCapacitancearea},#{capacitanceArea},#{privateStallnum},#{privateStallsold},#{privateStallunsold},#{garageNum},
+  	#{garageSold},#{garageUbsold},#{projectTotalarea},#{discountPrice},#{houseTotalnum},#{buildAreanum},#{buildUnitnum},
+  	#{buildBuildnum},#{stallNum},#{undergroundParkingspacestotal},#{groundParkingspacetotal},#{greeningRate},
+  	#{totalBuildarea},#{basementArea},#{province},#{fullAddress},#{postcode},#{street},#{address},#{postCode},#{company},#{outline},#{phone},#{parcel},#{planning},#{staffId},#{meansPayments},#{disabledPayFunction},#{state}, #{sortDate,jdbcType=TIMESTAMP}) 	
+  </insert>
+  
+  <insert id="insertProjectByid" parameterType="Project" >
+  	insert into t_project(project_id,project_number,project_name,stall_matching,park_area,car_entri_num,person_entri_num,car_stall_num,add_capacitance_area,
+  	capacitance_area,private_stall_num,private_stall_sold,private_stall_unsold,garage_num,garage_sold,garage_ubsold,project_total_area,
+  	discount_price,house_total_num,build_area_num,build_unit_num,build_build_num,stall_num,underground_parking_spaces_total,
+  	ground_parking_space_total,greening_rate,total_build_area,basement_area,province,full_address,postcode,street,address,post_code,company,outline,phone,parcel,planning,staff_id,means_payments,disabled_pay_function,state,sort_date)
+  	value(UUID(),#{projectNumber},#{projectName},#{stallMatching},#{parkArea},#{carEntrinum},#{personEntrinum},#{carStallnum},
+  	#{addCapacitancearea},#{capacitanceArea},#{privateStallnum},#{privateStallsold},#{privateStallunsold},#{garageNum},
+  	#{garageSold},#{garageUbsold},#{projectTotalarea},#{discountPrice},#{houseTotalnum},#{buildAreanum},#{buildUnitnum},
+  	#{buildBuildnum},#{stallNum},#{undergroundParkingspacestotal},#{groundParkingspacetotal},#{greeningRate},
+  	#{totalBuildarea},#{basementArea},#{province},#{fullAddress},#{postcode},#{street},#{address},#{postCode},#{company},#{outline},#{phone},#{parcel},#{planning},#{staffId},#{meansPayments},#{disabledPayFunction},#{state},#{sortDate,jdbcType=TIMESTAMP}) 	
+  </insert>
+    
+  <update id="updateProjectJson" parameterType="Project">
+  	update t_project
+  	set project_number=#{projectNumber},project_name=#{projectName},stall_matching=#{stallMatching},park_area=#{parkArea},
+  	car_entri_num=#{carEntrinum},person_entri_num=#{personEntrinum},car_stall_num=#{carStallnum},add_capacitance_area=#{addCapacitancearea},
+  	capacitance_area=#{capacitanceArea},private_stall_num=#{privateStallnum},private_stall_sold=#{privateStallsold},
+  	private_stall_unsold=#{privateStallunsold},garage_num=#{garageNum},garage_sold=#{garageSold},garage_ubsold=#{garageUbsold},
+  	project_total_area=#{projectTotalarea},discount_price=#{discountPrice},house_total_num=#{houseTotalnum},
+  	build_area_num=#{buildAreanum},build_unit_num=#{buildUnitnum},build_build_num=#{buildBuildnum},stall_num=#{stallNum},
+  	underground_parking_spaces_total=#{undergroundParkingspacestotal},ground_parking_space_total=#{groundParkingspacetotal},
+  	greening_rate=#{greeningRate},total_build_area=#{totalBuildarea},basement_area=#{basementArea},province=#{province},
+  	full_address=#{fullAddress},postcode=#{postcode},street=#{street},address=#{address},post_code=#{postCode}
+  	,company=#{company},outline=#{outline},phone=#{phone},parcel=#{parcel},planning=#{planning},staff_id=#{staffId},means_payments=#{meansPayments},disabled_pay_function=#{disabledPayFunction}, sort_date = #{sortDate,jdbcType=TIMESTAMP},
+  	#{state}
+  	where project_id=#{projectId}
+  </update>
+  
+  <update id="deleteSubProject" parameterType="String">
+  	update t_project
+  	set  state=#{0}
+  	where project_id=#{1}
+  </update>
+  
+  <delete id="deleteProjectByIdJson" parameterType="int">
+  	delete from t_project
+  	where project_id=#{projectId}
+  </delete>
+  
+  <!-- 查询所有项目信息 -->
+  <select id="selectAllProject" resultMap="ResultProject">
+  	select * from t_project
+  </select>
+  
+  <!-- 查询项目总数，以及启用计费管理的项目数 -->
+  <select id="getUSeSystemCount" resultType="String">
+  	select is_use_system from t_project where state = '0'
+  </select>
+   <!-- 查询表中编号最大的数据 -->
+    <select id="selectProjectCode" resultType="String">
+ 		select max(project_number) from t_project
+ 		
+ 	</select>
+  
+  <!-- 获取带有分区的项目 -->
+  <select id="getAllProjectWithRegion" resultMap="ProjectWithRegionsMap" parameterType="java.lang.String">
+  	select a.project_id,a.project_name,a.company,'false' as checked from t_project as a
+  	where a.project_id not in
+  	(select distinct project_id from tc_subcompany_project_relation)
+  	and a.company=#{company} and a.state=0
+  </select>
+  
+  <select id="getProjectBySubCompanyId" parameterType="String" resultMap="ResultProject">
+  	SELECT
+	*
+	FROM
+		t_project p
+	LEFT JOIN tc_subcompany_project_relation r ON r.project_id = p.project_id
+	LEFT JOIN tc_subcompany sub ON sub.subCompany_id = r.subCompany_id
+	WHERE
+		sub.subCompany_id = #{subCompanyId}
+  </select>
+  
+  <select id="getProjectByCompanyId" parameterType="String" resultType="String">
+  	select project_id from t_project where company = #{0} and state='0'
+  </select>
+  
+  <select id="listPageProjectByIsUseSystem" resultMap="ResultProject">
+  	select p.* from t_project p where p.is_use_system='0'
+  </select>
+	<!-- 根据公司id获取所有在有效状态的项目  王洲  2016.2.1 -->
+	<select id="getAllProjectByCompanyId" parameterType="String" resultMap="ResultProject">
+		select * from t_project where company = #{0} and state = '0'
+	</select>
+  
+  	<!-- 根据用户名查询所在公司下的所有项目 -->
+  	<select id="selectProjectByUser" parameterType="java.lang.String" resultMap="ResultProject">
+  		select p.* from t_project p
+		join t_user u on p.company=u.company_id
+		where u.login_name=#{0} and p.state='0'
+  	</select>
+  	
+  	<select id="getAllProjectByProjectIds" parameterType="java.util.List" resultMap="ResultProject">
+  		select p.project_id,p.state from t_proeject p where 1=1
+  		and p.project_id in (
+  		<foreach collection="list" item="item" index="index" separator=",">
+  		#{item}
+  		</foreach>
+  		)
+  	</select>
+</mapper>

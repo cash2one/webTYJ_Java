@@ -1,0 +1,204 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.flf.mapper.ChargeTypeBuildingBillingMapper" >
+  <resultMap id="BaseResultMap" type="com.flf.entity.ChargeTypeBuildingBilling" >
+    <id column="charge_type_building_billing_id_" property="chargeTypeBuildingBillingId" jdbcType="CHAR" />
+    <result column="charge_type_project_billing_id_" property="chargeTypeProjectBillingId" jdbcType="CHAR" />
+    <result column="charge_type_id_" property="chargeTypeId" jdbcType="CHAR" />
+    <result column="building_id_" property="buildingId" jdbcType="CHAR" />
+    <result column="billing_month_" property="billingMonth" jdbcType="VARCHAR" />
+    <result column="billing_time_" property="billingTime" jdbcType="VARCHAR" />
+    <result column="amount_" property="amount" jdbcType="DECIMAL" />
+    <result column="status_" property="status" jdbcType="CHAR" />
+    <result column="create_user_" property="createUser" jdbcType="CHAR" />
+    <result column="create_time_" property="createTime" jdbcType="VARCHAR" />
+    <result column="update_user_" property="updateUser" jdbcType="CHAR" />
+    <result column="update_time_" property="updateTime" jdbcType="VARCHAR" />
+    <!-- 建筑名称字段，附加，数据表中无 -->
+    <result column="full_name" property="fullName" jdbcType="VARCHAR"/>
+  </resultMap>
+  <sql id="Base_Column_List" >
+    charge_type_building_billing_id_, charge_type_project_billing_id_, charge_type_id_, 
+    building_id_, billing_month_, billing_time_, amount_, status_, create_user_, create_time_, 
+    update_user_, update_time_
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from tc_charge_type_building_billing
+    where charge_type_building_billing_id_ = #{chargeTypeBuildingBillingId,jdbcType=CHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from tc_charge_type_building_billing
+    where charge_type_building_billing_id_ = #{chargeTypeBuildingBillingId,jdbcType=CHAR}
+  </delete>
+  <insert id="insert" parameterType="com.flf.entity.ChargeTypeBuildingBilling" >
+    insert into tc_charge_type_building_billing (charge_type_building_billing_id_, charge_type_project_billing_id_, 
+      charge_type_id_, building_id_, billing_month_, 
+      billing_time_, amount_, status_, 
+      create_user_, create_time_, update_user_, 
+      update_time_)
+    values (#{chargeTypeBuildingBillingId,jdbcType=CHAR}, #{chargeTypeProjectBillingId,jdbcType=CHAR}, 
+      #{chargeTypeId,jdbcType=CHAR}, #{buildingId,jdbcType=CHAR}, #{billingMonth,jdbcType=VARCHAR}, 
+      #{billingTime,jdbcType=VARCHAR}, #{amount,jdbcType=DECIMAL}, #{status,jdbcType=CHAR}, 
+      #{createUser,jdbcType=CHAR}, #{createTime,jdbcType=VARCHAR}, #{updateUser,jdbcType=CHAR}, 
+      #{updateTime,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.flf.entity.ChargeTypeBuildingBilling" >
+    insert into tc_charge_type_building_billing
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="chargeTypeBuildingBillingId != null" >
+        charge_type_building_billing_id_,
+      </if>
+      <if test="chargeTypeProjectBillingId != null" >
+        charge_type_project_billing_id_,
+      </if>
+      <if test="chargeTypeId != null" >
+        charge_type_id_,
+      </if>
+      <if test="buildingId != null" >
+        building_id_,
+      </if>
+      <if test="billingMonth != null" >
+        billing_month_,
+      </if>
+      <if test="billingTime != null" >
+        billing_time_,
+      </if>
+      <if test="amount != null" >
+        amount_,
+      </if>
+      <if test="status != null" >
+        status_,
+      </if>
+      <if test="createUser != null" >
+        create_user_,
+      </if>
+      <if test="createTime != null" >
+        create_time_,
+      </if>
+      <if test="updateUser != null" >
+        update_user_,
+      </if>
+      <if test="updateTime != null" >
+        update_time_,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="chargeTypeBuildingBillingId != null" >
+        #{chargeTypeBuildingBillingId,jdbcType=CHAR},
+      </if>
+      <if test="chargeTypeProjectBillingId != null" >
+        #{chargeTypeProjectBillingId,jdbcType=CHAR},
+      </if>
+      <if test="chargeTypeId != null" >
+        #{chargeTypeId,jdbcType=CHAR},
+      </if>
+      <if test="buildingId != null" >
+        #{buildingId,jdbcType=CHAR},
+      </if>
+      <if test="billingMonth != null" >
+        #{billingMonth,jdbcType=VARCHAR},
+      </if>
+      <if test="billingTime != null" >
+        #{billingTime,jdbcType=VARCHAR},
+      </if>
+      <if test="amount != null" >
+        #{amount,jdbcType=DECIMAL},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=CHAR},
+      </if>
+      <if test="createUser != null" >
+        #{createUser,jdbcType=CHAR},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=VARCHAR},
+      </if>
+      <if test="updateUser != null" >
+        #{updateUser,jdbcType=CHAR},
+      </if>
+      <if test="updateTime != null" >
+        #{updateTime,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.flf.entity.ChargeTypeBuildingBilling" >
+    update tc_charge_type_building_billing
+    <set >
+      <if test="chargeTypeProjectBillingId != null" >
+        charge_type_project_billing_id_ = #{chargeTypeProjectBillingId,jdbcType=CHAR},
+      </if>
+      <if test="chargeTypeId != null" >
+        charge_type_id_ = #{chargeTypeId,jdbcType=CHAR},
+      </if>
+      <if test="buildingId != null" >
+        building_id_ = #{buildingId,jdbcType=CHAR},
+      </if>
+      <if test="billingMonth != null" >
+        billing_month_ = #{billingMonth,jdbcType=VARCHAR},
+      </if>
+      <if test="billingTime != null" >
+        billing_time_ = #{billingTime,jdbcType=VARCHAR},
+      </if>
+      <if test="amount != null" >
+        amount_ = #{amount,jdbcType=DECIMAL},
+      </if>
+      <if test="status != null" >
+        status_ = #{status,jdbcType=CHAR},
+      </if>
+      <if test="createUser != null" >
+        create_user_ = #{createUser,jdbcType=CHAR},
+      </if>
+      <if test="createTime != null" >
+        create_time_ = #{createTime,jdbcType=VARCHAR},
+      </if>
+      <if test="updateUser != null" >
+        update_user_ = #{updateUser,jdbcType=CHAR},
+      </if>
+      <if test="updateTime != null" >
+        update_time_ = #{updateTime,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where charge_type_building_billing_id_ = #{chargeTypeBuildingBillingId,jdbcType=CHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.flf.entity.ChargeTypeBuildingBilling" >
+    update tc_charge_type_building_billing
+    set charge_type_project_billing_id_ = #{chargeTypeProjectBillingId,jdbcType=CHAR},
+      charge_type_id_ = #{chargeTypeId,jdbcType=CHAR},
+      building_id_ = #{buildingId,jdbcType=CHAR},
+      billing_month_ = #{billingMonth,jdbcType=VARCHAR},
+      billing_time_ = #{billingTime,jdbcType=VARCHAR},
+      amount_ = #{amount,jdbcType=DECIMAL},
+      status_ = #{status,jdbcType=CHAR},
+      create_user_ = #{createUser,jdbcType=CHAR},
+      create_time_ = #{createTime,jdbcType=VARCHAR},
+      update_user_ = #{updateUser,jdbcType=CHAR},
+      update_time_ = #{updateTime,jdbcType=VARCHAR}
+    where charge_type_building_billing_id_ = #{chargeTypeBuildingBillingId,jdbcType=CHAR}
+  </update>
+  
+  <select id="listPageChargeTypeBuildingBilling" parameterType="com.flf.entity.ChargeTypeBuildingBilling"  resultMap="BaseResultMap">
+	select a.*,p.full_name from tc_charge_type_building_billing as a 
+	left join tc_building_structure as p on a.building_id_ = p.id 
+	where 1=1  
+	<if test="chargeTypeProjectBillingId != null">
+		and a.charge_type_project_billing_id_=#{chargeTypeProjectBillingId} 
+	</if>
+	<if test="fullName != null and fullName != ''">
+		and p.full_name like CONCAT('%',#{fullName},'%')
+	</if>
+	order by a.status_ asc,billing_time_ desc
+  </select>
+  
+  <select id="listAllChargeTypeBuildingBilling" parameterType="com.flf.entity.ChargeTypeBuildingBilling"  resultMap="BaseResultMap">
+	select * from tc_charge_type_building_billing  
+	where 1=1  
+	<if test="chargeTypeProjectBillingId != null">
+		and charge_type_project_billing_id_=#{chargeTypeProjectBillingId} 
+	</if>
+	<if test="status != null">
+		and status_=#{status} 
+	</if>
+  </select>
+</mapper>

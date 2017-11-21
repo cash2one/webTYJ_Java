@@ -1,0 +1,226 @@
+package com.flf.service;
+
+import java.util.List;
+import javax.jws.WebService;
+import javax.ws.rs.Consumes;
+import javax.ws.rs.GET;
+import javax.ws.rs.POST;
+import javax.ws.rs.PUT;
+import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
+import javax.ws.rs.Produces;
+import javax.ws.rs.core.MediaType;
+import com.flf.entity.Bill;
+import com.flf.entity.BillExport;
+import com.flf.entity.Billing;
+import com.flf.entity.PageRestful;
+
+@WebService
+@Path("/Bill")
+public interface BillService{
+	/**
+	 * 新增应收账单
+	 * @param Classes
+	 * @return
+	 */
+	@POST
+	@Path("/AddBill")
+	@Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+	void AddBill(Bill bill);
+	
+	/**
+	 * 服务请求结算
+	 * @param bill
+	 * @author zhuqi
+	 * @date
+	 */
+	@POST
+	@Path("/serviceRequestAddBill")
+	@Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+	void serviceRequestAddBill(Bill bill);
+	
+	/**
+	 * 条件查询所有账单
+	 * @param search
+	 * @return
+	 */
+	@POST
+	@Path("/listPageBill")
+	@Produces(MediaType.APPLICATION_JSON)
+/*	@Consumes({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })*/
+	PageRestful listPageBill(Bill bill);
+
+		
+	@GET
+	@Path("/getBillsByCustId/{custId}")
+	@Produces(MediaType.APPLICATION_JSON)
+	List<Bill> getBillsByCustId(@PathParam("custId") String custId);
+	
+	/*当月账单查询*/
+	@POST
+	@Path("/listPageBillsByelectronicBillingIdThisMonth")
+	@Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+	PageRestful listPageBillsByelectronicBillingIdThisMonth(Bill bill);
+	
+	/*历史账单查询*/
+	@POST
+	@Path("/listPageBillsByelectronicBillingIdLastMonth")
+	@Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+	PageRestful listPageBillsByelectronicBillingIdLastMonth(Bill bill);
+	
+	/**
+	 * 退款
+	 * @param bill
+	 */
+	@PUT
+	@Path("/updateRefund")
+	@Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+	void UpdateRefund(Bill bill);
+	
+	/**
+	 * 冲正
+	 * @param bill
+	 */
+	@PUT
+	@Path("/updateImpact")
+	@Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+	void UpdateImpact(Bill bill);
+	
+	/**
+	 * 根据项目id与时间查询
+	 * @param bill（projectId,billDate）
+	 * @return
+	 */
+	@POST
+	@Path("/getBillsByProjectIdAndDate")
+	@Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+	List<Bill> getBillsByProjectIdAndDate(Bill bill);
+	
+	/**
+	 * 根据收费项目父级对象id获取子收费项目对象
+	 */
+	@POST
+	@Path("/getSubBillsForSubChargeItem")
+	@Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+	List<Billing> getSubBillsForSubChargeItem(Bill bill);
+	
+	/**
+	 * 欠费报表
+	 * @param bill（projectId,billDate）
+	 * @return
+	 */
+	@POST
+	@Path("/getOwe")
+	@Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+	List<Bill> getOwe(Bill bill);
+	/**
+	 * 收缴率报表
+	 * @param bill（projectId,billDate）
+	 * @return
+	 */
+	@POST
+	@Path("/getCollectFee")
+	@Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+	List<Bill> getCollectFee(Bill bill);
+	/**
+	 * 导出Excel数据文档
+	 * @param 
+	 * @return
+	 */
+	@POST
+	@Path("/exportExcelFile")
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes({MediaType.APPLICATION_JSON,MediaType.APPLICATION_XML})
+	void exportExcelFile(BillExport billExport);
+	
+	/**
+	 * 新增
+	 * 根据项目计费id新增应收款 陈浪 2016-4-18
+	 * @param ids
+	 * @return
+	 */
+	@POST
+	@Path("/AddBillRes")
+	@Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+	void AddBillRes(String ids);
+	
+	/**
+	 * 新增
+	 * 根据收费项目计费id新增应收款 陈浪 2016-4-18
+	 * @param ids
+	 * @return
+	 */
+	@POST
+	@Path("/AddBillForChargeItemBilling")
+	@Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+	void AddBillForChargeItemBilling(String ids);
+	
+	/**
+	 * 新增
+	 * 根据建筑计费id新增应收款 陈浪 2016-4-18
+	 * @param ids
+	 * @return
+	 */
+	@POST
+	@Path("/AddBillForBuildingBilling")
+	@Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+	void AddBillForBuildingBilling(String ids);
+	
+	/*
+	 * 修改数据 
+	 * 2015/12/24 
+	 * 彭婷婷
+	 * 收款台--结算数据更新
+	 */
+	@PUT
+	@Path("/updateBill")
+	@Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+	void updateBill(Bill bill);
+	
+
+	/**
+	 * 根据客户姓名及客户ID查询其总的账单信息
+	 * @param bill
+	 * @return
+	 */
+	@POST
+	@Path("/listPageFindBillsByPersonMessage")
+	@Produces(MediaType.APPLICATION_JSON)
+	PageRestful listPageFindBillsByPersonMessage(Bill bill);
+	
+	/**
+	 * 根据buildingId查询当月张账单
+	 * @param bill
+	 * @return
+	 */
+	@POST
+	@Path("/listPageFindChargeBybuildingIdThisMonth")
+	@Produces(MediaType.APPLICATION_JSON)
+	PageRestful listPageFindChargeBybuildingIdThisMonth(Bill bill);
+	/**
+	 * 查询项目收费明细
+	 * @param bill
+	 * @return
+	 */
+	@POST
+	@Path("/findChargeDetailsBychargeTypeIdThisMonth")
+	@Produces(MediaType.APPLICATION_JSON)
+	PageRestful findChargeDetailsBychargeTypeIdThisMonth(Bill bill);
+	
+
+	/**
+	 * 查询历史账单
+	 * @param bill
+	 * @return
+	 */
+	@POST
+	@Path("/listPageBillsBybuildingIdLastMonth")
+	@Produces(MediaType.APPLICATION_JSON)
+	PageRestful listPageBillsBybuildingIdLastMonth(Bill bill);
+	
+	/**
+	 * 账单修改抵扣表
+	 * @param bill
+	 */
+	public void deduction(Bill bill);
+}

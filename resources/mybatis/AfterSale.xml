@@ -1,0 +1,197 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.flf.mapper.AfterSaleMapper" >
+  <resultMap id="BaseResultMap" type="AfterSale" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="responsible_department_id" property="responsibleDepartmentId" jdbcType="VARCHAR" />
+    <result column="responsible_department" property="responsibleDepartment" jdbcType="VARCHAR" />
+    <result column="responsible_department_type" property="responsibleDepartmentType" jdbcType="VARCHAR" />
+    <result column="responsible_department_phone" property="responsibleDepartmentPhone" jdbcType="VARCHAR" />
+    <result column="responsible_project_id" property="responsibleProjectId" jdbcType="VARCHAR" />
+    <result column="responsible_project" property="responsibleProject" jdbcType="VARCHAR" />
+    <result column="responsible_items" property="responsibleItems" jdbcType="VARCHAR" />
+    <result column="After_start_time" property="afterStartTime" jdbcType="DATE" />
+    <result column="After_end_time" property="afterEndTime" jdbcType="DATE" />
+    <result column="home_id" property="homeId" jdbcType="VARCHAR" />
+    <result column="service_home_num" property="serviceHomeNum" jdbcType="VARCHAR" />
+    <result column="home_Address" property="homeAddress" jdbcType="VARCHAR" />
+    <result column="client_id" property="clientId" jdbcType="VARCHAR" />
+    <result column="client_type" property="clientType" jdbcType="VARCHAR" />
+    <result column="client_name" property="clientName" jdbcType="VARCHAR" />
+    <result column="client_phone" property="clientPhone" jdbcType="VARCHAR" />
+    <result column="client_evaluate" property="clientEvaluate" jdbcType="VARCHAR" />
+    <result column="Processing_state" property="process" jdbcType="INTEGER" />
+    <result column="source" property="source" jdbcType="VARCHAR" />
+    <result column="Problem_description" property="describe" jdbcType="VARCHAR" />
+    <result column="staff_id" property="staffId" jdbcType="VARCHAR" />
+    <result column="property_id" property="propertyId" jdbcType="VARCHAR" />
+    <result column="property_name" property="propertyName" jdbcType="VARCHAR" />
+    <result column="property_number" property="propertyNumber" jdbcType="VARCHAR" />
+    <result column="property_type_name" property="propertyTypeName" jdbcType="VARCHAR" />
+    <result column="order_id" property="orderId" jdbcType="VARCHAR" />
+    <result column="order_type" property="orderType" jdbcType="TINYINT" />
+    <result column="operator_id" property="operatorId" jdbcType="VARCHAR" />
+    <result column="guarantee" property="guarantee" jdbcType="VARCHAR" />
+    <result column="process_id" property="processId" jdbcType="VARCHAR" />
+  </resultMap>
+  
+ <!-- 项目表查询 --> 
+ <resultMap id="ResultProject" type="Project" >
+ 	<result column="project_name" property="projectName" />
+ 	<result column = "project_id" property = "projectId" />
+ </resultMap>
+ 
+ <!-- 资产类型表查询 -->
+ <resultMap id="ResultPropertyType" type="PropertyType" >
+ 	<result column="property_type_id" property="propertyTypeId" />
+ 	<result column="property_type_name" property="propertyTypeName" />
+ </resultMap>
+ 
+  <select id="listAllAfterSale" resultMap="BaseResultMap">
+    select * from t_after_sale
+  </select>
+  	
+  <!-- 售后管理列表及条件查询，t_after_sale售后管理表，关联资产表 t_property， 关联资产类型表t_property_type -->
+  <select id="listPageAfterSale" resultMap="BaseResultMap" parameterType="AfterSaleQuery">
+    select t.*,tt.property_name,tt.property_number,tt.property_type_name 
+    from t_after_sale t LEFT JOIN 
+    (select tpt.property_type_name,tp.property_id,tp.property_name,tp.property_number 
+    from t_property_type tpt LEFT JOIN t_property tp on tpt.property_type_id = tp.property_type_id) tt 
+    on t.property_id = tt.property_id <include refid="ListPageAfterSale_Where_Clause" />
+  </select>
+  
+  <select id="listPageAfterSaleByProcessId" resultMap="BaseResultMap" parameterType="AfterSale">
+    select t.*,tt.property_name,tt.property_number,tt.property_type_name 
+    from t_after_sale t LEFT JOIN 
+    (select tpt.property_type_name,tp.property_id,tp.property_name,tp.property_number 
+    from t_property_type tpt LEFT JOIN t_property tp on tpt.property_type_id = tp.property_type_id) tt 
+    on t.property_id = tt.property_id 
+    where t.process_id=#{processId}
+  </select>
+  
+  <select id="listPageAfterSaleSingle" resultMap="BaseResultMap" parameterType="AfterSaleQuery">
+    select t.*,tt.property_name,tt.property_number,tt.property_type_name 
+    from t_after_sale t LEFT JOIN 
+    (select tpt.property_type_name,tp.property_id,tp.property_name,tp.property_number 
+    from t_property_type tpt LEFT JOIN t_property tp on tpt.property_type_id = tp.property_type_id) tt 
+    on t.property_id = tt.property_id <include refid="ListPageAfterSale_Where_Clause" />
+  </select>
+  <!-- 售后管理列表条件查询条件 -->
+  <sql id="ListPageAfterSale_Where_Clause">
+  	<where>
+  		<trim prefixOverrides="and">
+  			<!-- 项目 -->
+  			<if test="responsibleDepartmentId != null and responsibleDepartmentId !=''">and t.responsible_department_id = #{responsibleDepartmentId}</if>
+  			<!-- 资产名称 -->
+  			<if test="propertyName != null and propertyName != ''">and tt.property_name like CONCAT(CONCAT('%',#{propertyName}),'%')</if>
+  			<!-- 来源 -->
+  			<if test="source != null and source != ''">and t.source = #{source}</if>
+  			<!-- 进度 -->
+  			<if test="process != null and process != ''">and t.Processing_state = #{process}</if>
+  			<!-- 专业 -->
+  			<if test="propertyTypeName != null and propertyTypeName != ''">and tt.property_type_name = #{propertyTypeName}</if>
+  			<if test="clientName!='' and clientName!=null">
+  			and t.client_name like CONCAT('%',#{clientName},'%')
+  			</if>
+  			<if test="guarantee!='' and guarantee!=null">
+  			and t.guarantee like CONCAT('%',#{guarantee},'%')
+  			</if>
+  			<if test="homeAddress!='' and homeAddress!=null">
+  			and t.home_Address like CONCAT('%',#{homeAddress},'%')
+  			</if>
+  			<if test="contractNum!='' and contractNum!=null">
+  			and t.contract_num =#{contractNum}
+  			</if>
+  			<if test="responsibleProject!='' and responsibleProject!=null">
+  			and t.responsible_project =#{responsibleProject}
+  			</if>
+  			<!-- <if test="propertyTypeNameList != null">
+  				and tt.property_type_name in
+  				<foreach collection="propertyTypeNameList" index="index" item="item" open="(" separator="," close=")">
+  					#{item}
+  				</foreach>
+  			</if> -->
+  		</trim>
+  	</where>
+  </sql>
+  
+  <!-- 售后管理页面查询所有项目名并放入下拉框 -->
+  <select id="listProjectName" resultMap="ResultProject">
+  	select distinct t.project_id,t.project_name from t_project t
+  </select>
+  
+  <!-- 根据projectId获取售后管理信息 -->
+  <select id="getAfterSaleInfoByProjectId" parameterType="String" resultMap="BaseResultMap">
+  	select * from t_after_sale where responsible_project_id=#{0}
+  </select>
+  
+  <!-- 售后管理页面查询所有专业名 -->
+  <select id="listPropertyType" resultMap="ResultPropertyType">
+  	select distinct t.property_type_id,t.property_type_name from t_property_type t
+  </select>
+  
+  <!-- 根据传入的id修改对应记录的保修单位字段值 -->
+  <update id="updateGuaranteeById" parameterType="String">
+  	update t_after_sale t set t.guarantee = 2 where t.id = #{id}
+  </update>
+
+  <select id="getAfterSaleById" resultMap="BaseResultMap" parameterType="String" >
+    select * from t_after_sale
+    where id = #{0}
+  </select>
+  
+  <delete id="deleteAfterSale" parameterType="String">
+    delete from t_after_sale
+    where id =#{0}
+  </delete>
+  
+  <insert id="insertAfterSale" parameterType="AfterSale" >
+    insert into t_after_sale (id,responsible_department_id,responsible_department, responsible_department_type, 
+      responsible_department_phone,responsible_project_id, responsible_project, 
+      After_start_time, After_end_time,home_id,service_home_num, 
+      home_Address,client_id,client_type, client_name, 
+      client_phone, client_evaluate,responsible_items,Processing_state)
+    values (UUID(),#{responsibleDepartmentId},#{responsibleDepartment}, #{responsibleDepartmentType,jdbcType=VARCHAR}, 
+      #{responsibleDepartmentPhone,jdbcType=VARCHAR},#{responsibleProjectId}, #{responsibleProject}, 
+      #{afterStartTime,jdbcType=DATE}, #{afterEndTime,jdbcType=DATE},#{homeId}, #{serviceHomeNum,jdbcType=INTEGER}, 
+      #{homeAddress,jdbcType=VARCHAR},#{clientId}, #{clientType,jdbcType=VARCHAR}, #{clientName,jdbcType=VARCHAR}, 
+      #{clientPhone,jdbcType=VARCHAR}, #{clientEvaluate,jdbcType=VARCHAR},#{responsibleItems},#{process})
+  </insert>
+  
+    <update id="updateAfterSale" parameterType="AfterSale" >
+    update t_after_sale
+    set
+      responsible_department_id=#{responsibleDepartmentId}, 
+      responsible_department = #{responsibleDepartment,jdbcType=VARCHAR},
+      responsible_department_type = #{responsibleDepartmentType,jdbcType=VARCHAR},
+      responsible_department_phone = #{responsibleDepartmentPhone,jdbcType=VARCHAR},
+      responsible_project_id=#{responsibleProjectId},
+      responsible_project = #{responsibleProject,jdbcType=VARCHAR},
+      After_start_time = #{afterStartTime,jdbcType=DATE},
+      After_end_time = #{afterEndTime,jdbcType=DATE},
+      home_id=#{homeId},
+      service_home_num = #{serviceHomeNum,jdbcType=INTEGER},
+      home_Address = #{homeAddress,jdbcType=VARCHAR},
+      client_id=#{clientId},
+      client_type = #{clientType,jdbcType=VARCHAR},
+      client_name = #{clientName,jdbcType=VARCHAR},
+      client_phone = #{clientPhone,jdbcType=VARCHAR},
+      client_evaluate = #{clientEvaluate,jdbcType=VARCHAR},
+      responsible_items=#{responsibleItems},
+      Processing_state=#{process}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateAfterSaleProcessStateByProcessId" parameterType="AfterSale">
+  update t_after_sale
+  set 
+  	Processing_state=#{process}
+  where process_id=#{processId}
+  	
+  </update>
+  <update id="updateAfterSaleRelationIdById" parameterType="AfterSale">
+  	update t_after_sale
+  	set
+  		process_id=#{processId}
+  	where id=#{id}
+  </update>
+</mapper>

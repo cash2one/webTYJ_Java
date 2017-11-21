@@ -1,0 +1,82 @@
+package com.flf.service;
+
+import java.util.List;
+import javax.jws.WebService;
+import javax.ws.rs.Consumes;
+import javax.ws.rs.GET;
+import javax.ws.rs.POST;
+import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
+import javax.ws.rs.Produces;
+import javax.ws.rs.core.MediaType;
+import com.flf.entity.PageRestful;
+import com.flf.entity.PaymentDetails;
+
+/**
+ * 
+ * @author taoyongchao
+ *  收支明细
+ *  2015-10-9
+ */
+@WebService
+@Path("/PaymentDetails")
+public interface PaymentDetailsService {
+	
+	/**
+	 * 根据操作人员ID查询出其名下所有账单记录
+	 * @param financialStaffId
+	 * @return
+	 */
+	@GET
+	@Path("/listAllPaymentDetails/{financialStaffId}")
+	@Produces(MediaType.APPLICATION_JSON)
+	List<PaymentDetails> listAllPaymentDetails(@PathParam("financialStaffId") String financialStaffId);
+	/**
+	 * 条件查询
+	 * @param paymentDetails
+	 * @return
+	 */
+	@POST
+	@Path("/listPagePaymentDetails")
+	@Produces(MediaType.APPLICATION_JSON)
+/*	@Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })*/
+	PageRestful listPagePaymentDetails(PaymentDetails paymentDetails);
+	
+	/**
+	 * 根据Id查询
+	 * @param paymentDetailsId
+	 * @return
+	 */
+	@GET
+	@Path("/getPaymentDetailsById/{paymentDetailsId}")
+	@Produces(MediaType.APPLICATION_JSON)
+	PaymentDetails getPaymentDetailsById(@PathParam("paymentDetailsId") String paymentDetailsId);
+	
+	/**
+	 * 新增支付明细
+	 */
+	@POST
+   	@Path("/insertPaymentDetails")
+    @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+   	void insertPaymentDetailsRes(PaymentDetails paymentDetails);
+	
+	@POST
+	@Path("/listPageWithPaymentDetails")
+	@Produces(MediaType.APPLICATION_JSON)	
+	PageRestful listPageWithPaymentDetails(PaymentDetails paymentDetail);
+	
+	@GET
+	@Path("/getPaymentDatilsSumByStaffId/{financialStaffId}")
+	@Produces(MediaType.APPLICATION_JSON)	
+	PaymentDetails getPaymentDatilsSumByStaffId(@PathParam("financialStaffId")String financialStaffId);
+
+	@GET
+	@Path("/createPaymentNum/{projectId}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public PaymentDetails createPaymentNum(@PathParam("projectId") String projectId);
+	
+	@POST
+	@Path("/printPaymentBills")
+	@Produces(MediaType.APPLICATION_JSON)	
+	void printPaymentBills(PaymentDetails paymentDetails);
+}

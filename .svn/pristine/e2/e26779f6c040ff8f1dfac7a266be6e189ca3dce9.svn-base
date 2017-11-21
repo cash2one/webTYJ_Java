@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.flf.mapper.AssetAccountDetailMapper" >
+  <resultMap id="BaseResultMap" type="com.flf.entity.AssetAccountDetail" >
+    <id column="asset_account_detail_id" property="assetAccountDetailId" jdbcType="VARCHAR" />
+    <result column="asset_account_id" property="assetAccountId" jdbcType="VARCHAR" />
+    <result column="detail_name" property="detailName" jdbcType="VARCHAR" />
+    <result column="charge_item_id" property="chargeItemId" jdbcType="VARCHAR" />
+    <result column="disposable_balance" property="disposableBalance" jdbcType="DOUBLE" />
+  </resultMap>
+ <select id="getAssetAccountDetailById" parameterType="String" resultMap="BaseResultMap">
+ select * from tc_asset_account_detail where asset_account_id=#{assetAccountId}
+ 
+ </select>
+  <insert id="insertAssetAccountDetail" parameterType="com.flf.entity.AssetAccountDetail" >
+    insert into tc_asset_account_detail (asset_account_detail_id, asset_account_id, 
+      detail_name, charge_item_id, disposable_balance)
+    values (#{assetAccountDetailId,jdbcType=VARCHAR}, #{assetAccountId,jdbcType=VARCHAR}, 
+      #{detailName,jdbcType=VARCHAR}, #{chargeItemId,jdbcType=VARCHAR}, #{disposableBalance,jdbcType=DOUBLE} 
+      )
+  </insert>
+ 
+ 	<!-- 根据id修改金额值  王洲  2015.12.31 -->
+	<update id="changePriceById" parameterType="AssetAccountDetail">
+		update tc_asset_account_detail set disposable_balance = #{disposableBalance,jdbcType=DOUBLE}
+		where asset_account_detail_id = #{assetAccountDetailId,jdbcType=VARCHAR}
+	</update>
+	
+	<!-- 根据资产账户id以及收费项目id查询是否已有对应数据 王洲 2015.12.31 -->
+	<select id="getAssetAccountDetailByIdAndCiId" parameterType="String" resultMap="BaseResultMap">
+		select * from tc_asset_account_detail where asset_account_id = #{0} and charge_item_id = #{1}
+	</select>
+	
+	<update id="updateAssetAccountDetail" parameterType="AssetAccountDetail">
+		update tc_asset_account_detail
+    <set >
+      <if test="assetAccountId != null" >
+        asset_account_id = #{assetAccountId,jdbcType=VARCHAR},
+      </if>
+      <if test="detailName != null" >
+        detail_name = #{detailName,jdbcType=VARCHAR},
+      </if>
+      <if test="chargeItemId != null" >
+        charge_item_id = #{chargeItemId,jdbcType=VARCHAR},
+      </if>
+      <if test="disposableBalance != null" >
+        disposable_balance = #{disposableBalance,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where asset_account_detail_id = #{assetAccountDetailId,jdbcType=VARCHAR}
+  </update>	
+
+</mapper>

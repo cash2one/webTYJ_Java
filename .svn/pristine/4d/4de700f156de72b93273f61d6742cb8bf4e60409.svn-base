@@ -1,0 +1,44 @@
+package com.flf.mapper;
+
+import java.util.List;
+
+import org.apache.poi.openxml4j.exceptions.PartAlreadyExistsException;
+
+import com.flf.entity.PaymentDetails;
+
+
+public interface PaymentDetailsMapper {
+	/*查询员工下所有的账单信息*/
+	List<PaymentDetails> listAllPaymentDetails(String financialStaffId);
+	/*分页查询账单信息*/
+    List<PaymentDetails> listPagePaymentDetails(PaymentDetails paymentDetails);
+    /*根据id查询账单信息*/
+    PaymentDetails getPaymentDetailsById(String paymentDetailsId);
+    /*删除账单信息*/
+    int deletePaymentDetails(String paymentDetailsId);
+    /*新增账单信息*/
+    int insertPaymentDetails(PaymentDetails paymentDetails);
+    /*修改账单信息*/
+    int updatePaymentDetails(PaymentDetails paymentDetails);
+    /*条件查询账单所有信息*/
+    List<PaymentDetails> searchPaymentDetails(PaymentDetails paymentDetails);
+    
+    /*	根据收营员id查询该收银员 的收款记录 
+      	用于 收款台收银员交账
+		2015/12/30彭婷婷  	*/ 
+    List<PaymentDetails> getPaymentDatilsByStaffId(String financialStaffId);
+    
+    /*
+     * 通过交账id查找付款详情
+     */
+    List<PaymentDetails> getPaymentDetailsByAccountId(String accountRecordId);
+    
+    /**
+     * 根据资产账户id查询收支明细
+     * @author zhuqi 2016.04.28 
+     * @param assetAccountId
+     * @return
+     */
+    List<PaymentDetails>listPaymentDatilsByAssetAccountId(String assetAccountId);
+
+}

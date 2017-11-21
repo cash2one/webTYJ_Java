@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.flf.mapper.FinancialCounterofferDetailMapper" >
+    <resultMap id="BaseResultMap" type="FinancialCounterofferDetail" >
+    <id column="financial_counteroffer_detail_id" property="financialCounterofferDetailId" jdbcType="VARCHAR" />
+    <result column="contract_number" property="contractNumber" jdbcType="VARCHAR" />
+    <result column="bank_type" property="bankType"  jdbcType="VARCHAR" />
+    <result column="bank_num" property="bankNum"  jdbcType="VARCHAR" />
+    <result column="bank_account" property="bankAccount"  jdbcType="VARCHAR" />
+    <result column="sum" property="sum" jdbcType="DOUBLE" />
+    <result column="deductions_tag" property="deductionsTag" jdbcType="VARCHAR" />
+    <result column="cust_name" property="custName" jdbcType="VARCHAR"/> 
+    <result column="message" property="message" jdbcType="VARCHAR"/>
+    <result column="financial_counteroffer_total_id" property="financialCounterofferTotalId"  jdbcType="VARCHAR" />
+    <result column="batch_number" property="batchNumber" jdbcType="VARCHAR"/>
+    <result column="offer_state" property="offerState" jdbcType="VARCHAR"/>
+   </resultMap>
+
+	
+	<select id="getFinancialCounterofferDetailById" parameterType="String" resultMap="BaseResultMap">
+		SELECT * FROM tc_financial_counteroffer_detail WHERE financial_counteroffer_detail_id=#{0}
+	</select>
+	
+	<select id="getFinancialCounterofferDetailsByTotalId" parameterType="String" resultMap="BaseResultMap">
+		SELECT * FROM tc_financial_counteroffer_detail WHERE financial_counteroffer_total_id=#{0}
+	</select>
+	
+	<select id="listPageFinancialCounterofferDetail" parameterType="FinancialCounterofferDetail" resultMap="BaseResultMap">
+		SELECT * FROM tc_financial_counteroffer_detail WHERE 1=1 
+		 <if test="financialCounterofferTotalId!=null and financialCounterofferTotalId!=''">
+	     	and financial_counteroffer_total_id=#{financialCounterofferTotalId}
+	     </if>
+	     <if test="batchNumber!=null and batchNumber!=''">
+	     	and batch_number=#{batchNumber}
+	     </if>
+	     <if test="offerState!=null and offerState!=''">
+	     	and offer_state=#{offerState}
+	     </if>
+	</select>
+	
+ 	<insert id="insertFinancialCounterofferDetail" parameterType="FinancialCounterofferDetail">
+ 		insert into tc_financial_counteroffer_detail(financial_counteroffer_detail_id,contract_number,
+ 			bank_type,bank_num,bank_account,sum,deductions_tag,
+ 			cust_name,message,financial_counteroffer_total_id,batch_number,offer_state
+ 		)
+ 		values(#{financialCounterofferDetailId},#{contractNumber},
+ 			#{bankType},#{bankNum},#{bankAccount},#{sum},#{deductionsTag},
+ 			#{custName},#{message},#{financialCounterofferTotalId},#{batchNumber},#{offerState}
+ 		)
+ 	</insert>
+ 	
+ 	<!-- 修改 -->
+  	<update id="updateFinancialCounterofferDetail" parameterType="com.flf.entity.FinancialCounterofferDetail">
+  		update tc_financial_counteroffer_detail 
+  		<set>
+  			<if test="offerState != null" >
+		       offer_state = #{offerState},
+		    </if>
+  		</set>
+  		 where financial_counteroffer_detail_id=#{financialCounterofferDetailId,jdbcType=VARCHAR}
+ 	</update>
+ 	<!-- 删除 -->
+ 	<delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+	    delete from tc_financial_counteroffer_detail
+	    where financial_counteroffer_detail_id = #{0}
+	 </delete>
+	 <!-- 根据条件查询所有的回盘导入明细文件 -->
+	 <select id="listAllFinancialCounterofferDetail" parameterType="FinancialCounterofferDetail"  resultMap="BaseResultMap">
+		select * from tc_financial_counteroffer_detail where 1=1 
+		 <if test="batchNumber!=null and batchNumber!=''">
+	     	and batch_number=#{batchNumber}
+	     </if>
+	     <if test="offerState!=null and offerState!=''">
+	     	and offer_state=#{offerState}
+	     </if>
+	     <if test="financialCounterofferTotalId!=null and financialCounterofferTotalId!=''">
+	     	and financial_counteroffer_total_id=#{financialCounterofferTotalId}
+	     </if>
+	</select>
+</mapper>

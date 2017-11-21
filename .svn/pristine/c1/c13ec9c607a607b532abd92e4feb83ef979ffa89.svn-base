@@ -1,0 +1,74 @@
+package com.flf.service.impl;
+
+import com.flf.service.PaymentDetailsService;
+import com.flf.service.ProductFixedparkingspaceService;
+
+import net.sf.json.JSONObject;
+
+import java.util.HashMap;
+import java.util.Map;
+import java.util.UUID;
+
+import com.flf.entity.BuildingStructureNew;
+import com.flf.entity.ProductFixedparkingspace;
+import com.flf.entity.ProductFixedparkingspaceChild;
+import com.flf.mapper.ProductCommonserviceMapper;
+import com.flf.mapper.ProductFixedparkingspaceChildMapper;
+import com.flf.mapper.ProductFixedparkingspaceMapper;
+
+
+public class ProductFixedparkingspaceServiceImpl implements ProductFixedparkingspaceService {
+	Map<String,String> map=new HashMap<String,String>();
+	private ProductFixedparkingspaceMapper productFixedparkingspaceMapper;
+	private ProductFixedparkingspaceChildMapper productFixedparkingspaceChildMapper;
+
+	public ProductFixedparkingspaceChildMapper getProductFixedparkingspaceChildMapper() {
+		return productFixedparkingspaceChildMapper;
+	}
+
+	public void setProductFixedparkingspaceChildMapper(
+			ProductFixedparkingspaceChildMapper productFixedparkingspaceChildMapper) {
+		this.productFixedparkingspaceChildMapper = productFixedparkingspaceChildMapper;
+	}
+
+	public ProductFixedparkingspaceMapper getProductFixedparkingspaceMapper() {
+		return productFixedparkingspaceMapper;
+	}
+
+	public void setProductFixedparkingspaceMapper(ProductFixedparkingspaceMapper productFixedparkingspaceMapper) {
+		this.productFixedparkingspaceMapper = productFixedparkingspaceMapper;
+	}
+
+	@Override
+	public String addPf(ProductFixedparkingspace pf) {
+		// TODO Auto-generated method stub
+		//获得子表ID
+		ProductFixedparkingspaceChild pfc=new ProductFixedparkingspaceChild();
+		//获得主表ID
+		String fixedparkingspaceId = UUID.randomUUID().toString();	
+		//将主表ID写入子表
+		pfc.setFixedparkingspaceId(fixedparkingspaceId);
+		//写入主表
+		pf.setFixedparkingspaceId(fixedparkingspaceId);
+		//循环将车位ID导入子表中  并且新增
+		for(BuildingStructureNew bsn:pf.getBuildingStructureNewList()){
+			String fixedparkingspaceChildId = UUID.randomUUID().toString();
+			pfc.setFixedparkingspaceChildId(fixedparkingspaceChildId);
+			String stallId = bsn.getId();
+			pfc.setStallId(stallId);
+			productFixedparkingspaceChildMapper.insert(pfc);
+		}
+		int result=productFixedparkingspaceMapper.insert(pf);
+		if(result==1){
+			map.put("code","1");
+		    return JSONObject.fromObject(map).toString();
+	    }
+		else{
+			map.put("code","0");
+		    return JSONObject.fromObject(map).toString();
+		}
+	}
+	
+	
+
+}

@@ -1,0 +1,76 @@
+<!--创建人：彭婷婷
+    页面名称：内部专业线的入伙初始化
+    JS路径： 'controllers/internalProfession/joinGangInstitution/institutionNext02
+    修改时间：2015//6/3
+    修改人：彭婷婷
+    修改内容:搜素及点击显示
+-->
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>抄表管理1</title>
+    <!--选择左边table的tr在右边table显示数据js-->
+    <script type="text/javascript">
+        function butD(rows) {
+            var rows = rows.parentNode.parentNode.rowIndex    //找到当前选中的行
+            var myTable = document.getElementById('tables');  //找到当前这个 table;
+            var Rom_price = myTable.rows[rows].cells[0].innerHTML; //找到当前行的第一列的值;
+            //找到table2，并给table2新增一行
+            var x = document.getElementById('table2').insertRow();
+            x.align = "center";  //设置行样式
+            var Rom_typename = x.insertCell(0);
+            Rom_typename.innerHTML = Rom_price;
+        }
+    </script>
+</head>
+<body>
+<!--外部专业线的抄表管理的新增活动的页面1的团队信息显示-->
+<div style="padding:15px 0px 0" class="row">
+    <div class="complaint_user_list" style="height:800px;">
+        <div class="row pull-right" style="margin: 5px;">
+            <button style="height: 30px;width: 120px" ui-sref="index.internalProfession.joinGangInstitution.institutionNext03">下一步</button>
+        </div>
+        <div class="col-md-12">
+            <div class="row col-md-10">
+                <select class="form-control" ng-model="project"  ng-options="a.id as a.name for a in projectName">
+                    <option value="">选择项目</option>
+                </select>
+            </div>
+           <div class="col-md-2"><button type="button" ng-click="searchTask()">搜索</button></div>
+        </div>
+        <!--显示查询结果-->
+        <div class="result">
+            <div class="col-md-12">
+                <div class="col-md-3 col-md-offset-1">
+                    <table border='1px' width="150px" id="tables">
+                        <!--循环显示js房屋信息-->
+                        <tr  ng-repeat="house in itemsData" ng-show="house.houseId!=null">
+                            <td>
+                                <a href="" id="but1" onclick="butD(this);">
+                                    <img style="width: 60px;height: 60px;" src="images/staffHome/u81.jpg">
+                                </a>
+                                <span>{{house.name}}</span><br/>
+                                <span>{{house.department}}</span>
+                                <a href="#" ui-sref="index.internalProfession.joinGangInstitution.detailHouse"><span>{{house.detailedInformation}}</span></a>
+                            </td>
+                        </tr>
+                        <!--循环显示js房屋信息end-->
+                    </table>
+                </div>
+                <div class="col-md-3">
+                    <span class="glyphicon glyphicon-menu-right" style="font-size: 40px;margin-top: 100px"></span>
+                </div>
+                <div class="col-md-3">
+                    <table border='1px' width="150px" id="table2">
+
+                    </table>
+                </div>
+            </div>
+        </div>
+        <!--显示查询结果 end-->
+    </div>
+</div>
+
+</body>
+</html>

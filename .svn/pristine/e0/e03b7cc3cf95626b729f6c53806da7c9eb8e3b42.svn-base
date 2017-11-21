@@ -1,0 +1,116 @@
+package com.flf.entity;
+
+import java.util.Date;
+
+public class WaterLoss {
+    private Integer id;
+
+    private Integer level;
+
+    private String waterNum;
+
+    private String waterName;
+
+    private Double consumption;
+
+    private Double childConsumption;
+    private Double bootChildConsumption;
+
+    private Double waterLoss;
+
+    private String lossRate;
+
+    private Date meterDate;
+    
+    private Date queryDate; //水损查询日期
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public Integer getLevel() {
+        return level;
+    }
+
+    public void setLevel(Integer level) {
+        this.level = level;
+    }
+
+    public String getWaterNum() {
+        return waterNum;
+    }
+
+    public void setWaterNum(String waterNum) {
+        this.waterNum = waterNum == null ? null : waterNum.trim();
+    }
+
+    public String getWaterName() {
+        return waterName;
+    }
+
+    public void setWaterName(String waterName) {
+        this.waterName = waterName == null ? null : waterName.trim();
+    }
+
+    public Double getConsumption() {
+        return consumption;
+    }
+
+    public void setConsumption(Double consumption) {
+        this.consumption = consumption;
+    }
+
+    public Double getChildConsumption() {
+        return childConsumption;
+    }
+
+    public void setChildConsumption(Double childConsumption) {
+        this.childConsumption = childConsumption;
+    }
+
+    public Double getWaterLoss() {
+        return waterLoss;
+    }
+
+    public void setWaterLoss(Double waterLoss) {
+        this.waterLoss = waterLoss;
+    }
+
+    public String getLossRate() {
+        return lossRate;
+    }
+
+    public void setLossRate(String lossRate) {
+        this.lossRate = lossRate == null ? null : lossRate.trim();
+    }
+
+    public Date getMeterDate() {
+        return meterDate;
+    }
+
+    public void setMeterDate(Date meterDate) {
+        this.meterDate = meterDate;
+    }
+
+	public Double getBootChildConsumption() {
+		return bootChildConsumption;
+	}
+
+	public void setBootChildConsumption(Double bootChildConsumption) {
+		this.bootChildConsumption = bootChildConsumption;
+	}
+
+	public Date getQueryDate() {
+		return queryDate;
+	}
+
+	public void setQueryDate(Date queryDate) {
+		this.queryDate = queryDate;
+	}
+
+	
+}

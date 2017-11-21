@@ -1,0 +1,50 @@
+package com.flf.mapper;
+
+import java.util.List;
+
+import com.flf.entity.CarInfo;
+import com.flf.entity.Search;
+import com.flf.entity.SearchCar;
+
+public interface CarInfoMapper {
+	/*
+	 * t_carinfo 车辆信息表
+	 */
+    List<CarInfo> listPageCarInfo(CarInfo carInfo);//分页查询所有车辆信息
+    List<CarInfo> listAllCarInfo();//查询所有车辆信息
+    CarInfo getCarInfoById(String id);//通过车辆id查询车辆信息
+    int insertCarInfo(CarInfo carInfo);//增加车辆信息
+    int updateCarInfo(CarInfo carInfo);//更该车辆信息
+    int deleteCarInfo(String id);//通过车辆表主键 删除车辆信息
+    List<CarInfo> getCarInfo(String personId);//通过客户id查询车辆信息
+    List<CarInfo>listPageCarInfoByDelete(CarInfo carInfo);//通过客户id分页查询删除车辆信息
+    List<CarInfo>listPageCarInfoByTransactor(CarInfo carInfo);//通过客户id分页查询车辆信息
+    List<CarInfo> getCarInfoBy(String personId);//通过客户id查询车辆信息
+    
+    List<CarInfo> listSearchCarInfo(Search search);//物业服务搜索车辆
+    /**
+     * 创建 by 肖聪  2015/6/23
+     * @param personCustNew
+     * @return
+     */
+    List<CarInfo> getCarInfoByPerson(SearchCar searchCar);//根据人物信息查询车辆信息
+	List<CarInfo> listSearchCarInfoAu(Search search);//根据条件查询授权人和办理人的车辆信息
+	
+	List<CarInfo> listPageCarInfoByContion(CarInfo carInfo);//通过条件分页查询
+	
+	/**
+	 * 2016-7-13 ylq
+	 * 根据 search传入条件，查询车辆信息。(房屋编号，人员姓名和车牌号。Like匹配)
+	 * @param search
+	 * @return List &lt;CarInfo&gt;
+	 */
+	List<CarInfo> listPageCarInfoBySearchItems(Search search);
+	
+	/**
+	 * 2016-7-13 ylq
+	 * 根据 carInfo.carId 逻辑删除车辆信息。
+	 * @param carInfo
+	 * @return Integer
+	 */
+	int updateCarInfoDeleteCarByCarId(CarInfo carInfo);//通过车辆表主键更改删除状态
+}

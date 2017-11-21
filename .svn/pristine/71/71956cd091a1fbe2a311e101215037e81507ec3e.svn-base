@@ -1,0 +1,44 @@
+package com.flf.mapper;
+
+import com.flf.entity.Billing;
+import com.flf.entity.BuildingBilling;
+
+import java.util.List;
+import java.util.Map;
+public interface BuildingBillingMapper {
+
+	/*根据收费项目计费id查询关于建筑的收费项目详情*/
+	List<BuildingBilling> listPageBuildingBillingList(BuildingBilling buildingBilling);
+	
+	/**
+	 * 根据条件查询记录
+	 * @param Map 查询条件
+	 * @return List<BuildingBilling> 建筑收费项目计费对象集合
+	 * */
+	List<BuildingBilling> getBuildingBillingByCon(Map map);
+	
+	/**
+	 * 根据条件删除记录
+	 * @param Map 删除条件
+	 * */
+	void deleteBuildingBilling(Map map);
+	
+	/*修改**/
+	int updateBuildingBilling(BuildingBilling buildingBilling);
+	
+	/*新增*/
+    int insertBuildingBilling(BuildingBilling buildingBilling);
+    
+    //根据建筑ID查询建筑收费项目计费信息
+    List<BuildingBilling> getBuildingBillingByBuildingId(String buildingId);
+    //批量插入建筑收费项目计费信息
+	int insertList(List<BuildingBilling> buildingBillingListAll);
+	//根据建筑收费id获取建筑id
+	String selectBuildingIdByBuildingBillingId (String BuildingBillingId);
+	//根据收费项目id获取建筑收费信息
+	List<BuildingBilling> listBuildingBillingByChargeItemBillingId(String chargeItemBillingId);
+	//根据收费项目id获取未计费的建筑收费信息
+	List<BuildingBilling> listBuildingBillingNoPostingByChargeItemBillingId(String chargeItemBillingId);
+	//根据Id获取建筑收费信息
+	BuildingBilling getBuildingBillingById (String buildingBillingId);
+}

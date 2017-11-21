@@ -1,0 +1,217 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.flf.mapper.HrAuthorityMapper" >
+  <resultMap id="BaseResultMap" type="com.flf.entity.HrAuthority" >
+    <id column="authority_id" property="authorityId" jdbcType="VARCHAR" />
+    <result column="t_user_id" property="tUserId" jdbcType="VARCHAR" />
+    <result column="core_position_id" property="corePositionId" jdbcType="VARCHAR" />
+     <result column="type" property="type"/>
+      <result column="project_or_team_name" property="projectOrTeamName" jdbcType="VARCHAR" />
+       <result column="permissions_id" property="permissionsId" jdbcType="VARCHAR" />
+       <result column="teamwrok_id" property="teamworkId" jdbcType="VARCHAR" />
+       <result column="project_id" property="projectId" jdbcType="VARCHAR" />
+  </resultMap>
+    <resultMap id="BaseResultMapPermissions" type="com.flf.entity.HrAuthority" >
+    <id column="authority_id" property="authorityId" jdbcType="VARCHAR" />
+    <result column="t_user_id" property="tUserId" jdbcType="VARCHAR" />
+    <result column="core_position_id" property="corePositionId" jdbcType="VARCHAR" />
+     <result column="type" property="type"/>
+      <result column="project_or_team_name" property="projectOrTeamName" jdbcType="VARCHAR" />
+       <result column="permissions_id" property="permissionsId" jdbcType="VARCHAR" />
+       <result column="teamwrok_id" property="teamworkId" jdbcType="VARCHAR" />
+       <result column="project_id" property="projectId" jdbcType="VARCHAR" />
+       <association column="permissions_id" property="permissions" javaType="HrPermissions" select="com.flf.mapper.HrPermissionsMapper.selectByPrimaryKey" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    authority_id, t_user_id, core_position_id,type,permissions_id,teamwork_id,project_id
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from hr_authority
+    where authority_id = #{authorityId,jdbcType=VARCHAR}
+  </select>
+  
+  <select id="getTUserPermissionByMap" resultMap="BaseResultMap" parameterType="java.util.Map">
+  	 select 
+    <include refid="Base_Column_List" />
+    from hr_authority
+    <trim prefix="where" prefixOverrides="and">
+    	<if test="authorityId != null">
+    		authority_id = #{authorityId}
+    	</if>
+    	<if test="userId != null">
+    		and t_user_id = #{userId} 
+    	</if>
+    	<if test="corePositionId != null">
+    		and core_position_id = #{corePositionId}
+    	</if>
+    	<if test="type != null">
+    		and type = #{type}
+    	</if>
+    	<if test="permissionsId != null">
+    		and permissions_id = #{permissionsId}
+    	</if>
+    	<if test="teamwrokId != null">
+    		and teamwrok_id = #{teamworkId}
+    	</if>
+    	<if test="projectId != null">
+    		and project_id = #{teamworkId}
+    	</if>
+    </trim>
+  </select>
+  
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from hr_authority
+    where authority_id = #{authorityId,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.flf.entity.HrAuthority" >
+    insert into hr_authority (authority_id, t_user_id, core_position_id,type,permissions_id,teamwork_id,project_id
+      )
+    values (#{authorityId,jdbcType=VARCHAR}, #{tUserId,jdbcType=VARCHAR}, #{corePositionId,jdbcType=VARCHAR},#{type},#{permissionsId,jdbcType=VARCHAR},
+    #{teamworkId,jdbcType=VARCHAR}, #{projectId,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.flf.entity.HrAuthority" >
+    insert into hr_authority
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="authorityId != null" >
+        authority_id,
+      </if>
+      <if test="tUserId != null" >
+        t_user_id,
+      </if>
+      <if test="corePositionId != null" >
+        core_position_id,
+      </if>
+      <if test="teamwrokId != null" >
+        teamwork_id,
+      </if>
+      <if test="projectId != null">
+    		and project_id = #{teamworkId}
+    	</if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="authorityId != null" >
+        #{authorityId,jdbcType=VARCHAR},
+      </if>
+      <if test="tUserId != null" >
+        #{tUserId,jdbcType=VARCHAR},
+      </if>
+      <if test="corePositionId != null" >
+        #{corePositionId,jdbcType=VARCHAR},
+      </if>
+      <if test="teamwrokId != null" >
+        #{teamwrokId,jdbcType=VARCHAR},
+      </if>
+      <if test="projectId != null">
+    		and project_id = #{teamworkId}
+    	</if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.flf.entity.HrAuthority" >
+    update hr_authority
+    <set >
+      <if test="tUserId != null" >
+        t_user_id = #{tUserId,jdbcType=VARCHAR},
+      </if>
+      <if test="corePositionId != null" >
+        core_position_id = #{corePositionId,jdbcType=VARCHAR},
+      </if>
+      <if test="teamworkId != null" >
+        teamwork_id = #{teamworkId,jdbcType=VARCHAR},
+      </if>
+      <if test="projectId != null">
+    		and project_id = #{teamworkId}
+    	</if>
+    </set>
+    where authority_id = #{authorityId,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.flf.entity.HrAuthority" >
+    update hr_authority
+    set t_user_id = #{tUserId,jdbcType=VARCHAR},
+      core_position_id = #{corePositionId,jdbcType=VARCHAR}
+    where authority_id = #{authorityId,jdbcType=VARCHAR}
+  </update>
+  
+  <select id="listAuthorityByuserId" parameterType="String" resultMap="BaseResultMap">
+  	select <include refid="Base_Column_List" /> from hr_authority where t_user_id = #{tUserId}
+  </select>
+  
+  <delete id="deleteHrAuthority" parameterType="com.flf.entity.HrAuthority">
+  	delete from hr_authority
+  	<trim prefix="where" prefixOverrides="and">
+  		<if test="tUserId != null and tUserId != ''">
+  			t_user_id = #{tUserId,jdbcType=VARCHAR}
+  		</if>
+  		<if test="corePositionId != null and corePositionId != ''">
+  			and core_position_id = #{corePositionId,jdbcType=VARCHAR}
+  		</if>
+  		<if test="teamworkId != null and teamworkId != ''">
+  			and teamwork_id = #{teamworkId,jdbcType=VARCHAR}
+  		</if>
+  		<if test="projectId != null">
+    		and project_id = #{teamworkId}
+    	</if>
+  	</trim>
+  </delete>
+  
+  <delete id="deleteAuthrityByUserId" parameterType="String">
+  	delete from hr_authority
+    where t_user_id = #{0} and type=#{1}
+  </delete>
+  
+   <select id="listTeamHrAuthoritysByUserId" parameterType="String" resultMap="BaseResultMap">
+  	select a.*,b.team_name as project_or_team_name from hr_authority a left join t_teamwork b on a.core_position_id=b.id
+  	where a.t_user_id = #{tUserId} and type=0
+  </select>
+  
+  <select id="listProjectHrAuthoritysByUserId" parameterType="String" resultMap="BaseResultMap">
+  	select a.*,b.team_name as project_or_team_name from hr_authority a left join t_teamwork b on a.core_position_id=b.id
+  	where a.t_user_id = #{tUserId} and type=1
+  </select>
+  
+  <select id="listAuthorityForPower" parameterType="String" resultMap="BaseResultMap">
+  	select a.*,b.permissions_name from hr_authority a left join hr_permissions b on a.permissions_id=b.permissions_id
+  	where a.t_user_id = #{tUserId} and a.permissions_id IS NOT NULL
+  </select>
+  
+  <select id="selectHrAuthorityByUserIdAndTeamId" parameterType="HrAuthority" resultMap="BaseResultMap">
+  	select <include refid="Base_Column_List" /> from hr_authority where t_user_id = #{tUserId,jdbcType=VARCHAR} 
+  	 <if test="corePositionId != null" >
+        and core_position_id = #{corePositionId,jdbcType=VARCHAR}
+      </if>
+       <if test="permissionsId != null" >
+        and permissions_id = #{permissionsId,jdbcType=VARCHAR}
+      </if>
+      <if test="teamworkId!= null" >
+        and teamwork_id = #{teamworkId,jdbcType=VARCHAR}
+      </if>
+      <if test="projectId != null">
+    		and project_id = #{projectId}
+    	</if>
+     
+  </select>
+  
+  <select id="ifOderToAuthorityByuserId" parameterType="String" resultMap="BaseResultMap">
+  	select * from hr_authority a
+  	left join hr_permissions b on a.permissions_id=b.permissions_id
+  	where a.t_user_id = #{0} and b.permissions_name = '项目团队管理'
+  </select>
+  
+  <select id="getHrAuthorityByUserId" parameterType="String" resultMap="BaseResultMapPermissions">
+  	SELECT
+	*
+	FROM
+		hr_authority
+	WHERE
+		t_user_id = #{0}
+	AND permissions_id IS NOT NULL
+  </select>
+  
+  <select id="getAllByHrAuthority" resultMap="BaseResultMap" parameterType="HrAuthority">
+  	SELECT * FROM hr_authority WHERE t_user_id = (SELECT user_id FROM t_user WHERE employ_id = #{tUserId}) 
+	AND core_position_id = #{corePositionId} AND teamwork_id = #{teamworkId} AND project_id = #{projectId}
+  </select>
+  
+</mapper>

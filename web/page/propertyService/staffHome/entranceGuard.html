@@ -1,0 +1,30 @@
+<!--
+    pageName:【门禁卡】物业服务人员主页
+    Author:钟加诚
+   jsPath:js/controllers/propertyService/entranceGuard.js
+   最后修改时间：2015/5/28
+   -->
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>门禁卡</title>
+    <link href="css/propertyService.css" rel="stylesheet">
+</head>
+<body ng-controller="entranceGuardCtrl">
+<div class="complaint_user_list ">
+    <!--导航条-->
+    <div style="padding:5px 10px 0">
+        <div class="complaint_user_info_navigation">
+            <a class="btn" ui-sref="index.propertyService.staffHome.entranceGuard.addEntranceGuard">新增门禁卡</a>
+            <a class="btn" ui-sref="index.propertyService.staffHome.entranceGuard.checkEntranceGuard">门禁卡历史记录</a>
+        </div>
+        <div class="clear"></div>
+    </div>
+    <div class="row" style="padding:5px 10px 0">
+        <div ui-view></div>
+    </div>
+</div>
+</body>
+
+</html>

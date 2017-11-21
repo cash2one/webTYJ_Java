@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.flf.mapper.AreaDivisionMapper" >
+  <resultMap id="BaseResultMap" type="com.flf.entity.AreaDivision" >
+    <id column="area_division_id" property="areaDivisionId" jdbcType="VARCHAR" />
+    <result column="area_division_name" property="areaDivisionName" jdbcType="VARCHAR" />
+    <result column="area_division_num" property="areaDivisionNum" jdbcType="VARCHAR" />
+    <result column="unit_price" property="unitPrice" jdbcType="DOUBLE" />
+    <result column="sum" property="sum" jdbcType="DOUBLE" />
+    <result column="product_id" property="productId" jdbcType="VARCHAR" />
+    <result column="areas" property="areas" jdbcType="VARCHAR"/>
+  </resultMap>
+  <sql id="Base_Column_List" >
+    area_division_id, area_division_name, area_division_num, unit_price, sum, product_id, areas
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from tc_area_division
+    where area_division_id = #{areaDivisionId,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from tc_area_division
+    where area_division_id = #{areaDivisionId,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.flf.entity.AreaDivision" >
+    insert into tc_area_division (area_division_id, area_division_name, areas,
+      area_division_num, unit_price, sum, 
+      product_id)
+    values (#{areaDivisionId,jdbcType=VARCHAR}, #{areaDivisionName,jdbcType=VARCHAR}, #{areas,jdbcType=VARCHAR},
+      #{areaDivisionNum,jdbcType=VARCHAR}, #{unitPrice,jdbcType=DOUBLE}, #{sum,jdbcType=DOUBLE}, 
+      #{productId,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.flf.entity.AreaDivision" >
+    insert into tc_area_division
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="areaDivisionId != null" >
+        area_division_id,
+      </if>
+      <if test="areaDivisionName != null" >
+        area_division_name,
+      </if>
+      <if test="areas != null" >
+        areas,
+      </if>
+      <if test="areaDivisionNum != null" >
+        area_division_num,
+      </if>
+      <if test="unitPrice != null" >
+        unit_price,
+      </if>
+      <if test="sum != null" >
+        sum,
+      </if>
+      <if test="productId != null" >
+        product_id,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="areaDivisionId != null" >
+        #{areaDivisionId,jdbcType=VARCHAR},
+      </if>
+      <if test="areaDivisionName != null" >
+        #{areaDivisionName,jdbcType=VARCHAR},
+      </if>
+      <if test="areas != null" >
+        #{areas,jdbcType=VARCHAR},
+      </if>
+      <if test="areaDivisionNum != null" >
+        #{areaDivisionNum,jdbcType=VARCHAR},
+      </if>
+      <if test="unitPrice != null" >
+        #{unitPrice,jdbcType=DOUBLE},
+      </if>
+      <if test="sum != null" >
+        #{sum,jdbcType=DOUBLE},
+      </if>
+      <if test="productId != null" >
+        #{productId,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.flf.entity.AreaDivision" >
+    update tc_area_division
+    <set >
+      <if test="areaDivisionName != null" >
+        area_division_name = #{areaDivisionName,jdbcType=VARCHAR},
+      </if>
+      <if test="areas != null" >
+        areas = #{areas,jdbcType=VARCHAR},
+      </if>
+      <if test="areaDivisionNum != null" >
+        area_division_num = #{areaDivisionNum,jdbcType=VARCHAR},
+      </if>
+      <if test="unitPrice != null" >
+        unit_price = #{unitPrice,jdbcType=DOUBLE},
+      </if>
+      <if test="sum != null" >
+        sum = #{sum,jdbcType=DOUBLE},
+      </if>
+      <if test="productId != null" >
+        product_id = #{productId,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where area_division_id = #{areaDivisionId,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.flf.entity.AreaDivision" >
+    update tc_area_division
+    set area_division_name = #{areaDivisionName,jdbcType=VARCHAR},
+      areas = #{areas,jdbcType=VARHCAR},
+      area_division_num = #{areaDivisionNum,jdbcType=VARCHAR},
+      unit_price = #{unitPrice,jdbcType=DOUBLE},
+      sum = #{sum,jdbcType=DOUBLE},
+      product_id = #{productId,jdbcType=VARCHAR}
+    where area_division_id = #{areaDivisionId,jdbcType=VARCHAR}
+  </update>
+  
+  <!-- 根据产品id查询面积划分表中的关联数据 -->
+  <select id="listAreaDivisionByProductId" parameterType="String" resultMap="BaseResultMap">
+  	select * from tc_area_division where product_id = #{productId}
+  </select>
+  
+  <delete id="deleteByProductId" parameterType="String">
+  	delete from tc_area_division
+    where product_id = #{productId,jdbcType=VARCHAR}
+  </delete>
+</mapper>

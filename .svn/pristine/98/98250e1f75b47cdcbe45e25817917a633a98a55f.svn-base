@@ -1,0 +1,348 @@
+package com.flf.entity;
+
+
+
+
+
+import java.sql.Timestamp;
+import java.util.Date;
+
+import javax.xml.bind.annotation.XmlRootElement;
+
+import org.springframework.format.annotation.DateTimeFormat;
+
+
+//售后处理
+@XmlRootElement(name = "AfterSaleProcess")
+public class AfterSaleProcess {
+    private String id;//售后处理id
+
+    @DateTimeFormat(pattern ="yyyy-MM-dd HH:mm:ss")
+	private Date letterDate;//指定发函日期
+
+	private String guarantee;//保修单位
+
+    private String state;//状态
+
+    private Date repairTime;//维修时间
+
+    private Date replyTime;//回复时间
+
+    private Integer isLetter;//是否发函
+
+    private Integer isReply;//维保单位是否回复
+
+    private Date time;//签收时间
+
+    private String expressNum1;//维修通知函快递单号
+
+    private String expressCompany1;//维修通知函快递公司
+    
+    private String expressMan1;//维修通知函快递发件人
+    
+    private String expressManPhone1;//维修通知函快递发件人电话
+    
+    private Date exactLetterDate1;//维修通知函发函时间
+    
+    private String letterType1;//维修通知函发函类型
+    
+    private String expressNum2;//确认不来函快递单号
+    
+    private String expressCompany2;//确认不来函快递公司
+    
+    private String expressMan2;//确认不来函快递发件人
+    
+    private String expressManPhone2;//确认不来函快递发件人电话
+    
+    private Date exactLetterDate2;//确认不来函发函时间
+    
+    private String letterType2;//确认不来函发函类型
+    
+    private String expressNum3;//扣款函快递单号
+    
+    private String expressCompany3;//扣款函快递公司
+    
+    private String expressMan3;//扣款函快递发件人
+    
+    private String expressManPhone3;//扣款函快递发件人电话
+    
+    private Date exactLetterDate3;//扣款函发函时间
+    
+    private String letterType3;//扣款函发函类型
+
+    private Integer isAcceptWarranty;//是否接受保修
+    
+    private String operater1;//维修函操作人
+    
+    private String operater2;//确认不来函操作人
+    
+    private String operater3;//扣款函操作人
+    
+    private String responsibleProject;//负责项目
+    
+    private Page page;//分页
+
+    public Page getPage() {
+		return page;
+	}
+
+	public void setPage(Page page) {
+		this.page = page;
+	}
+
+	public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id == null ? null : id.trim();
+    }
+
+	public Date getLetterDate() {
+		return letterDate;
+	}
+
+	public void setLetterDate(Date letterDate) {
+		this.letterDate = letterDate;
+	}
+
+	public String getGuarantee() {
+        return guarantee;
+    }
+
+    public void setGuarantee(String guarantee) {
+        this.guarantee = guarantee == null ? null : guarantee.trim();
+    }
+
+    public String getState() {
+        return state;
+    }
+
+    public void setState(String state) {
+        this.state = state == null ? null : state.trim();
+    }
+
+    public Date getRepairTime() {
+        return repairTime;
+    }
+
+    public void setRepairTime(Date repairTime) {
+        this.repairTime = repairTime;
+    }
+
+    public Date getReplyTime() {
+        return replyTime;
+    }
+
+    public void setReplyTime(Date replyTime) {
+        this.replyTime = replyTime;
+    }
+
+    public Integer getIsLetter() {
+        return isLetter;
+    }
+
+    public void setIsLetter(Integer isLetter) {
+        this.isLetter = isLetter;
+    }
+
+    public Integer getIsReply() {
+        return isReply;
+    }
+
+    public void setIsReply(Integer isReply) {
+        this.isReply = isReply;
+    }
+
+    public Date getTime() {
+        return time;
+    }
+
+    public void setTime(Date time) {
+        this.time = time;
+    }
+
+    public String getExpressNum1() {
+		return expressNum1;
+	}
+
+	public void setExpressNum1(String expressNum1) {
+		this.expressNum1 = expressNum1;
+	}
+
+	public String getExpressCompany1() {
+		return expressCompany1;
+	}
+
+	public void setExpressCompany1(String expressCompany1) {
+		this.expressCompany1 = expressCompany1;
+	}
+
+	public String getExpressMan1() {
+		return expressMan1;
+	}
+
+	public void setExpressMan1(String expressMan1) {
+		this.expressMan1 = expressMan1;
+	}
+
+	public String getExpressManPhone1() {
+		return expressManPhone1;
+	}
+
+	public void setExpressManPhone1(String expressManPhone1) {
+		this.expressManPhone1 = expressManPhone1;
+	}
+
+	public Date getExactLetterDate1() {
+		return exactLetterDate1;
+	}
+
+	public void setExactLetterDate1(Date exactLetterDate1) {
+		this.exactLetterDate1 = exactLetterDate1;
+	}
+
+	public String getLetterType1() {
+		return letterType1;
+	}
+
+	public void setLetterType1(String letterType1) {
+		this.letterType1 = letterType1;
+	}
+
+	public String getExpressNum2() {
+		return expressNum2;
+	}
+
+	public void setExpressNum2(String expressNum2) {
+		this.expressNum2 = expressNum2;
+	}
+
+	public String getExpressCompany2() {
+		return expressCompany2;
+	}
+
+	public void setExpressCompany2(String expressCompany2) {
+		this.expressCompany2 = expressCompany2;
+	}
+
+	public String getExpressMan2() {
+		return expressMan2;
+	}
+
+	public void setExpressMan2(String expressMan2) {
+		this.expressMan2 = expressMan2;
+	}
+
+	public String getExpressManPhone2() {
+		return expressManPhone2;
+	}
+
+	public void setExpressManPhone2(String expressManPhone2) {
+		this.expressManPhone2 = expressManPhone2;
+	}
+
+	public Date getExactLetterDate2() {
+		return exactLetterDate2;
+	}
+
+	public void setExactLetterDate2(Date exactLetterDate2) {
+		this.exactLetterDate2 = exactLetterDate2;
+	}
+
+	public String getLetterType2() {
+		return letterType2;
+	}
+
+	public void setLetterType2(String letterType2) {
+		this.letterType2 = letterType2;
+	}
+
+	public String getExpressNum3() {
+		return expressNum3;
+	}
+
+	public void setExpressNum3(String expressNum3) {
+		this.expressNum3 = expressNum3;
+	}
+
+	public String getExpressCompany3() {
+		return expressCompany3;
+	}
+
+	public void setExpressCompany3(String expressCompany3) {
+		this.expressCompany3 = expressCompany3;
+	}
+
+    public String getExpressMan3() {
+		return expressMan3;
+	}
+
+	public void setExpressMan3(String expressMan3) {
+		this.expressMan3 = expressMan3;
+	}
+
+	public String getExpressManPhone3() {
+		return expressManPhone3;
+	}
+
+	public void setExpressManPhone3(String expressManPhone3) {
+		this.expressManPhone3 = expressManPhone3;
+	}
+
+	public Date getExactLetterDate3() {
+		return exactLetterDate3;
+	}
+
+	public void setExactLetterDate3(Date exactLetterDate3) {
+		this.exactLetterDate3 = exactLetterDate3;
+	}
+
+	public String getLetterType3() {
+		return letterType3;
+	}
+
+	public void setLetterType3(String letterType3) {
+		this.letterType3 = letterType3;
+	}
+
+	public String getOperater1() {
+		return operater1;
+	}
+
+	public void setOperater1(String operater1) {
+		this.operater1 = operater1;
+	}
+
+	public String getOperater2() {
+		return operater2;
+	}
+
+	public void setOperater2(String operater2) {
+		this.operater2 = operater2;
+	}
+
+	public String getOperater3() {
+		return operater3;
+	}
+
+	public void setOperater3(String operater3) {
+		this.operater3 = operater3;
+	}
+
+	public Integer getIsAcceptWarranty() {
+        return isAcceptWarranty;
+    }
+
+    public void setIsAcceptWarranty(Integer isAcceptWarranty) {
+        this.isAcceptWarranty = isAcceptWarranty;
+    }
+
+	public String getResponsibleProject() {
+		return responsibleProject;
+	}
+
+	public void setResponsibleProject(String responsibleProject) {
+		this.responsibleProject = responsibleProject;
+	}
+}

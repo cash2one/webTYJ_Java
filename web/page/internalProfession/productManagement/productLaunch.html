@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>产品发布</title>
+    <link rel="stylesheet" href="css/internalProfession/indexmin.css">
+</head>
+<body ng-controller="productLaunchCtrl">
+<div class="container-fluid">
+    <div class="row">
+        <div class="order">
+            <div class="program_search">
+                <div class="row">
+                    <div class="table_list">
+                        <div class="col-md-12" style="background-color: #80fadf;height: 100px;">
+                            <form class="form-horizontal" style="margin-top: 30px;">
+                                <div class="form-group">
+                                    <label class="col-sm-2 control-label">类目搜索:</label>
+                                    <div class="col-sm-8">
+                                        <input type="email" class="form-control" placeholder="请输入宝贝名/货号，数码电器书如型号，书籍类输入ISBN号">
+                                    </div>
+                                    <button class="active">快速找到类目</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+
+                    <div class="table_list">
+                        <div class="col-md-offset-2 col-md-10" style="height: 50px;margin-top: 30px;">
+                            <form class="form-horizontal">
+                                <div class="form-group">
+                                    <label class="col-sm-2 control-label"> <font color="orange"> 您最近使用的类目:</font></label>
+                                    <div class="col-lg-6">
+                                        <div class="input-group">
+                                            <input type="text" class="form-control" aria-label="..."  placeholder="请选择">
+                                            <div class="input-group-btn">
+                                                <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><span class="caret"></span></button>
+                                                <ul class="dropdown-menu dropdown-menu-right" role="menu">
+                                                    <li><a href="#">电脑</a></li>
+                                                    <li><a href="#">手机</a></li>
+                                                    <li><a href="#">相机</a></li>
+                                                </ul>
+                                            </div><!-- /btn-group -->
+                                        </div><!-- /input-group -->
+                                    </div><!-- /.col-lg-6 -->
+
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+
+                    <div class="table_list" style="margin-left: 65px">
+                        <div class="cate-container">
+                            <div class="cate-main">
+                                <div id="cate-cascading">
+                                    <a href="#" class="cc-prev cc-nav" style="visibility: hidden;"><span>上一级</span></a>
+                                    <div class="cc-listwrap">
+                                        <ol class="cc-list">
+                                            <li class="cc-list-item">
+                                                <div class="cc-cbox-filter">
+                                                    <label>输入名称/拼音首字母
+                                                        <i style="display:none;">当前第1级类目，回车选择类目/属性</i>
+                                                    </label>
+                                                    <input style="width: 176px;">
+                                                </div>
+                                                <div role="tree" class="cc-tree">
+                                                    <ul role="listbox" class="cc-tree-cont">
+                                                        <li class="cc-tree-group  cc-tree-expanded" aria-expanded="true">
+                                                            <div class="cc-tree-gname">游戏话费</div>
+                                                            <ul class="cc-tree-gcont">
+                                                                <li class="cc-tree-item cc-hasChild-item">腾讯QQ专区</li>
+                                                                <li class="cc-tree-item cc-hasChild-item">网游装备/游戏币/帐号/代练</li>
+                                                                <li class="cc-tree-item cc-hasChild-item">网络游戏点卡</li>
+                                                                <li class="cc-tree-item cc-hasChild-item">游戏物品交易平台</li>
+                                                            </ul>
+                                                        </li>
+                                                        <li class="cc-tree-group  cc-tree-expanded" aria-expanded="true">
+                                                            <div class="cc-tree-gname">服装鞋包</div>
+                                                            <ul class="cc-tree-gcont">
+                                                                <li class="cc-tree-item cc-hasChild-item">女士内衣/男士内衣/家居服</li>
+                                                                <li class="cc-tree-item cc-hasChild-item">男装</li>
+                                                                <li class="cc-tree-item cc-hasChild-item">流行男鞋</li>
+                                                                <li class="cc-tree-item cc-hasChild-item">女装/女士精品</li>
+                                                                <li class="cc-tree-item cc-hasChild-item">女鞋</li>
+                                                                <li class="cc-tree-item cc-hasChild-item">箱包皮具/热销女包/男包</li>
+                                                                <li class="cc-tree-item cc-hasChild-item">服饰配件/皮带/帽子/围巾</li>
+                                                            </ul>
+                                                        </li>
+                                                        <li class="cc-tree-group  cc-tree-expanded" aria-expanded="true">
+                                                            <div class="cc-tree-gname">手机数码</div>
+                                                            <ul class="cc-tree-gcont">
+                                                                <li class="cc-tree-item cc-hasChild-item">国货精品数码</li>
+                                                                <li class="cc-tree-item cc-hasChild-item">手机</li>
+                                                                <li class="cc-tree-item cc-hasChild-item">数码相机/单反相机/摄像机</li>
+                                                                <li class="cc-tree-item cc-hasChild-item">MP3/MP4/iPod/录音笔</li>
+                                                                <li class="cc-tree-item cc-hasChild-item">笔记本电脑</li>
+                                                                <li class="cc-tree-item cc-hasChild-item">平板电脑/MID</li>
+                                                                <li class="cc-tree-item cc-hasChild-item">DIY电脑</li>
+                                                                <li class="cc-tree-item cc-hasChild-item">电脑硬件/显示器/电脑周边</li>
+                                                                <li class="cc-tree-item cc-hasChild-item">网络设备/网络相关</li>
+                                                                <li class="cc-tree-item cc-hasChild-item">3C数码配件</li>
+                                                                <li class="cc-tree-item cc-hasChild-item">闪存卡/U盘/存储/移动硬盘</li>
+                                                                <li class="cc-tree-item cc-hasChild-item">办公设备/耗材/相关服务</li>
+                                                                <li class="cc-tree-item cc-hasChild-item">电子词典/电纸书/文化用品</li>
+                                                                <li class="cc-tree-item cc-hasChild-item">电玩/配件/游戏/攻略</li>
+                                                                <li class="cc-tree-item cc-hasChild-item">品牌台机/品牌一体机/服务器</li>
+                                                            </ul>
+                                                        </li>
+                                                        <li class="cc-tree-group  cc-tree-expanded" aria-expanded="true">
+                                                            <div class="cc-tree-gname">家用电器</div>
+                                                            <ul class="cc-tree-gcont">
+                                                                <li class="cc-tree-item cc-hasChild-item">生活电器</li>
+                                                                <li class="cc-tree-item cc-hasChild-item">大家电</li>
+                                                                <li class="cc-tree-item cc-hasChild-item">影音电器</li>
+                                                                <li class="cc-tree-item cc-hasChild-item">厨房电器</li>
+                                                                <li class="cc-tree-item cc-hasChild-item">个人护理/保健/按摩器材</li>
+                                                                <li class="cc-tree-item cc-hasChild-item">家庭保健</li>
+                                                            </ul>
+                                                        </li>
+                                                        <li class="cc-tree-group  cc-tree-expanded" aria-expanded="true">
+                                                            <div class="cc-tree-gname">美妆饰品</div>
+                                                            <ul class="cc-tree-gcont">
+                                                                <li class="cc-tree-item cc-hasChild-item">彩妆/香水/美妆工具</li>
+                                                                <li class="cc-tree-item cc-hasChild-item">美容护肤/美体/精油</li>
+                                                                <li class="cc-tree-item cc-hasChild-item">美发护发/假发</li>
+                                                                <li class="cc-tree-item cc-hasChild-item">珠宝/钻石/翡翠/黄金</li>
+                                                                <li class="cc-tree-item cc-hasChild-item">ZIPPO/瑞士军刀/眼镜</li>
+                                                                <li class="cc-tree-item cc-hasChild-item">饰品/流行首饰/时尚饰品新</li>
+                                                                <li class="cc-tree-item cc-hasChild-item">手表</li>
+                                                            </ul>
+                                                        </li>
+                                                        <li class="cc-tree-group  cc-tree-expanded" aria-expanded="true">
+                                                            <div class="cc-tree-gname">母婴用品</div>
+                                                            <ul class="cc-tree-gcont">
+                                                                <li class="cc-tree-item cc-hasChild-item">童装/婴儿装/亲子装</li>
+                                                                <li class="cc-tree-item cc-hasChild-item">奶粉/辅食/营养品/零食</li>
+                                                                <li class="cc-tree-item cc-hasChild-item">尿片/洗护/喂哺/推车床</li>
+                                                                <li class="cc-tree-item cc-hasChild-item">孕妇装/孕产妇用品/营养</li>
+                                                                <li class="cc-tree-item cc-hasChild-item">玩具/模型/动漫/早教/益智</li>
+                                                                <li class="cc-tree-item cc-hasChild-item">童鞋/婴儿鞋/亲子鞋</li>
+                                                            </ul>
+                                                        </li>
+                                                        <li class="cc-tree-group  cc-tree-expanded" aria-expanded="true">
+                                                            <div class="cc-tree-gname">家居建材</div>
+                                                            <ul class="cc-tree-gcont">
+                                                                <li class="cc-tree-item cc-hasChild-item">家居饰品</li>
+                                                                <li class="cc-tree-item cc-hasChild-item">特色手工艺</li>
+                                                                <li class="cc-tree-item cc-hasChild-item">住宅家具</li>
+                                                                <li class="cc-tree-item cc-hasChild-item">商业/办公家具</li>
+                                                                <li class="cc-tree-item cc-hasChild-item">家装主材</li>
+                                                                <li class="cc-tree-item cc-hasChild-item">基础建材</li>
+                                                                <li class="cc-tree-item cc-hasChild-item">五金/工具</li>
+                                                                <li class="cc-tree-item cc-hasChild-item">电子/电工</li>
+                                                                <li class="cc-tree-item cc-hasChild-item">床上用品</li>
+                                                                <li class="cc-tree-item cc-hasChild-item">装修设计/施工/监理</li>
+                                                                <li class="cc-tree-item cc-hasChild-item">居家布艺</li>
+                                                                <li class="cc-tree-item cc-hasChild-item">全屋定制</li>
+                                                            </ul>
+                                                        </li>
+                                                        <li class="cc-tree-group  cc-tree-expanded" aria-expanded="true">
+                                                            <div class="cc-tree-gname">百货食品</div>
+                                                            <ul class="cc-tree-gcont">
+                                                                <li class="cc-tree-item cc-hasChild-item">居家日用</li>
+                                                                <li class="cc-tree-item cc-hasChild-item">厨房/烹饪用具</li>
+                                                                <li class="cc-tree-item cc-hasChild-item">家庭/个人清洁工具</li>
+                                                                <li class="cc-tree-item cc-hasChild-item">传统滋补营养品</li>
+                                                                <li class="cc-tree-item cc-hasChild-item">零食/坚果/特产</li>
+                                                                <li class="cc-tree-item cc-hasChild-item">粮油米面/南北干货/调味品</li>
+                                                                <li class="cc-tree-item cc-hasChild-item">成人用品/避孕/计生用品</li>
+                                                                <li class="cc-tree-item cc-hasChild-item">洗护清洁剂/卫生巾/纸/香薰</li>
+                                                                <li class="cc-tree-item cc-hasChild-item">茶/咖啡/冲饮</li>
+                                                                <li class="cc-tree-item cc-hasChild-item">保健食品/膳食营养补充食品</li>
+                                                                <li class="cc-tree-item cc-hasChild-item">水产肉类/新鲜蔬果/熟食</li>
+                                                                <li class="cc-tree-item cc-hasChild-item">节庆用品/礼品</li>
+                                                                <li class="cc-tree-item cc-hasChild-item">餐饮具</li>
+                                                                <li class="cc-tree-item cc-hasChild-item">收纳整理</li>
+                                                            </ul>
+                                                        </li>
+                                                        <li class="cc-tree-group  cc-tree-expanded" aria-expanded="true">
+                                                            <div class="cc-tree-gname">运动户外</div>
+                                                            <ul class="cc-tree-gcont">
+                                                                <li class="cc-tree-item cc-hasChild-item">运动/瑜伽/健身/球迷用品</li>
+                                                                <li class="cc-tree-item cc-hasChild-item">户外/登山/野营/旅行用品</li>
+                                                                <li class="cc-tree-item cc-hasChild-item">运动服/休闲服装</li>
+                                                                <li class="cc-tree-item cc-hasChild-item">运动鞋new</li>
+                                                                <li class="cc-tree-item cc-hasChild-item">运动包/户外包/配件</li>
+                                                                <li class="cc-tree-item cc-hasChild-item">自行车/骑行装备/零配件</li>
+                                                            </ul>
+                                                        </li>
+                                                        <li class="cc-tree-group  cc-tree-expanded" aria-expanded="true">
+                                                            <div class="cc-tree-gname">文化玩乐</div>
+                                                            <ul class="cc-tree-gcont">
+                                                                <li class="cc-tree-item cc-hasChild-item">度假线路/签证送关/旅游服务</li>
+                                                                <li class="cc-tree-item cc-hasChild-item">特价酒店/特色客栈/公寓旅馆</li>
+                                                                <li class="cc-tree-item cc-hasChild-item">古董/邮币/字画/收藏</li>
+                                                                <li class="cc-tree-item cc-hasChild-item">书籍/杂志/报纸</li>
+                                                                <li class="cc-tree-item cc-hasChild-item">音乐/影视/明星/音像</li>
+                                                                <li class="cc-tree-item cc-hasChild-item">乐器/吉他/钢琴/配件</li>
+                                                                <li class="cc-tree-item cc-hasChild-item">宠物/宠物食品及用品</li>
+                                                                <li class="cc-tree-item cc-hasChild-item">交通票</li>
+                                                                <li class="cc-tree-item cc-hasChild-item">景点门票/实景演出/主题乐园</li>
+                                                            </ul>
+                                                        </li>
+                                                        <li class="cc-tree-group  cc-tree-expanded" aria-expanded="true">
+                                                            <div class="cc-tree-gname">生活服务</div>
+                                                            <ul class="cc-tree-gcont">
+                                                                <li class="cc-tree-item cc-hasChild-item">保险分销</li>
+                                                                <li class="cc-tree-item cc-hasChild-item">购物提货券/蛋糕面包</li>
+                                                                <li class="cc-tree-item cc-hasChild-item">休闲娱乐</li>
+                                                                <li class="cc-tree-item cc-hasChild-item">餐饮美食</li>
+                                                                <li class="cc-tree-item cc-hasChild-item">超市卡/商场购物卡</li>
+                                                                <li class="cc-tree-item cc-hasChild-item">教育培训</li>
+                                                                <li class="cc-tree-item cc-hasChild-item">摄影/摄像服务</li>
+                                                                <li class="cc-tree-item cc-hasChild-item">鲜花速递/花卉仿真/绿植园艺</li>
+                                                                <li class="cc-tree-item cc-hasChild-item">淘商号</li>
+                                                                <li class="cc-tree-item cc-hasChild-item">网店/网络服务/软件</li>
+                                                                <li class="cc-tree-item cc-hasChild-item">房产/租房/新房/二手房/委托服务</li>
+                                                                <li class="cc-tree-item cc-hasChild-item">外卖/外送/订餐(请勿发布)</li>
+                                                                <li class="cc-tree-item cc-hasChild-item">个性定制/设计服务/DIY</li>
+                                                                <li class="cc-tree-item cc-hasChild-item">电影/演出/体育赛事</li>
+                                                                <li class="cc-tree-item cc-hasChild-item">网络店铺代金/优惠券</li>
+                                                                <li class="cc-tree-item cc-hasChild-item cc-selected" aria-selected="true">本地化生活服务</li>
+                                                            </ul>
+                                                        </li>
+                                                        <li class="cc-tree-group  cc-tree-expanded" aria-expanded="true">
+                                                            <div class="cc-tree-gname">汽配摩托</div>
+                                                            <ul class="cc-tree-gcont">
+                                                                <li class="cc-tree-item cc-hasChild-item">汽车/用品/配件/改装</li>
+                                                                <li class="cc-tree-item cc-hasChild-item">新车/二手车</li>
+                                                                <li class="cc-tree-item cc-hasChild-item">摩托车/电动车/装备/配件</li>
+                                                            </ul>
+                                                        </li>
+                                                        <li class="cc-tree-group cc-tree-last cc-tree-expanded" aria-expanded="true">
+                                                            <div class="cc-tree-gname">其他</div>
+                                                            <ul class="cc-tree-gcont">
+                                                                <li class="cc-tree-item cc-hasChild-item">众筹</li>
+                                                                <li class="cc-tree-item cc-hasChild-item">淘女郎</li>
+                                                                <li class="cc-tree-item cc-hasChild-item">其他</li>
+                                                                <li class="cc-tree-item cc-hasChild-item">服务商品</li>
+                                                                <li class="cc-tree-item cc-hasChild-item">无线生活服务</li>
+                                                                <li class="cc-tree-item cc-hasChild-item">阿里通信专属类目</li>
+                                                                <li class="cc-tree-item cc-hasChild-item">零售O2O</li>
+                                                            </ul>
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                            </li>
+                                            <li class="cc-list-item">
+                                                <div class="cc-cbox-filter">
+                                                    <label>输入名称/拼音首字母<i style="display:none;">当前第2级类目，回车选择类目/属性</i></label>
+                                                    <input style="width: 176px;">
+                                                </div>
+                                                <div class="cc-cbox">
+                                                    <ul class="cc-cbox-cont">
+                                                        <li class="cc-cbox-group ">
+                                                            <ul class="cc-cbox-gcont">
+                                                                <li class="cc-cbox-item cc-hasChild-item">3C数码家电服务</li>
+                                                            </ul>
+                                                        </li>
+                                                        <li class="cc-cbox-group">
+                                                            <div class="cc-cbox-gname">b</div>
+                                                            <ul class="cc-cbox-gcont">
+                                                                <li class="cc-cbox-item cc-hasChild-item">保洁/清洗</li>
+                                                                <li class="cc-cbox-item cc-hasChild-item">搬家/搬运服务</li>
+                                                                <li class="cc-cbox-item cc-hasChild-item cc-selected" aria-selected="true">保姆/看护</li>
+                                                                <li class="cc-cbox-item cc-hasChild-item">便民服务</li>
+                                                            </ul>
+                                                        </li>
+                                                        <li class="cc-cbox-group ">
+                                                            <div class="cc-cbox-gname">c</div>
+                                                            <ul class="cc-cbox-gcont">
+                                                                <li class="cc-cbox-item cc-hasChild-item">宠物服务</li>
+                                                            </ul>
+                                                        </li>
+                                                        <li class="cc-cbox-group ">
+                                                            <div class="cc-cbox-gname">d</div>
+                                                            <ul class="cc-cbox-gcont">
+                                                                <li class="cc-cbox-item cc-hasChild-item">电子政务</li>
+                                                                <li class="cc-cbox-item cc-hasChild-item">多媒体服务</li>
+                                                                <li class="cc-cbox-item cc-hasChild-item">代购</li>
+                                                                <li class="cc-cbox-item cc-hasChild-item">钓场</li>
+                                                            </ul>
+                                                        </li>
+                                                        <li class="cc-cbox-group ">
+                                                            <div class="cc-cbox-gname">f</div>
+                                                            <ul class="cc-cbox-gcont">
+                                                                <li class="cc-cbox-item cc-hasChild-item">房屋维修</li>
+                                                                <li class="cc-cbox-item cc-hasChild-item">法律服务</li>
+                                                            </ul>
+                                                        </li>
+                                                        <li class="cc-cbox-group ">
+                                                            <div class="cc-cbox-gname">g</div>
+                                                            <ul class="cc-cbox-gcont">
+                                                                <li class="cc-cbox-item cc-hasChild-item">广告制作/传统印刷/打印/复印</li>
+                                                            </ul>
+                                                        </li>
+                                                        <li class="cc-cbox-group ">
+                                                            <div class="cc-cbox-gname">h</div>
+                                                            <ul class="cc-cbox-gcont">
+                                                                <li class="cc-cbox-item cc-hasChild-item">婚庆服务</li>
+                                                            </ul>
+                                                        </li>
+                                                        <li class="cc-cbox-group ">
+                                                            <div class="cc-cbox-gname">j</div>
+                                                            <ul class="cc-cbox-gcont">
+                                                                <li class="cc-cbox-item cc-hasChild-item">家电安装/维修</li>
+                                                                <li class="cc-cbox-item cc-hasChild-item">家居配送/安装/维修</li>
+                                                                <li class="cc-cbox-item cc-hasChild-item">家居测量/空气检测</li>
+                                                                <li class="cc-cbox-item cc-hasChild-item">家居装修施工/设计</li>
+                                                                <li class="cc-cbox-item cc-hasChild-item">健康服务</li>
+                                                            </ul>
+                                                        </li>
+                                                        <li class="cc-cbox-group ">
+                                                            <div class="cc-cbox-gname">k</div>
+                                                            <ul class="cc-cbox-gcont">
+                                                                <li class="cc-cbox-item cc-hasChild-item">开发/建站服务</li>
+                                                            </ul>
+                                                        </li>
+                                                        <li class="cc-cbox-group ">
+                                                            <div class="cc-cbox-gname">q</div>
+                                                            <ul class="cc-cbox-gcont">
+                                                                <li class="cc-cbox-item cc-hasChild-item">汽车服务</li>
+                                                                <li class="cc-cbox-item cc-hasChild-item">其他</li>
+                                                            </ul>
+                                                        </li>
+                                                        <li class="cc-cbox-group ">
+                                                            <div class="cc-cbox-gname">s</div>
+                                                            <ul class="cc-cbox-gcont">
+                                                                <li class="cc-cbox-item cc-hasChild-item">数码维修</li>
+                                                                <li class="cc-cbox-item cc-hasChild-item">摄影/摄像服务（待废弃）</li>
+                                                                <li class="cc-cbox-item cc-hasChild-item">商务服务</li>
+                                                            </ul>
+                                                        </li>
+                                                        <li class="cc-cbox-group ">
+                                                            <div class="cc-cbox-gname">t</div>
+                                                            <ul class="cc-cbox-gcont">
+                                                                <li class="cc-cbox-item cc-hasChild-item">特色服务</li>、、
+                                                            </ul>
+                                                        </li>
+                                                        <li class="cc-cbox-group ">
+                                                            <div class="cc-cbox-gname">w</div>
+                                                            <ul class="cc-cbox-gcont">
+                                                                <li class="cc-cbox-item cc-hasChild-item">文字类服务</li>
+                                                            </ul>
+                                                        </li>
+                                                        <li class="cc-cbox-group cc-group-last">
+                                                            <div class="cc-cbox-gname">z</div>
+                                                            <ul class="cc-cbox-gcont">
+                                                                <li class="cc-cbox-item cc-hasChild-item">招聘求职</li>
+                                                            </ul>
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                            </li>
+                                            <li class="cc-list-item">
+                                                <div class="cc-cbox-filter">
+                                                    <label>输入名称/拼音首字母<i style="display:none;">当前第3级类目，回车选择类目/属性</i></label>
+                                                    <input style="width: 192px;">
+                                                </div>
+                                                <div class="cc-cbox">
+                                                    <ul class="cc-cbox-cont">
+                                                        <li class="cc-cbox-group ">
+                                                            <div class="cc-cbox-gname">c</div>
+                                                            <ul class="cc-cbox-gcont"><li class="cc-cbox-item">催乳师</li></ul>
+                                                        </li>
+                                                        <li class="cc-cbox-group ">
+                                                            <div class="cc-cbox-gname">g</div>
+                                                            <ul class="cc-cbox-gcont"><li class="cc-cbox-item">管家</li></ul>
+                                                        </li>
+                                                        <li class="cc-cbox-group ">
+                                                            <div class="cc-cbox-gname">k</div>
+                                                            <ul class="cc-cbox-gcont"><li class="cc-cbox-item">看护/陪护</li></ul>
+                                                        </li>
+                                                        <li class="cc-cbox-group ">
+                                                            <div class="cc-cbox-gname">l</div>
+                                                            <ul class="cc-cbox-gcont"><li class="cc-cbox-item">临时看护服务</li></ul>
+                                                        </li>
+                                                        <li class="cc-cbox-group ">
+                                                            <div class="cc-cbox-gname">p</div>
+                                                            <ul class="cc-cbox-gcont"><li class="cc-cbox-item cc-selected" aria-selected="true">普通保姆</li></ul>
+                                                        </li>
+                                                        <li class="cc-cbox-group ">
+                                                            <div class="cc-cbox-gname">s</div>
+                                                            <ul class="cc-cbox-gcont"><li class="cc-cbox-item">涉外保姆</li></ul>
+                                                        </li>
+                                                        <li class="cc-cbox-group ">
+                                                            <div class="cc-cbox-gname">y</div>
+                                                            <ul class="cc-cbox-gcont">
+                                                                <li class="cc-cbox-item">育婴师</li>
+                                                                <li class="cc-cbox-item">月嫂</li>
+                                                            </ul>
+                                                        </li>
+                                                        <li class="cc-cbox-group cc-group-last">
+                                                            <div class="cc-cbox-gname">z</div>
+                                                            <ul class="cc-cbox-gcont"><li class="cc-cbox-item">专业营养师</li></ul>
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                            </li>
+                                        </ol>
+                                    </div>
+                                    <a href=#"><span>下一级</span></a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="cate-path" style="width: 950px">
+                            <dl>
+                                <div class="clearfix">
+                                    <dt>您当前选择的是：</dt>
+                                    <dd>
+                                        <ol class="category-path">
+                                            <li>本地化生活服务</li>
+                                            <li>&nbsp;&gt;&nbsp;保姆/看护</li>
+                                            <li>&nbsp;&gt;&nbsp;普通保姆</li>
+                                        </ol>
+                                        <div class="cate-desc" style="display: none;" title=""></div>
+                                    </dd>
+                                </div>
+                            </dl>
+                            <span id="J_SpanPointer" class="arrow up"></span>
+                        </div>
+                        <div class="row" style="margin-top: 30px;">
+                            <div class="col-md-offset-5">
+                                <input type="checkbox">
+                                <label>我已阅读并接受
+                                    <a href="http://www.taobao.com/go/chn/member/agreement.php?spm=a2145.7268393.0.0.v9BMZ9" target="_blank">《服务使用协议》</a>
+                                </label>
+                            </div>
+                            <div class="col-md-offset-5">
+                                <a ui-sref="index.internalProfession.productManagement.productInformation">
+                                    <button class=" btn btn-sm btn-primary">我已阅读以下规则，现在发布宝贝</button>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,376 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.flf.mapper.ArticleReleaseMapper" >
+  <resultMap id="BaseResultMap" type="com.flf.entity.ArticleRelease" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="house_id" property="houseId" jdbcType="VARCHAR" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="phone_number" property="phoneNumber" jdbcType="VARCHAR" />
+    <result column="Id_card" property="idCard" jdbcType="VARCHAR" />
+    <result column="apply_time" property="applyTime" jdbcType="DATE" />
+    <result column="release_time" property="releaseTime" jdbcType="DATE" />
+    <result column="accept_time" property="acceptTime" jdbcType="DATE" />
+    <result column="items_id" property="itemsId" jdbcType="VARCHAR" />
+    <result column="enterprise_id" property="enterpriseId" jdbcType="VARCHAR" />
+     <result column="customer_type" property="customerType"/>
+     <result column="cust_id" property="custId" jdbcType="VARCHAR" />
+     <result column="person_id" property="personId" jdbcType="VARCHAR" />
+     <result column="operate_date" property="operateDate"  />
+     <result column="release_time_end" property="releaseTimeEnd" jdbcType="TIMESTAMP"/>
+     <result column="house_name" property="houseName"  />
+     <result column="release_code" property="releaseCode"  />
+  </resultMap>
+  
+  <resultMap type="ArticleRelease" id="ItemArticleReleaseResultMap" extends="BaseResultMap">
+  	<association property="person" column="cust_id" javaType="PersonCustNew" select="selectPersonCust"></association>
+  	<collection property="item" column="id" ofType="Items" select="com.flf.mapper.ItemsMapper.getItemsbyArticleReleaseId"></collection>
+  </resultMap>
+  
+  <resultMap id="ItemResultMap" type="com.flf.entity.Items" >
+	    <id column="id" property="id" jdbcType="VARCHAR" />
+	    <result column="number" property="number" jdbcType="VARCHAR" />
+	    <result column="item_name" property="itemName" jdbcType="VARCHAR" />
+	    <result column="amount" property="amount" jdbcType="VARCHAR" />
+	    <result column="note" property="note" jdbcType="VARCHAR" />
+	    <result column="release_id" property="releaseId" jdbcType="VARCHAR" />
+	    <result column="contait_state" property="contaitState"  />
+  </resultMap>
+  
+  <resultMap id="PersonCustNewMap" type="PersonCustNew" >
+	    <result column="cust_id" property="custId" jdbcType="VARCHAR" />
+	    <result column="cust_code" property="custCode" jdbcType="VARCHAR" />
+	    <result column="name" property="name" jdbcType="VARCHAR" />
+	    <result column="sex" property="sex" jdbcType="VARCHAR" />
+	    <result column="native_place" property="nativePlace" jdbcType="VARCHAR" />
+	    <result column="census" property="census" jdbcType="VARCHAR" />
+	    <result column="birthday" property="birthday" jdbcType="DATE" />
+	    <result column="card_type" property="cardType" jdbcType="TINYINT" />
+	    <result column="card_num" property="cardNum" jdbcType="VARCHAR" />
+	    <result column="jiajia_num" property="jiajiaNum" jdbcType="VARCHAR" />
+	    <result column="weixin_num" property="weixinNum" jdbcType="VARCHAR" />
+	    <result column="work_units" property="workUnits" jdbcType="VARCHAR" />
+	    <result column="position" property="position" jdbcType="VARCHAR" />
+	    <result column="marrie_state" property="marrieState" jdbcType="TINYINT" />
+	    <result column="edu_level" property="eduLevel" jdbcType="TINYINT" />
+	    <result column="social" property="social" jdbcType="VARCHAR" />
+	    <result column="landscape" property="landscape" jdbcType="TINYINT" />
+	    <result column="hobby" property="hobby" jdbcType="VARCHAR" />
+	    <result column="cust_level" property="custLevel" jdbcType="VARCHAR" />
+	    <result column="is_enterprise" property="isEnterprise" jdbcType="TINYINT" />
+	    <result column="urgent_contact_person" property="urgentContactPerson" jdbcType="VARCHAR" />
+	    <result column="urgent_contact_phone" property="urgentContactPhone" jdbcType="VARCHAR" />
+	    <result column="upload_image" property="uploadImage" jdbcType="VARCHAR" />
+	    <result column="phone_num" property="phoneNum" jdbcType="VARCHAR" />
+	    <result column="register_phone" property="registerPhone" jdbcType="VARCHAR" />
+  </resultMap>
+  
+  <resultMap id="EnterpriseCustNewMap" type="EnterpriseCustNew" >
+	    <id column="enterprise_id" property="enterpriseId" jdbcType="VARCHAR" />
+	    <result column="enterprise_name" property="enterpriseName" jdbcType="VARCHAR" />
+	    <result column="address" property="address" jdbcType="VARCHAR" />
+	    <result column="representative" property="representative" jdbcType="VARCHAR" />
+	    <result column="office_phone" property="officePhone" jdbcType="VARCHAR" />
+	    <result column="fax_number" property="faxNumber" jdbcType="VARCHAR" />
+	    <result column="enterprise_url" property="enterpriseUrl" jdbcType="VARCHAR" />
+	    <result column="tax_certificate" property="taxCertificate" jdbcType="VARCHAR" />
+	    <result column="enterprise_property" property="enterpriseProperty" jdbcType="VARCHAR" />
+	    <result column="trading_date" property="tradingDate" jdbcType="DATE" />
+	    <result column="trading_number" property="tradingNumber" jdbcType="VARCHAR" />
+	    <result column="tax_number" property="taxNumber" jdbcType="VARCHAR" />
+	    <result column="tax_date" property="taxDate" jdbcType="DATE" />
+	    <result column="manage_type" property="manageType" jdbcType="VARCHAR" />
+	    <result column="unit_number" property="unitNumber" jdbcType="VARCHAR" />
+	    <result column="e_mail" property="eMail" jdbcType="VARCHAR" />
+	    <result column="business_address" property="businessAddress" jdbcType="VARCHAR" />
+	    <result column="principal" property="principal" jdbcType="VARCHAR" />
+	    <result column="emergency_contact" property="emergencyContact" jdbcType="VARCHAR" />
+  </resultMap>
+  
+  <resultMap id="ArticleReleaseResultMap" type="ArticleRelease" extends="BaseResultMap">
+   <association property="person" select="selectPersonCust" column="cust_id" javaType="PersonCustNew">
+	    <result column="cust_id" property="custId" jdbcType="VARCHAR" />
+	    <result column="cust_code" property="custCode" jdbcType="VARCHAR" />
+	    <result column="name" property="name" jdbcType="VARCHAR" />
+	    <result column="sex" property="sex" jdbcType="VARCHAR" />
+	    <result column="native_place" property="nativePlace" jdbcType="VARCHAR" />
+	    <result column="census" property="census" jdbcType="VARCHAR" />
+	    <result column="birthday" property="birthday" jdbcType="DATE" />
+	    <result column="card_type" property="cardType" jdbcType="TINYINT" />
+	    <result column="card_num" property="cardNum" jdbcType="VARCHAR" />
+	    <result column="jiajia_num" property="jiajiaNum" jdbcType="VARCHAR" />
+	    <result column="weixin_num" property="weixinNum" jdbcType="VARCHAR" />
+	    <result column="work_units" property="workUnits" jdbcType="VARCHAR" />
+	    <result column="position" property="position" jdbcType="VARCHAR" />
+	    <result column="marrie_state" property="marrieState" jdbcType="TINYINT" />
+	    <result column="edu_level" property="eduLevel" jdbcType="TINYINT" />
+	    <result column="social" property="social" jdbcType="VARCHAR" />
+	    <result column="landscape" property="landscape" jdbcType="TINYINT" />
+	    <result column="hobby" property="hobby" jdbcType="VARCHAR" />
+	    <result column="cust_level" property="custLevel" jdbcType="VARCHAR" />
+	    <result column="is_enterprise" property="isEnterprise" jdbcType="TINYINT" />
+	    <result column="urgent_contact_person" property="urgentContactPerson" jdbcType="VARCHAR" />
+	    <result column="urgent_contact_phone" property="urgentContactPhone" jdbcType="VARCHAR" />
+	    <result column="upload_image" property="uploadImage" jdbcType="VARCHAR" />
+	    <result column="phone_num" property="phoneNum" jdbcType="VARCHAR" />
+    </association>
+    <association property="personCust" select="selectPersonCust" column="person_id" javaType="PersonCustNew">
+	    <result column="cust_id" property="custId" jdbcType="VARCHAR" />
+	    <result column="cust_code" property="custCode" jdbcType="VARCHAR" />
+	    <result column="name" property="name" jdbcType="VARCHAR" />
+	    <result column="sex" property="sex" jdbcType="VARCHAR" />
+	    <result column="native_place" property="nativePlace" jdbcType="VARCHAR" />
+	    <result column="census" property="census" jdbcType="VARCHAR" />
+	    <result column="birthday" property="birthday" jdbcType="DATE" />
+	    <result column="card_type" property="cardType" jdbcType="TINYINT" />
+	    <result column="card_num" property="cardNum" jdbcType="VARCHAR" />
+	    <result column="jiajia_num" property="jiajiaNum" jdbcType="VARCHAR" />
+	    <result column="weixin_num" property="weixinNum" jdbcType="VARCHAR" />
+	    <result column="work_units" property="workUnits" jdbcType="VARCHAR" />
+	    <result column="position" property="position" jdbcType="VARCHAR" />
+	    <result column="marrie_state" property="marrieState" jdbcType="TINYINT" />
+	    <result column="edu_level" property="eduLevel" jdbcType="TINYINT" />
+	    <result column="social" property="social" jdbcType="VARCHAR" />
+	    <result column="landscape" property="landscape" jdbcType="TINYINT" />
+	    <result column="hobby" property="hobby" jdbcType="VARCHAR" />
+	    <result column="cust_level" property="custLevel" jdbcType="VARCHAR" />
+	    <result column="is_enterprise" property="isEnterprise" jdbcType="TINYINT" />
+	    <result column="urgent_contact_person" property="urgentContactPerson" jdbcType="VARCHAR" />
+	    <result column="urgent_contact_phone" property="urgentContactPhone" jdbcType="VARCHAR" />
+	    <result column="upload_image" property="uploadImage" jdbcType="VARCHAR" />
+	    <result column="phone_num" property="phoneNum" jdbcType="VARCHAR" />
+    </association>
+     <association property="enterpriseCustNew" select="selectEnterpriseCustNew" column="enterprise_id" javaType="EnterpriseCustNew">
+	    <id column="enterprise_id" property="enterpriseId" jdbcType="VARCHAR" />
+	    <result column="enterprise_name" property="enterpriseName" jdbcType="VARCHAR" />
+	    <result column="address" property="address" jdbcType="VARCHAR" />
+	    <result column="representative" property="representative" jdbcType="VARCHAR" />
+	    <result column="office_phone" property="officePhone" jdbcType="VARCHAR" />
+	    <result column="fax_number" property="faxNumber" jdbcType="VARCHAR" />
+	    <result column="enterprise_url" property="enterpriseUrl" jdbcType="VARCHAR" />
+	    <result column="tax_certificate" property="taxCertificate" jdbcType="VARCHAR" />
+	    <result column="enterprise_property" property="enterpriseProperty" jdbcType="VARCHAR" />
+	    <result column="trading_date" property="tradingDate" jdbcType="DATE" />
+	    <result column="trading_number" property="tradingNumber" jdbcType="VARCHAR" />
+	    <result column="tax_number" property="taxNumber" jdbcType="VARCHAR" />
+	    <result column="tax_date" property="taxDate" jdbcType="DATE" />
+	    <result column="manage_type" property="manageType" jdbcType="VARCHAR" />
+	    <result column="unit_number" property="unitNumber" jdbcType="VARCHAR" />
+	    <result column="e_mail" property="eMail" jdbcType="VARCHAR" />
+	    <result column="business_address" property="businessAddress" jdbcType="VARCHAR" />
+	    <result column="principal" property="principal" jdbcType="VARCHAR" />
+	    <result column="emergency_contact" property="emergencyContact" jdbcType="VARCHAR" />
+    </association>
+  	<collection property="item" column="id" ofType="Items" select="selectItems">
+	  	<id column="id" property="id" jdbcType="VARCHAR" />
+	    <result column="number" property="number" jdbcType="VARCHAR" />
+	    <result column="item_name" property="itemName" jdbcType="VARCHAR" />
+	    <result column="amount" property="amount" jdbcType="VARCHAR" />
+	    <result column="note" property="note" jdbcType="VARCHAR" />
+	    <result column="release_id" property="releaseId" jdbcType="VARCHAR" />
+	    <result column="contait_state" property="contaitState"  />
+	 </collection>
+  </resultMap>
+  
+  <resultMap type="com.flf.entity.ArticleRelease" id="ReleaseItemMap" extends="BaseResultMap">
+  	<collection property="releaseItem" ofType="com.flf.entity.Items"
+			column="id"
+			select="com.flf.mapper.ItemsMapper.getReleaseItemByArticleReleaseId" />
+	<collection property="notReleaseItem" ofType="com.flf.entity.Items"
+			column="id"
+			select="com.flf.mapper.ItemsMapper.getNotReleaseItemByArticleReleaseId" />
+  </resultMap>
+<!--   Created by Administrator on 2015/6/5. 
+ 		 		author:尹磊
+ 				修改时间：2015/6/5  修改人：尹磊 
+ 				修改时间：2015/6/19  修改人： 肖聪
+ 				-->
+ 				
+ 				
+ 			<!-- 分页查询所有放行条信息 -->
+  <select id="selectItems" parameterType="String" resultMap="ItemResultMap">
+      select * from t_items where id=#{0}
+  </select>
+  <select id="selectPersonCust" parameterType="String" resultMap="PersonCustNewMap">
+      select * from tc_person_cust where cust_id=#{0}
+  </select>
+  <select id="selectEnterpriseCustNew" parameterType="String" resultMap="EnterpriseCustNewMap">
+      select * from tc_enterprise_cust where enterprise_id=#{0}
+  </select>
+<!--   <select id="listPageArticleRelease" parameterType="ArticleRelease" resultMap="ArticleReleaseResultMap">
+      select * from t_article_release
+  </select>
+   -->
+  <!-- 查询所有放行条信息 -->
+  <select id="listAllArticleRelease"  resultMap="ArticleReleaseResultMap" parameterType="Search">
+      select * from t_article_release a
+	  LEFT JOIN  tc_person_cust b on a.cust_id=b.cust_id
+	  LEFT JOIN  tc_enterprise_cust c on a.enterprise_id=c.enterprise_id
+      where 1=1
+      <if test="staffName!='' and staffName!=null">
+  			and b.name like CONCAT('%',#{staffName},'%')
+  		</if>
+  		<if test="idNum!='' and idNum!=null"	>
+  			and b.card_num like CONCAT('%',#{idNum},'%')
+  		</if>
+  		<!--<if test="authorizedName!='' and authorizedName!=null">
+  			and a.phone_num like CONCAT('%',#{phone},'%')
+  		</if>
+  		  -->
+  		<if test="carNum!='' and carNum!=null">
+  			and c.enterprise_id like CONCAT('%',#{carNum},'%')
+  		</if>
+  		<if test="productName!='' and productName!=null">
+  			and c.enterprise_name like CONCAT('%',#{carportNum},'%')
+  		</if>
+  		<!-- <if test="custType!='' and custType!=null">
+  			and a.customer_type like CONCAT('%',#{custType},'%')
+  		</if> -->
+  </select>
+      
+   <select id="listAllArticleReleaseByPersonId"  resultMap="ItemArticleReleaseResultMap" parameterType="String">
+      select * from t_article_release where cust_id=#{0}
+  </select>
+  
+  <select id="listPageArticleReleaseByPersonId"  resultMap="ItemArticleReleaseResultMap" parameterType="ArticleRelease">
+      select * from t_article_release where 1=1 
+     <if test="custId != ''">
+      	and cust_id = #{custId}
+      </if>
+      Order By release_time Desc,release_time_end Desc
+  </select>
+  
+  <!-- 根据放行条id查询放行条信息 -->
+  <select id="getArticleReleasebyId" parameterType="String" resultMap="ArticleReleaseResultMap">
+      select * from t_article_release where id=#{0}
+  </select>
+  
+  <!-- 删除放行条信息 -->
+  <delete id="deleteArticleRelease" parameterType="String" >
+      delete from t_article_release where id=#{0}
+  </delete>
+  
+  <!-- 新增放行条信息 -->
+  <insert id="insertArticleRelease" parameterType="ArticleRelease" >
+    insert into t_article_release (id, house_id, name, 
+      phone_number, Id_card, apply_time, 
+      release_time, accept_time, items_id,cust_id,person_id,enterprise_id,operate_date,release_time_end,house_name,release_code,
+      customer_type)
+    values (#{id,jdbcType=VARCHAR}, #{houseId,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, 
+      #{phoneNumber,jdbcType=VARCHAR}, #{idCard,jdbcType=VARCHAR}, #{applyTime,jdbcType=DATE}, 
+      #{releaseTime,jdbcType=DATE}, #{acceptTime,jdbcType=DATE}, #{itemsId,jdbcType=VARCHAR},#{custId,jdbcType=VARCHAR},
+      #{personId,jdbcType=VARCHAR}, #{enterpriseId,jdbcType=VARCHAR},now(),#{releaseTimeEnd,jdbcType=TIMESTAMP},
+      #{houseName,jdbcType=VARCHAR},#{releaseCode,jdbcType=VARCHAR},#{customerType}
+      )
+  </insert>
+  
+  
+
+  <!-- 修改放行条信息 -->
+  <update id="updateArticleRelease" parameterType="ArticleRelease" >
+    update t_article_release
+    <set >
+      <if test="houseId != null" >
+        house_id = #{houseId,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null" >
+        name = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="phoneNumber != null" >
+        phone_number = #{phoneNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="idCard != null" >
+        Id_card = #{idCard,jdbcType=VARCHAR},
+      </if>
+      <if test="applyTime != null" >
+        apply_time = #{applyTime,jdbcType=DATE},
+      </if>
+      <if test="releaseTime != null" >
+        release_time = #{releaseTime,jdbcType=DATE},
+      </if>
+      <if test="acceptTime != null" >
+        accept_time = #{acceptTime,jdbcType=DATE},
+      </if>
+      <if test="itemsId != null" >
+        items_id = #{itemsId,jdbcType=VARCHAR},
+      </if> 
+      <if test="releaseTimeEnd != null" >
+        release_time_end = #{releaseTimeEnd,jdbcType=TIMESTAMP},
+      </if> 
+      operate_date=now()
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  
+  <!-- 根据条件分页查询  -->
+   <select id="listPageArticleReleaseByContion"  resultMap="ItemArticleReleaseResultMap" parameterType="ArticleRelease">
+      select ar.* 
+      from t_article_release ar
+      inner join tc_person_cust pc on ar.cust_id=pc.cust_id
+      where 1=1 
+      <if test="custName != null" >
+        and pc.name like CONCAT('%',#{custName},'%')
+      </if>
+      <if test="phone != null" >
+        and pc.phoneNum = #{phone,jdbcType=VARCHAR}
+      </if> 
+      <if test="cardNumber != null" >
+        pc.card_num = #{cardNumber,jdbcType=VARCHAR}
+      </if> 
+      <if test="cardType!='' and cardType!=null">
+  		and pc.card_type=#{cardType,jdbcType=VARCHAR}
+  	</if>
+  </select>
+  
+  <!-- 根据条件分页查询
+    <select id="listPageArticleReleaseByCondition"  resultMap="ArticleReleaseResultMap" parameterType="Search">
+       select a.*,b.register_phone from t_article_release a
+	  LEFT JOIN  tc_person_cust b on a.cust_id=b.cust_id
+	  LEFT JOIN  tc_enterprise_cust c on a.enterprise_id=c.enterprise_id
+      where 1=1
+      <if test="staffName!='' and staffName!=null">
+  			and b.name like CONCAT('%',#{staffName},'%')
+  		</if>
+  		<if test="idNum!='' and idNum!=null"	>
+  			and b.card_num like CONCAT('%',#{idNum},'%')
+  		</if>
+  		<if test="carNum!='' and carNum!=null">
+  			and c.enterprise_id like CONCAT('%',#{carNum},'%')
+  		</if>
+  		<if test="productName!='' and productName!=null">
+  			and c.enterprise_name like CONCAT('%',#{carportNum},'%')
+  		</if>
+  </select>   -->
+  <select id="listPageArticleReleaseByCondition"  resultMap="ArticleReleaseResultMap" parameterType="Search">
+       select a.*,b.register_phone from t_article_release a
+	  LEFT JOIN  tc_person_cust b on a.cust_id=b.cust_id
+	  LEFT JOIN  tc_enterprise_cust c on a.enterprise_id=c.enterprise_id
+      where 1=1
+      <if test="staffName!='' and staffName!=null">
+  			and b.name like CONCAT('%',#{staffName},'%')
+  		</if>
+  		<if test="idNum!='' and idNum!=null"	>
+  			and b.card_num like CONCAT('%',#{idNum},'%')
+  		</if>
+  		<if test="carNum!='' and carNum!=null">
+  			and a.release_code like CONCAT('%',#{carNum},'%')
+  		</if>
+  		<if test="productName!='' and productName!=null">
+  			and c.enterprise_name like CONCAT('%',#{carportNum},'%')
+  		</if>
+  </select> 
+
+	<!-- 根据客户id集合查询放行条记录 -->
+	 <select id="getArticleReleaseByCustIdList" resultMap="ReleaseItemMap">
+	 	select * from t_article_release where cust_id in
+	 	<foreach collection="list" open="(" close=")" separator=","
+			item="item">
+			#{item}
+		</foreach>
+		order by apply_time desc
+	 </select>
+	 
+	 <!-- 根据buildingStructureId查询放行条记录 -->
+	 <select id="getArticleReleaseByBuildingStructure" parameterType="java.lang.String" resultMap="ReleaseItemMap">
+	 	select * from t_article_release where house_id=#{0} order by apply_time desc
+	 </select>
+</mapper>

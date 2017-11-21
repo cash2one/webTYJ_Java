@@ -1,0 +1,886 @@
+package com.flf.service.impl;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.UUID;
+
+import org.springframework.beans.factory.annotation.Autowired;
+
+import com.flf.entity.AcceptanceOrders;
+import com.flf.entity.Annex;
+import com.flf.entity.CompensateObject;
+import com.flf.entity.ExecutionTimeRecords;
+import com.flf.entity.FrequencyRecord;
+import com.flf.entity.HandleMechanism;
+import com.flf.entity.ImportantEventType;
+import com.flf.entity.InspectionConfiguration;
+import com.flf.entity.InspectionOrder;
+import com.flf.entity.InspectionRecords;
+import com.flf.entity.MeterReadingData;
+import com.flf.entity.PageRestful;
+import com.flf.entity.ServiceObjectRecords;
+import com.flf.entity.ServiceRequest;
+import com.flf.entity.ServiceRequestJournal;
+import com.flf.entity.Tasks;
+import com.flf.entity.TasksJournal;
+import com.flf.entity.WaterMeterOrderRecords;
+import com.flf.entity.WaterMeterOrders;
+import com.flf.mapper.AcceptanceOrdersMapper;
+import com.flf.mapper.AnnexMapper;
+import com.flf.mapper.CompensateObjectMapper;
+import com.flf.mapper.ExecutionTimeRecordsMapper;
+import com.flf.mapper.FrequencyRecordMapper;
+import com.flf.mapper.ImportantEventTypeMapper;
+import com.flf.mapper.InspectionConfigurationMapper;
+import com.flf.mapper.InspectionOrderMapper;
+import com.flf.mapper.InspectionRecordsMapper;
+import com.flf.mapper.MeterReadingDataMapper;
+import com.flf.mapper.OwnerRenovationApplyMapper;
+import com.flf.mapper.ServiceObjectRecordsMapper;
+import com.flf.mapper.ServiceRequestJournalMapper;
+import com.flf.mapper.ServiceRequestMapper;
+import com.flf.mapper.TasksJournalMapper;
+import com.flf.mapper.TasksMapper;
+import com.flf.mapper.WaterMeterOrderRecordsMapper;
+import com.flf.mapper.WaterMeterOrdersMapper;
+import com.flf.request.Info;
+import com.flf.service.ServiceRequestService;
+import com.flf.util.Tools;
+
+import net.sf.json.JSONObject;
+/**
+ * 服务请求表
+ * 创建人：邵政
+ * 创建时间：2015/6/23
+ */
+public class ServiceRequestServiceImpl implements ServiceRequestService {
+	private ServiceRequestMapper serviceRequestMapper;
+	private TasksMapper tasksMapper;
+	private ServiceObjectRecordsMapper serviceObjectRecordsMapper;
+	private FrequencyRecordMapper frequencyRecordMapper;
+	private AnnexMapper annexMapper;
+	private ServiceRequestJournalMapper serviceRequestJournalMapper;
+	private CompensateObjectMapper compensateObjectMapper;
+	private ImportantEventTypeMapper importantEventTypeMapper;
+	private OwnerRenovationApplyMapper ownerRenovationApplyMapper;
+	private InspectionConfigurationMapper inspectionConfigurationMapper;
+	private AcceptanceOrdersMapper acceptanceOrdersMapper;
+	private WaterMeterOrdersMapper waterMeterOrdersMapper;
+	private TasksJournalMapper tasksJournalMapper;
+	private WaterMeterOrderRecordsMapper waterMeterOrderRecordsMapper;
+	private MeterReadingDataMapper meterReadingDataMapper;
+	@Autowired
+	private InspectionOrderMapper inspectionOrderMapper;
+	@Autowired
+	private InspectionRecordsMapper inspectionRecordsMapper;
+	@Autowired
+	private ExecutionTimeRecordsMapper executionTimeRecordsMapper;
+	
+	
+	public InspectionRecordsMapper getInspectionRecordsMapper() {
+		return inspectionRecordsMapper;
+	}
+
+	public void setInspectionRecordsMapper(InspectionRecordsMapper inspectionRecordsMapper) {
+		this.inspectionRecordsMapper = inspectionRecordsMapper;
+	}
+
+	public InspectionOrderMapper getInspectionOrderMapper() {
+		return inspectionOrderMapper;
+	}
+
+	public void setInspectionOrderMapper(InspectionOrderMapper inspectionOrderMapper) {
+		this.inspectionOrderMapper = inspectionOrderMapper;
+	}
+
+	public MeterReadingDataMapper getMeterReadingDataMapper() {
+		return meterReadingDataMapper;
+	}
+
+	public void setMeterReadingDataMapper(MeterReadingDataMapper meterReadingDataMapper) {
+		this.meterReadingDataMapper = meterReadingDataMapper;
+	}
+
+	public WaterMeterOrderRecordsMapper getWaterMeterOrderRecordsMapper() {
+		return waterMeterOrderRecordsMapper;
+	}
+
+	public void setWaterMeterOrderRecordsMapper(WaterMeterOrderRecordsMapper waterMeterOrderRecordsMapper) {
+		this.waterMeterOrderRecordsMapper = waterMeterOrderRecordsMapper;
+	}
+
+	public TasksJournalMapper getTasksJournalMapper() {
+		return tasksJournalMapper;
+	}
+
+	public void setTasksJournalMapper(TasksJournalMapper tasksJournalMapper) {
+		this.tasksJournalMapper = tasksJournalMapper;
+	}
+
+	public WaterMeterOrdersMapper getWaterMeterOrdersMapper() {
+		return waterMeterOrdersMapper;
+	}
+
+	public void setWaterMeterOrdersMapper(WaterMeterOrdersMapper waterMeterOrdersMapper) {
+		this.waterMeterOrdersMapper = waterMeterOrdersMapper;
+	}
+
+	public AcceptanceOrdersMapper getAcceptanceOrdersMapper() {
+		return acceptanceOrdersMapper;
+	}
+
+	public void setAcceptanceOrdersMapper(AcceptanceOrdersMapper acceptanceOrdersMapper) {
+		this.acceptanceOrdersMapper = acceptanceOrdersMapper;
+	}
+
+	public InspectionConfigurationMapper getInspectionConfigurationMapper() {
+		return inspectionConfigurationMapper;
+	}
+
+	public void setInspectionConfigurationMapper(
+			InspectionConfigurationMapper inspectionConfigurationMapper) {
+		this.inspectionConfigurationMapper = inspectionConfigurationMapper;
+	}
+
+	public OwnerRenovationApplyMapper getOwnerRenovationApplyMapper() {
+		return ownerRenovationApplyMapper;
+	}
+
+	public void setOwnerRenovationApplyMapper(
+			OwnerRenovationApplyMapper ownerRenovationApplyMapper) {
+		this.ownerRenovationApplyMapper = ownerRenovationApplyMapper;
+	}
+
+	public ImportantEventTypeMapper getImportantEventTypeMapper() {
+		return importantEventTypeMapper;
+	}
+
+	public void setImportantEventTypeMapper(
+			ImportantEventTypeMapper importantEventTypeMapper) {
+		this.importantEventTypeMapper = importantEventTypeMapper;
+	}
+
+	public CompensateObjectMapper getCompensateObjectMapper() {
+		return compensateObjectMapper;
+	}
+
+	public void setCompensateObjectMapper(
+			CompensateObjectMapper compensateObjectMapper) {
+		this.compensateObjectMapper = compensateObjectMapper;
+	}
+
+	public ServiceRequestJournalMapper getServiceRequestJournalMapper() {
+		return serviceRequestJournalMapper;
+	}
+
+	public void setServiceRequestJournalMapper(
+			ServiceRequestJournalMapper serviceRequestJournalMapper) {
+		this.serviceRequestJournalMapper = serviceRequestJournalMapper;
+	}
+
+	public AnnexMapper getAnnexMapper() {
+		return annexMapper;
+	}
+
+	public void setAnnexMapper(AnnexMapper annexMapper) {
+		this.annexMapper = annexMapper;
+	}
+
+	public FrequencyRecordMapper getFrequencyRecordMapper() {
+		return frequencyRecordMapper;
+	}
+
+	public void setFrequencyRecordMapper(FrequencyRecordMapper frequencyRecordMapper) {
+		this.frequencyRecordMapper = frequencyRecordMapper;
+	}
+
+	public ServiceObjectRecordsMapper getServiceObjectRecordsMapper() {
+		return serviceObjectRecordsMapper;
+	}
+
+	public void setServiceObjectRecordsMapper(
+			ServiceObjectRecordsMapper serviceObjectRecordsMapper) {
+		this.serviceObjectRecordsMapper = serviceObjectRecordsMapper;
+	}
+
+	public TasksMapper getTasksMapper() {
+		return tasksMapper;
+	}
+
+	public void setTasksMapper(TasksMapper tasksMapper) {
+		this.tasksMapper = tasksMapper;
+	}
+
+	public ServiceRequestMapper getServiceRequestMapper() {
+		return serviceRequestMapper;
+	}
+
+	public void setServiceRequestMapper(ServiceRequestMapper serviceRequestMapper) {
+		this.serviceRequestMapper = serviceRequestMapper;
+	}
+
+	@Override
+	public List<ServiceRequest> listPageServiceRequest(
+			ServiceRequest serviceRequest) {
+		// TODO Auto-generated method stub
+		return serviceRequestMapper.listPageServiceRequest(serviceRequest);
+	}
+
+	@Override
+	public List<ServiceRequest> listAllServiceRequest() {
+		// TODO Auto-generated method stub
+		return serviceRequestMapper.listAllServiceRequest();
+	}
+
+	@Override
+	public ServiceRequest getServiceRequestbyId(String serverId) {
+		// TODO Auto-generated method stub
+		return serviceRequestMapper.getServiceRequestbyId(serverId);
+	}
+
+	@Override
+	public void insertServiceRequest(ServiceRequest serviceRequest ,Tasks tasks) {
+		// TODO Auto-generated method stub
+		if(tasks != null){
+			tasksMapper.insertTasks(tasks);
+			serviceRequestMapper.updateServiceRequest(serviceRequest);
+		}
+		
+		serviceRequestMapper.updateServiceRequest(serviceRequest);
+	}
+
+	@Override
+	public void updateServiceRequest(ServiceRequest serviceRequest) {
+		// TODO Auto-generated method stub
+		serviceRequestMapper.updateServiceRequest(serviceRequest);
+	}
+
+	@Override
+	public void deleteServiceRequest(String serverId) {
+		// TODO Auto-generated method stub
+		serviceRequestMapper.deleteServiceRequest(serverId);
+	}
+
+	@Override
+	public List<ServiceRequest> getServiceRequestbyCustomerId(String customerId) {
+		// TODO Auto-generated method stub
+		return serviceRequestMapper.getServiceRequestbyCustomerId(customerId);
+	}
+
+	@Override
+	public void closeServiceRequest(String serviceRequestId) {
+		// TODO Auto-generated method stub
+		serviceRequestMapper.closeServiceRequest(serviceRequestId);
+	}
+
+	@Override
+	public void insertServiceRequestRestful(ServiceRequest serviceRequest) {
+
+		if(serviceRequest != null){
+			String uuid = UUID.randomUUID().toString();
+			String date = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date());
+			//Tasks tasks = serviceRequest.getTasks();
+			List<Tasks> lsitTasts = new ArrayList<>();
+			lsitTasts = serviceRequest.getListTasks();
+			serviceRequest.setRequestTime(date);
+			serviceRequest.setServiceRequestId(uuid);
+			
+			if(lsitTasts==null || lsitTasts.size() == 0){
+				serviceRequest.setServiceRequestState(1);//启用状态
+				serviceRequestMapper.insertServiceRequestUUID(serviceRequest);
+			}else{
+				serviceRequest.setServiceRequestState(2);//处理状态
+				String customerIdForTasks = serviceRequest.getCustomerId();//获取索赔人Id
+				if(serviceRequestMapper.insertServiceRequestUUID(serviceRequest)>0){
+					for (Tasks tasks : lsitTasts) {
+						String tasksUUID = UUID.randomUUID().toString();
+						String waterOrderUUID = UUID.randomUUID().toString();
+						List<Annex> annexList = tasks.getAnnexs();
+						Integer type = tasks.getTaskType();
+						
+						tasks.setTaskId(tasksUUID);
+						tasks.setCreateTime(date);
+						tasks.setServerId(uuid);
+						tasks.setTaskState(4);//未接受状态
+						tasks.setCustomerId(customerIdForTasks);
+						int result = tasksMapper.insertTasksUUID(tasks);
+						
+						//水表建筑关联
+						if(type==16){
+							if(tasks.getAddressIds()!=null&&tasks.getAddressIds().size()!=0){
+								//水表工单
+								WaterMeterOrders waterMeterOrders = new WaterMeterOrders();
+								waterMeterOrders.setOrderId(waterOrderUUID);
+								waterMeterOrders.setOrderType(9);
+								waterMeterOrders.setOrderState(1);
+								waterMeterOrders.setTaskId(tasksUUID);
+								waterMeterOrders.setServiceRequestId(uuid);
+								if(serviceRequest.getSource()!=null&&serviceRequest.getSource().equals(1)){
+									waterMeterOrders.setState("3");
+								}
+								if(serviceRequest.getWriterId()!=null){
+									waterMeterOrders.setOperatorId(serviceRequest.getWriterId());
+								}
+								waterMeterOrders.setRemarks("查抄水电");
+								int tmp = waterMeterOrdersMapper.insertWaterMeterOrders(waterMeterOrders);
+								if(tmp>0){
+									TasksJournal journal = new TasksJournal();
+									journal.setTaskId(waterMeterOrders.getTaskId());
+									journal.setCreOrderId(waterOrderUUID);
+									journal.setCreOrderType(waterMeterOrders.getOrderType());
+									journal.setChangeOrderState(waterMeterOrders.getOrderState());
+									if(waterMeterOrders.getOperatorId()!=null){
+										journal.setOperatorId(waterMeterOrders.getOperatorId());
+									}
+									journal.setRemarks(waterMeterOrders.getRemarks());
+									journal.setOperationTime(date);
+									tasksJournalMapper.insertTasksJournal(journal);
+									
+									for(int i=0;i<tasks.getAddressIds().size();i++){
+										WaterMeterOrderRecords waterMeterOrderRecords = new WaterMeterOrderRecords();
+										waterMeterOrderRecords.setRecordId(UUID.randomUUID().toString());
+										waterMeterOrderRecords.setOrderId(waterOrderUUID);
+										waterMeterOrderRecords.setBuildingStructureId(tasks.getAddressIds().get(i));
+										MeterReadingData meterReadingData = new MeterReadingData();
+										meterReadingData = meterReadingDataMapper.lastMeterReadings(tasks.getAddressIds().get(i));
+										if(meterReadingData!=null){
+											if(meterReadingData.getLastMonthReading()!=null){
+												waterMeterOrderRecords.setWaterLastReading(meterReadingData.getLastMonthReading());
+											}else{
+												waterMeterOrderRecords.setWaterLastReading(0D);
+											}
+											if(meterReadingData.getReading()!=null){
+												waterMeterOrderRecords.setWaterMeterReading(meterReadingData.getReading());
+											}
+										}
+										waterMeterOrderRecordsMapper.insertWaterMeterOrderRecords(waterMeterOrderRecords);
+									}
+								}
+							}
+						}
+						
+						//赔偿给业主
+						if(result>0 && type != null && type == 9){
+							CompensateObject copens = tasks.getCompensateObject();
+							if(copens!=null){
+								copens.setTaskId(tasksUUID);
+								compensateObjectMapper.insertCompensateObject(copens);
+							}
+						}
+						
+						//添加附件
+						if(annexList != null && annexList.size()>0){
+							for(Annex annex :annexList){
+								annex.setRelationId(uuid);
+								annex.setAnnexTime(date);
+								annexMapper.insertAnnex(annex);
+							}
+						}
+						
+						ServiceRequestJournal journal = new ServiceRequestJournal();
+						journal.setServiceRequestId(uuid);
+	//					journal.setOperatorId();	//操作人id即登录人id
+						journal.setOperationTime(new Date());
+						journal.setCreTaskType(tasks.getTaskType());
+						journal.setCreTaskId(tasksUUID);;
+						journal.setChangeState(2);
+						journal.setRemarks(serviceRequest.getRemarks());
+						serviceRequestJournalMapper.insertServiceRequestJournal(journal);
+					}
+				}
+			}
+		}
+	}
+
+	@Override
+	public void insertDeptServiceRequest(ServiceRequest serviceRequest) {
+		// TODO Auto-generated method stub
+		
+		String uuid = UUID.randomUUID().toString();
+		String date = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date());
+		
+		if(serviceRequest!= null && serviceRequest.getTasks() != null && serviceRequest.getServiceObjectRecords()!=null){
+			
+			Tasks tasks = serviceRequest.getTasks();
+			List<ServiceObjectRecords> list = serviceRequest.getServiceObjectRecords();
+			FrequencyRecord fr = serviceRequest.getFrequencyRecord();
+			
+			serviceRequest.setServiceRequestId(uuid);
+			serviceRequest.setRequestTime(date);
+			tasks.setServerId(uuid);
+			tasks.setCreateTime(date);
+			fr.setRelationId(uuid);
+			
+			if(list.size()>0 && serviceRequestMapper.insertServiceRequestUUID(serviceRequest)>0 
+					&& tasksMapper.insertTasks(tasks)>0 && frequencyRecordMapper.insertFrequencyRecord(fr)>0){
+				
+				for(ServiceObjectRecords sor : list){
+					sor.setServiceRequestId(uuid);
+					serviceObjectRecordsMapper.insertServiceObjectRecords(sor);
+				}
+			}
+		}
+		return;
+	}
+	
+	@Override
+	public int updateFeedback(ServiceRequest serviceRequest){
+		//添加回访信息
+		serviceRequest.setServiceRequestState(3);
+		serviceRequestMapper.updateFeedback(serviceRequest);
+		//修改回访工单
+		for (AcceptanceOrders aOrders : serviceRequest.getAcceptanceOrdersList()) {
+			acceptanceOrdersMapper.updateAcceptanceOrdersOnSatisfaction(aOrders);
+		}
+		return 1;
+	}
+
+	@Override
+	public List<ServiceRequest> getServiceRequestbyQCType(String QCType) {
+		// TODO Auto-generated method stub
+		List<ServiceRequest> newList = new ArrayList<ServiceRequest>();
+		List<ServiceRequest> serviceList = serviceRequestMapper.getServiceRequestbyQCType(QCType);
+		
+		if(serviceList != null && serviceList.size()>0){
+			for(ServiceRequest sr : serviceList){
+				FrequencyRecord fr = frequencyRecordMapper.getFrequencyRecordbyServieId(sr.getServiceRequestId());
+				sr.setFrequencyRecord(fr);
+				newList.add(sr);
+			}
+			return newList;
+		}
+		return null;
+	}
+
+	@Override
+	public String getCount(String customerId) {
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		Calendar c = Calendar.getInstance();   
+        c.add(Calendar.MONTH, 0);
+        c.set(Calendar.DAY_OF_MONTH,1);//设置为1号,当前日期既为本月第一天
+        String date = sdf.format(c.getTime());
+        
+		Map<String,Integer> data = new HashMap<String, Integer>();
+		List<ServiceRequest> list0 = serviceRequestMapper.getServiceRequestbyCustomerIdAndDate(customerId, date);
+		List<ServiceRequest> list1 = serviceRequestMapper.getServiceRequestbyState(customerId, "1",date);
+		List<ServiceRequest> list2 = serviceRequestMapper.getServiceRequestbyState(customerId, "2",date);
+		List<ServiceRequest> list3 = serviceRequestMapper.getServiceRequestbyState(customerId, "3",date);
+		
+		data.put("allCount", list0 == null? 0:list0.size());//服务请求个数
+		data.put("count1", list1 == null? 0:list1.size());//未处理
+		data.put("count2", list2 == null? 0:list2.size());//处理中
+		data.put("count3", list3 == null? 0:list3.size());//已处理
+		return JSONObject.fromObject(data).toString();
+	}
+
+	@Override
+	public Info changeServiceState(ServiceRequestJournal journal) {
+		if(journal!=null && (Tools.notEmpty(journal.getOperatorId()) || Tools.notEmpty(journal.getUserId()))){
+			String serviceRequestId = journal.getServiceRequestId();
+			
+			List<Tasks> tList = tasksMapper.getTasksbyServiceRequestId(serviceRequestId);
+			if(tList!=null && tList.size()>0){
+				for(Tasks t:tList){
+					if(t.getTaskState() !=0 && t.getTaskState() != 2){
+						return Tools.msg("服务请求下仍有进行中的任务!", false);
+					}
+				}
+				
+				ServiceRequest request = serviceRequestMapper.getServiceRequestbyId(serviceRequestId);
+				request.setServiceRequestState(journal.getChangeState());
+				if(serviceRequestMapper.updateServiceRequest(request)>0){
+					journal.setOperationTime(new Date());
+					serviceRequestJournalMapper.insertServiceRequestJournal(journal);
+					return Tools.msg("操作成功!", true);
+				}
+			}else{
+				ServiceRequest request = serviceRequestMapper.getServiceRequestbyId(serviceRequestId);
+				request.setServiceRequestState(journal.getChangeState());
+				if(serviceRequestMapper.updateServiceRequest(request)>0){
+					journal.setOperationTime(new Date());
+					serviceRequestJournalMapper.insertServiceRequestJournal(journal);
+					return Tools.msg("操作成功!", true);
+				}
+			}
+		}
+		return Tools.msg("操作失败!", false);
+	}
+
+	@Override
+	public List<Tasks> HomeInspectionServiceRequest(ServiceRequest serviceRequest) {
+		// TODO Auto-generated method stub
+		if(serviceRequest!=null){
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+			UUID serviceRequestUUID=UUID.randomUUID();
+			serviceRequest.setServiceRequestState(2);//处理状态
+			serviceRequest.setServiceRequestId(serviceRequestUUID.toString());
+			serviceRequestMapper.insertServiceRequestUUID(serviceRequest);
+			List<Tasks> tlist = serviceRequest.getListTasks();
+			if(tlist!=null && tlist.size()>0){
+				List<Tasks> tasksList = new ArrayList<Tasks>();
+				for(Tasks tasks:tlist){
+					tasks.setServerId(serviceRequestUUID.toString());
+					tasks.setTaskId(UUID.randomUUID().toString());
+					tasks.setCreateTime(sdf.format(new Date()));
+					tasks.setTaskState(4);//未接受状态
+					tasksMapper.insertTasksUUID(tasks);
+					tasksList.add(tasks);
+				}
+				return tasksList;
+				
+			}
+		}
+		return null; 
+	}
+
+	@Override
+	public List<ServiceRequest> getGoingServiceRequestbyStateAndType(String type) {
+		if(Tools.notEmpty(type)){
+			return serviceRequestMapper.getGoingServiceRequestbyStateAndType(type);
+		}
+		return null;
+	}
+
+	@Override
+	public List<ServiceRequest> getHistoryServiceRequestbyStateAndType(
+			String type) {
+		if(Tools.notEmpty(type)){
+			return serviceRequestMapper.getHistoryServiceRequestbyStateAndTypes(type);
+		}
+		return null;
+	}
+
+	@Override
+	public List<ServiceRequest> getServiceRequestbyDecoration(
+			String serviceRequestType) {
+		// TODO Auto-generated method stub
+		return serviceRequestMapper.getServiceRequestbyDecoration(serviceRequestType);
+	}
+
+	@Override
+	public void insertImportantEvent(ServiceRequest serviceRequest) {
+		if(serviceRequest!=null){
+			String uuid = UUID.randomUUID().toString();
+			String date = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date());
+			String eventTypeId = serviceRequest.getImportantEventTypeId();
+			ImportantEventType eventType= importantEventTypeMapper.getImportantEventTypebyId(eventTypeId);
+			
+			if(eventType!=null){
+				List<HandleMechanism> hmList = eventType.getHandleMechanismArr();
+				serviceRequest.setServiceRequestId(uuid);
+				serviceRequest.setRequestTime(date);
+				serviceRequest.setImportantEvent(1);
+				serviceRequest.setServiceRequestState(2);
+				Integer result = serviceRequestMapper.insertServiceRequestUUID(serviceRequest);
+				//添加创建任务
+				if(serviceRequest.getListTasks()!=null && serviceRequest.getListTasks().size()!=0){
+					for (Tasks tasks : serviceRequest.getListTasks()) {
+						tasks.setTaskState(4);
+						tasks.setCreateTime(date);
+						tasks.setServerId(uuid);
+						tasks.setTaskState(4);//未接受状态
+						if(serviceRequest.getCustomerId()!=null){
+							tasks.setCustomerId(serviceRequest.getCustomerId());
+						}
+						tasksMapper.insertTasks(tasks);
+					}
+				}
+				//添加重大事项处理机制任务
+				if(result>0 && hmList!=null && hmList.size()>0){
+					for(HandleMechanism hm : hmList){
+						Tasks t = new Tasks();
+						t.setServerId(uuid);
+						t.setTaskType(hm.getHandleType());
+						t.setTaskState(4);
+						t.setTaskDescription(hm.getRemarks());
+						t.setPrincipal(hm.getPrincipal());
+						tasksMapper.insertTasks(t);
+					}
+				}
+			}
+		}
+	}
+
+	@Override
+	public List<ServiceRequest> getAllServiceRequestsbyEventType() {
+		return serviceRequestMapper.getAllServiceRequestsbyEventType();
+	}
+
+	@Override
+	public List<ServiceRequest> getServiceRequestbyTypeAndCustomerId(
+			String serviceRequestType, String customerId) {
+		// TODO Auto-generated method stub
+		return serviceRequestMapper.getServiceRequestbyTypeAndCustomerId(serviceRequestType, customerId);
+	}
+
+	@Override
+	public PageRestful listPageAllServiceRequestsbyEventType(
+			ServiceRequest serviceRequest) {
+		// TODO Auto-generated method stub
+		PageRestful pageRestful = new PageRestful();
+		List<ServiceRequest> serviceRequests = serviceRequestMapper.listPageAllServiceRequestsbyEventType(serviceRequest);
+		serviceRequests.add(0, null);
+		pageRestful.setServiceRequests(serviceRequests);
+		pageRestful.setPage(serviceRequest.getPage());
+		return pageRestful;
+	}
+	
+	@Override
+	public PageRestful listPageGoingServiceRequestsbyEventType(
+			ServiceRequest serviceRequest) {
+		// TODO Auto-generated method stub
+		PageRestful pageRestful = new PageRestful();
+		List<ServiceRequest> serviceRequests = serviceRequestMapper.listPageGoingServiceRequestsbyEventType(serviceRequest);
+		serviceRequests.add(0, null);
+		pageRestful.setServiceRequests(serviceRequests);
+		pageRestful.setPage(serviceRequest.getPage());
+		return pageRestful;
+	}
+	
+	@Override
+	public PageRestful listPageHistoryServiceRequestsbyEventType(
+			ServiceRequest serviceRequest) {
+		// TODO Auto-generated method stub
+		PageRestful pageRestful = new PageRestful();
+		List<ServiceRequest> serviceRequests = serviceRequestMapper.listPageHistoryServiceRequestsbyEventType(serviceRequest);
+		serviceRequests.add(0, null);
+		pageRestful.setServiceRequests(serviceRequests);
+		pageRestful.setPage(serviceRequest.getPage());
+		return pageRestful;
+	}
+	
+	@Override
+	public ServiceRequest getEventSum(){
+		ServiceRequest serviceRequest = new ServiceRequest();
+		serviceRequest.setGoingSum(serviceRequestMapper.getGoingEventSum());
+		serviceRequest.setHistorySum(serviceRequestMapper.getHistotyEventSum());
+		return serviceRequest;
+	}
+
+	@Override
+	public PageRestful listPageServiceRequestbyCustomerId(ServiceRequest serviceRequest) {
+		// TODO Auto-generated method stub
+		PageRestful pageRestful = new PageRestful();
+		List<ServiceRequest> serviceRequests = serviceRequestMapper.listPageServiceRequestbyCustomerId(serviceRequest);
+		serviceRequests.add(0, null);
+		pageRestful.setServiceRequests(serviceRequests);
+		pageRestful.setPage(serviceRequest.getPage());
+		return pageRestful;
+	}
+	@Override
+	public PageRestful listPageServiceRequestByType(
+			ServiceRequest serviceRequest) {
+		// TODO Auto-generated method stub
+		PageRestful pageRestful = new PageRestful();
+		List<ServiceRequest> serviceRequests = serviceRequestMapper.listPageServiceRequestByType(serviceRequest);
+		serviceRequests.add(0, null);
+		pageRestful.setServiceRequests(serviceRequests);
+		pageRestful.setPage(serviceRequest.getPage());
+		return pageRestful;
+	}
+
+	@Override
+	public Info changeServiceRequestStateByIds(ServiceRequest serviceRequest) {
+		// TODO Auto-generated method stub
+		ServiceRequestJournal journal = serviceRequest.getServiceRequestJournal();
+		if(journal!=null && (Tools.notEmpty(journal.getOperatorId()) || Tools.notEmpty(journal.getUserId()))){
+			List<String> serviceRequestIds = serviceRequest.getServiceRequestIds();
+			if(serviceRequestIds != null && serviceRequestIds.size()>0){
+				for (String id : serviceRequestIds) {
+					List<Tasks> tasks = tasksMapper.getTasksbyServiceRequestId(id);
+					if(tasks!=null && tasks.size()>0){
+						for(Tasks t:tasks){
+							if(t != null && t.getTaskState() != null && t.getTaskState() !=0 && t.getTaskState() != 2){
+								return Tools.msg("服务请求下仍有进行中的任务!", false);
+							}
+						}
+					}
+				}
+				for (String id : serviceRequestIds) {//如果每个服务请求下都没有进行中的任务
+					journal.setServiceRequestJournalId(UUID.randomUUID().toString());
+					journal.setServiceRequestId(id);
+					journal.setOperationTime(new Date());
+					serviceRequestJournalMapper.insertServiceRequestJournal(journal);
+				}
+				serviceRequestMapper.changeServiceRequestStateByIds(serviceRequest);
+				return Tools.msg("状态修改成功!", true);
+			}
+		}
+		return Tools.msg("状态修改失败!", false);
+	}
+
+
+
+	@Override
+	public PageRestful listPageServiceRequestbyDecoration(
+			ServiceRequest serviceRequest) {
+		// TODO Auto-generated method stub
+		PageRestful pageRestful = new PageRestful();
+		List<ServiceRequest> serviceRequests = serviceRequestMapper.listPageServiceRequestbyDecoration(serviceRequest);
+		serviceRequests.add(0, null);
+		pageRestful.setServiceRequests(serviceRequests);
+		pageRestful.setPage(serviceRequest.getPage());
+		return pageRestful;
+	}
+
+	@Override
+	public PageRestful listPageServiceRequestbyStateAndType(
+			ServiceRequest serviceRequest) {
+		// TODO Auto-generated method stub
+		PageRestful pageRestful = new PageRestful();
+		List<ServiceRequest> serviceRequests = serviceRequestMapper.listPageServiceRequestbyStateAndType(serviceRequest);
+		serviceRequests.add(0, null);
+		pageRestful.setServiceRequests(serviceRequests);
+		pageRestful.setPage(serviceRequest.getPage());
+		return pageRestful;
+	}
+	//arraylist转换为string类型
+	public String listToString(List list, char separator) {
+		StringBuilder sb = new StringBuilder();
+		for (int i = 0; i < list.size(); i++) {
+			sb.append(list.get(i)).append(separator);
+		}
+		return sb.toString().substring(0, sb.toString().length() - 1);
+	}
+	
+	@Override
+	public void insertInspectionPlan(ServiceRequest serviceRequest) {
+		// TODO Auto-generated method stub
+		if(serviceRequest!= null ){
+			String uuid = UUID.randomUUID().toString();
+			String date = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date());
+
+			serviceRequest.setServiceRequestId(uuid);
+			serviceRequest.setRequestTime(date);
+			serviceRequest.setServiceRequestState(2);
+			//Integer result = 
+			serviceRequestMapper.insertServiceRequestUUID(serviceRequest);
+			FrequencyRecord fr = serviceRequest.getFrequencyRecord();
+			String uuid5 = UUID.randomUUID().toString();
+			fr.setrecordId(uuid5);
+			fr.setRelationId(uuid);	
+			if(fr.getFrequencyType()==0){//为日检
+				fr.setExecutionFrequency("每天执行");
+			}else{
+				//执行频率数组
+				List<String> ExecutionFrequencys =serviceRequest.getFrequencyRecord().getExecutionFrequencys();
+				//（ 将数组转成string类型，以逗号"," 隔开）
+				String executionFrequency=listToString(ExecutionFrequencys,',');
+				fr.setExecutionFrequency(executionFrequency);
+			}
+			frequencyRecordMapper.insertFrequencyRecordUUID(fr);
+			
+			String uuid6 =null;
+			
+			uuid6 = UUID.randomUUID().toString();
+			List<ExecutionTimeRecords> etr = serviceRequest.getExecutionTimeRecords();
+			for(ExecutionTimeRecords executionTimeRecords :etr){
+				executionTimeRecords.setExecutiveNumId(uuid6);
+				executionTimeRecords.setServiceRequestId(uuid);
+				executionTimeRecords.setExecutionFrequencyId(uuid5);
+				executionTimeRecordsMapper.insert(executionTimeRecords);
+			}	
+				/*Integer type=0;
+				String tasksUUID=null;
+				if(result>0&&serviceRequest.getTasks() != null){
+					Tasks tasks = serviceRequest.getTasks();
+					tasksUUID = UUID.randomUUID().toString();
+					tasks.setTaskId(tasksUUID);
+					tasks.setServerId(uuid);
+					tasks.setCreateTime(date);
+					tasks.setTaskType(20);
+					tasks.setTaskState(4);//未接受状态
+					tasks.setPrincipal(serviceRequest.getStaff().getStaffId());
+					tasks.setTaskDescription(serviceRequest.getRemarks());
+					type = tasks.getTaskType();
+					tasksMapper.insertTasksUUID(tasks);
+				}
+				if(type==20){
+					List<InspectionConfiguration> list = serviceRequest.getInspectionConfiguration();
+					if(list.size()>0&&list!=null){
+							//巡检单
+							InspectionOrder inspectionOrder = null;
+							String uuid3 = UUID.randomUUID().toString();
+							inspectionOrder = new InspectionOrder();
+							inspectionOrder.setOrderId(uuid3);
+							inspectionOrder.setOrderType(20);
+							inspectionOrder.setOrderState(1);
+							inspectionOrder.setTaskId(tasksUUID);
+							inspectionOrder.setOperatorId(serviceRequest.getStaff().getStaffId());
+							inspectionOrder.setServiceRequestId(uuid);
+							
+							inspectionOrder.setRemarks("巡检管理");
+							int tmp = inspectionOrderMapper.insertInspectionOrderUUID(inspectionOrder);
+							if(tmp>0){
+								//任务记录
+								TasksJournal journal = new TasksJournal();
+								journal.setTaskId(inspectionOrder.getTaskId());
+								journal.setCreOrderId(uuid3);
+								journal.setCreOrderType(inspectionOrder.getOrderType());
+								journal.setChangeOrderState(inspectionOrder.getOrderState());
+								if(inspectionOrder.getOperatorId()!=null){
+									journal.setOperatorId(inspectionOrder.getOperatorId());
+								}
+								journal.setRemarks(inspectionOrder.getRemarks());
+								journal.setOperationTime(date);
+								tasksJournalMapper.insertTasksJournal(journal);
+							}
+							
+							for(InspectionConfiguration sor : list){
+								//巡检方案
+								String uuid2 = UUID.randomUUID().toString();
+								sor.setReordId(uuid2);
+								sor.setServiceRequestId(uuid);
+								sor.setPrincipalId(serviceRequest.getStaff().getStaffId());
+								inspectionConfigurationMapper.insertSelective(sor);
+								//巡检单信息记录
+								InspectionRecords inspectionRecords = new InspectionRecords();
+								String uuid4 = UUID.randomUUID().toString();
+								inspectionRecords.setRecordId(uuid4);
+								inspectionRecords.setOrderId(uuid3);
+								inspectionRecords.setInspectionPropertyId(sor.getInspectionPropertyId());
+								inspectionRecords.setInspectionPlanId(sor.getInspectionPlanId());
+								inspectionRecordsMapper.inserInspectionRecords(inspectionRecords);
+								
+								
+							}
+							
+					}
+				}*/
+			
+		}
+		return;
+	}
+
+	@Override
+	public List<ServiceRequest> getInspectionServiceRequest() {
+	
+		return  serviceRequestMapper.getInspectionServiceRequest();
+	}
+
+	@Override
+	public PageRestful listPageInspectionServiceRequestbyStateAndType(ServiceRequest serviceRequest) {
+		// TODO Auto-generated method stub
+				PageRestful pageRestful = new PageRestful();
+				List<ServiceRequest> serviceRequests = serviceRequestMapper.listPageInspectionServiceRequestbyStateAndType(serviceRequest);
+				serviceRequests.add(0, null);
+				pageRestful.setServiceRequests(serviceRequests);
+				pageRestful.setPage(serviceRequest.getPage());
+				return pageRestful;
+	}
+
+	@Override
+	public PageRestful listPageInspectionServiceRequestbyStateAndType1(ServiceRequest serviceRequest) {
+		PageRestful pageRestful = new PageRestful();
+		List<ServiceRequest> serviceRequests = serviceRequestMapper.listPageInspectionServiceRequestbyStateAndType1(serviceRequest);
+		serviceRequests.add(0, null);
+		pageRestful.setServiceRequests(serviceRequests);
+		pageRestful.setPage(serviceRequest.getPage());
+		return pageRestful;
+	}
+
+}

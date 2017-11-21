@@ -1,0 +1,205 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.flf.mapper.AssetAccountMapper" >
+  <resultMap id="BaseResultMap" type="com.flf.entity.AssetAccount" >
+    <id column="asset_account_id" property="assetAccountId" jdbcType="VARCHAR" />
+    <result column="asset_account_name" property="assetAccountName" jdbcType="VARCHAR" />
+    <result column="asset_num" property="assetNum" jdbcType="VARCHAR" />
+    <result column="building_id" property="buildingId" jdbcType="VARCHAR" />
+    <result column="full_name" property="fullName" jdbcType="VARCHAR" />
+    <result column="area_id" property="areaTypeId" jdbcType="VARCHAR" />
+    <result column="asset_account_num" property="assetAccountNum" jdbcType="VARCHAR" />
+    <result column="is_bank_card" property="isBankCard" jdbcType="TINYINT" />
+    <result column="project_id" property="projectId" jdbcType="VARCHAR" />
+    <result column="asset_account_balance" property="assetAccountBalance" jdbcType="DOUBLE" />
+    <result column="asset_account_type" property="assetAccountType" jdbcType="TINYINT" javaType="Byte" />
+    <result column="total_deposits" property="totalDeposits" jdbcType="DOUBLE"/>
+    <result column="total_refundable_deposit" property="totalRefundableDeposit" jdbcType="DOUBLE"/>
+    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="general_balance" property="generalBalance" jdbcType="DOUBLE"/>
+    <result column="company_name" property="companyName" jdbcType="VARCHAR" />
+    <!-- hulili 账户详情可抵扣余额总和 -->
+    <result column="disSum" property="disSum" jdbcType="DOUBLE"/>
+    <result column="asset_account_detail_id" property="assetAccountDetailId" jdbcType="VARCHAR"/>
+    <result column="charge_item_id" property="chargeTypeId" jdbcType="VARCHAR"/>
+    <result column="disposable_balance" property="disposableBalance" jdbcType="DOUBLE"/>
+    
+    <result column="cust_id" property="custId" jdbcType="VARCHAR" />
+    <result column="bs_full_name" property="houseAddress" jdbcType="VARCHAR" />    
+    <result column="bank_account" property="bankAccount" jdbcType="VARCHAR" />  
+    <association property="paymentDetails" column="asset_account_id" select="com.flf.mapper.PaymentDetailsMapper.listPaymentDatilsByAssetAccountId"></association>  
+ 
+</resultMap>
+ 
+  <resultMap type="AssetAccount" id="AssetAccountAndBuildingMap" extends="BaseResultMap">
+  	<association property="buildingStructureNew" column="building_id" select="com.flf.mapper.BuildingStructureNewMapper.getBuildingStructureNewbyId"></association>
+  	<association property="chargeItem" column="building_id" select="com.flf.mapper.ChargeItemNewMapper.getChargeItemByBuildingId"></association>
+  </resultMap>
+  
+  <insert id="insertAssetAccount" parameterType="com.flf.entity.AssetAccount" >
+    insert into tc_asset_account (asset_account_id, asset_account_name, 
+      asset_num, building_id, full_name, 
+      asset_account_num, is_bank_card, project_id, 
+      asset_account_balance, asset_account_type,
+      total_deposits,total_refundable_deposit,general_balance)
+    values (#{assetAccountId,jdbcType=VARCHAR}, #{assetAccountName,jdbcType=VARCHAR}, 
+      #{assetNum,jdbcType=VARCHAR}, #{buildingId,jdbcType=VARCHAR}, #{fullName,jdbcType=VARCHAR}, 
+      #{assetAccountNum,jdbcType=VARCHAR}, #{isBankCard,jdbcType=TINYINT}, #{projectId,jdbcType=VARCHAR}, 
+      #{assetAccountBalance,jdbcType=DOUBLE}, #{assetAccountType,jdbcType=TINYINT},
+      #{totalDeposits,jdbcType=DOUBLE},#{totalRefundableDeposit,jdbcType=DOUBLE},#{generalBalance,jdbcType=DOUBLE})
+  </insert>
+ 
+<!--  通过资产账号获取用户资产 zhuqi 2016.04.08 -->
+ <select id="getAssetAccountById" parameterType="String" resultMap="BaseResultMap">
+ 	select * from tc_asset_account where asset_account_id = #{0}
+ </select>
+ 
+ <select id="listAssetAccountByBuildingId" parameterType="String" resultMap="BaseResultMap">
+ 	SELECT aa.*,bs.full_name FROM tc_asset_account aa 
+	LEFT JOIN tc_building_structure bs ON bs.id = aa.building_id
+	WHERE aa.building_id=#{0}
+ </select>
+ 
+ <select id="listAssetAccountByAssetAccountId" parameterType="String" resultMap="BaseResultMap">
+ 	SELECT * FROM tc_asset_account WHERE asset_account_id = #{0}
+ </select>
+ 
+ <select id="getAssetAccountByCustId" parameterType="String" resultMap="AssetAccountAndBuildingMap">
+ 	select a.* from tc_asset_account a
+ 	left join tc_account_relation b on a.asset_account_id=b.asset_account
+ 	left join tc_account c on b.account_id=c.account_id
+ 	where c.cust_id=#{0} and a.asset_account_type=1
+ </select>
+ 
+ <select id="getTotalBalanceOfDelinquentAccounts" parameterType="String" resultType="java.lang.Double">
+ 	select sum(asset_account_balance) from tc_asset_account where <![CDATA[ asset_account_balance<0 ]]> and asset_account_id = #{0}
+ </select>
+ 
+  <update id="updateAssetAccount" parameterType="com.flf.entity.AssetAccount" >
+    update tc_asset_account
+    <set >
+      <if test="assetAccountName != null" >
+        asset_account_name = #{assetAccountName,jdbcType=VARCHAR},
+      </if>
+      <if test="assetNum != null" >
+        asset_num = #{assetNum,jdbcType=VARCHAR},
+      </if>
+      <if test="buildingId != null" >
+        building_id = #{buildingId,jdbcType=VARCHAR},
+      </if>
+      <if test="fullName != null" >
+        full_name = #{fullName,jdbcType=VARCHAR},
+      </if>
+      <if test="assetAccountNum != null" >
+        asset_account_num = #{assetAccountNum,jdbcType=VARCHAR},
+      </if>
+      <if test="isBankCard != null" >
+        is_bank_card = #{isBankCard,jdbcType=TINYINT},
+      </if>
+      <if test="projectId != null" >
+        project_id = #{projectId,jdbcType=VARCHAR},
+      </if>
+      <if test="assetAccountBalance != null" >
+        asset_account_balance = #{assetAccountBalance,jdbcType=DOUBLE},
+      </if>
+      <if test="assetAccountType != null" >
+        asset_account_type = #{assetAccountType,jdbcType=TINYINT},
+      </if>
+      <if test="totalDeposits != null">
+      	total_deposits = #{totalDeposits,jdbcType=DOUBLE},
+      </if>
+      <if test="totalRefundableDeposit != null">
+      	total_refundable_deposit = #{totalRefundableDeposit,jdbcType=DOUBLE},
+      </if>
+       <if test="generalBalance != null">
+      	general_balance = #{generalBalance,jdbcType=DOUBLE},
+      </if>
+    </set>
+    where asset_account_id = #{assetAccountId,jdbcType=VARCHAR}
+  </update>
+  
+    
+  <!--根据客户id查询资产账户信息  -->
+  <select id="seletctAssetAccountByCustId" parameterType="String" resultMap="BaseResultMap">
+  	SELECT b.* FROM tc_account a,tc_asset_account b,tc_account_relation c
+	WHERE a.account_id=c.account_id AND c.asset_account=b.asset_account_id
+	and a.cust_id= #{0} and b.building_id = #{1}
+  </select>
+<!--   条件查询账单信息   增加查询出关联的物业公司  王洲 2015.12.29 -->
+  <select id="listPageAssetAccount" parameterType="Search" resultMap="BaseResultMap" >
+  	SELECT a.*,bs.full_name AS bs_full_name,bs.area_id,m.cust_id,m.name,y.company_name,taad.disSum FROM tc_asset_account a 
+		LEFT JOIN tc_building_structure bs ON a.building_id = bs.id
+		LEFT JOIN tc_account_relation b ON a.asset_account_id=b.asset_account
+		LEFT JOIN tc_account c ON  c.account_id = b.account_id
+		LEFT JOIN tc_person_cust m ON m.cust_id=c.cust_id
+		LEFT JOIN t_project p ON a.project_id = p.project_id
+		LEFT JOIN tc_company Y ON p.company = y.company_id  
+		LEFT JOIN (select asset_account_id,SUM(disposable_balance) disSum from tc_asset_account_detail GROUP BY asset_account_id) taad ON a.asset_account_id=taad.asset_account_id 
+	WHERE  1=1 
+	<if test="name!='' and name !=null">
+		and  m.name=#{name} 
+	</if>
+	 <if test="cardNum!='' and cardNum !=null">
+		and  m.card_num=#{cardNum} 
+	</if>
+	<if test="assetAccountType !='' and assetAccountType !=null ">
+		AND a.asset_account_type =#{assetAccountType,jdbcType=TINYINT}
+	</if>
+  </select>
+  
+  
+  <!-- 系统报表 	根据项目id获取管理户数 -->
+  <select id="countAccountNumByProjectId" parameterType="String" resultType="java.lang.Integer">
+  	select count(aa.asset_account_id) from tc_asset_account as aa
+  	where project_id=#{0}
+  </select>
+  <update id="topUP" parameterType="com.flf.entity.AssetAccount">
+    update tc_asset_account set general_balance = #{generalBalance,jdbcType=DOUBLE}
+        where asset_account_id = #{assetAccountId,jdbcType=VARCHAR}
+  </update>
+  
+  <!--根据建筑结构id查询资产账户信息  -->
+  <select id="getAssetAccountByBuildingStructureId" parameterType="String" resultMap="BaseResultMap">
+  	SELECT b.* FROM tc_asset_account b
+	WHERE b.building_id= #{buildingStructureId,jdbcType=VARCHAR}
+  </select>
+  
+	<!-- 查询资产账户表的所有数据  王洲  2016.04.19 -->  
+	<select id="listAllAssetAccount" resultMap="BaseResultMap">
+		select * from tc_asset_account
+	</select>
+	
+	<!-- 批量插入资产账户数据  王洲  2016.04.19 -->
+	<insert id="insertAssetAccountList" parameterType="java.util.List">
+		insert into tc_asset_account (asset_account_id, asset_account_name, 
+      		asset_num, building_id, full_name, 
+      		asset_account_num, is_bank_card, project_id, 
+      		asset_account_balance, asset_account_type,
+      		total_deposits,total_refundable_deposit,general_balance)
+    	values 
+    	<foreach collection="list" item="item" index="index" separator="," >
+    		(#{item.assetAccountId,jdbcType=VARCHAR}, #{item.assetAccountName,jdbcType=VARCHAR}, 
+      		#{item.assetNum,jdbcType=VARCHAR}, #{item.buildingId,jdbcType=VARCHAR}, #{item.fullName,jdbcType=VARCHAR}, 
+      		#{item.assetAccountNum,jdbcType=VARCHAR}, #{item.isBankCard,jdbcType=TINYINT}, #{item.projectId,jdbcType=VARCHAR}, 
+      		#{item.assetAccountBalance,jdbcType=DOUBLE}, #{item.assetAccountType,jdbcType=TINYINT},
+      		#{item.totalDeposits,jdbcType=DOUBLE},#{item.totalRefundableDeposit,jdbcType=DOUBLE},#{item.generalBalance,jdbcType=DOUBLE})
+      	</foreach>
+	</insert>
+	
+	<!-- 根据建筑结构id查询对应的资产账户  王洲  2016.04.19 -->
+	<select id="getAssetAccountByBuildingId" parameterType="String" resultMap="BaseResultMap">
+		select * from tc_asset_account where building_id = #{0}
+	</select>
+  
+	<select id="listAssetAccountByCustId" parameterType="String" resultMap="BaseResultMap">
+		select a.* from tc_asset_account a left join tc_account_relation b on a.asset_account_id = b.asset_account  where b.account_id = #{0}
+	</select>
+	
+	<!-- 根据条件查询账号和账号明细表 -->
+	<select id="queryByBuild" parameterType="com.flf.entity.AssetAccount" resultMap="BaseResultMap">
+		select taa.asset_account_id,taa.general_balance,taad.asset_account_detail_id,taad.charge_item_id,taad.disposable_balance from(
+			select * from tc_asset_account where building_id=#{buildingId}) taa 
+		left join tc_asset_account_detail taad on taa.asset_account_id=taad.asset_account_id;
+	</select>
+	
+</mapper>

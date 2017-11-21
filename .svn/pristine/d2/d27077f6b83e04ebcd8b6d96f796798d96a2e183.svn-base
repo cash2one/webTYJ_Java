@@ -1,0 +1,190 @@
+package com.flf.service;
+
+import java.util.List;
+
+import javax.jws.WebService;
+import javax.ws.rs.Consumes;
+import javax.ws.rs.GET;
+import javax.ws.rs.POST;
+import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
+import javax.ws.rs.Produces;
+import javax.ws.rs.core.MediaType;
+
+import com.flf.entity.BuildingStructureNew;
+import com.flf.entity.ChargeItemNew;
+/**
+ * 计费方案下收费项目service
+ * @author maogaofei
+ * @date 2016年6月29日 下午3:37:15
+ */
+@WebService
+@Path("/ChargeItemNew")
+public interface ChargeItemNewService {
+	
+	/**
+	 * 根据项目ID和计费方案ID查询可选建筑列表
+	 * @author maogaofei
+	 * @date 2016年6月30日 上午11:35:06
+	 * @param projectId
+	 * @param schemeId
+	 * @return
+	 */
+	@GET
+	@Path("/getBuildingListByProidAndSchemeid/{projectId}/{schemeId}")
+	@Produces(MediaType.APPLICATION_JSON)
+	List<BuildingStructureNew> getBuildingListByProidAndSchemeid(@PathParam("projectId") String projectId,@PathParam("schemeId") String schemeId);
+	
+	/**
+	 * 新增收费项目、收费项目建筑关系和收费项目详情列表
+	 * @author maogaofei
+	 * @date 2016年6月30日 下午2:48:48
+	 * @param chargeItemNew
+	 */
+	@POST
+	@Path("/insertChargeItemNew")
+	@Consumes({MediaType.APPLICATION_XML,MediaType.APPLICATION_JSON})
+	void insertChargeItemNew(ChargeItemNew chargeItemNew);
+	
+	/**
+	 * 根据条件查询收费项目列表
+	 * @author maogaofei
+	 * @date 2016年6月30日 下午3:40:01
+	 * @param chargeItemNew
+	 * @return
+	 */
+	@POST
+	@Path("/listAllChargeItemNew")
+	@PathParam(MediaType.APPLICATION_JSON)
+	List<ChargeItemNew> listAllChargeItemNew(ChargeItemNew chargeItemNew);
+	
+	/*@GET
+	@Path("/treeChargeItemNew")
+	@Produces(MediaType.APPLICATION_JSON)
+	List<Tree> treeChargeItemNew();
+
+	*//**
+	 * 搜索分页查询收费项目信息
+	 * @param roleId
+	 * @return
+	 *//*
+	@POST
+	@Path("/listPageChargeItemNew")
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
+	PageRestful listPageChargeItemNew(ChargeItemNew chargeItemNew);
+	
+	*//**
+	 * 根据id查询收费项目信息
+	 * @param ciId
+	 * @return
+	 *//*
+	@GET
+	@Path("/getChargeItemNewById/{ciId}")
+	@Produces(MediaType.APPLICATION_JSON)
+	ChargeItemNew getChargeItemNewById(@PathParam("ciId") String ciId);
+	
+	*//**
+	 * 删除收费项目信息
+	 * @param ciId
+	 *//*
+	@DELETE
+	@Path("/deleteChargeItemNew/{ciId}")
+	void deleteChargeItemNew(@PathParam("ciId") String ciId);
+	
+	
+	*//**
+	 * 新增收费项目信息并插入中间表
+	 * @param chargeItemNew 
+	 * 2015-10-30 shaozheng
+	 *//*
+	@POST
+	@Path("/insertChargeItemNewAndRelation/{schemeId}")
+	@Consumes({MediaType.APPLICATION_XML,MediaType.APPLICATION_JSON})
+	void insertChargeItemNewAndRelation(@PathParam("schemeId") String schemeId ,ChargeItemNew chargeItemNew);
+	
+	*//**
+	 * 修改收费项目信息
+	 * @param chargeItemNew
+	 *//*
+	@PUT
+	@Path("/updateChargeItemNew")
+	@Consumes({MediaType.APPLICATION_XML,MediaType.APPLICATION_JSON})
+	void updateChargeItemNew(ChargeItemNew chargeItemNew);
+	
+	*//**
+	 * 查询父节点下的子节点
+	 * @param ciId
+	 * @return
+	 *//*
+	@GET
+	@Path("/getChargeItemNewByIds/{ciId}")
+	@Produces(MediaType.APPLICATION_JSON)
+	List<ChargeItemNew> getChargeItemNewByIds(@PathParam("ciId") String ciId);
+	
+	*//**
+	 * 根据项目id查询收费项目信息
+	 * @param projectId
+	 * @return
+	 *//*
+	@GET
+	@Path("/listChargeItemNewbyProjectId/{projectId}")
+	@Produces(MediaType.APPLICATION_JSON)
+	List<ChargeItemNew> listChargeItemNewbyProjectId(@PathParam("projectId") String projectId);
+	
+	*//**
+	 * 根据项目名称查询收费项目信息 
+	 *//*
+	@POST
+	@Path("/listPageChargeItemNewbyProjectName")
+	@Produces(MediaType.APPLICATION_JSON)	
+	PageRestful listPageChargeItemNewbyProjectName(ChargeItemNew chargeItemNew);
+	
+	*//**
+	 * 根据项目id查询收费项目信息
+	 *//*
+	  @GET
+	  @Path("/listChargeItemNewbyProjectIdRestful/{projectId}")
+	  @Produces(MediaType.APPLICATION_JSON)
+	  List<ChargeItemNew> listChargeItemNewbyProjectIdRestful(@PathParam("projectId") String projectId);
+	    
+	*//**
+	 * 为项目设置手动收费项目
+	 * @param chargeItemNew
+	 *//*
+	@PUT
+	@Path("/update")
+	@Consumes({MediaType.APPLICATION_XML,MediaType.APPLICATION_JSON})
+	void update(ChargeItemNew chargeItemNew);
+	*//**
+	 * 根据一级收费项目id获取二级收费项目id
+	 * @param ciId
+	 * @param schemeId
+	 * @return
+	 *//*
+	@GET
+	@Path("/getChargeItemNewbyciIdAndSchemeId/{ciId}")
+	@Produces(MediaType.APPLICATION_JSON)
+	List<ChargeItemNew> getChargeItemNewbyciIdAndSchemeId(@PathParam("ciId") String ciId);
+	
+	*//**
+	 * 根据2级收费项目id删除收费项目以及中间关系
+	 * @param ids
+	 * @return
+	 *//*
+	@GET
+	@Path("/deleteChargeItemParentsAndSon/{ids}")
+	@Produces(MediaType.APPLICATION_JSON)
+	Info deleteChargeItemParentsAndSon(@PathParam("ids") String ids);
+	
+	*//**
+	 * 根据项目id查询出项目下的所有启用中的一级收费项目
+	 * @param projectId
+	 * @return
+	 *//*
+	@GET
+	@Path("/listFChargeItemNewByProjectId/{projectId}")
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
+	List<ChargeItemNew> listFChargeItemNewByProjectId(@PathParam("projectId") String projectId);*/
+}

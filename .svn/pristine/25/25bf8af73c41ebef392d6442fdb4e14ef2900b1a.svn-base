@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.flf.mapper.InformMapper" >
+    <resultMap id="BaseResultMap" type="Inform" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="inform" property="inform" jdbcType="VARCHAR" />
+    <result column="time" property="time" jdbcType="DATE" />
+    <result column="content" property="content" jdbcType="VARCHAR" />
+  </resultMap>
+  
+  <delete id="deleteInform" parameterType="String">
+  delete from t_inform where id=#{0}
+  </delete>
+  
+  <select id="listPageInform" parameterType="Inform" resultMap="BaseResultMap">
+  select * from t_inform  
+  </select>
+
+  
+  <select id="listAllInform" resultMap="BaseResultMap">
+     select * from t_inform  ORDER BY time DESC  LIMIT 5
+  </select>
+  
+   
+  <select id="listAllsInform" resultMap="BaseResultMap">
+     select * from t_inform  
+  </select>
+  
+  <select id="getInformById" parameterType="String" resultMap="BaseResultMap">
+  select * from t_inform where id=#{0}
+  </select>
+  
+  <insert id="insertInform" parameterType="Inform">
+    insert into t_inform (inform, time, 
+      content)
+    values ( #{inform}, #{time}, 
+      #{content})
+  </insert>
+  
+  <update id="updateInform" parameterType="Inform" >
+      update t_inform
+    set inform = #{inform},
+      time = #{time},
+      content = #{content}
+      where id = #{id}
+  </update>
+  
+  <delete id="deleteInforms" parameterType="String">
+  delete from t_inform where id=#{0}
+  </delete>
+  
+  <select id="getInformByIds" parameterType="String" resultMap="BaseResultMap">
+  select * from t_inform where id=#{0}
+  </select>
+  
+  <insert id="insertInforms" parameterType="Inform">
+    insert into t_inform (id,inform, time, 
+      content)
+    values ( UUID(),#{inform}, #{time}, 
+      #{content})
+  </insert>
+  
+  <update id="updateInforms" parameterType="Inform" >
+      update t_inform
+    set inform = #{inform},
+      time = #{time},
+      content = #{content}
+      where id = #{id}
+  </update>
+</mapper>

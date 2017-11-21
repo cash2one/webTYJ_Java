@@ -1,0 +1,135 @@
+package com.flf.service.impl;
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.List;
+
+
+
+import com.flf.entity.ElectricityMeterReadingData;
+import com.flf.entity.MeterReadingData;
+import com.flf.entity.PageRestful;
+import com.flf.entity.SearchMeter;
+import com.flf.mapper.ElectricityMeterReadingDataMapper;
+import com.flf.service.ElectricityMeterReadingDataService;
+
+public class ElectricityMeterReadingDataServiceImpl implements
+		ElectricityMeterReadingDataService {
+	private ElectricityMeterReadingDataMapper electricityMeterReadingDataMapper;
+	
+
+	public ElectricityMeterReadingDataMapper getElectricityMeterReadingDataMapper() {
+		return electricityMeterReadingDataMapper;
+	}
+
+	public void setElectricityMeterReadingDataMapper(
+			ElectricityMeterReadingDataMapper electricityMeterReadingDataMapper) {
+		this.electricityMeterReadingDataMapper = electricityMeterReadingDataMapper;
+	}
+
+	/**
+	 * 分页查询电表
+	 */
+	@Override
+	public PageRestful listPageElectricityMeterReadingDate(
+			SearchMeter searchMeter) {
+		// TODO Auto-generated method stub
+		PageRestful pageRestful =new PageRestful();
+		List<ElectricityMeterReadingData> electricityMeterReadingDatas=electricityMeterReadingDataMapper.listPageElectricityMeterReadingDataBySearchMeter(searchMeter);
+		electricityMeterReadingDatas.add(0,null);
+		pageRestful.setElectricityMeterReadingData(electricityMeterReadingDatas);
+		pageRestful.setPage(searchMeter.getPage());
+		return pageRestful;
+	}
+	
+	@Override
+	public PageRestful listPageElectricityMeterReadingData(ElectricityMeterReadingData electricityMeterReadingData){
+		PageRestful pageRestful =new PageRestful();
+		List<ElectricityMeterReadingData> electricityMeterReadingDatas=electricityMeterReadingDataMapper.listPageElectricityMeterReadingData(electricityMeterReadingData);
+		electricityMeterReadingDatas.add(0,null);
+		pageRestful.setElectricityMeterReadingData(electricityMeterReadingDatas);
+		pageRestful.setPage(electricityMeterReadingData.getPage());
+		return pageRestful;
+	}
+
+	@Override
+	public List<ElectricityMeterReadingData> listElectricityMeterReadingDatebyDate(
+			Date meterReadingDate) {
+		// TODO Auto-generated method stub
+		return electricityMeterReadingDataMapper.listElectricityMeterReadingDatebyDate(meterReadingDate);
+	}
+
+	@Override
+	public List<ElectricityMeterReadingData> listAllElectricityMeterReadingData() {
+		// TODO Auto-generated method stub
+		return electricityMeterReadingDataMapper.listAllElectricityMeterReadingData();
+	}
+
+	@Override
+	public ElectricityMeterReadingData getUserByIdRest(
+			String electricityMeterReadingDataId) {
+		// TODO Auto-generated method stub
+		return electricityMeterReadingDataMapper.getElectricityMeterReadingDatabyId(electricityMeterReadingDataId);
+	}
+
+	@Override
+	public List<ElectricityMeterReadingData> listElectricityMeterReadingDatebyName(
+			String projectName) {
+		// TODO Auto-generated method stub
+		return electricityMeterReadingDataMapper.listElectricityMeterReadingDatebyName(projectName);
+	}
+
+	@Override
+	public List<ElectricityMeterReadingData> listElectricityMeterReadingDatabyId(
+			String electricityMeterRecordId) {
+		// TODO Auto-generated method stub
+		return electricityMeterReadingDataMapper.listElectricityMeterReadingDatabyId(electricityMeterRecordId);
+	}
+	
+	@Override
+	public List<ElectricityMeterReadingData> listElectricityMeterReadingDatabyBuildingId(
+			String addressId) {
+		// TODO Auto-generated method stub
+		return electricityMeterReadingDataMapper.listElectricityMeterReadingDatabyBuildingId(addressId);
+	}
+
+	@Override
+	public void insertElectricityMeterReadingDatarest(
+			ElectricityMeterReadingData electricityMeterReadingData) {
+		// TODO Auto-generated method stub
+		electricityMeterReadingDataMapper.insertElectricityMeterReadingData(electricityMeterReadingData);
+	}
+
+	@Override
+	public void updateElectricityMeterReadingDatarest(
+			ElectricityMeterReadingData electricityMeterReadingData) {
+		// TODO Auto-generated method stub
+		electricityMeterReadingDataMapper.updateElectricityMeterReadingData(electricityMeterReadingData);
+	}
+
+	@Override
+	public void deleteElectricityMeterReadingDatarest(
+			String electricityMeterReadingDataId) {
+		// TODO Auto-generated method stub
+		electricityMeterReadingDataMapper.deleteElectricityMeterReadingData(electricityMeterReadingDataId);
+	}
+	
+	/*@Override
+	public Double getElectricityMeterUsage(ElectricityMeterReadingData electricityMeterReadingData) {
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        String str = sdf.format(electricityMeterReadingData.getSpecifiedDate());
+		MeterReadingData item = electricityMeterReadingDataMapper.selectByBuildingStructureIdAndElectricityMeterReadingDate(electricityMeterReadingData.getBuildingStructureId(),str);
+	    if(item == null)
+	    {
+	    	double electricitymetermsage = 0;
+	    	return electricitymetermsage;
+	    }
+	    else
+	    {
+	    	double electricitymetermsage = item.getConsumption();
+	    	return electricitymetermsage;
+		}
+	}*/
+	
+	
+}

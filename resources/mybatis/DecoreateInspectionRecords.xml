@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.flf.mapper.DecoreateInspectionRecordsMapper" >
+  <resultMap id="BaseResultMap" type="DecoreateInspectionRecords" >
+    <id column="record_id" property="recordId" jdbcType="VARCHAR" />
+    <result column="apply_id" property="applyId" jdbcType="VARCHAR" />
+    <result column="order_id" property="orderId" jdbcType="VARCHAR" />
+  </resultMap>
+  
+  <resultMap type="DecoreateInspectionRecords" id="resultDecoreateInspectionRecordsMap" extends="BaseResultMap">
+  	<collection property="decoreateInspectionRecords" column="apply_id" select="com.flf.mapper.DecoreateInspectionRecordsMapper.getDecoreateInspectionRecordsbyId"></collection>
+  </resultMap>
+  
+ <delete id="deleteDecoreateInspectionRecords" parameterType="String">
+  delete from ts_decoreate_inspection_records where record_id=#{0}
+  </delete>
+  
+  <select id="listAllDecoreateInspectionRecords"  resultMap="resultDecoreateInspectionRecordsMap" >
+ 	 select * from ts_decoreate_inspection_records 
+  </select>
+  
+  <select id="getDecoreateInspectionRecordsbyId" parameterType="String" resultMap="resultDecoreateInspectionRecordsMap">
+  	select * from ts_decoreate_inspection_records where record_id=#{0}
+  </select>
+  
+  <insert id="insertDecoreateInspectionRecords" parameterType="DecoreateInspectionRecords" >      
+      insert into ts_decoreate_inspection_records (record_id, apply_id,order_id)
+    values (UUID(), #{applyId,jdbcType=VARCHAR}, #{orderId,jdbcType=VARCHAR}
+  </insert>
+ 
+  <update id="updateDecoreateInspectionRecords" parameterType="DecoreateInspectionRecords" >
+    update ts_decoreate_inspection_records
+    set apply_id = #{applyId,jdbcType=VARCHAR},
+      order_id = #{orderId,jdbcType=VARCHAR},
+    where record_id = #{recordId,jdbcType=VARCHAR}
+  </update>
+</mapper>

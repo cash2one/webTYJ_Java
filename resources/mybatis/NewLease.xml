@@ -1,0 +1,487 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.flf.mapper.NewLeaseMapper">
+	<resultMap id="BaseResultMap" type="NewLease">
+		<id column="id" property="id" jdbcType="VARCHAR" />
+		<result column="honse_id" property="honseId" jdbcType="VARCHAR" />
+		<result column="house_id_type" property="houseIdType" jdbcType="VARCHAR" />
+		<result column="hire_start_date" property="hireStartDate"
+			jdbcType="DATE" />
+		<result column="hire_finish_date" property="hireFinishDate"
+			jdbcType="DATE" />
+		<result column="contract_number" property="contractNumber"
+			jdbcType="VARCHAR" />
+		<result column="leasePerson_id" property="leasepersonId"
+			jdbcType="VARCHAR" />
+		<result column="staff_id" property="staffId" jdbcType="VARCHAR" />
+		<result column="cust_id" property="custId" jdbcType="VARCHAR" />
+		<result column="createDate" property="createdate" jdbcType="DATE" />
+		<result column="user_opinion" property="userOpinion" jdbcType="VARCHAR" />
+		<result column="houseAddress" property="houseAddress" jdbcType="VARCHAR" />
+		<result column="lease_person_name" property="leasePersonName"
+			jdbcType="VARCHAR" />
+
+		<result column="lease_person_cardNum" property="leasePersonCardNum"
+			jdbcType="VARCHAR" />
+		<result column="lease_delete" property="leaseDelete" jdbcType="INTEGER" />
+		<result column="operate_date" property="operateDate"  />
+		<!-- 新增租金 -->
+		<result column="rent" property="rent" jdbcType="DOUBLE"/>
+		<!-- 建筑类型 -->
+		<result column="building_Type" property="buildingType" jdbcType="VARCHAR"/>
+	</resultMap>
+	
+	<resultMap id="PersonCustNewMap" type="PersonCustNew" >
+    <result column="cust_id" property="custId" jdbcType="VARCHAR" />
+    <result column="cust_code" property="custCode" jdbcType="VARCHAR" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="sex" property="sex" jdbcType="VARCHAR" />
+    <result column="native_place" property="nativePlace" jdbcType="VARCHAR" />
+    <result column="census" property="census" jdbcType="VARCHAR" />
+    <result column="birthday" property="birthday" jdbcType="DATE" />
+    <result column="card_type" property="cardType" jdbcType="VARCHAR" />
+    <result column="card_num" property="cardNum" jdbcType="VARCHAR" />
+    <result column="jiajia_num" property="jiajiaNum" jdbcType="VARCHAR" />
+    <result column="weixin_num" property="weixinNum" jdbcType="VARCHAR" />
+    <result column="work_units" property="workUnits" jdbcType="VARCHAR" />
+    <result column="position" property="position" jdbcType="VARCHAR" />
+    <result column="marrie_state" property="marrieState" jdbcType="TINYINT" />
+    <result column="edu_level" property="eduLevel" jdbcType="TINYINT" />
+    <result column="social" property="social" jdbcType="VARCHAR" />
+    <result column="landscape" property="landscape" jdbcType="TINYINT" />
+    <result column="hobby" property="hobby" jdbcType="VARCHAR" />
+    <result column="cust_level" property="custLevel" jdbcType="VARCHAR" />
+    <result column="is_enterprise" property="isEnterprise" jdbcType="TINYINT" />
+    <result column="urgent_contact_person" property="urgentContactPerson" jdbcType="VARCHAR" />
+    <result column="urgent_contact_phone" property="urgentContactPhone" jdbcType="VARCHAR" />
+    <result column="upload_image" property="uploadImage" jdbcType="VARCHAR" />
+    <result column="phone_num" property="phoneNum" jdbcType="VARCHAR" />
+    
+  </resultMap>
+	
+	<resultMap id="EntranceResultMap" type="com.flf.entity.Entrance" >
+    <id column="card_id" property="cardId" jdbcType="VARCHAR" />
+    <result column="house_id" property="houseId" jdbcType="VARCHAR" />
+    <result column="card_date" property="cardDate" jdbcType="DATE" />
+    <result column="start_date" property="startDate" jdbcType="DATE" />
+    <result column="end_date" property="endDate" jdbcType="DATE" />
+    <result column="user_type" property="userType" jdbcType="VARCHAR" />
+    <result column="user_id" property="userId" jdbcType="VARCHAR" />
+    <result column="relation" property="relation" jdbcType="VARCHAR" />
+    <result column="nominal_fee" property="nominalFee" jdbcType="DOUBLE" />
+    <result column="note" property="note" jdbcType="VARCHAR" />
+    <result column="car_type" property="carType" jdbcType="VARCHAR" />
+    <result column="cust_code" property="custCode" jdbcType="VARCHAR" />
+    <result column="card_state" property="cardState" jdbcType="TINYINT" />
+    <result column="idcard_num" property="idcardNum" jdbcType="VARCHAR" />
+    <result column="related" property="related" jdbcType="VARCHAR" />
+      <result column="card_num" property="cardNum" jdbcType="VARCHAR" />
+      <result column="staff_id" property="staffId" jdbcType="VARCHAR" />
+  </resultMap>
+  
+  <resultMap id="houseMap" type="HouseNew" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="building_id" property="buildingId" jdbcType="VARCHAR" />
+    <result column="building_structure_id" property="buildingStructureId" jdbcType="VARCHAR" />
+    <result column="house_num" property="houseNum" jdbcType="VARCHAR" />
+    <result column="property" property="property" jdbcType="VARCHAR" />
+    <result column="land_price" property="landPrice" jdbcType="DOUBLE" />
+    <result column="last_transcation_price" property="lastTranscationPrice" jdbcType="DOUBLE" />
+    <result column="house_name" property="houseName" jdbcType="VARCHAR" />
+    <result column="house_postcode" property="housePostcode" jdbcType="VARCHAR" />
+    <result column="manage_fee" property="manageFee" jdbcType="DOUBLE" />
+    <result column="complete_date" property="completeDate" jdbcType="DATE" />
+    <result column="elevator" property="elevator" jdbcType="TINYINT" />
+    <result column="gate_guard" property="gateGuard" jdbcType="TINYINT" />
+    <result column="join_date" property="joinDate" jdbcType="DATE" />
+    <result column="join_state" property="joinState" jdbcType="TINYINT" />
+    <result column="designer_draw" property="designerDraw" jdbcType="VARCHAR" />
+    <result column="is_billing" property="isBilling" jdbcType="TINYINT" />
+    <result column="price" property="price" jdbcType="DOUBLE" />
+    <result column="land_certificate" property="landCertificate" jdbcType="VARCHAR" />
+    <result column="market_state" property="marketState" jdbcType="TINYINT" />
+    <result column="special_fund" property="specialFund" jdbcType="TINYINT" />
+    <result column="capital_type" property="capitalType" jdbcType="TINYINT" />
+    <result column="password" property="password" jdbcType="VARCHAR" />
+    <result column="sip_id" property="sipId" jdbcType="VARCHAR" />
+    <result column="usable_area" property="usableArea" jdbcType="DOUBLE" />
+    <result column="house_area" property="houseArea" jdbcType="DOUBLE" />
+    <result column="house_address" property="houseAddress" jdbcType="VARCHAR" />
+    <result column="premises_permit" property="premisesPermit" jdbcType="VARCHAR" />
+    <result column="house_attribute" property="houseAttribute" jdbcType="VARCHAR" />
+    <result column="house_type" property="houseType" jdbcType="VARCHAR" />
+    <result column="share_area" property="shareArea" jdbcType="DOUBLE" />
+    <result column="complete_area" property="completeArea" jdbcType="DOUBLE" />
+    <result column="project_id" property="projectId" jdbcType="VARCHAR" />
+    <result column="management_unit_price" property="managementUnitPrice"/>
+    <result column="join_gang_state" property="joinGangState"/>
+     <result column="full_name" property="fullName" jdbcType="VARCHAR" />
+  </resultMap>
+  
+  <resultMap id="NewLeaseMap" type="NewLease" extends="BaseResultMap" >
+      <association property="house" select="selectHouse" javaType="HouseNew" column="honse_id">
+	    <id column="id" property="id" jdbcType="VARCHAR" />
+	    <result column="building_id" property="buildingId" jdbcType="VARCHAR" />
+	    <result column="building_structure_id" property="buildingStructureId" jdbcType="VARCHAR" />
+	    <result column="house_num" property="houseNum" jdbcType="VARCHAR" />
+	    <result column="property" property="property" jdbcType="VARCHAR" />
+	    <result column="land_price" property="landPrice" jdbcType="DOUBLE" />
+	    <result column="last_transcation_price" property="lastTranscationPrice" jdbcType="DOUBLE" />
+	    <result column="house_name" property="houseName" jdbcType="VARCHAR" />
+	    <result column="house_postcode" property="housePostcode" jdbcType="VARCHAR" />
+	    <result column="manage_fee" property="manageFee" jdbcType="DOUBLE" />
+	    <result column="complete_date" property="completeDate" jdbcType="DATE" />
+	    <result column="elevator" property="elevator" jdbcType="TINYINT" />
+	    <result column="gate_guard" property="gateGuard" jdbcType="TINYINT" />
+	    <result column="join_date" property="joinDate" jdbcType="DATE" />
+	    <result column="join_state" property="joinState" jdbcType="TINYINT" />
+	    <result column="designer_draw" property="designerDraw" jdbcType="VARCHAR" />
+	    <result column="is_billing" property="isBilling" jdbcType="TINYINT" />
+	    <result column="price" property="price" jdbcType="DOUBLE" />
+	    <result column="land_certificate" property="landCertificate" jdbcType="VARCHAR" />
+	    <result column="market_state" property="marketState" jdbcType="TINYINT" />
+	    <result column="special_fund" property="specialFund" jdbcType="TINYINT" />
+	    <result column="capital_type" property="capitalType" jdbcType="TINYINT" />
+	    <result column="password" property="password" jdbcType="VARCHAR" />
+	    <result column="sip_id" property="sipId" jdbcType="VARCHAR" />
+	    <result column="usable_area" property="usableArea" jdbcType="DOUBLE" />
+	    <result column="house_area" property="houseArea" jdbcType="DOUBLE" />
+	    <result column="house_address" property="houseAddress" jdbcType="VARCHAR" />
+	    <result column="premises_permit" property="premisesPermit" jdbcType="VARCHAR" />
+	    <result column="house_attribute" property="houseAttribute" jdbcType="VARCHAR" />
+	    <result column="house_type" property="houseType" jdbcType="VARCHAR" />
+	    <result column="share_area" property="shareArea" jdbcType="DOUBLE" />
+	    <result column="complete_area" property="completeArea" jdbcType="DOUBLE" />
+	    <result column="project_id" property="projectId" jdbcType="VARCHAR" />
+	    <result column="management_unit_price" property="managementUnitPrice"/>
+	    <result column="full_name" property="fullName" jdbcType="VARCHAR" />
+    </association>
+    
+    <association property="ower" select="selectPerson" javaType="PersonCustNew" column="cust_id">
+	  	<result column="cust_id" property="custId" jdbcType="VARCHAR" />
+	    <result column="cust_code" property="custCode" jdbcType="VARCHAR" />
+	    <result column="name" property="name" jdbcType="VARCHAR" />
+	    <result column="sex" property="sex" jdbcType="VARCHAR" />
+	    <result column="native_place" property="nativePlace" jdbcType="VARCHAR" />
+	    <result column="census" property="census" jdbcType="VARCHAR" />
+	    <result column="birthday" property="birthday" jdbcType="DATE" />
+	    <result column="card_type" property="cardType" jdbcType="VARCHAR" />
+	    <result column="card_num" property="cardNum" jdbcType="VARCHAR" />
+	    <result column="jiajia_num" property="jiajiaNum" jdbcType="VARCHAR" />
+	    <result column="weixin_num" property="weixinNum" jdbcType="VARCHAR" />
+	    <result column="work_units" property="workUnits" jdbcType="VARCHAR" />
+	    <result column="position" property="position" jdbcType="VARCHAR" />
+	    <result column="marrie_state" property="marrieState" jdbcType="TINYINT" />
+	    <result column="edu_level" property="eduLevel" jdbcType="TINYINT" />
+	    <result column="social" property="social" jdbcType="VARCHAR" />
+	    <result column="landscape" property="landscape" jdbcType="TINYINT" />
+	    <result column="hobby" property="hobby" jdbcType="VARCHAR" />
+	    <result column="cust_level" property="custLevel" jdbcType="VARCHAR" />
+	    <result column="is_enterprise" property="isEnterprise" jdbcType="TINYINT" />
+	    <result column="urgent_contact_person" property="urgentContactPerson" jdbcType="VARCHAR" />
+	    <result column="urgent_contact_phone" property="urgentContactPhone" jdbcType="VARCHAR" />
+	    <result column="upload_image" property="uploadImage" jdbcType="VARCHAR" />
+	    <result column="phone_num" property="phoneNum" jdbcType="VARCHAR" />
+    </association>
+    <association property="leaser" select="selectPerson" javaType="PersonCustNew" column="leasePerson_id">
+	   	<result column="cust_id" property="custId" jdbcType="VARCHAR" />
+	    <result column="cust_code" property="custCode" jdbcType="VARCHAR" />
+	    <result column="name" property="name" jdbcType="VARCHAR" />
+	    <result column="sex" property="sex" jdbcType="VARCHAR" />
+	    <result column="native_place" property="nativePlace" jdbcType="VARCHAR" />
+	    <result column="census" property="census" jdbcType="VARCHAR" />
+	    <result column="birthday" property="birthday" jdbcType="DATE" />
+	    <result column="card_type" property="cardType" jdbcType="VARCHAR" />
+	    <result column="card_num" property="cardNum" jdbcType="VARCHAR" />
+	    <result column="jiajia_num" property="jiajiaNum" jdbcType="VARCHAR" />
+	    <result column="weixin_num" property="weixinNum" jdbcType="VARCHAR" />
+	    <result column="work_units" property="workUnits" jdbcType="VARCHAR" />
+	    <result column="position" property="position" jdbcType="VARCHAR" />
+	    <result column="marrie_state" property="marrieState" jdbcType="TINYINT" />
+	    <result column="edu_level" property="eduLevel" jdbcType="TINYINT" />
+	    <result column="social" property="social" jdbcType="VARCHAR" />
+	    <result column="landscape" property="landscape" jdbcType="TINYINT" />
+	    <result column="hobby" property="hobby" jdbcType="VARCHAR" />
+	    <result column="cust_level" property="custLevel" jdbcType="VARCHAR" />
+	    <result column="is_enterprise" property="isEnterprise" jdbcType="TINYINT" />
+	    <result column="urgent_contact_person" property="urgentContactPerson" jdbcType="VARCHAR" />
+	    <result column="urgent_contact_phone" property="urgentContactPhone" jdbcType="VARCHAR" />
+	    <result column="upload_image" property="uploadImage" jdbcType="VARCHAR" />
+	    <result column="phone_num" property="phoneNum" jdbcType="VARCHAR" />
+    </association>
+   <collection property="entrances" select="selectEntrance" column="leasePerson_id" ofType="Entrance">
+      <id column="card_id" property="cardId" jdbcType="VARCHAR" />
+    <result column="honse_id" property="honseId" jdbcType="VARCHAR" />
+    <result column="house_id_type" property="houseIdType" jdbcType="VARCHAR"/>
+    <result column="card_date" property="cardDate" jdbcType="DATE" />
+    <result column="start_date" property="startDate" jdbcType="DATE" />
+    <result column="end_date" property="endDate" jdbcType="DATE" />
+    <result column="user_type" property="userType" jdbcType="VARCHAR" />
+    <result column="user_id" property="userId" jdbcType="VARCHAR" />
+    <result column="relation" property="relation" jdbcType="VARCHAR" />
+    <result column="nominal_fee" property="nominalFee" jdbcType="DOUBLE" />
+    <result column="note" property="note" jdbcType="VARCHAR" />
+    <result column="car_type" property="carType" jdbcType="VARCHAR" />
+    <result column="cust_code" property="custCode" jdbcType="VARCHAR" />
+    <result column="card_state" property="cardState" jdbcType="TINYINT" />
+    <result column="idcard_num" property="idcardNum" jdbcType="VARCHAR" />
+    <result column="related" property="related" jdbcType="VARCHAR" />
+    <result column="card_num" property="cardNum" jdbcType="VARCHAR" />
+    <result column="staff_id" property="staffId" jdbcType="VARCHAR" />
+    </collection>   
+
+    </resultMap>
+    
+  <select id="selectEntrance" resultMap="EntranceResultMap" parameterType="String">
+ select * from t_entrance where user_id=#{0}
+ </select>
+ 
+  <select id="selectHouse" resultMap="houseMap" parameterType="String">
+    select a.*,b.full_name from tc_house a
+  	left join tc_building_structure b on b.id=a.building_structure_id
+  	 where a.id=#{0}
+ </select>
+ 
+  <resultMap id="AnnexMap"  type="NewLease" extends="NewLeaseMap">
+    	<collection property="annexs" column="id"  ofType="Annex" select="com.flf.mapper.AnnexMapper.getAnnexbyRelationId"></collection>
+   </resultMap>
+  
+ 
+  <select id="selectPerson" resultMap="PersonCustNewMap" parameterType="String">
+ select * from tc_person_cust where cust_id=#{0}
+ </select>
+    
+    <!--  通过搜索条件找到租赁信息 -->
+	<select id="listSearchLease" resultMap="NewLeaseMap" parameterType="Search">
+		SELECT a.* FROM t_newlease a
+         LEFT JOIN tc_house b ON a.honse_id=b.id 
+         LEFT JOIN tc_person_building c ON b.building_structure_id=c.building_structure_id
+         LEFT JOIN tc_person_cust d ON c.cust_id=d.cust_id
+         WHERE b.id IN(SELECT b.id FROM tc_house b LEFT JOIN tc_person_building c ON b.building_structure_id=c.building_structure_id LEFT JOIN tc_person_cust d ON c.cust_id=d.cust_id WHERE d.cust_id=#{custId})   		
+  		<if test="custType!='' and custType!=null">
+  			and c.cust_type = #{custType}
+  		</if>
+  		<if test="personBuildingState!=null">
+  			and c.state = #{personBuildingState}
+  		</if>
+  		 GROUP BY a.id
+         ORDER BY a.id
+	</select>
+	
+	 <!--  通过搜索 条件找到外部管理租赁信息 -->
+	<select id="listSearchLeaseone" resultMap="NewLeaseMap" parameterType="Search">
+		    SELECT a.* FROM t_newlease a 
+             left JOIN  tc_person_cust b ON a.cust_id=b.cust_id
+             left JOIN tc_person_building c ON c.cust_id=b.cust_id
+            left JOIN tc_house d ON d.building_structure_id=c.building_structure_id
+            left JOIN  tc_building_structure e ON e.id=d.building_structure_id
+               where 1=1		
+  		<if test="staffName!='' and staffName!=null">
+  			and b.name like CONCAT('%',#{staffName},'%')
+  		</if>
+  		<if test="phone!='' and phone!=null">
+  			and b.phone_num like CONCAT('%',#{phone},'%')
+  		</if> 
+  		<if test="houseAddress!='' and houseAddress!=null">
+  			and d.house_address = #{houseAddress}
+  		</if>
+  		<if test="custId!='' and custId!=null">
+  			and b.cust_id = #{custId}
+  		</if>
+  		 GROUP BY a.id
+      
+	</select>
+	
+	 <!--  通过搜索 条件找到外部管理租赁信息 -->
+	<select id="listSearchLeaseAu" resultMap="NewLeaseMap" parameterType="Search">
+		SELECT a.* FROM t_newLease a 
+        LEFT JOIN tc_person_cust b ON b.cust_id =a.cust_id
+        LEFT JOIN t_authorization c ON b.cust_id = c.authorizer_personId 
+        where c.status = '1' and c.authorized_personId=#{custId} AND c.lease=1 AND NOW() BETWEEN c.sta_date AND c.end_date 		
+  		<if test="staffName!='' and staffName!=null">
+  			and b.name like CONCAT('%',#{staffName},'%')
+  		</if>
+  		<if test="phone!='' and phone!=null">
+  			and b.phone_num like CONCAT('%',#{phone},'%')
+  		</if> 
+  		 GROUP BY a.id  
+	</select>
+    
+    <!-- 分页查询客户下所有租赁 -->
+    <!-- 
+    <select id="listPageListSearchLease" parameterType="NewLease"  resultMap="AnnexMap">
+    	(
+    		SELECT a.id,a.honse_id,a.house_id_type,a.hire_start_date,a.hire_finish_date,a.leasePerson_id,a.cust_id,a.createDate,
+    			a.houseAddress,a.lease_delete,a.lease_person_id,a.lease_person_cardNum,a.lease_person_name,
+    			a.operate_date,a.rent,e.building_type
+    		FROM t_newlease a 
+            left JOIN tc_person_cust b ON a.cust_id=b.cust_id
+            left JOIN tc_person_building c ON c.cust_id=b.cust_id
+            left JOIN tc_house d ON d.building_structure_id=c.building_structure_id
+            left JOIN tc_building_structure e ON e.id=d.building_structure_id
+               where a.cust_id = #{custId} and a.lease_delete=1		
+	  		<if test="staffName!='' and staffName!=null">
+	  			and b.name like CONCAT('%',#{staffName},'%')
+	  		</if>
+	  		<if test="phone!='' and phone!=null">
+	  			and b.phone_num like CONCAT('%',#{phone},'%')
+	  		</if> 
+	  		<if test="houseAddress!='' and houseAddress!=null">
+	  			and a.houseAddress like CONCAT('%',CONCAT(#{houseAddress},'%'))
+	  		</if>
+	  		<if test="custId!='' and custId!=null">
+	  			and b.cust_id = #{custId}
+	  		</if>
+	  		 GROUP BY a.id
+    	) order by operate_date desc
+    </select> -->
+    
+    <!-- 分页查询客户下所有租赁 -->
+    <select id="listPageListSearchLease" parameterType="NewLease"  resultMap="AnnexMap">
+    	(
+	  		SELECT * FROM t_newlease WHERE cust_id = #{custId} AND lease_delete=1
+	  		<if test="houseAddress!='' and houseAddress!=null">
+	  			and houseAddress like CONCAT('%',CONCAT(#{houseAddress},'%'))
+	  		</if>
+	  		 GROUP BY id
+    	) order by operate_date desc
+    </select>
+    
+    
+    <!-- 根据房屋id获取租赁信息 -->
+    <select id="listPagegetNewLeasesByHonseId" parameterType="NewLease" resultMap="NewLeaseMap">
+    	select a.id,a.honse_id,a.hire_start_date,a.hire_finish_date,a.leasePerson_id,a.cust_id,a.createDate,
+    			a.houseAddress,a.lease_delete,a.lease_person_id,a.lease_person_cardNum,a.lease_person_name,
+    			a.operate_date,a.rent 
+    	FROM t_newLease a 
+    	where a.honse_id = #{honseId,jdbcType=VARCHAR} and <![CDATA[a.lease_delete <> 0]]>
+    </select>
+    
+	<select id="listPageNewLease" parameterType="NewLease"
+		resultMap="BaseResultMap">
+		select * from t_newlease where lease_delete=1
+		<if test="honseId!=null and honseId!= '' ">
+			and honse_id =#{honseId}
+		</if>
+	</select>
+
+	<select id="listAllNewLease" parameterType="NewLease" resultMap="BaseResultMap">
+		select * from t_newlease where lease_delete=1
+		<if test="honseId!=null and honseId!= '' ">
+			and honse_id =#{honseId}
+		</if>
+	</select>
+
+	<select id="getNewLeaseById"  resultMap="AnnexMap"
+		parameterType="String">
+		<!-- SELECT a.id,a.honse_id,a.hire_start_date,a.hire_finish_date,a.leasePerson_id,a.cust_id,a.createDate,
+    			a.houseAddress,a.lease_delete,a.lease_person_id,a.lease_person_cardNum,a.lease_person_name,
+    			a.operate_date,a.rent,e.building_type
+    		FROM t_newlease a 
+            left JOIN  tc_person_cust b ON a.cust_id=b.cust_id
+            left JOIN tc_person_building c ON c.cust_id=b.cust_id
+            left JOIN tc_house d ON d.building_structure_id=c.building_structure_id
+            left JOIN  tc_building_structure e ON e.id=d.building_structure_id
+              where a.id = #{0} and lease_delete=1 -->
+       SELECT * FROM t_newlease WHERE id = #{id} AND lease_delete=1
+	</select>
+	
+	<select id="getNewLeaseByleasePerson" resultMap="BaseResultMap"
+		parameterType="String">
+		select * from t_newlease
+		where leasePerson_id = #{0} and lease_delete=1
+	</select>
+
+
+	<insert id="insertNewLease" parameterType="com.flf.entity.NewLease">
+		insert into t_newlease
+		(id, honse_id,house_id_type, hire_start_date,
+		hire_finish_date, contract_number,
+		leasePerson_id,
+		staff_id, cust_id, createDate,
+		user_opinion,houseAddress,lease_person_name,lease_person_cardNum,operate_date,rent)
+
+		values (#{id}, #{honseId,jdbcType=VARCHAR},
+		#{houseIdType,jdbcType=VARCHAR},
+		#{hireStartDate,jdbcType=DATE},
+		#{hireFinishDate,jdbcType=DATE},
+		#{contractNumber,jdbcType=VARCHAR},
+		#{leasepersonId,jdbcType=VARCHAR},
+		#{staffId,jdbcType=VARCHAR}, #{custId,jdbcType=VARCHAR},
+		#{createdate,jdbcType=DATE},
+		#{userOpinion,jdbcType=VARCHAR},#{houseAddress,jdbcType=VARCHAR},#{leasePersonName,jdbcType=VARCHAR},#{leasePersonCardNum,jdbcType=VARCHAR},now(),#{rent,jdbcType=DOUBLE})
+	</insert>
+
+	<update id="deleteNewLease" parameterType="String">
+		update t_newlease
+		set
+		lease_delete=0,
+		operate_date=now()
+		where id=#{0}
+	</update>
+
+
+	<update id="updateNewLease" parameterType="com.flf.entity.NewLease">
+		update t_newlease
+		set
+		honse_id = #{honseId,jdbcType=VARCHAR},
+		hire_start_date =
+		#{hireStartDate,jdbcType=DATE},
+		hire_finish_date =
+		#{hireFinishDate,jdbcType=DATE},
+		contract_number =
+		#{contractNumber,jdbcType=VARCHAR},
+		leasePerson_id =
+		#{leasepersonId,jdbcType=VARCHAR},
+		staff_id =
+		#{staffId,jdbcType=VARCHAR},
+		cust_id = #{custId,jdbcType=VARCHAR},
+		createDate = #{createdate,jdbcType=DATE},
+		user_opinion =
+		#{userOpinion,jdbcType=VARCHAR},
+		houseAddress =
+		#{houseAddress,jdbcType=VARCHAR},
+		lease_person_name=#{leasePersonName,jdbcType=VARCHAR},
+		
+		lease_person_cardNum=#{leasePersonCardNum,jdbcType=VARCHAR},
+		operate_date=now(),
+		rent = #{rent,jdbcType=DOUBLE},
+	    operate_date=#{operateDate}
+		where id =
+		#{id,jdbcType=VARCHAR}
+	</update>
+	
+	<!-- 分页查询租赁信息 -->
+		
+	 <!--  通过搜索 条件找到外部管理租赁信息 -->
+	<select id="listPageNewLeaseByContion" resultMap="NewLeaseMap" parameterType="NewLease">
+		select distinct a.cust_id,a.id,a.honse_id,a.hire_start_date,a.hire_finish_date,a.leasePerson_id,a.createDate,
+    			a.houseAddress,
+    			a.operate_date,a.rent,e.building_type,b.name
+    		from t_newlease a 
+            inner join  tc_person_cust b on a.cust_id=b.cust_id
+            inner join tc_person_building c on c.cust_id=b.cust_id
+            inner join tc_house d on d.building_structure_id=c.building_structure_id
+            inner join  tc_building_structure e on e.id=d.building_structure_id
+            where c.cust_type="业主" and a.lease_delete=1	
+	  		<if test="name!='' and name!=null">
+	  			and b.name like CONCAT('%',#{name},'%')
+	  		</if>
+	  		<if test="phoneNumber!='' and phoneNumber!=null">
+	  			and b.phone_num like CONCAT('%',#{phoneNumber},'%')
+	  		</if> 
+	  		<if test="cardType!='' and cardType!=null">
+	  			and b.card_type=#{cardType}
+	  		</if>
+	  		<if test="cardNumber!='' and cardNumber!=null">
+	  			and b.card_num like CONCAT('%',#{cardNumber},'%')
+	  		</if>
+	  		 GROUP BY a.id 
+	</select>
+	
+	<select id="getNewLeaseByleasePersonIdAndHouseId" parameterType="String" resultMap="BaseResultMap">
+		select id,honse_id,lease_person_name,houseAddress,hire_start_date,hire_finish_date,rent,contract_number from t_newlease where leasePerson_id like CONCAT('%',#{0},'%') and honse_id = #{1}
+	</select>
+
+	
+</mapper>

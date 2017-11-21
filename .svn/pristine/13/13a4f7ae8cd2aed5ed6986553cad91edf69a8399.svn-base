@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.flf.mapper.PersonVipMapper" >
+  <resultMap id="BaseResultMap" type="PersonVip" >
+    <id column="vip_id" property="vipId" jdbcType="VARCHAR" />
+    <result column="cust_id" property="custId" jdbcType="VARCHAR" />
+    <result column="enterprise_id" property="enterpriseId" jdbcType="VARCHAR" />
+    <result column="vip_grade" property="vipGrade" jdbcType="TINYINT" />
+    <result column="vip_num" property="vipNum" jdbcType="VARCHAR" />
+    <result column="vip_start" property="vipStart" jdbcType="DATE" />
+    <result column="vip_end" property="vipEnd" jdbcType="DATE" />
+    <result column="apply_reason" property="applyReason" jdbcType="VARCHAR" />
+    <result column="refuse_reason" property="refuseReason" jdbcType="VARCHAR" />
+    <result column="review_state" property="reviewState" jdbcType="TINYINT" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="card_num" property="cardNum" jdbcType="VARCHAR" />
+    <result column="phone_num" property="phoneNum" jdbcType="VARCHAR" />    
+    <result column="applyfile_path" property="applyfilePath" jdbcType="VARCHAR" />
+    <result column="staff_id" property="staffId" jdbcType="VARCHAR" />
+    <result column="approval_id" property="approvalId" jdbcType="VARCHAR" />
+     <result column="theme" property="theme" jdbcType="VARCHAR" />
+     <result column="applystype" property="applystype" jdbcType="TINYINT" />
+     <result column="idcard" property="idcard" jdbcType="VARCHAR" />
+     <result column="phonenum" property="phonenum" jdbcType="VARCHAR" /> 
+     <result column="idcard1" property="idcard1" jdbcType="VARCHAR" />
+     <result column="phonenum1" property="phonenum1" jdbcType="VARCHAR" /> 
+  </resultMap>
+  
+    <sql id="Base_Column_List" >
+    vip_id, cust_id, enterprise_id, vip_grade,vip_num,vip_start,vip_end,
+    apply_reason,refuse_reason,review_state,name,card_num,phone_num,applyfile_path,
+    staff_id,approval_id,theme,applystype
+  </sql>
+ 
+
+  <resultMap type="PersonVip" id="resultPersonVipMap" extends="BaseResultMap">
+    
+  <collection property="personCustNew" column="cust_id" select="com.flf.mapper.PersonCustNewMapper.getPersonCustNewById" />
+  <collection property="enterpriseCustNew" column="enterprise_id" select="com.flf.mapper.EnterpriseCustNewMapper.getEnterpriseCustNewById" />
+  
+  </resultMap> 
+  
+  <select id="listPagePersonVip" resultMap="resultPersonVipMap"  parameterType="PersonVip">
+    select a.*,b.name,b.phone_num,b.card_num
+    from tc_person_vip a
+    left join tc_person_cust b on a.cust_id=b.cust_id
+    where 1=1 
+    <if test="name != null and name != '' ">
+        and name =#{name}
+    </if> 
+    <if test="phoneNum != null and phoneNum != '' ">
+        and phone_num =#{phoneNum}
+    </if>
+    <if test="cardNum != null and cardNum != ''">
+        and card_num =#{cardNum}
+    </if>
+  </select>
+ 
+  <select id="listAllPersonVip" resultMap="resultPersonVipMap"  >
+    select *
+    from tc_person_vip   
+  </select>
+  
+  <select id="selectPersonVipbyState" resultMap="BaseResultMap" parameterType="Byte" >
+    select a.*,b.name
+    from tc_person_vip a
+    left join tc_person_cust b on a.cust_id =b.cust_id
+    where review_state = #{0}
+  </select>
+ 
+  <select id="selectPersonVip" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select *
+    from tc_person_vip a
+    left join tc_person_cust b on a.cust_id =b.cust_id
+    where vip_id = #{0}
+  </select>
+  
+  <delete id="deletePersonVip" parameterType="String" >
+    delete from tc_person_vip
+    where vip_id = #{0}
+  </delete>
+  
+  <insert id="insertPersonVip" parameterType="PersonVip" >
+    insert into tc_person_vip (vip_id, cust_id, enterprise_id, 
+      vip_grade, vip_num, vip_start,
+      vip_end,apply_reason,refuse_reason,review_state,staff_id,applyfile_path,approval_id,theme,applystype,name,idcard,phonenum
+      )
+    values (#{vipId,jdbcType=VARCHAR} , #{custId,jdbcType=VARCHAR}, #{enterpriseId,jdbcType=VARCHAR}, 
+      #{vipGrade,jdbcType=TINYINT}, #{vipNum,jdbcType=VARCHAR}, #{vipStart,jdbcType=DATE}, 
+      #{vipEnd,jdbcType=DATE},#{applyReason,jdbcType=VARCHAR},#{refuseReason,jdbcType=VARCHAR},
+      #{reviewState,jdbcType=TINYINT},#{staffId,jdbcType=VARCHAR}, #{applyfilePath,jdbcType=VARCHAR},
+      #{approvalId,jdbcType=VARCHAR},#{theme,jdbcType=VARCHAR},#{applystype,jdbcType=TINYINT},#{name,jdbcType=VARCHAR}
+      ,#{idcard,jdbcType=VARCHAR},#{phonenum,jdbcType=VARCHAR})
+  </insert>
+
+  
+  <update id="updatePersonVip" parameterType="PersonVip" >
+    update tc_person_vip
+    set cust_id = #{custId,jdbcType=VARCHAR},
+      enterprise_id = #{enterpriseId,jdbcType=VARCHAR},
+      vip_grade = #{vipGrade,jdbcType=TINYINT},
+      vip_num = #{vipNum,jdbcType=VARCHAR},
+      vip_start = #{vipStart,jdbcType=DATE},
+      vip_end = #{vipEnd,jdbcType=DATE},
+      apply_reason=#{applyReason},
+      refuse_reason=#{refuseReason},
+      review_state=#{reviewState},
+      staff_id=#{staffId,jdbcType=VARCHAR}, 
+      applyfile_path=#{applyfilePath,jdbcType=VARCHAR},
+      applystype=#{applystype,jdbcType=TINYINT}
+    where vip_id = #{vipId,jdbcType=VARCHAR	}    
+    
+  </update>
+  
+  <!-- 根据vip客户id查询申请客户的状态 -->  
+  <select id="getPersonVipData" parameterType="String" resultMap="BaseResultMap">
+  	select * from tc_person_vip where applystype =0 and cust_id = #{custId,jdbcType=VARCHAR}  	
+  </select>
+  
+   <!-- 根据vip客户id查询失效申请客户的状态 -->  
+  <select id="getPersonVipDataById" parameterType="String" resultMap="BaseResultMap">
+  	select pv.review_state,pv.cust_id 
+  	from tc_person_vip pv
+  	where pv.applystype =1
+  	and pv.cust_id = #{custId,jdbcType=VARCHAR}   	
+  </select>
+  
+  <!-- 根据审核id查询vip信息 -->
+  <select id="getPersonVipDataByapprovalId" parameterType="String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from tc_person_vip
+    where approval_id = #{approvalId,jdbcType=VARCHAR} 	
+  </select>
+ <!-- 查询客户申请的状态 2016-1-19 供校验用 -->
+   <select id="getPersonVipState" parameterType="String" resultMap="BaseResultMap">
+   	select * from tc_person_vip 
+   	where cust_id = #{custId,jdbcType=VARCHAR}  order by vip_end desc limit 0,1 
+  </select>
+  
+  <!-- 查询vip客户申请数量 -->
+  <select id="getPersonVipSum"  parameterType="String" resultType="java.lang.Integer" >
+    select IFNULL(count(0),0) from tc_person_vip where theme=#{theme,jdbcType=VARCHAR}
+  </select>
+  
+  <!-- //查询vip客户失效申请数量-->
+  <select id="getFailPersonVipSum"  parameterType="String" resultType="java.lang.Integer" >
+    select IFNULL(count(0),0) from tc_person_vip where theme=#{theme,jdbcType=VARCHAR}
+  </select>
+</mapper>

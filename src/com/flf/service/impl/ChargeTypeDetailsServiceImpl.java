@@ -1,0 +1,47 @@
+package com.flf.service.impl;
+
+
+import java.util.List;
+
+import com.flf.entity.ChargeTypeDetails;
+import com.flf.mapper.ChargeTypeDetailsMapper;
+import com.flf.service.ChargeTypeDetailsService;
+/**
+ * 
+ * @author maogaofei
+ * @date 2016年6月28日 下午2:11:20
+ */
+public class ChargeTypeDetailsServiceImpl implements ChargeTypeDetailsService {
+	private ChargeTypeDetailsMapper chargeTypeDetailsMapper;
+
+	public ChargeTypeDetailsMapper getChargeTypeDetailsMapper() {
+		return chargeTypeDetailsMapper;
+	}
+
+	public void setChargeTypeDetailsMapper(
+			ChargeTypeDetailsMapper chargeTypeDetailsMapper) {
+		this.chargeTypeDetailsMapper = chargeTypeDetailsMapper;
+	}
+
+	@Override
+	public List<ChargeTypeDetails> listAllCharegeTypeDetails(
+			ChargeTypeDetails chargeTypeDetails) {
+		List<ChargeTypeDetails> list = chargeTypeDetailsMapper.listAllCharegeTypeDetails(chargeTypeDetails);
+		return list;
+	}
+	
+	@Override
+	public List<ChargeTypeDetails> getChargeTypeDetailsById(String chargeTypeId) {
+		List<ChargeTypeDetails> list = chargeTypeDetailsMapper.getChargeTypeDetailsById(chargeTypeId);
+		return list;
+	}
+
+	@Override
+	public String getCode() {
+		ChargeTypeDetails temp=chargeTypeDetailsMapper.getCode();
+		String str=temp.getChargeTypeDetailsNum();
+		return str;
+	}
+	
+
+}

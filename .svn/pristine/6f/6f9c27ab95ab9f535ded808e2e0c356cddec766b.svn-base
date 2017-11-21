@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.flf.mapper.CassetRepositoryMapper" >
+  <resultMap id="BaseResultMap" type="CassetRepository" >
+    <id column="asset_repository_id" property="assetRepositoryId" jdbcType="VARCHAR" />
+    <result column="property_id" property="propertyId" jdbcType="VARCHAR" />
+    <result column="property_number" property="propertyNumber" jdbcType="DOUBLE" />
+    <result column="property_area" property="propertyArea" jdbcType="DOUBLE" />
+    <result column="building_structure_id" property="buildingStructureId" jdbcType="VARCHAR" />
+    <result column="building_component_id" property="buildingComponentId" jdbcType="VARCHAR" />
+    <result column="functional_id" property="functionalId" jdbcType="VARCHAR" />
+  </resultMap>
+  
+ 
+ <select id="ListPageCassetRepository" resultMap="BaseResultMap" parameterType="CassetRepository">
+    select * from tc_casset_repository
+    
+  </select>
+  
+  <select id="ListCassetRepositoryAll" resultMap="BaseResultMap"  >
+    select * from tc_casset_repository
+   
+  </select>
+ 
+  <select id="selectCassetRepositoryById" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select * from tc_casset_repository
+    where asset_repository_id = #{0}
+  </select>
+  <delete id="deleteCassetRepository" parameterType="java.lang.String" >
+    delete from tc_casset_repository
+    where asset_repository_id = #{0}
+  </delete>
+  
+  <insert id="insertCassetRepository" parameterType="CassetRepository" >
+    insert into tc_casset_repository (asset_repository_id, property_id, property_number, 
+      property_area, building_structure_id, building_component_id, 
+      functional_id)
+    values (UUID(), #{propertyId,jdbcType=VARCHAR}, #{propertyNumber,jdbcType=DOUBLE}, 
+      #{propertyArea,jdbcType=DOUBLE}, #{buildingStructureId,jdbcType=VARCHAR}, #{buildingComponentId,jdbcType=VARCHAR}, 
+      #{functionalId,jdbcType=VARCHAR})
+  </insert>
+
+
+  <update id="updateCassetRepository" parameterType="CassetRepository" >
+    update tc_casset_repository
+    set property_id = #{propertyId,jdbcType=VARCHAR},
+      property_number = #{propertyNumber,jdbcType=DOUBLE},
+      property_area = #{propertyArea,jdbcType=DOUBLE},
+      building_structure_id = #{buildingStructureId,jdbcType=VARCHAR},
+      building_component_id = #{buildingComponentId,jdbcType=VARCHAR},
+      functional_id = #{functionalId,jdbcType=VARCHAR}
+    where asset_repository_id = #{assetRepositoryId,jdbcType=VARCHAR}
+  </update>
+</mapper>

@@ -1,0 +1,58 @@
+<!DOCTYPE>
+<html ng-app="UserApp">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>Insert title here</title>
+</head >
+<link type="text/css" rel="stylesheet" href="/Home/css/main.css"/>
+<script src="/Home/js/AngularJS/angular-1.2.3.js"></script>
+<script src="/Home/js/AngularJS/UserController.js"></script>
+<body>
+<script type="text/ng-template" id="listView">
+	<table class="main_head" width="100%" border="0" cellpadding="0" cellspacing="0" class="main_table">
+		<tr class="main_head">
+			<td>用户id</td>
+			<td>登录名</td>
+			<td>密码</td>
+			<td>用户名</td>
+		</tr>
+		<tr ng-repeat="items in users" class="main_head">
+			<td>{{items.userId}}</td>
+			<td>{{items.loginname}}</td>
+			<td>{{items.password}}</td>
+			<td>{{items.username}}</td>
+			<td><a href="#" ng-click="GetUser(items.userId)" class="myBtn"><em>修改</em></a></td>
+			<td><a href="#" ng-click="deleteUser(items.userId)" class="myBtn"><em>删除</em></a></td>
+		</tr>
+	</table>
+	<div class="page_and_btn">
+			<a href="#" ng-click="GetUser(0)" class="myBtn"><em>新增</em></a>
+		</div>
+</script>
+<script type="text/ng-template" id="AddOrUpdateView">
+     <table class="main_head" width="100%" border="0" cellpadding="0" cellspacing="0" class="main_table">
+		<tr class="main_head">
+			<th>登录名</th>
+			<td>
+				<input type="text" ng-model="user.loginname" />
+				<input type="hidden" ng-model="user.userId" /> 
+			</td>
+		</tr>
+		<tr class="main_head">
+			<th>密码</th>
+			<td><input type="text" ng-model="user.password"/> </td>
+		</tr>
+		<tr class="main_head">
+			<th>用户名</th>
+			<td><input type="text" ng-model="user.username"/> </td>
+		</tr>
+		<tr class="main_head">
+			<td colspan="2"><input type="button" value="保存" ng-click="AddOrUpdateUser()"/></td>
+		</tr>
+	</table>
+</script>
+<div ng-controller='UserCtrl'>
+	<div ng-include="templateUrl"></div>
+</div>
+</body>
+</html>

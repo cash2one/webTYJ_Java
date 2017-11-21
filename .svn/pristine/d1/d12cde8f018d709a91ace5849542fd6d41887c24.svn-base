@@ -1,0 +1,92 @@
+package com.flf.entity;
+
+import java.util.Date;
+
+import javax.xml.bind.annotation.XmlRootElement;
+
+import org.springframework.format.annotation.DateTimeFormat;
+//内部通知
+@XmlRootElement(name = "Inform")
+public class Inform {
+    private String id;//id
+
+    private String inform;//通知
+
+    private @DateTimeFormat(pattern="yyyy-MM-dd")Date time;//日期
+
+    private String content;//内容
+    
+    private String writer;//作者
+    
+    private String abstracts;//摘要
+    
+    private String department;//所属部门
+    
+    private String project;//发布项目
+    
+    private Page page;
+	
+   	public String getWriter() {
+		return writer;
+	}
+	public void setWriter(String writer) {
+		this.writer = writer;
+	}
+	public String getAbstracts() {
+		return abstracts;
+	}
+	public void setAbstracts(String abstracts) {
+		this.abstracts = abstracts;
+	}
+	public String getDepartment() {
+		return department;
+	}
+	public void setDepartment(String department) {
+		this.department = department;
+	}
+	public String getProject() {
+		return project;
+	}
+	public void setProject(String project) {
+		this.project = project;
+	}
+	public Page getPage() {
+   		return page;
+   	}
+   	public void setPage(Page page) {
+   		this.page = page;
+   	}
+
+    
+   	
+
+    public String getId() {
+		return id;
+	}
+	public void setId(String id) {
+		this.id = id;
+	}
+	public String getInform() {
+        return inform;
+    }
+
+    public void setInform(String inform) {
+        this.inform = inform;
+    }
+
+    public Date getTime() {
+        return time;
+    }
+
+    public void setTime(Date time) {
+        this.time = time;
+    }
+
+    public String getContent() {
+        return content;
+    }
+
+    public void setContent(String content) {
+        this.content = content;
+    }
+}

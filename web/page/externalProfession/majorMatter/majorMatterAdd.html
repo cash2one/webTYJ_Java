@@ -1,0 +1,119 @@
+<!--
+    前端负责人：倪明
+    后台负责人：
+    页面名称：外部专业线的新增重大事项
+    JS路径：'controllers/externalProfession/majorMatter/majorMatterAdd'
+    创建日期：2015/5/29
+    修改人：钟加诚
+    修改时间：2015/6/4
+-->
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>新增重大事项</title>
+    <style>
+        .panel_info td{
+            height: 30px;
+        }
+    </style>
+</head>
+<body>
+<div class="row" style="padding: 15px">
+    <div class=" panel_info clear" >
+        <table style="line-height: 30px">
+            <tr>
+                <td style="white-space: nowrap;text-align: right">服务编号：</td><td width="160">1001</td>
+                <td style="white-space: nowrap;text-align: right">服务类型：</td><td>前台</td>
+                <td></td>
+            </tr>
+            <tr>
+                <td style="white-space: nowrap;text-align: right">请求类型：</td><td width="160">101101212413234</td>
+                <td style="white-space: nowrap;text-align: right">客户名称：</td><td>谢XX</td>
+                <td></td>
+            </tr>
+            <tr>
+                <td>项目名称：</td><td>桃源居</td>
+                <td style="white-space: nowrap;text-align: right">区：</td><td>1区</td>
+                <td>栋/座：3</td>
+            </tr>
+            <tr>
+                <td style="text-align: right">单元：</td><td>3</td>
+                <td style="white-space: nowrap;text-align: right">层：</td><td>5</td>
+                <td>房屋：502</td>
+                <td><button style="height: 30px;width: 90px;margin-left: 30px">选择</button></td>
+            </tr>
+            <tr>
+                <td style="white-space: nowrap;text-align: right">优先级：</td>
+                <td><select style="width: 80px">
+                    <option>高</option>
+                </select></td>
+                <td style="white-space: nowrap;text-align: right">重要程度：</td>
+                <td><select style="width: 80px">
+                    <option>高</option>
+                </select></td>
+            </tr>
+        </table>
+        <table>
+            <tr>
+                <td>事由描述：</td>
+                <td><textarea style="width:450px;" cols="3" placeholder="请输入内容"></textarea></td>
+            </tr>
+        </table>
+        <div><a ng-click="click_a('div_a')" class="btn glyphicon glyphicon-plus" aria-hidden="true"></a></div>
+        <table style="display: none;" id="div_a">
+            <tr>
+                <td style="white-space: nowrap;text-align: right">工单ID：</td><td width="190">100101</td>
+                <td style="white-space: nowrap;text-align: right;color:red">重大事项：</td><td width="190" style="color: red">是</td>
+                <td></td>
+            </tr>
+            <tr>
+                <td style="white-space: nowrap;text-align: right">请求类型：</td>
+                <td><select style="width: 90px">
+                    <option>室内维修</option>
+                    <option>室外维修</option>
+                    <option>清洁</option>
+                    <option>园林</option>
+                    <option>安保</option>
+                    <option>邻里纠纷</option>
+                    <option>重大事项</option>
+                </select></td>
+                <td style="white-space: nowrap;text-align: right">分类：</td>
+                <td><select style="width: 90px">
+                    <option>电</option>
+                    <option>水</option>
+                    <option>窗</option>
+                    <option>门</option>
+                    <option>信报箱</option>
+                    <option>房屋主体</option>
+                    <option>抄水电表</option>
+                    <option>核实水电表</option>
+                    <option>开关水电</option>
+                    <option>电器</option>
+                    <option>洁具</option>
+                    <option>栏杆</option>
+                    <option>火灾</option>
+                </select></td>
+                <td style="white-space: nowrap;text-align: right">专业：</td>
+                <td><select style="width: 90px">
+                    <option>电表</option>
+                    <option>配电箱</option>
+                    <option>管线</option>
+                    <option>开关插座</option>
+                    <option>水管</option>
+                </select></td>
+            </tr>
+            <tr>
+                <td style="white-space: nowrap;text-align: right">负责人工号：</td><td>00010</td>
+                <td style="text-align: right">负责人：</td><td>邹工</td>
+            </tr>
+            <tr>
+                <td style="white-space: nowrap;text-align: right">负责人工号：</td><td>00010</td>
+                <td style="text-align: right">负责人：</td><td>邹工</td>
+            </tr>
+        </table>
+        <button class="btn btn-default" style="text-align: center" ng-click="save()">提交</button>
+    </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>物业服务车辆主页</title>
+    <link rel="stylesheet" href="css/personnel.css">
+</head>
+<body ng-controller="carHomeCtrl">
+<div class="row">
+    <!--车辆主页start-->
+    <div class="complaint_user">
+        <div class="complaint_user_img"><img src="images/personnel/entranceCard/car76.jpg" width="100" height="100"></div>
+        <div class="complaint_user_info">
+            <div class="complaint_user_info_button">
+                <span class="dot_Checked"></span><br>
+                <span class="dot_unCheck"></span><br>
+                         <span class="complaint_panel_info_navigation">
+         						    <ul>
+                                        <li><img src="images/propertyService/jiantoua.png" width="35" height="29">
+                                            <ul>
+                                                <li class="program_panel_info_navigation_top">办理放行条</li>
+                                                <li>办理门禁卡</li>
+                                                <li>宠物登记</li>
+                                                <li class="program_panel_info_navigation_bottom">缴纳物业费</li>
+                                            </ul>
+                                        </li>
+                                    </ul>
+                                 </span>
+
+            </div>
+            <div class="complaint_user_info_info">
+                <table class="complaint_user_info_userinfo">
+                    <tr>
+                        <td class="col-md-3">资产类型：汽车</td>
+                        <td class="col-md-3">车牌号：粤B12345</td>
+                        <td class="col-md-3">停车卡ID号：ID33445566</td>
+                        <td class="col-md-3">车位类型：私人车位</td>
+                    </tr>
+
+                    <tr>
+                        <td class="col-md-3">所属人：周润发</td>
+                        <td class="col-md-3">车辆型号：宝马740</td>
+                        <td class="col-md-3">停车卡到期日期：2015年3月1日</td>
+                        <td class="col-md-3">车位状态：使用中</td>
+                    </tr>
+
+                    <tr>
+                        <td class="col-md-3">联系电话：13856888788</td>
+                        <td class="col-md-3">车辆所有人：周润发</td>
+                        <td class="col-md-3">停车卡状态：欠费</td>
+                        <td class="col-md-3">登记日期：2013年3月31日</td>
+                    </tr>
+
+                </table>
+            </div>
+            <div class="complaint_user_info_navigation">
+                <a class="btn" ui-sref="index.propertyService.carHome.parkingCard">停车卡</a>
+                <a class="btn" ui-sref="index.propertyService.carHome.vehicleManagement">车辆管理</a>
+                <a class="btn" ui-sref="index.propertyService.carHome.claimManagement">保险理赔</a>
+                <a class="btn" ui-sref="index.propertyService.carHome.collectFees">收费</a>
+            </div>
+        </div>
+        <div class="clear"></div>
+    </div>
+    <!--车辆主页end-->
+</div>
+<div class="row">
+    <div ui-view></div>
+</div>
+</body>
+</html>

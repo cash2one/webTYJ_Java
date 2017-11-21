@@ -1,0 +1,100 @@
+<!--
+    作者：彭婷婷
+    页面名称：外部专业线---服务请求详情--园林
+    js路径：js/controllers/externalProfession/serviceRequestDatil/park
+    创建时间：2015/4/30
+    修改时间:2015/5/29
+-->
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+<div class="order">
+    <div class="row">
+        <div style="width:96%; margin:15px 30px; background:#f0f0f0; -moz-border-radius:7px; -webkit-border-radius:7px; border-radius:7px; border:1px solid #bbb; padding-bottom:15px; height:350px; ">
+            <div class="col-lg-4 col-md-4 col-sm-6"   ng-repeat="park in serviceRequestDatil.parkList">
+                <div class="program_panel">
+                    <div class="program_panel_people_title">
+                        <span class="panel_title_left">园林</span>
+                                  <span class="panel_title_right">
+                                  <span class="complaint1_panel_info_navigation">
+         						    <ul>
+                                        <li><a href="#" class="dropdown-toggle btn-lg" data-toggle="dropdown" role="button" aria-expanded="false"><span class="glyphicon glyphicon-menu-down" aria-hidden="true"></span></a>
+                                            <ul>
+                                                <li class="program_panel_info_navigation_top">接受</li>
+                                                <li>转出</li>
+                                                <li>合并</li>
+                                                <li>转专项</li>
+                                                <li class="program_panel_info_navigation_bottom">集中处理</li>
+                                                <li class="program_panel_info_navigation_bottom" >
+                                                    <a ui-sref="index.externalProfession.serviceRequestDatil.cleanQuery.logDetails">
+                                                        查看</a>
+                                                </li>
+                                            </ul>
+                                        </li>
+                                    </ul>
+                                 </span>
+                                  </span>
+                    </div>
+                    <div>
+                        <div>
+                            <table style="width: 98%;margin:5px;height:230px;">
+                                <tr>
+                                    <td style="width: 35%">任务号：{{park.taskOrder}}</td>
+                                    <td style="width: 40%">任务来源：{{park.taskSource}}</td>
+                                    <td style="width: 20%"></td>
+                                </tr>
+                                <tr>
+                                    <td>任务状态：{{park.taskState}}</td>
+                                    <td>催办次数：{{park.remindNumber}}</td>
+                                    <td></td>
+                                </tr>
+                                <tr>
+                                    <td>项目：{{park.project}}</td>
+                                    <td>区：{{park.area}}</td>
+                                    <td>栋/座：{{park.building}}</td>
+                                </tr>
+
+                                <tr>
+                                    <td>单元：{{park.unit}}</td>
+                                    <td>房号：{{park.roomNumber}}</td>
+                                    <td></td>
+                                </tr>
+                                <tr>
+                                    <td>请求类型：{{park.requestType}}</td>
+                                    <td>分类：{{park.classification}}</td>
+                                    <td>专业：{{park.Professional}}</td>
+                                </tr>
+                                <tr>
+                                    <td>是否回访：{{park.isVisit}}</td>
+                                    <td>回访电话:{{park.visitPhone}}</td>
+                                    <td></td>
+                                </tr>
+
+                                <tr>
+                                    <td>优先级：{{park.priority}}</td>
+                                    <td>是否公共区域：{{park.isPublicArea}}</td>
+                                </tr>
+
+                                <tr>
+                                    <td>负责人工号：{{park.chargePersonNumber}}</td>
+                                    <td>处理人：{{park.chargePerson}}</td>
+                                </tr>
+                                <tr>
+                                    <td>处理人工号：{{park.handleNumber}}</td>
+                                    <td>处理人：{{park.handlePerson}}</td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="clear"></div>
+    </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>索赔查看</title>
+</head>
+<body>
+<div class="complaint_user_list" style="margin: 20px 20px;height:600px">
+    <div>
+        <div class="complaint_user_info_navigation col-md-12" style="padding-top:5px;padding-left: 10px;margin: 10px 10px">
+            <a class="btn" ui-sref="index.externalProfession.compensation.compensationCheck.order">工单</a>
+            <a class="btn" ui-sref="index.externalProfession.compensation.compensationCheck.offerorder">报价工单详情</a>
+            <a class="btn" ui-sref="index.externalProfession.compensation.compensationCheck.manageorder">处理工单详情</a>
+            <a class="btn" ui-sref="index.externalProfession.compensation.compensationCheck.checkorder">验收工单详情</a>
+            <a class="btn" ui-sref="index.externalProfession.compensation.compensationCheck.balanceorder">结算工单详情</a>
+            <a class="btn" ui-sref="index.externalProfession.compensation.compensationCheck.log">日志</a>
+            <a class="btn" style="margin-left: 300px" ui-sref="index.externalProfession.compensation">返回</a>
+        </div>
+    </div>
+    <div class="clear"></div>
+    <div class="row" style="padding:5px 10px 0">
+        <div ui-view></div>
+    </div>
+</div>
+</body>
+</html>

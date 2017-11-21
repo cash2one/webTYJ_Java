@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.flf.mapper.SpecialtyInfoProjectMapper" >
+  <resultMap id="BaseResultMap" type="com.flf.entity.SpecialtyInfoProject" >
+    <id column="specialty_id" property="specialtyId" jdbcType="VARCHAR" />
+    <result column="specialty_name" property="specialtyName" jdbcType="VARCHAR" />
+    <result column="specialty_describle" property="specialtyDescrible" jdbcType="VARCHAR" />
+    <result column="instance_id" property="instanceId" jdbcType="INTEGER" />
+    <result column="state" property="state" jdbcType="TINYINT" />
+    <result column="will_options" property="willOptions" jdbcType="TINYINT" />
+    <result column="company_id" property="companyId" jdbcType="VARCHAR" />
+    <result column="project_id" property="projectId" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    specialty_id, specialty_name, specialty_describle, instance_id, state, will_options, 
+    company_id, project_id
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_specialty_info_project
+    where specialty_id = #{specialtyId,jdbcType=VARCHAR}
+  </select>
+  
+  <select id="listSpecialtyInfoProjectOpen" resultMap="BaseResultMap" parameterType="String">
+  	select * from t_specialty_info_project where state=1 and project_id=#{0}
+  </select>
+  
+  <select id="listSpecialtyInfoProject" resultMap="BaseResultMap">
+  	select * from t_specialty_info_project
+  </select>
+  
+  <select id="listSpecialtyInfoProjectByCompanyId" parameterType="String"
+		resultMap="BaseResultMap">
+		SELECT*FROM t_post tp ,t_core_position tcp,t_specialty_info_project
+		c WHERE tp.post_id=tcp.post_id AND
+		tp.professional_line_id=c.specialty_id
+		and c.company_id=#{0} AND
+		c.specialty_id=#{1}
+	</select>
+  
+  <select id="listSpecialtyInfoProjectByProjectId" parameterType="String" resultMap="BaseResultMap">
+  	select * from t_specialty_info_project where project_id = #{0}
+  </select>
+  
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from t_specialty_info_project
+    where specialty_id = #{specialtyId,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.flf.entity.SpecialtyInfoProject" >
+    insert into t_specialty_info_project (specialty_id, specialty_name, specialty_describle, 
+      instance_id, state, will_options, 
+      company_id, project_id)
+    values (UUID(), #{specialtyName,jdbcType=VARCHAR}, #{specialtyDescrible,jdbcType=VARCHAR}, 
+      #{instanceId,jdbcType=INTEGER}, #{state,jdbcType=TINYINT}, #{willOptions,jdbcType=TINYINT}, 
+      #{companyId,jdbcType=VARCHAR}, #{projectId,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.flf.entity.SpecialtyInfoProject" >
+    insert into t_specialty_info_project
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="specialtyId != null" >
+        specialty_id,
+      </if>
+      <if test="specialtyName != null" >
+        specialty_name,
+      </if>
+      <if test="specialtyDescrible != null" >
+        specialty_describle,
+      </if>
+      <if test="instanceId != null" >
+        instance_id,
+      </if>
+      <if test="state != null" >
+        state,
+      </if>
+      <if test="willOptions != null" >
+        will_options,
+      </if>
+      <if test="companyId != null" >
+        company_id,
+      </if>
+      <if test="projectId != null" >
+        project_id,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="specialtyId != null" >
+        #{specialtyId,jdbcType=VARCHAR},
+      </if>
+      <if test="specialtyName != null" >
+        #{specialtyName,jdbcType=VARCHAR},
+      </if>
+      <if test="specialtyDescrible != null" >
+        #{specialtyDescrible,jdbcType=VARCHAR},
+      </if>
+      <if test="instanceId != null" >
+        #{instanceId,jdbcType=INTEGER},
+      </if>
+      <if test="state != null" >
+        #{state,jdbcType=TINYINT},
+      </if>
+      <if test="willOptions != null" >
+        #{willOptions,jdbcType=TINYINT},
+      </if>
+      <if test="companyId != null" >
+        #{companyId,jdbcType=VARCHAR},
+      </if>
+      <if test="projectId != null" >
+        #{projectId,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.flf.entity.SpecialtyInfoProject" >
+    update t_specialty_info_project
+    <set >
+      <if test="specialtyName != null" >
+        specialty_name = #{specialtyName,jdbcType=VARCHAR},
+      </if>
+      <if test="specialtyDescrible != null" >
+        specialty_describle = #{specialtyDescrible,jdbcType=VARCHAR},
+      </if>
+      <if test="instanceId != null" >
+        instance_id = #{instanceId,jdbcType=INTEGER},
+      </if>
+      <if test="state != null" >
+        state = #{state,jdbcType=TINYINT},
+      </if>
+      <if test="willOptions != null" >
+        will_options = #{willOptions,jdbcType=TINYINT},
+      </if>
+      <if test="companyId != null" >
+        company_id = #{companyId,jdbcType=VARCHAR},
+      </if>
+      <if test="projectId != null" >
+        project_id = #{projectId,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where specialty_id = #{specialtyId,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.flf.entity.SpecialtyInfoProject" >
+    update t_specialty_info_project
+    set specialty_name = #{specialtyName,jdbcType=VARCHAR},
+      specialty_describle = #{specialtyDescrible,jdbcType=VARCHAR},
+      instance_id = #{instanceId,jdbcType=INTEGER},
+      state = #{state,jdbcType=TINYINT},
+      will_options = #{willOptions,jdbcType=TINYINT},
+      company_id = #{companyId,jdbcType=VARCHAR},
+      project_id = #{projectId,jdbcType=VARCHAR}
+    where specialty_id = #{specialtyId,jdbcType=VARCHAR}
+  </update>
+</mapper>

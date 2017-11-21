@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.flf.mapper.PersonEmphasisMapper" >
+  <resultMap id="BaseResultMap" type="PersonEmphasis" >
+    <result column="emphasis_id" property="emphasisId" jdbcType="VARCHAR" />
+    <result column="username" property="username" jdbcType="VARCHAR" />
+    <result column="applyreason" property="applyreason" jdbcType="VARCHAR" />
+   <result column="applyfilepath" property="applyfilepath" jdbcType="VARCHAR" /> 
+    <result column="applydate" property="applydate" jdbcType="DATE" />
+    <result column="applystatus" property="applystatus" jdbcType="TINYINT" />
+    <result column="idcard" property="idcard" jdbcType="VARCHAR" />
+    <result column="failreason" property="failreason" jdbcType="VARCHAR" />
+    <result column="phonenum" property="phonenum" jdbcType="VARCHAR" />
+    <result column="enterprise_id" property="enterpriseId" jdbcType="VARCHAR" />
+    <result column="cust_id" property="custId" jdbcType="VARCHAR" />
+    <result column="applyeddate" property="applyeddate" jdbcType="DATE" />
+    <result column="approval_id" property="approvalId" jdbcType="VARCHAR" />
+       <result column="theme" property="theme" jdbcType="VARCHAR" />
+       <result column="applystype" property="applystype" jdbcType="TINYINT" />
+         <result column="theme1" property="theme1" jdbcType="VARCHAR" />
+           <result column="applystype1" property="applystype1" jdbcType="TINYINT" />
+  </resultMap>
+  
+   <sql id="Base_Column_List" >
+    emphasis_id, username, applyreason, applyfilepath,applydate,applystatus,
+    idcard,failreason,phonenum,enterprise_id,cust_id,applyeddate,approval_id,
+    theme,applystype
+  </sql>
+  
+  <resultMap type="PersonEmphasis" id="resultPersonEmphasisMap" extends="BaseResultMap" >
+    
+  <collection property="personCustNew" column="cust_id" select="com.flf.mapper.PersonCustNewMapper.getPersonCustNewById" />
+  <collection property="enterpriseCustNew" column="enterprise_id" select="com.flf.mapper.EnterpriseCustNewMapper.getEnterpriseCustNewById" />
+  
+  </resultMap> 
+  
+  
+  <!--   查询所有重点客户（审核已通过的）分页结果    -->
+  <select id="listPagePersonEmphasis" resultMap="resultPersonEmphasisMap"  parameterType="PersonEmphasis">
+    select *
+    from tc_person_emphasis where applystatus=1 
+    <if test="username!=null and username!=''">
+    	and username like CONCAT('%',#{username},'%')
+    </if>
+    <if test="idcard!=null and idcard!=''">
+    	and idcard like CONCAT('%',#{idcard},'%')
+    </if>
+    <if test="phonenum!=null and phonenum!=''">
+    	and phonenum like CONCAT('%',#{phonenum},'%')  
+    </if> 
+  </select>
+  
+  
+ <!--   查询所有重点客户（审核已通过的）    -->
+ <!--  <select id="listAllPersonEmphasis" resultMap="resultPersonEmphasisMap"  >
+    select *
+    from tc_person_emphasis where applystatus=1 
+  </select> -->
+  
+  <!--   按审核状态查询所有重点客户    -->
+   <select id="listPersonEmphasisBySta" resultMap="resultPersonEmphasisMap"  parameterType="java.lang.Integer" >
+    select *
+    from tc_person_emphasis where applystatus=#{0}
+  </select>
+  
+ <!--   按重点客户id查询    -->
+  <select id="selectPersonEmphasis" resultMap="resultPersonEmphasisMap" parameterType="java.lang.String" >
+    select *
+    from tc_person_emphasis
+    where emphasis_id=#{0}
+  </select>
+
+  
+  <delete id="deletePersonEmphasis" parameterType="java.lang.String" >
+    delete from tc_person_emphasis where emphasis_id=#{0}
+  </delete>
+  
+  <!-- 插入记录  -->
+  <insert id="insertPersonEmphasis" parameterType="PersonEmphasis" >
+  insert into tc_person_emphasis (emphasis_id, username, applyreason, applydate, applystatus, idcard, failreason, phonenum, enterprise_id, cust_id,applystype,theme,approval_id) 
+	VALUES(
+    #{emphasisId,jdbcType=VARCHAR},
+	#{username,jdbcType=VARCHAR},
+	#{applyreason,jdbcType=VARCHAR},
+	#{applydate,jdbcType=DATE},
+	#{applystatus,jdbcType=TINYINT},
+	#{idcard,jdbcType=VARCHAR},
+	#{failreason,jdbcType=VARCHAR},
+	#{phonenum,jdbcType=VARCHAR},
+	#{enterpriseId,jdbcType=VARCHAR},
+	#{custId,jdbcType=VARCHAR},
+	#{applystype,jdbcType=TINYINT},
+	#{theme,jdbcType=VARCHAR},	
+	#{approvalId,jdbcType=VARCHAR}
+	)
+  </insert>
+
+
+
+  <update id="updatePersonEmphasis" parameterType="PersonEmphasis" >
+    update tc_person_emphasis
+    set 
+	applystatus =#{applystatus,jdbcType=TINYINT},
+	applyeddate =#{applyeddate,jdbcType=DATE}
+   where emphasis_id=#{emphasisId,jdbcType=VARCHAR}
+  </update>
+  
+  
+    <!-- 根据审核id查询重点信息 -->
+  <select id="getPersonEmphasisDataByapprovalId" parameterType="String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from  tc_person_emphasis
+    where approval_id = #{approvalId,jdbcType=VARCHAR} 	
+  </select>
+  
+    <!-- 根据重点客户id查询申请客户的状态 -->  
+  <select id="getPersonEmphasisData" parameterType="String" resultMap="BaseResultMap">
+  	select applystatus 
+  	from  tc_person_emphasis
+  	where applystype =2
+  	and cust_id = #{custId,jdbcType=VARCHAR}  	
+  </select>
+  
+   <!-- 根据重点客户id查询失效申请客户的状态 -->  
+  <select id="getPersonEmphasisDataById" parameterType="String" resultMap="BaseResultMap">
+  	select applystatus
+  	from tc_person_emphasis
+  	where applystype =3
+  	and cust_id = #{custId,jdbcType=VARCHAR}   	
+  </select>
+  
+  <!-- 查询客户申请的状态 2016-1-19 供校验用 -->
+   <select id="getPersonEmphasisState" parameterType="String" resultMap="BaseResultMap">
+   	select * from tc_person_emphasis 
+   	where cust_id = #{custId,jdbcType=VARCHAR}  order by applyeddate desc limit 0,1 
+  </select>
+  <!-- 查询重点客户申请数量 -->
+  <select id="getPersonEmphasisSum"  parameterType="String" resultType="java.lang.Integer" >
+    select IFNULL(count(0),0) from tc_person_emphasis where theme=#{theme,jdbcType=VARCHAR}
+  </select>
+  
+  <!-- //查询重点客户失效申请数量-->
+  <select id="getFailPersonEmphasisSum"  parameterType="String" resultType="java.lang.Integer" >
+    select IFNULL(count(0),0) from tc_person_emphasis where theme=#{theme,jdbcType=VARCHAR}
+  </select>
+  
+</mapper>

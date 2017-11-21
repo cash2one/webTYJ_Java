@@ -1,0 +1,38 @@
+package com.flf.mapper;
+
+import java.util.List;
+
+import com.flf.entity.BillingRecord;
+
+/**
+ * @author maogaofei
+ * @date 2016年7月12日 下午4:35:06
+ */
+public interface BillingRecordMapper {
+	//根据主键删除
+    int deleteByPrimaryKey(String billingRecordId);
+    //插入对象中所有字段
+    int insert(BillingRecord record);
+    //根据条件插入对象字段
+    int insertSelective(BillingRecord record);
+    //根据主键查询
+    BillingRecord selectByPrimaryKey(String billingRecordId);
+    //根据条件修改对象属性
+    int updateByPrimaryKeySelective(BillingRecord record);
+    //修改对象所有属性
+    int updateByPrimaryKey(BillingRecord record);
+    /**
+     * 根据条件分页查询计费记录
+     * @author maogaofei
+     * @date 2016年7月13日 下午2:18:23
+     * @param billingRecord
+     * @return
+     */
+	List<BillingRecord> listPageBillingRecord(BillingRecord billingRecord);
+	
+	/**
+	 * 批量新增
+	 * @param brList
+	 */
+	void insertList(List<BillingRecord> brList);
+}

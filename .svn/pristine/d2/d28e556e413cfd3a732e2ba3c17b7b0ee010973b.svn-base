@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.flf.mapper.LogTypeMapper" >
+  <resultMap id="BaseResultMap" type="com.flf.entity.LogType" >
+    <id column="log_type_id" property="logTypeId" jdbcType="VARCHAR" />
+    <result column="log_type_name" property="logTypeName" jdbcType="VARCHAR" />
+    <result column="note" property="note" jdbcType="VARCHAR" />
+  </resultMap>
+  
+  <select id="listPageLogType" parameterType="Log" resultMap="BaseResultMap">
+      select * from t_log_type
+  </select>
+  
+  <select id="listAllLogType"  resultMap="BaseResultMap">
+      select * from t_log_type
+  </select>
+  
+  <select id="getLogTypeById" parameterType="String" resultMap="BaseResultMap">
+      select * from t_log_type where log_type_id=#{0}
+  </select>
+  
+  <delete id="deleteLogType" parameterType="String">
+      delete from t_log_type where log_type_id=#{0}
+  </delete>
+  
+  <insert id="insertLogType" parameterType="com.flf.entity.LogType" >
+    insert into t_log_type (log_type_id, log_type_name, note
+      )
+    values (#{logTypeId,jdbcType=VARCHAR}, #{logTypeName,jdbcType=VARCHAR}, #{note,jdbcType=VARCHAR}
+      )
+  </insert>
+ 
+  <update id="updateLogType" parameterType="com.flf.entity.LogType" >
+    update t_log_type
+    set log_type_name = #{logTypeName,jdbcType=VARCHAR},
+      note = #{note,jdbcType=VARCHAR}
+    where log_type_id = #{logTypeId,jdbcType=VARCHAR}
+  </update>
+</mapper>

@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.flf.mapper.ConstructionInspectionOrdersMapper" >
+  <resultMap id="BaseResultMap" type="ConstructionInspectionOrders" >
+    <id column="order_id" property="orderId" jdbcType="VARCHAR" />
+    <result column="order_type" property="orderType" jdbcType="TINYINT" />
+    <result column="order_state" property="orderState" jdbcType="TINYINT" />
+    <result column="task_id" property="taskId" jdbcType="VARCHAR" />
+    <result column="service_request_id" property="serviceRequestId" jdbcType="VARCHAR" />
+    <result column="operator_id" property="operatorId" jdbcType="VARCHAR" />
+    <result column="finish_time" property="finishTime" jdbcType="TIMESTAMP" />
+    <result column="inspection_normal" property="inspectionNormal" jdbcType="TINYINT" />
+    <result column="remarks" property="remarks" jdbcType="VARCHAR" />
+    <result column="close_time" property="closeTime" jdbcType="TIMESTAMP" />
+    <result column="close_person_id" property="closePersonId" jdbcType="VARCHAR" />
+    <result column="close_remarks" property="closeRemarks" jdbcType="VARCHAR" />
+  </resultMap>
+  
+  <resultMap type="ConstructionInspectionOrders" id="resultConstructionInspectionOrdersMap" extends="BaseResultMap">
+  	<association property="staff" column="operator_id" javaType="Staff" select="com.flf.mapper.StaffMapper.selectByid"></association>
+  	<collection property="annexs" column="order_id" ofType="Annex" select="com.flf.mapper.AnnexMapper.getAnnexbyRelationId"></collection>
+  	<collection property="constructionInspectionRecords" column="order_id" ofType="ConstructionInspectionRecords" select="com.flf.mapper.ConstructionInspectionRecordsMapper.getConstructionInspectionRecordsbyOrderId"></collection>
+   	<collection property="letterRecords" column="order_id" ofType="LetterRecords" select="com.flf.mapper.LetterRecordsMapper.getLetterRecordsbyOrderId"></collection>
+ 
+  </resultMap>
+  
+  <select id="listAllConstructionInspectionOrders"  resultMap="resultConstructionInspectionOrdersMap" >
+  	select * from ts_construction_inspection_orders
+  </select>
+  
+  <select id="getConstructionInspectionOrdersbyId" parameterType="String" resultMap="resultConstructionInspectionOrdersMap">
+  	select * from ts_construction_inspection_orders where order_id=#{0}
+  </select>
+   <select id="getConstructionInspectionOrdersbyTypeAndTaskId" parameterType="String" resultMap="resultConstructionInspectionOrdersMap">
+  	select * from ts_construction_inspection_orders where  order_type=#{0} and task_id=#{1}
+  </select>
+  <insert id="insertConstructionInspectionOrders" parameterType="ConstructionInspectionOrders" >
+  	insert into ts_construction_inspection_orders (order_id,order_type,order_state,task_id,service_request_id,operator_id,
+  		finish_time,inspection_normal,remarks,close_time,close_person_id,close_remarks)
+  	values (UUID(),#{orderType,jdbcType=TINYINT},#{orderState,jdbcType=TINYINT},#{taskId,jdbcType=VARCHAR},
+  		#{serviceRequestId,jdbcType=VARCHAR},#{operatorId,jdbcType=VARCHAR},#{finishTime,jdbcType=TIMESTAMP},
+  		#{inspectionNormal,jdbcType=TINYINT},#{remarks,jdbcType=VARCHAR},#{closeTime,jdbcType=TIMESTAMP},
+  		#{closePersonId,jdbcType=VARCHAR},#{closeRemarks,jdbcType=VARCHAR})
+  </insert>
+  
+  <insert id="insertConstructionInspectionOrdersUUID" parameterType="ConstructionInspectionOrders" >   
+  	insert into ts_construction_inspection_orders (order_id,order_type,order_state,task_id,service_request_id,operator_id,
+  		finish_time,inspection_normal,remarks,close_time,close_person_id,close_remarks)
+  	values (#{orderId,jdbcType=VARCHAR},#{orderType,jdbcType=TINYINT},#{orderState,jdbcType=TINYINT},#{taskId,jdbcType=VARCHAR},
+  		#{serviceRequestId,jdbcType=VARCHAR},#{operatorId,jdbcType=VARCHAR},#{finishTime,jdbcType=TIMESTAMP},
+  		#{inspectionNormal,jdbcType=TINYINT},#{remarks,jdbcType=VARCHAR},#{closeTime,jdbcType=TIMESTAMP},
+  		#{closePersonId,jdbcType=VARCHAR},#{closeRemarks,jdbcType=VARCHAR})
+  </insert>
+ 
+  <update id="updateConstructionInspectionOrders" parameterType="ConstructionInspectionOrders" >
+    update ts_construction_inspection_orders set 
+    	order_type = #{orderType,jdbcType=TINYINT},
+    	order_state = #{orderState,jdbcType=TINYINT},
+      	task_id = #{taskId,jdbcType=VARCHAR},
+      	service_request_id = #{serviceRequestId,jdbcType=VARCHAR},
+      	operator_id = #{operatorId,jdbcType=VARCHAR},
+     	finish_time = #{finishTime,jdbcType=TIMESTAMP},
+     	inspection_normal = #{inspectionNormal,jdbcType=TINYINT},
+      	remarks = #{remarks,jdbcType=VARCHAR},
+      	close_time = #{closeTime,jdbcType=TIMESTAMP},
+      	close_person_id = #{closePersonId,jdbcType=VARCHAR},
+      	close_remarks = #{closeRemarks,jdbcType=VARCHAR}
+    where order_id = #{orderId,jdbcType=VARCHAR}
+  </update>
+  <select id="getConstructionInspectionOrdersbyTaskId" parameterType="String" resultMap="resultConstructionInspectionOrdersMap">
+  		select * from ts_construction_inspection_orders where task_id=#{0}
+  </select>
+</mapper>

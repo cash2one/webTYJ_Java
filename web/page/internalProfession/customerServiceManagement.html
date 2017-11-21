@@ -1,0 +1,141 @@
+<!--
+    创建时间：2015/5/19
+    作者:钟加诚
+    修改者：钟加诚
+    修改时间：2015/6/1
+    修改内容：Js数据，查询效果，修改效果
+    页面名称:售后管理
+    js路径:js/controllers/internalProfession/customerServiceManagement
+-->
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>售后管理</title>
+    <link rel="stylesheet" href="css/propertyService.css">
+    <style>
+        .selectOrder label{margin-right:10px;}
+    </style>
+</head>
+<body ng-controller="customerServiceManagementCtrl">
+<div class="row">
+    <div class="complaint_user_list" style="margin-top: 15px;">
+            <!--搜索条件-->
+            <div class="row" style="margin: 10px 40px">
+                <div class="col-md-12 checkbox selectOrder">
+                    <span>项目：</span>
+                    <label><input type="checkbox" value="1" ng-model="itemName">深圳桃源居</label>
+                    <label><input type="checkbox" value="2" ng-model="itemName1">重庆桃源居</label>
+                </div>
+                <div class="checkbox col-md-12 selectOrder" style="margin-top:-8px;">
+                    <span>专业：</span>
+                    <label><input type="radio" value="强电" ng-model="specialty">强电</label>
+                    <label><input type="radio" value="土建" ng-model="specialty">土建</label>
+                    <label><input type="radio" value="装修" ng-model="specialty">装修</label>
+                </div>
+                <div class="checkbox col-md-3 selectOrder" style="margin-top:-8px;white-space: nowrap">
+                    <span>来源：</span>
+                    <label><input type="radio" value="验房" ng-model="source">验房</label>
+                    <label><input type="radio" value="入伙" ng-model="source">入伙</label>
+                </div>
+                <div class="checkbox col-md-9 selectOrder" style="margin-top:-8px;">
+                    <span>进度：</span>
+                    <label><input type="radio" value="处理完" ng-model="condition">处理完</label>
+                    <label><input type="radio" value="已受理" ng-model="condition">已受理</label>
+                    <label><input type="radio" value="处理中" ng-model="condition">处理中</label>
+                </div>
+                <div class="col-md-12 checkbox selectOrder">
+                    <div class="col-md-1" style="white-space: nowrap"><span>资产名称：</span></div>
+                    <div class="col-md-2"><input type="text" class="input-sm form-control" style="width: 100px" ng-model="assetName"></div>
+                    <span class="glyphicon glyphicon-search btn btn-default btn-xs" aria-hidden="true" ng-click="change()"></span>
+                    <!--<span class="pull-right">批量处理：-->
+                        <!--<select><option value="已受理" ng-model="condition">已受理</option><option value="处理中" ng-model="condition">处理中</option><option value="处理完毕" ng-model="condition">处理完毕</option></select>-->
+                    <!--</span>-->
+                </div>
+            </div>
+            <!--搜索条件 end-->
+    </div>
+        <!--表格显示搜索数据-->
+    <div class="complaint_user_list" style="margin-top: 15px;">
+        <div class="row">
+            <div class="col-md-11" style="margin:20px 40px">
+                <table class="table table-bordered table-hover text-center" style="background-color: #ffffff;line-height:45px;">
+                    <tr class="info" style="height:35px;">
+                        <td><strong>序号</strong></td>
+                        <td><strong>地址</strong></td>
+                        <td><strong>专业</strong></td>
+                        <td><strong>区域</strong></td>
+                        <td><strong>资产编号</strong></td>
+                        <td><strong>资产名称</strong></td>
+                        <td><strong>业主</strong></td>
+                        <td><strong>业主电话</strong></td>
+                        <td><strong>处理状态</strong></td>
+                        <td><strong>来源</strong></td>
+                        <td><strong>问题描述</strong></td>
+                    </tr>
+                    <tr ng-repeat="item in borderItem" ng-show="item.borderId!=null">
+                        <td>{{item.borderId}}</td>
+                        <td>{{item.address}}</td>
+                        <td>{{item.specialty}}</td>
+                        <td>{{item.area}}</td>
+                        <td>{{item.assetNumber}}</td>
+                        <td>{{item.assetName}}</td>
+                        <td>{{item.proprietor}}</td>
+                        <td>{{item.proprietorPh}}</td>
+                        <td><a data-toggle="modal" data-target="#searchResult" ng-click="toUpdate($index)">{{item.condition}}</a></td>
+                        <td>{{item.source}}</td>
+                        <td>{{item.questionDescribe}}</td>
+                    </tr>
+              </table>
+                  <!--分页-->
+              <div class="pagination">
+                    <a href="#" ng-show="searchPaginator.hasPrevious()" ng-click="searchPaginator.previous()">上一页</a>
+                    <a href="#" ng-repeat="i in searchPaginator.pages"  ng-click="searchPaginator.go(i)" class="number">{{i}}</a>
+                    <a href="#" ng-show="searchPaginator.hasNext()" ng-click="searchPaginator.next()">下一页</a>
+              </div>
+                <!--分页结束-->
+            </div>
+        </div>
+        <!--表格显示搜索数据 end-->
+</div>
+
+    <!-- 模态框（Modal） -->
+    <div class="modal fade" id="searchResult" tabindex="-1" role="dialog"
+         aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <p class="col-md-6">建筑类别：住宅</p>
+                    <p class="col-md-6">处理状态：<select><option>已受理</option><option>已处理</option><option>处理完毕</option></select></p>
+
+                    <p class="col-md-1" style="white-space: nowrap">电话：</p>
+                    <p class="col-md-5"><input type="text" style="width: 120px" class="form-control input-sm" ng-model="item.proprietorPh"/></p>
+                    <p class="col-md-1" style="white-space: nowrap">地址：</p>
+                    <p class="col-md-5"><input type="text" style="width: 120px" class="form-control input-sm" ng-model="item.address"/></p>
+
+                    <p class="col-md-1" style="white-space: nowrap">业主：</p>
+                    <p class="col-md-3"><input type="text" class="form-control input-sm" ng-model="item.proprietor"/></p>
+                    <p class="col-md-1" style="white-space: nowrap">专业：</p>
+                    <p class="col-md-3"><input type="text" class="form-control input-sm" ng-model="item.specialty"/></p>
+                    <p class="col-md-4">资产：</p>
+                    <table>
+                        <tr>
+                            <td style="text-align: right"><span>描述：</span></td>
+                            <td><textarea cols="60"  ng-model="item.questionDescribe"></textarea></td>
+                        </tr>
+                    </table>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">关闭
+                    </button>
+                    <button data-dismiss="modal" type="button" class="btn btn-primary"  ng-click="save()">
+                        提交更改
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- 模态框（Modal） -->
+</div>
+</body>
+</html>

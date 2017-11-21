@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.flf.mapper.ClassesTypeMapper" >
+  <resultMap id="BaseResultMap" type="ClassesType" >
+    <id column="classes_type_id" property="classesTypeId" jdbcType="VARCHAR" />
+    <result column="classes_type_name" property="classesTypeName" jdbcType="VARCHAR" />
+  </resultMap>
+  
+  <select id="listClassesAll" resultMap="BaseResultMap">
+  	 select * from t_classes_type
+  </select>
+  
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="String" >
+    select *  
+    from t_classes_type
+    where classes_type_id = #{classesTypeId}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="String" >
+    delete from t_classes_type
+    where classes_type_id = #{classesTypeId}
+  </delete>
+  
+  <insert id="insertClassesType" parameterType="ClassesType" >
+    insert into t_classes_type (classes_type_id, classes_type_name)
+    values ( UUID(),#{classesTypeName})
+  </insert>
+  
+  <update id="updateByPrimaryKey" parameterType="ClassesType" >
+    update t_classes_type
+    set classes_type_name = #{classesTypeName}
+	where classes_type_id = #{classesTypeId}
+  </update>
+  
+  
+</mapper>

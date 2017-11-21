@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.flf.mapper.OrderAttachmentMapper" >
+  <resultMap id="BaseResultMap" type="OrderAttachment" >
+    <id column="order_Attachment_id" property="orderAttachmentId"  />
+    <result column="work_order_id" property="workOrderId"  />
+    <result column="FILE_NAME" property="fileName" jdbcType="VARCHAR" />
+    <result column="FILE_path" property="filePath" jdbcType="VARCHAR" />
+    <result column="FILE_SRC_TYPE" property="fileSrcType" jdbcType="VARCHAR" />
+    <result column="DB_LAST_UPD_SRC" property="dbLastUpdSrc" jdbcType="VARCHAR" />
+    <result column="PUBLISH_CD" property="publishCd" jdbcType="TINYINT" />
+    <result column="FILE_DOCK_STAT_FLG" property="fileDockStatFlg" jdbcType="TINYINT" />
+    <result column="FILE_REV_NUM" property="fileRevNum" jdbcType="VARCHAR" />
+    <result column="FILE_DATE" property="fileDate" jdbcType="TIMESTAMP" />
+    <result column="COMMENTS" property="comments" jdbcType="VARCHAR" />
+    <result column="process" property="process" jdbcType="TINYINT" />
+    <result column="frek_id" property="frekId" jdbcType="VARCHAR" />
+  </resultMap>
+  
+  <select id="selectOrder" resultMap="BaseResultMap" parameterType="String">
+    select * from t_order where work_order_id=#{0}
+  </select>
+  
+  <select id="listPageOrderAttachment" resultMap="BaseResultMap" parameterType="OrderAttachment" >
+    select * from t_order_attachment
+  </select>
+  
+  <select id="listAllOrderAttachment" resultMap="BaseResultMap">
+    select * from t_order_attachment
+  </select>
+  
+  <select id="getOrderAttachmentById" resultMap="BaseResultMap" parameterType="String" >
+    select * from t_order_attachment
+    where order_Attachment_id = #{0}
+  </select>
+
+  <insert id="insertOrderAttachment" parameterType="OrderAttachment" >
+   insert into t_order_attachment (order_Attachment_id,work_order_id, FILE_NAME, 
+      FILE_path, FILE_SRC_TYPE, DB_LAST_UPD_SRC, 
+      PUBLISH_CD, FILE_DOCK_STAT_FLG, FILE_REV_NUM, 
+      FILE_DATE, COMMENTS, process,frek_id
+      )
+    values (UUID(),#{workOrderId}, #{fileName,jdbcType=VARCHAR}, 
+      #{filePath,jdbcType=VARCHAR}, #{fileSrcType,jdbcType=VARCHAR}, #{dbLastUpdSrc,jdbcType=VARCHAR}, 
+      #{publishCd,jdbcType=TINYINT}, #{fileDockStatFlg,jdbcType=TINYINT}, #{fileRevNum,jdbcType=VARCHAR}, 
+      NOW(), #{comments,jdbcType=VARCHAR}, #{process,jdbcType=TINYINT},#{frekId,jdbcType=VARCHAR}
+      )
+  </insert>
+  
+  <insert id="insertOrderAttachments">
+  	insert into t_order_attachment (order_Attachment_id,work_order_id, FILE_NAME, 
+      FILE_path, FILE_SRC_TYPE, DB_LAST_UPD_SRC, 
+      PUBLISH_CD, FILE_DOCK_STAT_FLG, FILE_REV_NUM, 
+      FILE_DATE, COMMENTS, process,frek_id
+      )
+    values
+    <foreach collection="list" item="items" separator=","> 
+   (UUID(),#{items.workOrderId}, #{items.fileName,jdbcType=VARCHAR}, 
+      #{items.filePath,jdbcType=VARCHAR}, #{items.fileSrcType,jdbcType=VARCHAR}, #{items.dbLastUpdSrc,jdbcType=VARCHAR}, 
+      #{items.publishCd,jdbcType=TINYINT}, #{items.fileDockStatFlg,jdbcType=TINYINT}, #{items.fileRevNum,jdbcType=VARCHAR}, 
+      NOW(), #{items.comments,jdbcType=VARCHAR}, #{items.process,jdbcType=TINYINT},#{frekId,jdbcType=VARCHAR}
+      )
+    </foreach>
+  </insert>
+ 
+  <update id="updateOrderAttachment" parameterType="OrderAttachment" >
+    update t_order_attachment
+    set work_order_id = #{workOrderId},
+      FILE_NAME = #{fileName,jdbcType=VARCHAR},
+      FILE_path = #{filePath,jdbcType=VARCHAR},
+      FILE_SRC_TYPE = #{fileSrcType,jdbcType=VARCHAR},
+      DB_LAST_UPD_SRC = #{dbLastUpdSrc,jdbcType=VARCHAR},
+      PUBLISH_CD = #{publishCd,jdbcType=TINYINT},
+      FILE_DOCK_STAT_FLG = #{fileDockStatFlg,jdbcType=TINYINT},
+      FILE_REV_NUM = #{fileRevNum,jdbcType=VARCHAR},
+      FILE_DATE = #{fileDate,jdbcType=TIMESTAMP},
+      COMMENTS = #{comments,jdbcType=VARCHAR},
+      process = #{process,jdbcType=TINYINT},
+      frek_id= #{frekId,jdbcType=VARCHAR}
+    where order_Attachment_id = #{orderAttachmentId}
+  </update>
+  
+  <delete id="deleteOrderAttachment" parameterType="String" >
+    delete from t_order_attachment
+    where order_Attachment_id = #{0}
+  </delete>
+</mapper>

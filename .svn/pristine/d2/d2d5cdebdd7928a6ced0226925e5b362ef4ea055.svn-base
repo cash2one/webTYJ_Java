@@ -1,0 +1,90 @@
+<!DOCTYPE>
+<html ng-app="RulesApp">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>规章制度表</title>
+</head >
+<link type="text/css" rel="stylesheet" href="/Home/css/main.css"/>
+<script src="/Home/js/AngularJS/angular-1.2.3.js"></script>
+<script src="/Home/js/AngularJS/RulesController.js"></script>
+<body>
+<script type="text/ng-template" id="listView">
+<table class="main_head" width="100%" border="0" cellpadding="0" cellspacing="0" class="main_table" >
+			<tr class="main_head">
+				<th>id</th>
+				<th>标题</th>
+				<th>简要内容</th>
+				<th>详细信息</th>
+				<th>记录创建人</th>
+				<th>创建时间</th>
+				<th>最后修改人</th>
+				<th>最后修改时间</th>
+				<th colspan="2">操作</th>
+			</tr>
+					<tr ng-repeat="items in ruless" class="main_head">
+						<td>{{items.id}}</td>
+						<td>{{items.title}}</td>
+						<td>{{items.briefContent}}</td>
+						<td>{{items.detailInfo}}</td>
+						<td>{{items.recordCreater}}</td>
+						<td>{{items.createTime}}</td>
+						<td>{{items.lastModifier}}</td>
+						<td>{{items.lastModtime}}</td>
+						<td><a href="#" ng-click="GetRules(items.id)" class="myBtn"><em>修改</em></a></td>
+						<td><a href="#" ng-click="deleteRules(items.id)" class="myBtn"><em>删除</em></a></td>
+					</tr>
+		</table>
+	<div class="page_and_btn">
+			<a href="#" ng-click="GetRules(0)" class="myBtn"><em>新增</em></a>
+		</div>
+</script>
+	<script type="text/ng-template" id="AddOrUpdateView">
+	<table class="main_head" width="100%" border="0" cellpadding="0" cellspacing="0">
+
+		<tr class="main_head">
+			<th>标题:</th>
+			<td>
+				<input type="text" ng-model="rules.title" />
+				<input type="hidden" ng-model="rules.id" /> 
+			</td>
+		</tr>
+
+		<tr class="main_head">
+			<th>简要内容:</th>
+			<td><input type="text" ng-model="rules.briefContent"/> </td>
+		</tr>
+
+		<tr class="main_head">
+			<th>详细信息:</th>
+			<td><input type="text" ng-model="rules.detailInfo"/> </td>
+		</tr>
+
+       <tr class="main_head">
+			<th>记录创建人:</th>
+			<td><input type="text" ng-model="rules.recordCreater" /></td>
+		</tr>
+		<tr class="main_head">
+			<th>创建时间:</th>
+			<td><input type="date" ng-model="rules.createTime"/> </td>
+		</tr>
+
+		<tr class="main_head">
+			<th>最后修改人:</th>
+			<td><input type="text" ng-model="rules.lastModifier"/> </td>
+		</tr>
+
+		<tr class="main_head">
+			<th>最后修改时间:</th>
+			<td><input type="date" ng-model="rules.lastModtime"/> </td>
+		</tr>
+
+		<tr class="main_head">
+			<td colspan="2"><input type="button" value="保存" ng-click="AddOrUpdateRules()"/></td>
+		</tr>
+		</table>
+</script>
+<div ng-controller="RulesCtrl">
+	<div ng-include="templateUrl"></div>
+</div>
+</body>
+</html>

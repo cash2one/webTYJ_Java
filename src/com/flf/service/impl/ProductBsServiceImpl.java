@@ -1,0 +1,56 @@
+package com.flf.service.impl;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.UUID;
+
+import com.flf.entity.LeaseContract;
+import com.flf.entity.PageRestful;
+import com.flf.entity.ProductBs;
+import com.flf.mapper.ProductBsMapper;
+import com.flf.service.ProductBsService;
+
+public class ProductBsServiceImpl implements ProductBsService {
+	
+	private ProductBsMapper productBsMapper;
+
+	public ProductBsMapper getProductBsMapper() {
+		return productBsMapper;
+	}
+
+	public void setProductBsMapper(ProductBsMapper productBsMapper) {
+		this.productBsMapper = productBsMapper;
+	}
+
+	@Override
+	public PageRestful listPageProductBs(ProductBs productBs) {
+		// TODO Auto-generated method stub
+//		  Map<String, Object> params = new HashMap<String, Object>();
+//		    params.put("veragePriceA",productBs.getAveragePriceA());
+//		    params.put("veragePriceB",productBs.getAveragePriceB());
+//		    params.put("buildingAreaA",productBs.getBuildingAreaA());
+//		    params.put("buildingAreaB",productBs.getBuildingAreaB());
+//		    params.put("projectId",productBs.getProjectId());
+//		    params.put("productBs", productBs);
+//	        params.put("buildingTypes", productBs.getBuildingTypes());
+//	        params.put("page", productBs.getPage());
+		
+		PageRestful pagerestful=new PageRestful();
+		List<ProductBs> productBss =productBsMapper.listPageProductBs(productBs);
+		productBss.add(0,null);
+		pagerestful.setProductBss(productBss);
+		pagerestful.setPage(productBs.getPage());
+		return pagerestful;
+	}
+
+	@Override
+	public void changeStateByProductId(String productids) {		
+		String[] productIdList = productids.split(",");
+		for(int i = 0; i < productIdList.length; i ++){
+			productBsMapper.changeStateByProductId(productIdList[i]);	
+		}
+		
+	}
+
+}

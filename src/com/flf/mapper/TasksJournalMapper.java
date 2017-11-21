@@ -1,0 +1,31 @@
+package com.flf.mapper;
+
+
+import java.util.List;
+
+import com.flf.entity.TasksJournal;
+import com.flf.entity.UrgeTaskRecords;
+/**
+ * 任务日志表
+ * 创建人：邵政
+ * 创建时间：2015/6/23
+ */
+public interface TasksJournalMapper {
+	int deleteTasksJournal(String tasksJournalId);//删除任务日志信息
+
+	int insertTasksJournal(TasksJournal tasksJournal);//添加任务日志信息
+
+    List<TasksJournal> listPageTasksJournal(TasksJournal tasksJournal);//分页查询任务日志信息
+    
+    List<TasksJournal> listAllTasksJournal();//查询所有任务日志信息
+
+    TasksJournal getTasksJournalbyId(String tasksJournalId);//通过Id查询任务日志信息
+
+    int updateTasksJournal(TasksJournal tasksJournal);//修改任务日志信息
+    
+    List<TasksJournal> getTasksJournalbyTasksId(String tasksId);//通过任务Id查询任务日志信息
+
+    TasksJournal getTasksJournalbyDateandType(String creOrderType,String operationTime);//根据完成时间和类型返回任务日志
+    
+    
+}

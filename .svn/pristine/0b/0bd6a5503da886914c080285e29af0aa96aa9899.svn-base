@@ -1,0 +1,54 @@
+<!--
+    作者:彭婷婷
+    页面名称:添加部门质量检查标准--新建
+    js路径:js/controllers/externalProfession/addDepartmentQuality/newDepartmentQuality
+-->
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+<div style="border: 1px solid #000000;width: 97%;height:180px;margin: 20px">
+    <table style="width: 90% ;margin:20px auto;">
+        <tr>
+            <td>名称:</td>
+            <td><input type="text"></td>
+            <td>类型:</td>
+            <td>
+                <select style="width: 100px">
+                    <option>绿化养护</option>
+                </select>
+            </td>
+            <td>检查对象:</td>
+            <td>
+                <select style="width: 100px">
+                    <option>乔木</option>
+                </select>
+            </td>
+            <td>权重:</td>
+            <td>
+                <select style="width: 100px">
+                    <option>1</option>
+                    <option>2</option>
+                    <option>3</option>
+                </select>
+            </td>
+        </tr>
+        <tr>
+            <td>检查内容：</td>
+            <td colspan="3">
+                <textarea class="form-control" rows="3">受外力影响歪倒乔木在外力结束7天内扶正或加固
+                </textarea>
+            </td>
+            <td>评分标准：</td>
+            <td colspan="3">
+                 <textarea class="form-control" rows="3">每发现一处不合格扣1分
+                 </textarea>
+            </td>
+        </tr>
+    </table>
+</div>
+</body>
+</html>

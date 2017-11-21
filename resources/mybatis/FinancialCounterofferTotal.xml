@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.flf.mapper.FinancialCounterofferTotalMapper" >
+    <resultMap id="BaseResultMap" type="FinancialCounterofferTotal" >
+    <id column="financial_counteroffer_total_id" property="financialCounterofferTotalId" jdbcType="VARCHAR"/>
+    <result column="agency_bank_num" property="agencyBankNum" jdbcType="VARCHAR" />
+    <result column="payment_unit_code" property="paymentUnitCode"  jdbcType="VARCHAR" />
+    <result column="coin_type" property="coinType" jdbcType="TINYINT" />
+    <result column="payment_state" property="paymentState" jdbcType="TINYINT" />
+    <result column="collection_total_num" property="collectionTotalNum" jdbcType="VARCHAR"/> 
+    <result column="collection_total_name" property="collectionTotalName" jdbcType="VARCHAR"/>
+    <result column="house_number" property="houseNumber"  jdbcType="TINYINT" />
+    <result column="sum" property="sum" jdbcType="DOUBLE" />
+    <result column="deductions_house_number" property="deductionsHouseNumber" jdbcType="TINYINT" />
+    <result column="deductions_sum" property="deductionsSum" jdbcType="DOUBLE" />
+    <result column="tobank_date" property="tobankDate" jdbcType="DATE" />  
+    <result column="prepare_deductions_date" property="prepareDeductionsDate" jdbcType="DATE" />
+    <result column="deductions_date" property="deductionsDate"  jdbcType="DATE" />
+    <result column="batch_number" property="batchNumber" jdbcType="VARCHAR"/>
+    <result column="offer_state" property="offerState" jdbcType="VARCHAR"/>
+    <result column="create_time" property="createTime" jdbcType="VARCHAR"/>
+    <result column="project_id" property="projectId"  jdbcType="VARCHAR" />
+   </resultMap>
+   
+    <select id="listPageFinancialCounterofferTotal" parameterType="FinancialCounterofferTotal"  resultMap="BaseResultMap">
+		select * from tc_financial_counteroffer_total where 1=1 
+		 <if test="batchNumber!=null and batchNumber!=''">
+	     	and batch_number=#{batchNumber} 
+	     </if>
+	     <if test="offerState!=null and offerState!=''">
+	     	and offer_state=#{offerState} 
+	     </if>
+	     <if test="collectionTotalName!=null and collectionTotalName!=''">
+	     	and collection_total_name=#{collectionTotalName} 
+	     </if>
+	     <if test="projectId != null and projectId != ''">
+      	 	and project_id = #{projectId} 
+     	 </if>
+	     <if test="tobankDate != null and tobankDate != '' and deductionsDate != null and deductionsDate != ''">
+			<![CDATA[
+		      and DATE_FORMAT(tobank_date, '%Y-%m-%d') between DATE_FORMAT(#{tobankDate}, '%Y-%m-%d') 
+		      and DATE_FORMAT(#{deductionsDate}, '%Y-%m-%d') 
+			]]>
+		 </if>
+		 <if test="tobankDate != null and deductionsDate == null">
+			<![CDATA[
+		      and DATE_FORMAT(tobank_date, '%Y-%m-%d') >=  DATE_FORMAT(#{tobankDate}, '%Y-%m-%d') 
+			]]>
+		 </if> 
+		 <if test="tobankDate == null and deductionsDate != null">
+			<![CDATA[
+		      and DATE_FORMAT(tobank_date, '%Y-%m-%d') <=  DATE_FORMAT(#{deductionsDate}, '%Y-%m-%d') 
+			]]>
+		 </if> 
+	      ORDER BY create_time DESC
+	</select>
+   
+	<select id="getFinancialCounterofferTotalById" parameterType="String" resultMap="BaseResultMap">
+	  	select * from tc_financial_counteroffer_total where 1=1 AND financial_counteroffer_total_id = #{0}
+	</select> 
+
+ 	<insert id="insertFinancialCounterofferTotal" parameterType="FinancialCounterofferTotal">
+ 		insert into tc_financial_counteroffer_total(financial_counteroffer_total_id,agency_bank_num,payment_unit_code,coin_type,payment_state,
+ 			collection_total_num,collection_total_name,house_number,sum,deductions_house_number,
+ 			deductions_sum,tobank_date,prepare_deductions_date,deductions_date,batch_number,offer_state,project_id,create_time)
+ 		values(#{financialCounterofferTotalId},#{agencyBankNum},#{paymentUnitCode},#{coinType},#{paymentState},
+ 			#{collectionTotalNum},#{collectionTotalName},#{houseNumber},#{sum},#{deductionsHouseNumber},
+ 			#{deductionsSum},#{tobankDate},#{prepareDeductionsDate},#{deductionsDate},#{batchNumber},#{offerState},#{projectId},#{createTime})
+ 	</insert>
+ 	
+ 	<!-- 修改 -->
+  	<update id="updateFinancialCounterofferTotal" parameterType="com.flf.entity.FinancialCounterofferTotal">
+  		update tc_financial_counteroffer_total 
+  		<set>
+  			<if test="offerState != null" >
+		       offer_state = #{offerState},
+		    </if>
+  		</set>
+  		 where financial_counteroffer_total_id=#{financialCounterofferTotalId,jdbcType=VARCHAR}
+ 	</update>
+ 	<!-- 删除 -->
+ 	<delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+	    delete from tc_financial_counteroffer_total
+	    where financial_counteroffer_total_id = #{0}
+	</delete>
+	<!-- 根据条件查询所有的回盘导入文件 -->
+	 <select id="listAllFinancialCounterofferTotal" parameterType="FinancialCounterofferTotal"  resultMap="BaseResultMap">
+		select * from tc_financial_counteroffer_total where 1=1 
+		 <if test="batchNumber!=null and batchNumber!=''">
+	     	and batch_number=#{batchNumber}
+	     </if>
+	     <if test="offerState!=null and offerState!=''">
+	     	and offer_state=#{offerState}
+	     </if>
+	     <if test="collectionTotalName!=null and collectionTotalName!=''">
+	     	and collection_total_name=#{collectionTotalName}
+	     </if>
+	     <if test="projectId != null and projectId != ''">
+      	 	and project_id = #{projectId} 
+     	 </if>
+	     order by create_time desc
+	</select>
+</mapper>

@@ -1,0 +1,187 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.flf.mapper.FaqsMapper" >
+  <resultMap id="BaseResultMap" type="com.flf.entity.Faqs" >
+    <id column="faq_question_id" property="faqQuestionId" jdbcType="VARCHAR" />
+    <result column="faq_question_num" property="faqQuestionNum" jdbcType="VARCHAR" />
+    <result column="faq_question_state" property="faqQuestionState" jdbcType="TINYINT" />
+    <result column="faq_question_name" property="faqQuestionName" jdbcType="VARCHAR" />
+    <result column="faq_question_answer" property="faqQuestionAnswer" jdbcType="VARCHAR" />
+    <result column="faq_type_id" property="faqTypeId" jdbcType="VARCHAR" />
+    <result column="keyword" property="keyword" jdbcType="VARCHAR" />
+    <result column="cre_person_id" property="crePersonId" jdbcType="VARCHAR" />
+    <result column="cre_time" property="creTime" jdbcType="TIMESTAMP" />
+    <result column="person_cust_id" property="personCustId" jdbcType="VARCHAR" />
+    <association property="personCustNew" column="person_cust_id" javaType="PersonCustNew" select="com.flf.mapper.PersonCustNewMapper.getPersonCustNewById" />
+    <association property="staff" column="cre_person_id" javaType="Staff" select="com.flf.mapper.StaffMapper.selectByid" />
+    <association property="faqTypes" column="faq_type_id" javaType="FaqTypes" select="com.flf.mapper.FaqTypesMapper.selectByPrimaryKey" />
+  </resultMap>
+  
+  <resultMap type="com.flf.entity.Faqs" id="ResultMapWithFaqTypes" extends="BaseResultMap">
+  	<association property="faqTypes" column="faq_type_id" javaType="FaqTypes" select="com.flf.mapper.FaqTypesMapper.selectByPrimaryKey" />
+  </resultMap>
+  
+  <sql id="Base_Column_List" >
+    faq_question_id, faq_question_num, faq_question_state, faq_question_name, faq_question_answer, 
+    faq_type_id, keyword, cre_person_id, cre_time, person_cust_id
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="ResultMapWithFaqTypes" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from ts_faqs
+    where faq_question_id = #{faqQuestionId,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from ts_faqs
+    where faq_question_id = #{faqQuestionId,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.flf.entity.Faqs" >
+    insert into ts_faqs (faq_question_id, faq_question_num, faq_question_state, 
+      faq_question_name, faq_question_answer, faq_type_id, 
+      keyword, cre_person_id, cre_time, person_cust_id
+      )
+    values (#{faqQuestionId,jdbcType=VARCHAR}, #{faqQuestionNum,jdbcType=VARCHAR}, #{faqQuestionState,jdbcType=TINYINT}, 
+      #{faqQuestionName,jdbcType=VARCHAR}, #{faqQuestionAnswer,jdbcType=VARCHAR}, #{faqTypeId,jdbcType=VARCHAR}, 
+      #{keyword,jdbcType=VARCHAR}, #{crePersonId,jdbcType=VARCHAR}, #{creTime,jdbcType=TIMESTAMP}, #{personCustId,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.flf.entity.Faqs" >
+    insert into ts_faqs
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="faqQuestionId != null" >
+        faq_question_id,
+      </if>
+      <if test="faqQuestionNum != null" >
+        faq_question_num,
+      </if>
+      <if test="faqQuestionState != null" >
+        faq_question_state,
+      </if>
+      <if test="faqQuestionName != null" >
+        faq_question_name,
+      </if>
+      <if test="faqQuestionAnswer != null" >
+        faq_question_answer,
+      </if>
+      <if test="faqTypeId != null" >
+        faq_type_id,
+      </if>
+      <if test="keyword != null" >
+        keyword,
+      </if>
+      <if test="crePersonId != null" >
+        cre_person_id,
+      </if>
+      <if test="creTime != null" >
+        cre_time,
+      </if>
+      <if test="personCustId != null">
+      	person_cust_id,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="faqQuestionId != null" >
+        #{faqQuestionId,jdbcType=VARCHAR},
+      </if>
+      <if test="faqQuestionNum != null" >
+        #{faqQuestionNum,jdbcType=VARCHAR},
+      </if>
+      <if test="faqQuestionState != null" >
+        #{faqQuestionState,jdbcType=TINYINT},
+      </if>
+      <if test="faqQuestionName != null" >
+        #{faqQuestionName,jdbcType=VARCHAR},
+      </if>
+      <if test="faqQuestionAnswer != null" >
+        #{faqQuestionAnswer,jdbcType=VARCHAR},
+      </if>
+      <if test="faqTypeId != null" >
+        #{faqTypeId,jdbcType=VARCHAR},
+      </if>
+      <if test="keyword != null" >
+        #{keyword,jdbcType=VARCHAR},
+      </if>
+      <if test="crePersonId != null" >
+        #{crePersonId,jdbcType=VARCHAR},
+      </if>
+      <if test="creTime != null" >
+        #{creTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="personCustId != null">
+      	#{personCustId,jdbcType=VARCHAR}
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.flf.entity.Faqs" >
+    update ts_faqs
+    <set >
+      <if test="faqQuestionNum != null" >
+        faq_question_num = #{faqQuestionNum,jdbcType=VARCHAR},
+      </if>
+      <if test="faqQuestionState != null" >
+        faq_question_state = #{faqQuestionState,jdbcType=TINYINT},
+      </if>
+      <if test="faqQuestionName != null" >
+        faq_question_name = #{faqQuestionName,jdbcType=VARCHAR},
+      </if>
+      <if test="faqQuestionAnswer != null" >
+        faq_question_answer = #{faqQuestionAnswer,jdbcType=VARCHAR},
+      </if>
+      <if test="faqTypeId != null" >
+        faq_type_id = #{faqTypeId,jdbcType=VARCHAR},
+      </if>
+      <if test="keyword != null" >
+        keyword = #{keyword,jdbcType=VARCHAR},
+      </if>
+      <if test="crePersonId != null" >
+        cre_person_id = #{crePersonId,jdbcType=VARCHAR},
+      </if>
+      <if test="creTime != null" >
+        cre_time = #{creTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="personCustId != null">
+      	person_cust_id = #{personCustId,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where faq_question_id = #{faqQuestionId,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.flf.entity.Faqs" >
+    update ts_faqs
+    set faq_question_num = #{faqQuestionNum,jdbcType=VARCHAR},
+      faq_question_state = #{faqQuestionState,jdbcType=TINYINT},
+      faq_question_name = #{faqQuestionName,jdbcType=VARCHAR},
+      faq_question_answer = #{faqQuestionAnswer,jdbcType=VARCHAR},
+      faq_type_id = #{faqTypeId,jdbcType=VARCHAR},
+      keyword = #{keyword,jdbcType=VARCHAR},
+      cre_person_id = #{crePersonId,jdbcType=VARCHAR},
+      cre_time = #{creTime,jdbcType=TIMESTAMP},
+      person_cust_id = #{personCustId,jdbcType=VARCHAR}
+    where faq_question_id = #{faqQuestionId,jdbcType=VARCHAR}
+  </update>
+  
+  <!-- 查询所有FAQS -->
+  <select id="listPageFaqs" parameterType="Faqs" resultMap="BaseResultMap">
+  	select <include refid="Base_Column_List" /> from ts_faqs where faq_question_state = 0 and faq_question_answer != '' <if test="condition != null and condition != ''">
+  		and faq_question_name like CONCAT(CONCAT('%',#{condition,jdbcType=VARCHAR}),'%') or faq_question_answer like CONCAT(CONCAT('%',#{condition,jdbcType=VARCHAR}),'%')
+  	</if>
+  	 order by cre_time desc
+  </select>
+  
+  <!-- 分页查询待办FAQS -->
+  <select id="listPageFaqsNoAnswer" parameterType="Faqs" resultMap="BaseResultMap">
+  	select <include refid="Base_Column_List" /> from ts_faqs where faq_question_state = 0 and faq_question_answer is null <if test="condition != null and condition != ''">
+  		and faq_question_name like CONCAT(CONCAT('%',#{condition,jdbcType=VARCHAR}),'%')
+  	</if>
+  	order by cre_time desc
+  </select>
+  
+  <!-- 根据FAQS名称查询FAQS -->
+  <select id="getFaqsByfaqQuestionName" parameterType="String" resultMap="ResultMapWithFaqTypes">
+  	select <include refid="Base_Column_List" /> from ts_faqs where faq_question_name like CONCAT(CONCAT('%',#{faqQuestionName,jdbcType=VARCHAR}),'%')
+  </select>
+  
+  <update id="failFaqs" parameterType="String">
+  	update ts_faqs set faq_question_state = 1 where faq_question_id = #{faqQuestionId,jdbcType=VARCHAR}
+  </update>
+  
+</mapper>

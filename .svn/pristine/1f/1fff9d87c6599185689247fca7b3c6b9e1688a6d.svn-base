@@ -1,0 +1,52 @@
+package com.flf.entity;
+
+import javax.xml.bind.annotation.XmlRootElement;
+
+/**
+ * 部门质检频率关联表
+ * @author shaozheng
+ *	2015-7-14
+ */
+@XmlRootElement(name = "FrequencyRecord")
+public class FrequencyRecord {
+	
+	private String executionFrequencyId;//记录ID
+	private String relationId;//父级id
+	private Integer frequencyType;//频率类型
+	private String executionFrequency;//执行频率
+	private Byte executionFrequencyNum;//执行次数
+	
+	
+	public Byte getExecutionFrequencyNum() {
+		return executionFrequencyNum;
+	}
+	public void setExecutionFrequencyNum(Byte executionFrequencyNum) {
+		this.executionFrequencyNum = executionFrequencyNum;
+	}
+	
+	public String getExecutionFrequencyId() {
+		return executionFrequencyId;
+	}
+	public void setExecutionFrequencyId(String executionFrequencyId) {
+		this.executionFrequencyId = executionFrequencyId;
+	}
+	
+	public String getRelationId() {
+		return relationId;
+	}
+	public void setRelationId(String relationId) {
+		this.relationId = relationId;
+	}
+	public Integer getFrequencyType() {
+		return frequencyType;
+	}
+	public void setFrequencyType(Integer frequencyType) {
+		this.frequencyType = frequencyType;
+	}
+	public String getExecutionFrequency() {
+		return executionFrequency;
+	}
+	public void setExecutionFrequency(String executionFrequency) {
+		this.executionFrequency = executionFrequency;
+	}
+}

@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.flf.mapper.FrequencyRecordMapper" >
+  <resultMap id="BaseResultMap" type="FrequencyRecord" >
+    <id column="executionFrequency_id" property="executionFrequencyId" jdbcType="VARCHAR" />
+    <result column="relation_id" property="relationId" jdbcType="VARCHAR" />
+    <result column="frequency_type" property="frequencyType" jdbcType="TINYINT" />
+    <result column="execution_frequency" property="executionFrequency" jdbcType="VARCHAR" />
+     <result column="execution_frequency_num" property="executionFrequencyNum" jdbcType="TINYINT" />
+  </resultMap>
+  
+  <select id="getFrequencyRecordbyId" parameterType="String" resultMap="BaseResultMap">
+  	select * from ts_frequency_record where executionFrequency_id = #{0}
+  </select>
+  
+  <select id="getFrequencyRecordbyServieId" parameterType="String" resultMap="BaseResultMap"> 
+  	select * from ts_frequency_record where relation_id = #{0}
+  </select>
+  
+  <insert id="insertFrequencyRecord" parameterType="FrequencyRecord">
+  	insert into ts_frequency_record (executionFrequency_id,relation_id,frequency_type,execution_frequency,execution_frequency_num) 
+  	values(UUID(), #{relationId,jdbcType=VARCHAR},#{frequencyType,jdbcType=TINYINT},#{executionFrequency,jdbcType=VARCHAR}
+  	,#{executionFrequencyNum,jdbcType=TINYINT})
+  </insert>
+  
+</mapper>

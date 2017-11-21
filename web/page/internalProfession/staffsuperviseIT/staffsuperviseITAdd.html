@@ -1,0 +1,130 @@
+<!--
+   更改  肖聪    2015/6/1
+   根据需求向页面填充数据用于增删改查
+   修改人:彭婷婷
+   修改时间:2015/6/2
+   修改内容：添加字段
+ -->
+<!--<!DOCTYPE html>-->
+<!--<html>-->
+<!--<head lang="en">-->
+    <!--<meta charset="UTF-8">-->
+    <!--<title></title>-->
+  <!--</head>-->
+<!--<body>-->
+<!--<div class="complaint_user_list" style="margin: 10px auto">-->
+    <!--<table style="margin: 20px 300px">-->
+        <!--<tr>-->
+            <!--<td>员工姓名：</td>-->
+            <!--<td><label><input type="text" class="form-control" ng-model="addStaff.staffName"></label></td>-->
+        <!--</tr>-->
+        <!--<tr>-->
+            <!--<td>员工性别：</td>-->
+            <!--<td><label> <select ng-model="search.id" ng-options="p.id as p.sex for p in sexs" ng-change="getSex(search.id)"></select></label></td>-->
+        <!--</tr>-->
+            <!--<td>员工年龄：</td>-->
+            <!--<td><label><input type="date" class="form-control" ng-model="addStaff.birthday"></label></td>-->
+        <!--</tr>-->
+        <!--<tr>-->
+            <!--<td>身份证号码：</td>-->
+            <!--<td><label><input type="text" class="form-control"  ng-model="addStaff.cardNum"></label></td>-->
+        <!--</tr>-->
+        <!--<tr>-->
+            <!--<td>籍贯：</td>-->
+            <!--<td><label><input type="text" class="form-control"  ng-model="addStaff.nativePlace"></label></td>-->
+        <!--</tr>-->
+        <!--<tr>-->
+            <!--<td>电话：</td>-->
+            <!--<td><label><input type="text" class="form-control"  ng-model="addStaff.telphone"></label></td>-->
+        <!--</tr>-->
+        <!--<tr>-->
+            <!--<td>住址：</td>-->
+            <!--<td><label><input type="text" class="form-control"  ng-model="addStaff.address"></label></td>-->
+        <!--</tr>-->
+        <!--<tr>-->
+            <!--<td>邮箱：</td>-->
+            <!--<td><label><input type="text" class="form-control"  ng-model="addStaff.email"></label></td>-->
+        <!--</tr>-->
+        <!--<tr>-->
+            <!--<td>上传照片：</td>-->
+            <!--<td><img src="images/u1557.png"></td>-->
+        <!--</tr>-->
+        <!--<tr>-->
+       <!--<td colspan="2" style="text-align: center;margin-top: 720px">-->
+           <!--<button class="btn btn-default" ng-click="insert()">确认添加</button>-->
+       <!--</td>-->
+        <!--</tr>    </table>-->
+<!--</div>-->
+<!--</body>-->
+<!--</html>-->
+
+
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>物业工作台</title>
+</head>
+<body>
+<div class="container-fluid">
+    <div class="right">
+        <div class="row seartable-padding">
+            <div class="building_panner">
+                <div class="col-lg-12 col-md-12 col-sm-6">
+                    <div class="row building_padding">
+                        <div class="user_new_pannel">
+                            <div class="user_new_pannel_title">
+                                员工基本信息登记：
+                            </div>
+                            <div class="user_new_pannel_text">
+                                <div class="col-lg-6 col-md-6 col-sm-6">
+                                    <ul class="user_new_one">
+                                        <li><span>员工工号：</span>
+                                            <form><input name="input" type="text" class="user_new_input" ng-model="addStaff.staffNumber"/></form>
+                                            <div class="clear"></div>
+                                        </li>
+                                        <li><span>员工姓名：</span>
+                                            <form><input name="input" type="text" class="user_new_input"  ng-model="addStaff.staffName"/></form>
+                                            <div class="clear"></div>
+                                        </li>
+                                        <li><span>员工性别：</span>
+                                            <label> <select ng-model="search.id" ng-options="p.id as p.sex for p in sexs" ng-change="getSex(search.id)"></select></label>
+                                        </li>
+                                        <li><span>婚姻状况：</span>
+                                            <label>
+                                                <select ng-model="seletedId" ng-options="a.id as a.married for a in marriage">
+                                                </select>
+                                            </label>
+                                        </li>
+                                        <li><span>出生日期：</span> <form><input name="input" type="date" class="user_new_bottom_input" ng-model="addStaff.birthday"/></form></li>
+                                    </ul>
+                                </div>
+                                <div class="col-lg-6 col-md-6 col-sm-6">
+                                    <div class="user_new_pannel_img"></div>
+                                </div>
+                                <div class="col-lg-12 col-md-12 col-sm-6">
+                                    <ul>
+                                        <li><span>身份证号码：</span><form><input name="input" type="text" class="user_new_bottom_input" ng-model="addStaff.cardNum"/></form></li>
+                                        <li><span>联系电话： </span><form><input name="input" type="text" class="user_new_bottom_input" ng-model="addStaff.telphone"/></form></li>
+                                        <li><span>学历：</span><form><input name="input" type="text" class="user_new_bottom_input" ng-model="addStaff.eduLever"/></form></li>
+                                        <li><span>户籍：</span> <form><input name="input" type="text" class="user_new_bottom_input" ng-model="addStaff.nativePlace"/></form></li>
+                                        <li><span>现居住地： </span>  <form><input name="input" type="text" class="user_new_bottom_input" ng-model="addStaff.address"/></form></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="clear"></div>
+            </div>
+            <input type="button"  class="authorization_save" value="保存" ng-click="insert()">
+        </div>
+    </div>
+</div>
+
+
+</div>
+<!--右侧结束-->
+</div>
+</body>
+</html>

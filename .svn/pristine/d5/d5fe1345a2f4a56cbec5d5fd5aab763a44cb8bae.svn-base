@@ -1,0 +1,10 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>收管理费</title>
+</head>
+<body ng-controller="collectManageCtrl">
+{{test}}
+</body>
+</html>
